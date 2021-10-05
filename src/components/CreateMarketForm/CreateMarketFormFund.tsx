@@ -16,7 +16,7 @@ import Tooltip from '../Tooltip';
 
 function CreateMarketFormFund() {
   const { currency } = useNetwork();
-  const [field, meta, helpers] = useField('liquidity');
+  const [field, _meta, helpers] = useField('liquidity');
   const [fee, setFee] = useState(0);
 
   const balance = useAppSelector(state => state.bepro.ethBalance);
