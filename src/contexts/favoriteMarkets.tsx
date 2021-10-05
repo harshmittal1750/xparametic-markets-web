@@ -17,7 +17,7 @@ type FavoriteMarketsProviderProps = {
 };
 
 function FavoriteMarketsProvider({ children }: FavoriteMarketsProviderProps) {
-  const [favoriteMarkets, setFavoriteMarkets] = useLocalStorage(
+  const [favoriteMarkets, setFavoriteMarkets] = useLocalStorage<string[]>(
     'favoriteMarkets',
     []
   );

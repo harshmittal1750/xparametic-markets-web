@@ -18,7 +18,7 @@ import useToastNotification from 'hooks/useToastNotification';
 
 function PrivateBeta() {
   const [wrongWallet, setWrongWallet] = useState(false);
-  const [walletAddress, setWalletAddress] = useLocalStorage(
+  const [walletAddress, setWalletAddress] = useLocalStorage<string | undefined>(
     'walletAddress',
     undefined
   );
