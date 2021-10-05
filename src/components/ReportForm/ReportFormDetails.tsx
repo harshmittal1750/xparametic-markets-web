@@ -60,22 +60,25 @@ function ReportFormDetails() {
     }
   ];
 
-  async function getOutcomesBonds() {
-    const beproService = new BeproService();
-    // await beproService.login();
-
-    const response = await beproService.getQuestionBonds(questionId);
-    setBonds(response);
-
-    // TODO: improve this calculating total bond
-    const totalBondAmount = Object.values(response || {}).reduce((a: any, b: any) => a + b, 0) as number;
-    setTotalBond(totalBondAmount);
-  }
-
   // UGLY WORKAROUND! TODO: get data from api
   useEffect(() => {
+    async function getOutcomesBonds() {
+      const beproService = new BeproService();
+      // await beproService.login();
+
+      const response = await beproService.getQuestionBonds(questionId);
+      setBonds(response);
+
+      // TODO: improve this calculating total bond
+      const totalBondAmount = Object.values(response || {}).reduce(
+        (a: any, b: any) => a + b,
+        0
+      ) as number;
+      setTotalBond(totalBondAmount);
+    }
+
     getOutcomesBonds();
-  }, [finalizeTs]);
+  }, [finalizeTs, questionId]);
 
   const totalBondItems: TotalBondItem[] = [
     {
