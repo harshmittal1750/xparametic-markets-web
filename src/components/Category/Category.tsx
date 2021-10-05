@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 import classnames from 'classnames';
 import dayjs from 'dayjs';
 import { setFilter } from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
 
-import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
+// import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import { useAppSelector } from 'hooks';
 import useCategories from 'hooks/useCategories';
 
-import Label from '../Label';
+// import Label from '../Label';
 import MiniAreaChart from '../MiniAreaChart';
 import Text from '../Text';
 
