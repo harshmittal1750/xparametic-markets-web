@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import { Market } from 'models/market';
 
