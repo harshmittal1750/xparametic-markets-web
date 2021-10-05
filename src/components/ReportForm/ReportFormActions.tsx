@@ -87,7 +87,6 @@ function ReportFormActions({
       setIsApprovingPolk(false);
     } catch (error) {
       setIsApprovingPolk(false);
-      console.error(error);
     }
   }
 
@@ -132,7 +131,6 @@ function ReportFormActions({
       dispatch(changeQuestion(question));
     } catch (error) {
       setIsBonding(false);
-      console.error(error);
     }
   }
 
@@ -165,7 +163,6 @@ function ReportFormActions({
       setIsResolvingMarket(false);
     } catch (error) {
       setIsResolvingMarket(false);
-      console.error(error);
     }
   }
 
