@@ -15,11 +15,13 @@ function ReportFormOutcomeSelect() {
   const isMarketQuestionFinalized = useAppSelector(
     state => state.market.market.question.isFinalized
   );
-  const { bestAnswer, bond } = useAppSelector(state => state.market.market.question);
+  const { bestAnswer, bond } = useAppSelector(
+    state => state.market.market.question
+  );
   const { bonds, portfolio } = useAppSelector(state => state.bepro);
 
   // Form state
-  const [field, meta, helpers] = useField('outcome');
+  const [field, _meta, helpers] = useField('outcome');
 
   // converting bytes32 to int
   const resolvedOutcomeId = BeproService.bytes32ToInt(bestAnswer);
