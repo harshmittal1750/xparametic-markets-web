@@ -11,3 +11,9 @@ export type GetMarketByStateData = Market[];
 export type GetMarketByStateArgs = {
   state: 'open' | 'closed' | 'resolved';
 };
+
+// getMarketsByIds
+export type GetMarketsByIdsData = Market[];
+export type GetMarketsByIdsArgs = {
+  ids: string[];
+};

@@ -5,7 +5,9 @@ import {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
   GetMarketByStateArgs,
-  GetMarketByStateData
+  GetMarketByStateData,
+  GetMarketsByIdsArgs,
+  GetMarketsByIdsData
 } from './types';
 
 const polkamarketsApi = createApi({
@@ -20,11 +22,17 @@ const polkamarketsApi = createApi({
       GetMarketByStateArgs
     >({
       query: ({ state }) => `/markets?state=${state}`
+    }),
+    getMarketsByIds: builder.query<GetMarketsByIdsData, GetMarketsByIdsArgs>({
+      query: ({ ids }) => `/markets?id=${ids.join(',')}`
     })
   })
 });
 
 export default polkamarketsApi;
 
-export const { useGetMarketBySlugQuery, useGetMarketsByStateQuery } =
-  polkamarketsApi;
+export const {
+  useGetMarketBySlugQuery,
+  useGetMarketsByStateQuery,
+  useGetMarketsByIdsQuery
+} = polkamarketsApi;
