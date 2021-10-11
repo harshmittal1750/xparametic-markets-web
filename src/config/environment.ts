@@ -33,9 +33,9 @@ function getEnvironmentConfigVariable(
 
 function buildEnvironmentConfigObject() {
   return environmentConfigVariables.reduce(
-    (acc, key) => ({
+    (acc, variable) => ({
       ...acc,
-      [key]: getEnvironmentConfigVariable(key)
+      [variable]: getEnvironmentConfigVariable(variable)
     }),
     {} as EnvironmentConfig
   );
