@@ -17,3 +17,9 @@ export type GetMarketsByIdsData = Market[];
 export type GetMarketsByIdsArgs = {
   ids: string[];
 };
+
+// reloadMarketBySlug
+export type ReloadMarketBySlugData = void;
+export type ReloadMarketBySlugArgs = {
+  slug: string;
+};

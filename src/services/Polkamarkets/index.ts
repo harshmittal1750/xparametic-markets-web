@@ -7,7 +7,9 @@ import {
   GetMarketByStateArgs,
   GetMarketByStateData,
   GetMarketsByIdsArgs,
-  GetMarketsByIdsData
+  GetMarketsByIdsData,
+  ReloadMarketBySlugArgs,
+  ReloadMarketBySlugData
 } from './types';
 
 const polkamarketsApi = createApi({
@@ -25,6 +27,15 @@ const polkamarketsApi = createApi({
     }),
     getMarketsByIds: builder.query<GetMarketsByIdsData, GetMarketsByIdsArgs>({
       query: ({ ids }) => `/markets?id=${ids.join(',')}`
+    }),
+    reloadMarketBySlug: builder.mutation<
+      ReloadMarketBySlugData,
+      ReloadMarketBySlugArgs
+    >({
+      query: ({ slug }) => ({
+        url: `/markets/${slug}/reload`,
+        method: 'POST'
+      })
     })
   })
 });
@@ -34,5 +45,6 @@ export default polkamarketsApi;
 export const {
   useGetMarketBySlugQuery,
   useGetMarketsByStateQuery,
-  useGetMarketsByIdsQuery
+  useGetMarketsByIdsQuery,
+  useReloadMarketBySlugMutation
 } = polkamarketsApi;
