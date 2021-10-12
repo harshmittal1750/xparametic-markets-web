@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
+import { camelizeKeys } from 'humps';
 
 import {
   GetMarketBySlugArgs,
@@ -18,21 +19,28 @@ import {
   ReloadPortfolioByAddressData
 } from './types';
 
+function camelize<T extends object>(response: T): T {
+  return camelizeKeys(response) as T;
+}
+
 const polkamarketsApi = createApi({
   reducerPath: 'polkamarketsApi',
   baseQuery: fetchBaseQuery({ baseUrl: environment.POLKAMARKETS_API_URL }),
   endpoints: builder => ({
     getMarketBySlug: builder.query<GetMarketBySlugData, GetMarketBySlugArgs>({
-      query: ({ slug }) => `/markets/${slug}`
+      query: ({ slug }) => `/markets/${slug}`,
+      transformResponse: (response: GetMarketBySlugData) => camelize(response)
     }),
     getMarketsByState: builder.query<
       GetMarketByStateData,
       GetMarketByStateArgs
     >({
-      query: ({ state }) => `/markets?state=${state}`
+      query: ({ state }) => `/markets?state=${state}`,
+      transformResponse: (response: GetMarketByStateData) => camelize(response)
     }),
     getMarketsByIds: builder.query<GetMarketsByIdsData, GetMarketsByIdsArgs>({
-      query: ({ ids }) => `/markets?id=${ids.join(',')}`
+      query: ({ ids }) => `/markets?id=${ids.join(',')}`,
+      transformResponse: (response: GetMarketsByIdsData) => camelize(response)
     }),
     reloadMarketBySlug: builder.mutation<
       ReloadMarketBySlugData,
@@ -53,13 +61,16 @@ const polkamarketsApi = createApi({
         body: {
           id
         }
-      })
+      }),
+      transformResponse: (response: CreateMarketByIdData) => camelize(response)
     }),
     getPortfolioByAddress: builder.query<
       GetPortfolioByAddressData,
       GetPortfolioByAddressArgs
     >({
-      query: ({ address }) => `/portfolios/${address}`
+      query: ({ address }) => `/portfolios/${address}`,
+      transformResponse: (response: GetPortfolioByAddressData) =>
+        camelize(response)
     }),
     reloadPortfolioByAddress: builder.mutation<
       ReloadPortfolioByAddressData,
