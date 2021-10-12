@@ -23,3 +23,9 @@ export type ReloadMarketBySlugData = void;
 export type ReloadMarketBySlugArgs = {
   slug: string;
 };
+
+// createMarketById
+export type CreateMarketByIdData = Market;
+export type CreateMarketByIdArgs = {
+  id: string;
+};

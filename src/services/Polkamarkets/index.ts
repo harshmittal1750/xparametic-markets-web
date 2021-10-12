@@ -9,7 +9,9 @@ import {
   GetMarketsByIdsArgs,
   GetMarketsByIdsData,
   ReloadMarketBySlugArgs,
-  ReloadMarketBySlugData
+  ReloadMarketBySlugData,
+  CreateMarketByIdArgs,
+  CreateMarketByIdData
 } from './types';
 
 const polkamarketsApi = createApi({
@@ -36,6 +38,18 @@ const polkamarketsApi = createApi({
         url: `/markets/${slug}/reload`,
         method: 'POST'
       })
+    }),
+    createMarketById: builder.mutation<
+      CreateMarketByIdData,
+      CreateMarketByIdArgs
+    >({
+      query: ({ id }) => ({
+        url: `/markets/`,
+        method: 'POST',
+        body: {
+          id
+        }
+      })
     })
   })
 });
@@ -46,5 +60,6 @@ export const {
   useGetMarketBySlugQuery,
   useGetMarketsByStateQuery,
   useGetMarketsByIdsQuery,
-  useReloadMarketBySlugMutation
+  useReloadMarketBySlugMutation,
+  useCreateMarketByIdMutation
 } = polkamarketsApi;
