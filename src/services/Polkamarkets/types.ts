@@ -1,4 +1,5 @@
 import { Market } from 'models/market';
+import { Portfolio } from 'models/portfolio';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -28,4 +29,10 @@ export type ReloadMarketBySlugArgs = {
 export type CreateMarketByIdData = Market;
 export type CreateMarketByIdArgs = {
   id: string;
+};
+
+// getPortfolioByAddress
+export type GetPortfolioByAddressData = Portfolio;
+export type GetPortfolioByAddressArgs = {
+  address: string;
 };
