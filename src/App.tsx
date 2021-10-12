@@ -10,7 +10,10 @@ import { useLocalStorage, useTheme } from 'hooks';
 
 const App = () => {
   const { theme } = useTheme();
-  const [localStorageTheme, setLocalStorageTheme] = useLocalStorage('theme');
+  const [localStorageTheme, setLocalStorageTheme] = useLocalStorage<string>(
+    'theme',
+    'dark'
+  );
 
   useEffect(() => {
     setLocalStorageTheme(theme);

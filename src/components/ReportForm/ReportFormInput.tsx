@@ -47,6 +47,7 @@ function ReportFormInput() {
     if (isValidTimestamp && isOutdated) {
       fetchQuestion();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   // TODO: fetch question if now > finalizeTs

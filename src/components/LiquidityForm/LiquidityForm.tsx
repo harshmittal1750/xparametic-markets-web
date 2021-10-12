@@ -2,7 +2,7 @@ import LiquidityFormActions from './LiquidityFormActions';
 import LiquidityFormDetails from './LiquidityFormDetails';
 import LiquidityFormInfo from './LiquidityFormInfo';
 import LiquidityFormInput from './LiquidityFormInput';
-import LiquidityFormTerms from './LiquidityFormTerms';
+// import LiquidityFormTerms from './LiquidityFormTerms';
 import LiquidityFormTypeSelector from './LiquidityFormTypeSelector';
 
 function LiquidityForm() {

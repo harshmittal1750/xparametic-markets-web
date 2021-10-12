@@ -51,8 +51,8 @@ function ReportForm() {
       .required('Bond is required!')
   });
 
-  async function handleFormSubmit(values: ReportFormData) {
-    console.log(values);
+  async function handleFormSubmit(_values: ReportFormData) {
+    // console.log(values);
   }
 
   if (isLoading) return null;
