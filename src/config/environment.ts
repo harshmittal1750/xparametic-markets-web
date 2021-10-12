@@ -14,7 +14,7 @@ export type EnvironmentConfigVariable =
   typeof environmentConfigVariables[number];
 
 export type EnvironmentConfig = {
-  [variable in typeof environmentConfigVariables[number]]: string | undefined;
+  [_variable in typeof environmentConfigVariables[number]]: string | undefined;
 };
 
 /**
