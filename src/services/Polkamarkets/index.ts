@@ -13,7 +13,9 @@ import {
   CreateMarketByIdArgs,
   CreateMarketByIdData,
   GetPortfolioByAddressArgs,
-  GetPortfolioByAddressData
+  GetPortfolioByAddressData,
+  ReloadPortfolioByAddressArgs,
+  ReloadPortfolioByAddressData
 } from './types';
 
 const polkamarketsApi = createApi({
@@ -58,6 +60,15 @@ const polkamarketsApi = createApi({
       GetPortfolioByAddressArgs
     >({
       query: ({ address }) => `/portfolios/${address}`
+    }),
+    reloadPortfolioByAddress: builder.mutation<
+      ReloadPortfolioByAddressData,
+      ReloadPortfolioByAddressArgs
+    >({
+      query: ({ address }) => ({
+        url: `/portfolios/${address}/reload`,
+        method: 'POST'
+      })
     })
   })
 });
@@ -70,5 +81,6 @@ export const {
   useGetMarketsByIdsQuery,
   useReloadMarketBySlugMutation,
   useCreateMarketByIdMutation,
-  useGetPortfolioByAddressQuery
+  useGetPortfolioByAddressQuery,
+  useReloadPortfolioByAddressMutation
 } = polkamarketsApi;

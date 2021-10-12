@@ -36,3 +36,9 @@ export type GetPortfolioByAddressData = Portfolio;
 export type GetPortfolioByAddressArgs = {
   address: string;
 };
+
+// reloadPortfolioByAddress
+export type ReloadPortfolioByAddressData = void;
+export type ReloadPortfolioByAddressArgs = {
+  address: string;
+};
