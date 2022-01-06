@@ -4,17 +4,42 @@ $color--chinese-black: #12141c !default;
 $color--eerie-black: #171b23 !default;
 $color--pure-black: #000000 !default;
 
+$black-tones: (
+  black: $color--black,
+  chinese-black: $color--chinese-black,
+  eerie-black: $color--eerie-black,
+  pure-black: $color--pure-black
+) !default;
+
+// White tones and light colors
+$color--ghost-white: #f9fafb !default;
+
+$white-tones: (
+  ghost-white: $color--ghost-white
+) !default;
+
 // Gray tones
 $color--metal-gray: #647084 !default;
 $color--charcoal: #3a4150 !default;
 $color--gun-metal: #242c3b !default;
 
-$colors: (
-  black: $color--black,
-  chinese-black: $color--chinese-black,
-  eerie-black: $color--eerie-black,
-  pure-black: $color--pure-black,
+$gray-tones: (
   metal-gray: $color--metal-gray,
   charcoal: $color--charcoal,
   gun-metal: $color--gun-metal
+) !default;
+
+// Blue tones
+$color--light-blue: #6f69fa !default;
+
+$blue-tones: (
+  light-blue: $color--light-blue
+) !default;
+
+// All colors
+$colors: map-merge(
+  $black-tones,
+  $white-tones,
+  $gray-tones,
+  $blue-tones
 ) !default;
