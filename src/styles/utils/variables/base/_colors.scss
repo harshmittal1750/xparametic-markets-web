@@ -1,0 +1,12 @@
+// Black tones and dark colors
+$color--black: #0e1016 !default;
+$color--chinese-black: #12141c !default;
+$color--eerie-black: #171b23 !default;
+$color--pure-black: #000000 !default;
+
+$colors: (
+  black: $color--black,
+  chinese-black: $color--chinese-black,
+  eerie-black: $color--eerie-black,
+  pure-black: $color--pure-black
+) !default;
