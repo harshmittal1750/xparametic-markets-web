@@ -1,0 +1,31 @@
+@each $size, $value in $spacers {
+  .margin-#{$size} {
+    margin: #{$value};
+  }
+
+  .margin-top-#{$size} {
+    margin-top: #{$value};
+  }
+
+  .margin-right-#{$size} {
+    margin-right: #{$value};
+  }
+
+  .margin-bottom-#{$size} {
+    margin-bottom: #{$value};
+  }
+
+  .margin-left-#{$size} {
+    margin-left: #{$value};
+  }
+
+  .margin-x-#{$size} {
+    margin-right: #{$value};
+    margin-left: #{$value};
+  }
+
+  .margin-y-#{$size} {
+    margin-top: #{$value};
+    margin-bottom: #{$value};
+  }
+}
