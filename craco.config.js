@@ -8,6 +8,7 @@ module.exports = {
       options: {
         hoistUseStatements: true,
         patterns: [
+          path.join(__dirname, './src/styles/utils/*.scss'),
           path.join(__dirname, './src/styles/abstracts/variables/_colors.scss'),
           path.join(__dirname, './src/styles/abstracts/variables/*.scss'),
           path.join(__dirname, './src/styles/abstracts/mixins/*.scss'),
