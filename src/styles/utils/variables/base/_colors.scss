@@ -36,10 +36,18 @@ $blue-tones: (
   light-blue: $color--light-blue
 ) !default;
 
+// Orange tones
+$color--orange-yellow: #f0b429 !default;
+
+$orange-tones: (
+  orange-yellow: $color--orange-yellow
+) !default;
+
 // All colors
 $colors: map-merge(
   $black-tones,
   $white-tones,
   $gray-tones,
-  $blue-tones
+  $blue-tones,
+  $orange-tones
 ) !default;
