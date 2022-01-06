@@ -1,0 +1,31 @@
+@each $size, $value in $spacers {
+  .padding-#{$size} {
+    padding: #{$value};
+  }
+
+  .padding-top-#{$size} {
+    padding-top: #{$value};
+  }
+
+  .padding-right-#{$size} {
+    padding-right: #{$value};
+  }
+
+  .padding-bottom-#{$size} {
+    padding-bottom: #{$value};
+  }
+
+  .padding-left-#{$size} {
+    padding-left: #{$value};
+  }
+
+  .padding-x-#{$size} {
+    padding-right: #{$value};
+    padding-left: #{$value};
+  }
+
+  .padding-y-#{$size} {
+    padding-top: #{$value};
+    padding-bottom: #{$value};
+  }
+}
