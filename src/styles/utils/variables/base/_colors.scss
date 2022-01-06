@@ -4,9 +4,17 @@ $color--chinese-black: #12141c !default;
 $color--eerie-black: #171b23 !default;
 $color--pure-black: #000000 !default;
 
+// Gray tones
+$color--metal-gray: #647084 !default;
+$color--charcoal: #3a4150 !default;
+$color--gun-metal: #242c3b !default;
+
 $colors: (
   black: $color--black,
   chinese-black: $color--chinese-black,
   eerie-black: $color--eerie-black,
-  pure-black: $color--pure-black
+  pure-black: $color--pure-black,
+  metal-gray: $color--metal-gray,
+  charcoal: $color--charcoal,
+  gun-metal: $color--gun-metal
 ) !default;
