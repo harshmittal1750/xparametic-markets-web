@@ -1,0 +1,80 @@
+$achievement-themes: (
+  dark: (
+    text: (
+      title: (
+        available: map-get($colors, 'light-blue'),
+        unavailable: map-get($colors, 'metal-gray'),
+        claimed: map-get($colors, 'light-blue')
+      ),
+      award: (
+        title: map-get($colors, 'ghost-white'),
+        description: map-get($colors, 'metal-gray')
+      ),
+      claim-count: map-get($colors, 'metal-gray'),
+      rarity: (
+        common: map-get($colors, 'metal-gray'),
+        rare: map-get($colors, 'orange-yellow')
+      )
+    ),
+    background-colors: (
+      content: map-get($colors, 'eerie-black'),
+      footer: map-get($colors, 'chinese-black')
+    ),
+    border-color: map-get($colors, 'gun-metal')
+  )
+);
+
+.pm-c-achievement {
+  @include themes($achievement-themes) {
+    &__content {
+      background-color: map-get(themed('background-colors'), 'content');
+    }
+
+    &__footer {
+      background-color: map-get(themed('background-colors'), 'footer');
+    }
+
+    &__title {
+      &--available {
+        @extend .pm-c-achievement__title;
+        color: map-get(map-get(themed('text'), 'title'), 'available');
+      }
+
+      &--unavailable {
+        @extend .pm-c-achievement__title;
+        color: map-get(map-get(themed('text'), 'title'), 'unavailable');
+      }
+
+      &--claimed {
+        @extend .pm-c-achievement__title;
+        color: map-get(map-get(themed('text'), 'title'), 'claimed');
+      }
+    }
+
+    &__award {
+      &-title {
+        color: map-get(map-get(themed('text'), 'award'), 'title');
+      }
+
+      &-description {
+        color: map-get(map-get(themed('text'), 'award'), 'description');
+      }
+    }
+
+    &__claim-count {
+      color: map-get(themed('text'), 'claim-count');
+    }
+
+    &__rarity {
+      &--common {
+        @extend .pm-c-achievement__rarity;
+        color: map-get(map-get(themed('text'), 'rarity'), 'common');
+      }
+
+      &--rare {
+        @extend .pm-c-achievement__rarity;
+        color: map-get(map-get(themed('text'), 'rarity'), 'rare');
+      }
+    }
+  }
+}
