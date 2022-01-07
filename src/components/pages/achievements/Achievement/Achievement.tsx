@@ -17,7 +17,12 @@ type AchievementProps = {
 };
 
 function Achievement() {
-  return <div />;
+  return (
+    <div className="pm-c-achievement">
+      <div className="pm-c-achievement__content" />
+      <div className="pm-c-achievement__footer" />
+    </div>
+  );
 }
 
 export default Achievement;
