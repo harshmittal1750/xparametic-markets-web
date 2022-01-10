@@ -1,0 +1,40 @@
+%border {
+  border-width: 0.1rem;
+}
+
+.border-solid {
+  @extend %border;
+  border-style: solid;
+}
+
+.border-solid-x {
+  @extend %border;
+  border-left-style: solid;
+  border-right-style: solid;
+}
+
+.border-solid-y {
+  @extend %border;
+  border-top-style: solid;
+  border-bottom-style: solid;
+}
+
+.border-solid-top {
+  @extend %border;
+  border-top-style: solid;
+}
+
+.border-solid-right {
+  @extend %border;
+  border-right-style: solid;
+}
+
+.border-solid-bottom {
+  @extend %border;
+  border-bottom-style: solid;
+}
+
+.border-solid-left {
+  @extend %border;
+  border-left-style: solid;
+}

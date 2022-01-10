@@ -1,0 +1,27 @@
+$border-radius-size--small: 0.4rem !default;
+$border-radius-size--medium: 0.8rem !default;
+$border-radius-size--large: 1.6rem !default;
+
+$border-radius-sizes: (
+  small: $border-radius-size--small,
+  medium: $border-radius-size--medium,
+  large: $border-radius-size--large
+) !default;
+
+@each $size, $value in $border-radius-sizes {
+  .border-radius-#{$size} {
+    border-radius: $value;
+  }
+
+  .border-radius-top-corners-#{$size} {
+    border-radius: $value $value 0rem 0rem;
+  }
+
+  .border-radius-bottom-corners-#{$size} {
+    border-radius: 0rem 0rem $value $value;
+  }
+}
+
+.border-radius-50 {
+  border-radius: 50%;
+}
