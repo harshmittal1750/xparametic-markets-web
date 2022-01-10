@@ -29,7 +29,13 @@ type TextType =
   | 'i'
   | 'b';
 
-type TextScale = 'heading' | 'body' | 'caption' | 'tiny' | 'tiny-uppercase';
+type TextScale =
+  | 'heading-large'
+  | 'heading'
+  | 'body'
+  | 'caption'
+  | 'tiny'
+  | 'tiny-uppercase';
 
 type TextFontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 

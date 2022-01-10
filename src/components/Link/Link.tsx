@@ -5,6 +5,7 @@ import classNames from 'classnames';
 export type LinkVariant = 'information' | 'success' | 'warning' | 'error';
 
 export type LinkScale =
+  | 'heading-large'
   | 'heading'
   | 'body'
   | 'caption'
