@@ -1,0 +1,15 @@
+$achievements-themes: (
+  dark: (
+    text: (
+      title: map-get($colors, 'cultured-white')
+    )
+  )
+) !default;
+
+.pm-p-achievements {
+  @include themes($achievements-themes) {
+    &__title {
+      color: map-get(themed('text'), 'title');
+    }
+  }
+}
