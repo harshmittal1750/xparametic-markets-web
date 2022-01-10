@@ -10,7 +10,7 @@ function Achievements() {
           Achievements
         </h1>
       </div>
-      <ul className="flex-row wrap gap-8">
+      <ul className="pm-p-achievements__list">
         {achievements.map(achievement => (
           <li key={achievement.id}>
             <Achievement {...achievement} />
