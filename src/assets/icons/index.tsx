@@ -28,6 +28,7 @@ import LaptopIcon from './LaptopIcon';
 import LineChartIcon from './LineChartIcon';
 import LinkedInIcon from './LinkedInIcon';
 import MarketsIcon from './MarketsIcon';
+import MedalIcon from './MedalIcon';
 import MediumIcon from './MediumIcon';
 import MetaMaskIcon from './MetaMaskIcon';
 import MetaMaskIconSmall from './MetaMaskIconSmall';
@@ -91,6 +92,7 @@ export {
   LineChartIcon,
   LinkedInIcon,
   MarketsIcon,
+  MedalIcon,
   MediumIcon,
   MetaMaskIcon,
   MetaMaskIconSmall,
