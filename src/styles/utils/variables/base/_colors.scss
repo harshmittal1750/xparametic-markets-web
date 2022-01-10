@@ -14,10 +14,12 @@ $black-tones: (
 // White tones and light colors
 $color--pure-white: #ffffff !default;
 $color--ghost-white: #f9fafb !default;
+$color--cultured-white: #f4f5f6 !default;
 
 $white-tones: (
   pure-white: $color--pure-white,
-  ghost-white: $color--ghost-white
+  ghost-white: $color--ghost-white,
+  cultured-white: $color--cultured-white
 ) !default;
 
 // Gray tones
