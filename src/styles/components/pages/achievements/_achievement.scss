@@ -1,6 +1,11 @@
 $achievement-themes: (
   dark: (
     text: (
+      status: (
+        available: map-get($colors, 'pure-white'),
+        unavailable: map-get($colors, 'lavender-gray'),
+        claimed: map-get($colors, 'pure-white')
+      ),
       title: (
         available: map-get($colors, 'light-blue'),
         unavailable: map-get($colors, 'metal-gray'),
@@ -17,6 +22,11 @@ $achievement-themes: (
       )
     ),
     background-colors: (
+      status: (
+        available: map-get($colors, 'very-light-blue'),
+        unavailable: map-get($colors, 'charleston-gray'),
+        claimed: map-get($colors, 'jungle-green')
+      ),
       content: map-get($colors, 'eerie-black'),
       footer: map-get($colors, 'chinese-black')
     ),
@@ -26,12 +36,78 @@ $achievement-themes: (
 
 .pm-c-achievement {
   @include themes($achievement-themes) {
+    &__wrapper {
+      border-color: themed('border-color');
+      border-bottom: none;
+    }
+
     &__content {
       background-color: map-get(themed('background-colors'), 'content');
     }
 
     &__footer {
       background-color: map-get(themed('background-colors'), 'footer');
+      border-color: themed('border-color');
+    }
+
+    &__status {
+      padding: 0.6rem;
+
+      &--available {
+        @extend .pm-c-achievement__status;
+        background-color: map-get(
+          map-get(themed('background-colors'), 'status'),
+          'available'
+        );
+
+        .pm-c-achievement__status-title {
+          color: map-get(map-get(themed('text'), 'status'), 'available');
+        }
+      }
+
+      &--unavailable {
+        @extend .pm-c-achievement__status;
+        background-color: map-get(
+          map-get(themed('background-colors'), 'status'),
+          'unavailable'
+        );
+
+        .pm-c-achievement__status-title {
+          color: map-get(map-get(themed('text'), 'status'), 'unavailable');
+        }
+      }
+
+      &--claimed {
+        @extend .pm-c-achievement__status;
+        background-color: map-get(
+          map-get(themed('background-colors'), 'status'),
+          'claimed'
+        );
+
+        .pm-c-achievement__status-title {
+          color: map-get(map-get(themed('text'), 'status'), 'claimed');
+        }
+      }
+    }
+
+    &__medal-icon {
+      height: 1.2rem;
+      width: 1.2rem;
+
+      &--available {
+        @extend .pm-c-achievement__medal-icon;
+        fill: map-get(map-get(themed('text'), 'title'), 'available');
+      }
+
+      &--unavailable {
+        @extend .pm-c-achievement__medal-icon;
+        fill: map-get(map-get(themed('text'), 'title'), 'unavailable');
+      }
+
+      &--claimed {
+        @extend .pm-c-achievement__medal-icon;
+        fill: map-get(map-get(themed('text'), 'title'), 'claimed');
+      }
     }
 
     &__title {
