@@ -12,11 +12,11 @@ $black-tones: (
 ) !default;
 
 // White tones and light colors
-$color--white: #ffffff !default;
+$color--pure-white: #ffffff !default;
 $color--ghost-white: #f9fafb !default;
 
 $white-tones: (
-  white: $color--white,
+  pure-white: $color--pure-white,
   ghost-white: $color--ghost-white
 ) !default;
 
