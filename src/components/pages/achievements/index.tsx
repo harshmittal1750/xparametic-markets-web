@@ -1,4 +1,5 @@
-/* eslint-disable import/prefer-default-export */
 import Achievement from './Achievement';
+import AchievementFilter, { Item } from './AchievementFilter';
 
-export { Achievement };
+export { Achievement, AchievementFilter };
+export type { Item };
