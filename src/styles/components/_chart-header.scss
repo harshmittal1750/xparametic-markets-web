@@ -43,3 +43,47 @@
     }
   }
 }
+
+.achievement-filter {
+  @include themes($chart-header-themes) {
+    @include flex-row;
+    gap: 4.8rem;
+
+    &__item {
+      @include flex-row;
+      gap: 0.8rem;
+
+      width: 100%;
+      place-content: space-between;
+
+      &-item {
+        @extend .pm-c-button;
+        padding: 0.4rem 0.8rem;
+
+        width: fit-content;
+
+        @extend .caption, .bold;
+        color: themed('item-text-color');
+
+        background-color: themed('item-background-color');
+        @include border(themed('item-border-color'));
+
+        transition: $chart-header-transitions;
+
+        svg {
+          fill: themed('item-text-color');
+          transition: $chart-header-transitions;
+        }
+
+        &.active {
+          color: themed('item-text-color-active');
+          background-color: themed('item-background-color-active');
+
+          svg {
+            fill: themed('item-text-color-active');
+          }
+        }
+      }
+    }
+  }
+}
