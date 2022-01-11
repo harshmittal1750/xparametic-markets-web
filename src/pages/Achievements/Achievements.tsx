@@ -1,17 +1,54 @@
-import { Achievement } from 'components/pages/achievements';
+import { useState } from 'react';
+
+import {
+  Achievement,
+  AchievementFilter,
+  Item
+} from 'components/pages/achievements';
 
 import achievements from './mock';
 
+const achievementFilters: Item[] = [
+  {
+    id: 'all',
+    name: 'ALL',
+    value: 'all'
+  },
+  {
+    id: 'available',
+    name: 'AVAILABLE',
+    value: 'available'
+  },
+  {
+    id: 'unavailable',
+    name: 'UNAVAILABLE',
+    value: 'unavailable'
+  }
+];
+
+const filters = {
+  all: items => items,
+  available: items => items.status === 'available',
+  unavailable: items => items.status === 'unavailable'
+};
+
 function Achievements() {
+  const [filter, setFilter] = useState(achievementFilters[0].value);
+
   return (
     <div className="pm-p-achievements flex-column gap-4">
-      <div className="flex-row justify-space-between align-center padding-bottom-3">
+      <div className="flex-row wrap justify-space-between align-center gap-6 padding-bottom-3">
         <h1 className="pm-p-achievements__title heading semibold">
           Achievements
         </h1>
+        <AchievementFilter
+          items={achievementFilters}
+          defaultItemId={achievementFilters[0].id}
+          onChangeItem={(_item, value) => setFilter(value)}
+        />
       </div>
       <ul className="pm-p-achievements__list">
-        {achievements.map(achievement => (
+        {achievements.filter(filters[filter]).map(achievement => (
           <li key={achievement.id}>
             <Achievement {...achievement} />
           </li>
