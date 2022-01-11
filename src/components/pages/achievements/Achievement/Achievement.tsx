@@ -1,11 +1,13 @@
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 
 import { Achievement as AchievementProps } from 'types/achievement';
 
 import { CheckIcon, MedalIcon } from 'assets/icons';
 
-import { Button, Divider } from 'components';
+import { Button, Divider, Toast, ToastNotification } from 'components';
 import { ButtonColor, ButtonVariant } from 'components/Button';
+
+import useToastNotification from 'hooks/useToastNotification';
 
 type ButtonStatus = {
   title: string;
@@ -40,12 +42,26 @@ const buttonsByStatus: { [key: string]: ButtonStatus } = {
 };
 
 function Achievement({
+  id,
   title,
   award,
   status,
   claimCount,
   rarity
 }: AchievementProps) {
+  // Fake logic
+  const [isClaimingNFT, setIsClaimingNFT] = useState(false);
+  const { show, close } = useToastNotification();
+
+  function claimNFT() {
+    setIsClaimingNFT(true);
+
+    setTimeout(() => {
+      show(`claimNFT-${id}`);
+      setIsClaimingNFT(false);
+    }, 3000);
+  }
+
   return (
     <div className="pm-c-achievement flex-column border-radius-top-corners-small">
       <div className="pm-c-achievement__wrapper flex-column border-solid border-radius-top-corners-small">
@@ -91,11 +107,30 @@ function Achievement({
             size="normal"
             color={buttonsByStatus[status].color}
             variant={buttonsByStatus[status].variant}
+            loading={isClaimingNFT}
             disabled={buttonsByStatus[status].disabled}
+            onClick={() => claimNFT()}
           >
             {buttonsByStatus[status].icon}
             {buttonsByStatus[status].title}
           </Button>
+          <ToastNotification id={`claimNFT-${id}`} duration={10000}>
+            <Toast
+              variant="success"
+              title="Success"
+              description="Success example!"
+            >
+              <Toast.Actions>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => close(`claimNFT-${id}`)}
+                >
+                  Dismiss
+                </Button>
+              </Toast.Actions>
+            </Toast>
+          </ToastNotification>
         </div>
       </div>
       <div className="pm-c-achievement__footer flex-row gap-3 justify-center align-center padding-4 border-solid border-radius-bottom-corners-small">
