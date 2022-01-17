@@ -26,7 +26,7 @@ export default class BeproService {
   constructor() {
     this.bepro = new beprojs.Application({
       web3Provider: process.env.REACT_APP_WEB3_PROVIDER,
-      web3EventsProvider: process.env.REACT_APP_WEB3_EVENTS_PROVIDER,
+      web3EventsProvider: process.env.REACT_APP_WEB3_EVENTS_PROVIDER
     });
     this.bepro.start();
     // fetching contract
