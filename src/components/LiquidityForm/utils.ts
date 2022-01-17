@@ -1,5 +1,5 @@
 import { roundNumber } from 'helpers/math';
-import { Market, Outcome } from 'models/market';
+import { Market } from 'models/market';
 import { LiquidityDetails } from 'redux/ducks/liquidity';
 
 function formatMiniTableItems(
@@ -29,7 +29,10 @@ function formatMiniTableItems(
       key: 'pricePerFraction',
       title: 'Price per share',
       // eslint-disable-next-line prettier/prettier
-      value: `${roundNumber(price || selectedPredictionObj?.price || 0, 3)} ${ticker}`
+      value: `${roundNumber(
+        price || selectedPredictionObj?.price || 0,
+        3
+      )} ${ticker}`
     },
     {
       key: 'shares',

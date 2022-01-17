@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, ChangeEvent, FormEvent } from 'react';
 
 import { SearchIcon } from 'assets/icons';

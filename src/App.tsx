@@ -14,7 +14,10 @@ const POLKAMARKETS_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/polkamarkets_meta
 
 const App = () => {
   const { theme } = useTheme();
-  const [localStorageTheme, setLocalStorageTheme] = useLocalStorage('theme');
+  const [localStorageTheme, setLocalStorageTheme] = useLocalStorage<string>(
+    'theme',
+    'dark'
+  );
 
   useEffect(() => {
     setLocalStorageTheme(theme);

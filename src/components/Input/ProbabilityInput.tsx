@@ -37,7 +37,13 @@ const ProbabilityInput = React.forwardRef<
         probability: 100 - secondOutcome.probability
       });
     }
-  }, [name, secondOutcome, setFieldValue]);
+  }, [
+    firstOutcome.name,
+    firstOutcome.probability,
+    name,
+    secondOutcome,
+    setFieldValue
+  ]);
 
   useEffect(() => {
     if (secondOutcome.probability !== 100 - firstOutcome.probability) {
@@ -46,7 +52,13 @@ const ProbabilityInput = React.forwardRef<
         probability: 100 - firstOutcome.probability
       });
     }
-  }, [name, firstOutcome, setFieldValue]);
+  }, [
+    name,
+    firstOutcome,
+    setFieldValue,
+    secondOutcome.probability,
+    secondOutcome.name
+  ]);
 
   return (
     <div className="pm-c-probability-input--default__group">
