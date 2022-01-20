@@ -1,4 +1,4 @@
-import { Currency, DEV, ETH, MOVR } from 'hooks/useNetwork/currencies';
+import { Currency, DEV, ETH, MOVR, GLMR } from 'hooks/useNetwork/currencies';
 
 export type Network = {
   id: string;
@@ -11,8 +11,11 @@ export type Network = {
   buyEc20Url?: string;
 };
 
-export const { REACT_APP_NETWORK_ID, REACT_APP_ERC20_CONTRACT_ADDRESS } =
-  process.env;
+export const {
+  REACT_APP_NETWORK_ID,
+  REACT_APP_ERC20_CONTRACT_ADDRESS,
+  REACT_APP_GOVERNANCE_CONTRACT_ADDRESS
+} = process.env;
 
 const NETWORKS: {
   [key: string]: Network;
@@ -71,6 +74,16 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://etherscan.io',
     rpcUrls: ['http://localhost:9933']
+  },
+  '0x504': {
+    id: '1284',
+    name: 'Moonbeam',
+    key: 'moonbeam',
+    currency: GLMR,
+    decimals: 18,
+    explorerURL: 'https://moonbeam.moonscan.io',
+    rpcUrls: ['https://rpc.api.moonbeam.network'],
+    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${REACT_APP_GOVERNANCE_CONTRACT_ADDRESS}`
   },
   '0x505': {
     id: '1285',
