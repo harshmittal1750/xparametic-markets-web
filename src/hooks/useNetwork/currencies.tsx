@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 
-import { EthereumIcon, MoonriverIcon } from 'assets/icons';
+import { EthereumIcon, MoonbeamIcon, MoonriverIcon } from 'assets/icons';
 
 export type Currency = {
   name: string;
@@ -30,4 +30,11 @@ const MOVR: Currency = {
   icon: <MoonriverIcon />
 };
 
-export { DEV, ETH, MOVR };
+const GLMR: Currency = {
+  name: 'Moonbeam',
+  ticker: 'GLMR',
+  symbol: 'GLMR',
+  icon: <MoonbeamIcon />
+};
+
+export { DEV, ETH, MOVR, GLMR };
