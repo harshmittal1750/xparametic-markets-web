@@ -1,7 +1,6 @@
 import isNull from 'lodash/isNull';
 import isUndefined from 'lodash/isUndefined';
 
-// A environment variable must have the prefix `REACT_APP_` in .env file
 const environmentConfigVariables = [
   'ERC20_CONTRACT_ADDRESS',
   'IP_API_KEY',
@@ -13,33 +12,13 @@ const environmentConfigVariables = [
   'WEB3_PROVIDER'
 ] as const;
 
-const networkConfigVariables = [
-  'PREDICTION_MARKET_CONTRACT_ADDRESS',
-  'REALITIO_ERC20_CONTRACT_ADDRESS',
-  'ERC20_CONTRACT_ADDRESS',
-  'NETWORK_ID',
-  'WEB3_PROVIDER',
-  'WEB3_EVENTS_PROVIDER'
-] as const;
-
-const networkVariableRegularExp = new RegExp(
-  '^REACT_APP_NETWORK_([0-9]+)((_[A-Z0-9]+)*)$'
-);
-
 export type EnvironmentConfigVariable =
   typeof environmentConfigVariables[number];
-
-export type NetworkConfigVariable = typeof networkConfigVariables[number];
 
 export type EnvironmentConfig = {
   [_variable in typeof environmentConfigVariables[number]]: string | undefined;
 };
 
-/**
- * This method will retrieve any configuration variable.
- * @param variable
- * @returns string | undefined
- */
 function getEnvironmentConfigVariable(
   variable: EnvironmentConfigVariable
 ): string | undefined {
@@ -49,35 +28,7 @@ function getEnvironmentConfigVariable(
   return process.env[`REACT_APP_${variable}`];
 }
 
-function getNetworksConfigVariables() {
-  const networksVariables = Object.keys(process.env).filter(variable =>
-    variable.match(networkVariableRegularExp)
-  );
-
-  return networksVariables;
-}
-
-function groupNetworksVariablesById(variables: string[]) {
-  const networks = {};
-
-  function addVariableToGroup(variable: string) {
-    const regexMatchResult = variable.match(networkVariableRegularExp);
-    const group = !isNull(regexMatchResult) ? regexMatchResult[1] : undefined;
-
-    if (!isUndefined(group)) {
-      networks[group] = [...(networks[group] || []), variable];
-    }
-  }
-
-  variables.forEach(addVariableToGroup);
-
-  return networks;
-}
-
 function buildEnvironmentConfigObject() {
-  const networkVariables = getNetworksConfigVariables();
-  const networksVariablesById = groupNetworksVariablesById(networkVariables);
-
   return environmentConfigVariables.reduce(
     (acc, variable) => ({
       ...acc,
@@ -89,4 +40,59 @@ function buildEnvironmentConfigObject() {
 
 const environmentConfig = buildEnvironmentConfigObject();
 
-export default environmentConfig;
+type NetworkConfigVariable =
+  | 'ERC20_CONTRACT_ADDRESS'
+  | 'NETWORK_ID'
+  | 'PREDICTION_MARKET_CONTRACT_ADDRESS'
+  | 'REALITIO_ERC20_CONTRACT_ADDRESS'
+  | 'WEB3_PROVIDER'
+  | 'WEB3_EVENTS_PROVIDER';
+
+export type NetworkConfig = {
+  ERC20_CONTRACT_ADDRESS: string;
+  NETWORK_ID: string | number;
+  PREDICTION_MARKET_CONTRACT_ADDRESS: string;
+  REALITIO_ERC20_CONTRACT_ADDRESS: string;
+  WEB3_PROVIDER: string;
+  WEB3_EVENTS_PROVIDER?: string;
+};
+
+export type NetworksConfigs = { [key: number]: NetworkConfig };
+
+const networkVariableRegularExp = new RegExp(
+  '^REACT_APP_NETWORK_([0-9]+)((_[A-Z0-9]+)*)$'
+);
+
+function getNetworksConfigVariablesFromEnv() {
+  const networksVariables = Object.keys(process.env).filter(variable =>
+    variable.match(networkVariableRegularExp)
+  );
+
+  return networksVariables as NetworkConfigVariable[];
+}
+
+function buildNetworksConfigObject(variables: NetworkConfigVariable[]) {
+  const networks: { [key: string]: NetworkConfig } = {};
+
+  function addVariableToGroup(variable: NetworkConfigVariable) {
+    const regexMatchResult = variable.match(networkVariableRegularExp);
+    const group = !isNull(regexMatchResult) ? regexMatchResult[1] : undefined;
+
+    if (!isUndefined(group)) {
+      networks[group] = {
+        ...networks[group],
+        [variable.split(`${group}_`)[1] as NetworkConfigVariable]:
+          process.env[variable]
+      } as NetworkConfig;
+    }
+  }
+
+  variables.forEach(addVariableToGroup);
+
+  return networks;
+}
+
+const networkVariables = getNetworksConfigVariablesFromEnv();
+const networksConfig = buildNetworksConfigObject(networkVariables);
+
+export default { ...environmentConfig, NETWORKS: networksConfig };
