@@ -1,0 +1,155 @@
+$networks-selected-padding-y: 1rem !default;
+$networks-selected-padding-x: 1.4rem !default;
+$networks-selected-gap: 0.8rem !default;
+$networks-selected-border-width: 0.1rem !default;
+$networks-selected-border-radius: 0.8rem !default;
+$networks-selected-caret-icon-height: 1.2rem !default;
+$networks-selected-caret-icon-width: 1.2rem !default;
+$networks-selected-transitions: all 0.2s ease-in-out 0s !default;
+
+$networks-dropdown-item-padding-y: 1.2rem !default;
+$networks-dropdown-item-padding-x: 1.6rem !default;
+$networks-dropdown-item-gap: 1.2rem !default;
+$networks-dropdown-border-width: 0.1rem !default;
+$networks-dropdown-border-radius: 0.8rem !default;
+
+$networks-themes: (
+  light: (
+    variants: (
+      blue: (
+        background-color: rgba(#627eea, 0.2),
+        border-color: mix(#000000, #627eea, 20%),
+        text-colors: (
+          selected: mix(#000000, #627eea, 20%)
+        ),
+        assets-color: mix(#000000, #627eea, 20%)
+      ),
+      orange: (
+        background-color: rgba(#f3ba2f, 0.2),
+        border-color: mix(#000000, #f3ba2f, 20%),
+        text-colors: (
+          selected: mix(#000000, #f3ba2f, 20%)
+        ),
+        assets-color: mix(#000000, #f3ba2f, 20%)
+      ),
+      green: (
+        background-color: rgba(#53cbc8, 0.2),
+        border-color: mix(#000000, #53cbc8, 20%),
+        text-colors: (
+          selected: mix(#000000, #53cbc8, 20%)
+        ),
+        assets-color: mix(#2b2a2a, #53cbc8, 20%)
+      )
+    ),
+    dropdown: (
+      background-color: #f5f6fa,
+      border-color: #e3e7f0,
+      item: #101219
+    )
+  ),
+  dark: (
+    variants: (
+      blue: (
+        background-color: rgba(#627eea, 0.2),
+        border-color: mix(#000000, #627eea, 20%),
+        text-colors: (
+          selected: #f3f4f6
+        ),
+        assets-color: rgba(#ffffff, 0.5)
+      ),
+      orange: (
+        background-color: rgba(#f3ba2f, 0.2),
+        border-color: mix(#000000, #f3ba2f, 20%),
+        text-colors: (
+          selected: #f3f4f6
+        ),
+        assets-color: rgba(#ffffff, 0.5)
+      ),
+      green: (
+        background-color: rgba(#53cbc8, 0.2),
+        border-color: mix(#000000, #53cbc8, 20%),
+        text-colors: (
+          selected: #f3f4f6
+        ),
+        assets-color: rgba(#ffffff, 0.5)
+      )
+    ),
+    dropdown: (
+      background-color: #171b23,
+      border-color: #242c3b,
+      item: #f3f4f6
+    )
+  )
+) !default;
+
+.pm-c-networks {
+  @include themes($networks-themes) {
+    position: relative;
+
+    &__selected {
+      @include flex-row(space-between, center, $networks-selected-gap);
+      padding: $networks-selected-padding-y $networks-selected-padding-x;
+      border-width: $networks-selected-border-width;
+      border-style: solid;
+      border-radius: $networks-selected-border-radius;
+      transition: $networks-selected-transitions;
+
+      &-caret-icon {
+        height: $networks-selected-caret-icon-height;
+        width: $networks-selected-caret-icon-width;
+      }
+
+      @each $variant, $variant-map in themed('variants') {
+        &--#{$variant} {
+          @extend .pm-c-networks__selected;
+          background-color: map-get($variant-map, 'background-color');
+          border-color: map-get($variant-map, 'border-color');
+
+          .pm-c-networks__selected-name {
+            color: map-get(map-get($variant-map, 'text-colors'), 'selected');
+            transition: $networks-selected-transitions;
+          }
+
+          .pm-c-networks__selected-caret-icon {
+            fill: map-get($variant-map, 'assets-color');
+            transition: $networks-selected-transitions;
+          }
+        }
+      }
+    }
+
+    &__dropdown {
+      display: none;
+      position: absolute;
+      z-index: 1;
+      left: 50%;
+      transform: translateX(-50%);
+
+      background-color: map-get(themed('dropdown'), 'background-color');
+      border: $networks-dropdown-border-width solid
+        map-get(themed('dropdown'), 'border-color');
+      border-radius: $networks-dropdown-border-radius;
+
+      &.visible {
+        display: initial;
+      }
+
+      & > :not(:last-child) {
+        border-bottom: $networks-dropdown-border-width solid
+          map-get(themed('dropdown'), 'border-color');
+      }
+
+      &-item {
+        @include flex-row(space-between, center, $networks-dropdown-item-gap);
+        padding: $networks-dropdown-item-padding-y
+          $networks-dropdown-item-padding-x;
+        width: 100%;
+        border-radius: 0rem;
+
+        &-name {
+          color: map-get(themed('dropdown'), 'item');
+        }
+      }
+    }
+  }
+}
