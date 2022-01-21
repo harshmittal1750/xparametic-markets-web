@@ -4,6 +4,7 @@ export type Network = {
   id: string;
   name: string;
   key: string;
+  colorAccent: 'blue' | 'orange' | 'green';
   currency: Currency;
   decimals: number;
   explorerURL: string;
@@ -24,6 +25,7 @@ const NETWORKS: {
     id: '1',
     name: 'Ethereum Mainnet',
     key: 'mainnet',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
@@ -33,6 +35,7 @@ const NETWORKS: {
     id: '3',
     name: 'Ropsten Testnet',
     key: 'ropsten',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://ropsten.etherscan.io',
@@ -42,6 +45,7 @@ const NETWORKS: {
     id: '4',
     name: 'Rinkeby Testnet',
     key: 'rinkeby',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://rinkeby.etherscan.io',
@@ -51,6 +55,7 @@ const NETWORKS: {
     id: '5',
     name: 'Goerli Testnet',
     key: 'goerli',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://goerli.etherscan.io',
@@ -60,6 +65,7 @@ const NETWORKS: {
     id: '42',
     name: 'Kovan Testnet',
     key: 'kovan',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://kovan.etherscan.io',
@@ -70,6 +76,7 @@ const NETWORKS: {
     id: '1281',
     name: 'Moonbase Local',
     key: 'moonbase-local',
+    colorAccent: 'blue',
     currency: DEV,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
@@ -79,6 +86,7 @@ const NETWORKS: {
     id: '1284',
     name: 'Moonbeam',
     key: 'moonbeam',
+    colorAccent: 'green',
     currency: GLMR,
     decimals: 18,
     explorerURL: 'https://moonbeam.moonscan.io',
@@ -89,6 +97,7 @@ const NETWORKS: {
     id: '1285',
     name: 'Moonriver',
     key: 'moonriver',
+    colorAccent: 'blue',
     currency: MOVR,
     decimals: 18,
     explorerURL: 'https://moonriver.moonscan.io',
@@ -99,6 +108,7 @@ const NETWORKS: {
     id: '1287',
     name: 'Moonbase Alpha',
     key: 'moonbase-alpha',
+    colorAccent: 'blue',
     currency: DEV,
     decimals: 18,
     explorerURL: 'https://moonbase-blockscout.testnet.moonbeam.network',
@@ -108,6 +118,7 @@ const NETWORKS: {
     id: '1337',
     name: 'Local Testnet',
     key: 'local',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
@@ -118,6 +129,7 @@ const NETWORKS: {
     id: '9999',
     name: 'Unknown',
     key: 'unknown',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
