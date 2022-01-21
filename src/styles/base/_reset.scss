@@ -59,8 +59,8 @@ video {
   padding: 0;
   border: 0;
   vertical-align: baseline;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
+  text-rendering: auto;
+  -webkit-font-smoothing: auto;
   text-size-adjust: none;
 }
 
