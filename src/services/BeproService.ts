@@ -1,5 +1,6 @@
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
 import * as beprojs from 'bepro-js';
+import { NetworkConfig } from 'config/environment';
 
 export default class BeproService {
   // bepro app
@@ -14,6 +15,12 @@ export default class BeproService {
   // user eth address
   public address: string = '';
 
+  public predictionMarketContractAddress: string;
+
+  public erc20ContractAddress: string;
+
+  public realitioErc20ContractAddress: string;
+
   // util functions
   static bytes32ToInt(bytes32Str: string): number {
     return Number(realitioLib.bytes32ToString(bytes32Str, { type: 'int' }));
@@ -23,11 +30,22 @@ export default class BeproService {
     return realitioLib.answerToBytes32(int, { type: 'int' });
   }
 
-  constructor() {
+  constructor({
+    PREDICTION_MARKET_CONTRACT_ADDRESS,
+    ERC20_CONTRACT_ADDRESS,
+    REALITIO_ERC20_CONTRACT_ADDRESS,
+    WEB3_PROVIDER,
+    WEB3_EVENTS_PROVIDER
+  }: NetworkConfig) {
+    this.predictionMarketContractAddress = PREDICTION_MARKET_CONTRACT_ADDRESS;
+    this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
+    this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
+
     this.bepro = new beprojs.Application({
-      web3Provider: process.env.REACT_APP_WEB3_PROVIDER,
-      web3EventsProvider: process.env.REACT_APP_WEB3_EVENTS_PROVIDER
+      web3Provider: WEB3_PROVIDER,
+      web3EventsProvider: WEB3_EVENTS_PROVIDER
     });
+
     this.bepro.start();
     // fetching contract
     this.getContracts();
@@ -41,19 +59,19 @@ export default class BeproService {
 
   public getPredictionMarketContract() {
     this.contracts.pm = this.bepro.getPredictionMarketContract({
-      contractAddress: process.env.REACT_APP_PREDICTION_MARKET_CONTRACT_ADDRESS
+      contractAddress: this.predictionMarketContractAddress
     });
   }
 
   public getERC20Contract() {
     this.contracts.erc20 = this.bepro.getERC20Contract({
-      contractAddress: process.env.REACT_APP_ERC20_CONTRACT_ADDRESS
+      contractAddress: this.erc20ContractAddress
     });
   }
 
   public getRealitioERC20Contract() {
     this.contracts.realitio = this.bepro.getRealitioERC20Contract({
-      contractAddress: process.env.REACT_APP_REALITIO_ERC20_CONTRACT_ADDRESS
+      contractAddress: this.realitioErc20ContractAddress
     });
   }
 
