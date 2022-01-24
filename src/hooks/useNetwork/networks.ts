@@ -97,7 +97,7 @@ const NETWORKS: {
     id: '1285',
     name: 'Moonriver',
     key: 'moonriver',
-    colorAccent: 'blue',
+    colorAccent: 'green',
     currency: MOVR,
     decimals: 18,
     explorerURL: 'https://moonriver.moonscan.io',
