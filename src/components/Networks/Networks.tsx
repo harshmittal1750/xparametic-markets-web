@@ -1,28 +1,24 @@
-import { ReactNode, useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 
 import classNames from 'classnames';
+import { environment } from 'config';
+import findKey from 'lodash/findKey';
 
 import { CaretDownFilledIcon } from 'assets/icons';
 
+import { useNetwork } from 'hooks';
+import networks, { Network } from 'hooks/useNetwork/networks';
+
 import Text from '../Text';
 
-export type NetworkColorVariant = 'blue' | 'orange' | 'green';
+const availableNetworks = Object.values(networks).filter(network =>
+  Object.keys(environment.NETWORKS).includes(network.id)
+);
 
-export type Network = {
-  id: string;
-  name: string;
-  icon: ReactNode;
-  color: NetworkColorVariant;
-};
-
-type NetworksProps = {
-  networks: Network[];
-};
-
-function Networks({ networks }: NetworksProps) {
-  const [currentNetwork, setCurrentNetwork] = useState<Network>(networks[0]);
+function Networks() {
+  const network = useNetwork();
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
-
+  const [isChangingNetwork, setIsChangingNetwork] = useState(false);
   const ref = useRef<HTMLOListElement>(null);
 
   function handleToggleDropdownVisibility() {
@@ -33,13 +29,50 @@ function Networks({ networks }: NetworksProps) {
     setDropdownIsVisible(false);
   }
 
-  function handleSelectNetwork(network: Network) {
-    setCurrentNetwork(network);
-    handleCloseDropdown();
-  }
-
   function handleClickOutside(event) {
     if (ref.current && !ref.current.contains(event.target)) {
+      handleCloseDropdown();
+    }
+  }
+
+  async function handleChangeNetwork(newNetwork: Network) {
+    setIsChangingNetwork(true);
+    try {
+      try {
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [
+            {
+              chainId: findKey(networks, newNetwork)
+            }
+          ]
+        });
+        setIsChangingNetwork(false);
+        handleCloseDropdown();
+      } catch (error: any) {
+        if (error.code === 4902) {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: findKey(networks, newNetwork),
+                chainName: newNetwork.name,
+                nativeCurrency: {
+                  name: newNetwork.currency.ticker,
+                  symbol: newNetwork.currency.ticker,
+                  decimals: newNetwork.decimals
+                },
+                rpcUrls: newNetwork.rpcUrls,
+                blockExplorerUrls: [newNetwork.explorerURL]
+              }
+            ]
+          });
+        }
+        setIsChangingNetwork(false);
+        handleCloseDropdown();
+      }
+    } catch (error: any) {
+      setIsChangingNetwork(false);
       handleCloseDropdown();
     }
   }
@@ -55,17 +88,18 @@ function Networks({ networks }: NetworksProps) {
     <div className="pm-c-networks">
       <button
         type="button"
-        className={`pm-c-button pm-c-networks__selected--${currentNetwork.color}`}
+        className={`pm-c-button pm-c-networks__selected--${network.colorAccent}`}
         onClick={handleToggleDropdownVisibility}
+        disabled={isChangingNetwork}
       >
-        {currentNetwork.icon}
+        {network.currency.icon}
         <Text
           as="span"
           scale="caption"
           fontWeight="semibold"
           className="pm-c-networks__selected-name"
         >
-          {currentNetwork.name}
+          {network.name}
         </Text>
         <CaretDownFilledIcon className="pm-c-networks__selected-caret-icon" />
       </button>
@@ -76,12 +110,13 @@ function Networks({ networks }: NetworksProps) {
           visible: dropdownIsVisible
         })}
       >
-        {networks.map(network => (
-          <li key={network.id}>
+        {availableNetworks.map(availableNetwork => (
+          <li key={availableNetwork.id}>
             <button
               type="button"
               className="pm-c-button-normal--noborder pm-c-networks__dropdown-item"
-              onClick={() => handleSelectNetwork(network)}
+              onClick={() => handleChangeNetwork(availableNetwork)}
+              disabled={isChangingNetwork || availableNetwork.id === network.id}
             >
               <Text
                 as="span"
@@ -89,9 +124,9 @@ function Networks({ networks }: NetworksProps) {
                 fontWeight="semibold"
                 className="pm-c-networks__dropdown-item-name"
               >
-                {network.name}
+                {availableNetwork.name}
               </Text>
-              {network.icon}
+              {availableNetwork.currency.icon}
             </button>
           </li>
         ))}
