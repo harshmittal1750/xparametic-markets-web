@@ -87,7 +87,7 @@ function useNetwork() {
     onChainChange();
   }, [networkConfig]);
 
-  return network || defaultNetwork;
+  return { network, networkConfig };
 }
 
 export default useNetwork;
