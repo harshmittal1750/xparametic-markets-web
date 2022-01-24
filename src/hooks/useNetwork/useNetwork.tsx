@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { environment } from 'config';
+import { NetworkConfig } from 'config/environment';
 import { fetchAditionalData, login } from 'redux/ducks/bepro';
 import store from 'redux/store';
 
@@ -31,13 +33,14 @@ async function getChainId(): Promise<string> {
   return chainId;
 }
 
-function fetchUserData() {
-  login(store.dispatch);
-  fetchAditionalData(store.dispatch);
+function fetchUserData(networkConfig: NetworkConfig) {
+  store.dispatch(login(networkConfig));
+  store.dispatch(fetchAditionalData(networkConfig));
 }
 
 function useNetwork() {
   const [network, setNetwork] = useState<Network>(defaultNetwork);
+  const networkConfig = environment.NETWORKS[network.id];
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
 
   useEffect(() => {
@@ -58,13 +61,13 @@ function useNetwork() {
         const chainId = await getChainId();
 
         if (NETWORKS[chainId] === defaultNetwork) {
-          fetchUserData();
+          fetchUserData(networkConfig);
         }
       });
     }
 
     onAccountChange();
-  }, []);
+  }, [networkConfig]);
 
   useEffect(() => {
     function changeNetwork(chainId: string) {
@@ -76,13 +79,13 @@ function useNetwork() {
         changeNetwork(chainId);
 
         if (NETWORKS[chainId] === defaultNetwork) {
-          fetchUserData();
+          fetchUserData(networkConfig);
         }
       });
     }
 
     onChainChange();
-  }, []);
+  }, [networkConfig]);
 
   return network || defaultNetwork;
 }
