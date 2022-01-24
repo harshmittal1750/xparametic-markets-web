@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NetworkConfig } from 'config/environment';
 import { BeproService } from 'services';
 
 const initialState = {
@@ -85,63 +86,67 @@ const {
 } = beproSlice.actions;
 
 // fetching initial wallet details
-const login = async (dispatch: any) => {
-  const beproService = new BeproService();
+function login(networkConfig: NetworkConfig) {
+  return async dispatch => {
+    const beproService = new BeproService(networkConfig);
 
-  const isLoggedIn = await beproService.isLoggedIn();
-  dispatch(changeIsLoggedIn(isLoggedIn));
+    const isLoggedIn = await beproService.isLoggedIn();
+    dispatch(changeIsLoggedIn(isLoggedIn));
 
-  if (isLoggedIn) {
-    await beproService.login();
+    if (isLoggedIn) {
+      await beproService.login();
 
-    const address = await beproService.getAddress();
-    dispatch(changeEthAddress(address));
+      const address = await beproService.getAddress();
+      dispatch(changeEthAddress(address));
 
-    const balance = await beproService.getBalance();
-    dispatch(changeEthBalance(balance));
+      const balance = await beproService.getBalance();
+      dispatch(changeEthBalance(balance));
 
-    const polkBalance = await beproService.getERC20Balance();
-    dispatch(changePolkBalance(polkBalance));
+      const polkBalance = await beproService.getERC20Balance();
+      dispatch(changePolkBalance(polkBalance));
 
-    const polkApproved = await beproService.isRealitioERC20Approved();
-    dispatch(changePolkApproved(polkApproved));
-  }
-};
+      const polkApproved = await beproService.isRealitioERC20Approved();
+      dispatch(changePolkApproved(polkApproved));
+    }
+  };
+}
 
-const fetchAditionalData = async (dispatch: any) => {
-  const beproService = new BeproService();
-  const isLoggedIn = await beproService.isLoggedIn();
+function fetchAditionalData(networkConfig: NetworkConfig) {
+  return async dispatch => {
+    const beproService = new BeproService(networkConfig);
+    const isLoggedIn = await beproService.isLoggedIn();
 
-  if (isLoggedIn) {
-    await beproService.login();
+    if (isLoggedIn) {
+      await beproService.login();
 
-    dispatch(
-      changeLoading({
-        key: 'portfolio',
-        value: true
-      })
-    );
+      dispatch(
+        changeLoading({
+          key: 'portfolio',
+          value: true
+        })
+      );
 
-    const portfolio = await beproService.getPortfolio();
-    dispatch(changePortfolio(portfolio));
+      const portfolio = await beproService.getPortfolio();
+      dispatch(changePortfolio(portfolio));
 
-    const bonds = await beproService.getBonds();
-    dispatch(changeBonds(bonds));
+      const bonds = await beproService.getBonds();
+      dispatch(changeBonds(bonds));
 
-    dispatch(
-      changeLoading({
-        key: 'portfolio',
-        value: false
-      })
-    );
+      dispatch(
+        changeLoading({
+          key: 'portfolio',
+          value: false
+        })
+      );
 
-    const actions = await beproService.getActions();
-    dispatch(changeActions(actions));
+      const actions = await beproService.getActions();
+      dispatch(changeActions(actions));
 
-    const bondActions = await beproService.getBondActions();
-    dispatch(changeBondActions(bondActions));
-  }
-};
+      const bondActions = await beproService.getBondActions();
+      dispatch(changeBondActions(bondActions));
+    }
+  };
+}
 
 export {
   changeIsLoggedIn,
