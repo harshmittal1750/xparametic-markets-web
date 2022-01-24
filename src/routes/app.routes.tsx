@@ -1,6 +1,7 @@
 import { useEffect, useState, Suspense, lazy } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { environment } from 'config';
 import { getUserCountry } from 'helpers/location';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
@@ -18,14 +19,14 @@ const WrongNetwork = lazy(() => import('pages/WrongNetwork'));
 const CreateMarket = lazy(() => import('pages/CreateMarket'));
 const RestrictedCountry = lazy(() => import('pages/RestrictedCountry'));
 
-const { REACT_APP_NETWORK_ID, REACT_APP_RESTRICTED_COUNTRIES } = process.env;
+const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
 
 const AppRoutes = () => {
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
   const network = useNetwork();
 
   const isAllowedNetwork =
-    !walletConnected || network?.id === REACT_APP_NETWORK_ID;
+    !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
 
   const restrictedCountries = REACT_APP_RESTRICTED_COUNTRIES?.split(',');
   const [isAllowedCountry, setIsAllowedCountry] = useState(true);
