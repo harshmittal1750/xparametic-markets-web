@@ -12,7 +12,7 @@ import useAlertNotification from 'hooks/useAlertNotification';
 import { AlertInline } from '../Alert';
 import { Button } from '../Button';
 import Link from '../Link';
-import NetworkInfo from '../NetworkInfo';
+import Networks from '../Networks';
 import WalletInfo from '../WalletInfo';
 
 function NavBarActions() {
@@ -56,9 +56,7 @@ function NavBarActions() {
           </>
         }
       />
-      {network && network.key !== 'unknown' ? (
-        <NetworkInfo name={network.name} slug={network.key} />
-      ) : null}
+      {network && network.key !== 'unknown' ? <Networks /> : null}
       {walletConnected ? (
         <WalletInfo
           wallets={[
