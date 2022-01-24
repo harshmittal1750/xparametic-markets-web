@@ -8,7 +8,9 @@ import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 function LiquidityFormDetails() {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const liquidityDetails = useAppSelector(
     state => state.liquidity.liquidityDetails
   );

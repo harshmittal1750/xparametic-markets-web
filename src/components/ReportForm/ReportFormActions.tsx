@@ -34,7 +34,7 @@ function ReportFormActions({
   const dispatch = useAppDispatch();
   const { show, close } = useToastNotification();
   const { errors } = useFormikContext();
-  const network = useNetwork();
+  const { network } = useNetwork();
 
   // Form state
   const [outcome] = useField('outcome');

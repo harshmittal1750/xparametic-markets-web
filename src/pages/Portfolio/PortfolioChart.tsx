@@ -16,7 +16,9 @@ const PortfolioChart = () => {
   const { holdingsValue, holdingsPerformance } = useAppSelector(
     state => state.portfolio.portfolio
   );
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker } = currency;
 
   const holdingsChartData = fromPriceChartToLineChartSeries(holdingsChart);

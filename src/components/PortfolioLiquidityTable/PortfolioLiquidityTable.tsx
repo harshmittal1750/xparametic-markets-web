@@ -36,7 +36,9 @@ const PortfolioLiquidityTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker, symbol } = currency;
   const filter = useAppSelector(state => state.portfolio.filter);
 

@@ -16,7 +16,9 @@ const intervals = [
 ];
 
 function TradeFormCharts() {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker } = currency;
   const location = useLocation();
   const predictions = useAppSelector(state => state.market.market.outcomes);

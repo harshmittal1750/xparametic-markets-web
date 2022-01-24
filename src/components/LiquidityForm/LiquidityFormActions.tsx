@@ -32,7 +32,7 @@ function LiquidityFormActions() {
 
   const [isLoading, setIsLoading] = useState(false);
   const { show, close } = useToastNotification();
-  const network = useNetwork();
+  const { network } = useNetwork();
 
   function handleCancel() {
     dispatch(closeLiquidityForm());

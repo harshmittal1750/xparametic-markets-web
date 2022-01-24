@@ -10,7 +10,9 @@ type MarketStatsProps = {
 };
 
 function MarketStats({ market }: MarketStatsProps) {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { symbol } = currency;
   const outcomeStats = market.outcomes.map(outcome => {
     const chartData = outcome.priceCharts.find(

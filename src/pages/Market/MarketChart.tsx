@@ -16,7 +16,9 @@ const intervals = [
 
 const MarketChart = () => {
   const { theme } = useTheme();
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker } = currency;
   const predictions = useAppSelector(state => state.market.market.outcomes);
   const { chartViewType } = useAppSelector(state => state.market);

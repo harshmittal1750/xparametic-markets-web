@@ -22,7 +22,9 @@ function LiquidityFormInput() {
   // buy and sell have different maxes
   const balance = useAppSelector(state => state.bepro.ethBalance);
   const portfolio = useAppSelector(state => state.bepro.portfolio);
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const amount = useAppSelector(state => state.liquidity.amount);
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;

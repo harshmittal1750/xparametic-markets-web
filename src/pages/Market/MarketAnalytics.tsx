@@ -15,7 +15,9 @@ function MarketAnalytics({
   volume,
   expiration
 }: MarketAnalyticsProps) {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker } = currency;
 
   return (

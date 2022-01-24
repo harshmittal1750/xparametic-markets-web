@@ -15,7 +15,9 @@ import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 function CreateMarketFormFund() {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const [field, _meta, helpers] = useField('liquidity');
   const [fee, setFee] = useState(0);
 

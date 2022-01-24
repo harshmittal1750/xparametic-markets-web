@@ -26,9 +26,11 @@ type Params = {
 const Market = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { symbol, ticker } = currency;
-  const network = useNetwork();
+  const { network } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading } = useAppSelector(state => state.market);
   const { actions, bondActions } = useAppSelector(state => state.bepro);

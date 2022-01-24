@@ -14,7 +14,9 @@ type PredictionCardProps = {
 
 function PredictionCard({ market }: PredictionCardProps) {
   const dispatch = useAppDispatch();
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker } = currency;
 
   const { slug } = market;

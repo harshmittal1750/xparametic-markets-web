@@ -18,7 +18,7 @@ import WalletInfo from '../WalletInfo';
 function NavBarActions() {
   const { show } = useAlertNotification();
   const dispatch = useAppDispatch();
-  const network = useNetwork();
+  const { network } = useNetwork();
 
   const beproService = new BeproService();
 

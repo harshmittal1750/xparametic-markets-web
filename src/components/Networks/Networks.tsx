@@ -16,7 +16,7 @@ const availableNetworks = Object.values(networks).filter(network =>
 );
 
 function Networks() {
-  const network = useNetwork();
+  const { network } = useNetwork();
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [isChangingNetwork, setIsChangingNetwork] = useState(false);
   const ref = useRef<HTMLOListElement>(null);

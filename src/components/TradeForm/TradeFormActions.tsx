@@ -22,7 +22,7 @@ function TradeFormActions() {
   // Helpers
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const network = useNetwork();
+  const { network } = useNetwork();
   const { show, close } = useToastNotification();
 
   // Market selectors

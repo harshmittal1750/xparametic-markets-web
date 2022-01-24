@@ -23,7 +23,7 @@ const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
 
 const AppRoutes = () => {
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
-  const network = useNetwork();
+  const { network } = useNetwork();
 
   const isAllowedNetwork =
     !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
