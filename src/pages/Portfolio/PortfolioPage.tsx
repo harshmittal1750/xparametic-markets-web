@@ -27,13 +27,13 @@ const PortfolioPage = () => {
     dispatch(getMarkets('open', network.id));
     dispatch(getMarkets('closed', network.id));
     dispatch(getMarkets('resolved', network.id));
-  }, [rightSidebarIsVisible, dispatch]);
+  }, [rightSidebarIsVisible, dispatch, network.id]);
 
   useEffect(() => {
     if (ethAddress) {
       dispatch(getPortfolio(ethAddress, network.id));
     }
-  }, [ethAddress, dispatch]);
+  }, [ethAddress, dispatch, network.id]);
 
   return (
     <div className="portfolio-page">
