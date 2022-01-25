@@ -69,14 +69,14 @@ const { request, success, error, setFilter } = portfolioSlice.actions;
 
 export { setFilter };
 
-export function getPortfolio(address: string) {
+export function getPortfolio(address: string, networkId: string) {
   return async dispatch => {
     // only fetching portfolio if address is present
     if (!address) return;
 
     dispatch(request());
     try {
-      const response = await portfolioService.getPortfolio(address);
+      const response = await portfolioService.getPortfolio(address, networkId);
       const { data } = response;
       dispatch(success(data));
     } catch (err) {
