@@ -1,6 +1,6 @@
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
 import * as beprojs from 'bepro-js';
-import { NetworkConfig } from 'config/environment';
+import environment, { NetworkConfig } from 'config/environment';
 
 export default class BeproService {
   // bepro app
@@ -30,13 +30,15 @@ export default class BeproService {
     return realitioLib.answerToBytes32(int, { type: 'int' });
   }
 
-  constructor({
-    PREDICTION_MARKET_CONTRACT_ADDRESS,
-    ERC20_CONTRACT_ADDRESS,
-    REALITIO_ERC20_CONTRACT_ADDRESS,
-    WEB3_PROVIDER,
-    WEB3_EVENTS_PROVIDER
-  }: NetworkConfig) {
+  constructor(
+    {
+      PREDICTION_MARKET_CONTRACT_ADDRESS,
+      ERC20_CONTRACT_ADDRESS,
+      REALITIO_ERC20_CONTRACT_ADDRESS,
+      WEB3_PROVIDER,
+      WEB3_EVENTS_PROVIDER
+    }: NetworkConfig = environment.NETWORKS[environment.NETWORK_ID || 42]
+  ) {
     this.predictionMarketContractAddress = PREDICTION_MARKET_CONTRACT_ADDRESS;
     this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
     this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
