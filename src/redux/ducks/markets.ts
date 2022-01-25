@@ -64,10 +64,16 @@ const marketsSlice = createSlice({
     }),
     success: (
       state,
-      action: PayloadAction<{ type: MarketState | string; data: Market[] }>
+      action: PayloadAction<{
+        type: MarketState | string;
+        data: Market[];
+        networkId: string;
+      }>
     ) => ({
       ...state,
-      markets: uniqBy([...state.markets, ...action.payload.data], 'id'),
+      markets: uniqBy([...state.markets, ...action.payload.data], 'id').filter(
+        market => `${market.networkId}` === action.payload.networkId
+      ),
       isLoading: {
         ...state.isLoading,
         [action.payload.type]: false
@@ -211,7 +217,7 @@ export function getMarkets(marketState: MarketState, networkId: string) {
         networkId
       });
       const { data } = response;
-      dispatch(success({ type: marketState, data }));
+      dispatch(success({ type: marketState, data, networkId }));
     } catch (err) {
       dispatch(error({ type: marketState, error: err }));
     }
@@ -224,7 +230,7 @@ export function getFavoriteMarkets(ids: string[], networkId) {
     try {
       const response = await marketService.getMarketsByIds(ids, networkId);
       const { data } = response;
-      dispatch(success({ type: 'favorites', data }));
+      dispatch(success({ type: 'favorites', data, networkId }));
     } catch (err) {
       dispatch(error({ type: 'favorites', error: err }));
     }
