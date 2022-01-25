@@ -18,9 +18,9 @@ import WalletInfo from '../WalletInfo';
 function NavBarActions() {
   const { show } = useAlertNotification();
   const dispatch = useAppDispatch();
-  const { network } = useNetwork();
+  const { network, networkConfig } = useNetwork();
 
-  const beproService = new BeproService();
+  const beproService = new BeproService(networkConfig);
 
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
   const ethBalance = useAppSelector(state => state.bepro.ethBalance);
@@ -34,7 +34,7 @@ function NavBarActions() {
 
   const handleConnectWallet = async () => {
     await beproService.login();
-    await login(dispatch);
+    await dispatch(login(networkConfig));
   };
 
   return (

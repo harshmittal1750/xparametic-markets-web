@@ -16,7 +16,8 @@ import Tooltip from '../Tooltip';
 
 function CreateMarketFormFund() {
   const {
-    network: { currency }
+    network: { currency },
+    networkConfig
   } = useNetwork();
   const [field, _meta, helpers] = useField('liquidity');
   const [fee, setFee] = useState(0);
@@ -28,7 +29,7 @@ function CreateMarketFormFund() {
   }
 
   async function getMarketFee() {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     const response = await beproService.getMarketFee();
     setFee(response);

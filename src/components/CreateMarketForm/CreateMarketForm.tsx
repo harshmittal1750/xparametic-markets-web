@@ -6,6 +6,7 @@ import { BeproService } from 'services';
 import * as marketService from 'services/Polkamarkets/market';
 import * as Yup from 'yup';
 
+import { useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
@@ -94,6 +95,7 @@ const validationSchema = Yup.object().shape({
 
 function CreateMarketForm() {
   const history = useHistory();
+  const { networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
 
   function redirectToHomePage() {
@@ -105,7 +107,7 @@ function CreateMarketForm() {
   }
 
   async function handleFormSubmit(values: CreateMarketFormData) {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
     const closingDate = new Date(values.closingDate).getTime() / 1000; // TODO: move to dayjs
     const outcomes = [values.firstOutcome.name, values.secondOutcome.name];
     const category = `${values.category};${values.subcategory}`;

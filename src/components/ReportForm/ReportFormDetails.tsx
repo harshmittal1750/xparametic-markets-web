@@ -6,7 +6,7 @@ import { BeproService } from 'services';
 
 import { ArrowRightIcon, InfoIcon } from 'assets/icons';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import Badge from '../Badge';
 import Text from '../Text';
@@ -31,6 +31,7 @@ type TotalBondItem = {
 };
 
 function ReportFormDetails() {
+  const { networkConfig } = useNetwork();
   const [bond] = useField('bond');
   const [outcome] = useField('outcome');
 
@@ -63,7 +64,7 @@ function ReportFormDetails() {
   // UGLY WORKAROUND! TODO: get data from api
   useEffect(() => {
     async function getOutcomesBonds() {
-      const beproService = new BeproService();
+      const beproService = new BeproService(networkConfig);
       // await beproService.login();
 
       const response = await beproService.getQuestionBonds(questionId);
@@ -78,7 +79,7 @@ function ReportFormDetails() {
     }
 
     getOutcomesBonds();
-  }, [finalizeTs, questionId]);
+  }, [finalizeTs, networkConfig, questionId]);
 
   const totalBondItems: TotalBondItem[] = [
     {

@@ -13,7 +13,12 @@ import { BeproService, PolkamarketsApiService } from 'services';
 
 import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
-import { useAppDispatch, useAppSelector, useSortableData } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  useSortableData
+} from 'hooks';
 
 import { AlertMini } from '../Alert';
 import { Button } from '../Button';
@@ -33,6 +38,7 @@ const PortfolioReportTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
+  const { networkConfig } = useNetwork();
   const filter = useAppSelector(state => state.portfolio.filter);
 
   const [isLoadingClaimReport, setIsLoadingClaimReport] = useState({});
@@ -42,7 +48,7 @@ const PortfolioReportTable = ({
   }
 
   async function handleClaimReport(market: Market) {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     handleChangeIsLoading(market.id, true);
 
@@ -56,8 +62,8 @@ const PortfolioReportTable = ({
       dispatch(changeMarketQuestion({ marketId: market.id, question }));
 
       // updating wallet
-      login(dispatch);
-      await fetchAditionalData(dispatch);
+      dispatch(login(networkConfig));
+      await dispatch(fetchAditionalData(networkConfig));
 
       handleChangeIsLoading(market.id, false);
     } catch (error) {

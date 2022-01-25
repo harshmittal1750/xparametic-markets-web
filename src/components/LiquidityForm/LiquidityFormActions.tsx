@@ -32,18 +32,23 @@ function LiquidityFormActions() {
 
   const [isLoading, setIsLoading] = useState(false);
   const { show, close } = useToastNotification();
-  const { network } = useNetwork();
+  const { network, networkConfig } = useNetwork();
 
   function handleCancel() {
     dispatch(closeLiquidityForm());
     dispatch(reset());
   }
 
+  async function updateWallet() {
+    await dispatch(login(networkConfig));
+    await dispatch(fetchAditionalData(networkConfig));
+  }
+
   async function handleAddliquidity() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     setIsLoading(true);
 
@@ -66,8 +71,7 @@ function LiquidityFormActions() {
       new PolkamarketsApiService().reloadPortfolio(ethAddress);
 
       // updating wallet
-      await login(dispatch);
-      await fetchAditionalData(dispatch);
+      await updateWallet();
     } catch (error) {
       setIsLoading(false);
     }
@@ -77,7 +81,7 @@ function LiquidityFormActions() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     setIsLoading(true);
 
@@ -100,8 +104,7 @@ function LiquidityFormActions() {
       new PolkamarketsApiService().reloadPortfolio(ethAddress);
 
       // updating wallet
-      await login(dispatch);
-      await fetchAditionalData(dispatch);
+      await updateWallet();
     } catch (error) {
       setIsLoading(false);
     }

@@ -22,7 +22,7 @@ function TradeFormActions() {
   // Helpers
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { network } = useNetwork();
+  const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
 
   // Market selectors
@@ -52,7 +52,9 @@ function TradeFormActions() {
   }
 
   async function reloadMarketPrices() {
-    const marketData = await new BeproService().getMarketData(marketId);
+    const marketData = await new BeproService(networkConfig).getMarketData(
+      marketId
+    );
 
     marketData.outcomes.forEach((outcomeData, outcomeId) => {
       const data = { price: outcomeData.price, shares: outcomeData.shares };
@@ -81,11 +83,16 @@ function TradeFormActions() {
     setNeedsPricesRefresh(false);
   }
 
+  async function updateWallet() {
+    await dispatch(login(networkConfig));
+    await dispatch(fetchAditionalData(networkConfig));
+  }
+
   async function handleBuy() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -135,8 +142,7 @@ function TradeFormActions() {
       new PolkamarketsApiService().reloadPortfolio(ethAddress);
 
       // updating wallet
-      await login(dispatch);
-      await fetchAditionalData(dispatch);
+      await updateWallet();
     } catch (error) {
       setIsLoading(false);
     }
@@ -148,7 +154,7 @@ function TradeFormActions() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -199,8 +205,7 @@ function TradeFormActions() {
       new PolkamarketsApiService().reloadPortfolio(ethAddress);
 
       // updating wallet
-      await login(dispatch);
-      await fetchAditionalData(dispatch);
+      await updateWallet();
     } catch (error) {
       setIsLoading(false);
     }

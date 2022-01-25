@@ -6,11 +6,10 @@ import { getUserCountry } from 'helpers/location';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import { fetchAditionalData } from 'redux/ducks/bepro';
-import store from 'redux/store';
 
 import { Layout } from 'components';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 const Home = lazy(() => import('pages/Home'));
 const Market = lazy(() => import('pages/Market'));
@@ -22,8 +21,9 @@ const RestrictedCountry = lazy(() => import('pages/RestrictedCountry'));
 const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
 
 const AppRoutes = () => {
+  const dispatch = useAppDispatch();
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
-  const { network } = useNetwork();
+  const { network, networkConfig } = useNetwork();
 
   const isAllowedNetwork =
     !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
@@ -33,9 +33,9 @@ const AppRoutes = () => {
 
   useEffect(() => {
     if (isAllowedNetwork && walletConnected) {
-      fetchAditionalData(store.dispatch);
+      dispatch(fetchAditionalData(networkConfig));
     }
-  }, [isAllowedNetwork, walletConnected]);
+  }, [dispatch, isAllowedNetwork, networkConfig, walletConnected]);
 
   useEffect(() => {
     async function fetchUserCountry() {

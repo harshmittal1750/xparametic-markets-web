@@ -9,7 +9,7 @@ import { BeproService, PolkamarketsApiService } from 'services';
 
 import { PolkamarketsIconSmall } from 'assets/icons';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import { AmountInput } from '../Input';
 import Text from '../Text';
@@ -24,6 +24,7 @@ const POLK: Currency = {
 
 function ReportFormInput() {
   const dispatch = useAppDispatch();
+  const { networkConfig } = useNetwork();
 
   const { polkBalance } = useAppSelector(state => state.bepro);
   const { finalizeTs } = useAppSelector(state => state.market.market.question);
@@ -34,7 +35,7 @@ function ReportFormInput() {
   const timeLeftUntilDecision = relativeTimeToX(finalizeTs * 1000);
 
   async function fetchQuestion() {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
     const question = await beproService.getQuestion(questionId);
     dispatch(changeQuestion(question));
     dispatch(changeMarketQuestion({ marketId: id, question }));
