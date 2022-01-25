@@ -34,9 +34,12 @@ export default class PolkarmarketsApiService {
     return response.json();
   }
 
-  public async reloadPortfolio(address: string): Promise<any> {
+  public async reloadPortfolio(
+    address: string,
+    networkId: string
+  ): Promise<any> {
     const requestOptions = { method: 'POST' };
-    const url = `${this.apiUrl}/portfolios/${address}/reload`;
+    const url = `${this.apiUrl}/portfolios/${address}/reload?network_id=${networkId}`;
 
     const response = await fetch(url, requestOptions);
 
