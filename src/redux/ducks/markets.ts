@@ -202,11 +202,14 @@ export const filteredMarketsSelector = (
   );
 };
 
-export function getMarkets(marketState: MarketState) {
+export function getMarkets(marketState: MarketState, networkId: string) {
   return async dispatch => {
     dispatch(request(marketState));
     try {
-      const response = await marketService.getMarkets({ state: marketState });
+      const response = await marketService.getMarkets({
+        state: marketState,
+        networkId
+      });
       const { data } = response;
       dispatch(success({ type: marketState, data }));
     } catch (err) {
@@ -215,11 +218,11 @@ export function getMarkets(marketState: MarketState) {
   };
 }
 
-export function getFavoriteMarkets(ids: string[]) {
+export function getFavoriteMarkets(ids: string[], networkId) {
   return async dispatch => {
     dispatch(request('favorites'));
     try {
-      const response = await marketService.getMarketsByIds(ids);
+      const response = await marketService.getMarketsByIds(ids, networkId);
       const { data } = response;
       dispatch(success({ type: 'favorites', data }));
     } catch (err) {
