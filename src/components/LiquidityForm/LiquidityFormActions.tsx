@@ -68,7 +68,7 @@ function LiquidityFormActions() {
 
       // triggering cache reload action on api
       new PolkamarketsApiService().reloadMarket(marketSlug);
-      new PolkamarketsApiService().reloadPortfolio(ethAddress);
+      new PolkamarketsApiService().reloadPortfolio(ethAddress, network.id);
 
       // updating wallet
       await updateWallet();
@@ -101,7 +101,7 @@ function LiquidityFormActions() {
 
       // triggering cache reload action on api
       new PolkamarketsApiService().reloadMarket(marketSlug);
-      new PolkamarketsApiService().reloadPortfolio(ethAddress);
+      new PolkamarketsApiService().reloadPortfolio(ethAddress, network.id);
 
       // updating wallet
       await updateWallet();
