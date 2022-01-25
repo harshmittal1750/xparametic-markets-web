@@ -23,7 +23,7 @@ function getEnvironmentConfigVariable(
   variable: EnvironmentConfigVariable
 ): string | undefined {
   if (!(`REACT_APP_${variable}` in process.env)) {
-    throw new Error(`Environment variable REACT_APP_${variable} is undefined!`);
+    return undefined;
   }
   return process.env[`REACT_APP_${variable}`];
 }
