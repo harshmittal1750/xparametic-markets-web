@@ -34,7 +34,7 @@ const MarketListAsync = ({
     if (!isEmpty(filterBy)) {
       dispatch(asyncAction(filterBy, network.id));
     }
-  }, [dispatch, asyncAction, filterBy]);
+  }, [dispatch, asyncAction, filterBy, network.id]);
 
   function refreshMarkets() {
     if (!isEmpty(filterBy)) {
