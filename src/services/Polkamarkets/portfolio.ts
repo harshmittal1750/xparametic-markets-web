@@ -2,8 +2,8 @@ import { Portfolio } from 'models/portfolio';
 
 import api, { polkamarketsApiUrl } from './api';
 
-async function getPortfolio(address: string) {
-  const url = `${polkamarketsApiUrl}/portfolios/${address}`;
+async function getPortfolio(address: string, networkId: string) {
+  const url = `${polkamarketsApiUrl}/portfolios/${address}?network_id=${networkId}`;
   return api.get<Portfolio>(url);
 }
 
