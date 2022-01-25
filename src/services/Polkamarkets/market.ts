@@ -1,3 +1,5 @@
+import identity from 'lodash/identity';
+import pickBy from 'lodash/pickBy';
 import { Market } from 'models/market';
 
 import api, { polkamarketsApiUrl } from './api';
@@ -11,23 +13,32 @@ export type MarketState = 'open' | 'closed' | 'resolved';
 
 type MarketsFilters = {
   state: MarketState;
+  networkId: string;
 };
 
-async function getMarkets({ state }: MarketsFilters) {
+async function getMarkets({ state, networkId }: MarketsFilters) {
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
-    params: {
-      state
-    }
+    params: pickBy(
+      {
+        state,
+        network_id: networkId
+      },
+      identity
+    )
   });
 }
 
-async function getMarketsByIds(ids: string[]) {
+async function getMarketsByIds(ids: string[], networkId: string) {
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
-    params: {
-      id: ids.join(',')
-    }
+    params: pickBy(
+      {
+        id: ids.join(','),
+        network_id: networkId
+      },
+      identity
+    )
   });
 }
 
