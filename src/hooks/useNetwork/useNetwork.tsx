@@ -40,7 +40,9 @@ function fetchUserData(networkConfig: NetworkConfig) {
 
 function useNetwork() {
   const [network, setNetwork] = useState<Network>(defaultNetwork);
+  const defaultNetworkConfig = environment.NETWORKS[defaultNetwork.id];
   const networkConfig = environment.NETWORKS[network.id];
+
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
 
   useEffect(() => {
@@ -87,7 +89,7 @@ function useNetwork() {
     onChainChange();
   }, [networkConfig]);
 
-  return { network, networkConfig };
+  return { network, networkConfig: networkConfig || defaultNetworkConfig };
 }
 
 export default useNetwork;
