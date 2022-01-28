@@ -6,6 +6,7 @@ import { fetchAditionalData, login } from 'redux/ducks/bepro';
 import store from 'redux/store';
 
 import useAppSelector from '../useAppSelector';
+import useLocalStorage from '../useLocalStorage';
 import NETWORKS, { Network, REACT_APP_NETWORK_ID } from './networks';
 
 declare global {
@@ -29,6 +30,10 @@ function fetchUserData(networkConfig: NetworkConfig) {
 
 function useNetwork() {
   const [network, setNetwork] = useState<Network>(defaultNetwork);
+  const [localNetwork, setLocalNetwork] = useLocalStorage<string>(
+    'localNetwork',
+    defaultNetwork.id
+  );
   const networkConfig = environment.NETWORKS[network.id];
 
   const metamaskWalletIsConnected = useAppSelector(
@@ -37,7 +42,7 @@ function useNetwork() {
 
   useEffect(() => {
     async function getCurrentEthereumNetworkId() {
-      if (window.ethereum) {
+      if (window.ethereum && metamaskWalletIsConnected) {
         const currentEthereumNetworkId = await window.ethereum.request({
           method: 'eth_chainId'
         });
@@ -53,17 +58,29 @@ function useNetwork() {
         ) {
           fetchUserData(environment.NETWORKS[currentEthereumNetwork.id]);
         }
+      } else {
+        const localEthereumNetworkId = `0x${Number(localNetwork).toString(16)}`;
+
+        const localEthereumNetwork =
+          NETWORKS[localEthereumNetworkId] || defaultNetwork;
+
+        setNetwork(localEthereumNetwork);
       }
     }
 
     getCurrentEthereumNetworkId();
-  }, [metamaskWalletIsConnected]);
+  }, [localNetwork, metamaskWalletIsConnected]);
 
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', () => {
         window.location.reload();
       });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.ethereum) {
       window.ethereum.on('accountsChanged', () => {
         window.location.reload();
       });
@@ -73,7 +90,7 @@ function useNetwork() {
   return {
     network,
     networkConfig: networkConfig || defaultNetworkConfig,
-    setNetwork
+    setNetwork: setLocalNetwork
   };
 }
 
