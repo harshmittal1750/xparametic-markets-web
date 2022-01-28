@@ -6,7 +6,7 @@ import findKey from 'lodash/findKey';
 
 import { CaretDownFilledIcon } from 'assets/icons';
 
-import { useNetwork } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 import networks, { Network } from 'hooks/useNetwork/networks';
 
 import Text from '../Text';
@@ -16,9 +16,11 @@ const availableNetworks = Object.values(networks).filter(network =>
 );
 
 function Networks() {
-  const { network } = useNetwork();
+  const { network, setNetwork } = useNetwork();
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [isChangingNetwork, setIsChangingNetwork] = useState(false);
+  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
+
   const ref = useRef<HTMLOListElement>(null);
 
   function handleToggleDropdownVisibility() {
@@ -35,7 +37,12 @@ function Networks() {
     }
   }
 
-  async function handleChangeNetwork(newNetwork: Network) {
+  function changeLocalNetwork(newNetwork: Network) {
+    setNetwork(newNetwork.id);
+    handleCloseDropdown();
+  }
+
+  async function changeMetamaskNetwork(newNetwork: Network) {
     setIsChangingNetwork(true);
     try {
       try {
@@ -74,6 +81,14 @@ function Networks() {
     } catch (error: any) {
       setIsChangingNetwork(false);
       handleCloseDropdown();
+    }
+  }
+
+  async function handleChangeNetwork(newNetwork: Network) {
+    if (!window.ethereum || !walletConnected) {
+      changeLocalNetwork(newNetwork);
+    } else {
+      await changeMetamaskNetwork(newNetwork);
     }
   }
 
