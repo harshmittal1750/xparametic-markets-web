@@ -24,7 +24,7 @@ function CreateMarket() {
 
   useEffect(() => {
     getMinimumRequiredBalance();
-  }, [polkBalance]);
+  }, [polkBalance, networkConfig]);
 
   return (
     <div className="pm-p-create-market">
