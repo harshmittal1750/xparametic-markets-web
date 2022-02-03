@@ -25,10 +25,9 @@ const store = configureStore({
     [polkamarketsApi.reducerPath]: polkamarketsApi.reducer
   },
   middleware: getDefaultMiddleware =>
-    getDefaultMiddleware().concat([
-      thunkMiddleware,
-      polkamarketsApi.middleware
-    ]),
+    getDefaultMiddleware({
+      serializableCheck: false
+    }).concat([thunkMiddleware, polkamarketsApi.middleware]),
   devTools: true
 });
 
