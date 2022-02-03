@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
+import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
 import { openTradeForm } from 'redux/ducks/ui';
@@ -32,7 +33,7 @@ const Market = () => {
   const { symbol, ticker } = currency;
   const { network } = useNetwork();
   const { marketId } = useParams<Params>();
-  const { market, isLoading } = useAppSelector(state => state.market);
+  const { market, isLoading, error } = useAppSelector(state => state.market);
   const { actions, bondActions } = useAppSelector(state => state.bepro);
 
   useEffect(() => {
@@ -45,6 +46,23 @@ const Market = () => {
 
     fetchMarket();
   }, [dispatch, marketId]);
+
+  useEffect(() => {
+    function goToHomePage() {
+      history.push('/');
+      window.location.reload();
+    }
+
+    if (!isLoading && !isNull(error)) {
+      goToHomePage();
+    }
+
+    if (!isLoading && market.id !== '') {
+      if (`${market.networkId}` !== network.id) {
+        goToHomePage();
+      }
+    }
+  }, [error, history, isLoading, market.id, market.networkId, network.id]);
 
   if (!market || market.id === '' || isLoading)
     return (
