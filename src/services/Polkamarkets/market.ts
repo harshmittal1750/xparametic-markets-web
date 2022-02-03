@@ -1,3 +1,4 @@
+import axios from 'axios';
 import identity from 'lodash/identity';
 import pickBy from 'lodash/pickBy';
 import { Market } from 'models/market';
@@ -16,7 +17,15 @@ type MarketsFilters = {
   networkId: string;
 };
 
+let getMarketsCancelToken;
+
 async function getMarkets({ state, networkId }: MarketsFilters) {
+  if (typeof getMarketsCancelToken !== typeof undefined) {
+    getMarketsCancelToken.cancel('Canceled due to new getMarkets request');
+  }
+
+  getMarketsCancelToken = axios.CancelToken.source();
+
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
     params: pickBy(
@@ -25,7 +34,8 @@ async function getMarkets({ state, networkId }: MarketsFilters) {
         network_id: networkId
       },
       identity
-    )
+    ),
+    cancelToken: getMarketsCancelToken.token
   });
 }
 
