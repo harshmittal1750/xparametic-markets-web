@@ -43,6 +43,7 @@ import PopcornIcon from './PopcornIcon';
 import PortfolioIcon from './PortifolioIcon';
 import QuestionIcon from './QuestionIcon';
 import RemoveIcon from './RemoveIcon';
+import RepeatCycleIcon from './RepeatCycleIcon';
 import SearchIcon from './SearchIcon';
 import SettingsIcon from './SettingsIcon';
 import ShareIcon from './ShareIcon';
@@ -105,6 +106,7 @@ export {
   PortfolioIcon,
   QuestionIcon,
   RemoveIcon,
+  RepeatCycleIcon,
   ShareIcon,
   SearchIcon,
   SettingsIcon,
