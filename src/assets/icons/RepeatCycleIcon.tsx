@@ -12,6 +12,7 @@ function RepeatCycleIcon(props: SVGProps<SVGSVGElement>) {
       height="15"
       fill="none"
       viewBox="0 0 15 15"
+      style={{ transition: 'fill 0.2s ease-in-out' }}
       {...props}
     >
       <path fill={accentColor} d="M3.5 14.5a2.5 2.5 0 100-5 2.5 2.5 0 000 5z" />
