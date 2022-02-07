@@ -17,14 +17,20 @@ type MarketsFilters = {
   networkId: string;
 };
 
-let getMarketsCancelToken;
+const getMarketsCancelTokens: { [key: string]: any } = {
+  open: undefined,
+  closed: undefined,
+  resolved: undefined
+};
 
 async function getMarkets({ state, networkId }: MarketsFilters) {
-  if (typeof getMarketsCancelToken !== typeof undefined) {
-    getMarketsCancelToken.cancel('Canceled due to new getMarkets request');
+  if (typeof getMarketsCancelTokens[state] !== typeof undefined) {
+    getMarketsCancelTokens[state].cancel(
+      'Canceled due to new getMarkets request'
+    );
   }
 
-  getMarketsCancelToken = axios.CancelToken.source();
+  getMarketsCancelTokens[state] = axios.CancelToken.source();
 
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
@@ -35,7 +41,7 @@ async function getMarkets({ state, networkId }: MarketsFilters) {
       },
       identity
     ),
-    cancelToken: getMarketsCancelToken.token
+    cancelToken: getMarketsCancelTokens[state].token
   });
 }
 
