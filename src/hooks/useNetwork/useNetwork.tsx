@@ -3,8 +3,10 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import { environment } from 'config';
 import { NetworkConfig } from 'config/environment';
-import { fetchAditionalData, login } from 'redux/ducks/bepro';
+import { changeNetworkId, fetchAditionalData, login } from 'redux/ducks/bepro';
 import store from 'redux/store';
+
+import { useAppDispatch } from 'hooks';
 
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
@@ -30,7 +32,20 @@ function fetchUserData(networkConfig: NetworkConfig) {
 }
 
 function useNetwork() {
-  const [network, setNetwork] = useState<Network>(defaultNetwork);
+  const dispatch = useAppDispatch();
+  const metamaskWalletIsConnected = useAppSelector(
+    state => state.bepro.isLoggedIn
+  );
+  const metamaskNetworkId = useAppSelector(state => state.bepro.networkId);
+  const metamaskNetwork = NETWORKS[metamaskNetworkId];
+
+  const [network, setNetwork] = useState<Network>(
+    metamaskNetwork || defaultNetwork
+  );
+
+  if (metamaskNetwork && network !== metamaskNetwork) {
+    setNetwork(metamaskNetwork);
+  }
   const [localNetwork, setLocalNetwork] = useLocalStorage<string>(
     'localNetwork',
     defaultNetwork.id
@@ -38,10 +53,6 @@ function useNetwork() {
   const location = useLocation();
   const history = useHistory();
   const networkConfig = environment.NETWORKS[network.id];
-
-  const metamaskWalletIsConnected = useAppSelector(
-    state => state.bepro.isLoggedIn
-  );
 
   useEffect(() => {
     async function getCurrentEthereumNetworkId() {
@@ -57,9 +68,11 @@ function useNetwork() {
 
         if (
           metamaskWalletIsConnected &&
-          availableNetworks.includes(currentEthereumNetwork.id)
+          availableNetworks.includes(currentEthereumNetwork.id) &&
+          currentEthereumNetworkId !== metamaskNetworkId
         ) {
           fetchUserData(environment.NETWORKS[currentEthereumNetwork.id]);
+          dispatch(changeNetworkId(currentEthereumNetworkId));
         }
       } else {
         const localEthereumNetworkId = `0x${Number(localNetwork).toString(16)}`;
@@ -72,7 +85,7 @@ function useNetwork() {
     }
 
     getCurrentEthereumNetworkId();
-  }, [localNetwork, metamaskWalletIsConnected]);
+  }, []);
 
   useEffect(() => {
     if (window.ethereum) {

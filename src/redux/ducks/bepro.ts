@@ -4,6 +4,7 @@ import { BeproService } from 'services';
 
 const initialState = {
   isLoggedIn: false,
+  networkId: '',
   ethAddress: '',
   ethBalance: 0,
   polkBalance: 0,
@@ -24,6 +25,10 @@ const beproSlice = createSlice({
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoggedIn: action.payload
+    }),
+    changeNetworkId: (state, action: PayloadAction<string>) => ({
+      ...state,
+      networkId: action.payload
     }),
     changeEthAddress: (state, action: PayloadAction<string>) => ({
       ...state,
@@ -74,6 +79,7 @@ export default beproSlice.reducer;
 
 const {
   changeIsLoggedIn,
+  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
@@ -150,6 +156,7 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
 
 export {
   changeIsLoggedIn,
+  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
