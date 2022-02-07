@@ -31,10 +31,12 @@ const Market = () => {
     network: { currency }
   } = useNetwork();
   const { symbol, ticker } = currency;
-  const { network } = useNetwork();
+  const { network, setNetwork } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions } = useAppSelector(state => state.bepro);
+  const { actions, bondActions, isLoggedIn } = useAppSelector(
+    state => state.bepro
+  );
 
   useEffect(() => {
     async function fetchMarket() {
@@ -58,8 +60,11 @@ const Market = () => {
     }
 
     if (!isLoading && market.id !== '') {
-      if (`${market.networkId}` !== network.id) {
-        goToHomePage();
+      if (
+        `${market.networkId}` !== network.id &&
+        (!window.ethereum || !isLoggedIn)
+      ) {
+        setNetwork(market.networkId);
       }
     }
   }, [error, history, isLoading, market.id, market.networkId, network.id]);
