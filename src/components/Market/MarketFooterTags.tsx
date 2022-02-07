@@ -5,7 +5,12 @@ import { Market } from 'models/market';
 import Pill, { PillColor, PillVariant } from '../Pill';
 
 type MarketState = {
-  copy: 'Awaiting Resolution' | 'Ending Soon' | 'New' | 'Resolved';
+  copy:
+    | 'Awaiting Resolution'
+    | 'Ending Soon'
+    | 'New'
+    | 'Resolved'
+    | 'Market voided';
   color: PillColor;
   colorVariant: PillVariant;
 };
@@ -22,7 +27,8 @@ const marketStates: MarketStates = {
   },
   endingSoon: { copy: 'Ending Soon', color: 'danger', colorVariant: 'subtle' },
   new: { copy: 'New', color: 'success', colorVariant: 'subtle' },
-  resolved: { copy: 'Resolved', color: 'success', colorVariant: 'normal' }
+  resolved: { copy: 'Resolved', color: 'success', colorVariant: 'normal' },
+  voided: { copy: 'Market voided', color: 'danger', colorVariant: 'normal' }
 };
 
 type MarketFooterTagsProps = {
@@ -30,12 +36,13 @@ type MarketFooterTagsProps = {
 };
 
 function MarketFooterTags({ market }: MarketFooterTagsProps) {
-  const { createdAt, expiresAt, state } = market;
+  const { createdAt, expiresAt, state, voided } = market;
 
   const isAwaitingResolution = state === 'closed';
   const isEndingSoon = inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
   const isNew = inRange(dayjs(createdAt).diff(dayjs(), 'hours'), -24, 1);
-  const isResolved = state === 'resolved';
+  const isResolved = state === 'resolved' && !voided;
+  const isVoided = voided;
 
   return (
     <>
@@ -79,6 +86,15 @@ function MarketFooterTags({ market }: MarketFooterTagsProps) {
             badge
           >
             {marketStates.resolved.copy}
+          </Pill>
+        ) : null}
+        {isVoided ? (
+          <Pill
+            color={marketStates.voided.color}
+            variant={marketStates.voided.colorVariant}
+            badge
+          >
+            {marketStates.voided.copy}
           </Pill>
         ) : null}
       </div>
