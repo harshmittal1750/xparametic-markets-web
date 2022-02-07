@@ -85,7 +85,7 @@ function useNetwork() {
     }
 
     getCurrentEthereumNetworkId();
-  }, []);
+  }, [localNetwork]);
 
   useEffect(() => {
     if (window.ethereum) {
