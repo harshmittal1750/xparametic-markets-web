@@ -12,6 +12,7 @@ import {
   ArrowUpIcon,
   CheckIcon,
   RemoveIcon,
+  RepeatCycleIcon,
   WarningIcon
 } from 'assets/icons';
 
@@ -23,7 +24,8 @@ import Text from '../Text';
 const outcomeStates = {
   success: { icon: <CheckIcon /> },
   warning: { icon: <WarningIcon /> },
-  danger: { icon: <RemoveIcon /> }
+  danger: { icon: <RemoveIcon /> },
+  voided: { icon: <RepeatCycleIcon /> }
 };
 
 type MarketOutcomesItemProps = {
@@ -46,6 +48,7 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
     marketId === selectedMarketId && id === selectedOutcomeId;
 
   const isMarketResolved = market.state === 'resolved';
+  const isVoided = market.voided;
   const isWinningOutcome = isMarketResolved && market.resolvedOutcomeId === id;
 
   useEffect(() => {
@@ -125,9 +128,9 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
       </div>
       {isMarketResolved ? (
         <div className="pm-c-market-outcomes__item-result">
-          {isWinningOutcome
-            ? outcomeStates.success.icon
-            : outcomeStates.danger.icon}
+          {isWinningOutcome && !isVoided ? outcomeStates.success.icon : null}
+          {!isWinningOutcome && !isVoided ? outcomeStates.danger.icon : null}
+          {isVoided ? outcomeStates.voided.icon : null}
         </div>
       ) : (
         <div className="pm-c-market-outcomes__item-chart">
