@@ -22,6 +22,7 @@ const defaultNetworkId = `0x${(Number(REACT_APP_NETWORK_ID) || 42).toString(
   16
 )}`;
 const defaultNetwork = NETWORKS[defaultNetworkId];
+const unknownNetwork = NETWORKS['0x270f'];
 
 const availableNetworks = Object.keys(environment.NETWORKS);
 const defaultNetworkConfig = environment.NETWORKS[defaultNetwork.id];
@@ -37,7 +38,9 @@ function useNetwork() {
     state => state.bepro.isLoggedIn
   );
   const metamaskNetworkId = useAppSelector(state => state.bepro.networkId);
-  const metamaskNetwork = NETWORKS[metamaskNetworkId];
+  const metamaskNetwork = metamaskNetworkId
+    ? NETWORKS[metamaskNetworkId] || unknownNetwork
+    : null;
 
   const [network, setNetwork] = useState<Network>(
     metamaskNetwork || defaultNetwork
@@ -62,9 +65,10 @@ function useNetwork() {
         });
 
         const currentEthereumNetwork =
-          NETWORKS[currentEthereumNetworkId] || defaultNetwork;
+          NETWORKS[currentEthereumNetworkId] || unknownNetwork;
 
         setNetwork(currentEthereumNetwork);
+        dispatch(changeNetworkId(currentEthereumNetworkId));
 
         if (
           metamaskWalletIsConnected &&
@@ -72,7 +76,6 @@ function useNetwork() {
           currentEthereumNetworkId !== metamaskNetworkId
         ) {
           fetchUserData(environment.NETWORKS[currentEthereumNetwork.id]);
-          dispatch(changeNetworkId(currentEthereumNetworkId));
         }
       } else {
         const localEthereumNetworkId = `0x${Number(localNetwork).toString(16)}`;
