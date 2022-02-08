@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { environment } from 'config';
 import { NetworkConfig } from 'config/environment';
@@ -34,6 +35,8 @@ function useNetwork() {
     'localNetwork',
     defaultNetwork.id
   );
+  const location = useLocation();
+  const history = useHistory();
   const networkConfig = environment.NETWORKS[network.id];
 
   const metamaskWalletIsConnected = useAppSelector(
@@ -74,18 +77,20 @@ function useNetwork() {
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', () => {
+        history.push(`${location.pathname}?modal=false`);
         window.location.reload();
       });
     }
-  }, []);
+  }, [history, location.pathname]);
 
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', () => {
+        history.push(`${location.pathname}?modal=false`);
         window.location.reload();
       });
     }
-  }, []);
+  }, [history, location.pathname]);
 
   return {
     network,
