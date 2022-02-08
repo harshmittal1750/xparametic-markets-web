@@ -68,7 +68,6 @@ function useNetwork() {
           NETWORKS[currentEthereumNetworkId] || unknownNetwork;
 
         setNetwork(currentEthereumNetwork);
-        dispatch(changeNetworkId(currentEthereumNetworkId));
 
         if (
           metamaskWalletIsConnected &&
@@ -77,6 +76,9 @@ function useNetwork() {
         ) {
           fetchUserData(environment.NETWORKS[currentEthereumNetwork.id]);
         }
+        // changing networkId on redux only after fetch portfolio has been called
+        dispatch(changeNetworkId(currentEthereumNetworkId));
+
       } else {
         const localEthereumNetworkId = `0x${Number(localNetwork).toString(16)}`;
 
