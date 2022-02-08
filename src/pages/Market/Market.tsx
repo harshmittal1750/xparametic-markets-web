@@ -34,7 +34,7 @@ const Market = () => {
   const { network, setNetwork } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions, isLoggedIn } = useAppSelector(
+  const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
     state => state.bepro
   );
 
@@ -65,9 +65,24 @@ const Market = () => {
         (!window.ethereum || !isLoggedIn)
       ) {
         setNetwork(market.networkId);
+      } else if (
+        isLoggedIn &&
+        networkId &&
+        // eslint-disable-next-line radix
+        `0x${parseInt(market.networkId).toString(16)}` !== networkId
+      ) {
+        goToHomePage();
       }
     }
-  }, [error, history, isLoading, market.id, market.networkId, network.id]);
+  }, [
+    error,
+    history,
+    isLoading,
+    market.id,
+    market.networkId,
+    network.id,
+    networkId
+  ]);
 
   if (!market || market.id === '' || isLoading)
     return (
