@@ -93,7 +93,7 @@ function useNetwork() {
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', () => {
-        history.push(`${location.pathname}?modal=false`);
+        history.push(`${location.pathname}?m=f`);
         window.location.reload();
       });
     }
@@ -102,7 +102,7 @@ function useNetwork() {
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', () => {
-        history.push(`${location.pathname}?modal=false`);
+        history.push(`${location.pathname}?m=f`);
         window.location.reload();
       });
     }
