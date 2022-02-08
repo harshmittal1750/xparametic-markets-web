@@ -99,7 +99,7 @@ function CreateMarketForm() {
   const { show, close } = useToastNotification();
 
   function redirectToHomePage() {
-    return history.push('/home');
+    return history.push('/');
   }
 
   function redirectToMarketPage(marketSlug) {
@@ -126,7 +126,10 @@ function CreateMarketForm() {
     const { marketId } = response.events.MarketCreated.returnValues;
 
     try {
-      const res = await marketService.createMarket(marketId);
+      const res = await marketService.createMarket(
+        marketId,
+        networkConfig.NETWORK_ID
+      );
       redirectToMarketPage(res.data.slug);
     } catch (err) {
       redirectToHomePage();

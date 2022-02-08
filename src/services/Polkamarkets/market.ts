@@ -63,9 +63,9 @@ async function reloadMarket(marketSlug: string) {
   return api.post(url);
 }
 
-async function createMarket(marketId: string) {
+async function createMarket(marketId: string, networkId: string | number) {
   const url = `${polkamarketsApiUrl}/markets/`;
-  return api.post(url, { id: marketId });
+  return api.post(url, { id: marketId, network_id: networkId });
 }
 
 export { getMarkets, getMarket, getMarketsByIds, reloadMarket, createMarket };
