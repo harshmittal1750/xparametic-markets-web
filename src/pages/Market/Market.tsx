@@ -49,7 +49,7 @@ const Market = () => {
 
   useEffect(() => {
     function goToHomePage() {
-      history.push('/');
+      history.push('/?modal=false');
       window.location.reload();
     }
 
