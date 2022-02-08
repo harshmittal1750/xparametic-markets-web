@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
+import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
 import { openTradeForm } from 'redux/ducks/ui';
@@ -26,12 +27,16 @@ type Params = {
 const Market = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { symbol, ticker } = currency;
-  const network = useNetwork();
+  const { network, setNetwork } = useNetwork();
   const { marketId } = useParams<Params>();
-  const { market, isLoading } = useAppSelector(state => state.market);
-  const { actions, bondActions } = useAppSelector(state => state.bepro);
+  const { market, isLoading, error } = useAppSelector(state => state.market);
+  const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
+    state => state.bepro
+  );
 
   useEffect(() => {
     async function fetchMarket() {
@@ -43,6 +48,41 @@ const Market = () => {
 
     fetchMarket();
   }, [dispatch, marketId]);
+
+  useEffect(() => {
+    function goToHomePage() {
+      history.push('/?m=f');
+      window.location.reload();
+    }
+
+    if (!isLoading && !isNull(error)) {
+      goToHomePage();
+    }
+
+    if (!isLoading && market.id !== '') {
+      if (
+        `${market.networkId}` !== network.id &&
+        (!window.ethereum || !isLoggedIn)
+      ) {
+        setNetwork(market.networkId);
+      } else if (
+        isLoggedIn &&
+        networkId &&
+        // eslint-disable-next-line radix
+        `0x${parseInt(market.networkId).toString(16)}` !== networkId
+      ) {
+        goToHomePage();
+      }
+    }
+  }, [
+    error,
+    history,
+    isLoading,
+    market.id,
+    market.networkId,
+    network.id,
+    networkId
+  ]);
 
   if (!market || market.id === '' || isLoading)
     return (

@@ -18,7 +18,7 @@ type WalletInfoProps = {
 };
 
 function WalletInfo({ wallets, address }: WalletInfoProps) {
-  const network = useNetwork();
+  const { network } = useNetwork();
 
   return (
     <div className="pm-c-wallet-info">

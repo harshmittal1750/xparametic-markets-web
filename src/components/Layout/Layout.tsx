@@ -1,4 +1,5 @@
 import { ReactNode, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import useAlertNotification from 'hooks/useAlertNotification';
 
@@ -16,7 +17,10 @@ type LayoutProps = {
 
 function Layout({ children }: LayoutProps) {
   const { alertList } = useAlertNotification();
-  const [modalVisible, setModalVisible] = useState(true);
+  const location = useLocation();
+  const modalVisibility = new URLSearchParams(location.search).get('m');
+
+  const [modalVisible, setModalVisible] = useState(modalVisibility !== 'f');
 
   const hasAlertNotification = alertList.size > 0;
 

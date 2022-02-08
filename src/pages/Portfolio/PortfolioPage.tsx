@@ -4,7 +4,7 @@ import { getMarkets } from 'redux/ducks/markets';
 import { getPortfolio } from 'redux/ducks/portfolio';
 import { closeRightSidebar } from 'redux/ducks/ui';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import PortfolioAnalytics from './PortfolioAnalytics';
 import PortfolioChart from './PortfolioChart';
@@ -12,6 +12,7 @@ import PortfolioTabs from './PortfolioTabs';
 
 const PortfolioPage = () => {
   const dispatch = useAppDispatch();
+  const { network } = useNetwork();
 
   const rightSidebarIsVisible = useAppSelector(
     state => state.ui.rightSidebar.visible
@@ -23,16 +24,16 @@ const PortfolioPage = () => {
     if (rightSidebarIsVisible) {
       dispatch(closeRightSidebar());
     }
-    dispatch(getMarkets('open'));
-    dispatch(getMarkets('closed'));
-    dispatch(getMarkets('resolved'));
-  }, [rightSidebarIsVisible, dispatch]);
+    dispatch(getMarkets('open', network.id));
+    dispatch(getMarkets('closed', network.id));
+    dispatch(getMarkets('resolved', network.id));
+  }, [rightSidebarIsVisible, dispatch, network.id]);
 
   useEffect(() => {
     if (ethAddress) {
-      dispatch(getPortfolio(ethAddress));
+      dispatch(getPortfolio(ethAddress, network.id));
     }
-  }, [ethAddress, dispatch]);
+  }, [ethAddress, dispatch, network.id]);
 
   return (
     <div className="portfolio-page">

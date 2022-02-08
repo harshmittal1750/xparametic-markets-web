@@ -34,6 +34,7 @@ const initialState: MarketInitialState = {
     verified: false,
     voided: false,
     questionId: '',
+    networkId: '',
     resolvedOutcomeId: -1,
     outcomes: [
       {

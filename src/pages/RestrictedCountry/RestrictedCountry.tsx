@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-curly-newline */
+/* eslint-disable prettier/prettier */
 import { PolkamarketsIcon } from 'assets/icons';
 
 import { Button, ModalNotification, Text, Link } from 'components';
@@ -57,7 +59,8 @@ function RestrictedCountry() {
               window.open(
                 'https://help.polkamarkets.com/en/articles/5623718-ownership-architecture',
                 '_blank'
-              )}
+              )
+            }
           >
             Learn More
           </Button>

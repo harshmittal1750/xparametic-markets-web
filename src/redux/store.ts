@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import { configureStore } from '@reduxjs/toolkit';
 import thunkMiddleware from 'redux-thunk';
+import polkamarketsApi from 'services/Polkamarkets';
 
 import bepro from './ducks/bepro';
 import liquidity from './ducks/liquidity';
@@ -20,9 +21,13 @@ const store = configureStore({
     markets,
     portfolio,
     bepro,
-    ui
+    ui,
+    [polkamarketsApi.reducerPath]: polkamarketsApi.reducer
   },
-  middleware: [thunkMiddleware],
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false
+    }).concat([thunkMiddleware, polkamarketsApi.middleware]),
   devTools: true
 });
 

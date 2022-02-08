@@ -15,7 +15,9 @@ import Text from '../Text';
 import { calculateTradeDetails } from './utils';
 
 function TradeFormInput() {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { name, ticker, icon } = currency;
   const dispatch = useAppDispatch();
   const type = useAppSelector(state => state.trade.type);

@@ -15,8 +15,11 @@ import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 function CreateMarketFormFund() {
-  const { currency } = useNetwork();
-  const [field, meta, helpers] = useField('liquidity');
+  const {
+    network: { currency },
+    networkConfig
+  } = useNetwork();
+  const [field, _meta, helpers] = useField('liquidity');
   const [fee, setFee] = useState(0);
 
   const balance = useAppSelector(state => state.bepro.ethBalance);
@@ -26,7 +29,7 @@ function CreateMarketFormFund() {
   }
 
   async function getMarketFee() {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     const response = await beproService.getMarketFee();
     setFee(response);

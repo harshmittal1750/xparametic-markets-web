@@ -22,7 +22,7 @@ function themeReducer(state, action) {
 
 // eslint-disable-next-line react/prop-types
 const ThemeProvider = ({ children }) => {
-  const [localStorageTheme] = useLocalStorage('theme');
+  const [localStorageTheme] = useLocalStorage('theme', 'dark');
   const [state, dispatch] = useReducer(themeReducer, {
     theme: localStorageTheme || 'dark'
   });

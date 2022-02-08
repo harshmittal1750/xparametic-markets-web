@@ -8,7 +8,7 @@ import { InfoIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
@@ -27,17 +27,18 @@ const MarketListAsync = ({
   markets
 }: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
+  const { network } = useNetwork();
   const { isLoading, error } = useAppSelector(state => state.markets);
 
   useEffect(() => {
     if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy));
+      dispatch(asyncAction(filterBy, network.id));
     }
-  }, [dispatch, asyncAction]);
+  }, [dispatch, asyncAction, filterBy, network.id]);
 
   function refreshMarkets() {
     if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy));
+      dispatch(asyncAction(filterBy, network.id));
     }
   }
 

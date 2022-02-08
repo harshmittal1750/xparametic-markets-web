@@ -12,15 +12,15 @@ import useAlertNotification from 'hooks/useAlertNotification';
 import { AlertInline } from '../Alert';
 import { Button } from '../Button';
 import Link from '../Link';
-import NetworkInfo from '../NetworkInfo';
+import Networks from '../Networks';
 import WalletInfo from '../WalletInfo';
 
 function NavBarActions() {
   const { show } = useAlertNotification();
   const dispatch = useAppDispatch();
-  const network = useNetwork();
+  const { network, networkConfig } = useNetwork();
 
-  const beproService = new BeproService();
+  const beproService = new BeproService(networkConfig);
 
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
   const ethBalance = useAppSelector(state => state.bepro.ethBalance);
@@ -34,7 +34,7 @@ function NavBarActions() {
 
   const handleConnectWallet = async () => {
     await beproService.login();
-    await login(dispatch);
+    await dispatch(login(networkConfig));
   };
 
   return (
@@ -56,9 +56,7 @@ function NavBarActions() {
           </>
         }
       />
-      {network && network.key !== 'unknown' ? (
-        <NetworkInfo name={network.name} slug={network.key} />
-      ) : null}
+      {network && network.key !== 'unknown' ? <Networks /> : null}
       {walletConnected ? (
         <WalletInfo
           wallets={[

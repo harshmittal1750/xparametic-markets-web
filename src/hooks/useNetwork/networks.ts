@@ -1,9 +1,10 @@
-import { Currency, DEV, ETH, MOVR } from 'hooks/useNetwork/currencies';
+import { Currency, DEV, ETH, MOVR, GLMR } from 'hooks/useNetwork/currencies';
 
 export type Network = {
   id: string;
   name: string;
   key: string;
+  colorAccent: 'blue' | 'orange' | 'green';
   currency: Currency;
   decimals: number;
   explorerURL: string;
@@ -11,8 +12,11 @@ export type Network = {
   buyEc20Url?: string;
 };
 
-export const { REACT_APP_NETWORK_ID, REACT_APP_ERC20_CONTRACT_ADDRESS } =
-  process.env;
+export const {
+  REACT_APP_NETWORK_ID,
+  REACT_APP_ERC20_CONTRACT_ADDRESS,
+  REACT_APP_GOVERNANCE_CONTRACT_ADDRESS
+} = process.env;
 
 const NETWORKS: {
   [key: string]: Network;
@@ -21,6 +25,7 @@ const NETWORKS: {
     id: '1',
     name: 'Ethereum Mainnet',
     key: 'mainnet',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
@@ -30,6 +35,7 @@ const NETWORKS: {
     id: '3',
     name: 'Ropsten Testnet',
     key: 'ropsten',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://ropsten.etherscan.io',
@@ -39,6 +45,7 @@ const NETWORKS: {
     id: '4',
     name: 'Rinkeby Testnet',
     key: 'rinkeby',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://rinkeby.etherscan.io',
@@ -48,6 +55,7 @@ const NETWORKS: {
     id: '5',
     name: 'Goerli Testnet',
     key: 'goerli',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://goerli.etherscan.io',
@@ -57,6 +65,7 @@ const NETWORKS: {
     id: '42',
     name: 'Kovan Testnet',
     key: 'kovan',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://kovan.etherscan.io',
@@ -67,15 +76,28 @@ const NETWORKS: {
     id: '1281',
     name: 'Moonbase Local',
     key: 'moonbase-local',
+    colorAccent: 'blue',
     currency: DEV,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
     rpcUrls: ['http://localhost:9933']
   },
+  '0x504': {
+    id: '1284',
+    name: 'Moonbeam',
+    key: 'moonbeam',
+    colorAccent: 'green',
+    currency: GLMR,
+    decimals: 18,
+    explorerURL: 'https://moonbeam.moonscan.io',
+    rpcUrls: ['https://rpc.api.moonbeam.network'],
+    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${REACT_APP_GOVERNANCE_CONTRACT_ADDRESS}`
+  },
   '0x505': {
     id: '1285',
     name: 'Moonriver',
     key: 'moonriver',
+    colorAccent: 'orange',
     currency: MOVR,
     decimals: 18,
     explorerURL: 'https://moonriver.moonscan.io',
@@ -86,6 +108,7 @@ const NETWORKS: {
     id: '1287',
     name: 'Moonbase Alpha',
     key: 'moonbase-alpha',
+    colorAccent: 'blue',
     currency: DEV,
     decimals: 18,
     explorerURL: 'https://moonbase-blockscout.testnet.moonbeam.network',
@@ -95,6 +118,7 @@ const NETWORKS: {
     id: '1337',
     name: 'Local Testnet',
     key: 'local',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://etherscan.io',
@@ -105,6 +129,7 @@ const NETWORKS: {
     id: '9999',
     name: 'Unknown',
     key: 'unknown',
+    colorAccent: 'blue',
     currency: ETH,
     decimals: 18,
     explorerURL: 'https://etherscan.io',

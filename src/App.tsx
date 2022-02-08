@@ -2,23 +2,33 @@ import { useEffect } from 'react';
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { login } from 'redux/ducks/bepro';
 import Routes from 'routes';
 
 import { SEO } from 'components';
 
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
 
-import { useLocalStorage, useTheme } from 'hooks';
+import { useAppDispatch, useLocalStorage, useNetwork, useTheme } from 'hooks';
 
 const POLKAMARKETS_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`;
 
 const App = () => {
   const { theme } = useTheme();
-  const [localStorageTheme, setLocalStorageTheme] = useLocalStorage('theme');
+  const [localStorageTheme, setLocalStorageTheme] = useLocalStorage<string>(
+    'theme',
+    'dark'
+  );
+  const dispatch = useAppDispatch();
+  const { networkConfig } = useNetwork();
 
   useEffect(() => {
     setLocalStorageTheme(theme);
   }, [theme, setLocalStorageTheme]);
+
+  useEffect(() => {
+    dispatch(login(networkConfig));
+  }, [dispatch, networkConfig]);
 
   return (
     <div className={`theme--${localStorageTheme || theme}`}>

@@ -55,4 +55,5 @@ export interface Market {
   tradingViewSymbol: any;
   fee: number;
   question: Question;
+  networkId: string;
 }

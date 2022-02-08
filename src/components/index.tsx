@@ -42,6 +42,7 @@ import Modal from './Modal';
 import ModalNotification from './ModalNotification';
 import NavBar from './NavBar';
 import NetworkInfo from './NetworkInfo';
+import Networks from './Networks';
 import Outcome from './Outcome';
 import Pill from './Pill';
 import PortfolioLiquidityTable from './PortfolioLiquidityTable';
@@ -116,6 +117,7 @@ export {
   ModalNotification,
   NavBar,
   NetworkInfo,
+  Networks,
   Outcome,
   OutcomeInput,
   Pill,

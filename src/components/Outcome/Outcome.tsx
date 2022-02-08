@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { useMemo } from 'react';
 
-import { useField } from 'formik';
 import { roundNumber } from 'helpers/math';
 import isUndefined from 'lodash/isUndefined';
 import reject from 'lodash/reject';
@@ -64,7 +62,7 @@ type OutcomeProps = {
   resolvedOutcomeId: number;
   marketQuestionFinalized: boolean;
   isStarted: boolean;
-  onSelect: (id: string) => void;
+  onSelect: (_id: string) => void;
 };
 
 function Outcome({
@@ -82,7 +80,6 @@ function Outcome({
   onSelect,
   isStarted
 }: OutcomeProps) {
-  const [field] = useField('bond');
   const isWinningOutcome = isStarted && resolvedOutcomeId.toString() === id;
 
   const miniTableRows = useMemo(() => {

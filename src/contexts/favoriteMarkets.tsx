@@ -1,11 +1,12 @@
-/* eslint-disable no-unused-vars */
 import { ReactNode, createContext } from 'react';
 
 import { useLocalStorage } from 'hooks';
 
+type FavoriteMarketsByNetwork = { [key: string]: string[] };
+
 type FavoriteMarkets = {
-  favoriteMarkets: string[];
-  setFavoriteMarkets: (favoriteMarkets: string[]) => void;
+  favoriteMarkets: FavoriteMarketsByNetwork;
+  setFavoriteMarkets: (_favoriteMarkets: FavoriteMarketsByNetwork) => void;
 };
 
 export const FavoriteMarketsContext = createContext<FavoriteMarkets>(
@@ -17,10 +18,8 @@ type FavoriteMarketsProviderProps = {
 };
 
 function FavoriteMarketsProvider({ children }: FavoriteMarketsProviderProps) {
-  const [favoriteMarkets, setFavoriteMarkets] = useLocalStorage(
-    'favoriteMarkets',
-    []
-  );
+  const [favoriteMarkets, setFavoriteMarkets] =
+    useLocalStorage<FavoriteMarketsByNetwork>('favoriteMarketsByNetwork', {});
 
   return (
     <FavoriteMarketsContext.Provider

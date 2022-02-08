@@ -11,6 +11,7 @@ import ArrowUpSmallestIcon from './ArrowUpSmallestIcon';
 import BetaTagIcon from './BetaTagIcon';
 import BitcoinIcon from './BitcoinIcon';
 import CandleStickChartIcon from './CandleStickChartIcon';
+import CaretDownFilledIcon from './CaretDownFilledIcon';
 import CaretDownIcon from './CaretDownIcon';
 import CaretUpIcon from './CaretUpIcon';
 import ChartGrowthIcon from './ChartGrowthIcon';
@@ -72,6 +73,7 @@ export {
   BetaTagIcon,
   BitcoinIcon,
   CandleStickChartIcon,
+  CaretDownFilledIcon,
   CaretDownIcon,
   CaretUpIcon,
   ChartGrowthIcon,

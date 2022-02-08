@@ -42,7 +42,10 @@ const PortfolioMarketTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { currency } = useNetwork();
+  const {
+    network: { currency },
+    networkConfig
+  } = useNetwork();
   const { ticker, symbol } = currency;
   const filter = useAppSelector(state => state.portfolio.filter);
 
@@ -64,8 +67,13 @@ const PortfolioMarketTable = ({
     });
   }
 
+  async function updateWallet() {
+    await dispatch(login(networkConfig));
+    await dispatch(fetchAditionalData(networkConfig));
+  }
+
   async function handleClaimWinnings(marketId) {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     handleChangeIsLoading(marketId, true);
 
@@ -73,8 +81,7 @@ const PortfolioMarketTable = ({
       await beproService.claimWinnings(marketId);
 
       // updating wallet
-      await login(dispatch);
-      await fetchAditionalData(dispatch);
+      await updateWallet();
 
       handleChangeIsLoading(marketId, false);
     } catch (error) {
@@ -83,7 +90,7 @@ const PortfolioMarketTable = ({
   }
 
   async function handleClaimVoided(marketId, outcomeId) {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     handleChangeIsLoadingVoided(marketId, outcomeId, true);
 
@@ -91,8 +98,7 @@ const PortfolioMarketTable = ({
       await beproService.claimVoidedOutcomeShares(marketId, outcomeId);
 
       // updating wallet
-      await login(dispatch);
-      await fetchAditionalData(dispatch);
+      await updateWallet();
 
       handleChangeIsLoadingVoided(marketId, outcomeId, false);
     } catch (error) {

@@ -1,3 +1,6 @@
+import axios from 'axios';
+import identity from 'lodash/identity';
+import pickBy from 'lodash/pickBy';
 import { Market } from 'models/market';
 
 import api, { polkamarketsApiUrl } from './api';
@@ -11,23 +14,47 @@ export type MarketState = 'open' | 'closed' | 'resolved';
 
 type MarketsFilters = {
   state: MarketState;
+  networkId: string;
 };
 
-async function getMarkets({ state }: MarketsFilters) {
+const getMarketsCancelTokens: { [key: string]: any } = {
+  open: undefined,
+  closed: undefined,
+  resolved: undefined
+};
+
+async function getMarkets({ state, networkId }: MarketsFilters) {
+  if (typeof getMarketsCancelTokens[state] !== typeof undefined) {
+    getMarketsCancelTokens[state].cancel(
+      'Canceled due to new getMarkets request'
+    );
+  }
+
+  getMarketsCancelTokens[state] = axios.CancelToken.source();
+
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
-    params: {
-      state
-    }
+    params: pickBy(
+      {
+        state,
+        network_id: networkId
+      },
+      identity
+    ),
+    cancelToken: getMarketsCancelTokens[state].token
   });
 }
 
-async function getMarketsByIds(ids: string[]) {
+async function getMarketsByIds(ids: string[], networkId: string) {
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
-    params: {
-      id: ids.join(',')
-    }
+    params: pickBy(
+      {
+        id: ids.join(','),
+        network_id: networkId
+      },
+      identity
+    )
   });
 }
 
@@ -36,9 +63,9 @@ async function reloadMarket(marketSlug: string) {
   return api.post(url);
 }
 
-async function createMarket(marketId: string) {
+async function createMarket(marketId: string, networkId: string | number) {
   const url = `${polkamarketsApiUrl}/markets/`;
-  return api.post(url, { id: marketId });
+  return api.post(url, { id: marketId, network_id: networkId });
 }
 
 export { getMarkets, getMarket, getMarketsByIds, reloadMarket, createMarket };

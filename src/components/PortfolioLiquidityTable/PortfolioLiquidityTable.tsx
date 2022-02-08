@@ -36,7 +36,10 @@ const PortfolioLiquidityTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { currency } = useNetwork();
+  const {
+    network: { currency },
+    networkConfig
+  } = useNetwork();
   const { ticker, symbol } = currency;
   const filter = useAppSelector(state => state.portfolio.filter);
 
@@ -47,7 +50,7 @@ const PortfolioLiquidityTable = ({
   }
 
   async function handleClaimLiquidity(marketId) {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     handleChangeIsLoading(marketId, true);
 
@@ -55,8 +58,8 @@ const PortfolioLiquidityTable = ({
       await beproService.claimLiquidity(marketId);
 
       // updating wallet
-      await login(dispatch);
-      await fetchAditionalData(dispatch);
+      await dispatch(login(networkConfig));
+      await dispatch(fetchAditionalData(networkConfig));
 
       handleChangeIsLoading(marketId, false);
     } catch (error) {

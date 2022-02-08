@@ -6,7 +6,7 @@ import { BeproService } from 'services';
 
 import { ArrowRightIcon, InfoIcon } from 'assets/icons';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import Badge from '../Badge';
 import Text from '../Text';
@@ -31,6 +31,7 @@ type TotalBondItem = {
 };
 
 function ReportFormDetails() {
+  const { networkConfig } = useNetwork();
   const [bond] = useField('bond');
   const [outcome] = useField('outcome');
 
@@ -60,22 +61,25 @@ function ReportFormDetails() {
     }
   ];
 
-  async function getOutcomesBonds() {
-    const beproService = new BeproService();
-    // await beproService.login();
-
-    const response = await beproService.getQuestionBonds(questionId);
-    setBonds(response);
-
-    // TODO: improve this calculating total bond
-    const totalBondAmount = Object.values(response || {}).reduce((a: any, b: any) => a + b, 0) as number;
-    setTotalBond(totalBondAmount);
-  }
-
   // UGLY WORKAROUND! TODO: get data from api
   useEffect(() => {
+    async function getOutcomesBonds() {
+      const beproService = new BeproService(networkConfig);
+      // await beproService.login();
+
+      const response = await beproService.getQuestionBonds(questionId);
+      setBonds(response);
+
+      // TODO: improve this calculating total bond
+      const totalBondAmount = Object.values(response || {}).reduce(
+        (a: any, b: any) => a + b,
+        0
+      ) as number;
+      setTotalBond(totalBondAmount);
+    }
+
     getOutcomesBonds();
-  }, [finalizeTs]);
+  }, [finalizeTs, networkConfig, questionId]);
 
   const totalBondItems: TotalBondItem[] = [
     {

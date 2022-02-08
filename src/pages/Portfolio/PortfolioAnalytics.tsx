@@ -7,7 +7,9 @@ import { useAppSelector, useNetwork } from 'hooks';
 import { formatPortfolioAnalytics } from './utils';
 
 function PortfolioAnalytics() {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker } = currency;
 
   const apiPortfolio = useAppSelector(state => state.portfolio.portfolio);

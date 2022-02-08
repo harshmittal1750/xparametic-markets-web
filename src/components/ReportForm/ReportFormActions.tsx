@@ -34,7 +34,7 @@ function ReportFormActions({
   const dispatch = useAppDispatch();
   const { show, close } = useToastNotification();
   const { errors } = useFormikContext();
-  const network = useNetwork();
+  const { network, networkConfig } = useNetwork();
 
   // Form state
   const [outcome] = useField('outcome');
@@ -85,7 +85,7 @@ function ReportFormActions({
     questionBond > 0;
 
   async function handleApprovePolk() {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     setIsApprovingPolk(true);
 
@@ -99,11 +99,10 @@ function ReportFormActions({
         show('approvePolk');
       }
 
-      await login(dispatch);
+      await dispatch(login(networkConfig));
       setIsApprovingPolk(false);
     } catch (error) {
       setIsApprovingPolk(false);
-      console.error(error);
     }
   }
 
@@ -113,7 +112,7 @@ function ReportFormActions({
   }
 
   async function handleBond() {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
     const polkamarketApiService = new PolkamarketsApiService();
 
     setIsBonding(true);
@@ -140,20 +139,19 @@ function ReportFormActions({
       polkamarketApiService.reloadMarket(marketSlug);
 
       // updating wallet
-      login(dispatch);
-      fetchAditionalData(dispatch);
+      dispatch(login(networkConfig));
+      dispatch(fetchAditionalData(networkConfig));
 
       // updating question
       const question = await beproService.getQuestion(questionId);
       dispatch(changeQuestion(question));
     } catch (error) {
       setIsBonding(false);
-      console.error(error);
     }
   }
 
   async function handleResolve() {
-    const beproService = new BeproService();
+    const beproService = new BeproService(networkConfig);
 
     setIsResolvingMarket(true);
     try {
@@ -181,7 +179,6 @@ function ReportFormActions({
       setIsResolvingMarket(false);
     } catch (error) {
       setIsResolvingMarket(false);
-      console.error(error);
     }
   }
 

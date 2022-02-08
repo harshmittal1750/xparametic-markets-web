@@ -8,7 +8,9 @@ import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 function LiquidityFormDetails() {
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const liquidityDetails = useAppSelector(
     state => state.liquidity.liquidityDetails
   );
@@ -143,9 +145,11 @@ function LiquidityFormDetails() {
         </Text>
 
         <Text as="span" scale="body" fontWeight="semibold">
-          {`${roundNumber(liquidityDetails.totalStake + (transactionType === 'remove' ? feesEarned : 0), 3)} ${
-            currency.symbol
-          }`}
+          {`${roundNumber(
+            liquidityDetails.totalStake +
+              (transactionType === 'remove' ? feesEarned : 0),
+            3
+          )} ${currency.symbol}`}
         </Text>
       </div>
     </div>

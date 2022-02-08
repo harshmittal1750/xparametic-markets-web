@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import { fetchAditionalData, login } from 'redux/ducks/bepro';
+import { environment } from 'config';
+import { NetworkConfig } from 'config/environment';
+import { changeNetworkId, fetchAditionalData, login } from 'redux/ducks/bepro';
 import store from 'redux/store';
 
+import { useAppDispatch } from 'hooks';
+
 import useAppSelector from '../useAppSelector';
+import useLocalStorage from '../useLocalStorage';
 import NETWORKS, { Network, REACT_APP_NETWORK_ID } from './networks';
 
 declare global {
@@ -12,79 +18,102 @@ declare global {
   }
 }
 
-export function getDefaultNetworkHex(): string {
-  const networkId = Number(REACT_APP_NETWORK_ID) || 42;
-  const networkIdHex = `0x${networkId.toString(16)}`;
+const defaultNetworkId = `0x${(Number(REACT_APP_NETWORK_ID) || 42).toString(
+  16
+)}`;
+const defaultNetwork = NETWORKS[defaultNetworkId];
+const unknownNetwork = NETWORKS['0x270f'];
 
-  return networkIdHex;
-}
+const availableNetworks = Object.keys(environment.NETWORKS);
+const defaultNetworkConfig = environment.NETWORKS[defaultNetwork.id];
 
-export function getDefaultNetwork(): Network {
-  return NETWORKS[getDefaultNetworkHex()];
-}
-
-const defaultNetwork = getDefaultNetwork();
-
-async function getChainId(): Promise<string> {
-  const chainId = await window.ethereum?.request({ method: 'eth_chainId' });
-
-  return chainId;
-}
-
-function fetchUserData() {
-  login(store.dispatch);
-  fetchAditionalData(store.dispatch);
+function fetchUserData(networkConfig: NetworkConfig) {
+  store.dispatch(login(networkConfig));
+  store.dispatch(fetchAditionalData(networkConfig));
 }
 
 function useNetwork() {
-  const [network, setNetwork] = useState<Network>(defaultNetwork);
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
+  const dispatch = useAppDispatch();
+  const metamaskWalletIsConnected = useAppSelector(
+    state => state.bepro.isLoggedIn
+  );
+  const metamaskNetworkId = useAppSelector(state => state.bepro.networkId);
+  const metamaskNetwork = metamaskNetworkId
+    ? NETWORKS[metamaskNetworkId] || unknownNetwork
+    : null;
+
+  const [network, setNetwork] = useState<Network>(
+    metamaskNetwork || defaultNetwork
+  );
+
+  if (metamaskNetwork && network !== metamaskNetwork) {
+    setNetwork(metamaskNetwork);
+  }
+  const [localNetwork, setLocalNetwork] = useLocalStorage<string>(
+    'localNetwork',
+    defaultNetwork.id
+  );
+  const location = useLocation();
+  const history = useHistory();
+  const networkConfig = environment.NETWORKS[network.id];
 
   useEffect(() => {
-    async function onWalletChange() {
-      if (walletConnected) {
-        const chainId = await getChainId();
+    async function getCurrentEthereumNetworkId() {
+      if (window.ethereum && metamaskWalletIsConnected) {
+        const currentEthereumNetworkId = await window.ethereum.request({
+          method: 'eth_chainId'
+        });
 
-        setNetwork(NETWORKS[chainId] || NETWORKS['0x270f']);
+        const currentEthereumNetwork =
+          NETWORKS[currentEthereumNetworkId] || unknownNetwork;
+
+        setNetwork(currentEthereumNetwork);
+
+        if (
+          metamaskWalletIsConnected &&
+          availableNetworks.includes(currentEthereumNetwork.id) &&
+          currentEthereumNetworkId !== metamaskNetworkId
+        ) {
+          fetchUserData(environment.NETWORKS[currentEthereumNetwork.id]);
+        }
+        // changing networkId on redux only after fetch portfolio has been called
+        dispatch(changeNetworkId(currentEthereumNetworkId));
+      } else {
+        const localEthereumNetworkId = `0x${Number(localNetwork).toString(16)}`;
+
+        const localEthereumNetwork =
+          NETWORKS[localEthereumNetworkId] || defaultNetwork;
+
+        setNetwork(localEthereumNetwork);
       }
     }
 
-    onWalletChange();
-  }, [walletConnected, setNetwork]);
+    getCurrentEthereumNetworkId();
+  }, [localNetwork]);
 
   useEffect(() => {
-    async function onAccountChange() {
-      window.ethereum?.on('accountsChanged', async () => {
-        const chainId = await getChainId();
-
-        if (NETWORKS[chainId] === defaultNetwork) {
-          fetchUserData();
-        }
+    if (window.ethereum) {
+      window.ethereum.on('chainChanged', () => {
+        history.push(`${location.pathname}?m=f`);
+        window.location.reload();
       });
     }
-
-    onAccountChange();
-  }, []);
+  }, [history, location.pathname]);
 
   useEffect(() => {
-    function changeNetwork(chainId: string) {
-      setNetwork(NETWORKS[chainId] || NETWORKS['0x270f']);
-    }
-
-    function onChainChange() {
-      window.ethereum?.on('chainChanged', chainId => {
-        changeNetwork(chainId);
-
-        if (NETWORKS[chainId] === defaultNetwork) {
-          fetchUserData();
-        }
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', () => {
+        history.push(`${location.pathname}?m=f`);
+        window.location.reload();
       });
     }
+  }, [history, location.pathname]);
 
-    onChainChange();
-  }, []);
-
-  return network || defaultNetwork;
+  return {
+    network,
+    networkConfig: networkConfig || defaultNetworkConfig,
+    setNetwork: setLocalNetwork
+  };
 }
 
 export default useNetwork;

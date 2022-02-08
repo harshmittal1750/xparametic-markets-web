@@ -17,7 +17,9 @@ function CreateMarketBuyPolk({
 
   const polkBalance = useAppSelector(state => state.bepro.polkBalance);
 
-  const { buyEc20Url } = useNetwork();
+  const {
+    network: { buyEc20Url }
+  } = useNetwork();
 
   async function handleBuyPolk() {
     setIsLoadingBuyPolk(true);

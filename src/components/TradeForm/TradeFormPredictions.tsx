@@ -12,7 +12,9 @@ import Text from '../Text';
 function TradeFormPredictions() {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  const { currency } = useNetwork();
+  const {
+    network: { currency }
+  } = useNetwork();
   const { symbol } = currency;
 
   const selectedMarketId = useAppSelector(

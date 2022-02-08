@@ -1,6 +1,6 @@
-import Text from '../Text';
-import FooterLinks from './FooterLinks';
-import FooterMenu from './FooterMenu';
+// import Text from '../Text';
+// import FooterLinks from './FooterLinks';
+// import FooterMenu from './FooterMenu';
 import FooterTerms from './FooterTerms';
 
 function Footer() {

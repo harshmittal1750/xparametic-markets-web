@@ -131,16 +131,14 @@ const Sidebar = () => {
                   </span>
                   {
                     // TODO: calculate categories market count
-                    false ? (
-                      <span
-                        className={classNames(
-                          'sidebar__link-counter',
-                          collapsed && 'hidden'
-                        )}
-                      >
-                        {123}
-                      </span>
-                    ) : null
+                    // <span
+                    //   className={classNames(
+                    //     'sidebar__link-counter',
+                    //     collapsed && 'hidden'
+                    //   )}
+                    // >
+                    //   {123}
+                    // </span>
                   }
                 </NavLink>
               </Menu.Item>
