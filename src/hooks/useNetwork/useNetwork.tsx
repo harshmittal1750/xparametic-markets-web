@@ -78,7 +78,6 @@ function useNetwork() {
         }
         // changing networkId on redux only after fetch portfolio has been called
         dispatch(changeNetworkId(currentEthereumNetworkId));
-
       } else {
         const localEthereumNetworkId = `0x${Number(localNetwork).toString(16)}`;
 
