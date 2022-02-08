@@ -18,9 +18,9 @@ type LayoutProps = {
 function Layout({ children }: LayoutProps) {
   const { alertList } = useAlertNotification();
   const location = useLocation();
-  const modalVisibility = new URLSearchParams(location.search).get('modal');
+  const modalVisibility = new URLSearchParams(location.search).get('m');
 
-  const [modalVisible, setModalVisible] = useState(modalVisibility !== 'false');
+  const [modalVisible, setModalVisible] = useState(modalVisibility !== 'f');
 
   const hasAlertNotification = alertList.size > 0;
 

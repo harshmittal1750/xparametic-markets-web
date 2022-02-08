@@ -31,10 +31,12 @@ const Market = () => {
     network: { currency }
   } = useNetwork();
   const { symbol, ticker } = currency;
-  const { network } = useNetwork();
+  const { network, setNetwork } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions } = useAppSelector(state => state.bepro);
+  const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
+    state => state.bepro
+  );
 
   useEffect(() => {
     async function fetchMarket() {
@@ -49,7 +51,7 @@ const Market = () => {
 
   useEffect(() => {
     function goToHomePage() {
-      history.push('/?modal=false');
+      history.push('/?m=f');
       window.location.reload();
     }
 
@@ -58,11 +60,29 @@ const Market = () => {
     }
 
     if (!isLoading && market.id !== '') {
-      if (`${market.networkId}` !== network.id) {
+      if (
+        `${market.networkId}` !== network.id &&
+        (!window.ethereum || !isLoggedIn)
+      ) {
+        setNetwork(market.networkId);
+      } else if (
+        isLoggedIn &&
+        networkId &&
+        // eslint-disable-next-line radix
+        `0x${parseInt(market.networkId).toString(16)}` !== networkId
+      ) {
         goToHomePage();
       }
     }
-  }, [error, history, isLoading, market.id, market.networkId, network.id]);
+  }, [
+    error,
+    history,
+    isLoading,
+    market.id,
+    market.networkId,
+    network.id,
+    networkId
+  ]);
 
   if (!market || market.id === '' || isLoading)
     return (
