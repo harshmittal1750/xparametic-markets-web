@@ -6,7 +6,7 @@ import {
   setLiquidityDetails
 } from 'redux/ducks/liquidity';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 
 import AmountInput from '../AmountInput';
 import { calculateLiquidityDetails } from './utils';
@@ -22,9 +22,8 @@ function LiquidityFormInput() {
   // buy and sell have different maxes
   const balance = useAppSelector(state => state.bepro.ethBalance);
   const portfolio = useAppSelector(state => state.bepro.portfolio);
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
+
   const amount = useAppSelector(state => state.liquidity.amount);
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;
