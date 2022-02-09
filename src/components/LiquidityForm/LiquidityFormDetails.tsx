@@ -2,15 +2,13 @@ import { roundNumber } from 'helpers/math';
 
 import { InfoIcon } from 'assets/icons';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 function LiquidityFormDetails() {
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const liquidityDetails = useAppSelector(
     state => state.liquidity.liquidityDetails
   );
