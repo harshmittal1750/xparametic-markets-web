@@ -86,7 +86,8 @@ const marketSlice = createSlice({
   reducers: {
     request: state => ({
       ...state,
-      isLoading: true
+      isLoading: true,
+      error: null
     }),
     success: {
       reducer: (state, action: PayloadAction<Market>) => ({

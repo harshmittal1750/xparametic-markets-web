@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
@@ -37,6 +37,7 @@ const Market = () => {
   const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
     state => state.bepro
   );
+  const [retries, setRetries] = useState(0);
 
   useEffect(() => {
     async function fetchMarket() {
@@ -47,7 +48,7 @@ const Market = () => {
     }
 
     fetchMarket();
-  }, [dispatch, marketId]);
+  }, [dispatch, marketId, retries]);
 
   useEffect(() => {
     function goToHomePage() {
@@ -55,8 +56,16 @@ const Market = () => {
       window.location.reload();
     }
 
-    if (!isLoading && !isNull(error)) {
+    if (!isLoading && !isNull(error) && error.response.status === 404) {
+      // Market not found
       goToHomePage();
+    } else if (!isLoading && !isNull(error)) {
+      // 500 error, retrying 3 times
+      if (retries < 3) {
+        setRetries(retries + 1);
+      } else {
+        goToHomePage();
+      }
     }
 
     if (!isLoading && market.id !== '') {
