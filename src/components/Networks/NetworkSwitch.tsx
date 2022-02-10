@@ -74,6 +74,8 @@ function NetworkSwitch() {
     }
   }
 
+  if (!marketNetwork) return null;
+
   return (
     <Button
       color="warning"
