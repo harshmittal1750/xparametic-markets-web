@@ -9,15 +9,20 @@ import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
+import NetworkSwitch from '../Networks/NetworkSwitch';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 
 function LiquidityFormActions() {
   const dispatch = useAppDispatch();
+  const { network, networkConfig } = useNetwork();
   const transactionType = useAppSelector(
     state => state.liquidity.transactionType
   );
   const marketId = useAppSelector(state => state.market.market.id);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const amount = useAppSelector(state => state.liquidity.amount);
   const maxAmount = useAppSelector(state => state.liquidity.maxAmount);
@@ -32,7 +37,8 @@ function LiquidityFormActions() {
 
   const [isLoading, setIsLoading] = useState(false);
   const { show, close } = useToastNotification();
-  const { network, networkConfig } = useNetwork();
+
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   function handleCancel() {
     dispatch(closeLiquidityForm());
@@ -117,8 +123,8 @@ function LiquidityFormActions() {
       <Button variant="subtle" color="default" onClick={handleCancel}>
         Cancel
       </Button>
-
-      {transactionType === 'add' ? (
+      {isWrongNetwork ? <NetworkSwitch /> : null}
+      {transactionType === 'add' && !isWrongNetwork ? (
         <Button
           color="primary"
           fullwidth
@@ -129,8 +135,7 @@ function LiquidityFormActions() {
           Add Liquidity
         </Button>
       ) : null}
-
-      {transactionType === 'remove' ? (
+      {transactionType === 'remove' && !isWrongNetwork ? (
         <Button
           color="primary"
           fullwidth
@@ -141,7 +146,6 @@ function LiquidityFormActions() {
           Remove Liquidity
         </Button>
       ) : null}
-
       {transactionSuccess && transactionSuccessHash ? (
         <ToastNotification id={transactionType} duration={10000}>
           <Toast
