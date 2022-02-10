@@ -28,9 +28,7 @@ type Params = {
 const Market = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const { symbol, ticker } = currency;
   const { network, setNetwork } = useNetwork();
   const { marketId } = useParams<Params>();
@@ -81,7 +79,7 @@ const Market = () => {
         // eslint-disable-next-line radix
         `0x${parseInt(market.networkId).toString(16)}` !== networkId
       ) {
-        goToHomePage();
+        // goToHomePage();
       }
     }
   }, [
