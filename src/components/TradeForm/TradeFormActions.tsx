@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
+import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
@@ -28,6 +29,9 @@ function TradeFormActions() {
   // Market selectors
   const type = useAppSelector(state => state.trade.type);
   const marketId = useAppSelector(state => state.trade.selectedMarketId);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const predictionId = useAppSelector(state => state.trade.selectedOutcomeId);
   const { amount, shares, totalStake, fee } = useAppSelector(
@@ -38,6 +42,7 @@ function TradeFormActions() {
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // Local state
   const [isLoading, setIsLoading] = useState(false);
@@ -230,7 +235,8 @@ function TradeFormActions() {
             Cancel
           </Button>
         ) : null}
-        {needsPricesRefresh ? (
+        {isWrongNetwork ? <NetworkSwitch /> : null}
+        {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
             <Button
               color="default"
@@ -263,7 +269,7 @@ function TradeFormActions() {
             </Text>
           </div>
         ) : null}
-        {type === 'buy' && !needsPricesRefresh ? (
+        {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
           <Button
             color="success"
             fullwidth
@@ -274,7 +280,7 @@ function TradeFormActions() {
             Buy
           </Button>
         ) : null}
-        {type === 'sell' && !needsPricesRefresh ? (
+        {type === 'sell' && !needsPricesRefresh && !isWrongNetwork ? (
           <Button
             color="danger"
             fullwidth
