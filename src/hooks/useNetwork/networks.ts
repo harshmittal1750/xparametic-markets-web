@@ -88,7 +88,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://moonbeam.moonscan.io',
     rpcUrls: ['https://rpc.api.moonbeam.network'],
-    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}`
+    buyEc20Url: `//app.solarflare.io/exchange/swap?outputCurrency=${REACT_APP_ERC20_CONTRACT_ADDRESS}`
   },
   '0x505': {
     id: '1285',
