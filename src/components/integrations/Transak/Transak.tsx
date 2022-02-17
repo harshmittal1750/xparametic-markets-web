@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useReducer, useEffect, useMemo } from 'react';
 
 import TransakSDK from '@transak/transak-sdk';
 import { environment } from 'config';
@@ -7,6 +7,80 @@ import { TransakConfig } from 'types/integrations/transak';
 import { useAppSelector, useNetwork } from 'hooks';
 
 import { Button } from '../../Button';
+
+type TransakInitialState = {
+  widgetOpen: boolean;
+  loading: boolean;
+  error: string | null;
+};
+
+type TransakActionState =
+  | 'TRANSAK_WIDGET_INITIALISED'
+  | 'TRANSAK_WIDGET_OPEN'
+  | 'TRANSAK_WIDGET_CLOSE'
+  | 'TRANSAK_ORDER_CREATED'
+  | 'TRANSAK_ORDER_CANCELLED'
+  | 'TRANSAK_ORDER_FAILED'
+  | 'TRANSAK_ORDER_SUCCESSFUL';
+
+const initialState: TransakInitialState = {
+  widgetOpen: false,
+  loading: false,
+  error: null
+};
+
+type TransakAction = {
+  type: TransakActionState;
+};
+
+function transakReducer(state: TransakInitialState, action: TransakAction) {
+  const { type } = action;
+
+  switch (type) {
+    case 'TRANSAK_WIDGET_INITIALISED':
+      return {
+        ...state,
+        widgetOpen: true
+      };
+    case 'TRANSAK_WIDGET_OPEN':
+      return {
+        ...state,
+        widgetOpen: true
+      };
+    case 'TRANSAK_WIDGET_CLOSE':
+      return {
+        ...state,
+        widgetOpen: false
+      };
+    case 'TRANSAK_ORDER_CREATED':
+      return {
+        ...state,
+        loading: true
+      };
+    case 'TRANSAK_ORDER_CANCELLED':
+      return {
+        ...state,
+        loading: false
+      };
+    case 'TRANSAK_ORDER_FAILED':
+      return {
+        ...state,
+        loading: false,
+        error: 'Order failed'
+      };
+    case 'TRANSAK_ORDER_SUCCESSFUL':
+      return {
+        ...state,
+        loading: false,
+        error: null
+      };
+
+    default:
+      return {
+        ...state
+      };
+  }
+}
 
 const baseConfig: TransakConfig = {
   apiKey: environment.TRANSAK_API_KEY!,
@@ -26,6 +100,11 @@ function buildCustomConfig({
 }
 
 function Transak() {
+  const [transakState, transakDispatch] = useReducer(
+    transakReducer,
+    initialState
+  );
+
   const { network } = useNetwork();
   const walletAddress = useAppSelector(state => state.bepro.ethAddress);
 
@@ -39,12 +118,24 @@ function Transak() {
     return new TransakSDK(transakConfig);
   }, [network, walletAddress]);
 
+  useEffect(() => {
+    transak.on(transak.ALL_EVENTS, data => {
+      transakDispatch({ type: data.eventName });
+    });
+  }, [transak]);
+
   function openWidget() {
     transak.init();
   }
 
   return (
-    <Button size="sm" color="primary" onClick={openWidget}>
+    <Button
+      size="sm"
+      color="primary"
+      onClick={openWidget}
+      loading={transakState.loading}
+      disabled={transakState.widgetOpen}
+    >
       {`Buy $${network.currency.ticker}`}
     </Button>
   );
