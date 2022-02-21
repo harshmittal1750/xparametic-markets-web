@@ -1,4 +1,3 @@
-import axios from 'axios';
 import identity from 'lodash/identity';
 import pickBy from 'lodash/pickBy';
 import { Market } from 'models/market';
@@ -17,20 +16,18 @@ type MarketsFilters = {
   networkId: string;
 };
 
-const getMarketsCancelTokens: { [key: string]: any } = {
+const getMarketsAbortControllers: { [key: string]: any } = {
   open: undefined,
   closed: undefined,
   resolved: undefined
 };
 
 async function getMarkets({ state, networkId }: MarketsFilters) {
-  if (typeof getMarketsCancelTokens[state] !== typeof undefined) {
-    getMarketsCancelTokens[state].cancel(
-      'Canceled due to new getMarkets request'
-    );
+  if (typeof getMarketsAbortControllers[state] !== typeof undefined) {
+    getMarketsAbortControllers[state].abort();
   }
 
-  getMarketsCancelTokens[state] = axios.CancelToken.source();
+  getMarketsAbortControllers[state] = new AbortController();
 
   const url = `${polkamarketsApiUrl}/markets`;
   return api.get<Market[]>(url, {
@@ -41,7 +38,7 @@ async function getMarkets({ state, networkId }: MarketsFilters) {
       },
       identity
     ),
-    cancelToken: getMarketsCancelTokens[state].token
+    signal: getMarketsAbortControllers[state].signal
   });
 }
 
