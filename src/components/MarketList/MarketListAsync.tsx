@@ -49,7 +49,7 @@ const MarketListAsync = ({
       </div>
     );
 
-  if (error[id]) {
+  if (error[id] && error[id].message !== 'canceled') {
     return (
       <div className="pm-c-market-list__error">
         <div className="pm-c-market-list__error__body">
