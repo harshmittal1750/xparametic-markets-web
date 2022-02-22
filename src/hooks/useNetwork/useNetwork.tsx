@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import { environment } from 'config';
 import { NetworkConfig } from 'config/environment';
+import { toHexadecimal } from 'helpers/string';
 import { changeNetworkId, fetchAditionalData, login } from 'redux/ducks/bepro';
 import store from 'redux/store';
 
@@ -18,14 +19,13 @@ declare global {
   }
 }
 
-const defaultNetworkId = `0x${(Number(REACT_APP_NETWORK_ID) || 42).toString(
-  16
-)}`;
-const defaultNetwork = NETWORKS[defaultNetworkId];
-const unknownNetwork = NETWORKS['0x270f'];
+const DEFAULT_NETWORK_ID = toHexadecimal(REACT_APP_NETWORK_ID || 42);
+const DEFAULT_NETWORK = NETWORKS[DEFAULT_NETWORK_ID];
+const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
 
-const availableNetworks = Object.keys(environment.NETWORKS);
-const defaultNetworkConfig = environment.NETWORKS[defaultNetwork.id];
+const UNKNOWN_NETWORK = NETWORKS['0x270f'];
+
+const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
 
 function fetchUserData(networkConfig: NetworkConfig) {
   store.dispatch(login(networkConfig));
@@ -33,29 +33,41 @@ function fetchUserData(networkConfig: NetworkConfig) {
 }
 
 function useNetwork() {
+  // Third-party hooks
+  const location = useLocation();
+  const history = useHistory();
+
+  // Custom hooks
   const dispatch = useAppDispatch();
+  const [localNetwork, setLocalNetwork] = useLocalStorage<string>(
+    'localNetwork',
+    DEFAULT_NETWORK.id
+  );
+
+  // Redux state selectors
   const metamaskWalletIsConnected = useAppSelector(
     state => state.bepro.isLoggedIn
   );
   const metamaskNetworkId = useAppSelector(state => state.bepro.networkId);
+
+  // Derivated state
   const metamaskNetwork = metamaskNetworkId
-    ? NETWORKS[metamaskNetworkId] || unknownNetwork
+    ? NETWORKS[metamaskNetworkId] || UNKNOWN_NETWORK
     : null;
 
+  const localEthereumNetworkId = toHexadecimal(localNetwork);
+  const localEthereumNetwork =
+    NETWORKS[localEthereumNetworkId] || UNKNOWN_NETWORK;
+
   const [network, setNetwork] = useState<Network>(
-    metamaskNetwork || defaultNetwork
+    metamaskNetwork || localEthereumNetwork || DEFAULT_NETWORK
   );
+
+  const networkConfig = environment.NETWORKS[network.id];
 
   if (metamaskNetwork && network !== metamaskNetwork) {
     setNetwork(metamaskNetwork);
   }
-  const [localNetwork, setLocalNetwork] = useLocalStorage<string>(
-    'localNetwork',
-    defaultNetwork.id
-  );
-  const location = useLocation();
-  const history = useHistory();
-  const networkConfig = environment.NETWORKS[network.id];
 
   useEffect(() => {
     async function getCurrentEthereumNetworkId() {
@@ -65,13 +77,13 @@ function useNetwork() {
         });
 
         const currentEthereumNetwork =
-          NETWORKS[currentEthereumNetworkId] || unknownNetwork;
+          NETWORKS[currentEthereumNetworkId] || UNKNOWN_NETWORK;
 
         setNetwork(currentEthereumNetwork);
 
         if (
           metamaskWalletIsConnected &&
-          availableNetworks.includes(currentEthereumNetwork.id) &&
+          AVAILABLE_NETWORKS.includes(currentEthereumNetwork.id) &&
           currentEthereumNetworkId !== metamaskNetworkId
         ) {
           fetchUserData(environment.NETWORKS[currentEthereumNetwork.id]);
@@ -79,11 +91,6 @@ function useNetwork() {
         // changing networkId on redux only after fetch portfolio has been called
         dispatch(changeNetworkId(currentEthereumNetworkId));
       } else {
-        const localEthereumNetworkId = `0x${Number(localNetwork).toString(16)}`;
-
-        const localEthereumNetwork =
-          NETWORKS[localEthereumNetworkId] || defaultNetwork;
-
         setNetwork(localEthereumNetwork);
       }
     }
@@ -111,7 +118,7 @@ function useNetwork() {
 
   return {
     network,
-    networkConfig: networkConfig || defaultNetworkConfig,
+    networkConfig: networkConfig || DEFAULT_NETWORK_CONFIG,
     setNetwork: setLocalNetwork
   };
 }
