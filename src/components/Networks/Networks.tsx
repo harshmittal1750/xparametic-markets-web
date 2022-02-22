@@ -133,6 +133,7 @@ function Networks() {
               onClick={() => handleChangeNetwork(availableNetwork)}
               disabled={isChangingNetwork || availableNetwork.id === network.id}
             >
+              {availableNetwork.currency.icon}
               <Text
                 as="span"
                 scale="caption"
@@ -141,7 +142,6 @@ function Networks() {
               >
                 {availableNetwork.name}
               </Text>
-              {availableNetwork.currency.icon}
             </button>
           </li>
         ))}

@@ -140,7 +140,7 @@ $networks-themes: (
       }
 
       &-item {
-        @include flex-row(space-between, center, $networks-dropdown-item-gap);
+        @include flex-row(flex-start, center, $networks-dropdown-item-gap);
         padding: $networks-dropdown-item-padding-y
           $networks-dropdown-item-padding-x;
         width: 100%;
