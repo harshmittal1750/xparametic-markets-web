@@ -5,12 +5,7 @@ import { Market } from 'models/market';
 import Pill, { PillColor, PillVariant } from '../Pill';
 
 type MarketState = {
-  copy:
-    | 'Awaiting Resolution'
-    | 'Ending Soon'
-    | 'New'
-    | 'Resolved'
-    | 'Market voided';
+  copy: 'Awaiting Resolution' | 'Ending Soon' | 'New' | 'Resolved' | 'Voided';
   color: PillColor;
   colorVariant: PillVariant;
 };
@@ -28,7 +23,7 @@ const marketStates: MarketStates = {
   endingSoon: { copy: 'Ending Soon', color: 'danger', colorVariant: 'subtle' },
   new: { copy: 'New', color: 'success', colorVariant: 'subtle' },
   resolved: { copy: 'Resolved', color: 'success', colorVariant: 'normal' },
-  voided: { copy: 'Market voided', color: 'danger', colorVariant: 'normal' }
+  voided: { copy: 'Voided', color: 'danger', colorVariant: 'normal' }
 };
 
 type MarketFooterTagsProps = {
