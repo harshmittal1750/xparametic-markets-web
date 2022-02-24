@@ -53,6 +53,7 @@ export type NetworkConfig = {
   NETWORK_ID: string | number;
   PREDICTION_MARKET_CONTRACT_ADDRESS: string;
   REALITIO_ERC20_CONTRACT_ADDRESS: string;
+  ACHIEVEMENTS_CONTRACT_ADDRESS?: string;
   WEB3_PROVIDER: string;
   WEB3_EVENTS_PROVIDER?: string;
 };

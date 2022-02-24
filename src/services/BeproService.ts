@@ -21,6 +21,8 @@ export default class BeproService {
 
   public realitioErc20ContractAddress: string;
 
+  public achievementsContractAddress: string | undefined;
+
   // util functions
   static bytes32ToInt(bytes32Str: string): number {
     return Number(realitioLib.bytes32ToString(bytes32Str, { type: 'int' }));
@@ -35,6 +37,7 @@ export default class BeproService {
       PREDICTION_MARKET_CONTRACT_ADDRESS,
       ERC20_CONTRACT_ADDRESS,
       REALITIO_ERC20_CONTRACT_ADDRESS,
+      ACHIEVEMENTS_CONTRACT_ADDRESS,
       WEB3_PROVIDER,
       WEB3_EVENTS_PROVIDER
     }: NetworkConfig = environment.NETWORKS[environment.NETWORK_ID || 42]
@@ -42,6 +45,7 @@ export default class BeproService {
     this.predictionMarketContractAddress = PREDICTION_MARKET_CONTRACT_ADDRESS;
     this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
     this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
+    this.achievementsContractAddress = ACHIEVEMENTS_CONTRACT_ADDRESS;
 
     this.bepro = new beprojs.Application({
       web3Provider: WEB3_PROVIDER,
@@ -57,6 +61,7 @@ export default class BeproService {
     this.getPredictionMarketContract();
     this.getRealitioERC20Contract();
     this.getERC20Contract();
+    this.getAchievementsContract();
   }
 
   public getPredictionMarketContract() {
@@ -77,6 +82,14 @@ export default class BeproService {
     });
   }
 
+  public getAchievementsContract() {
+    this.contracts.achievements = this.bepro.getAchievementsContract({
+      contractAddress: this.achievementsContractAddress,
+      predictionMarketContractAddress: this.predictionMarketContractAddress,
+      realitioERC20ContractAddress: this.realitioErc20ContractAddress
+    });
+  }
+
   // returns wether wallet is connected to service or not
   public async isLoggedIn(): Promise<boolean> {
     return this.bepro.isLoggedIn();
@@ -94,6 +107,7 @@ export default class BeproService {
         this.bepro.web3.eth.defaultAccount = this.address;
         // re-fetching contracts
         this.getContracts();
+        console.log(this);
       }
     } catch (e) {
       // should be non-blocking
