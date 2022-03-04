@@ -1,18 +1,17 @@
-export type Award = {
-  title: string;
-  description: string;
-  imageURL: string;
-};
-
-export type AchievementStatus = 'available' | 'unavailable' | 'claimed';
-
-export type AchievementRarity = 'common' | 'rare';
+export type AchievementAction =
+  | 'buy'
+  | 'add_liquidity'
+  | 'bond'
+  | 'claim_winnings'
+  | 'create_market';
 
 export type Achievement = {
-  id: string | number;
+  id: number;
+  networkId: number;
+  action: AchievementAction;
+  occurrences: number;
+  imageUrl: string;
+  verified: boolean;
   title: string;
-  award: Award;
-  status: AchievementStatus;
-  claimCount: number;
-  rarity: AchievementRarity;
+  description: string;
 };
