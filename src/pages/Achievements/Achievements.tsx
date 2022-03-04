@@ -1,12 +1,14 @@
 import { useState } from 'react';
 
+import { useGetAchievementsQuery } from 'services/Polkamarkets';
+
 import {
   Achievement,
   AchievementFilter,
   Item
 } from 'components/pages/achievements';
 
-import achievements from './mock';
+import { useNetwork } from 'hooks';
 
 const achievementFilters: Item[] = [
   {
@@ -33,6 +35,11 @@ const filters = {
 };
 
 function Achievements() {
+  const { network } = useNetwork();
+  const { data: achievements } = useGetAchievementsQuery({
+    networkId: network.id
+  });
+
   const [filter, setFilter] = useState(achievementFilters[0].value);
 
   return (
@@ -48,7 +55,7 @@ function Achievements() {
         />
       </div>
       <ul className="pm-p-achievements__list">
-        {achievements.filter(filters[filter]).map(achievement => (
+        {achievements?.filter(filters[filter]).map(achievement => (
           <li key={achievement.id}>
             <Achievement {...achievement} />
           </li>
