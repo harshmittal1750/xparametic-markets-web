@@ -1,0 +1,69 @@
+// Black tones and dark colors
+$color--black: #0e1016 !default;
+$color--chinese-black: #12141c !default;
+$color--eerie-black: #171b23 !default;
+$color--pure-black: #000000 !default;
+
+$black-tones: (
+  black: $color--black,
+  chinese-black: $color--chinese-black,
+  eerie-black: $color--eerie-black,
+  pure-black: $color--pure-black
+) !default;
+
+// White tones and light colors
+$color--pure-white: #ffffff !default;
+$color--ghost-white: #f9fafb !default;
+
+$white-tones: (
+  pure-white: $color--pure-white,
+  ghost-white: $color--ghost-white
+) !default;
+
+// Gray tones
+$color--lavender-gray: #c4cad3 !default;
+$color--metal-gray: #647084 !default;
+$color--charcoal: #3a4150 !default;
+$color--gun-metal: #242c3b !default;
+$color--charleston-gray: #252a32 !default;
+
+$gray-tones: (
+  lavender-gray: $color--lavender-gray,
+  metal-gray: $color--metal-gray,
+  charcoal: $color--charcoal,
+  gun-metal: $color--gun-metal,
+  charleston-gray: $color--charleston-gray
+) !default;
+
+// Blue tones
+$color--light-blue: #6f69fa !default;
+$color--very-light-blue: #5d55fa !default;
+
+$blue-tones: (
+  light-blue: $color--light-blue,
+  very-light-blue: $color--very-light-blue
+) !default;
+
+// Green tones
+$color--jungle-green: #27ab83 !default;
+
+$green-tones: (
+  jungle-green: $color--jungle-green
+) !default;
+
+// Orange tones
+$color--orange-yellow: #f0b429 !default;
+
+$orange-tones: (
+  orange-yellow: $color--orange-yellow
+) !default;
+
+// All colors
+$colors: map-collect(
+  $black-tones,
+  $white-tones,
+  $gray-tones,
+  $blue-tones,
+  $green-tones,
+  $orange-tones
+) !default;
