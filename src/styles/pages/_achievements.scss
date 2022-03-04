@@ -1,0 +1,21 @@
+$achievements-themes: (
+  dark: (
+    text: (
+      title: map-get($colors, 'cultured-white')
+    )
+  )
+) !default;
+
+.pm-p-achievements {
+  @include themes($achievements-themes) {
+    &__title {
+      color: map-get(themed('text'), 'title');
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
+      gap: 4rem;
+    }
+  }
+}
