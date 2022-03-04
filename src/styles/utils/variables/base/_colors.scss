@@ -44,7 +44,7 @@ $orange-tones: (
 ) !default;
 
 // All colors
-$colors: map-collect(
+$colors: map-merge(
   $black-tones,
   $white-tones,
   $gray-tones,
