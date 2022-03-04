@@ -25,14 +25,12 @@ $color--lavender-gray: #c4cad3 !default;
 $color--metal-gray: #647084 !default;
 $color--charcoal: #3a4150 !default;
 $color--gun-metal: #242c3b !default;
-$color--charleston-gray: #252a32 !default;
 
 $gray-tones: (
   lavender-gray: $color--lavender-gray,
   metal-gray: $color--metal-gray,
   charcoal: $color--charcoal,
-  gun-metal: $color--gun-metal,
-  charleston-gray: $color--charleston-gray
+  gun-metal: $color--gun-metal
 ) !default;
 
 // Blue tones
