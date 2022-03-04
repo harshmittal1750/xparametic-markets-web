@@ -41,17 +41,14 @@ const buttonsByStatus: { [key: string]: ButtonStatus } = {
   }
 };
 
-function Achievement({
-  id,
-  title,
-  award,
-  status,
-  claimCount,
-  rarity
-}: AchievementProps) {
+function Achievement({ id, title, description, imageUrl }: AchievementProps) {
   // Fake logic
   const [isClaimingNFT, setIsClaimingNFT] = useState(false);
   const { show, close } = useToastNotification();
+
+  const status = 'available';
+  const rarity = 'rare';
+  const claimCount = 10;
 
   function claimNFT() {
     setIsClaimingNFT(true);
@@ -67,8 +64,8 @@ function Achievement({
       <div className="pm-c-achievement__wrapper flex-column border-solid border-radius-top-corners-small">
         <div className="relative">
           <img
-            src={award.imageURL}
-            alt={award.title}
+            src={imageUrl}
+            alt={title}
             className="width-full border-radius-top-corners-small"
           />
           <div
@@ -97,10 +94,10 @@ function Achievement({
               </h1>
             </div>
             <h4 className="pm-c-achievement__award-title heading-large bold">
-              {award.title}
+              {title}
             </h4>
             <p className="pm-c-achievement__award-description caption medium">
-              {award.description}
+              {description}
             </p>
           </div>
           <Button
