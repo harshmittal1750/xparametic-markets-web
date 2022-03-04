@@ -35,11 +35,9 @@ $gray-tones: (
 
 // Blue tones
 $color--light-blue: #6f69fa !default;
-$color--very-light-blue: #5d55fa !default;
 
 $blue-tones: (
-  light-blue: $color--light-blue,
-  very-light-blue: $color--very-light-blue
+  light-blue: $color--light-blue
 ) !default;
 
 // Green tones
