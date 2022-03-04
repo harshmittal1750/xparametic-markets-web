@@ -40,13 +40,6 @@ $blue-tones: (
   light-blue: $color--light-blue
 ) !default;
 
-// Green tones
-$color--jungle-green: #27ab83 !default;
-
-$green-tones: (
-  jungle-green: $color--jungle-green
-) !default;
-
 // Orange tones
 $color--orange-yellow: #f0b429 !default;
 
@@ -60,6 +53,5 @@ $colors: map-collect(
   $white-tones,
   $gray-tones,
   $blue-tones,
-  $green-tones,
   $orange-tones
 ) !default;
