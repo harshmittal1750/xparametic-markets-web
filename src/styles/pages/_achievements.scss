@@ -1,4 +1,9 @@
 $achievements-themes: (
+  light: (
+    text: (
+      title: map-get($colors, 'eerie-black')
+    )
+  ),
   dark: (
     text: (
       title: map-get($colors, 'cultured-white')
