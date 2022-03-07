@@ -5,13 +5,17 @@ export type AchievementAction =
   | 'claim_winnings'
   | 'create_market';
 
+export type AchievementRarity = 'common' | 'rare';
+
 export type Achievement = {
   id: number;
   networkId: number;
-  action: AchievementAction;
-  occurrences: number;
-  imageUrl: string;
-  verified: boolean;
   title: string;
   description: string;
+  imageUrl: string;
+  action: AchievementAction;
+  occurrences: number;
+  actionTitle: string;
+  rarity: AchievementRarity;
+  verified: boolean;
 };
