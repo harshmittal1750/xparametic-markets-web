@@ -42,10 +42,12 @@ $gray-tones: (
 // Blue tones
 $color--light-blue: #6f69fa !default;
 $color--very-light-blue: #5d55fa !default;
+$color--weldon-blue: #8293ae !default;
 
 $blue-tones: (
   light-blue: $color--light-blue,
-  very-light-blue: $color--very-light-blue
+  very-light-blue: $color--very-light-blue,
+  weldon-blue: $color--weldon-blue
 ) !default;
 
 // Green tones
