@@ -72,7 +72,7 @@ function Achievement({
           <img
             src={imageUrl}
             alt={title}
-            className="width-full border-radius-top-corners-small"
+            className="width-full height-full border-radius-top-corners-small"
           />
           <div
             className="absolute"
