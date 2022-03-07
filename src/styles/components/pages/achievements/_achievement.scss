@@ -1,4 +1,37 @@
 $achievement-themes: (
+  light: (
+    text: (
+      status: (
+        available: map-get($colors, 'pure-white'),
+        unavailable: map-get($colors, 'lavender-gray'),
+        claimed: map-get($colors, 'pure-white')
+      ),
+      title: (
+        available: map-get($colors, 'light-blue'),
+        unavailable: map-get($colors, 'metal-gray'),
+        claimed: map-get($colors, 'light-blue')
+      ),
+      award: (
+        title: map-get($colors, 'charcoal'),
+        description: map-get($colors, 'weldon-blue')
+      ),
+      claim-count: map-get($colors, 'weldon-blue'),
+      rarity: (
+        common: map-get($colors, 'weldon-blue'),
+        rare: map-get($colors, 'orange-yellow')
+      )
+    ),
+    background-colors: (
+      status: (
+        available: map-get($colors, 'very-light-blue'),
+        unavailable: map-get($colors, 'charleston-gray'),
+        claimed: map-get($colors, 'jungle-green')
+      ),
+      content: map-get($colors, 'ghost-white'),
+      footer: map-get($colors, 'cultured-white')
+    ),
+    border-color: map-get($colors, 'bright-gray')
+  ),
   dark: (
     text: (
       status: (
