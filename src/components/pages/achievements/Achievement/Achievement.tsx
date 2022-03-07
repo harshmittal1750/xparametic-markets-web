@@ -68,7 +68,7 @@ function Achievement({
   return (
     <div className="pm-c-achievement flex-column border-radius-top-corners-small">
       <div className="pm-c-achievement__wrapper flex-column border-solid border-radius-top-corners-small">
-        <div className="relative">
+        <div className="pm-c-achievement__image-vignette relative">
           <img
             src={imageUrl}
             alt={title}
