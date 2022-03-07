@@ -10,6 +10,8 @@ import {
 
 import { useNetwork } from 'hooks';
 
+import AchievementsLoading from './AchievementsLoading';
+
 const achievementFilters: Item[] = [
   {
     id: 'all',
@@ -36,11 +38,17 @@ const filters = {
 
 function Achievements() {
   const { network } = useNetwork();
-  const { data: achievements } = useGetAchievementsQuery({
+  const {
+    data: achievements,
+    isFetching,
+    isLoading
+  } = useGetAchievementsQuery({
     networkId: network.id
   });
 
   const [filter, setFilter] = useState(achievementFilters[0].value);
+
+  if (isFetching || isLoading) return <AchievementsLoading />;
 
   return (
     <div className="pm-p-achievements flex-column gap-4">
