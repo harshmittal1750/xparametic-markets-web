@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
 import { camelizeKeys } from 'humps';
 
+import { getAchievementsTransformResponse } from './functions';
 import {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
@@ -85,7 +86,8 @@ const polkamarketsApi = createApi({
     }),
     getAchievements: builder.query<GetAchievementsData, GetAchievementsArgs>({
       query: ({ networkId }) => `/achievements?network_id=${networkId}`,
-      transformResponse: (response: GetAchievementsData) => camelize(response)
+      transformResponse: (response: GetAchievementsData) =>
+        getAchievementsTransformResponse(camelize(response))
     })
   })
 });
