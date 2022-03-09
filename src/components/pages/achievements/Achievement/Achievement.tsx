@@ -8,6 +8,8 @@ import { Button, Divider, Toast, ToastNotification } from 'components';
 import { ButtonColor, ButtonVariant } from 'components/Button';
 
 import useToastNotification from 'hooks/useToastNotification';
+import { useNetwork } from 'hooks';
+import { BeproService } from 'services';
 
 type ButtonStatus = {
   title: string;
@@ -47,22 +49,36 @@ function Achievement({
   description,
   imageUrl,
   actionTitle,
-  rarity
+  rarity,
+  status
 }: AchievementProps) {
   // Fake logic
   const [isClaimingNFT, setIsClaimingNFT] = useState(false);
   const { show, close } = useToastNotification();
+  const { networkConfig } = useNetwork();
 
-  const status = 'available';
   const claimCount = 10;
 
-  function claimNFT() {
+  async function claimNFT() {
     setIsClaimingNFT(true);
 
-    setTimeout(() => {
+    const beproService = new BeproService(networkConfig);
+
+    try {
+      await beproService.login();
+
+      const response = await beproService.claimAchievement(id);
+
+      setIsClaimingNFT(false);
+
+      // TODO: transaction hash logic
+      if (response.status && response.transactionHash) {
+        show(`claimNFT-${id}`);
+      }
+    } catch (error) {
       show(`claimNFT-${id}`);
       setIsClaimingNFT(false);
-    }, 3000);
+    }
   }
 
   return (

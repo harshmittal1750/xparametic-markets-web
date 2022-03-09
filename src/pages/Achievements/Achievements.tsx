@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { BeproService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 
 import {
@@ -37,7 +38,7 @@ const filters = {
 };
 
 function Achievements() {
-  const { network } = useNetwork();
+  const { network, networkConfig } = useNetwork();
   const {
     data: achievements,
     isFetching,
@@ -47,6 +48,19 @@ function Achievements() {
   });
 
   const [filter, setFilter] = useState(achievementFilters[0].value);
+  const [userAchievements, setUserAchievements] = useState({});
+
+  useEffect(() => {
+    async function getUserAchievements() {
+      const beproService = new BeproService(networkConfig);
+      await beproService.login();
+
+      const response = await beproService.getAchievements();
+      setUserAchievements(response);
+    }
+
+    getUserAchievements();
+  }, [network]);
 
   if (isFetching || isLoading) return <AchievementsLoading />;
 
@@ -63,11 +77,20 @@ function Achievements() {
         />
       </div>
       <ul className="pm-p-achievements__list">
-        {achievements?.filter(filters[filter]).map(achievement => (
-          <li key={achievement.id}>
-            <Achievement {...achievement} />
-          </li>
-        ))}
+        {achievements?.filter(filters[filter]).map(achievement => {
+          let status = 'unavailable';
+          if (userAchievements[achievement.id]?.claimed) {
+            status = 'claimed';
+          } else if (userAchievements[achievement.id]?.canClaim) {
+            status = 'available';
+          }
+
+          return (
+            <li key={achievement.id}>
+              <Achievement {...{ ...achievement, status }} />
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
