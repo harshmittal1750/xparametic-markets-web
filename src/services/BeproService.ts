@@ -84,9 +84,7 @@ export default class BeproService {
 
   public getAchievementsContract() {
     this.contracts.achievements = this.bepro.getAchievementsContract({
-      contractAddress: this.achievementsContractAddress,
-      predictionMarketContractAddress: this.predictionMarketContractAddress,
-      realitioERC20ContractAddress: this.realitioErc20ContractAddress
+      contractAddress: this.achievementsContractAddress
     });
   }
 
@@ -107,7 +105,6 @@ export default class BeproService {
         this.bepro.web3.eth.defaultAccount = this.address;
         // re-fetching contracts
         this.getContracts();
-        console.log(this);
       }
     } catch (e) {
       // should be non-blocking
@@ -495,5 +492,33 @@ export default class BeproService {
     const question = await this.contracts.realitio.getQuestion({ questionId });
 
     return question;
+  }
+
+  // Achievement contract functions
+
+  public async getAchievements(): Promise<Object> {
+    // TODO improve this: contract might not be defined for network
+    // eslint-disable-next-line no-underscore-dangle
+    if (!this.contracts.achievements.getContract()._address) return {};
+
+    // ensuring user has wallet connected
+    if (!this.address) return {};
+
+    const response = await this.contracts.achievements.getUserAchievements({
+      user: this.address
+    });
+
+    return response;
+  }
+
+  public async claimAchievement(achievementId: string | number) {
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.achievements.claimAchievement({
+      achievementId
+    });
+
+    return response;
   }
 }
