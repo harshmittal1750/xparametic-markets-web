@@ -1,3 +1,4 @@
+import AchievementsIcon from './AchievementsIcon';
 import AddIcon from './AddIcon';
 import AlienIcon from './AlienIcon';
 import ArrowBackIcon from './ArrowBackIcon';
@@ -62,6 +63,7 @@ import WarningIcon from './WarningIcon';
 import WhiteHouseIcon from './WhiteHouseIcon';
 
 export {
+  AchievementsIcon,
   AddIcon,
   AlienIcon,
   ArrowBackIcon,
