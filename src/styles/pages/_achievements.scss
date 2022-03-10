@@ -19,8 +19,8 @@ $achievements-themes: (
 
     &__list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(28rem, 41rem));
-      gap: 4rem;
+      grid-template-columns: repeat(auto-fit, minmax(32rem, 1fr));
+      gap: clamp(2rem, calc(4 / 90 * 100vw), 4rem);
     }
   }
 }
