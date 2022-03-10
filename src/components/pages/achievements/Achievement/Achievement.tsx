@@ -66,8 +66,8 @@ function Achievement({
   }
 
   return (
-    <div className="pm-c-achievement flex-column border-radius-top-corners-small">
-      <div className="pm-c-achievement__wrapper flex-column border-solid border-radius-top-corners-small">
+    <div className="pm-c-achievement flex-column height-full border-radius-top-corners-small">
+      <div className="pm-c-achievement__wrapper flex-column height-full border-solid border-radius-top-corners-small">
         <div className="pm-c-achievement__image-vignette relative">
           <img
             src={imageUrl}
@@ -87,9 +87,9 @@ function Achievement({
             </div>
           </div>
         </div>
-        <div className="pm-c-achievement__content flex-column gap-5 padding-6">
-          <div className="flex-column gap-3">
-            <div className="flex-row  justify-start align-center gap-3">
+        <div className="pm-c-achievement__content flex-column gap-5 padding-6 height-full">
+          <div className="flex-column grow gap-3">
+            <div className="flex-row justify-start align-center gap-3">
               <MedalIcon
                 className={`pm-c-achievement__medal-icon--${status}`}
               />
