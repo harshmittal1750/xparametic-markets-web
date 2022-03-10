@@ -8,7 +8,8 @@
   margin: 1rem 0rem;
 }
 
-.pm-c-market-list__empty-state {
+.pm-c-market-list__empty-state,
+.pm-p-achievements__empty {
   @include themes($market-list-themes) {
     width: 100%;
     height: auto;
