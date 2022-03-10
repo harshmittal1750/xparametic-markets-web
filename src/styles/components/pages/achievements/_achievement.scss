@@ -82,6 +82,17 @@ $achievement-themes: (
       width: 100%;
       object-fit: cover;
       object-position: bottom;
+
+      &--available,
+      &--claimed,
+      &--unavailable {
+        @extend .pm-c-achievement__image;
+      }
+
+      &--unavailable {
+        filter: saturate(0);
+        opacity: 0.2;
+      }
     }
 
     &__image-vignette {

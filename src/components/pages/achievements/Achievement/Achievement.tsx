@@ -72,7 +72,7 @@ function Achievement({
           <img
             src={imageUrl}
             alt={title}
-            className="pm-c-achievement__image border-radius-top-corners-small"
+            className={`pm-c-achievement__image--${status} border-radius-top-corners-small`}
           />
           <div
             className="absolute"
