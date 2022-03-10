@@ -20,6 +20,14 @@
   flex-wrap: wrap-reverse;
 }
 
+.grow {
+  flex-grow: 1;
+}
+
+.grow-0 {
+  flex-grow: 0;
+}
+
 .justify-start {
   justify-content: flex-start;
 }
