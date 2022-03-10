@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-indent */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
+import { BeproService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 
 import {
@@ -40,7 +41,7 @@ const filters = {
 };
 
 function Achievements() {
-  const { network } = useNetwork();
+  const { network, networkConfig } = useNetwork();
   const {
     data: achievements,
     isFetching,
@@ -51,6 +52,19 @@ function Achievements() {
 
   const [filter, setFilter] = useState(achievementFilters[0].value);
   const achievementsByFilter = achievements?.filter(filters[filter]);
+  const [userAchievements, setUserAchievements] = useState({});
+
+  useEffect(() => {
+    async function getUserAchievements() {
+      const beproService = new BeproService(networkConfig);
+      await beproService.login();
+
+      const response = await beproService.getAchievements();
+      setUserAchievements(response);
+    }
+
+    getUserAchievements();
+  }, [network]);
 
   const loading = isFetching || isLoading;
   const empty = !achievementsByFilter || isEmpty(achievementsByFilter);
@@ -77,6 +91,20 @@ function Achievements() {
               </li>
             ))
           : null}
+        {achievements?.filter(filters[filter]).map(achievement => {
+          let status = 'unavailable';
+          if (userAchievements[achievement.id]?.claimed) {
+            status = 'claimed';
+          } else if (userAchievements[achievement.id]?.canClaim) {
+            status = 'available';
+          }
+
+          return (
+            <li key={achievement.id}>
+              <Achievement {...{ ...achievement, status }} />
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
