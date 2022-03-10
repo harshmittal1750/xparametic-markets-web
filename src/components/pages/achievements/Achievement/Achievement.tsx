@@ -1,5 +1,6 @@
 import { ReactNode, useState } from 'react';
 
+import { BeproService } from 'services';
 import { Achievement as AchievementProps } from 'types/achievement';
 
 import { CheckIcon, MedalIcon } from 'assets/icons';
@@ -7,9 +8,8 @@ import { CheckIcon, MedalIcon } from 'assets/icons';
 import { Button, Divider, Toast, ToastNotification } from 'components';
 import { ButtonColor, ButtonVariant } from 'components/Button';
 
-import useToastNotification from 'hooks/useToastNotification';
 import { useNetwork } from 'hooks';
-import { BeproService } from 'services';
+import useToastNotification from 'hooks/useToastNotification';
 
 type ButtonStatus = {
   title: string;
@@ -52,10 +52,14 @@ function Achievement({
   rarity,
   status
 }: AchievementProps) {
-  // Fake logic
-  const [isClaimingNFT, setIsClaimingNFT] = useState(false);
   const { show, close } = useToastNotification();
-  const { networkConfig } = useNetwork();
+  const { network, networkConfig } = useNetwork();
+
+  const [isClaimingNFT, setIsClaimingNFT] = useState(false);
+  const [claimNFTTransactionSuccess, setClaimNFTTransactionSuccess] =
+    useState(false);
+  const [claimNFTTransactionSuccessHash, setClaimNFTTransactionSuccessHash] =
+    useState(undefined);
 
   const claimCount = 10;
 
@@ -66,17 +70,16 @@ function Achievement({
 
     try {
       await beproService.login();
-
       const response = await beproService.claimAchievement(id);
 
-      setIsClaimingNFT(false);
-
-      // TODO: transaction hash logic
       if (response.status && response.transactionHash) {
+        setClaimNFTTransactionSuccess(response.status);
+        setClaimNFTTransactionSuccessHash(response.transactionHash);
         show(`claimNFT-${id}`);
       }
+
+      setIsClaimingNFT(false);
     } catch (error) {
-      show(`claimNFT-${id}`);
       setIsClaimingNFT(false);
     }
   }
@@ -133,23 +136,34 @@ function Achievement({
             {buttonsByStatus[status].icon}
             {buttonsByStatus[status].title}
           </Button>
-          <ToastNotification id={`claimNFT-${id}`} duration={10000}>
-            <Toast
-              variant="success"
-              title="Success"
-              description="Success example!"
-            >
-              <Toast.Actions>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => close(`claimNFT-${id}`)}
-                >
-                  Dismiss
-                </Button>
-              </Toast.Actions>
-            </Toast>
-          </ToastNotification>
+          {claimNFTTransactionSuccess && claimNFTTransactionSuccessHash ? (
+            <ToastNotification id={`claimNFT-${id}`} duration={10000}>
+              <Toast
+                variant="success"
+                title="Success"
+                description="Your transaction is completed!"
+              >
+                <Toast.Actions>
+                  <a
+                    target="_blank"
+                    href={`${network.explorerURL}/tx/${claimNFTTransactionSuccessHash}`}
+                    rel="noreferrer"
+                  >
+                    <Button size="sm" color="success">
+                      View on Explorer
+                    </Button>
+                  </a>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => close(`claimNFT-${id}`)}
+                  >
+                    Dismiss
+                  </Button>
+                </Toast.Actions>
+              </Toast>
+            </ToastNotification>
+          ) : null}
         </div>
       </div>
       <div className="pm-c-achievement__footer flex-row gap-3 justify-center align-center padding-4 border-solid border-radius-bottom-corners-small">
