@@ -68,11 +68,11 @@ function Achievement({
   return (
     <div className="pm-c-achievement flex-column height-full border-radius-top-corners-small">
       <div className="pm-c-achievement__wrapper flex-column height-full border-solid border-radius-top-corners-small">
-        <div className="pm-c-achievement__image-vignette relative">
+        <div className="pm-c-achievement__image-vignette relative border-radius-top-corners-small">
           <img
             src={imageUrl}
             alt={title}
-            className="width-full height-full border-radius-top-corners-small"
+            className="pm-c-achievement__image border-radius-top-corners-small"
           />
           <div
             className="absolute"

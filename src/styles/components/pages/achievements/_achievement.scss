@@ -74,15 +74,20 @@ $achievement-themes: (
       border-bottom: none;
     }
 
+    &__image {
+      position: relative;
+      z-index: -1;
+
+      height: clamp(30rem, calc(30 / 20 * 100vw), 37rem);
+      width: 100%;
+      object-fit: cover;
+      object-position: bottom;
+    }
+
     &__image-vignette {
       display: inline-block;
       line-height: 0;
       box-shadow: inset -1.2rem 8rem 18.2rem -6.1rem rgba(0, 0, 0, 0.63);
-
-      img {
-        position: relative;
-        z-index: -1;
-      }
     }
 
     &__content {
