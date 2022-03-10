@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-indent */
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import { BeproService } from 'services';
@@ -35,9 +35,9 @@ const achievementFilters: Item[] = [
 ];
 
 const filters = {
-  all: items => items,
-  available: items => items.status === 'available',
-  unavailable: items => items.status === 'unavailable'
+  all: item => item,
+  available: item => item.status === 'available',
+  unavailable: item => item.status === 'unavailable'
 };
 
 function Achievements() {
@@ -51,7 +51,6 @@ function Achievements() {
   });
 
   const [filter, setFilter] = useState(achievementFilters[0].value);
-  const achievementsByFilter = achievements?.filter(filters[filter]);
   const [userAchievements, setUserAchievements] = useState({});
 
   useEffect(() => {
@@ -66,8 +65,24 @@ function Achievements() {
     getUserAchievements();
   }, [network]);
 
+  // Derivated state
+  const achievementsWithStatus = useMemo(() => {
+    return (
+      achievements?.map(achievement => {
+        let status = 'unavailable';
+        if (userAchievements[achievement.id]?.claimed) {
+          status = 'claimed';
+        } else if (userAchievements[achievement.id]?.canClaim) {
+          status = 'available';
+        }
+        return { ...achievement, status };
+      }) || []
+    );
+  }, [achievements, userAchievements]);
+
+  const achievementsByFilter = achievementsWithStatus.filter(filters[filter]);
   const loading = isFetching || isLoading;
-  const empty = !achievementsByFilter || isEmpty(achievementsByFilter);
+  const empty = isEmpty(achievementsByFilter);
 
   return (
     <div className="pm-p-achievements flex-column gap-4">
@@ -85,26 +100,14 @@ function Achievements() {
         {loading ? <AchievementsLoading /> : null}
         {!loading && empty ? <AchievementsEmpty /> : null}
         {!loading && !empty
-          ? achievementsByFilter.map(achievement => (
-              <li key={achievement.id}>
-                <Achievement {...achievement} />
-              </li>
-            ))
+          ? achievementsByFilter.map(achievement => {
+              return (
+                <li key={achievement.id}>
+                  <Achievement {...achievement} />
+                </li>
+              );
+            })
           : null}
-        {achievements?.filter(filters[filter]).map(achievement => {
-          let status = 'unavailable';
-          if (userAchievements[achievement.id]?.claimed) {
-            status = 'claimed';
-          } else if (userAchievements[achievement.id]?.canClaim) {
-            status = 'available';
-          }
-
-          return (
-            <li key={achievement.id}>
-              <Achievement {...{ ...achievement, status }} />
-            </li>
-          );
-        })}
       </ul>
     </div>
   );
