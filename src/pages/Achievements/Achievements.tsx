@@ -1,5 +1,7 @@
+/* eslint-disable react/jsx-indent */
 import { useState } from 'react';
 
+import isEmpty from 'lodash/isEmpty';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 
 import {
@@ -10,6 +12,7 @@ import {
 
 import { useNetwork } from 'hooks';
 
+import AchievementsEmpty from './AchievementsEmpty';
 import AchievementsLoading from './AchievementsLoading';
 
 const achievementFilters: Item[] = [
@@ -47,8 +50,10 @@ function Achievements() {
   });
 
   const [filter, setFilter] = useState(achievementFilters[0].value);
+  const achievementsByFilter = achievements?.filter(filters[filter]);
 
-  if (isFetching || isLoading) return <AchievementsLoading />;
+  const loading = isFetching || isLoading;
+  const empty = !achievementsByFilter || isEmpty(achievementsByFilter);
 
   return (
     <div className="pm-p-achievements flex-column gap-4">
@@ -63,11 +68,15 @@ function Achievements() {
         />
       </div>
       <ul className="pm-p-achievements__list">
-        {achievements?.filter(filters[filter]).map(achievement => (
-          <li key={achievement.id}>
-            <Achievement {...achievement} />
-          </li>
-        ))}
+        {loading ? <AchievementsLoading /> : null}
+        {!loading && empty ? <AchievementsEmpty /> : null}
+        {!loading && !empty
+          ? achievementsByFilter.map(achievement => (
+              <li key={achievement.id}>
+                <Achievement {...achievement} />
+              </li>
+            ))
+          : null}
       </ul>
     </div>
   );
