@@ -2,6 +2,7 @@
 import { useEffect, useState, useMemo } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
+import { closeRightSidebar } from 'redux/ducks/ui';
 import { BeproService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 
@@ -11,7 +12,7 @@ import {
   Item
 } from 'components/pages/achievements';
 
-import { useNetwork } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import AchievementsEmpty from './AchievementsEmpty';
 import AchievementsLoading from './AchievementsLoading';
@@ -41,6 +42,10 @@ const filters = {
 };
 
 function Achievements() {
+  const dispatch = useAppDispatch();
+  const rightSidebarIsVisible = useAppSelector(
+    state => state.ui.rightSidebar.visible
+  );
   const { network, networkConfig } = useNetwork();
   const {
     data: achievements,
@@ -52,6 +57,12 @@ function Achievements() {
 
   const [filter, setFilter] = useState(achievementFilters[0].value);
   const [userAchievements, setUserAchievements] = useState({});
+
+  useEffect(() => {
+    if (rightSidebarIsVisible) {
+      dispatch(closeRightSidebar());
+    }
+  }, [dispatch, rightSidebarIsVisible]);
 
   useEffect(() => {
     async function getUserAchievements() {
