@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-indent */
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import { closeRightSidebar } from 'redux/ducks/ui';
@@ -50,7 +50,8 @@ function Achievements() {
   const {
     data: achievements,
     isFetching,
-    isLoading
+    isLoading,
+    refetch
   } = useGetAchievementsQuery({
     networkId: network.id
   });
@@ -64,17 +65,22 @@ function Achievements() {
     }
   }, [dispatch, rightSidebarIsVisible]);
 
+  const getUserAchievements = useCallback(async () => {
+    const beproService = new BeproService(networkConfig);
+    await beproService.login();
+
+    const response = await beproService.getAchievements();
+    setUserAchievements(response);
+  }, [networkConfig]);
+
   useEffect(() => {
-    async function getUserAchievements() {
-      const beproService = new BeproService(networkConfig);
-      await beproService.login();
-
-      const response = await beproService.getAchievements();
-      setUserAchievements(response);
-    }
-
     getUserAchievements();
-  }, [network]);
+  }, [getUserAchievements, network]);
+
+  async function handleClaimCompleted() {
+    await refetch();
+    await getUserAchievements();
+  }
 
   // Derivated state
   const achievementsWithStatus = useMemo(() => {
@@ -115,7 +121,10 @@ function Achievements() {
           {achievementsByFilter.map(achievement => {
             return (
               <li key={achievement.id} className="pm-p-achievements__list-item">
-                <Achievement {...achievement} />
+                <Achievement
+                  {...achievement}
+                  onClaimCompleted={handleClaimCompleted}
+                />
               </li>
             );
           })}
