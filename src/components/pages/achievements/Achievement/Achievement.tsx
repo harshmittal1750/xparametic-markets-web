@@ -43,6 +43,10 @@ const buttonsByStatus: { [key: string]: ButtonStatus } = {
   }
 };
 
+type AditionalAchievementProps = {
+  onClaimCompleted: () => void;
+};
+
 function Achievement({
   id,
   title,
@@ -50,8 +54,9 @@ function Achievement({
   imageUrl,
   actionTitle,
   rarity,
-  status
-}: AchievementProps) {
+  status,
+  onClaimCompleted
+}: AchievementProps & AditionalAchievementProps) {
   const { show, close } = useToastNotification();
   const { network, networkConfig } = useNetwork();
 
@@ -76,6 +81,7 @@ function Achievement({
         setClaimNFTTransactionSuccess(response.status);
         setClaimNFTTransactionSuccessHash(response.transactionHash);
         show(`claimNFT-${id}`);
+        await onClaimCompleted();
       }
 
       setIsClaimingNFT(false);
