@@ -107,19 +107,20 @@ function Achievements() {
           onChangeItem={(_item, value) => setFilter(value)}
         />
       </div>
-      <ul className="pm-p-achievements__list">
-        {loading ? <AchievementsLoading /> : null}
-        {!loading && empty ? <AchievementsEmpty /> : null}
-        {!loading && !empty
-          ? achievementsByFilter.map(achievement => {
-              return (
-                <li key={achievement.id}>
-                  <Achievement {...achievement} />
-                </li>
-              );
-            })
-          : null}
-      </ul>
+
+      {loading ? <AchievementsLoading /> : null}
+      {!loading && empty ? <AchievementsEmpty /> : null}
+      {!loading && !empty ? (
+        <ul className="pm-p-achievements__list">
+          {achievementsByFilter.map(achievement => {
+            return (
+              <li key={achievement.id} className="pm-p-achievements__list-item">
+                <Achievement {...achievement} />
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
     </div>
   );
 }
