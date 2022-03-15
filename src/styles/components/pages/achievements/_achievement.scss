@@ -78,9 +78,7 @@ $achievement-themes: (
       position: relative;
       z-index: -1;
 
-      height: clamp(30rem, calc(30 / 20 * 100vw), 37rem);
       width: 100%;
-      object-fit: cover;
 
       &--unlocked,
       &--claimed,
