@@ -6,6 +6,7 @@ import { closeRightSidebar } from 'redux/ducks/ui';
 import { BeproService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 
+import { Button, Toast, ToastNotification } from 'components';
 import {
   Achievement,
   AchievementFilter,
@@ -13,6 +14,7 @@ import {
 } from 'components/pages/achievements';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import useToastNotification from 'hooks/useToastNotification';
 
 import AchievementsEmpty from './AchievementsEmpty';
 import AchievementsLoading from './AchievementsLoading';
@@ -42,11 +44,17 @@ const filters = {
 };
 
 function Achievements() {
+  // Custom Hooks
+  const { network, networkConfig } = useNetwork();
+  const { show, close } = useToastNotification();
   const dispatch = useAppDispatch();
+
+  // Redux store selections
   const rightSidebarIsVisible = useAppSelector(
     state => state.ui.rightSidebar.visible
   );
-  const { network, networkConfig } = useNetwork();
+
+  // Redux toolkit queries
   const {
     data: achievements,
     isFetching,
@@ -56,15 +64,16 @@ function Achievements() {
     networkId: network.id
   });
 
+  // Local state
   const [filter, setFilter] = useState(achievementFilters[0].value);
   const [userAchievements, setUserAchievements] = useState({});
+  const [claimedAchievement, setClaimedAchievement] = useState<{
+    id: number | undefined;
+    status: boolean;
+    transactionHash: string | undefined;
+  }>({ id: undefined, status: false, transactionHash: undefined });
 
-  useEffect(() => {
-    if (rightSidebarIsVisible) {
-      dispatch(closeRightSidebar());
-    }
-  }, [dispatch, rightSidebarIsVisible]);
-
+  // Memoized callbacks
   const getUserAchievements = useCallback(async () => {
     const beproService = new BeproService(networkConfig);
     await beproService.login();
@@ -73,14 +82,30 @@ function Achievements() {
     setUserAchievements(response);
   }, [networkConfig]);
 
+  const handleClaimCompleted = useCallback(
+    async (id: number, status: boolean, transactionHash: string) => {
+      setClaimedAchievement({
+        id,
+        status,
+        transactionHash
+      });
+
+      await getUserAchievements();
+      show(`claimNFT-${id}`);
+      await refetch();
+    },
+    [getUserAchievements, refetch, show]
+  );
+
+  useEffect(() => {
+    if (rightSidebarIsVisible) {
+      dispatch(closeRightSidebar());
+    }
+  }, [dispatch, rightSidebarIsVisible]);
+
   useEffect(() => {
     getUserAchievements();
   }, [getUserAchievements, network]);
-
-  async function handleClaimCompleted() {
-    await refetch();
-    await getUserAchievements();
-  }
 
   // Derivated state
   const achievementsWithStatus = useMemo(() => {
@@ -129,6 +154,39 @@ function Achievements() {
             );
           })}
         </ul>
+      ) : null}
+      {claimedAchievement.id &&
+      claimedAchievement.status &&
+      claimedAchievement.transactionHash ? (
+        <ToastNotification
+          id={`claimNFT-${claimedAchievement.id}`}
+          duration={10000}
+        >
+          <Toast
+            variant="success"
+            title="Success"
+            description="Your transaction is completed!"
+          >
+            <Toast.Actions>
+              <a
+                target="_blank"
+                href={`${network.explorerURL}/tx/${claimedAchievement.transactionHash}`}
+                rel="noreferrer"
+              >
+                <Button size="sm" color="success">
+                  View on Explorer
+                </Button>
+              </a>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => close(`claimNFT-${claimedAchievement.id}`)}
+              >
+                Dismiss
+              </Button>
+            </Toast.Actions>
+          </Toast>
+        </ToastNotification>
       ) : null}
     </div>
   );

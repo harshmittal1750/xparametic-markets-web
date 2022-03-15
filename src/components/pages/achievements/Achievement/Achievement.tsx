@@ -1,15 +1,14 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useState, memo } from 'react';
 
 import { BeproService } from 'services';
 import { Achievement as AchievementProps } from 'types/achievement';
 
 import { CheckIcon, MedalIcon } from 'assets/icons';
 
-import { Button, Divider, Toast, ToastNotification } from 'components';
+import { Button, Divider } from 'components';
 import { ButtonColor, ButtonVariant } from 'components/Button';
 
 import { useNetwork } from 'hooks';
-import useToastNotification from 'hooks/useToastNotification';
 
 type ButtonStatus = {
   title: string;
@@ -44,7 +43,11 @@ const buttonsByStatus: { [key: string]: ButtonStatus } = {
 };
 
 type AditionalAchievementProps = {
-  onClaimCompleted: () => void;
+  onClaimCompleted: (
+    _id: number,
+    _status: boolean,
+    _transactionHash: string
+  ) => void;
 };
 
 function Achievement({
@@ -57,19 +60,15 @@ function Achievement({
   status,
   onClaimCompleted
 }: AchievementProps & AditionalAchievementProps) {
-  const { show, close } = useToastNotification();
-  const { network, networkConfig } = useNetwork();
-
+  const { networkConfig } = useNetwork();
   const [isClaimingNFT, setIsClaimingNFT] = useState(false);
-  const [claimNFTTransactionSuccess, setClaimNFTTransactionSuccess] =
-    useState(false);
-  const [claimNFTTransactionSuccessHash, setClaimNFTTransactionSuccessHash] =
-    useState(undefined);
 
   const claimCount = 10;
 
   async function claimNFT() {
     setIsClaimingNFT(true);
+
+    await onClaimCompleted(id, true, `sss`);
 
     const beproService = new BeproService(networkConfig);
 
@@ -78,10 +77,7 @@ function Achievement({
       const response = await beproService.claimAchievement(id);
 
       if (response.status && response.transactionHash) {
-        setClaimNFTTransactionSuccess(response.status);
-        setClaimNFTTransactionSuccessHash(response.transactionHash);
-        show(`claimNFT-${id}`);
-        await onClaimCompleted();
+        await onClaimCompleted(id, response.status, response.transactionHash);
       }
 
       setIsClaimingNFT(false);
@@ -142,34 +138,6 @@ function Achievement({
             {buttonsByStatus[status].icon}
             {buttonsByStatus[status].title}
           </Button>
-          {claimNFTTransactionSuccess && claimNFTTransactionSuccessHash ? (
-            <ToastNotification id={`claimNFT-${id}`} duration={10000}>
-              <Toast
-                variant="success"
-                title="Success"
-                description="Your transaction is completed!"
-              >
-                <Toast.Actions>
-                  <a
-                    target="_blank"
-                    href={`${network.explorerURL}/tx/${claimNFTTransactionSuccessHash}`}
-                    rel="noreferrer"
-                  >
-                    <Button size="sm" color="success">
-                      View on Explorer
-                    </Button>
-                  </a>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => close(`claimNFT-${id}`)}
-                  >
-                    Dismiss
-                  </Button>
-                </Toast.Actions>
-              </Toast>
-            </ToastNotification>
-          ) : null}
         </div>
       </div>
       <div className="pm-c-achievement__footer flex-row gap-3 justify-center align-center padding-4 border-solid border-radius-bottom-corners-small">
@@ -187,4 +155,4 @@ function Achievement({
   );
 }
 
-export default Achievement;
+export default memo(Achievement);
