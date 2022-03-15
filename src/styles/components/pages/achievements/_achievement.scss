@@ -2,13 +2,13 @@ $achievement-themes: (
   light: (
     text: (
       status: (
-        available: map-get($colors, 'pure-white'),
-        unavailable: map-get($colors, 'lavender-gray'),
+        unlocked: map-get($colors, 'pure-white'),
+        locked: map-get($colors, 'lavender-gray'),
         claimed: map-get($colors, 'pure-white')
       ),
       title: (
-        available: map-get($colors, 'light-blue'),
-        unavailable: map-get($colors, 'metal-gray'),
+        unlocked: map-get($colors, 'light-blue'),
+        locked: map-get($colors, 'metal-gray'),
         claimed: map-get($colors, 'light-blue')
       ),
       award: (
@@ -23,8 +23,8 @@ $achievement-themes: (
     ),
     background-colors: (
       status: (
-        available: map-get($colors, 'very-light-blue'),
-        unavailable: map-get($colors, 'charleston-gray'),
+        unlocked: map-get($colors, 'very-light-blue'),
+        locked: map-get($colors, 'charleston-gray'),
         claimed: map-get($colors, 'jungle-green')
       ),
       content: map-get($colors, 'ghost-white'),
@@ -35,13 +35,13 @@ $achievement-themes: (
   dark: (
     text: (
       status: (
-        available: map-get($colors, 'pure-white'),
-        unavailable: map-get($colors, 'lavender-gray'),
+        unlocked: map-get($colors, 'pure-white'),
+        locked: map-get($colors, 'lavender-gray'),
         claimed: map-get($colors, 'pure-white')
       ),
       title: (
-        available: map-get($colors, 'light-blue'),
-        unavailable: map-get($colors, 'metal-gray'),
+        unlocked: map-get($colors, 'light-blue'),
+        locked: map-get($colors, 'metal-gray'),
         claimed: map-get($colors, 'light-blue')
       ),
       award: (
@@ -56,8 +56,8 @@ $achievement-themes: (
     ),
     background-colors: (
       status: (
-        available: map-get($colors, 'very-light-blue'),
-        unavailable: map-get($colors, 'charleston-gray'),
+        unlocked: map-get($colors, 'very-light-blue'),
+        locked: map-get($colors, 'charleston-gray'),
         claimed: map-get($colors, 'jungle-green')
       ),
       content: map-get($colors, 'eerie-black'),
@@ -82,13 +82,13 @@ $achievement-themes: (
       width: 100%;
       object-fit: cover;
 
-      &--available,
+      &--unlocked,
       &--claimed,
-      &--unavailable {
+      &--locked {
         @extend .pm-c-achievement__image;
       }
 
-      &--unavailable {
+      &--locked {
         filter: saturate(0);
         opacity: 0.2;
       }
@@ -112,27 +112,27 @@ $achievement-themes: (
     &__status {
       padding: 0.6rem;
 
-      &--available {
+      &--unlocked {
         @extend .pm-c-achievement__status;
         background-color: map-get(
           map-get(themed('background-colors'), 'status'),
-          'available'
+          'unlocked'
         );
 
         .pm-c-achievement__status-title {
-          color: map-get(map-get(themed('text'), 'status'), 'available');
+          color: map-get(map-get(themed('text'), 'status'), 'unlocked');
         }
       }
 
-      &--unavailable {
+      &--locked {
         @extend .pm-c-achievement__status;
         background-color: map-get(
           map-get(themed('background-colors'), 'status'),
-          'unavailable'
+          'locked'
         );
 
         .pm-c-achievement__status-title {
-          color: map-get(map-get(themed('text'), 'status'), 'unavailable');
+          color: map-get(map-get(themed('text'), 'status'), 'locked');
         }
       }
 
@@ -153,14 +153,14 @@ $achievement-themes: (
       height: 1.2rem;
       width: 1.2rem;
 
-      &--available {
+      &--unlocked {
         @extend .pm-c-achievement__medal-icon;
-        fill: map-get(map-get(themed('text'), 'title'), 'available');
+        fill: map-get(map-get(themed('text'), 'title'), 'unlocked');
       }
 
-      &--unavailable {
+      &--locked {
         @extend .pm-c-achievement__medal-icon;
-        fill: map-get(map-get(themed('text'), 'title'), 'unavailable');
+        fill: map-get(map-get(themed('text'), 'title'), 'locked');
       }
 
       &--claimed {
@@ -170,14 +170,14 @@ $achievement-themes: (
     }
 
     &__title {
-      &--available {
+      &--unlocked {
         @extend .pm-c-achievement__title;
-        color: map-get(map-get(themed('text'), 'title'), 'available');
+        color: map-get(map-get(themed('text'), 'title'), 'unlocked');
       }
 
-      &--unavailable {
+      &--locked {
         @extend .pm-c-achievement__title;
-        color: map-get(map-get(themed('text'), 'title'), 'unavailable');
+        color: map-get(map-get(themed('text'), 'title'), 'locked');
       }
 
       &--claimed {
