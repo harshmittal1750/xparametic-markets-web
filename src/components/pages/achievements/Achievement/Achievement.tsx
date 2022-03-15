@@ -68,8 +68,6 @@ function Achievement({
   async function claimNFT() {
     setIsClaimingNFT(true);
 
-    await onClaimCompleted(id, true, `sss`);
-
     const beproService = new BeproService(networkConfig);
 
     try {
