@@ -117,13 +117,21 @@ function Achievements() {
   const achievementsWithStatus = useMemo(() => {
     return (
       achievements?.map(achievement => {
+        // fetching status
         let status = 'locked';
         if (userAchievements[achievement.id]?.claimed) {
           status = 'claimed';
         } else if (userAchievements[achievement.id]?.canClaim) {
           status = 'unlocked';
         }
-        return { ...achievement, status };
+
+        // fetching image, if claimed
+        let { imageUrl } = achievement;
+        if (userAchievements[achievement.id]?.token?.data?.image) {
+          imageUrl = userAchievements[achievement.id]?.token?.data?.image;
+        }
+
+        return { ...achievement, status, imageUrl };
       }) || []
     );
   }, [achievements, userAchievements]);
