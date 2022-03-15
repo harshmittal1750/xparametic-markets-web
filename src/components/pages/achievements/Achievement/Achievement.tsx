@@ -19,14 +19,14 @@ type ButtonStatus = {
 };
 
 const buttonsByStatus: { [key: string]: ButtonStatus } = {
-  available: {
+  unlocked: {
     title: 'Claim NFT',
     color: 'primary',
     variant: 'normal',
     icon: null,
     disabled: false
   },
-  unavailable: {
+  locked: {
     title: 'Claim NFT',
     color: 'default',
     variant: 'subtle',

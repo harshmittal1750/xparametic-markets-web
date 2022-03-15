@@ -26,21 +26,27 @@ const achievementFilters: Item[] = [
     value: 'all'
   },
   {
-    id: 'available',
-    name: 'AVAILABLE',
-    value: 'available'
+    id: 'claimed',
+    name: 'CLAIMED',
+    value: 'claimed'
   },
   {
-    id: 'unavailable',
-    name: 'UNAVAILABLE',
-    value: 'unavailable'
+    id: 'unlocked',
+    name: 'UNLOCKED',
+    value: 'unlocked'
+  },
+  {
+    id: 'locked',
+    name: 'LOCKED',
+    value: 'locked'
   }
 ];
 
 const filters = {
   all: item => item,
-  available: item => item.status === 'available',
-  unavailable: item => item.status === 'unavailable'
+  claimed: item => item.status === 'claimed',
+  unlocked: item => item.status === 'unlocked',
+  locked: item => item.status === 'locked'
 };
 
 function Achievements() {
@@ -111,11 +117,11 @@ function Achievements() {
   const achievementsWithStatus = useMemo(() => {
     return (
       achievements?.map(achievement => {
-        let status = 'unavailable';
+        let status = 'locked';
         if (userAchievements[achievement.id]?.claimed) {
           status = 'claimed';
         } else if (userAchievements[achievement.id]?.canClaim) {
-          status = 'available';
+          status = 'unlocked';
         }
         return { ...achievement, status };
       }) || []
