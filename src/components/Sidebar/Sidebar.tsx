@@ -8,7 +8,8 @@ import {
   HamburguerMenuIcon,
   ArrowBackIcon,
   MarketsIcon,
-  PortfolioIcon
+  PortfolioIcon,
+  AchievementsIcon
 } from 'assets/icons';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
@@ -89,6 +90,25 @@ const Sidebar = () => {
                   )}
                 >
                   Portfolio
+                </span>
+              </NavLink>
+            </Menu.Item>
+          </Tooltip>
+          <Tooltip text="Achievements" position="right" disabled={!collapsed}>
+            <Menu.Item key="achievements" style={{ padding: '1.8rem 0rem' }}>
+              <NavLink
+                to="/achievements"
+                className="sidebar__link--lg"
+                activeClassName="sidebar__link--lg active"
+              >
+                <AchievementsIcon />
+                <span
+                  className={classNames(
+                    'market__link-title--lg',
+                    collapsed && 'hidden'
+                  )}
+                >
+                  Achievements
                 </span>
               </NavLink>
             </Menu.Item>

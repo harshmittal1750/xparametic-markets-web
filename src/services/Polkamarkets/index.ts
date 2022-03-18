@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
 import { camelizeKeys } from 'humps';
 
+import { getAchievementsTransformResponse } from './functions';
 import {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
@@ -16,7 +17,9 @@ import {
   GetPortfolioByAddressArgs,
   GetPortfolioByAddressData,
   ReloadPortfolioByAddressArgs,
-  ReloadPortfolioByAddressData
+  ReloadPortfolioByAddressData,
+  GetAchievementsArgs,
+  GetAchievementsData
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -80,6 +83,11 @@ const polkamarketsApi = createApi({
         url: `/portfolios/${address}/reload`,
         method: 'POST'
       })
+    }),
+    getAchievements: builder.query<GetAchievementsData, GetAchievementsArgs>({
+      query: ({ networkId }) => `/achievements?network_id=${networkId}`,
+      transformResponse: (response: GetAchievementsData) =>
+        getAchievementsTransformResponse(camelize(response))
     })
   })
 });
@@ -93,5 +101,6 @@ export const {
   useReloadMarketBySlugMutation,
   useCreateMarketByIdMutation,
   useGetPortfolioByAddressQuery,
-  useReloadPortfolioByAddressMutation
+  useReloadPortfolioByAddressMutation,
+  useGetAchievementsQuery
 } = polkamarketsApi;

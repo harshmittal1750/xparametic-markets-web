@@ -3,9 +3,9 @@ import React, { useRef, useState } from 'react';
 
 import classNames from 'classnames';
 
-type ButtonVariant = 'normal' | 'outline' | 'subtle' | 'ghost';
+export type ButtonVariant = 'normal' | 'outline' | 'subtle' | 'ghost';
 
-type ButtonColor =
+export type ButtonColor =
   | 'base'
   | 'default'
   | 'primary'

@@ -1,5 +1,6 @@
 import { Market } from 'models/market';
 import { Portfolio } from 'models/portfolio';
+import { Achievement } from 'types/achievement';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -41,4 +42,10 @@ export type GetPortfolioByAddressArgs = {
 export type ReloadPortfolioByAddressData = void;
 export type ReloadPortfolioByAddressArgs = {
   address: string;
+};
+
+// getAchievements
+export type GetAchievementsData = Achievement[];
+export type GetAchievementsArgs = {
+  networkId: string;
 };

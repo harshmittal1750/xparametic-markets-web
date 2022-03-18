@@ -1,0 +1,35 @@
+$achievements-themes: (
+  light: (
+    text: (
+      title: map-get($colors, 'eerie-black')
+    )
+  ),
+  dark: (
+    text: (
+      title: map-get($colors, 'cultured-white')
+    )
+  )
+) !default;
+
+.pm-p-achievements {
+  @include themes($achievements-themes) {
+    &__title {
+      color: map-get(themed('text'), 'title');
+    }
+
+    &__list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(32rem, 1fr));
+      gap: clamp(2rem, calc(4 / 90 * 100vw), 4rem);
+      justify-items: center;
+
+      @include breakpoint-to('md') {
+        justify-items: stretch;
+      }
+
+      &-item {
+        max-width: 42rem;
+      }
+    }
+  }
+}

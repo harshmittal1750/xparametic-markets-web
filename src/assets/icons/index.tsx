@@ -1,3 +1,4 @@
+import AchievementsIcon from './AchievementsIcon';
 import AddIcon from './AddIcon';
 import AlienIcon from './AlienIcon';
 import ArrowBackIcon from './ArrowBackIcon';
@@ -28,6 +29,7 @@ import LaptopIcon from './LaptopIcon';
 import LineChartIcon from './LineChartIcon';
 import LinkedInIcon from './LinkedInIcon';
 import MarketsIcon from './MarketsIcon';
+import MedalIcon from './MedalIcon';
 import MediumIcon from './MediumIcon';
 import MetaMaskIcon from './MetaMaskIcon';
 import MetaMaskIconSmall from './MetaMaskIconSmall';
@@ -61,6 +63,7 @@ import WarningIcon from './WarningIcon';
 import WhiteHouseIcon from './WhiteHouseIcon';
 
 export {
+  AchievementsIcon,
   AddIcon,
   AlienIcon,
   ArrowBackIcon,
@@ -91,6 +94,7 @@ export {
   LineChartIcon,
   LinkedInIcon,
   MarketsIcon,
+  MedalIcon,
   MediumIcon,
   MetaMaskIcon,
   MetaMaskIconSmall,

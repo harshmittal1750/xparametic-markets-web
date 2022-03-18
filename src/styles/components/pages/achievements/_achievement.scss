@@ -1,0 +1,213 @@
+$achievement-themes: (
+  light: (
+    text: (
+      status: (
+        unlocked: map-get($colors, 'pure-white'),
+        locked: map-get($colors, 'lavender-gray'),
+        claimed: map-get($colors, 'pure-white')
+      ),
+      title: (
+        unlocked: map-get($colors, 'light-blue'),
+        locked: map-get($colors, 'metal-gray'),
+        claimed: map-get($colors, 'light-blue')
+      ),
+      award: (
+        title: map-get($colors, 'charcoal'),
+        description: map-get($colors, 'weldon-blue')
+      ),
+      claim-count: map-get($colors, 'weldon-blue'),
+      rarity: (
+        common: map-get($colors, 'weldon-blue'),
+        rare: map-get($colors, 'orange-yellow')
+      )
+    ),
+    background-colors: (
+      status: (
+        unlocked: map-get($colors, 'very-light-blue'),
+        locked: map-get($colors, 'charleston-gray'),
+        claimed: map-get($colors, 'jungle-green')
+      ),
+      content: map-get($colors, 'ghost-white'),
+      footer: map-get($colors, 'cultured-white')
+    ),
+    border-color: map-get($colors, 'bright-gray')
+  ),
+  dark: (
+    text: (
+      status: (
+        unlocked: map-get($colors, 'pure-white'),
+        locked: map-get($colors, 'lavender-gray'),
+        claimed: map-get($colors, 'pure-white')
+      ),
+      title: (
+        unlocked: map-get($colors, 'light-blue'),
+        locked: map-get($colors, 'metal-gray'),
+        claimed: map-get($colors, 'light-blue')
+      ),
+      award: (
+        title: map-get($colors, 'ghost-white'),
+        description: map-get($colors, 'metal-gray')
+      ),
+      claim-count: map-get($colors, 'metal-gray'),
+      rarity: (
+        common: map-get($colors, 'metal-gray'),
+        rare: map-get($colors, 'orange-yellow')
+      )
+    ),
+    background-colors: (
+      status: (
+        unlocked: map-get($colors, 'very-light-blue'),
+        locked: map-get($colors, 'charleston-gray'),
+        claimed: map-get($colors, 'jungle-green')
+      ),
+      content: map-get($colors, 'eerie-black'),
+      footer: map-get($colors, 'chinese-black')
+    ),
+    border-color: map-get($colors, 'gun-metal')
+  )
+);
+
+.pm-c-achievement {
+  @include themes($achievement-themes) {
+    &__wrapper {
+      border-color: themed('border-color');
+      border-bottom: none;
+    }
+
+    &__image {
+      position: relative;
+      z-index: -1;
+
+      width: 100%;
+
+      &--unlocked,
+      &--claimed,
+      &--locked {
+        @extend .pm-c-achievement__image;
+      }
+
+      &--locked {
+        filter: saturate(0);
+        opacity: 0.2;
+      }
+    }
+
+    &__image-vignette {
+      display: inline-block;
+      line-height: 0;
+      box-shadow: inset -1.2rem 8rem 18.2rem -6.1rem rgba(0, 0, 0, 0.63);
+    }
+
+    &__content {
+      background-color: map-get(themed('background-colors'), 'content');
+    }
+
+    &__footer {
+      background-color: map-get(themed('background-colors'), 'footer');
+      border-color: themed('border-color');
+    }
+
+    &__status {
+      padding: 0.6rem;
+
+      &--unlocked {
+        @extend .pm-c-achievement__status;
+        background-color: map-get(
+          map-get(themed('background-colors'), 'status'),
+          'unlocked'
+        );
+
+        .pm-c-achievement__status-title {
+          color: map-get(map-get(themed('text'), 'status'), 'unlocked');
+        }
+      }
+
+      &--locked {
+        @extend .pm-c-achievement__status;
+        background-color: map-get(
+          map-get(themed('background-colors'), 'status'),
+          'locked'
+        );
+
+        .pm-c-achievement__status-title {
+          color: map-get(map-get(themed('text'), 'status'), 'locked');
+        }
+      }
+
+      &--claimed {
+        @extend .pm-c-achievement__status;
+        background-color: map-get(
+          map-get(themed('background-colors'), 'status'),
+          'claimed'
+        );
+
+        .pm-c-achievement__status-title {
+          color: map-get(map-get(themed('text'), 'status'), 'claimed');
+        }
+      }
+    }
+
+    &__medal-icon {
+      height: 1.2rem;
+      width: 1.2rem;
+
+      &--unlocked {
+        @extend .pm-c-achievement__medal-icon;
+        fill: map-get(map-get(themed('text'), 'title'), 'unlocked');
+      }
+
+      &--locked {
+        @extend .pm-c-achievement__medal-icon;
+        fill: map-get(map-get(themed('text'), 'title'), 'locked');
+      }
+
+      &--claimed {
+        @extend .pm-c-achievement__medal-icon;
+        fill: map-get(map-get(themed('text'), 'title'), 'claimed');
+      }
+    }
+
+    &__title {
+      &--unlocked {
+        @extend .pm-c-achievement__title;
+        color: map-get(map-get(themed('text'), 'title'), 'unlocked');
+      }
+
+      &--locked {
+        @extend .pm-c-achievement__title;
+        color: map-get(map-get(themed('text'), 'title'), 'locked');
+      }
+
+      &--claimed {
+        @extend .pm-c-achievement__title;
+        color: map-get(map-get(themed('text'), 'title'), 'claimed');
+      }
+    }
+
+    &__award {
+      &-title {
+        color: map-get(map-get(themed('text'), 'award'), 'title');
+      }
+
+      &-description {
+        color: map-get(map-get(themed('text'), 'award'), 'description');
+      }
+    }
+
+    &__claim-count {
+      color: map-get(themed('text'), 'claim-count');
+    }
+
+    &__rarity {
+      &--common {
+        @extend .pm-c-achievement__rarity;
+        color: map-get(map-get(themed('text'), 'rarity'), 'common');
+      }
+
+      &--rare {
+        @extend .pm-c-achievement__rarity;
+        color: map-get(map-get(themed('text'), 'rarity'), 'rare');
+      }
+    }
+  }
+}

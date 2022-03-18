@@ -1,5 +1,12 @@
 @charset 'utf-8';
 
+// New styling approach
+@import 'background';
+@import 'spacing';
+@import 'layout';
+@import 'borders';
+@import 'sizing';
+
 // 1. Configuration and helpers
 @import 'helpers/display';
 @import 'helpers/position';
@@ -74,6 +81,9 @@
 @import 'components/trade-form';
 @import 'components/wallet-info';
 
+// New styling approach
+@import 'components/pages';
+
 // 6. Page-specific styles
 @import 'pages/home';
 @import 'pages/market';
@@ -82,5 +92,6 @@
 @import 'pages/wrong-network';
 @import 'pages/create-market';
 @import 'pages/restricted-country';
+@import 'pages/achievements';
 
 // 7. Themes
