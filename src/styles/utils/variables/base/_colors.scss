@@ -15,12 +15,14 @@ $black-tones: (
 $color--pure-white: #ffffff !default;
 $color--anti-flash-white: #eff1f4 !default;
 $color--ghost-white: #f9fafb !default;
+$color--azureish-white: #e3e7f0 !default;
 $color--cultured-white: #f4f5f6 !default;
 
 $white-tones: (
   pure-white: $color--pure-white,
   anti-flash-white: $color--anti-flash-white,
   ghost-white: $color--ghost-white,
+  azureish-white: $color--azureish-white,
   cultured-white: $color--cultured-white
 ) !default;
 
