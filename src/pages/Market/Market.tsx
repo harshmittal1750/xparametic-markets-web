@@ -9,7 +9,7 @@ import { openTradeForm } from 'redux/ducks/ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import { Tabs, Table, Text, Button, SEO } from 'components';
+import { Tabs, Table, Button, SEO } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -17,6 +17,7 @@ import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
 import MarketChartViewSelector from './MarketChartViewSelector';
 import MarketHead from './MarketHead';
+import MarketNews from './MarketNews';
 import MarketStats from './MarketStats';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
@@ -168,22 +169,8 @@ const Market = () => {
               emptyDataDescription="You have no positions."
             />
           </Tabs.TabPane>
-          {/* market.description ? (
-          <Tabs.TabPane tab="About market" id="about">
-            <Text as="p" scale="body" fontWeight="medium" color="light">
-              Coming Soon 🔥
-            </Text>
-          </Tabs.TabPane>
-        ) : null */}
           <Tabs.TabPane tab="News" id="news">
-            <Text
-              as="p"
-              scale="body"
-              fontWeight="medium"
-              className="pm-p-market__news"
-            >
-              Coming Soon 🔥
-            </Text>
+            <MarketNews news={market.news} />
           </Tabs.TabPane>
         </Tabs>
       </div>
