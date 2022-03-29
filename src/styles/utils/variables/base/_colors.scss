@@ -13,11 +13,13 @@ $black-tones: (
 
 // White tones and light colors
 $color--pure-white: #ffffff !default;
+$color--anti-flash-white: #eff1f4 !default;
 $color--ghost-white: #f9fafb !default;
 $color--cultured-white: #f4f5f6 !default;
 
 $white-tones: (
   pure-white: $color--pure-white,
+  anti-flash-white: $color--anti-flash-white,
   ghost-white: $color--ghost-white,
   cultured-white: $color--cultured-white
 ) !default;
