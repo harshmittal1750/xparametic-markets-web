@@ -1,0 +1,73 @@
+$news-card--padding-y: map-get($spacers, 6);
+$news-card--padding-x: map-get($spacers, 6);
+$news-card--border-width: 0.1rem;
+
+$news-card-image--margin-y: map-get($spacers, 3);
+$news-card-image--margin-x: map-get($spacers, 0);
+
+$news-card--themes: (
+  light: (
+    background-color: map-get($colors, 'anti-flash-white'),
+    border-color: map-get($colors, 'azureish-white'),
+    text-colors: (
+      source: map-get($colors, 'charcoal'),
+      headline: map-get($colors, 'charcoal'),
+      summary: map-get($colors, 'metal-gray'),
+      action: map-get($colors, 'weldon-blue')
+    )
+  ),
+  dark: (
+    background-color: map-get($colors, 'eerie-black'),
+    border-color: map-get($colors, 'gun-metal'),
+    text-colors: (
+      source: map-get($colors, 'ghost-white'),
+      headline: map-get($colors, 'ghost-white'),
+      summary: map-get($colors, 'lavender-gray'),
+      action: map-get($colors, 'metal-gray')
+    )
+  )
+);
+
+.pm-c-news-card {
+  @include themes($news-card--themes) {
+    @include flex-column(flex-start, flex-start, map-get($spacers, 3));
+    padding: $news-card--padding-y $news-card--padding-x;
+
+    background-color: themed('background-color');
+    border: $news-card--border-width solid themed('border-color');
+    border-radius: $border-radius--small;
+
+    &__header {
+      @include flex-row(flex-start, center, map-get($spacers, 3));
+    }
+
+    &__source {
+      color: map-get(themed('text-colors'), 'source');
+    }
+
+    &__image {
+      margin: $news-card-image--margin-y $news-card-image--margin-x;
+      border-radius: $border-radius--medium;
+    }
+
+    &__content {
+      @include flex-column(flex-start, flex-start, map-get($spacers, 2));
+    }
+
+    &__headline {
+      color: map-get(themed('text-colors'), 'headline');
+    }
+
+    &__summary {
+      color: map-get(themed('text-colors'), 'summary');
+    }
+
+    &__footer {
+      @include flex-row(flex-start, center);
+    }
+
+    &__action {
+      color: map-get(themed('text-colors'), 'action');
+    }
+  }
+}

@@ -43,6 +43,7 @@ import ModalNotification from './ModalNotification';
 import NavBar from './NavBar';
 import NetworkInfo from './NetworkInfo';
 import Networks from './Networks';
+import NewsCard from './NewsCard';
 import Outcome from './Outcome';
 import Pill from './Pill';
 import PortfolioLiquidityTable from './PortfolioLiquidityTable';
@@ -118,6 +119,7 @@ export {
   NavBar,
   NetworkInfo,
   Networks,
+  NewsCard,
   Outcome,
   OutcomeInput,
   Pill,
