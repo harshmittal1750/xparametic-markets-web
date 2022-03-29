@@ -1,3 +1,5 @@
+import { News } from 'types/market';
+
 export interface PriceChartPoint {
   value: number;
   timestamp: number;
@@ -56,4 +58,5 @@ export interface Market {
   fee: number;
   question: Question;
   networkId: string;
+  news: News[];
 }
