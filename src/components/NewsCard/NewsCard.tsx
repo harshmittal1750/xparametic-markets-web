@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { News } from 'types/market';
 
 import Text from '../Text';
@@ -24,21 +26,23 @@ function NewsCard({
         </Text>
       </header>
       <div className="pm-c-news-card__content">
-        <Text
-          as="span"
-          scale="body"
-          fontWeight="bold"
-          className="pm-c-news-card__headline"
+        <a
+          className="pm-c-news-card__headline body bold width-full"
+          href={url}
+          target="_blank"
+          rel="noreferrer"
         >
           {title}
-        </Text>
-        <img
-          className="pm-c-news-card__image"
-          width={241}
-          height={107}
-          src={imageUrl}
-          alt=""
-        />
+        </a>
+        <a href={url} target="_blank" rel="noreferrer" className="width-full">
+          <img
+            className="pm-c-news-card__image"
+            height={107}
+            width="100%"
+            src={imageUrl}
+            alt=""
+          />
+        </a>
         <Text
           as="p"
           scale="tiny"
@@ -62,4 +66,4 @@ function NewsCard({
   );
 }
 
-export default NewsCard;
+export default memo(NewsCard);

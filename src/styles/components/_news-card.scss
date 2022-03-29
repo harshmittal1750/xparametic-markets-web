@@ -13,7 +13,10 @@ $news-card--themes: (
       source: map-get($colors, 'charcoal'),
       headline: map-get($colors, 'charcoal'),
       summary: map-get($colors, 'metal-gray'),
-      action: map-get($colors, 'weldon-blue')
+      action: (
+        default: map-get($colors, 'weldon-blue'),
+        hover: map-get($colors, 'charcoal')
+      )
     )
   ),
   dark: (
@@ -23,7 +26,10 @@ $news-card--themes: (
       source: map-get($colors, 'ghost-white'),
       headline: map-get($colors, 'ghost-white'),
       summary: map-get($colors, 'lavender-gray'),
-      action: map-get($colors, 'metal-gray')
+      action: (
+        default: map-get($colors, 'metal-gray'),
+        hover: map-get($colors, 'ghost-white')
+      )
     )
   )
 );
@@ -32,6 +38,8 @@ $news-card--themes: (
   @include themes($news-card--themes) {
     @include flex-column(flex-start, flex-start, map-get($spacers, 3));
     padding: $news-card--padding-y $news-card--padding-x;
+
+    height: 100%;
 
     background-color: themed('background-color');
     border: $news-card--border-width solid themed('border-color');
@@ -46,12 +54,15 @@ $news-card--themes: (
     }
 
     &__image {
+      width: 100%;
+      object-fit: cover;
       margin: $news-card-image--margin-y $news-card-image--margin-x;
       border-radius: $border-radius--medium;
     }
 
     &__content {
       @include flex-column(flex-start, flex-start, map-get($spacers, 2));
+      flex-grow: 1;
     }
 
     &__headline {
@@ -60,6 +71,12 @@ $news-card--themes: (
 
     &__summary {
       color: map-get(themed('text-colors'), 'summary');
+      text-overflow: ellipsis;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      word-break: break-word;
     }
 
     &__footer {
@@ -67,7 +84,12 @@ $news-card--themes: (
     }
 
     &__action {
-      color: map-get(themed('text-colors'), 'action');
+      color: map-get(map-get(themed('text-colors'), 'action'), 'default');
+      transition: color 0.2s ease-in-out;
+
+      &:hover {
+        color: map-get(map-get(themed('text-colors'), 'action'), 'hover');
+      }
     }
   }
 }
