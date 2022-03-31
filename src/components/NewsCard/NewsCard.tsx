@@ -2,8 +2,6 @@ import { memo } from 'react';
 
 import { News } from 'types/market';
 
-import { PolkamarketsIconCircle } from 'assets/icons';
-
 import Text from '../Text';
 
 type NewsCardProps = News;
@@ -18,7 +16,6 @@ function NewsCard({
   return (
     <article className="pm-c-news-card">
       <header className="pm-c-news-card__header">
-        <PolkamarketsIconCircle />
         <Text
           as="p"
           scale="tiny"
