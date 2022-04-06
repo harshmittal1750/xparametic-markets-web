@@ -19,4 +19,5 @@ export type Achievement = {
   rarity: AchievementRarity;
   verified: boolean;
   status: string;
+  tokenCount: number;
 };
