@@ -173,9 +173,7 @@ const Market = () => {
             <Tabs.TabPane tab="News (Beta)" id="news">
               <MarketNews news={market.news} />
             </Tabs.TabPane>
-          ) : (
-            <div />
-          )}
+          ) : null}
         </Tabs>
       </div>
     </div>
