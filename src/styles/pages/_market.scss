@@ -97,9 +97,22 @@
         padding-top: 1rem;
       }
     }
+  }
+}
 
-    &__news {
-      color: themed('news-text-color');
+.pm-p-market-news {
+  &__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28rem, 1fr));
+    gap: 2.4rem;
+    justify-items: center;
+
+    @include breakpoint-to('md') {
+      justify-items: stretch;
     }
+  }
+
+  &__item {
+    height: 100%;
   }
 }

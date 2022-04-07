@@ -72,7 +72,8 @@ const initialState: MarketInitialState = {
       isFinalized: false,
       isClaimed: false,
       finalizeTs: 0
-    }
+    },
+    news: []
   },
   chartViews: chartViewsEnum,
   chartViewType: 'marketOverview',
