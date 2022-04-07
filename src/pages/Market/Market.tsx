@@ -169,9 +169,13 @@ const Market = () => {
               emptyDataDescription="You have no positions."
             />
           </Tabs.TabPane>
-          <Tabs.TabPane tab="News" id="news">
-            <MarketNews news={market.news} />
-          </Tabs.TabPane>
+          {market.news && market.news.length > 0 ? (
+            <Tabs.TabPane tab="News (Beta)" id="news">
+              <MarketNews news={market.news} />
+            </Tabs.TabPane>
+          ) : (
+            <div />
+          )}
         </Tabs>
       </div>
     </div>
