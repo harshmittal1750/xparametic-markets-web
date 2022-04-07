@@ -1,13 +1,16 @@
-import React, {
+import {
   createContext,
   useContext,
   useEffect,
   useMemo,
-  useState
+  useState,
+  ReactNode,
+  Children
 } from 'react';
 
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import isNull from 'lodash/isNull';
 import isUndefined from 'lodash/isUndefined';
 
 import Divider from '../Divider';
@@ -15,11 +18,16 @@ import Divider from '../Divider';
 const ActiveTabContext = createContext({});
 
 function getChildrenTabs(children): { name: string; id: string }[] {
-  const tabs = React.Children.map(children, child => {
-    return { name: child.props.tab, id: child.props.id };
-  });
+  return Children.map(children, child => {
+    if (!isNull(child)) {
+      return {
+        name: child.props.tab,
+        id: child.props.id
+      };
+    }
 
-  return tabs;
+    return child;
+  }).filter(child => !isNull(child));
 }
 
 type TabPaneProps = {
@@ -31,7 +39,7 @@ type TabPaneProps = {
    * Id of the tab pane
    */
   id: string;
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
 function TabPane({ tab, id, children }: TabPaneProps) {
@@ -55,8 +63,8 @@ type TabsProps = {
   /**
    * Custom filter component
    */
-  filters?: React.ReactNode[];
-  children?: React.ReactNode;
+  filters?: ReactNode[];
+  children?: ReactNode;
 };
 
 /**
