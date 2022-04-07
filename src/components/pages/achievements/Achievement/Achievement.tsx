@@ -58,12 +58,11 @@ function Achievement({
   actionTitle,
   rarity,
   status,
+  tokenCount,
   onClaimCompleted
 }: AchievementProps & AditionalAchievementProps) {
   const { networkConfig } = useNetwork();
   const [isClaimingNFT, setIsClaimingNFT] = useState(false);
-
-  const claimCount = 10;
 
   async function claimNFT() {
     setIsClaimingNFT(true);
@@ -139,10 +138,10 @@ function Achievement({
         </div>
       </div>
       <div className="pm-c-achievement__footer flex-row gap-3 justify-center align-center padding-4 border-solid border-radius-bottom-corners-small">
-        {/* <span className="pm-c-achievement__claim-count tiny-uppercase semibold">
-          {`${claimCount} claimed`}
+        <span className="pm-c-achievement__claim-count tiny-uppercase semibold">
+          {`${tokenCount} claimed`}
         </span>
-        <Divider variant="circle" /> */}
+        <Divider variant="circle" />
         <span
           className={`pm-c-achievement__rarity--${rarity} tiny-uppercase semibold`}
         >
