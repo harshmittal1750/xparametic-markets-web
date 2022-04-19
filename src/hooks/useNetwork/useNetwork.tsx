@@ -19,20 +19,21 @@ declare global {
   }
 }
 
-const DEFAULT_NETWORK_ID = toHexadecimal(REACT_APP_NETWORK_ID || 42);
-const DEFAULT_NETWORK = NETWORKS[DEFAULT_NETWORK_ID];
-const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
-
-const UNKNOWN_NETWORK = NETWORKS['0x270f'];
-
-const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
-
 function fetchUserData(networkConfig: NetworkConfig) {
   store.dispatch(login(networkConfig));
   store.dispatch(fetchAditionalData(networkConfig));
 }
 
 function useNetwork() {
+  // Constants
+  const DEFAULT_NETWORK_ID = toHexadecimal(REACT_APP_NETWORK_ID || 42);
+  const DEFAULT_NETWORK = NETWORKS[DEFAULT_NETWORK_ID];
+  const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
+
+  const UNKNOWN_NETWORK = NETWORKS['0x270f'];
+
+  const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
+
   // Third-party hooks
   const location = useLocation();
   const history = useHistory();
