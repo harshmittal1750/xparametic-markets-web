@@ -8,14 +8,18 @@ import {
 
 import { WalletIcon } from 'assets/icons';
 
-import { useAppSelector, useAppDispatch } from 'hooks';
+import { useAppSelector, useAppDispatch, useNetwork } from 'hooks';
 
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 import { calculateTradeDetails } from './utils';
 
 function TradeFormInput() {
+  const { network } = useNetwork();
   const currency = useAppSelector(state => state.market.market.currency);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
   const { name, ticker, icon } = currency;
   const dispatch = useAppDispatch();
   const type = useAppSelector(state => state.trade.type);
@@ -28,6 +32,8 @@ function TradeFormInput() {
   const selectedOutcomeId = useAppSelector(
     state => state.trade.selectedOutcomeId
   );
+
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
   const balance = useAppSelector(state => state.bepro.ethBalance);
@@ -109,17 +115,19 @@ function TradeFormInput() {
         <label className="pm-c-amount-input__header-title" htmlFor={label}>
           {label}
         </label>
-        <div className="pm-c-amount-input__header-wallet">
-          <figure aria-label="Wallet icon">
-            <WalletIcon />
-          </figure>
-          <Text as="strong" scale="tiny" fontWeight="semibold">
-            {max()}
-          </Text>
-          <Text as="span" scale="tiny" fontWeight="semibold">
-            {type === 'buy' ? ticker : ' Shares'}
-          </Text>
-        </div>
+        {!isWrongNetwork ? (
+          <div className="pm-c-amount-input__header-wallet">
+            <figure aria-label="Wallet icon">
+              <WalletIcon />
+            </figure>
+            <Text as="strong" scale="tiny" fontWeight="semibold">
+              {max()}
+            </Text>
+            <Text as="span" scale="tiny" fontWeight="semibold">
+              {type === 'buy' ? ticker : ' Shares'}
+            </Text>
+          </div>
+        ) : null}
       </div>
       <div className="pm-c-amount-input__group">
         <input
@@ -133,9 +141,14 @@ function TradeFormInput() {
           max={max()}
           onChange={event => handleChangeAmount(event)}
           onWheel={event => event.currentTarget.blur()}
+          disabled={isWrongNetwork}
         />
         <div className="pm-c-amount-input__actions">
-          <button type="button" onClick={handleSetMaxAmount}>
+          <button
+            type="button"
+            onClick={handleSetMaxAmount}
+            disabled={isWrongNetwork}
+          >
             <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
               Max
             </Text>
@@ -160,6 +173,7 @@ function TradeFormInput() {
       <StepSlider
         currentValue={stepAmount}
         onChange={value => handleChangeSlider(value)}
+        disabled={isWrongNetwork}
       />
     </form>
   );
