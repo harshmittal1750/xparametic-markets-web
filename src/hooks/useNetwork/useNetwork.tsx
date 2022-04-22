@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 
 import { environment } from 'config';
 import { NetworkConfig } from 'config/environment';
@@ -33,10 +32,6 @@ function fetchUserData(networkConfig: NetworkConfig) {
 }
 
 function useNetwork() {
-  // Third-party hooks
-  const location = useLocation();
-  const history = useHistory();
-
   // Custom hooks
   const dispatch = useAppDispatch();
   const [localNetwork, setLocalNetwork] = useLocalStorage<string>(
@@ -101,20 +96,18 @@ function useNetwork() {
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('chainChanged', () => {
-        history.push(`${location.pathname}?m=f`);
         window.location.reload();
       });
     }
-  }, [history, location.pathname]);
+  }, []);
 
   useEffect(() => {
     if (window.ethereum) {
       window.ethereum.on('accountsChanged', () => {
-        history.push(`${location.pathname}?m=f`);
         window.location.reload();
       });
     }
-  }, [history, location.pathname]);
+  }, []);
 
   return {
     network,
