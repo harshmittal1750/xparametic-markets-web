@@ -53,7 +53,7 @@ const Market = () => {
 
   useEffect(() => {
     function goToHomePage() {
-      history.push('/?m=f');
+      history.push('/');
       window.location.reload();
     }
 
