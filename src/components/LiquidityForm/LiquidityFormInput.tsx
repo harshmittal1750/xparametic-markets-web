@@ -6,18 +6,24 @@ import {
   setLiquidityDetails
 } from 'redux/ducks/liquidity';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import AmountInput from '../AmountInput';
 import { calculateLiquidityDetails } from './utils';
 
 function LiquidityFormInput() {
   const dispatch = useAppDispatch();
+  const { network } = useNetwork();
   const transactionType = useAppSelector(
     state => state.liquidity.transactionType
   );
   const market = useAppSelector(state => state.market.market);
   const marketId = useAppSelector(state => state.market.market.id);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
+
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
   const balance = useAppSelector(state => state.bepro.ethBalance);
@@ -77,6 +83,7 @@ function LiquidityFormInput() {
         max={max()}
         onChange={liquidityAmount => handleChangeAmount(liquidityAmount)}
         currency={currentCurrency()}
+        disabled={isWrongNetwork}
       />
     </div>
   );
