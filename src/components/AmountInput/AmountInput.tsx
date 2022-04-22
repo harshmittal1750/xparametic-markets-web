@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-indent */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
@@ -13,6 +14,7 @@ type AmountInputProps = {
   onChange: (value: number) => void;
   currency: any;
   customHeaderItem?: React.ReactNode;
+  disabled?: boolean;
 };
 
 function round(value) {
@@ -24,7 +26,8 @@ function AmountInput({
   max,
   onChange,
   currency,
-  customHeaderItem
+  customHeaderItem,
+  disabled = false
 }: AmountInputProps) {
   const [amount, setAmount] = useState<number | undefined>(0);
   const [stepAmount, setStepAmount] = useState<number>(0);
@@ -70,19 +73,26 @@ function AmountInput({
         <label className="pm-c-amount-input__header-title" htmlFor={label}>
           {label}
         </label>
-        {customHeaderItem || (
-          <div className="pm-c-amount-input__header-wallet">
-            <figure aria-label="Wallet">
-              <WalletIcon />
-            </figure>
-            <Text as="strong" scale="tiny" fontWeight="semibold" color="light">
-              {max}
-            </Text>
-            <Text as="span" scale="tiny" fontWeight="semibold" color="gray">
-              {currency.ticker}
-            </Text>
-          </div>
-        )}
+        {!disabled
+          ? customHeaderItem || (
+              <div className="pm-c-amount-input__header-wallet">
+                <figure aria-label="Wallet">
+                  <WalletIcon />
+                </figure>
+                <Text
+                  as="strong"
+                  scale="tiny"
+                  fontWeight="semibold"
+                  color="light"
+                >
+                  {max}
+                </Text>
+                <Text as="span" scale="tiny" fontWeight="semibold" color="gray">
+                  {currency.ticker}
+                </Text>
+              </div>
+            )
+          : null}
       </div>
       <div className="pm-c-amount-input__group">
         <input
@@ -95,9 +105,14 @@ function AmountInput({
           max={max}
           onChange={event => handleChangeAmount(event)}
           onWheel={event => event.currentTarget.blur()}
+          disabled={disabled}
         />
         <div className="pm-c-amount-input__actions">
-          <button type="button" onClick={handleSetMaxAmount}>
+          <button
+            type="button"
+            onClick={handleSetMaxAmount}
+            disabled={disabled}
+          >
             Max
           </button>
           <div className="pm-c-amount-input__logo">
@@ -113,6 +128,7 @@ function AmountInput({
       <StepSlider
         currentValue={stepAmount}
         onChange={value => handleChangeSlider(value)}
+        disabled={disabled}
       />
     </div>
   );
