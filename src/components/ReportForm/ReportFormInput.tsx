@@ -24,11 +24,16 @@ const POLK: Currency = {
 
 function ReportFormInput() {
   const dispatch = useAppDispatch();
-  const { networkConfig } = useNetwork();
+  const { network, networkConfig } = useNetwork();
 
   const { polkBalance } = useAppSelector(state => state.bepro);
   const { finalizeTs } = useAppSelector(state => state.market.market.question);
   const { id, questionId, slug } = useAppSelector(state => state.market.market);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
+
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   const isValidTimestamp = finalizeTs > 0;
   const isOutdated = Date.now() > finalizeTs * 1000;
@@ -97,6 +102,7 @@ function ReportFormInput() {
           <></>
         )
       }
+      disabled={isWrongNetwork}
     />
   );
 }
