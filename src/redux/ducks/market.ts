@@ -2,10 +2,21 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 
+import { Currency } from 'hooks/useNetwork/currencies';
+import NETWORKS from 'hooks/useNetwork/networks';
+
 const chartViewsEnum = [
   { id: 'marketOverview', name: 'Market Overview', color: 'default' },
   { id: 'tradingView', name: 'TradingView', color: 'default' }
 ];
+
+function toHex(value: string) {
+  return `0x${Number(value).toString(16)}`;
+}
+
+function getNetworkById(id: string) {
+  return NETWORKS[toHex(id)];
+}
 
 export interface MarketInitialState {
   market: Market;
@@ -35,6 +46,7 @@ const initialState: MarketInitialState = {
     voided: false,
     questionId: '',
     networkId: '',
+    currency: {} as Currency,
     resolvedOutcomeId: -1,
     outcomes: [
       {
@@ -97,9 +109,11 @@ const marketSlice = createSlice({
         isLoading: false
       }),
       prepare: (market: Market) => {
+        const network = getNetworkById(market.networkId);
         return {
           payload: {
             ...market,
+            currency: network.currency,
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
@@ -120,9 +134,11 @@ const marketSlice = createSlice({
         market: action.payload
       }),
       prepare: (market: Market) => {
+        const network = getNetworkById(market.networkId);
         return {
           payload: {
             ...market,
+            currency: network.currency,
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))

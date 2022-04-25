@@ -12,6 +12,8 @@ import { BeproService, PolkamarketsApiService } from 'services';
 
 import { QuestionIcon } from 'assets/icons';
 
+import NetworkSwitch from 'components/Networks/NetworkSwitch';
+
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
@@ -65,7 +67,9 @@ function ReportFormActions({
   // Selectors
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const isPolkApproved = useAppSelector(state => state.bepro.polkApproved);
-  const { id, questionId } = useAppSelector(state => state.market.market);
+  const { id, questionId, networkId } = useAppSelector(
+    state => state.market.market
+  );
   const { bestAnswer } = useAppSelector(state => state.market.market.question);
   const questionBond = useAppSelector(
     state => state.market.market.question.bond
@@ -73,6 +77,7 @@ function ReportFormActions({
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
+  const isWrongNetwork = network.id !== `${networkId}`;
   const resolvedOutcomeId = BeproService.bytes32ToInt(bestAnswer);
 
   const isWinningOutcome = outcomeId =>
@@ -184,157 +189,35 @@ function ReportFormActions({
 
   return (
     <div className="pm-c-report-form-details__actions">
-      <div className="pm-c-report-form-details__actions-group--column">
-        {!isPolkApproved && !marketQuestionFinalized ? (
-          <Button
-            color="primary"
-            size="sm"
-            fullwidth
-            style={{
-              justifyContent: isApprovingPolk ? 'center' : 'space-between'
-            }}
-            onClick={handleApprovePolk}
-            loading={isApprovingPolk}
-            disabled={isApprovingPolk}
-          >
-            Allow Polkamarkets to use your POLK
-            <Tooltip text="You only have to do this once.">
-              <QuestionIcon
-                style={{ width: '1.4rem', height: '1.4rem', opacity: 0.35 }}
-              />
-            </Tooltip>
-          </Button>
-        ) : null}
-        {approvePolkTransactionSuccess && approvePolkTransactionSuccessHash ? (
-          <ToastNotification id="approvePolk" duration={10000}>
-            <Toast
-              variant="success"
-              title="Success"
-              description="Your transaction is completed!"
+      {isWrongNetwork ? (
+        <div className="pm-c-report-form-details__actions-group--column">
+          <NetworkSwitch />
+        </div>
+      ) : (
+        <div className="pm-c-report-form-details__actions-group--column">
+          {!isPolkApproved && !marketQuestionFinalized ? (
+            <Button
+              color="primary"
+              size="sm"
+              fullwidth
+              style={{
+                justifyContent: isApprovingPolk ? 'center' : 'space-between'
+              }}
+              onClick={handleApprovePolk}
+              loading={isApprovingPolk}
+              disabled={isApprovingPolk}
             >
-              <Toast.Actions>
-                <a
-                  target="_blank"
-                  href={`${network.explorerURL}/tx/${approvePolkTransactionSuccessHash}`}
-                  rel="noreferrer"
-                >
-                  <Button size="sm" color="success">
-                    View on Explorer
-                  </Button>
-                </a>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => close('approvePolk')}
-                >
-                  Dismiss
-                </Button>
-              </Toast.Actions>
-            </Toast>
-          </ToastNotification>
-        ) : null}
-        {showCurrentOutcomeBondWarning ? (
-          <AlertMinimal
-            variant="warning"
-            description={
-              <>
-                {`Placing a bond on the winning outcome will restart the timer.
-                You'll also pay the previous answerer ${roundNumber(
-                  questionBond,
-                  3
-                )} POLK. `}
-                <Link
-                  target="_blank"
-                  href="https://help.polkamarkets.com/en/articles/5610525-how-market-resolution-works"
-                  rel="noreferrer"
-                  variant="warning"
-                  scale="caption"
-                  fontWeight="semibold"
-                  title="Learn more"
+              Allow Polkamarkets to use your POLK
+              <Tooltip text="You only have to do this once.">
+                <QuestionIcon
+                  style={{ width: '1.4rem', height: '1.4rem', opacity: 0.35 }}
                 />
-              </>
-            }
-          />
-        ) : null}
-        {marketQuestionFinalized ? (
-          <Alert
-            variant="success"
-            title="Resolve market"
-            description={
-              <>
-                {`You're one step away from claiming your winnings! The smart contract needs to fetch the
-                 outcome reported by the reporters and calculate the market payouts. `}
-              </>
-            }
-          />
-        ) : null}
-        {marketResolveTransactionSuccess &&
-        marketResolveTransactionSuccessHash ? (
-          <ToastNotification id="marketResolve" duration={10000}>
-            <Toast
-              variant="success"
-              title="Success"
-              description="Your transaction is completed!"
-            >
-              <Toast.Actions>
-                <a
-                  target="_blank"
-                  href={`${network.explorerURL}/tx/${marketResolveTransactionSuccessHash}`}
-                  rel="noreferrer"
-                >
-                  <Button size="sm" color="success">
-                    View on Explorer
-                  </Button>
-                </a>
-                <Button
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => close('marketResolve')}
-                >
-                  Dismiss
-                </Button>
-              </Toast.Actions>
-            </Toast>
-          </ToastNotification>
-        ) : null}
-        <div className="pm-c-report-form-details__actions-group--row">
-          {!isMarketPage ? (
-            <Button variant="subtle" color="default" onClick={handleCancel}>
-              Cancel
+              </Tooltip>
             </Button>
           ) : null}
-          {marketQuestionFinalized ? (
-            <Button
-              type="button"
-              color="success"
-              fullwidth
-              onClick={handleResolve}
-              disabled={isResolvingMarket}
-              loading={isResolvingMarket}
-            >
-              Resolve
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              color={showCurrentOutcomeBondWarning ? 'warning' : 'primary'}
-              fullwidth
-              onClick={handleBond}
-              disabled={
-                !isPolkApproved ||
-                bond.value === 0 ||
-                isBonding ||
-                has(errors, 'bond')
-              }
-              loading={isBonding}
-            >
-              Bond
-            </Button>
-          )}
-
-          {/* TODO: Create notifications by type (ex: Transaction completed) */}
-          {bondTransactionSuccess && bondTransactionSuccessHash ? (
-            <ToastNotification id="bond" duration={10000}>
+          {approvePolkTransactionSuccess &&
+          approvePolkTransactionSuccessHash ? (
+            <ToastNotification id="approvePolk" duration={10000}>
               <Toast
                 variant="success"
                 title="Success"
@@ -343,7 +226,7 @@ function ReportFormActions({
                 <Toast.Actions>
                   <a
                     target="_blank"
-                    href={`${network.explorerURL}/tx/${bondTransactionSuccessHash}`}
+                    href={`${network.explorerURL}/tx/${approvePolkTransactionSuccessHash}`}
                     rel="noreferrer"
                   >
                     <Button size="sm" color="success">
@@ -353,7 +236,7 @@ function ReportFormActions({
                   <Button
                     size="sm"
                     variant="ghost"
-                    onClick={() => close('bond')}
+                    onClick={() => close('approvePolk')}
                   >
                     Dismiss
                   </Button>
@@ -361,8 +244,137 @@ function ReportFormActions({
               </Toast>
             </ToastNotification>
           ) : null}
+          {showCurrentOutcomeBondWarning ? (
+            <AlertMinimal
+              variant="warning"
+              description={
+                <>
+                  {`Placing a bond on the winning outcome will restart the timer.
+                You'll also pay the previous answerer ${roundNumber(
+                  questionBond,
+                  3
+                )} POLK. `}
+                  <Link
+                    target="_blank"
+                    href="https://help.polkamarkets.com/en/articles/5610525-how-market-resolution-works"
+                    rel="noreferrer"
+                    variant="warning"
+                    scale="caption"
+                    fontWeight="semibold"
+                    title="Learn more"
+                  />
+                </>
+              }
+            />
+          ) : null}
+          {marketQuestionFinalized ? (
+            <Alert
+              variant="success"
+              title="Resolve market"
+              description={
+                <>
+                  {`You're one step away from claiming your winnings! The smart contract needs to fetch the
+                 outcome reported by the reporters and calculate the market payouts. `}
+                </>
+              }
+            />
+          ) : null}
+          {marketResolveTransactionSuccess &&
+          marketResolveTransactionSuccessHash ? (
+            <ToastNotification id="marketResolve" duration={10000}>
+              <Toast
+                variant="success"
+                title="Success"
+                description="Your transaction is completed!"
+              >
+                <Toast.Actions>
+                  <a
+                    target="_blank"
+                    href={`${network.explorerURL}/tx/${marketResolveTransactionSuccessHash}`}
+                    rel="noreferrer"
+                  >
+                    <Button size="sm" color="success">
+                      View on Explorer
+                    </Button>
+                  </a>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    onClick={() => close('marketResolve')}
+                  >
+                    Dismiss
+                  </Button>
+                </Toast.Actions>
+              </Toast>
+            </ToastNotification>
+          ) : null}
+          <div className="pm-c-report-form-details__actions-group--row">
+            {!isMarketPage ? (
+              <Button variant="subtle" color="default" onClick={handleCancel}>
+                Cancel
+              </Button>
+            ) : null}
+            {marketQuestionFinalized ? (
+              <Button
+                type="button"
+                color="success"
+                fullwidth
+                onClick={handleResolve}
+                disabled={isResolvingMarket}
+                loading={isResolvingMarket}
+              >
+                Resolve
+              </Button>
+            ) : (
+              <Button
+                type="submit"
+                color={showCurrentOutcomeBondWarning ? 'warning' : 'primary'}
+                fullwidth
+                onClick={handleBond}
+                disabled={
+                  !isPolkApproved ||
+                  bond.value === 0 ||
+                  isBonding ||
+                  has(errors, 'bond')
+                }
+                loading={isBonding}
+              >
+                Bond
+              </Button>
+            )}
+
+            {/* TODO: Create notifications by type (ex: Transaction completed) */}
+            {bondTransactionSuccess && bondTransactionSuccessHash ? (
+              <ToastNotification id="bond" duration={10000}>
+                <Toast
+                  variant="success"
+                  title="Success"
+                  description="Your transaction is completed!"
+                >
+                  <Toast.Actions>
+                    <a
+                      target="_blank"
+                      href={`${network.explorerURL}/tx/${bondTransactionSuccessHash}`}
+                      rel="noreferrer"
+                    >
+                      <Button size="sm" color="success">
+                        View on Explorer
+                      </Button>
+                    </a>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => close('bond')}
+                    >
+                      Dismiss
+                    </Button>
+                  </Toast.Actions>
+                </Toast>
+              </ToastNotification>
+            ) : null}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

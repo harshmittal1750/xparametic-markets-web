@@ -28,9 +28,7 @@ type Params = {
 const Market = () => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = useAppSelector(state => state.market.market.currency);
   const { symbol, ticker } = currency;
   const { network, setNetwork } = useNetwork();
   const { marketId } = useParams<Params>();
@@ -65,22 +63,6 @@ const Market = () => {
       if (retries < 3) {
         setRetries(retries + 1);
       } else {
-        goToHomePage();
-      }
-    }
-
-    if (!isLoading && market.id !== '') {
-      if (
-        `${market.networkId}` !== network.id &&
-        (!window.ethereum || !isLoggedIn)
-      ) {
-        setNetwork(market.networkId);
-      } else if (
-        isLoggedIn &&
-        networkId &&
-        // eslint-disable-next-line radix
-        `0x${parseInt(market.networkId).toString(16)}` !== networkId
-      ) {
         goToHomePage();
       }
     }

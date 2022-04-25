@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import ChartHeader from '../ChartHeader';
 import LineChart from '../LineChart';
@@ -16,11 +16,8 @@ const intervals = [
 ];
 
 function TradeFormCharts() {
-  const {
-    network: { currency }
-  } = useNetwork();
-  const { ticker } = currency;
   const location = useLocation();
+  const ticker = useAppSelector(state => state.market.market.currency.ticker);
   const predictions = useAppSelector(state => state.market.market.outcomes);
   const marketSlug = useAppSelector(state => state.market.market.slug);
 
