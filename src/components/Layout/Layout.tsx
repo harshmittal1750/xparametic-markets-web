@@ -1,6 +1,6 @@
-import { ReactNode, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { ReactNode } from 'react';
 
+import { useCookie } from 'hooks';
 import useAlertNotification from 'hooks/useAlertNotification';
 
 import BetaWarning from '../BetaWarning';
@@ -17,10 +17,9 @@ type LayoutProps = {
 
 function Layout({ children }: LayoutProps) {
   const { alertList } = useAlertNotification();
-  const location = useLocation();
-  const modalVisibility = new URLSearchParams(location.search).get('m');
 
-  const [modalVisible, setModalVisible] = useState(modalVisibility !== 'f');
+  const [modalCookie, setModalCookie] = useCookie('modalVisible', 'true');
+  const modalVisible = modalCookie === 'true';
 
   const hasAlertNotification = alertList.size > 0;
 
@@ -28,7 +27,7 @@ function Layout({ children }: LayoutProps) {
     <>
       {modalVisible ? (
         <Modal>
-          <BetaWarning handleChangeModalVisibility={setModalVisible} />
+          <BetaWarning handleChangeModalVisibility={setModalCookie} />
         </Modal>
       ) : null}
       <div className="pm-l-layout">
