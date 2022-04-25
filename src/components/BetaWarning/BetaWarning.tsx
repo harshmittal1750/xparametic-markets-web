@@ -9,7 +9,7 @@ import Link from '../Link';
 import Text from '../Text';
 
 type BetaWarningProps = {
-  handleChangeModalVisibility: (visible: string) => void;
+  handleChangeModalVisibility: (visible: boolean) => void;
 };
 
 function BetaWarning({ handleChangeModalVisibility }: BetaWarningProps) {
@@ -87,7 +87,7 @@ function BetaWarning({ handleChangeModalVisibility }: BetaWarningProps) {
           color="warning"
           fullwidth
           disabled={!acceptedTerms}
-          onClick={() => handleChangeModalVisibility('false')}
+          onClick={() => handleChangeModalVisibility(false)}
         >
           Proceed
         </Button>
