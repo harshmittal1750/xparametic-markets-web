@@ -66,22 +66,6 @@ const Market = () => {
         goToHomePage();
       }
     }
-
-    if (!isLoading && market.id !== '') {
-      if (
-        `${market.networkId}` !== network.id &&
-        (!window.ethereum || !isLoggedIn)
-      ) {
-        setNetwork(market.networkId);
-      } else if (
-        isLoggedIn &&
-        networkId &&
-        // eslint-disable-next-line radix
-        `0x${parseInt(market.networkId).toString(16)}` !== networkId
-      ) {
-        // goToHomePage();
-      }
-    }
   }, [
     error,
     history,
