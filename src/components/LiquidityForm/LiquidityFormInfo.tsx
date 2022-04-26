@@ -15,6 +15,7 @@ function LiquidityFormInfo() {
               aria-label="Learn more"
               target="_blank"
               rel="noreferrer"
+              variant="warning"
               scale="caption"
               fontWeight="medium"
             />
