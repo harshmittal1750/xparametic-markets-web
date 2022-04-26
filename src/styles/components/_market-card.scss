@@ -88,6 +88,13 @@
       transition: $market-outcome-text-transitions;
     }
 
+    &-title {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+    }
+
     &-chart {
       display: none;
 
