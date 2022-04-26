@@ -63,12 +63,14 @@ function TradeFormInput() {
 
   const [amount, setAmount] = useState<number | undefined>(0);
   const [stepAmount, setStepAmount] = useState<number>(0);
+  const [touched, setTouched] = useState(false);
 
   useEffect(() => {
     dispatch(setMaxAmount(max()));
   }, [dispatch, max, type]);
 
   useEffect(() => {
+    setTouched(false);
     dispatch(setTradeAmount(0));
     setAmount(0);
     setStepAmount(0);
@@ -99,7 +101,17 @@ function TradeFormInput() {
     setStepAmount(100);
   }
 
+  function handleFocus() {
+    if (!touched) {
+      handleSetMaxAmount();
+    }
+
+    setTouched(true);
+  }
+
   function handleChangeSlider(value: number) {
+    setTouched(true);
+
     const percentage = value / 100;
 
     const newAmount = roundDown(max() * percentage);
@@ -139,6 +151,7 @@ function TradeFormInput() {
           step=".0001"
           min={0}
           max={max()}
+          onFocus={() => handleFocus()}
           onChange={event => handleChangeAmount(event)}
           onWheel={event => event.currentTarget.blur()}
           disabled={isWrongNetwork}
