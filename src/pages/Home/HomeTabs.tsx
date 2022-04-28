@@ -1,7 +1,10 @@
+import { useCallback } from 'react';
+
 import {
   getFavoriteMarkets,
   getMarkets,
   setFilterByVerified,
+  setSorterByEndingSoon,
   setSorter
 } from 'redux/ducks/markets';
 
@@ -26,6 +29,13 @@ function HomeTabs({
   function handleChangeFilterInline(filterByVerifiedMarkets: boolean) {
     dispatch(setFilterByVerified(filterByVerifiedMarkets));
   }
+
+  const handleTouchedFilter = useCallback(
+    (touched: boolean) => {
+      dispatch(setSorterByEndingSoon(!touched));
+    },
+    [dispatch]
+  );
 
   function handleSelectedFilter(filter: {
     value: string | number;
@@ -53,6 +63,7 @@ function HomeTabs({
           defaultOption="volume"
           options={filters}
           onChange={handleSelectedFilter}
+          onTouch={handleTouchedFilter}
         />
       ]}
     >
