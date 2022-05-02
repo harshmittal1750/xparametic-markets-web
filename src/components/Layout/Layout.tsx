@@ -1,6 +1,9 @@
-import { ReactNode, useState } from 'react';
+import { ReactNode, useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import isNull from 'lodash/isNull';
+
+import { useCookie } from 'hooks';
 import useAlertNotification from 'hooks/useAlertNotification';
 
 import BetaWarning from '../BetaWarning';
@@ -16,19 +19,42 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
+  // Hooks
   const { alertList } = useAlertNotification();
   const location = useLocation();
-  const modalVisibility = new URLSearchParams(location.search).get('m');
 
-  const [modalVisible, setModalVisible] = useState(modalVisibility !== 'f');
-
+  // Derivated state
   const hasAlertNotification = alertList.size > 0;
+  const modalVisibilitySearchParam = new URLSearchParams(location.search).get(
+    'm'
+  );
+
+  const [modalVisibleParam, setModalVisibleParam] = useState(
+    isNull(modalVisibilitySearchParam) ||
+      (!isNull(modalVisibilitySearchParam) &&
+        modalVisibilitySearchParam !== 'f')
+  );
+  const [modalVisibleCookie, setModalVisibleCookie] = useCookie(
+    'modalVisible',
+    'true'
+  );
+
+  const changeModalVisibility = useCallback(
+    (visible: string) => {
+      setModalVisibleParam(visible === 'true');
+      setModalVisibleCookie(visible);
+    },
+    [setModalVisibleCookie]
+  );
+
+  const modalVisible =
+    modalVisibleParam || (!modalVisibleParam && modalVisibleCookie === 'true');
 
   return (
     <>
       {modalVisible ? (
         <Modal>
-          <BetaWarning handleChangeModalVisibility={setModalVisible} />
+          <BetaWarning handleChangeModalVisibility={changeModalVisibility} />
         </Modal>
       ) : null}
       <div className="pm-l-layout">
