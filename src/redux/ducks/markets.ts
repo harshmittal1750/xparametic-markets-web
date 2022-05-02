@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import dayjs from 'dayjs';
+import inRange from 'lodash/inRange';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
 import { Category } from 'models/category';
@@ -23,6 +25,7 @@ export interface MarketsIntialState {
   };
   filter: string;
   filterByVerified: boolean;
+  sorterByEndingSoon: boolean;
   sorter: {
     value: string;
     sortBy: any | undefined;
@@ -45,6 +48,7 @@ const initialState: MarketsIntialState = {
   },
   filter: '',
   filterByVerified: true,
+  sorterByEndingSoon: true,
   sorter: {
     value: 'featured',
     sortBy: undefined
@@ -105,6 +109,10 @@ const marketsSlice = createSlice({
       ...state,
       filterByVerified: action.payload
     }),
+    setSorterByEndingSoon: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      sorterByEndingSoon: action.payload
+    }),
     setSorter: (state, action) => ({
       ...state,
       sorter: {
@@ -160,6 +168,7 @@ const {
   error,
   setFilter,
   setFilterByVerified,
+  setSorterByEndingSoon,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -169,6 +178,7 @@ const {
 export {
   setFilter,
   setFilterByVerified,
+  setSorterByEndingSoon,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -183,9 +193,21 @@ export const filteredMarketsSelector = (
   const regExpFullFilter = new RegExp(`^${state.filter}$`, 'i');
   const verifiedFilter = verified =>
     state.filterByVerified ? state.filterByVerified && verified : true;
+  const isEndingSoonFilter = expiresAt =>
+    inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
-  function sorted(markets) {
+  function sorted(markets: Market[]) {
     if (state.sorter.sortBy) {
+      if (state.sorterByEndingSoon) {
+        return [
+          ...markets.filter(market => isEndingSoonFilter(market.expiresAt)),
+          ...orderBy(
+            markets.filter(market => !isEndingSoonFilter(market.expiresAt)),
+            [state.sorter.value],
+            [state.sorter.sortBy]
+          )
+        ];
+      }
       return orderBy(markets, [state.sorter.value], [state.sorter.sortBy]);
     }
 
