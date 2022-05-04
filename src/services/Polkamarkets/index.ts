@@ -6,8 +6,8 @@ import { getAchievementsTransformResponse } from './functions';
 import {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
-  GetMarketByStateArgs,
-  GetMarketByStateData,
+  GetMarketsByStateArgs,
+  GetMarketsByStateData,
   GetMarketsByIdsArgs,
   GetMarketsByIdsData,
   ReloadMarketBySlugArgs,
@@ -35,11 +35,11 @@ const polkamarketsApi = createApi({
       transformResponse: (response: GetMarketBySlugData) => camelize(response)
     }),
     getMarketsByState: builder.query<
-      GetMarketByStateData,
-      GetMarketByStateArgs
+      GetMarketsByStateData,
+      GetMarketsByStateArgs
     >({
       query: ({ state }) => `/markets?state=${state}`,
-      transformResponse: (response: GetMarketByStateData) => camelize(response)
+      transformResponse: (response: GetMarketsByStateData) => camelize(response)
     }),
     getMarketsByIds: builder.query<GetMarketsByIdsData, GetMarketsByIdsArgs>({
       query: ({ ids }) => `/markets?id=${ids.join(',')}`,
