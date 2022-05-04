@@ -3,16 +3,21 @@ import { roundNumber } from 'helpers/math';
 import { Market } from 'models/market';
 
 import Text from '../Text';
+import Tooltip from '../Tooltip';
 
 type MarketFooterStatsProps = {
   market: Market;
-  ticker: string;
 };
 
-function MarketFooterStats({ market, ticker }: MarketFooterStatsProps) {
-  const { volume, expiresAt, liquidity } = market;
+function MarketFooterStats({ market }: MarketFooterStatsProps) {
+  const { volume, expiresAt, liquidity, network } = market;
+  const { currency } = network;
+
   return (
     <div className="pm-c-market-footer__stats">
+      {network ? (
+        <Tooltip text={network.name}>{network.currency.icon}</Tooltip>
+      ) : null}
       {volume ? (
         <Text
           as="span"
@@ -27,7 +32,7 @@ function MarketFooterStats({ market, ticker }: MarketFooterStatsProps) {
             fontWeight="semibold"
             color="lighter-gray"
           >
-            {`${roundNumber(volume, 3)} ${ticker}`}
+            {`${roundNumber(volume, 3)} ${currency.ticker}`}
           </Text>
         </Text>
       ) : null}
@@ -43,7 +48,7 @@ function MarketFooterStats({ market, ticker }: MarketFooterStatsProps) {
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
           {`Liquidity: `}
           <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-            {`${roundNumber(liquidity, 3)} ${ticker}`}
+            {`${roundNumber(liquidity, 3)} ${currency.ticker}`}
           </Text>
         </Text>
       ) : null}
