@@ -1,6 +1,7 @@
 import { Market } from 'models/market';
 import { Portfolio } from 'models/portfolio';
 import { Achievement } from 'types/achievement';
+import { MarketState } from 'types/market';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -9,15 +10,17 @@ export type GetMarketBySlugArgs = {
 };
 
 // getMarketsByState
-export type GetMarketByStateData = Market[];
-export type GetMarketByStateArgs = {
-  state: 'open' | 'closed' | 'resolved';
+export type GetMarketsByStateData = Market[];
+export type GetMarketsByStateArgs = {
+  state: MarketState;
+  networkId?: string;
 };
 
 // getMarketsByIds
 export type GetMarketsByIdsData = Market[];
 export type GetMarketsByIdsArgs = {
   ids: string[];
+  networkId?: string;
 };
 
 // reloadMarketBySlug
