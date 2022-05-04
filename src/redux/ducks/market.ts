@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
+import { Currency } from 'types/currency';
+import { Network } from 'types/network';
 
-import { Currency } from 'hooks/useNetwork/currencies';
 import NETWORKS from 'hooks/useNetwork/networks';
 
 const chartViewsEnum = [
@@ -46,6 +47,7 @@ const initialState: MarketInitialState = {
     voided: false,
     questionId: '',
     networkId: '',
+    network: {} as Network,
     currency: {} as Currency,
     resolvedOutcomeId: -1,
     outcomes: [
