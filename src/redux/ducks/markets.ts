@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { environment } from 'config';
 import dayjs from 'dayjs';
 import inRange from 'lodash/inRange';
 import orderBy from 'lodash/orderBy';
@@ -6,8 +7,18 @@ import uniqBy from 'lodash/uniqBy';
 import { Category } from 'models/category';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
+import { MarketState } from 'types/market';
 
-import { MarketState } from '../../services/Polkamarkets/market';
+import networks from 'hooks/useNetwork/networks';
+
+const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
+
+const AVAILABLE_NETWORKS = Object.values(networks).filter(network =>
+  AVAILABLE_NETWORKS_IDS.includes(network.id)
+);
+
+const isMarketFromAvailableNetwork = (market: Market) =>
+  AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
 
 export interface MarketsIntialState {
   markets: Market[];
@@ -66,27 +77,47 @@ const marketsSlice = createSlice({
         [action.payload]: true
       }
     }),
-    success: (
-      state,
-      action: PayloadAction<{
-        type: MarketState | string;
-        data: Market[];
-        networkId: string;
-      }>
-    ) => ({
-      ...state,
-      markets: uniqBy([...state.markets, ...action.payload.data], 'id').filter(
-        market => `${market.networkId}` === action.payload.networkId
-      ),
-      isLoading: {
-        ...state.isLoading,
-        [action.payload.type]: false
-      },
-      error: {
-        ...state.error,
-        [action.payload.type]: null
+    success: {
+      reducer: (
+        state,
+        action: PayloadAction<{
+          type: MarketState | string;
+          data: Market[];
+        }>
+      ) => ({
+        ...state,
+        markets: uniqBy(
+          [...state.markets, ...action.payload.data],
+          (market: Market) => `${market.networkId}${market.id}`
+        ).filter(isMarketFromAvailableNetwork),
+        isLoading: {
+          ...state.isLoading,
+          [action.payload.type]: false
+        },
+        error: {
+          ...state.error,
+          [action.payload.type]: null
+        }
+      }),
+      prepare(type: MarketState | string, data: Market[]) {
+        return {
+          payload: {
+            type,
+            data: data.map(market => {
+              const network = AVAILABLE_NETWORKS.find(
+                ({ id }) => id === `${market.networkId}`
+              );
+
+              return {
+                ...market,
+                network
+              } as Market;
+            })
+          },
+          type
+        };
       }
-    }),
+    },
     error: (state, action) => ({
       ...state,
       markets: [],
@@ -239,7 +270,7 @@ export function getMarkets(marketState: MarketState, networkId: string) {
         networkId
       });
       const { data } = response;
-      dispatch(success({ type: marketState, data, networkId }));
+      dispatch(success(marketState, data));
     } catch (err) {
       dispatch(error({ type: marketState, error: err }));
     }
@@ -250,9 +281,9 @@ export function getFavoriteMarkets(ids: string[], networkId) {
   return async dispatch => {
     dispatch(request('favorites'));
     try {
-      const response = await marketService.getMarketsByIds(ids, networkId);
+      const response = await marketService.getMarketsByIds({ ids, networkId });
       const { data } = response;
-      dispatch(success({ type: 'favorites', data, networkId }));
+      dispatch(success('favorites', data));
     } catch (err) {
       dispatch(error({ type: 'favorites', error: err }));
     }
