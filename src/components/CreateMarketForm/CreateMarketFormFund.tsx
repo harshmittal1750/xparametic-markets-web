@@ -54,7 +54,7 @@ function CreateMarketFormFund() {
         styles="outline"
         description={
           <>
-            {`Providing liquidity is risky and could result in near total loss. It is important to withdraw liquidity before the event occurs and to be aware the market could move abruptly at any time. `}
+            {`Providing liquidity is risky and can lead to near total loss. Market prices can move abruptly at any time. `}
             <Link
               title="More Info"
               href="//help.polkamarkets.com/en/articles/6153227-strategies-and-risks-for-liquidity-providers"
