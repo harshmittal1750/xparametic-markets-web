@@ -1,6 +1,6 @@
+import { Currency } from 'types/currency';
 import { News } from 'types/market';
-
-import { Currency } from './currency';
+import { Network } from 'types/network';
 
 export interface PriceChartPoint {
   value: number;
@@ -60,6 +60,7 @@ export interface Market {
   fee: number;
   question: Question;
   networkId: string;
+  network: Network;
   news: News[];
   currency: Currency;
 }
