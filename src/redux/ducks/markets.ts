@@ -2,12 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { environment } from 'config';
 import dayjs from 'dayjs';
 import inRange from 'lodash/inRange';
+import isEmpty from 'lodash/isEmpty';
+import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
 import { Category } from 'models/category';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
+
+import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
 import networks from 'hooks/useNetwork/networks';
 
@@ -277,7 +281,7 @@ export function getMarkets(marketState: MarketState, networkId: string) {
   };
 }
 
-export function getFavoriteMarkets(ids: string[], networkId) {
+export function getFavoriteMarketsByNetwork(ids: string[], networkId) {
   return async dispatch => {
     dispatch(request('favorites'));
     try {
@@ -287,5 +291,17 @@ export function getFavoriteMarkets(ids: string[], networkId) {
     } catch (err) {
       dispatch(error({ type: 'favorites', error: err }));
     }
+  };
+}
+
+export function getFavoriteMarkets(favoriteMarkets: FavoriteMarketsByNetwork) {
+  return async dispatch => {
+    return Promise.all(
+      Object.keys(omitBy(favoriteMarkets, isEmpty)).map(networkId =>
+        dispatch(
+          getFavoriteMarketsByNetwork(favoriteMarkets[networkId], networkId)
+        )
+      )
+    );
   };
 }
