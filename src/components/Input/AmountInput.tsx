@@ -8,6 +8,7 @@ import omit from 'lodash/omit';
 
 import { WalletIcon } from 'assets/icons';
 
+import { Button } from '../Button';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 
@@ -100,14 +101,20 @@ const AmountInput = React.forwardRef<
                   <figure aria-label="Wallet">
                     <WalletIcon />
                   </figure>
-                  <Text
-                    as="strong"
-                    scale="tiny"
-                    fontWeight="semibold"
-                    color="light"
+                  <Button
+                    color="noborder"
+                    onClick={handleSetMaxAmount}
+                    disabled={disabled}
                   >
-                    {max}
-                  </Text>
+                    <Text
+                      as="strong"
+                      scale="tiny"
+                      fontWeight="semibold"
+                      color="light"
+                    >
+                      {max}
+                    </Text>
+                  </Button>
                   <Text
                     as="span"
                     scale="tiny"
