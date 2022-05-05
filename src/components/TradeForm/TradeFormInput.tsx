@@ -10,6 +10,7 @@ import { WalletIcon } from 'assets/icons';
 
 import { useAppSelector, useAppDispatch, useNetwork } from 'hooks';
 
+import { Button } from '../Button';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 import { calculateTradeDetails } from './utils';
@@ -120,9 +121,15 @@ function TradeFormInput() {
             <figure aria-label="Wallet icon">
               <WalletIcon />
             </figure>
-            <Text as="strong" scale="tiny" fontWeight="semibold">
-              {max()}
-            </Text>
+            <Button
+              color="noborder"
+              onClick={handleSetMaxAmount}
+              disabled={isWrongNetwork}
+            >
+              <Text as="strong" scale="tiny" fontWeight="semibold">
+                {max()}
+              </Text>
+            </Button>
             <Text as="span" scale="tiny" fontWeight="semibold">
               {type === 'buy' ? ticker : ' Shares'}
             </Text>
