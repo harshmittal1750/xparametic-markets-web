@@ -16,7 +16,9 @@ function MarketFooterActions({ market }: MarketFooterActionsProps) {
   const { favoriteMarkets, addFavoriteMarket, removeFavoriteMarket } =
     useFavoriteMarkets();
 
-  const isFavoriteMarket = favoriteMarkets[`${networkId}`].includes(id);
+  const isFavoriteMarket =
+    favoriteMarkets[`${networkId}`] &&
+    favoriteMarkets[`${networkId}`].includes(id);
 
   return (
     <div className="pm-c-market-footer__actions">
