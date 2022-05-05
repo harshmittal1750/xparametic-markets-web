@@ -16,33 +16,42 @@ function MarketFooterStats({ market }: MarketFooterStatsProps) {
   return (
     <div className="pm-c-market-footer__stats">
       {network ? (
-        <Tooltip text={network.name}>{network.currency.icon}</Tooltip>
+        <>
+          <Tooltip text={network.name}>{network.currency.icon}</Tooltip>
+          <span className="pm-c-divider--circle" />
+        </>
       ) : null}
       {volume ? (
-        <Text
-          as="span"
-          scale="tiny-uppercase"
-          fontWeight="semibold"
-          color="gray"
-        >
-          {`Volume: `}
+        <>
           <Text
-            as="strong"
+            as="span"
             scale="tiny-uppercase"
             fontWeight="semibold"
-            color="lighter-gray"
+            color="gray"
           >
-            {`${roundNumber(volume, 3)} ${currency.ticker}`}
+            {`Volume: `}
+            <Text
+              as="strong"
+              scale="tiny-uppercase"
+              fontWeight="semibold"
+              color="lighter-gray"
+            >
+              {`${roundNumber(volume, 3)} ${currency.ticker}`}
+            </Text>
           </Text>
-        </Text>
+          <span className="pm-c-divider--circle" />
+        </>
       ) : null}
       {expiresAt ? (
-        <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-          {`Expiration: `}
-          <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-            {dayjs(expiresAt).utc().format('YYYY-MM-DD HH:mm UTC')}
+        <>
+          <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+            {`Expiration: `}
+            <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
+              {dayjs(expiresAt).utc().format('YYYY-MM-DD HH:mm UTC')}
+            </Text>
           </Text>
-        </Text>
+          <span className="pm-c-divider--circle" />
+        </>
       ) : null}
       {liquidity ? (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
