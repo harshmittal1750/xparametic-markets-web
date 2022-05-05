@@ -37,7 +37,7 @@ function LiquidityFormDetails() {
             </Tooltip>
           </Text>
 
-          <Text as="span" scale="body" fontWeight="semibold">
+          <Text as="span" scale="caption" fontWeight="semibold">
             {
               // eslint-disable-next-line prettier/prettier
               `${roundNumber(liquidityDetails.liquidityStake, 3)} ${
@@ -64,7 +64,7 @@ function LiquidityFormDetails() {
               Fees Earned
             </Text>
 
-            <Text as="span" scale="body" fontWeight="semibold">
+            <Text as="span" scale="caption" fontWeight="semibold">
               {
                 // eslint-disable-next-line prettier/prettier
                 `${roundNumber(feesEarned, 3)} ${currency.symbol}`
@@ -117,7 +117,7 @@ function LiquidityFormDetails() {
                 </Tooltip>
               </Text>
 
-              <Text as="span" scale="body" fontWeight="semibold">
+              <Text as="span" scale="caption" fontWeight="semibold">
                 {`${roundNumber(outcomeDetails.stake, 3)} ${currency.symbol}`}
               </Text>
             </div>

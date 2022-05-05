@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 
 import { WalletIcon } from 'assets/icons';
 
+import { Button } from '../Button';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 
@@ -79,14 +80,20 @@ function AmountInput({
                 <figure aria-label="Wallet">
                   <WalletIcon />
                 </figure>
-                <Text
-                  as="strong"
-                  scale="tiny"
-                  fontWeight="semibold"
-                  color="light"
+                <Button
+                  color="noborder"
+                  onClick={handleSetMaxAmount}
+                  disabled={disabled}
                 >
-                  {max}
-                </Text>
+                  <Text
+                    as="strong"
+                    scale="tiny"
+                    fontWeight="semibold"
+                    color="light"
+                  >
+                    {max}
+                  </Text>
+                </Button>
                 <Text as="span" scale="tiny" fontWeight="semibold" color="gray">
                   {currency.ticker}
                 </Text>

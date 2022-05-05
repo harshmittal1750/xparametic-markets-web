@@ -61,6 +61,7 @@ function CreateMarketFormFund() {
               aria-label="More Info"
               target="_blank"
               rel="noreferrer"
+              variant="information"
               scale="tiny"
               fontWeight="medium"
             />

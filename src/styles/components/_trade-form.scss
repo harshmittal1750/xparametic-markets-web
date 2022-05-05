@@ -81,12 +81,6 @@
   @include flex-column;
 
   width: 100%;
-
-  > button {
-    * {
-      margin-left: auto;
-    }
-  }
 }
 
 .pm-c-trade-form-type-selector {
