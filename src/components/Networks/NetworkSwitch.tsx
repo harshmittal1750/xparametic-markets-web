@@ -85,7 +85,7 @@ function NetworkSwitch() {
       loading={isChangingNetwork}
       disabled={isChangingNetwork}
     >
-      {`Switch Network to ${marketNetwork.name}`}
+      Switch Network
     </Button>
   );
 }
