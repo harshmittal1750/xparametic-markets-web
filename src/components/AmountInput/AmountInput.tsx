@@ -31,10 +31,8 @@ function AmountInput({
 }: AmountInputProps) {
   const [amount, setAmount] = useState<number | undefined>(0);
   const [stepAmount, setStepAmount] = useState<number>(0);
-  const [touched, setTouched] = useState(false);
 
   useEffect(() => {
-    setTouched(false);
     onChange(0);
     setAmount(0);
     setStepAmount(0);
@@ -59,16 +57,7 @@ function AmountInput({
     onChange(roundedMax);
   }
 
-  function handleFocus() {
-    if (!touched) {
-      handleSetMaxAmount();
-    }
-
-    setTouched(true);
-  }
-
   function handleChangeSlider(value: number) {
-    setTouched(true);
     const percentage = value / 100;
 
     const newAmount = round(max * percentage);
@@ -114,7 +103,6 @@ function AmountInput({
           step=".00001"
           min={0}
           max={max}
-          onFocus={() => handleFocus()}
           onChange={event => handleChangeAmount(event)}
           onWheel={event => event.currentTarget.blur()}
           disabled={disabled}

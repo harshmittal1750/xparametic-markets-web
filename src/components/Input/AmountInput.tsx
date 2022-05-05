@@ -77,12 +77,6 @@ const AmountInput = React.forwardRef<
       setAmount(roundedMax);
     }
 
-    function handleFocus() {
-      if (!meta.touched) {
-        handleSetMaxAmount();
-      }
-    }
-
     function handleChangeSlider(value: number) {
       setFieldTouched(name, true);
       const percentage = value / 100;
@@ -141,7 +135,6 @@ const AmountInput = React.forwardRef<
             value={amount}
             min={0}
             max={max}
-            onFocus={() => handleFocus()}
             onChange={event => handleChangeAmount(event)}
             onWheel={event => event.currentTarget.blur()}
             disabled={disabled}
