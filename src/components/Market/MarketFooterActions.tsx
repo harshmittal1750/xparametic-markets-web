@@ -12,10 +12,11 @@ type MarketFooterActionsProps = {
 };
 
 function MarketFooterActions({ market }: MarketFooterActionsProps) {
+  const { id, networkId } = market;
   const { favoriteMarkets, addFavoriteMarket, removeFavoriteMarket } =
     useFavoriteMarkets();
 
-  const isFavoriteMarket = favoriteMarkets.includes(market.id);
+  const isFavoriteMarket = favoriteMarkets[`${networkId}`].includes(id);
 
   return (
     <div className="pm-c-market-footer__actions">
@@ -30,8 +31,8 @@ function MarketFooterActions({ market }: MarketFooterActionsProps) {
         color="noborder"
         onClick={
           isFavoriteMarket
-            ? () => removeFavoriteMarket(market.id)
-            : () => addFavoriteMarket(market.id)
+            ? () => removeFavoriteMarket(networkId, id)
+            : () => addFavoriteMarket(networkId, id)
         }
       >
         <FavoriteIcon
