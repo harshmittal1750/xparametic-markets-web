@@ -4,15 +4,68 @@ import { TableColumn, TableRow } from 'components/new/Table';
 
 const columns: TableColumn[] = [
   { title: 'Wallet', key: 'wallet', align: 'left' },
-  { title: 'Volume', key: 'volume', align: 'center' },
-  { title: 'Markets Created', key: 'marketsCreated', align: 'center' },
-  { title: 'Won Predictions', key: 'wonPredictions', align: 'center' },
-  { title: 'Liquidity Added', key: 'liquidityAdded', align: 'center' },
-  { title: 'NFT Achievements', key: 'NFTAchievements', align: 'center' },
+  {
+    title: 'Volume',
+    key: 'volume',
+    align: 'right'
+  },
+  { title: 'Markets Created', key: 'marketsCreated', align: 'right' },
+  { title: 'Won Predictions', key: 'wonPredictions', align: 'right' },
+  { title: 'Liquidity Added', key: 'liquidityAdded', align: 'right' },
+  { title: 'NFT Achievements', key: 'NFTAchievements', align: 'right' },
   { title: 'Rank', key: 'rank', align: 'right' }
 ];
 
-const rows: TableRow[] = [];
+const rows: TableRow[] = [
+  {
+    key: '1',
+    wallet: {
+      address: 'Ox23y8632',
+      place: 1
+    },
+    volume: 0.126,
+    marketsCreated: 124,
+    wonPredictions: 284,
+    liquidityAdded: 100,
+    NFTAchievements: [],
+    rank: {
+      place: 1,
+      change: 'up'
+    }
+  },
+  {
+    key: '2',
+    wallet: {
+      address: 'Ox23y8632',
+      place: 2
+    },
+    volume: 0.126,
+    marketsCreated: 24,
+    wonPredictions: 84,
+    liquidityAdded: 100,
+    NFTAchievements: [],
+    rank: {
+      place: 2,
+      change: 'down'
+    }
+  },
+  {
+    key: '3',
+    wallet: {
+      address: 'Ox23y8632',
+      place: 3
+    },
+    volume: 0.126,
+    marketsCreated: 12,
+    wonPredictions: 28,
+    liquidityAdded: 100,
+    NFTAchievements: [],
+    rank: {
+      place: 3,
+      change: 'stable'
+    }
+  }
+];
 
 function Leaderboard() {
   return (
