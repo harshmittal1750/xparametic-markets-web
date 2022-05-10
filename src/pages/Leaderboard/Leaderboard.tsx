@@ -1,7 +1,10 @@
 import {
   FirstPlaceIcon,
   SecondPlaceIcon,
-  ThirdPlaceIcon
+  ThirdPlaceIcon,
+  RankUpIcon,
+  RankDownIcon,
+  RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
 import { Tabs } from 'components';
@@ -39,6 +42,22 @@ function volumeColumnRender(volume: VolumeColumnRenderArgs) {
   );
 }
 
+type RankColumnRenderArgs = {
+  place: number;
+  change: 'up' | 'down' | 'stable';
+};
+
+function rankColumnRender({ place, change }: RankColumnRenderArgs) {
+  return (
+    <div className="flex-row gap-3">
+      <span className="caption semibold text-1">{place}</span>
+      {change === 'up' ? <RankUpIcon /> : null}
+      {change === 'down' ? <RankDownIcon /> : null}
+      {change === 'stable' ? <RankStableIcon /> : null}
+    </div>
+  );
+}
+
 const columns: TableColumn[] = [
   { title: 'Wallet', key: 'wallet', align: 'left', render: walletColumnRender },
   {
@@ -51,7 +70,7 @@ const columns: TableColumn[] = [
   { title: 'Won Predictions', key: 'wonPredictions', align: 'right' },
   { title: 'Liquidity Added', key: 'liquidityAdded', align: 'right' },
   { title: 'NFT Achievements', key: 'NFTAchievements', align: 'right' },
-  { title: 'Rank', key: 'rank', align: 'right' }
+  { title: 'Rank', key: 'rank', align: 'right', render: rankColumnRender }
 ];
 
 const rows: TableRow[] = [
