@@ -8,6 +8,8 @@ import { Tabs } from 'components';
 import { Table } from 'components/new';
 import { TableColumn, TableRow } from 'components/new/Table';
 
+import { ETH } from 'hooks/useNetwork/currencies';
+
 type WalletColumnRenderArgs = {
   address: string;
   place: number;
@@ -24,12 +26,26 @@ function walletColumnRender({ address, place }: WalletColumnRenderArgs) {
   );
 }
 
+type VolumeColumnRenderArgs = {
+  volume: number;
+};
+
+function volumeColumnRender(volume: VolumeColumnRenderArgs) {
+  return (
+    <span className="caption semibold text-1 whitespace-nowrap">
+      {`${volume} `}
+      {ETH.symbol}
+    </span>
+  );
+}
+
 const columns: TableColumn[] = [
   { title: 'Wallet', key: 'wallet', align: 'left', render: walletColumnRender },
   {
     title: 'Volume',
     key: 'volume',
-    align: 'right'
+    align: 'right',
+    render: volumeColumnRender
   },
   { title: 'Markets Created', key: 'marketsCreated', align: 'right' },
   { title: 'Won Predictions', key: 'wonPredictions', align: 'right' },
