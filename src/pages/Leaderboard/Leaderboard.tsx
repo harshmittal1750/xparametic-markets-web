@@ -1,9 +1,31 @@
+import {
+  FirstPlaceIcon,
+  SecondPlaceIcon,
+  ThirdPlaceIcon
+} from 'assets/icons/pages/leaderboard';
+
 import { Tabs } from 'components';
 import { Table } from 'components/new';
 import { TableColumn, TableRow } from 'components/new/Table';
 
+type WalletColumnRenderArgs = {
+  address: string;
+  place: number;
+};
+
+function walletColumnRender({ address, place }: WalletColumnRenderArgs) {
+  return (
+    <div className="flex-row gap-4">
+      {place === 1 ? <FirstPlaceIcon /> : null}
+      {place === 2 ? <SecondPlaceIcon /> : null}
+      {place === 3 ? <ThirdPlaceIcon /> : null}
+      <span className="caption semibold text-1">{address}</span>
+    </div>
+  );
+}
+
 const columns: TableColumn[] = [
-  { title: 'Wallet', key: 'wallet', align: 'left' },
+  { title: 'Wallet', key: 'wallet', align: 'left', render: walletColumnRender },
   {
     title: 'Volume',
     key: 'volume',
