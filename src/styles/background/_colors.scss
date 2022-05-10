@@ -1,3 +1,41 @@
+:root,
+[data-theme='light'] {
+  --color-bg-1: #f8faff;
+  --color-bg-2: #fbfcfe;
+  --color-bg-3: #f5f6fa;
+  --color-bg-4: #dde1e8;
+}
+
+@supports (--css: variables) {
+  [data-theme='dark'] {
+    --color-bg-1: #0e1016;
+    --color-bg-2: #12141c;
+    --color-bg-3: #171b23;
+    --color-bg-4: #232a36;
+  }
+}
+
+$bg-colors-map: (
+  1: var(--color-bg-1),
+  2: var(--color-bg-2),
+  3: var(--color-bg-3),
+  4: var(--color-bg-4)
+);
+
+@each $bg-color, $bg-color-value in $bg-colors-map {
+  .bg-#{'' + $bg-color} {
+    background-color: $bg-color-value;
+  }
+
+  .bg-#{'' + $bg-color}-on-hover {
+    transition: 0.2s color ease-in-out;
+
+    &:hover {
+      background-color: $bg-color-value;
+    }
+  }
+}
+
 @each $color, $value in $colors {
   .background-#{'' + $color} {
     background-color: $value;
