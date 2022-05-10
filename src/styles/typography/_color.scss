@@ -1,24 +1,24 @@
 :root,
 [data-theme='light'] {
-  --color-text-primary: #313a4c;
-  --color-text-seconday: #637084;
-  --color-text-tertiary: #8293ae;
+  --color-text-1: #313a4c;
+  --color-text-2: #637084;
+  --color-text-3: #8293ae;
   --color-text-inverse: #ffffff;
 }
 
 @supports (--css: variables) {
   [data-theme='dark'] {
-    --color-text-primary: #f9fafb;
-    --color-text-seconday: #c5cad3;
-    --color-text-tertiary: #637084;
+    --color-text-1: #f9fafb;
+    --color-text-2: #c5cad3;
+    --color-text-3: #637084;
     --color-text-inverse: #0e1016;
   }
 }
 
 $text-colors-map: (
-  primary: var(--color-text-primary),
-  secondary: var(--color-text-secondary),
-  tertiary: var(--color-text-tertiary),
+  1: var(--color-text-1),
+  2: var(--color-text-2),
+  3: var(--color-text-3),
   inverse: var(--color-text-inverse)
 );
 
