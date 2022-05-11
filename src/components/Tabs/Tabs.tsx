@@ -64,6 +64,7 @@ type TabsProps = {
    * Custom filter component
    */
   filters?: ReactNode[];
+  fullwidth?: boolean;
   children?: ReactNode;
 };
 
@@ -74,6 +75,7 @@ function Tabs({
   direction = 'row',
   defaultActiveId,
   filters,
+  fullwidth,
   children
 }: TabsProps) {
   const [activeTab, setActiveTab] = useState<string | undefined>(undefined);
@@ -87,7 +89,7 @@ function Tabs({
   if (!activeTab || !children) return null;
 
   return (
-    <div className="pm-c-tabs">
+    <div className={classNames({ 'pm-c-tabs': true, 'width-full': fullwidth })}>
       <div className="pm-c-tabs__header">
         <ul className={`pm-c-tabs__list--${direction}`}>
           {tabs?.map((tab, index) => (
