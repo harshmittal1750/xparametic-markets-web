@@ -4,6 +4,7 @@
   --color-bg-2: #fbfcfe;
   --color-bg-3: #f5f6fa;
   --color-bg-4: #dde1e8;
+  --color-bg-primary: 93, 85, 250;
 }
 
 @supports (--css: variables) {
@@ -19,7 +20,9 @@ $bg-colors-map: (
   1: var(--color-bg-1),
   2: var(--color-bg-2),
   3: var(--color-bg-3),
-  4: var(--color-bg-4)
+  4: var(--color-bg-4),
+  primary: var(--color-bg-primary),
+  primary-10: rgba(var(--color-bg-primary), 0.1)
 );
 
 @each $bg-color, $bg-color-value in $bg-colors-map {
