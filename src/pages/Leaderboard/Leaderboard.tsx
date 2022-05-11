@@ -77,6 +77,7 @@ const rows: TableRow[] = [
   {
     key: '1',
     wallet: {
+      isCurrentUser: false,
       address: 'Ox23y8632',
       place: 1
     },
@@ -93,6 +94,7 @@ const rows: TableRow[] = [
   {
     key: '2',
     wallet: {
+      isCurrentUser: false,
       address: 'Ox23y8632',
       place: 2
     },
@@ -109,6 +111,7 @@ const rows: TableRow[] = [
   {
     key: '3',
     wallet: {
+      isCurrentUser: false,
       address: 'Ox23y8632',
       place: 3
     },
@@ -121,6 +124,24 @@ const rows: TableRow[] = [
       place: 3,
       change: 'stable'
     }
+  },
+  {
+    key: '4',
+    wallet: {
+      isCurrentUser: true,
+      address: 'Ox23y8632',
+      place: 4
+    },
+    volume: 0.12,
+    marketsCreated: 2,
+    wonPredictions: 2,
+    liquidityAdded: 100,
+    NFTAchievements: [],
+    rank: {
+      place: 4,
+      change: 'stable'
+    },
+    highlight: true
   }
 ];
 
