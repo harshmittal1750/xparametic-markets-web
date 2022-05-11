@@ -4,7 +4,8 @@ import {
   ThirdPlaceIcon,
   RankUpIcon,
   RankDownIcon,
-  RankStableIcon
+  RankStableIcon,
+  MyPlaceIcon
 } from 'assets/icons/pages/leaderboard';
 
 import { Tabs } from 'components';
@@ -14,17 +15,48 @@ import { TableColumn, TableRow } from 'components/new/Table';
 import { ETH } from 'hooks/useNetwork/currencies';
 
 type WalletColumnRenderArgs = {
+  isCurrentUser: boolean;
   address: string;
   place: number;
 };
 
-function walletColumnRender({ address, place }: WalletColumnRenderArgs) {
+function walletColumnRender({
+  isCurrentUser,
+  address,
+  place
+}: WalletColumnRenderArgs) {
+  const walletPlace = {
+    1: {
+      icon: <FirstPlaceIcon />,
+      textColor: 'warning'
+    },
+    2: {
+      icon: <SecondPlaceIcon />,
+      textColor: 'violets-are-blue'
+    },
+    3: {
+      icon: <ThirdPlaceIcon />,
+      textColor: 'maximum-blue-green'
+    }
+  }[place] || {
+    icon: null,
+    textColor: '1'
+  };
+
   return (
     <div className="flex-row gap-4">
-      {place === 1 ? <FirstPlaceIcon /> : null}
-      {place === 2 ? <SecondPlaceIcon /> : null}
-      {place === 3 ? <ThirdPlaceIcon /> : null}
-      <span className="caption semibold text-1">{address}</span>
+      {walletPlace.icon}
+      {isCurrentUser ? <MyPlaceIcon /> : null}
+      <span
+        className={`caption semibold text-${
+          isCurrentUser ? '1' : walletPlace.textColor
+        }`}
+      >
+        {address}
+        {isCurrentUser ? (
+          <span className="caption semibold text-3">{` (You)`}</span>
+        ) : null}
+      </span>
     </div>
   );
 }
