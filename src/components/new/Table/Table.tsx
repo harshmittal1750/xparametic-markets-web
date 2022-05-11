@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 
+import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 
 import { AlertMini } from 'components';
@@ -15,6 +16,7 @@ export type TableColumn = {
 
 export type TableRow = {
   key: string;
+  highlight?: boolean;
   [key: string]: any;
 };
 
@@ -50,7 +52,11 @@ function Table({
         <tbody>
           {rows?.map(row => (
             <tr
-              className="bg-1 bg-3-on-hover border-solid-top border-1"
+              className={classNames({
+                'bg-1 bg-3-on-hover': !row.highlight,
+                'bg-primary-10': row.highlight,
+                'border-solid-top border-1': true
+              })}
               key={row.key}
             >
               {columns.map(column => (
