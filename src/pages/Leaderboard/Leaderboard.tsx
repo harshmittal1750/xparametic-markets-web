@@ -49,7 +49,7 @@ type RankColumnRenderArgs = {
 
 function rankColumnRender({ place, change }: RankColumnRenderArgs) {
   return (
-    <div className="flex-row gap-3">
+    <div className="flex-row justify-end gap-3">
       <span className="caption semibold text-1">{place}</span>
       {change === 'up' ? <RankUpIcon /> : null}
       {change === 'down' ? <RankDownIcon /> : null}
@@ -128,7 +128,7 @@ function Leaderboard() {
   return (
     <div className="flex-column justify-start align-start gap-6 width-full">
       <h1 className="heading semibold text-1">Leaderboard</h1>
-      <Tabs direction="row" defaultActiveId="volume">
+      <Tabs direction="row" fullwidth defaultActiveId="volume">
         <Tabs.TabPane tab="Volume" id="volume">
           <Table columns={columns} rows={rows} />
         </Tabs.TabPane>
