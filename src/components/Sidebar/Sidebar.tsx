@@ -11,6 +11,7 @@ import {
   PortfolioIcon,
   AchievementsIcon
 } from 'assets/icons';
+import { LeaderboardIcon } from 'assets/icons/pages/leaderboard';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 import useCategories from 'hooks/useCategories';
@@ -109,6 +110,25 @@ const Sidebar = () => {
                   )}
                 >
                   Achievements
+                </span>
+              </NavLink>
+            </Menu.Item>
+          </Tooltip>
+          <Tooltip text="Leaderboard" position="right" disabled={!collapsed}>
+            <Menu.Item key="leaderboard" style={{ padding: '1.8rem 0rem' }}>
+              <NavLink
+                to="/leaderboard"
+                className="sidebar__link--lg"
+                activeClassName="sidebar__link--lg active"
+              >
+                <LeaderboardIcon />
+                <span
+                  className={classNames(
+                    'market__link-title--lg',
+                    collapsed && 'hidden'
+                  )}
+                >
+                  Leaderboard
                 </span>
               </NavLink>
             </Menu.Item>
