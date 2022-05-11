@@ -69,7 +69,7 @@ function volumeColumnRender(volume: VolumeColumnRenderArgs) {
   return (
     <span className="caption semibold text-1 whitespace-nowrap">
       {`${volume} `}
-      {ETH.symbol}
+      <span className="caption semibold text-3">{ETH.symbol}</span>
     </span>
   );
 }
