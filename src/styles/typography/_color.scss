@@ -6,6 +6,7 @@
   --color-text-inverse: #ffffff;
   --color-text-warning: #f0b429;
   --color-text-violets-are-blue: #8976ff;
+  --color-text-maximum-blue-green: #28c1b8;
 }
 
 @supports (--css: variables) {
@@ -23,7 +24,8 @@ $text-colors-map: (
   3: var(--color-text-3),
   inverse: var(--color-text-inverse),
   warning: var(--color-text-warning),
-  violets-are-blue: var(--color-text-violets-are-blue)
+  violets-are-blue: var(--color-text-violets-are-blue),
+  maximum-blue-green: var(--color-text-maximum-blue-green)
 );
 
 @each $text-color, $text-color-value in $text-colors-map {
