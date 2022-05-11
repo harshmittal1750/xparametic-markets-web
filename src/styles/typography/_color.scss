@@ -4,6 +4,7 @@
   --color-text-2: #637084;
   --color-text-3: #8293ae;
   --color-text-inverse: #ffffff;
+  --color-text-warning: #f0b429;
 }
 
 @supports (--css: variables) {
@@ -19,7 +20,8 @@ $text-colors-map: (
   1: var(--color-text-1),
   2: var(--color-text-2),
   3: var(--color-text-3),
-  inverse: var(--color-text-inverse)
+  inverse: var(--color-text-inverse),
+  warning: var(--color-text-warning)
 );
 
 @each $text-color, $text-color-value in $text-colors-map {
