@@ -45,8 +45,10 @@ export interface Market {
   bannerUrl: string;
   title: string;
   volume: number;
+  volumeEur: number;
   shares: number;
   liquidity: number;
+  liquidityEur: number;
   liquidityPrice: number;
   createdAt: string;
   expiresAt: string;
