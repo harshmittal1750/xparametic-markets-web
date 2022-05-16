@@ -123,16 +123,17 @@ function TradeFormInput() {
             </figure>
             <Button
               color="noborder"
+              style={{ gap: '0.2rem' }}
               onClick={handleSetMaxAmount}
               disabled={isWrongNetwork}
             >
               <Text as="strong" scale="tiny" fontWeight="semibold">
                 {max()}
               </Text>
+              <Text as="span" scale="tiny" fontWeight="semibold">
+                {type === 'buy' ? ticker : ' Shares'}
+              </Text>
             </Button>
-            <Text as="span" scale="tiny" fontWeight="semibold">
-              {type === 'buy' ? ticker : ' Shares'}
-            </Text>
           </div>
         ) : null}
       </div>
