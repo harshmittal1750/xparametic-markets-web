@@ -1,6 +1,41 @@
 import { SVGProps, memo } from 'react';
 
-function VerifiedIcon(props: SVGProps<SVGSVGElement>) {
+type VerifiedIconProps = {
+  size?: 'sm' | 'normal';
+};
+
+function VerifiedIcon(props: SVGProps<SVGSVGElement> & VerifiedIconProps) {
+  const { size = 'normal' } = props;
+
+  if (size === 'sm') {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="19"
+        fill="none"
+        viewBox="0 0 18 19"
+        {...props}
+      >
+        <rect width="12" height="12" x="3" y="3.5" fill="#fff" rx="6" />
+        <path
+          fill="#7069FA"
+          d="M9 3.5c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6-2.7-6-6-6zm-.75 8.55L5.7 9.5l1.05-1.05 1.5 1.5 3-3L12.3 8l-4.05 4.05z"
+        />
+        <rect
+          width="15"
+          height="15"
+          x="1.5"
+          y="2"
+          stroke="#7069FA"
+          strokeOpacity="0.4"
+          strokeWidth="3"
+          rx="7.5"
+        />
+      </svg>
+    );
+  }
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
