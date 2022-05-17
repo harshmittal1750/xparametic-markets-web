@@ -80,7 +80,6 @@ function NetworkSwitch() {
     <Button
       color="warning"
       fullwidth
-      truncated
       onClick={() => handleChangeNetwork()}
       loading={isChangingNetwork}
       disabled={isChangingNetwork}
