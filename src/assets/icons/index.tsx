@@ -59,6 +59,7 @@ import TrophyIcon from './TrophyIcon';
 import TwarningIcon from './TWarningIcon';
 import TwitterIcon from './TwitterIcon';
 import UsersIcon from './UsersIcon';
+import VerifiedIcon from './VerifiedIcon';
 import WalletIcon from './WalletIcon';
 import WarningIcon from './WarningIcon';
 import WhiteHouseIcon from './WhiteHouseIcon';
@@ -125,6 +126,7 @@ export {
   TwitterIcon,
   TrophyIcon,
   UsersIcon,
+  VerifiedIcon,
   WalletIcon,
   WarningIcon,
   WhiteHouseIcon
