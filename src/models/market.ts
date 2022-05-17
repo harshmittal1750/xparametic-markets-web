@@ -1,6 +1,6 @@
+import { Currency } from 'types/currency';
 import { News } from 'types/market';
-
-import { Currency } from './currency';
+import { Network } from 'types/network';
 
 export interface PriceChartPoint {
   value: number;
@@ -45,8 +45,10 @@ export interface Market {
   bannerUrl: string;
   title: string;
   volume: number;
+  volumeEur: number;
   shares: number;
   liquidity: number;
+  liquidityEur: number;
   liquidityPrice: number;
   createdAt: string;
   expiresAt: string;
@@ -60,6 +62,7 @@ export interface Market {
   fee: number;
   question: Question;
   networkId: string;
+  network: Network;
   news: News[];
   currency: Currency;
 }

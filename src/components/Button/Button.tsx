@@ -44,6 +44,11 @@ type ButtonProps = {
    */
   noHover?: boolean;
   /**
+   * Truncate text inside of button
+   * @default 'false'
+   */
+  truncated?: boolean;
+  /**
    * Loading state
    * @default 'false'
    */
@@ -60,6 +65,7 @@ function Button({
   size = 'normal',
   fullwidth = false,
   noHover = false,
+  truncated = false,
   loading = false,
   children,
   onClick,
@@ -87,7 +93,8 @@ function Button({
         `pm-c-button-${variant}--${color}`,
         `pm-c-button--${size}`,
         fullwidth && 'pm-c-button--fullwidth',
-        noHover && 'pm-c-button--no-hover'
+        noHover && 'pm-c-button--no-hover',
+        truncated && 'pm-c-button--truncated'
       )}
       style={
         loading

@@ -60,7 +60,7 @@ function HomeTabs({
         <Filter
           key="sortBy"
           description="Sort by"
-          defaultOption="volume"
+          defaultOption="volumeEur"
           options={filters}
           onChange={handleSelectedFilter}
           onTouch={handleTouchedFilter}

@@ -11,7 +11,7 @@ import { useAppDispatch } from 'hooks';
 
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
-import NETWORKS, { Network, REACT_APP_NETWORK_ID } from './networks';
+import NETWORKS, { Network } from './networks';
 
 declare global {
   interface Window {
@@ -26,7 +26,7 @@ function fetchUserData(networkConfig: NetworkConfig) {
 
 function useNetwork() {
   // Constants
-  const DEFAULT_NETWORK_ID = toHexadecimal(REACT_APP_NETWORK_ID || 42);
+  const DEFAULT_NETWORK_ID = toHexadecimal(environment.NETWORK_ID || 42);
   const DEFAULT_NETWORK = NETWORKS[DEFAULT_NETWORK_ID];
   const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
 
