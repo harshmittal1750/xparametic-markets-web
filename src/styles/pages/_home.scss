@@ -9,10 +9,6 @@
     @include flex-column(center, center);
 
     margin: 1.6rem 0rem;
-
-    @include breakpoint-to('sm') {
-      display: none;
-    }
   }
 
   &__categories {
