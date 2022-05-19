@@ -1,3 +1,5 @@
+import { MobileView } from 'react-device-detect';
+
 import { filteredMarketsSelector } from 'redux/ducks/markets';
 
 import { useAppSelector, useFavoriteMarkets } from 'hooks';
@@ -18,7 +20,8 @@ function Home() {
   const openMarkets = markets.filter(market => market.state === 'open');
   const closedMarkets = markets.filter(market => market.state === 'closed');
   const resolvedMarkets = markets.filter(market => market.state === 'resolved');
-  const favoritesMarkets = markets.filter(market =>
+  const favoritesMarkets = markets.filter(
+    market =>
       favoriteMarkets[`${market.networkId}`] &&
       favoriteMarkets[`${market.networkId}`].includes(market.id)
   );
@@ -26,7 +29,9 @@ function Home() {
   return (
     <div className="pm-home">
       <div className="pm-home__content">
-        <HomeMobileInfo />
+        <MobileView>
+          <HomeMobileInfo />
+        </MobileView>
         <HomeCategories />
         <HomeTabs
           openMarkets={openMarkets}
