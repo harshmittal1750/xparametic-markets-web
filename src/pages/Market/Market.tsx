@@ -115,6 +115,7 @@ const Market = () => {
       </div>
       <div className="pm-p-market__market">
         <MarketHead
+          isVerified={market.verified}
           section={market.category}
           subsection={market.subcategory}
           imageUrl={market.imageUrl}
