@@ -1,5 +1,7 @@
 import { CSSProperties, ReactNode } from 'react';
 
+import classNames from 'classnames';
+
 type ScrollbarSize = 'normal' | 'sm';
 
 type ScrollableAreaProps = {
@@ -12,6 +14,7 @@ type ScrollableAreaProps = {
    * Optional CSS inline styles
    */
   style?: CSSProperties;
+  className?: string;
   children: ReactNode;
 };
 
@@ -21,11 +24,15 @@ type ScrollableAreaProps = {
 function ScrollableArea({
   scrollbarSize = 'normal',
   style,
+  className,
   children
 }: ScrollableAreaProps) {
   return (
     <div className={`pm-c-scrollable-area--${scrollbarSize}`}>
-      <div className="pm-c-scrollable-area__content" style={style}>
+      <div
+        className={classNames('pm-c-scrollable-area__content', className)}
+        style={style}
+      >
         {children}
       </div>
     </div>
