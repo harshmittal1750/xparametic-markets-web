@@ -59,7 +59,7 @@ function Layout({ children }: LayoutProps) {
       ) : null}
       <div className="pm-l-layout">
         <header className="pm-l-layout__header sticky">
-          <div id="alert-notification-portal" />
+          <div id="alert-notification-portal" className="pm-l-layout__alert" />
           <NavBar />
         </header>
         <nav className="pm-l-layout__nav">
