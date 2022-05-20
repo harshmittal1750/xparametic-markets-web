@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { isMobile } from 'react-device-detect';
 
 import { formatNumberToString } from 'helpers/math';
 import { login } from 'redux/ducks/bepro';
@@ -28,10 +27,9 @@ function NavBarActions() {
   const polkBalance = useAppSelector(state => state.bepro.polkBalance);
   const walletAddress = useAppSelector(state => state.bepro.ethAddress);
 
+  // Example
   useEffect(() => {
-    if (!isMobile) {
-      show('beta-testing');
-    }
+    show('beta-testing');
   }, [show, walletConnected]);
 
   const handleConnectWallet = async () => {
