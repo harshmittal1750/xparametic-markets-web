@@ -31,6 +31,18 @@
       padding: 2.4rem;
     }
 
+    &__scrollable-area {
+      height: calc(100vh - 6.8rem);
+
+      &--with-alert {
+        height: calc(100vh - 6.8rem);
+
+        @include breakpoint-to('md') {
+          height: calc(100vh - 11rem);
+        }
+      }
+    }
+
     &__aside {
       grid-area: aside;
     }

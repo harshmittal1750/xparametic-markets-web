@@ -66,14 +66,11 @@ function Layout({ children }: LayoutProps) {
           <Sidebar />
         </nav>
         <ScrollableArea
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            height: hasAlertNotification
-              ? 'calc(100vh - 11rem)'
-              : 'calc(100vh - 7.3rem)'
-          }}
+          className={`${
+            hasAlertNotification
+              ? 'pm-l-layout__scrollable-area--with-alert'
+              : 'pm-l-layout__scrollable-area'
+          } flex-column justify-space-between`}
         >
           <main className="pm-l-layout__main">{children}</main>
           <footer className="pm-l-layout__footer">
