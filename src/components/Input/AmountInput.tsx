@@ -103,6 +103,7 @@ const AmountInput = React.forwardRef<
                   </figure>
                   <Button
                     color="noborder"
+                    style={{ gap: '0.2rem' }}
                     onClick={handleSetMaxAmount}
                     disabled={disabled}
                   >
@@ -114,15 +115,15 @@ const AmountInput = React.forwardRef<
                     >
                       {max}
                     </Text>
+                    <Text
+                      as="span"
+                      scale="tiny"
+                      fontWeight="semibold"
+                      color="gray"
+                    >
+                      {currency.ticker}
+                    </Text>
                   </Button>
-                  <Text
-                    as="span"
-                    scale="tiny"
-                    fontWeight="semibold"
-                    color="gray"
-                  >
-                    {currency.ticker}
-                  </Text>
                 </div>
               )
             : null}

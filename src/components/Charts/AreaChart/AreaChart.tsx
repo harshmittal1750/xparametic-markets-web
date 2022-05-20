@@ -43,6 +43,9 @@ function AreaChart({ data, color, height }: AreaChartProps) {
             left: 0,
             bottom: 0
           }}
+          style={{
+            cursor: 'pointer'
+          }}
         >
           <defs>
             <linearGradient id="1" x1="0" y1="0" x2="0" y2="1">

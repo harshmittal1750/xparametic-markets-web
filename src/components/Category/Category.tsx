@@ -65,7 +65,13 @@ function Category({
       onKeyPress={handleCategorySelected}
     >
       <div className="pm-c-category__header">
-        <Text as="label" scale="body" fontWeight="semibold" color="white">
+        <Text
+          as="label"
+          scale="body"
+          fontWeight="semibold"
+          color="white"
+          className="cursor-pointer"
+        >
           {title}
         </Text>
         {/* disabling change labels at the moment
