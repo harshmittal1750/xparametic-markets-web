@@ -1,4 +1,4 @@
-/* eslint-disable import/prefer-default-export */
 import Table from './Table';
+import TableMini from './TableMini';
 
-export { Table };
+export { Table, TableMini };
