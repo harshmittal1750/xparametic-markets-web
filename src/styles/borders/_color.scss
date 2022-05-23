@@ -20,4 +20,9 @@ $border-colors-map: (
   .border-#{'' + $border-color} {
     border-color: $border-color-value;
   }
+
+  .border-#{'' + $border-color + '-75'} {
+    border-color: $border-color-value;
+    opacity: 0.75;
+  }
 }
