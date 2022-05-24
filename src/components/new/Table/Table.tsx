@@ -1,4 +1,7 @@
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable react/jsx-curly-newline */
 import { ReactNode } from 'react';
+import { TableVirtuoso } from 'react-virtuoso';
 
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -35,9 +38,41 @@ function Table({
 }: TableProps) {
   return (
     <>
-      <table className="width-full border-solid border-1">
-        <thead>
-          <tr>
+      <TableVirtuoso
+        style={{ height: 700 }}
+        className="border-solid border-1"
+        data={rows}
+        totalCount={rows.length}
+        components={{
+          Table: ({ style, ...props }) => (
+            <table
+              {...props}
+              className="width-full"
+              style={{
+                ...style,
+                tableLayout: 'fixed',
+                borderCollapse: 'collapse'
+              }}
+            />
+          ),
+          TableRow: props => {
+            const index = props['data-index'];
+            const row = rows[index];
+
+            return (
+              <tr
+                {...props}
+                className={classNames({
+                  'bg-1 bg-3-on-hover': !row.highlight,
+                  'bg-primary-10': row.highlight,
+                  'border-solid-top border-1': true
+                })}
+              />
+            );
+          }
+        }}
+        fixedHeaderContent={() => (
+          <tr className="border-solid-bottom border-1">
             {columns?.map(column => (
               <th
                 key={column.key}
@@ -48,31 +83,18 @@ function Table({
               </th>
             ))}
           </tr>
-        </thead>
-        <tbody>
-          {rows?.map(row => (
-            <tr
-              className={classNames({
-                'bg-1 bg-3-on-hover': !row.highlight,
-                'bg-primary-10': row.highlight,
-                'border-solid-top border-1': true
-              })}
-              key={row.key}
+        )}
+        itemContent={(_index, row) => {
+          return columns.map(column => (
+            <td
+              key={`${column.key}${row.key}`}
+              className={`padding-y-6 padding-x-5 caption semibold text-1 align-middle whitespace-normal text-${column.align}`}
             >
-              {columns.map(column => (
-                <td
-                  key={`${column.key}${row.key}`}
-                  className={`padding-y-6 padding-x-5 caption semibold text-1 align-middle whitespace-normal text-${column.align}`}
-                >
-                  {column.render
-                    ? column.render(row[column.key])
-                    : row[column.key]}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              {column.render ? column.render(row[column.key]) : row[column.key]}
+            </td>
+          ));
+        }}
+      />
 
       {isEmpty(rows) && isLoadingData ? (
         <div className="flex-row justify-center align-center width-full padding-y-7 padding-x-4">
