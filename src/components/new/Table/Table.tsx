@@ -1,7 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-curly-newline */
-import { ReactNode } from 'react';
-import { TableVirtuoso } from 'react-virtuoso';
+import { ReactNode, useRef } from 'react';
+import { TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
 
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
@@ -36,9 +36,26 @@ function Table({
   isLoadingData = false,
   emptyDataDescription = 'No data to show.'
 }: TableProps) {
+  const virtuoso = useRef<TableVirtuosoHandle>(null);
+
+  type ScrollToIndexArgs = {
+    index: number;
+    align?: 'start' | 'center' | 'end';
+  };
+
+  function scrollToIndex({ index, align = 'start' }: ScrollToIndexArgs) {
+    if (virtuoso.current) {
+      virtuoso.current?.scrollToIndex({
+        index,
+        align
+      });
+    }
+  }
+
   return (
     <>
       <TableVirtuoso
+        ref={virtuoso}
         style={{ height: 700 }}
         className="border-solid border-1"
         data={rows}
