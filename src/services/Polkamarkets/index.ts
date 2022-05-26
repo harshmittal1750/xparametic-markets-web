@@ -19,7 +19,9 @@ import {
   ReloadPortfolioByAddressArgs,
   ReloadPortfolioByAddressData,
   GetAchievementsArgs,
-  GetAchievementsData
+  GetAchievementsData,
+  GetLeaderboardByTimeframeData,
+  GetLeaderboardByTimeframeArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -88,6 +90,15 @@ const polkamarketsApi = createApi({
       query: ({ networkId }) => `/achievements?network_id=${networkId}`,
       transformResponse: (response: GetAchievementsData) =>
         getAchievementsTransformResponse(camelize(response))
+    }),
+    getLeaderboardByTimeframe: builder.query<
+      GetLeaderboardByTimeframeData,
+      GetLeaderboardByTimeframeArgs
+    >({
+      query: ({ timeframe, networkId }) =>
+        `/leaderboard?timeframe=${timeframe}&network_id=${networkId}`,
+      transformResponse: (response: GetLeaderboardByTimeframeData) =>
+        camelize(response)
     })
   })
 });
@@ -102,5 +113,6 @@ export const {
   useCreateMarketByIdMutation,
   useGetPortfolioByAddressQuery,
   useReloadPortfolioByAddressMutation,
-  useGetAchievementsQuery
+  useGetAchievementsQuery,
+  useGetLeaderboardByTimeframeQuery
 } = polkamarketsApi;
