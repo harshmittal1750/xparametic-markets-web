@@ -52,3 +52,25 @@ export type GetAchievementsData = Achievement[];
 export type GetAchievementsArgs = {
   networkId: string;
 };
+
+// getLeaderboardByTimeframe
+export type GetLeaderboardByTimeframeData = {
+  user: string;
+  marketsCreated: number;
+  volume: number;
+  tvlVolume: number;
+  liquidity: number;
+  tvlLiquidity: number;
+  claimWinningsCount: number;
+  transactions: number;
+  achievements: {
+    id: number;
+    name: string;
+    image: string;
+  }[];
+}[];
+
+export type GetLeaderboardByTimeframeArgs = {
+  timeframe: '1d' | '1w' | '1m';
+  networkId: string;
+};
