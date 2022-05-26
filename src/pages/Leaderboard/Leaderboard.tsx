@@ -1,3 +1,7 @@
+import { ReactNode } from 'react';
+
+import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
+
 import {
   FirstPlaceIcon,
   SecondPlaceIcon,
@@ -10,9 +14,11 @@ import {
 
 import { Tabs } from 'components';
 import { Table } from 'components/new';
-import { TableColumn, TableRow } from 'components/new/Table';
+import { TableColumn } from 'components/new/Table';
 
-import { ETH } from 'hooks/useNetwork/currencies';
+import { useNetwork } from 'hooks';
+
+import { prepareLeaderboardTableRows } from './prepare';
 
 type WalletColumnRenderArgs = {
   isCurrentUser: boolean;
@@ -52,7 +58,9 @@ function walletColumnRender({
           isCurrentUser ? '1' : walletPlace.textColor
         }`}
       >
-        {address}
+        {`${address.substring(0, 6)}...${address.substring(
+          address.length - 4
+        )}`}
         {isCurrentUser ? (
           <span className="caption semibold text-3">{` (You)`}</span>
         ) : null}
@@ -63,13 +71,14 @@ function walletColumnRender({
 
 type VolumeColumnRenderArgs = {
   volume: number;
+  ticker: ReactNode;
 };
 
-function volumeColumnRender(volume: VolumeColumnRenderArgs) {
+function volumeColumnRender({ volume, ticker }: VolumeColumnRenderArgs) {
   return (
     <span className="caption semibold text-1 whitespace-nowrap">
-      {`${volume} `}
-      <span className="caption semibold text-3">{ETH.symbol}</span>
+      {`${volume.toFixed(3)} `}
+      {ticker}
     </span>
   );
 }
@@ -105,85 +114,27 @@ const columns: TableColumn[] = [
   { title: 'Rank', key: 'rank', align: 'right', render: rankColumnRender }
 ];
 
-const rows: TableRow[] = [
-  {
-    key: '1',
-    wallet: {
-      isCurrentUser: false,
-      address: 'Ox23y8632',
-      place: 1
-    },
-    volume: 0.126,
-    marketsCreated: 124,
-    wonPredictions: 284,
-    liquidityAdded: 100,
-    NFTAchievements: [],
-    rank: {
-      place: 1,
-      change: 'up'
-    }
-  },
-  {
-    key: '2',
-    wallet: {
-      isCurrentUser: false,
-      address: 'Ox23y8632',
-      place: 2
-    },
-    volume: 0.126,
-    marketsCreated: 24,
-    wonPredictions: 84,
-    liquidityAdded: 100,
-    NFTAchievements: [],
-    rank: {
-      place: 2,
-      change: 'down'
-    }
-  },
-  {
-    key: '3',
-    wallet: {
-      isCurrentUser: false,
-      address: 'Ox23y8632',
-      place: 3
-    },
-    volume: 0.126,
-    marketsCreated: 12,
-    wonPredictions: 28,
-    liquidityAdded: 100,
-    NFTAchievements: [],
-    rank: {
-      place: 3,
-      change: 'stable'
-    }
-  },
-  {
-    key: '4',
-    wallet: {
-      isCurrentUser: true,
-      address: 'Ox23y8632',
-      place: 4
-    },
-    volume: 0.12,
-    marketsCreated: 2,
-    wonPredictions: 2,
-    liquidityAdded: 100,
-    NFTAchievements: [],
-    rank: {
-      place: 4,
-      change: 'stable'
-    },
-    highlight: true
-  }
-];
-
 function Leaderboard() {
+  const { network } = useNetwork();
+  const { data } = useGetLeaderboardByTimeframeQuery({
+    timeframe: '1w',
+    networkId: network.id
+  });
+
+  if (!data) return null;
+
+  const rowsSortedByVolume = prepareLeaderboardTableRows({
+    data,
+    sortBy: 'volume',
+    ticker: network.currency.ticker
+  });
+
   return (
     <div className="flex-column justify-start align-start gap-6 width-full">
       <h1 className="heading semibold text-1">Leaderboard</h1>
       <Tabs direction="row" fullwidth defaultActiveId="volume">
         <Tabs.TabPane tab="Volume" id="volume">
-          <Table columns={columns} rows={rows} />
+          <Table columns={columns} rows={rowsSortedByVolume} />
         </Tabs.TabPane>
         <Tabs.TabPane tab="Markets created" id="marketsCreated" />
         <Tabs.TabPane tab="Won predictions" id="wonPredictions" />
