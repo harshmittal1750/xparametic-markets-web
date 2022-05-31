@@ -1,0 +1,18 @@
+.pm-p-leaderboard {
+  @include flex-column($justify: start, $align: start, $gap: 5);
+  width: 100%;
+}
+
+.pm-c-leaderboard-table {
+  &__wallet {
+    @include flex-row($gap: 4);
+  }
+
+  &__volume {
+    white-space: nowrap;
+  }
+
+  &__rank {
+    @include flex-row($justify: end, $gap: 3);
+  }
+}
