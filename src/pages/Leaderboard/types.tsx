@@ -1,6 +1,10 @@
 import { ReactNode } from 'react';
 
+import { TableColumn } from 'components/new/Table';
+
 // Table
+
+export type LeaderboardTableColumn = TableColumn;
 
 export type LeaderboardTableRow = {
   key: string;
