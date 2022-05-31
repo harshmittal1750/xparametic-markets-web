@@ -1,7 +1,6 @@
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 
 import { Tabs } from 'components';
-import { TableColumn } from 'components/new/Table';
 
 import { useNetwork } from 'hooks';
 
@@ -11,8 +10,9 @@ import {
   volumeColumnRender,
   walletColumnRender
 } from './prepare';
+import { LeaderboardTableColumn } from './types';
 
-const columns: TableColumn[] = [
+const columns: LeaderboardTableColumn[] = [
   { title: 'Wallet', key: 'wallet', align: 'left', render: walletColumnRender },
   {
     title: 'Volume',

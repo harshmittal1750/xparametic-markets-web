@@ -1,15 +1,15 @@
 import { useMemo } from 'react';
 
 import { Table } from 'components/new';
-import { TableColumn } from 'components/new/Table';
 
 import {
   prepareLeaderboardTableRows,
   PrepareLeaderboardTableRowsArgs
 } from './prepare';
+import { LeaderboardTableColumn } from './types';
 
 type LeaderboardTableProps = {
-  columns: TableColumn[];
+  columns: LeaderboardTableColumn[];
   currency: string;
   isLoading: boolean;
 } & Pick<PrepareLeaderboardTableRowsArgs, 'rows' | 'sortBy'>;
