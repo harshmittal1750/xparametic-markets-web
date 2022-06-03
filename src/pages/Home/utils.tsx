@@ -48,7 +48,7 @@ const filters = [
     ]
   },
   {
-    value: 'id',
+    value: 'createdAt',
     name: 'Newest',
     defaultTrigger: 1,
     optionalTriggers: [
