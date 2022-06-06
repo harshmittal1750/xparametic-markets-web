@@ -21,6 +21,14 @@
       transition: all 0.2s ease-in-out 0s;
     }
 
+    &__alert {
+      display: none;
+
+      @include breakpoint-to('md') {
+        display: inline;
+      }
+    }
+
     &__nav {
       grid-area: nav;
     }
@@ -29,6 +37,18 @@
       grid-area: main;
 
       padding: 2.4rem;
+    }
+
+    &__scrollable-area {
+      height: calc(100vh - 6.8rem);
+
+      &--with-alert {
+        height: calc(100vh - 6.8rem);
+
+        @include breakpoint-to('md') {
+          height: calc(100vh - 11rem);
+        }
+      }
     }
 
     &__aside {
