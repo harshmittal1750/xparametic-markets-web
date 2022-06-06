@@ -36,6 +36,8 @@ const Market = () => {
   const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
     state => state.bepro
   );
+
+  const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
 
   useEffect(() => {
@@ -164,7 +166,7 @@ const Market = () => {
         </div>
       ) : null}
       <div className="pm-p-market__tabs">
-        <Tabs defaultActiveId="positions">
+        <Tabs value={activeTab} onChange={tab => setActiveTab(tab)}>
           <Tabs.TabPane tab="Positions" id="positions">
             <Table
               columns={tableItems.columns}
