@@ -173,3 +173,46 @@ function prepareLeaderboardTableRows({
 }
 
 export { prepareLeaderboardTableRows };
+
+// Top wallets
+
+type TopWalletRenderArgs = {
+  address: string;
+  place: number;
+};
+
+function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
+  const walletPlace = WALLET_PLACES[place] || {
+    icon: null,
+    textColor: '1'
+  };
+
+  return (
+    <div className="pm-c-leaderboard-top-wallets__wallet">
+      {walletPlace.icon}
+      <span className={`caption semibold text-${walletPlace.textColor}`}>
+        {`${address.substring(0, 6)}...${address.substring(
+          address.length - 4
+        )}`}
+      </span>
+    </div>
+  );
+}
+
+type topWalletRowRenderArgs = {
+  place: number;
+  change: 'up' | 'down' | 'stable';
+};
+
+function topWalletRowRender({ place, change }: topWalletRowRenderArgs) {
+  return (
+    <div className="pm-c-leaderboard-table__rank">
+      <span className="caption semibold text-1">{place}</span>
+      {change === 'up' ? <RankUpIcon /> : null}
+      {change === 'down' ? <RankDownIcon /> : null}
+      {change === 'stable' ? <RankStableIcon /> : null}
+    </div>
+  );
+}
+
+export { topWalletColumnRender, topWalletRowRender };
