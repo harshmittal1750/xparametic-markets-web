@@ -15,35 +15,37 @@ import {
 
 import { LeaderboardTableRow } from './types';
 
+const WALLET_PLACES = {
+  1: {
+    icon: <FirstPlaceIcon />,
+    textColor: 'warning'
+  },
+  2: {
+    icon: <SecondPlaceIcon />,
+    textColor: 'violets-are-blue'
+  },
+  3: {
+    icon: <ThirdPlaceIcon />,
+    textColor: 'maximum-blue-green'
+  }
+};
+
 // Table
 
 // Columns
 
 type WalletColumnRenderArgs = {
-  isCurrentUser: boolean;
+  isLoggedInUser: boolean;
   address: string;
   place: number;
 };
 
 function walletColumnRender({
-  isCurrentUser,
+  isLoggedInUser,
   address,
   place
 }: WalletColumnRenderArgs) {
-  const walletPlace = {
-    1: {
-      icon: <FirstPlaceIcon />,
-      textColor: 'warning'
-    },
-    2: {
-      icon: <SecondPlaceIcon />,
-      textColor: 'violets-are-blue'
-    },
-    3: {
-      icon: <ThirdPlaceIcon />,
-      textColor: 'maximum-blue-green'
-    }
-  }[place] || {
+  const walletPlace = WALLET_PLACES[place] || {
     icon: null,
     textColor: '1'
   };
@@ -51,16 +53,16 @@ function walletColumnRender({
   return (
     <div className="pm-c-leaderboard-table__wallet">
       {walletPlace.icon}
-      {isCurrentUser ? <MyPlaceIcon /> : null}
+      {isLoggedInUser ? <MyPlaceIcon /> : null}
       <span
         className={`caption semibold text-${
-          isCurrentUser ? '1' : walletPlace.textColor
+          isLoggedInUser ? '1' : walletPlace.textColor
         }`}
       >
         {`${address.substring(0, 6)}...${address.substring(
           address.length - 4
         )}`}
-        {isCurrentUser ? (
+        {isLoggedInUser ? (
           <span className="caption semibold text-3">{` (You)`}</span>
         ) : null}
       </span>
@@ -105,7 +107,7 @@ export { walletColumnRender, volumeColumnRender, rankColumnRender };
 export type PrepareLeaderboardTableRowsArgs = {
   rows?: GetLeaderboardByTimeframeData;
   ticker: ReactNode;
-  sortBy: 'volume' | 'marketsCreated' | 'wonPredictions' | 'liquidityAdded';
+  sortBy: 'volume' | 'marketsCreated' | 'claimWinningsCount' | 'liquidity';
   loggedInUser?: string;
 };
 
