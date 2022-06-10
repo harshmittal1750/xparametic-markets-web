@@ -8,6 +8,7 @@ import { useNetwork } from 'hooks';
 
 import LeaderboardTable from './LeaderboardTable';
 import {
+  achievementsColumnRender,
   rankColumnRender,
   volumeColumnRender,
   walletColumnRender
@@ -28,7 +29,8 @@ const columns: LeaderboardTableColumn[] = [
   {
     title: 'NFT Achievements',
     key: 'achievements',
-    align: 'right'
+    align: 'right',
+    render: achievementsColumnRender
   },
   { title: 'Rank', key: 'rank', align: 'right', render: rankColumnRender }
 ];
