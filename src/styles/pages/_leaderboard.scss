@@ -41,8 +41,22 @@
       }
     }
   }
+
   &__rank {
     @include flex-row($justify: flex-end, $gap: 3);
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+}
+
+.pm-c-leaderboard-top-wallets {
+  @include flex-column($gap: 5);
+  padding: map-get($spacers, 5);
+
+  &__wallet {
+    @include flex-row($gap: 3);
 
     svg {
       flex-shrink: 0;
