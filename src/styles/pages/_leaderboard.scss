@@ -16,6 +16,31 @@
     white-space: nowrap;
   }
 
+  &__achievements-list {
+    position: relative;
+  }
+
+  &__achievement {
+    position: absolute;
+    height: 3.2rem;
+    width: 3.2rem;
+    border-radius: 50%;
+    border: solid 0.3rem #171b23;
+
+    top: 50%;
+    transform: translateY(-50%);
+
+    $index: 1 2 3;
+    $z-index: 3 2 1;
+    $space: 0rem 2rem 4rem;
+
+    @each $i, $z, $s in zip($index, $z-index, $space) {
+      &:nth-child(#{$i}) {
+        z-index: $z;
+        right: $s;
+      }
+    }
+  }
   &__rank {
     @include flex-row($justify: end, $gap: 3);
   }
