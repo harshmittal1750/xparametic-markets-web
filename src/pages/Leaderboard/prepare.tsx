@@ -100,7 +100,34 @@ function rankColumnRender({ place, change }: RankColumnRenderArgs) {
   );
 }
 
-export { walletColumnRender, volumeColumnRender, rankColumnRender };
+type AchievementsColumnRenderArgs = {
+  id: number;
+  name: string;
+  image: string;
+}[];
+
+function achievementsColumnRender(achievements: AchievementsColumnRenderArgs) {
+  return (
+    <div className="pm-c-leaderboard-table__achievements-list">
+      {achievements.slice(0, 3).map((achievement, index) => (
+        <img
+          id={`achievement${index}`}
+          className="pm-c-leaderboard-table__achievement"
+          key={achievement.id}
+          src={achievement.image}
+          alt={achievement.name}
+        />
+      ))}
+    </div>
+  );
+}
+
+export {
+  walletColumnRender,
+  volumeColumnRender,
+  achievementsColumnRender,
+  rankColumnRender
+};
 
 // Rows
 
