@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 
 import { Tabs } from 'components';
@@ -23,22 +25,35 @@ const columns: LeaderboardTableColumn[] = [
   { title: 'Markets Created', key: 'marketsCreated', align: 'right' },
   { title: 'Won Predictions', key: 'wonPredictions', align: 'right' },
   { title: 'Liquidity Added', key: 'liquidityAdded', align: 'right' },
-  { title: 'NFT Achievements', key: 'NFTAchievements', align: 'right' },
+  {
+    title: 'NFT Achievements',
+    key: 'achievements',
+    align: 'right'
+  },
   { title: 'Rank', key: 'rank', align: 'right', render: rankColumnRender }
 ];
+
+type Timeframe = '1d' | '1w' | '1m';
 
 function Leaderboard() {
   const { network } = useNetwork();
   const { currency } = network;
+  const [activeTab, setActiveTab] = useState('volume');
+  const [timeframe, setTimeframe] = useState<Timeframe>('1m');
   const { data, isLoading } = useGetLeaderboardByTimeframeQuery({
-    timeframe: '1m',
+    timeframe,
     networkId: network.id
   });
 
   return (
     <div className="pm-p-leaderboard">
       <h1 className="heading semibold text-1">Leaderboard</h1>
-      <Tabs direction="row" fullwidth defaultActiveId="volume">
+      <Tabs
+        direction="row"
+        fullwidth
+        value={activeTab}
+        onChange={tab => setActiveTab(tab)}
+      >
         <Tabs.TabPane tab="Volume" id="volume">
           <LeaderboardTable
             columns={columns}
@@ -61,7 +76,7 @@ function Leaderboard() {
           <LeaderboardTable
             columns={columns}
             rows={data}
-            sortBy="wonPredictions"
+            sortBy="claimWinningsCount"
             currency={currency.ticker}
             isLoading={isLoading}
           />
@@ -70,7 +85,7 @@ function Leaderboard() {
           <LeaderboardTable
             columns={columns}
             rows={data}
-            sortBy="liquidityAdded"
+            sortBy="liquidity"
             currency={currency.ticker}
             isLoading={isLoading}
           />
