@@ -22,7 +22,7 @@ export type TableMiniRowValue = {
   /**
    * Row slice value
    */
-  value: string | number;
+  value: { [key: string]: string | number };
   /**
    * Row slice value custom render
    */
@@ -57,13 +57,13 @@ function TableMini({ columns, row }: TableMiniProps) {
   if (!isEmpty(xor(columnsKeys, rowKeys))) return null;
 
   return (
-    <ol className="flex-column gap-2">
+    <ol className="flex-column gap-4">
       {columns.map(column => {
         const rowSlice = row[column.key];
         return (
           <li key={`${column.key}`} className="flex-row align-center gap-3">
             {column.render ? (
-              column.render(column.title)
+              column.render(rowSlice.value)
             ) : (
               <span className="tiny-uppercase bold text-3">{column.title}</span>
             )}
