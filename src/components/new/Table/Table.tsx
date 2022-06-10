@@ -72,6 +72,12 @@ function Table({
               }}
             />
           ),
+          TableHead: props => (
+            <thead
+              {...props}
+              style={{ position: 'sticky', zIndex: 10, top: '0px' }}
+            />
+          ),
           TableRow: props => {
             const index = props['data-index'];
             const row = rows[index];
