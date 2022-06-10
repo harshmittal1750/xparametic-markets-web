@@ -47,6 +47,8 @@ function Leaderboard() {
     networkId: network.id
   });
 
+  const userEthAddress = '0x891dA613d26ef051ECA35ea337428c514D271c98';
+
   return (
     <div className="pm-p-leaderboard">
       <h1 className="heading semibold text-1">Leaderboard</h1>
@@ -58,6 +60,7 @@ function Leaderboard() {
       >
         <Tabs.TabPane tab="Volume" id="volume">
           <LeaderboardTable
+            loggedInUser={userEthAddress}
             columns={columns}
             rows={data}
             sortBy="volume"
@@ -67,6 +70,7 @@ function Leaderboard() {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Markets created" id="marketsCreated">
           <LeaderboardTable
+            loggedInUser={userEthAddress}
             columns={columns}
             rows={data}
             sortBy="marketsCreated"
@@ -76,6 +80,7 @@ function Leaderboard() {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Won predictions" id="wonPredictions">
           <LeaderboardTable
+            loggedInUser={userEthAddress}
             columns={columns}
             rows={data}
             sortBy="claimWinningsCount"
@@ -85,6 +90,7 @@ function Leaderboard() {
         </Tabs.TabPane>
         <Tabs.TabPane tab="Liquidity added" id="liquidityAdded">
           <LeaderboardTable
+            loggedInUser={userEthAddress}
             columns={columns}
             rows={data}
             sortBy="liquidity"

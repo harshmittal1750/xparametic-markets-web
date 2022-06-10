@@ -9,12 +9,14 @@ import {
 import { LeaderboardTableColumn } from './types';
 
 type LeaderboardTableProps = {
+  loggedInUser?: string;
   columns: LeaderboardTableColumn[];
   currency: string;
   isLoading: boolean;
 } & Pick<PrepareLeaderboardTableRowsArgs, 'rows' | 'sortBy'>;
 
 function LeaderboardTable({
+  loggedInUser,
   columns,
   rows,
   currency,
@@ -24,11 +26,12 @@ function LeaderboardTable({
   const preparedRows = useMemo(
     () =>
       prepareLeaderboardTableRows({
+        loggedInUser,
         rows,
         sortBy,
         ticker: currency
       }),
-    [currency, rows, sortBy]
+    [currency, loggedInUser, rows, sortBy]
   );
 
   return (
