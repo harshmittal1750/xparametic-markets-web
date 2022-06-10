@@ -6,6 +6,10 @@
 .pm-c-leaderboard-table {
   &__wallet {
     @include flex-row($gap: 4);
+
+    svg {
+      flex-shrink: 0;
+    }
   }
 
   &__volume {
