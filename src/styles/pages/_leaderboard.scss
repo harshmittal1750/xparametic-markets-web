@@ -42,6 +42,10 @@
     }
   }
   &__rank {
-    @include flex-row($justify: end, $gap: 3);
+    @include flex-row($justify: flex-end, $gap: 3);
+
+    svg {
+      flex-shrink: 0;
+    }
   }
 }
