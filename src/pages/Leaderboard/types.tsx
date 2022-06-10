@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { TableColumn } from 'components/new/Table';
+import { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
 
 // Table
 
@@ -26,3 +27,8 @@ export type LeaderboardTableRow = {
     change: 'up' | 'down' | 'stable';
   };
 };
+
+// Top Wallets
+
+export type LeaderboardTopWalletsColumn = TableMiniColumn;
+export type LeaderboardTopWalletsRow = TableMiniRow;
