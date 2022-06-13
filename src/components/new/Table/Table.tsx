@@ -56,7 +56,7 @@ function Table({
       <TableVirtuoso
         ref={virtuoso}
         style={{ height: 700 }}
-        className="border-solid border-1"
+        className="width-full border-solid border-1"
         data={rows}
         totalCount={rows.length}
         components={{
