@@ -41,6 +41,11 @@ function Dropdown({ options, defaultOption, onSelect }: DropdownProps) {
     }
   }
 
+  function handleSelectOption(option: Option) {
+    setSelectedOption(option);
+    handleCloseDropdown();
+  }
+
   useEffect(() => {
     document.addEventListener('click', handleClickOutside, true);
     return () => {
@@ -90,7 +95,7 @@ function Dropdown({ options, defaultOption, onSelect }: DropdownProps) {
                   'text-2': true,
                   'text-1-on-hover': true
                 })}
-                onClick={() => setSelectedOption({ label, value })}
+                onClick={() => handleSelectOption({ label, value })}
               >
                 {label}
               </button>
