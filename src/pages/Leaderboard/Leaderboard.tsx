@@ -8,6 +8,8 @@ import { Dropdown } from 'components/new';
 import { useNetwork } from 'hooks';
 
 import LeaderboardTable from './LeaderboardTable';
+import LeaderboardTopWallets from './LeaderboardTopWallets';
+import LeaderboardYourStats from './LeaderboardYourStats';
 import {
   achievementsColumnRender,
   liquidityColumnRender,
@@ -16,6 +18,29 @@ import {
   walletColumnRender
 } from './prepare';
 import { LeaderboardTableColumn } from './types';
+
+const tabs = [
+  {
+    id: 'volume',
+    title: 'Volume',
+    sortBy: 'volume'
+  },
+  {
+    id: 'marketsCreated',
+    title: 'Markets Created',
+    sortBy: 'marketsCreated'
+  },
+  {
+    id: 'wonPredictions',
+    title: 'Won Predictions',
+    sortBy: 'claimWinningsCount'
+  },
+  {
+    id: 'liquidityAdded',
+    title: 'Liquidity Added',
+    sortBy: 'liquidity'
+  }
+];
 
 const columns: LeaderboardTableColumn[] = [
   { title: 'Wallet', key: 'wallet', align: 'left', render: walletColumnRender },
@@ -47,13 +72,15 @@ type Timeframe = '1d' | '1w' | '1m';
 function Leaderboard() {
   const { network } = useNetwork();
   const { currency } = network;
-  const { symbol, ticker } = currency;
   const [activeTab, setActiveTab] = useState('volume');
   const [timeframe, setTimeframe] = useState<Timeframe>('1m');
-  const { data, isLoading } = useGetLeaderboardByTimeframeQuery({
+  const { data, isLoading, isFetching } = useGetLeaderboardByTimeframeQuery({
     timeframe,
     networkId: network.id
   });
+
+  const isLoadingQuery = isLoading || isFetching;
+  const ticker = currency.symbol || currency.ticker;
 
   const userEthAddress = '0x891dA613d26ef051ECA35ea337428c514D271c98';
 
@@ -78,46 +105,30 @@ function Leaderboard() {
           />
         ]}
       >
-        <Tabs.TabPane tab="Volume" id="volume">
-          <LeaderboardTable
-            loggedInUser={userEthAddress}
-            columns={columns}
-            rows={data}
-            sortBy="volume"
-            ticker={symbol || ticker}
-            isLoading={isLoading}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Markets created" id="marketsCreated">
-          <LeaderboardTable
-            loggedInUser={userEthAddress}
-            columns={columns}
-            rows={data}
-            sortBy="marketsCreated"
-            ticker={symbol || ticker}
-            isLoading={isLoading}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Won predictions" id="wonPredictions">
-          <LeaderboardTable
-            loggedInUser={userEthAddress}
-            columns={columns}
-            rows={data}
-            sortBy="claimWinningsCount"
-            ticker={symbol || ticker}
-            isLoading={isLoading}
-          />
-        </Tabs.TabPane>
-        <Tabs.TabPane tab="Liquidity added" id="liquidityAdded">
-          <LeaderboardTable
-            loggedInUser={userEthAddress}
-            columns={columns}
-            rows={data}
-            sortBy="liquidity"
-            ticker={symbol || ticker}
-            isLoading={isLoading}
-          />
-        </Tabs.TabPane>
+        {tabs.map(tab => (
+          <Tabs.TabPane key={tab.id} id={tab.id} tab={tab.title}>
+            <div className="flex-row gap-6 justify-space-between align-start width-full">
+              <LeaderboardTable
+                loggedInUser={userEthAddress}
+                columns={columns}
+                rows={data}
+                sortBy={tab.sortBy}
+                ticker={ticker}
+                isLoading={isLoadingQuery}
+              />
+              <div className="flex-column gap-6 justify-start align-start">
+                <LeaderboardYourStats
+                  loggedInUser={userEthAddress}
+                  rows={data}
+                  sortBy={tab.sortBy}
+                  ticker={ticker}
+                  isLoading={isLoadingQuery}
+                />
+                <LeaderboardTopWallets isLoading={isLoadingQuery} />
+              </div>
+            </div>
+          </Tabs.TabPane>
+        ))}
       </Tabs>
     </div>
   );

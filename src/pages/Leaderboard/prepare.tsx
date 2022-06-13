@@ -150,7 +150,7 @@ export {
 export type PrepareLeaderboardTableRowsArgs = {
   rows?: GetLeaderboardByTimeframeData;
   ticker: string;
-  sortBy: 'volume' | 'marketsCreated' | 'claimWinningsCount' | 'liquidity';
+  sortBy: string;
   loggedInUser?: string;
 };
 
