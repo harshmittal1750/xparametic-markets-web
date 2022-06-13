@@ -11,7 +11,7 @@ import { LeaderboardTableColumn } from './types';
 type LeaderboardTableProps = {
   loggedInUser?: string;
   columns: LeaderboardTableColumn[];
-  currency: string;
+  ticker: string;
   isLoading: boolean;
 } & Pick<PrepareLeaderboardTableRowsArgs, 'rows' | 'sortBy'>;
 
@@ -19,7 +19,7 @@ function LeaderboardTable({
   loggedInUser,
   columns,
   rows,
-  currency,
+  ticker,
   sortBy,
   isLoading
 }: LeaderboardTableProps) {
@@ -29,9 +29,9 @@ function LeaderboardTable({
         loggedInUser,
         rows,
         sortBy,
-        ticker: currency
+        ticker
       }),
-    [currency, loggedInUser, rows, sortBy]
+    [ticker, loggedInUser, rows, sortBy]
   );
 
   return (

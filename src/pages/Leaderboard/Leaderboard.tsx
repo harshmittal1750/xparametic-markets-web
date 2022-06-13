@@ -40,6 +40,7 @@ type Timeframe = '1d' | '1w' | '1m';
 function Leaderboard() {
   const { network } = useNetwork();
   const { currency } = network;
+  const { symbol, ticker } = currency;
   const [activeTab, setActiveTab] = useState('volume');
   const [timeframe, setTimeframe] = useState<Timeframe>('1m');
   const { data, isLoading } = useGetLeaderboardByTimeframeQuery({
@@ -64,7 +65,7 @@ function Leaderboard() {
             columns={columns}
             rows={data}
             sortBy="volume"
-            currency={currency.ticker}
+            ticker={symbol || ticker}
             isLoading={isLoading}
           />
         </Tabs.TabPane>
@@ -74,7 +75,7 @@ function Leaderboard() {
             columns={columns}
             rows={data}
             sortBy="marketsCreated"
-            currency={currency.ticker}
+            ticker={symbol || ticker}
             isLoading={isLoading}
           />
         </Tabs.TabPane>
@@ -84,7 +85,7 @@ function Leaderboard() {
             columns={columns}
             rows={data}
             sortBy="claimWinningsCount"
-            currency={currency.ticker}
+            ticker={symbol || ticker}
             isLoading={isLoading}
           />
         </Tabs.TabPane>
@@ -94,7 +95,7 @@ function Leaderboard() {
             columns={columns}
             rows={data}
             sortBy="liquidity"
-            currency={currency.ticker}
+            ticker={symbol || ticker}
             isLoading={isLoading}
           />
         </Tabs.TabPane>
