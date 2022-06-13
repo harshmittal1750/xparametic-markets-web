@@ -1,5 +1,4 @@
-import { TableMini } from 'components/new';
-
+import LeaderboardStats from './LeaderboardStats';
 import { topWalletColumnRender, topWalletRowRender } from './prepare';
 import { LeaderboardTopWalletsColumn, LeaderboardTopWalletsRow } from './types';
 
@@ -48,12 +47,18 @@ const row: LeaderboardTopWalletsRow = {
   }
 };
 
-function LeaderboardTopWallets() {
+type LeaderboardTopWalletsProps = {
+  isLoading: boolean;
+};
+
+function LeaderboardTopWallets({ isLoading }: LeaderboardTopWalletsProps) {
   return (
-    <div className="pm-c-leaderboard-top-wallets bg-3 border-radius-medium border-solid border-1">
-      <h2 className="body semibold text-1">Top Wallets</h2>
-      <TableMini columns={columns} row={row} />
-    </div>
+    <LeaderboardStats
+      title="Top Wallets"
+      columns={columns}
+      row={row}
+      isLoading={isLoading}
+    />
   );
 }
 

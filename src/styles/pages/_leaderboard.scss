@@ -52,10 +52,13 @@
   }
 }
 
-.pm-c-leaderboard-top-wallets {
+.pm-c-leaderboard-stats {
   @include flex-column($gap: 5);
   padding: map-get($spacers, 5);
+  min-width: 29rem;
+}
 
+.pm-c-leaderboard-top-wallets {
   &__wallet {
     @include flex-row($gap: 3);
 
