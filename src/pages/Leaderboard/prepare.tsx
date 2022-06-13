@@ -133,7 +133,7 @@ export {
 
 export type PrepareLeaderboardTableRowsArgs = {
   rows?: GetLeaderboardByTimeframeData;
-  ticker: ReactNode;
+  ticker: string;
   sortBy: 'volume' | 'marketsCreated' | 'claimWinningsCount' | 'liquidity';
   loggedInUser?: string;
 };
@@ -162,7 +162,10 @@ function prepareLeaderboardTableRows({
       },
       marketsCreated: row.marketsCreated,
       wonPredictions: row.claimWinningsCount,
-      liquidityAdded: row.liquidity,
+      liquidityAdded: {
+        liquidity: row.liquidity,
+        ticker
+      },
       achievements: row.achievements,
       rank: {
         place: index + 1,
