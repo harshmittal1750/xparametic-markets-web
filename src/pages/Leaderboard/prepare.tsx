@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import orderBy from 'lodash/orderBy';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
 
@@ -72,14 +70,31 @@ function walletColumnRender({
 
 type VolumeColumnRenderArgs = {
   volume: number;
-  ticker: ReactNode;
+  ticker: string;
 };
 
 function volumeColumnRender({ volume, ticker }: VolumeColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__volume caption semibold text-1">
       {`${volume.toFixed(3)} `}
-      {ticker}
+      <strong className="caption semibold text-3">{ticker}</strong>
+    </span>
+  );
+}
+
+type LiquidityColumnRenderArgs = {
+  liquidity: number;
+  ticker: string;
+};
+
+function liquidityColumnRender({
+  liquidity,
+  ticker
+}: LiquidityColumnRenderArgs) {
+  return (
+    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
+      {`${liquidity.toFixed(3)} `}
+      <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
 }
@@ -126,6 +141,7 @@ export {
   walletColumnRender,
   volumeColumnRender,
   achievementsColumnRender,
+  liquidityColumnRender,
   rankColumnRender
 };
 

@@ -9,6 +9,7 @@ import { useNetwork } from 'hooks';
 import LeaderboardTable from './LeaderboardTable';
 import {
   achievementsColumnRender,
+  liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
   walletColumnRender
@@ -25,7 +26,12 @@ const columns: LeaderboardTableColumn[] = [
   },
   { title: 'Markets Created', key: 'marketsCreated', align: 'right' },
   { title: 'Won Predictions', key: 'wonPredictions', align: 'right' },
-  { title: 'Liquidity Added', key: 'liquidityAdded', align: 'right' },
+  {
+    title: 'Liquidity Added',
+    key: 'liquidityAdded',
+    align: 'right',
+    render: liquidityColumnRender
+  },
   {
     title: 'NFT Achievements',
     key: 'achievements',
