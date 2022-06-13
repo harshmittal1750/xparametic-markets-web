@@ -193,6 +193,52 @@ function prepareLeaderboardTableRows({
 
 export { prepareLeaderboardTableRows };
 
+// Your stats
+
+function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
+  const yourStats = rows.find(row => row.wallet.isLoggedInUser);
+
+  if (!yourStats) {
+    return undefined;
+  }
+
+  return {
+    rank: {
+      value: {
+        place: yourStats.rank.place,
+        change: yourStats.rank.change
+      },
+      render: rankColumnRender
+    },
+    volume: {
+      value: {
+        volume: yourStats.volume.volume,
+        ticker: yourStats.volume.ticker
+      },
+      render: volumeColumnRender
+    },
+    marketsCreated: {
+      value: yourStats.marketsCreated
+    },
+    wonPredictions: {
+      value: yourStats.wonPredictions
+    },
+    liquidityAdded: {
+      value: {
+        liquidity: yourStats.liquidityAdded.liquidity,
+        ticker: yourStats.liquidityAdded.ticker
+      },
+      render: liquidityColumnRender
+    },
+    achievements: {
+      value: yourStats.achievements,
+      render: achievementsColumnRender
+    }
+  };
+}
+
+export { prepareLeaderboardYourStatsRow };
+
 // Top wallets
 
 type TopWalletRenderArgs = {
