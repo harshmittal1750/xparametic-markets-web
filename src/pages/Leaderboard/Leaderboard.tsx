@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 
 import { Tabs } from 'components';
+import { Dropdown } from 'components/new';
 
 import { useNetwork } from 'hooks';
 
@@ -64,6 +65,18 @@ function Leaderboard() {
         fullwidth
         value={activeTab}
         onChange={tab => setActiveTab(tab)}
+        filters={[
+          <Dropdown
+            key="timeframe"
+            defaultOption="1m"
+            options={[
+              { label: 'Daily leaderboard', value: '1d' },
+              { label: 'Weekly leaderboard', value: '1w' },
+              { label: 'Monthly leaderboard', value: '1m' }
+            ]}
+            onSelect={value => setTimeframe(value)}
+          />
+        ]}
       >
         <Tabs.TabPane tab="Volume" id="volume">
           <LeaderboardTable
