@@ -4,7 +4,6 @@ import { ReactNode, useRef } from 'react';
 import { TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
 
 import classNames from 'classnames';
-import isEmpty from 'lodash/isEmpty';
 
 import { AlertMini } from 'components';
 
@@ -92,6 +91,22 @@ function Table({
                 })}
               />
             );
+          },
+          EmptyPlaceholder: () => {
+            return (
+              <div className="absolute flex-row justify-center align-center width-full margin-top-12 padding-y-12 padding-x-4">
+                {!isLoadingData ? (
+                  <AlertMini
+                    style={{ border: 'none' }}
+                    styles="outline"
+                    variant="information"
+                    description={emptyDataDescription}
+                  />
+                ) : (
+                  <div className="spinner--primary" />
+                )}
+              </div>
+            );
           }
         }}
         fixedHeaderContent={() => (
@@ -118,22 +133,6 @@ function Table({
           ));
         }}
       />
-
-      {isEmpty(rows) && isLoadingData ? (
-        <div className="flex-row justify-center align-center width-full padding-y-7 padding-x-4">
-          <div className="spinner--primary" />
-        </div>
-      ) : null}
-
-      {isEmpty(rows) && !isLoadingData ? (
-        <div className="pm-c-table__empty flex-row justify-center align-center width-full padding-0">
-          <AlertMini
-            styles="outline"
-            variant="information"
-            description={emptyDataDescription}
-          />
-        </div>
-      ) : null}
     </>
   );
 }
