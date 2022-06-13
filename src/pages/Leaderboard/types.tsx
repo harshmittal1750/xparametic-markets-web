@@ -1,5 +1,3 @@
-import { ReactNode } from 'react';
-
 import { TableColumn } from 'components/new/Table';
 import { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
 
@@ -16,11 +14,14 @@ export type LeaderboardTableRow = {
   };
   volume: {
     volume: number;
-    ticker: ReactNode;
+    ticker: string;
   };
   marketsCreated: number;
   wonPredictions: number;
-  liquidityAdded: number;
+  liquidityAdded: {
+    liquidity: number;
+    ticker: string;
+  };
   achievements: { id: number; name: string; image: string }[];
   rank: {
     place: number;
