@@ -12,6 +12,7 @@ import {
   RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
+import mockAchievements from './mock';
 import { LeaderboardTableRow } from './types';
 
 const WALLET_PLACES = {
@@ -203,7 +204,7 @@ function prepareLeaderboardTableRows({
         liquidity: row.liquidity,
         ticker
       },
-      achievements: row.achievements,
+      achievements: mockAchievements,
       rank: {
         place: index + 1,
         change: 'stable'
@@ -252,7 +253,7 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
       render: liquidityColumnRender
     },
     achievements: {
-      value: yourStats.achievements,
+      value: mockAchievements,
       render: achievements => achievementsColumnRender(achievements, 'small')
     }
   };
