@@ -302,4 +302,61 @@ function topWalletRowRender({ place, change }: topWalletRowRenderArgs) {
   );
 }
 
-export { topWalletColumnRender, topWalletRowRender };
+type PrepareLeaderboardTopWalletsRowArgs = {
+  rows?: GetLeaderboardByTimeframeData;
+  sortBy: string;
+};
+
+function prepareLeaderboardTopWalletsRow({
+  rows,
+  sortBy
+}: PrepareLeaderboardTopWalletsRowArgs) {
+  const sortedRows = orderBy(
+    rows,
+    sortBy,
+    'desc'
+  ) as GetLeaderboardByTimeframeData;
+
+  const firstPlace = sortedRows[0];
+  const secondPlace = sortedRows[1];
+  const thirdPlace = sortedRows[2];
+
+  return {
+    firstPlace: {
+      value: firstPlace
+        ? {
+            address: firstPlace.user,
+            place: 1,
+            change: 'stable'
+          }
+        : null,
+      render: topWalletRowRender
+    },
+    secondPlace: {
+      value: secondPlace
+        ? {
+            address: secondPlace.user,
+            place: 2,
+            change: 'stable'
+          }
+        : null,
+      render: topWalletRowRender
+    },
+    thirdPlace: {
+      value: thirdPlace
+        ? {
+            address: thirdPlace.user,
+            place: 3,
+            change: 'stable'
+          }
+        : null,
+      render: topWalletRowRender
+    }
+  };
+}
+
+export {
+  topWalletColumnRender,
+  topWalletRowRender,
+  prepareLeaderboardTopWalletsRow
+};
