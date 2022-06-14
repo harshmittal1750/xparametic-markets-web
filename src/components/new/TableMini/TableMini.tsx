@@ -1,6 +1,8 @@
 import { ReactNode } from 'react';
 
+import isArray from 'lodash/isArray';
 import isEmpty from 'lodash/isEmpty';
+import isNull from 'lodash/isNull';
 import xor from 'lodash/xor';
 
 export type TableMiniColumn = {
@@ -22,7 +24,7 @@ export type TableMiniRowValue = {
   /**
    * Row slice value
    */
-  value: { [key: string]: string | number };
+  value?: any;
   /**
    * Row slice value custom render
    */
@@ -51,6 +53,8 @@ type TableMiniProps = {
  * Table mini
  */
 function TableMini({ columns, row }: TableMiniProps) {
+  if (!row) return null;
+
   const columnsKeys = [...columns.map(column => column.key)];
   const rowKeys = Object.keys(row);
 
@@ -60,6 +64,10 @@ function TableMini({ columns, row }: TableMiniProps) {
     <ol className="flex-column gap-4">
       {columns.map(column => {
         const rowSlice = row[column.key];
+
+        if (isNull(rowSlice.value)) return null;
+        if (isArray(rowSlice.value) && isEmpty(rowSlice.value)) return null;
+
         return (
           <li key={`${column.key}`} className="flex-row align-center gap-3">
             {column.render ? (
