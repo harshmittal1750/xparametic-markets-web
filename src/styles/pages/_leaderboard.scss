@@ -23,23 +23,40 @@
 
   &__achievement {
     position: absolute;
-    height: 3.2rem;
-    width: 3.2rem;
     border-radius: 50%;
-    border: solid 0.3rem #171b23;
+    background-color: var(--color-border-3);
+    border: solid 0.3rem var(--color-border-3);
 
     top: 50%;
     transform: translateY(-50%);
 
-    $index: 1 2 3;
-    $z-index: 3 2 1;
-    $space: 0rem 2rem 4rem;
+    $index: 1 2 3 4;
+    $z-index: 4 3 2 1;
+    $space: 0rem 2rem 4rem 6rem;
 
     @each $i, $z, $s in zip($index, $z-index, $space) {
       &:nth-child(#{$i}) {
         z-index: $z;
         right: $s;
       }
+    }
+
+    &--small {
+      @extend .pm-c-leaderboard-table__achievement;
+      height: 2.8rem;
+      width: 2.8rem;
+    }
+
+    &--medium {
+      @extend .pm-c-leaderboard-table__achievement;
+      height: 3.2rem;
+      width: 3.2rem;
+    }
+
+    &--more {
+      @extend .pm-c-leaderboard-table__achievement;
+      @include flex-row(center, center);
+      background: map-get($colors, 'pure-white');
     }
   }
 
