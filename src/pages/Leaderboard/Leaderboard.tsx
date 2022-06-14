@@ -5,7 +5,7 @@ import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 import { Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
-import { useNetwork } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
@@ -70,19 +70,28 @@ const columns: LeaderboardTableColumn[] = [
 type Timeframe = '1d' | '1w' | '1m';
 
 function Leaderboard() {
+  // Redux selectors
+  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
+  const ethAddress = useAppSelector(state => state.bepro.ethAddress);
+
+  // Custom hooks
   const { network } = useNetwork();
   const { currency } = network;
+
+  // Local state
   const [activeTab, setActiveTab] = useState('volume');
   const [timeframe, setTimeframe] = useState<Timeframe>('1m');
+
+  // Query hooks
   const { data, isLoading, isFetching } = useGetLeaderboardByTimeframeQuery({
     timeframe,
     networkId: network.id
   });
 
+  const userEthAddress = walletConnected ? ethAddress : undefined;
+
   const isLoadingQuery = isLoading || isFetching;
   const ticker = currency.symbol || currency.ticker;
-
-  const userEthAddress = '0x891dA613d26ef051ECA35ea337428c514D271c98';
 
   return (
     <div className="pm-p-leaderboard">
