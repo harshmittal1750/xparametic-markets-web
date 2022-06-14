@@ -220,40 +220,42 @@ export { prepareLeaderboardTableRows };
 function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
   const yourStats = rows.find(row => row.wallet.isLoggedInUser);
 
-  if (!yourStats) {
-    return undefined;
-  }
-
   return {
     rank: {
-      value: {
-        place: yourStats.rank.place,
-        change: yourStats.rank.change
-      },
+      value: yourStats
+        ? {
+            place: yourStats.rank.place,
+            change: yourStats.rank.change
+          }
+        : null,
       render: rankColumnRender
     },
     volume: {
-      value: {
-        volume: yourStats.volume.volume,
-        ticker: yourStats.volume.ticker
-      },
+      value: yourStats
+        ? {
+            volume: yourStats.volume.volume,
+            ticker: yourStats.volume.ticker
+          }
+        : null,
       render: volumeColumnRender
     },
     marketsCreated: {
-      value: yourStats.marketsCreated
+      value: yourStats ? yourStats.marketsCreated : null
     },
     wonPredictions: {
-      value: yourStats.wonPredictions
+      value: yourStats ? yourStats.wonPredictions : null
     },
     liquidityAdded: {
-      value: {
-        liquidity: yourStats.liquidityAdded.liquidity,
-        ticker: yourStats.liquidityAdded.ticker
-      },
+      value: yourStats
+        ? {
+            liquidity: yourStats.liquidityAdded.liquidity,
+            ticker: yourStats.liquidityAdded.ticker
+          }
+        : null,
       render: liquidityColumnRender
     },
     achievements: {
-      value: mockAchievements,
+      value: yourStats ? mockAchievements : null,
       render: achievements => achievementsColumnRender(achievements, 'small')
     }
   };
