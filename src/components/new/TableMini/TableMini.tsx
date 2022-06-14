@@ -71,7 +71,7 @@ function TableMini({ columns, row }: TableMiniProps) {
             {rowSlice.render ? (
               rowSlice.render(rowSlice.value)
             ) : (
-              <span className="caption semibold text-3">{rowSlice.value}</span>
+              <span className="caption semibold text-1">{rowSlice.value}</span>
             )}
           </li>
         );
