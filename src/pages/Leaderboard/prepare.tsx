@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import orderBy from 'lodash/orderBy';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
 
@@ -121,13 +122,33 @@ type AchievementsColumnRenderArgs = {
   image: string;
 }[];
 
-function achievementsColumnRender(achievements: AchievementsColumnRenderArgs) {
+function achievementsColumnRender(
+  achievements: AchievementsColumnRenderArgs,
+  size: 'medium' | 'small'
+) {
+  const visibleAchievements = achievements.slice(0, 3);
+  const remainingAchievements = achievements.slice(3);
+
   return (
     <div className="pm-c-leaderboard-table__achievements-list">
-      {achievements.slice(0, 3).map((achievement, index) => (
+      {!isEmpty(remainingAchievements) ? (
+        <div
+          id={`achievement${0}`}
+          className={`pm-c-leaderboard-table__achievement--${size} pm-c-leaderboard-table__achievement--more`}
+        >
+          <span
+            className={`${
+              size === 'small' ? 'tiny' : 'caption'
+            } semibold text-primary`}
+          >
+            {`${remainingAchievements.length}+`}
+          </span>
+        </div>
+      ) : null}
+      {visibleAchievements.slice(0, 3).map((achievement, index) => (
         <img
           id={`achievement${index}`}
-          className="pm-c-leaderboard-table__achievement"
+          className={`pm-c-leaderboard-table__achievement--${size}`}
           key={achievement.id}
           src={achievement.image}
           alt={achievement.name}
@@ -232,7 +253,7 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
     },
     achievements: {
       value: yourStats.achievements,
-      render: achievementsColumnRender
+      render: achievements => achievementsColumnRender(achievements, 'small')
     }
   };
 }
