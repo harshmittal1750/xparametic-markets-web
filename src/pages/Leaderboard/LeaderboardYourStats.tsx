@@ -1,5 +1,7 @@
 import { useMemo } from 'react';
 
+import some from 'lodash/some';
+
 import { TableMiniColumn } from 'components/new/TableMini';
 
 import LeaderboardStats from './LeaderboardStats';
@@ -65,7 +67,16 @@ function LeaderboardYourStats({
     [preparedRows]
   );
 
-  if (!loggedInUser || !row) return null;
+  const userHasPlaceInLeaderboard = useMemo(
+    () =>
+      some(
+        preparedRows.map(r => r.wallet.isLoggedInUser),
+        item => item === true
+      ),
+    [preparedRows]
+  );
+
+  if (!isLoading && (!loggedInUser || !userHasPlaceInLeaderboard)) return null;
 
   return (
     <LeaderboardStats
