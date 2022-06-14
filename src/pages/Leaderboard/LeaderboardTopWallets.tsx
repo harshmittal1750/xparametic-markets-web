@@ -1,6 +1,12 @@
+import { useMemo } from 'react';
+
 import LeaderboardStats from './LeaderboardStats';
-import { topWalletColumnRender, topWalletRowRender } from './prepare';
-import { LeaderboardTopWalletsColumn, LeaderboardTopWalletsRow } from './types';
+import {
+  PrepareLeaderboardTableRowsArgs,
+  prepareLeaderboardTopWalletsRow,
+  topWalletColumnRender
+} from './prepare';
+import { LeaderboardTopWalletsColumn } from './types';
 
 const columns: LeaderboardTopWalletsColumn[] = [
   {
@@ -20,38 +26,20 @@ const columns: LeaderboardTopWalletsColumn[] = [
   }
 ];
 
-const row: LeaderboardTopWalletsRow = {
-  firstPlace: {
-    value: {
-      address: 'Oxaaa',
-      place: 1,
-      change: 'up'
-    },
-    render: topWalletRowRender
-  },
-  secondPlace: {
-    value: {
-      address: 'Oxbbb',
-      place: 2,
-      change: 'down'
-    },
-    render: topWalletRowRender
-  },
-  thirdPlace: {
-    value: {
-      address: 'Oxccc',
-      place: 3,
-      change: 'stable'
-    },
-    render: topWalletRowRender
-  }
-};
-
 type LeaderboardTopWalletsProps = {
   isLoading: boolean;
-};
+} & Pick<PrepareLeaderboardTableRowsArgs, 'rows' | 'sortBy'>;
 
-function LeaderboardTopWallets({ isLoading }: LeaderboardTopWalletsProps) {
+function LeaderboardTopWallets({
+  rows,
+  sortBy,
+  isLoading
+}: LeaderboardTopWalletsProps) {
+  const row = useMemo(
+    () => prepareLeaderboardTopWalletsRow({ rows, sortBy }),
+    [rows, sortBy]
+  );
+
   return (
     <LeaderboardStats
       title="Top Wallets"

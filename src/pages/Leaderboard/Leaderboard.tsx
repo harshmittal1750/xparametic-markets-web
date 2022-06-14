@@ -124,7 +124,11 @@ function Leaderboard() {
                   ticker={ticker}
                   isLoading={isLoadingQuery}
                 />
-                <LeaderboardTopWallets isLoading={isLoadingQuery} />
+                <LeaderboardTopWallets
+                  rows={data}
+                  sortBy={tab.sortBy}
+                  isLoading={isLoadingQuery}
+                />
               </div>
             </div>
           </Tabs.TabPane>
