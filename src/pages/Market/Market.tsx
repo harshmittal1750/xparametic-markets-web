@@ -9,7 +9,7 @@ import { openTradeForm } from 'redux/ducks/ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import { Tabs, Table, Button, SEO } from 'components';
+import { Tabs, Table, Text, Button, SEO } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -142,6 +142,27 @@ const Market = () => {
       <div className="pm-p-market__stats">
         <MarketStats market={market} />
       </div>
+      {market.resolutionSource ? (
+        <div className="pm-p-market__source">
+          <Text
+            as="p"
+            scale="tiny"
+            fontWeight="semibold"
+            style={{ margin: '0.8rem 0rem' }}
+            color="lighter-gray"
+          >
+            {`Resolution source: `}
+            <a
+              href={market.resolutionSource}
+              target="_blank"
+              className="tiny semibold text-primary"
+              rel="noreferrer"
+            >
+              {market.resolutionSource}
+            </a>
+          </Text>
+        </div>
+      ) : null}
       <div className="pm-p-market__tabs">
         <Tabs defaultActiveId="positions">
           <Tabs.TabPane tab="Positions" id="positions">
