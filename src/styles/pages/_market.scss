@@ -38,6 +38,7 @@
         'market actions'
         'view view'
         'charts stats'
+        'source source'
         'tabs tabs';
 
       grid-template-columns: 75% 25%;
@@ -84,6 +85,18 @@
             color: themed('analytics-text-color');
           }
         }
+      }
+    }
+
+    &__source {
+      grid-area: source;
+      text-align: center;
+      display: none;
+
+      @include breakpoint-to('md') {
+        @include flex-column;
+        width: 100%;
+        padding-top: 1rem;
       }
     }
 

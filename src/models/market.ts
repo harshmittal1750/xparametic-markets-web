@@ -41,6 +41,7 @@ export interface Market {
   slug: string;
   category: string;
   subcategory: string;
+  resolutionSource: string | null;
   imageUrl: string;
   bannerUrl: string;
   title: string;

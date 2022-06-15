@@ -33,6 +33,7 @@ const initialState: MarketInitialState = {
     slug: '',
     category: '',
     subcategory: '',
+    resolutionSource: null,
     imageUrl: '',
     bannerUrl: '',
     title: '',
