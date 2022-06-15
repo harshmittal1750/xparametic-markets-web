@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-curly-newline */
-import { ReactNode, useRef } from 'react';
+import { CSSProperties, ReactNode, useRef } from 'react';
 import { TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
 
 import classNames from 'classnames';
@@ -23,6 +23,8 @@ export type TableRow = {
 };
 
 type TableProps = {
+  height: CSSProperties['height'];
+  minWidth: CSSProperties['minWidth'];
   columns: TableColumn[];
   rows: TableRow[];
   isLoadingData?: boolean;
@@ -30,6 +32,8 @@ type TableProps = {
 };
 
 function Table({
+  height,
+  minWidth,
   columns,
   rows,
   isLoadingData = false,
@@ -52,10 +56,10 @@ function Table({
   }
 
   return (
-    <>
+    <div className="width-full" style={{ overflowX: 'auto' }}>
       <TableVirtuoso
         ref={virtuoso}
-        style={{ height: 700 }}
+        style={{ height, minWidth }}
         className="width-full border-solid border-1"
         data={rows}
         totalCount={rows.length}
@@ -133,7 +137,7 @@ function Table({
           ));
         }}
       />
-    </>
+    </div>
   );
 }
 
