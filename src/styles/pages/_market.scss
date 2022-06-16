@@ -91,14 +91,12 @@
 
     &__source {
       grid-area: source;
-      text-align: center;
-      display: none;
 
-      @include breakpoint-to('md') {
-        @include flex-column;
-        width: 100%;
-        padding-top: 1rem;
-      }
+      @include flex-column;
+      width: 100%;
+      padding-top: 1rem;
+
+      text-align: center;
     }
 
     &__tabs {
