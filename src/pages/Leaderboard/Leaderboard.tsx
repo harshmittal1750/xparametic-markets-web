@@ -123,6 +123,7 @@ function Leaderboard() {
                 rows={data}
                 sortBy={tab.sortBy}
                 ticker={ticker}
+                explorerURL={network.explorerURL}
                 isLoading={isLoadingQuery}
               />
               <div className="flex-column gap-6 justify-start align-start">
@@ -131,11 +132,13 @@ function Leaderboard() {
                   rows={data}
                   sortBy={tab.sortBy}
                   ticker={ticker}
+                  explorerURL={network.explorerURL}
                   isLoading={isLoadingQuery}
                 />
                 <LeaderboardTopWallets
                   rows={data}
                   sortBy={tab.sortBy}
+                  explorerURL={network.explorerURL}
                   isLoading={isLoadingQuery}
                 />
               </div>
