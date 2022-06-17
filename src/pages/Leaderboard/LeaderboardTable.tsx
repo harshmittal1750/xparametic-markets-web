@@ -12,6 +12,7 @@ type LeaderboardTableProps = {
   loggedInUser?: string;
   columns: LeaderboardTableColumn[];
   ticker: string;
+  explorerURL: string;
   isLoading: boolean;
 } & Pick<PrepareLeaderboardTableRowsArgs, 'rows' | 'sortBy'>;
 
@@ -20,6 +21,7 @@ function LeaderboardTable({
   columns,
   rows,
   ticker,
+  explorerURL,
   sortBy,
   isLoading
 }: LeaderboardTableProps) {
@@ -29,9 +31,10 @@ function LeaderboardTable({
         loggedInUser,
         rows,
         sortBy,
-        ticker
+        ticker,
+        explorerURL
       }),
-    [ticker, loggedInUser, rows, sortBy]
+    [loggedInUser, rows, sortBy, ticker, explorerURL]
   );
 
   const tableMinWidth = loggedInUser ? 1200 : 950;
