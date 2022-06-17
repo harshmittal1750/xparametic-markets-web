@@ -41,14 +41,16 @@ const columns: TableMiniColumn[] = [
 type LeaderboardYourStatsProps = {
   loggedInUser?: string;
   ticker: string;
+  explorerURL: string;
   isLoading: boolean;
 } & Pick<PrepareLeaderboardTableRowsArgs, 'rows' | 'sortBy'>;
 
 function LeaderboardYourStats({
   loggedInUser,
-  ticker,
   rows,
   sortBy,
+  ticker,
+  explorerURL,
   isLoading
 }: LeaderboardYourStatsProps) {
   const preparedRows = useMemo(
@@ -57,9 +59,10 @@ function LeaderboardYourStats({
         loggedInUser,
         rows,
         sortBy,
-        ticker
+        ticker,
+        explorerURL
       }),
-    [ticker, loggedInUser, rows, sortBy]
+    [loggedInUser, rows, sortBy, ticker, explorerURL]
   );
 
   const row = useMemo(
