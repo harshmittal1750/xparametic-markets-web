@@ -59,7 +59,7 @@ const columns: LeaderboardTableColumn[] = [
     render: liquidityColumnRender
   },
   {
-    title: 'NFT Achievements',
+    title: 'Achievements',
     key: 'achievements',
     align: 'right',
     render: achievements => achievementsColumnRender(achievements, 'medium')
