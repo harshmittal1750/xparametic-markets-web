@@ -37,12 +37,14 @@ type WalletColumnRenderArgs = {
   isLoggedInUser: boolean;
   address: string;
   place: number;
+  explorerURL: string;
 };
 
 function walletColumnRender({
   isLoggedInUser,
   address,
-  place
+  place,
+  explorerURL
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -53,10 +55,13 @@ function walletColumnRender({
     <div className="pm-c-leaderboard-table__wallet">
       {walletPlace.icon}
       {isLoggedInUser ? <MyPlaceIcon /> : null}
-      <span
+      <a
         className={`caption semibold text-${
           isLoggedInUser ? '1' : walletPlace.textColor
         }`}
+        target="_blank"
+        href={`${explorerURL}/address/${address}`}
+        rel="noreferrer"
       >
         {`${address.substring(0, 6)}...${address.substring(
           address.length - 4
@@ -64,7 +69,7 @@ function walletColumnRender({
         {isLoggedInUser ? (
           <span className="caption semibold text-3">{` (You)`}</span>
         ) : null}
-      </span>
+      </a>
     </div>
   );
 }
@@ -171,6 +176,7 @@ export {
 export type PrepareLeaderboardTableRowsArgs = {
   rows?: GetLeaderboardByTimeframeData;
   ticker: string;
+  explorerURL: string;
   sortBy: string;
   loggedInUser?: string;
 };
@@ -178,6 +184,7 @@ export type PrepareLeaderboardTableRowsArgs = {
 function prepareLeaderboardTableRows({
   rows = [],
   ticker,
+  explorerURL,
   sortBy,
   loggedInUser
 }: PrepareLeaderboardTableRowsArgs): LeaderboardTableRow[] {
@@ -191,7 +198,8 @@ function prepareLeaderboardTableRows({
       wallet: {
         isLoggedInUser,
         address: row.user,
-        place: index + 1
+        place: index + 1,
+        explorerURL
       },
       volume: {
         volume: row.volume,
@@ -267,9 +275,14 @@ export { prepareLeaderboardYourStatsRow };
 type TopWalletRenderArgs = {
   address: string;
   place: number;
+  explorerURL: string;
 };
 
-function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
+function topWalletColumnRender({
+  address,
+  place,
+  explorerURL
+}: TopWalletRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
     textColor: '1'
@@ -278,11 +291,16 @@ function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
   return (
     <div className="pm-c-leaderboard-top-wallets__wallet">
       {walletPlace.icon}
-      <span className={`caption semibold text-${walletPlace.textColor}`}>
+      <a
+        className={`caption semibold text-${walletPlace.textColor}`}
+        target="_blank"
+        href={`${explorerURL}/address/${address}`}
+        rel="noreferrer"
+      >
         {`${address.substring(0, 6)}...${address.substring(
           address.length - 4
         )}`}
-      </span>
+      </a>
     </div>
   );
 }
@@ -306,11 +324,13 @@ function topWalletRowRender({ place, change }: topWalletRowRenderArgs) {
 type PrepareLeaderboardTopWalletsRowArgs = {
   rows?: GetLeaderboardByTimeframeData;
   sortBy: string;
+  explorerURL: string;
 };
 
 function prepareLeaderboardTopWalletsRow({
   rows,
-  sortBy
+  sortBy,
+  explorerURL
 }: PrepareLeaderboardTopWalletsRowArgs) {
   const sortedRows = orderBy(
     rows,
@@ -328,7 +348,8 @@ function prepareLeaderboardTopWalletsRow({
         ? {
             address: firstPlace.user,
             place: 1,
-            change: 'stable'
+            change: 'stable',
+            explorerURL
           }
         : null,
       render: topWalletRowRender
@@ -338,7 +359,8 @@ function prepareLeaderboardTopWalletsRow({
         ? {
             address: secondPlace.user,
             place: 2,
-            change: 'stable'
+            change: 'stable',
+            explorerURL
           }
         : null,
       render: topWalletRowRender
@@ -348,7 +370,8 @@ function prepareLeaderboardTopWalletsRow({
         ? {
             address: thirdPlace.user,
             place: 3,
-            change: 'stable'
+            change: 'stable',
+            explorerURL
           }
         : null,
       render: topWalletRowRender
