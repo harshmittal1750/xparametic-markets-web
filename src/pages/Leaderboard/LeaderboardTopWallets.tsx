@@ -27,17 +27,19 @@ const columns: LeaderboardTopWalletsColumn[] = [
 ];
 
 type LeaderboardTopWalletsProps = {
+  explorerURL: string;
   isLoading: boolean;
 } & Pick<PrepareLeaderboardTableRowsArgs, 'rows' | 'sortBy'>;
 
 function LeaderboardTopWallets({
   rows,
   sortBy,
+  explorerURL,
   isLoading
 }: LeaderboardTopWalletsProps) {
   const row = useMemo(
-    () => prepareLeaderboardTopWalletsRow({ rows, sortBy }),
-    [rows, sortBy]
+    () => prepareLeaderboardTopWalletsRow({ rows, sortBy, explorerURL }),
+    [rows, sortBy, explorerURL]
   );
 
   return (
