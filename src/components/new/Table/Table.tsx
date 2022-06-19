@@ -1,9 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-curly-newline */
-import { CSSProperties, ReactNode, useRef } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
 
 import classNames from 'classnames';
+
+import { ArrowUpSmallestIcon } from 'assets/icons';
 
 import { AlertMini } from 'components';
 
@@ -23,8 +25,8 @@ export type TableRow = {
 };
 
 type TableProps = {
-  height: CSSProperties['height'];
-  minWidth: CSSProperties['minWidth'];
+  height: number;
+  minWidth: number;
   columns: TableColumn[];
   rows: TableRow[];
   isLoadingData?: boolean;
@@ -39,6 +41,8 @@ function Table({
   isLoadingData = false,
   emptyDataDescription = 'No data to show.'
 }: TableProps) {
+  const [atTop, setAtTop] = useState(true);
+
   const virtuoso = useRef<TableVirtuosoHandle>(null);
 
   type ScrollToIndexArgs = {
@@ -56,13 +60,27 @@ function Table({
   }
 
   return (
-    <div className="width-full" style={{ overflowX: 'auto' }}>
+    <div className="relative width-full" style={{ overflowX: 'auto' }}>
+      {!atTop ? (
+        <div className="pm-c-table__action-overlay--top flex-row justify-center align-start">
+          <button
+            type="button"
+            className="pm-c-table__action-button"
+            onClick={() => scrollToIndex({ index: 0 })}
+          >
+            <ArrowUpSmallestIcon style={{ opacity: 0.5 }} />
+            Go to top
+          </button>
+        </div>
+      ) : null}
       <TableVirtuoso
         ref={virtuoso}
         style={{ height, minWidth }}
         className="width-full border-solid border-1"
         data={rows}
         totalCount={rows.length}
+        atTopThreshold={height}
+        atTopStateChange={setAtTop}
         components={{
           Table: ({ style, ...props }) => (
             <table
