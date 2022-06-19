@@ -37,6 +37,20 @@ function LeaderboardTable({
     [loggedInUser, rows, sortBy, ticker, explorerURL]
   );
 
+  const userIndex = useMemo(() => {
+    if (loggedInUser) {
+      const user = preparedRows.find(
+        row => row.wallet.address === loggedInUser
+      );
+
+      if (user) {
+        return preparedRows.indexOf(user);
+      }
+    }
+
+    return undefined;
+  }, [loggedInUser, preparedRows]);
+
   const tableMinWidth = loggedInUser ? 1200 : 950;
 
   return (
@@ -46,6 +60,11 @@ function LeaderboardTable({
       columns={columns}
       rows={preparedRows}
       isLoadingData={isLoading}
+      customAction={
+        userIndex
+          ? { description: 'See your rank', index: userIndex }
+          : undefined
+      }
     />
   );
 }
