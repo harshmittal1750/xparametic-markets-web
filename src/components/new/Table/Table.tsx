@@ -1,11 +1,11 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-curly-newline */
-import { ReactNode, useRef, useState } from 'react';
-import { TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
+import { ReactNode, useCallback, useRef, useState } from 'react';
+import { ListItem, TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
 
 import classNames from 'classnames';
 
-import { ArrowUpSmallestIcon } from 'assets/icons';
+import { ArrowUpSmallestIcon, ArrowDownSmallestIcom } from 'assets/icons';
 
 import { AlertMini } from 'components';
 
@@ -31,6 +31,10 @@ type TableProps = {
   rows: TableRow[];
   isLoadingData?: boolean;
   emptyDataDescription?: string;
+  customAction?: {
+    description: string;
+    index: number;
+  };
 };
 
 function Table({
@@ -39,9 +43,14 @@ function Table({
   columns,
   rows,
   isLoadingData = false,
-  emptyDataDescription = 'No data to show.'
+  emptyDataDescription = 'No data to show.',
+  customAction
 }: TableProps) {
   const [atTop, setAtTop] = useState(true);
+  const [indexInRenderedItems, setIndexInRenderedItems] = useState(false);
+  const [indexPositon, setIndexPosition] = useState<
+    ('up' | 'down') | undefined
+  >();
 
   const virtuoso = useRef<TableVirtuosoHandle>(null);
 
@@ -59,6 +68,26 @@ function Table({
     }
   }
 
+  const handleChangeItemsRendered = useCallback(
+    (items: ListItem<TableRow>[]) => {
+      if (customAction) {
+        const { index } = customAction;
+
+        const itemsIndexes = Object.values(items).map(item => item.index);
+        const indexInItemsIndexes = itemsIndexes.includes(index);
+
+        setIndexInRenderedItems(indexInItemsIndexes);
+
+        if (!indexInItemsIndexes) {
+          const isAbove = index > itemsIndexes[itemsIndexes.length - 1];
+
+          setIndexPosition(isAbove ? 'down' : 'up');
+        }
+      }
+    },
+    [customAction]
+  );
+
   return (
     <div className="relative width-full" style={{ overflowX: 'auto' }}>
       {!atTop ? (
@@ -68,8 +97,26 @@ function Table({
             className="pm-c-table__action-button"
             onClick={() => scrollToIndex({ index: 0 })}
           >
-            <ArrowUpSmallestIcon style={{ opacity: 0.5 }} />
+            <ArrowUpSmallestIcon />
             Go to top
+          </button>
+        </div>
+      ) : null}
+      {customAction && !indexInRenderedItems ? (
+        <div className="pm-c-table__action-overlay--bottom flex-row justify-center align-end">
+          <button
+            type="button"
+            className="pm-c-table__action-button"
+            onClick={() =>
+              scrollToIndex({ index: customAction.index, align: 'center' })
+            }
+          >
+            {indexPositon === 'up' ? (
+              <ArrowUpSmallestIcon />
+            ) : (
+              <ArrowDownSmallestIcom />
+            )}
+            {customAction.description}
           </button>
         </div>
       ) : null}
@@ -81,6 +128,7 @@ function Table({
         totalCount={rows.length}
         atTopThreshold={height}
         atTopStateChange={setAtTop}
+        itemsRendered={items => handleChangeItemsRendered(items)}
         components={{
           Table: ({ style, ...props }) => (
             <table
