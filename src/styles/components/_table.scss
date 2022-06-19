@@ -110,6 +110,7 @@
         border-top-right-radius: 0rem;
       }
     }
+
     &__action-overlay {
       position: absolute;
       left: 0.1rem;
@@ -139,6 +140,12 @@
           'bottom'
         );
       }
+    }
+
+    &__action-button {
+      @extend .pm-c-button-ghost--primary, .pm-c-button--xs;
+      padding: 0.8rem 0.9rem;
+      border-radius: 10.8rem;
     }
   }
 }
