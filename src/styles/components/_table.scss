@@ -146,6 +146,10 @@
       @extend .pm-c-button-ghost--primary, .pm-c-button--xs;
       padding: 0.8rem 0.9rem;
       border-radius: 10.8rem;
+
+      svg {
+        opacity: 0.5;
+      }
     }
   }
 }
