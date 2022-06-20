@@ -9,6 +9,7 @@ export type Achievement = { id: number; name: string; image: string };
 
 export type LeaderboardTableRow = {
   key: string;
+  highlight?: boolean;
   wallet: {
     isLoggedInUser: boolean;
     address: string;
