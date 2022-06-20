@@ -195,8 +195,7 @@ function prepareLeaderboardTableRows({
         isLoggedInUser,
         address: row.user,
         place: index + 1,
-        explorerURL,
-        achievements: row.achievements
+        explorerURL
       },
       volume: {
         volume: row.volume,
