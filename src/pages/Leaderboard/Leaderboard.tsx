@@ -47,17 +47,35 @@ const columns: LeaderboardTableColumn[] = [
     title: 'Volume',
     key: 'volume',
     align: 'right',
+    width: 180,
     render: volumeColumnRender
   },
-  { title: 'Markets Created', key: 'marketsCreated', align: 'right' },
-  { title: 'Won Predictions', key: 'wonPredictions', align: 'right' },
+  {
+    title: 'Markets Created',
+    key: 'marketsCreated',
+    align: 'right',
+    width: 140
+  },
+  {
+    title: 'Won Predictions',
+    key: 'wonPredictions',
+    align: 'right',
+    width: 140
+  },
   {
     title: 'Liquidity Added',
     key: 'liquidityAdded',
     align: 'right',
+    width: 180,
     render: liquidityColumnRender
   },
-  { title: 'Rank', key: 'rank', align: 'right', render: rankColumnRender }
+  {
+    title: 'Rank',
+    key: 'rank',
+    align: 'right',
+    width: 100,
+    render: rankColumnRender
+  }
 ];
 
 type Timeframe = '1d' | '1w' | '1m';
