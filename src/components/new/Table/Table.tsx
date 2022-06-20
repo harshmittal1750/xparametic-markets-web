@@ -27,7 +27,6 @@ export type TableRow = {
 
 type TableProps = {
   height: number;
-  minWidth: number;
   columns: TableColumn[];
   rows: TableRow[];
   isLoadingData?: boolean;
@@ -40,7 +39,6 @@ type TableProps = {
 
 function Table({
   height,
-  minWidth,
   columns,
   rows,
   isLoadingData = false,
@@ -123,7 +121,7 @@ function Table({
       ) : null}
       <TableVirtuoso
         ref={virtuoso}
-        style={{ height, minWidth }}
+        style={{ height }}
         className="width-full border-solid border-1"
         data={rows}
         totalCount={rows.length}
