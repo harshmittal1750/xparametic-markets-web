@@ -1,6 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-curly-newline */
-import { ReactNode, useCallback, useRef, useState } from 'react';
+import { CSSProperties, ReactNode, useCallback, useRef, useState } from 'react';
 import { ListItem, TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
 
 import classNames from 'classnames';
@@ -16,6 +16,7 @@ export type TableColumn = {
   key: string;
   render?: (_value: any) => ReactNode;
   align: TableColumnAlign;
+  width?: CSSProperties['width'];
 };
 
 export type TableRow = {
@@ -186,6 +187,7 @@ function Table({
                 key={column.key}
                 scope="col"
                 className={`bg-3 padding-y-4 padding-x-5 tiny bold text-3 align-middle whitespace-nowrap text-${column.align}`}
+                style={{ width: column.width }}
               >
                 {column.title}
               </th>
