@@ -5,6 +5,8 @@ import { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
 
 export type LeaderboardTableColumn = TableColumn;
 
+export type Achievement = { id: number; name: string; image: string };
+
 export type LeaderboardTableRow = {
   key: string;
   wallet: {
@@ -12,6 +14,7 @@ export type LeaderboardTableRow = {
     address: string;
     place: number;
     explorerURL: string;
+    achievements: Achievement[];
   };
   volume: {
     volume: number;
@@ -23,7 +26,7 @@ export type LeaderboardTableRow = {
     liquidity: number;
     ticker: string;
   };
-  achievements: { id: number; name: string; image: string }[];
+  achievements: Achievement[];
   rank: {
     place: number;
     change: 'up' | 'down' | 'stable';
