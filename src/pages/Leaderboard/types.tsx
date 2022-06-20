@@ -15,7 +15,6 @@ export type LeaderboardTableRow = {
     address: string;
     place: number;
     explorerURL: string;
-    achievements: Achievement[];
   };
   volume: {
     volume: number;
