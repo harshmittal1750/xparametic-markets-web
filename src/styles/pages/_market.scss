@@ -92,11 +92,22 @@
     &__source {
       grid-area: source;
 
-      @include flex-column;
+      @include flex-row(center, center);
       width: 100%;
-      padding-top: 1rem;
+      padding: 1rem 2rem;
 
       text-align: center;
+
+      p {
+        display: inline-block;
+        width: 100%;
+        max-width: 65rem;
+
+        direction: ltr;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+      }
     }
 
     &__tabs {
