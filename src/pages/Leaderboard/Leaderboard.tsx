@@ -11,6 +11,7 @@ import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
 import {
+  achievementsColumnRender,
   liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
@@ -42,12 +43,18 @@ const tabs = [
 ];
 
 const columns: LeaderboardTableColumn[] = [
-  { title: 'Wallet', key: 'wallet', align: 'left', render: walletColumnRender },
+  {
+    title: 'Wallet',
+    key: 'wallet',
+    align: 'left',
+    width: 200,
+    render: walletColumnRender
+  },
   {
     title: 'Volume',
     key: 'volume',
     align: 'right',
-    width: 180,
+    width: 150,
     render: volumeColumnRender
   },
   {
@@ -66,8 +73,15 @@ const columns: LeaderboardTableColumn[] = [
     title: 'Liquidity Added',
     key: 'liquidityAdded',
     align: 'right',
-    width: 180,
+    width: 150,
     render: liquidityColumnRender
+  },
+  {
+    title: 'Achievements',
+    key: 'achievements',
+    align: 'right',
+    width: 140,
+    render: achievements => achievementsColumnRender(achievements, 'medium')
   },
   {
     title: 'Rank',
