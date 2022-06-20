@@ -232,6 +232,7 @@ function prepareLeaderboardTableRows({
 
     return {
       key: row.user,
+      highlight: isLoggedInUser,
       wallet: {
         isLoggedInUser,
         address: row.user,
