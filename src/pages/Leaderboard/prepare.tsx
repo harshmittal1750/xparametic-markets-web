@@ -158,48 +158,6 @@ function rankColumnRender({ place, change }: RankColumnRenderArgs) {
   );
 }
 
-type AchievementsColumnRenderArgs = {
-  id: number;
-  name: string;
-  image: string;
-}[];
-
-function achievementsColumnRender(
-  achievements: AchievementsColumnRenderArgs,
-  size: 'medium' | 'small'
-) {
-  const visibleAchievements = achievements.slice(0, 3);
-  const remainingAchievements = achievements.slice(3);
-
-  return (
-    <div className="pm-c-leaderboard-table__achievements-list">
-      {!isEmpty(remainingAchievements) ? (
-        <div
-          id={`achievement${0}`}
-          className={`pm-c-leaderboard-table__achievement--${size} pm-c-leaderboard-table__achievement--more`}
-        >
-          <span
-            className={`${
-              size === 'small' ? 'tiny' : 'caption'
-            } semibold text-primary`}
-          >
-            {`${remainingAchievements.length}+`}
-          </span>
-        </div>
-      ) : null}
-      {visibleAchievements.slice(0, 3).map((achievement, index) => (
-        <img
-          id={`achievement${index}`}
-          className={`pm-c-leaderboard-table__achievement--${size}`}
-          key={achievement.id}
-          src={achievement.image}
-          alt={achievement.name}
-        />
-      ))}
-    </div>
-  );
-}
-
 export {
   walletColumnRender,
   volumeColumnRender,
@@ -237,6 +195,7 @@ function prepareLeaderboardTableRows({
         isLoggedInUser,
         address: row.user,
         place: index + 1,
+        explorerURL,
         achievements: row.achievements
       },
       volume: {
