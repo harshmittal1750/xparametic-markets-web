@@ -11,7 +11,6 @@ import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
 import {
-  achievementsColumnRender,
   liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
@@ -57,12 +56,6 @@ const columns: LeaderboardTableColumn[] = [
     key: 'liquidityAdded',
     align: 'right',
     render: liquidityColumnRender
-  },
-  {
-    title: 'Achievements',
-    key: 'achievements',
-    align: 'right',
-    render: achievements => achievementsColumnRender(achievements, 'medium')
   },
   { title: 'Rank', key: 'rank', align: 'right', render: rankColumnRender }
 ];
