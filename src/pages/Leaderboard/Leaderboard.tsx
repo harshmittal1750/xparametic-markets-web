@@ -152,14 +152,16 @@ function Leaderboard() {
                 isLoading={isLoadingQuery}
               />
               <div className="flex-column gap-6 justify-start align-start">
-                <LeaderboardYourStats
-                  loggedInUser={userEthAddress}
-                  rows={data}
-                  sortBy={tab.sortBy}
-                  ticker={ticker}
-                  explorerURL={network.explorerURL}
-                  isLoading={isLoadingQuery}
-                />
+                {walletConnected ? (
+                  <LeaderboardYourStats
+                    loggedInUser={userEthAddress}
+                    rows={data}
+                    sortBy={tab.sortBy}
+                    ticker={ticker}
+                    explorerURL={network.explorerURL}
+                    isLoading={isLoadingQuery}
+                  />
+                ) : null}
                 <LeaderboardTopWallets
                   rows={data}
                   sortBy={tab.sortBy}
