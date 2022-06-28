@@ -1,6 +1,6 @@
 # Polkamarkets
 
-Polkamarkets is an Autonomous Prediction Market Protocol built for cross-chain information exchange and trading, based on Polkadot.
+Polkamarkets is an Autonomous Prediction Market Protocol built for multi-chain information exchange and trading, based on Polkadot.
 
 ## Project Overview
 
