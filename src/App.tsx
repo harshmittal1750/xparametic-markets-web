@@ -24,7 +24,7 @@ const App = () => {
 
   useEffect(() => {
     setLocalStorageTheme(theme);
-  }, [theme, setLocalStorageTheme]);
+  }, [theme]);
 
   useEffect(() => {
     dispatch(login(networkConfig));

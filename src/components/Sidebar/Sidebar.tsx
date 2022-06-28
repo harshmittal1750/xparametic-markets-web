@@ -127,6 +127,7 @@ const Sidebar = () => {
             >
               <Menu.Item
                 key={category.title}
+                fullWidth
                 style={{ padding: '1.6rem 0rem' }}
               >
                 <NavLink
@@ -149,17 +150,16 @@ const Sidebar = () => {
                   >
                     {category.title}
                   </span>
-                  {
-                    // TODO: calculate categories market count
-                    // <span
-                    //   className={classNames(
-                    //     'sidebar__link-counter',
-                    //     collapsed && 'hidden'
-                    //   )}
-                    // >
-                    //   {123}
-                    // </span>
-                  }
+                  {category.marketCount ? (
+                    <span
+                      className={classNames(
+                        'sidebar__link-counter',
+                        collapsed && 'hidden'
+                      )}
+                    >
+                      {category.marketCount}
+                    </span>
+                  ) : null}
                 </NavLink>
               </Menu.Item>
             </Tooltip>
