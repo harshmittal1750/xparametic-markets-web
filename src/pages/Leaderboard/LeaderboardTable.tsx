@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 
 import { Table } from 'components/new';
 
+import { useWindowDimensions } from 'hooks';
+
 import {
   prepareLeaderboardTableRows,
   PrepareLeaderboardTableRowsArgs
@@ -25,6 +27,8 @@ function LeaderboardTable({
   sortBy,
   isLoading
 }: LeaderboardTableProps) {
+  const { height } = useWindowDimensions();
+
   const preparedRows = useMemo(
     () =>
       prepareLeaderboardTableRows({
@@ -51,9 +55,11 @@ function LeaderboardTable({
     return undefined;
   }, [loggedInUser, preparedRows]);
 
+  const tableHeight = Math.min(Math.ceil(height * 0.6), 900);
+
   return (
     <Table
-      height={700}
+      height={tableHeight}
       columns={columns}
       rows={preparedRows}
       isLoadingData={isLoading}
