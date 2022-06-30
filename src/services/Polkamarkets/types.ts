@@ -71,6 +71,6 @@ export type GetLeaderboardByTimeframeData = {
 }[];
 
 export type GetLeaderboardByTimeframeArgs = {
-  timeframe: '1d' | '1w' | '1m';
+  timeframe: '1w' | '1m' | 'at';
   networkId: string;
 };

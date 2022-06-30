@@ -92,7 +92,7 @@ const columns: LeaderboardTableColumn[] = [
   }
 ];
 
-type Timeframe = '1d' | '1w' | '1m';
+type Timeframe = '1w' | '1m' | 'at';
 
 function Leaderboard() {
   // Redux selectors
@@ -105,7 +105,7 @@ function Leaderboard() {
 
   // Local state
   const [activeTab, setActiveTab] = useState('volume');
-  const [timeframe, setTimeframe] = useState<Timeframe>('1m');
+  const [timeframe, setTimeframe] = useState<Timeframe>('1w');
 
   // Query hooks
   const { data, isLoading, isFetching } = useGetLeaderboardByTimeframeQuery({
@@ -129,11 +129,11 @@ function Leaderboard() {
         filters={[
           <Dropdown
             key="timeframe"
-            defaultOption="1m"
+            defaultOption="1w"
             options={[
-              { label: 'Daily leaderboard', value: '1d' },
-              { label: 'Weekly leaderboard', value: '1w' },
-              { label: 'Monthly leaderboard', value: '1m' }
+              { label: 'Weekly', value: '1w' },
+              { label: 'Monthly', value: '1m' },
+              { label: 'All-time', value: 'at' }
             ]}
             onSelect={value => setTimeframe(value)}
           />
