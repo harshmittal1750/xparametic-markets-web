@@ -162,9 +162,9 @@ function rankColumnRender({ place, change }: RankColumnRenderArgs) {
   return (
     <div className="pm-c-leaderboard-table__rank">
       <span className="caption semibold text-1">{place}</span>
-      {change === 'up' ? <RankUpIcon /> : null}
+      {/* {change === 'up' ? <RankUpIcon /> : null}
       {change === 'down' ? <RankDownIcon /> : null}
-      {change === 'stable' ? <RankStableIcon /> : null}
+      {change === 'stable' ? <RankStableIcon /> : null} */}
     </div>
   );
 }
@@ -335,9 +335,9 @@ function topWalletRowRender({ place, change }: topWalletRowRenderArgs) {
   return (
     <div className="pm-c-leaderboard-table__rank">
       <span className="caption semibold text-1">{place}</span>
-      {change === 'up' ? <RankUpIcon /> : null}
+      {/* {change === 'up' ? <RankUpIcon /> : null}
       {change === 'down' ? <RankDownIcon /> : null}
-      {change === 'stable' ? <RankStableIcon /> : null}
+      {change === 'stable' ? <RankStableIcon /> : null} */}
     </div>
   );
 }
