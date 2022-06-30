@@ -37,13 +37,17 @@ type AchievementsColumnRenderArgs = Achievement[];
 
 function achievementsColumnRender(
   achievements: AchievementsColumnRenderArgs,
-  size: 'medium' | 'small'
+  size: 'medium' | 'small',
+  marginLeft: number = 0
 ) {
   const visibleAchievements = achievements.slice(0, 3);
   const remainingAchievements = achievements.slice(3);
 
   return (
-    <div className="pm-c-leaderboard-table__achievements-list">
+    <div
+      className="pm-c-leaderboard-table__achievements-list"
+      style={{ marginLeft }}
+    >
       {!isEmpty(remainingAchievements) ? (
         <div
           id={`achievement${0}`}
@@ -75,13 +79,15 @@ type WalletColumnRenderArgs = {
   address: string;
   place: number;
   explorerURL: string;
+  achievements: Achievement[];
 };
 
 function walletColumnRender({
   isLoggedInUser,
   address,
   place,
-  explorerURL
+  explorerURL,
+  achievements
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -107,6 +113,11 @@ function walletColumnRender({
           <span className="caption semibold text-3">{` (You)`}</span>
         ) : null}
       </a>
+      {achievementsColumnRender(
+        achievements,
+        'medium',
+        5 + 20 * Math.min(achievements.length, 4)
+      )}
     </div>
   );
 }
@@ -195,7 +206,8 @@ function prepareLeaderboardTableRows({
         isLoggedInUser,
         address: row.user,
         place: index + 1,
-        explorerURL
+        explorerURL,
+        achievements: row.achievements
       },
       volume: {
         volume: row.volume,

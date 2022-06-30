@@ -77,13 +77,6 @@ const columns: LeaderboardTableColumn[] = [
     render: liquidityColumnRender
   },
   {
-    title: 'Achievements',
-    key: 'achievements',
-    align: 'right',
-    width: 140,
-    render: achievements => achievementsColumnRender(achievements, 'medium')
-  },
-  {
     title: 'Rank',
     key: 'rank',
     align: 'right',
