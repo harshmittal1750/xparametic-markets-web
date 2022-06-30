@@ -11,7 +11,6 @@ import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
 import {
-  achievementsColumnRender,
   liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
@@ -22,7 +21,7 @@ import { LeaderboardTableColumn } from './types';
 const tabs = [
   {
     id: 'volume',
-    title: 'Volume',
+    title: 'Gross Volume',
     sortBy: 'volume'
   },
   {
@@ -36,9 +35,14 @@ const tabs = [
     sortBy: 'claimWinningsCount'
   },
   {
-    id: 'liquidityAdded',
-    title: 'Liquidity Added',
-    sortBy: 'liquidity'
+    id: 'netVolume',
+    title: 'Net Volume',
+    sortBy: 'tvlVolume'
+  },
+  {
+    id: 'netLiquidity',
+    title: 'Net Liquidity',
+    sortBy: 'tvlLiquidity'
   }
 ];
 
@@ -51,10 +55,10 @@ const columns: LeaderboardTableColumn[] = [
     render: walletColumnRender
   },
   {
-    title: 'Volume',
+    title: 'Gross Volume',
     key: 'volume',
     align: 'right',
-    width: 150,
+    width: 140,
     render: volumeColumnRender
   },
   {
@@ -70,10 +74,17 @@ const columns: LeaderboardTableColumn[] = [
     width: 140
   },
   {
-    title: 'Liquidity Added',
-    key: 'liquidityAdded',
+    title: 'Net Volume',
+    key: 'netVolume',
     align: 'right',
-    width: 150,
+    width: 140,
+    render: volumeColumnRender
+  },
+  {
+    title: 'Net Liquidity',
+    key: 'netLiquidity',
+    align: 'right',
+    width: 140,
     render: liquidityColumnRender
   },
   {

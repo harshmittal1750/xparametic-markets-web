@@ -130,7 +130,7 @@ type VolumeColumnRenderArgs = {
 function volumeColumnRender({ volume, ticker }: VolumeColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__volume caption semibold text-1">
-      {`${volume.toFixed(3)} `}
+      {`${volume.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -147,7 +147,7 @@ function liquidityColumnRender({
 }: LiquidityColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
-      {`${liquidity.toFixed(3)} `}
+      {`${liquidity.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -215,8 +215,12 @@ function prepareLeaderboardTableRows({
       },
       marketsCreated: row.marketsCreated,
       wonPredictions: row.claimWinningsCount,
-      liquidityAdded: {
-        liquidity: row.liquidity,
+      netVolume: {
+        volume: row.tvlVolume,
+        ticker
+      },
+      netLiquidity: {
+        liquidity: row.tvlLiquidity,
         ticker
       },
       achievements: row.achievements,
@@ -260,11 +264,20 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
     wonPredictions: {
       value: yourStats ? yourStats.wonPredictions : null
     },
-    liquidityAdded: {
+    netVolume: {
       value: yourStats
         ? {
-            liquidity: yourStats.liquidityAdded.liquidity,
-            ticker: yourStats.liquidityAdded.ticker
+            volume: yourStats.netVolume.volume,
+            ticker: yourStats.netVolume.ticker
+          }
+        : null,
+      render: volumeColumnRender
+    },
+    netLiquidity: {
+      value: yourStats
+        ? {
+            liquidity: yourStats.netLiquidity.liquidity,
+            ticker: yourStats.netLiquidity.ticker
           }
         : null,
       render: liquidityColumnRender
