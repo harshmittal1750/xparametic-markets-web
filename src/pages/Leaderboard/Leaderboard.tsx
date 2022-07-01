@@ -108,7 +108,7 @@ function Leaderboard() {
   const { currency } = network;
 
   // Local state
-  const [activeTab, setActiveTab] = useState('volume');
+  const [activeTab, setActiveTab] = useState('netVolume');
   const [timeframe, setTimeframe] = useState<Timeframe>('1w');
 
   // Query hooks
