@@ -30,8 +30,10 @@ const App = () => {
     dispatch(login(networkConfig));
   }, [dispatch, networkConfig]);
 
+  const appTheme = localStorageTheme || theme;
+
   return (
-    <div className={`theme--${localStorageTheme || theme}`}>
+    <div data-theme={appTheme} className={`theme--${appTheme}`}>
       <SEO
         title="Polkamarkets - Autonomous Prediction Market Protocol"
         description="Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot."

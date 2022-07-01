@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
   getFavoriteMarkets,
@@ -26,6 +26,8 @@ function HomeTabs({
     state => state.markets.filterByVerified
   );
 
+  const [activeTab, setActiveTab] = useState('open');
+
   function handleChangeFilterInline(filterByVerifiedMarkets: boolean) {
     dispatch(setFilterByVerified(filterByVerifiedMarkets));
   }
@@ -48,7 +50,8 @@ function HomeTabs({
 
   return (
     <Tabs
-      defaultActiveId="open"
+      value={activeTab}
+      onChange={tab => setActiveTab(tab)}
       filters={[
         <FilterInline
           key="filterByVerifiedMarkets"

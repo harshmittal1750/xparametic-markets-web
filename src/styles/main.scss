@@ -7,6 +7,7 @@
 @import 'borders';
 @import 'sizing';
 @import 'interactivity';
+@import 'typography';
 
 // 1. Configuration and helpers
 @import 'helpers/display';
@@ -42,6 +43,7 @@
 @import 'components/checkbox';
 @import 'components/create-market-form';
 @import 'components/divider';
+@import 'components/dropdown';
 @import 'components/featured-card';
 @import 'components/image-cropper';
 @import 'components/input';
@@ -95,5 +97,6 @@
 @import 'pages/create-market';
 @import 'pages/restricted-country';
 @import 'pages/achievements';
+@import 'pages/leaderboard';
 
 // 7. Themes
