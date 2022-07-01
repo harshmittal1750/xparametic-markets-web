@@ -114,7 +114,7 @@ const Sidebar = () => {
               </NavLink>
             </Menu.Item>
           </Tooltip>
-          {/* <Tooltip text="Leaderboard" position="right" disabled={!collapsed}>
+          <Tooltip text="Leaderboard" position="right" disabled={!collapsed}>
             <Menu.Item key="leaderboard" style={{ padding: '1.8rem 0rem' }}>
               <NavLink
                 to="/leaderboard"
@@ -132,7 +132,7 @@ const Sidebar = () => {
                 </span>
               </NavLink>
             </Menu.Item>
-          </Tooltip> */}
+          </Tooltip>
         </Menu>
 
         <hr className="sidebar__separator" />
