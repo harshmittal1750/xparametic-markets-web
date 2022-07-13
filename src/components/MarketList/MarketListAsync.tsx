@@ -92,7 +92,10 @@ const MarketListAsync = ({
   return (
     <ul className="market-list">
       {markets.map(market => (
-        <li className="market-list__item" key={market.id}>
+        <li
+          className="market-list__item"
+          key={`${market.id}-${market.networkId}`}
+        >
           <PredictionCard market={market} />
         </li>
       ))}
