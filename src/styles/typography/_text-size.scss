@@ -1,0 +1,29 @@
+:root {
+  --font-scale-heading: 1;
+
+  --font-size-heading-1: 2.6rem;
+  --font-size-heading-2: 2.1rem;
+}
+
+$font-sizes: (
+  'heading-1': calc(var(--font-scale-heading) * var(--font-size-heading-1)),
+  'heading-2': calc(var(--font-scale-heading) * var(--font-size-heading-2))
+);
+
+$line-heights: (
+  'heading-1': 1.38,
+  'heading-2': 1.48
+);
+
+$letter-spacings: (
+  'heading-1': -0.01em,
+  'heading-2': -0.01em
+);
+
+@each $name, $value in $font-sizes {
+  .text-#{$name} {
+    font-size: $value;
+    line-height: map-get($line-heights, $name);
+    letter-spacing: map-get($letter-spacings, $name);
+  }
+}
