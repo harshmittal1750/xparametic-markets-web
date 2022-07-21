@@ -20,10 +20,10 @@ type ProfileAchievementProps = {
 function ProfileAchievement({ backgroundColor }: ProfileAchievementProps) {
   return (
     <div
-      className={`flex-row align-center padding-6 margin-right-4 gap-6 bg-${backgroundColor}`}
+      className={`flex-row align-center padding-6 margin-right-4 width-full gap-6 bg-${backgroundColor}`}
     >
       <img src={mock.imageUrl} alt={mock.title} width={104} height={104} />
-      <div className="flex-column gap-3">
+      <div className="flex-column gap-3 width-full">
         <h4 className="pm-c-achievement__award-title heading-large bold">
           {mock.title}
         </h4>

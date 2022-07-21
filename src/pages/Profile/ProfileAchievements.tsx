@@ -11,6 +11,7 @@ function ProfileAchievements() {
           className="flex-column"
           scrollbarSize="sm"
           style={{ height: 456 }}
+          fullwidth
         >
           <ProfileAchievement backgroundColor="2" />
           <ProfileAchievement backgroundColor="3" />
