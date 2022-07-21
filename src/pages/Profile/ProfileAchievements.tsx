@@ -4,7 +4,7 @@ import ProfileAchievement from './ProfileAchievement';
 
 function ProfileAchievements() {
   return (
-    <div className="flex-column gap-4">
+    <div className="flex-column gap-4 width-full">
       <h2 className="text-heading-2 font-semibold text-1">Achievements</h2>
       <div className="border-radius-small border-solid border-1">
         <ScrollableArea
