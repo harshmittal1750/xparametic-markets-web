@@ -1,5 +1,11 @@
+import ProfileYourStats from './ProfileYourStats';
+
 function Profile() {
-  return <div>Profile</div>;
+  return (
+    <div>
+      <ProfileYourStats />
+    </div>
+  );
 }
 
 export default Profile;
