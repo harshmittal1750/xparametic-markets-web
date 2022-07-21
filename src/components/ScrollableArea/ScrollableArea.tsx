@@ -15,6 +15,7 @@ type ScrollableAreaProps = {
    */
   style?: CSSProperties;
   className?: string;
+  fullwidth?: boolean;
   children: ReactNode;
 };
 
@@ -25,10 +26,16 @@ function ScrollableArea({
   scrollbarSize = 'normal',
   style,
   className,
+  fullwidth,
   children
 }: ScrollableAreaProps) {
   return (
-    <div className={`pm-c-scrollable-area--${scrollbarSize}`}>
+    <div
+      className={classNames(
+        `pm-c-scrollable-area--${scrollbarSize}`,
+        fullwidth && 'width-full'
+      )}
+    >
       <div
         className={classNames('pm-c-scrollable-area__content', className)}
         style={style}
