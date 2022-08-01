@@ -1,6 +1,7 @@
 import { Market } from 'models/market';
 import { Portfolio } from 'models/portfolio';
 import { Achievement } from 'types/achievement';
+import { LeaderboardTimeframe } from 'types/leaderboard';
 import { MarketState } from 'types/market';
 
 // getMarketBySlug
@@ -71,6 +72,6 @@ export type GetLeaderboardByTimeframeData = {
 }[];
 
 export type GetLeaderboardByTimeframeArgs = {
-  timeframe: '1w' | '1m' | 'at';
+  timeframe: LeaderboardTimeframe;
   networkId: string;
 };
