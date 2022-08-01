@@ -1,7 +1,10 @@
 import { Market } from 'models/market';
 import { Portfolio } from 'models/portfolio';
 import { Achievement } from 'types/achievement';
-import { LeaderboardTimeframe } from 'types/leaderboard';
+import {
+  LeaderboardAchievement,
+  LeaderboardTimeframe
+} from 'types/leaderboard';
 import { MarketState } from 'types/market';
 
 // getMarketBySlug
@@ -72,6 +75,33 @@ export type GetLeaderboardByTimeframeData = {
 }[];
 
 export type GetLeaderboardByTimeframeArgs = {
+  timeframe: LeaderboardTimeframe;
+  networkId: string;
+};
+
+// getLeaderboardByAddress
+export type GetLeaderboardByAddressData = {
+  user: string;
+  ens: any;
+  marketsCreated: number;
+  volume: number;
+  tvlVolume: number;
+  liquidity: number;
+  tvlLiquidity: number;
+  claimWinningsCount: number;
+  transactions: number;
+  achievements: LeaderboardAchievement[];
+  rank: {
+    marketsCreated: number;
+    volume: number;
+    tvlVolume: number;
+    tvlLiquidity: number;
+    claimWinningsCount: number;
+  };
+};
+
+export type GetLeaderboardByAddressArgs = {
+  address: string;
   timeframe: LeaderboardTimeframe;
   networkId: string;
 };
