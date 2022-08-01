@@ -7,3 +7,5 @@ export type LeaderboardAchievement = {
     traitType: string;
   }[];
 };
+
+export type LeaderboardTimeframe = '1w' | '1m' | 'at';
