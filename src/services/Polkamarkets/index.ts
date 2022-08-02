@@ -2,7 +2,10 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
 import { camelizeKeys } from 'humps';
 
-import { getAchievementsTransformResponse } from './functions';
+import {
+  getAchievementsTransformResponse,
+  getPortfolioByAddressAndNetworkTransformResponse
+} from './functions';
 import {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
@@ -23,7 +26,9 @@ import {
   GetLeaderboardByTimeframeData,
   GetLeaderboardByTimeframeArgs,
   GetLeaderboardByAddressData,
-  GetLeaderboardByAddressArgs
+  GetLeaderboardByAddressArgs,
+  GetPortfolioByAddressAndNetworkData,
+  GetPortfolioByAddressAndNetworkArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -110,6 +115,15 @@ const polkamarketsApi = createApi({
         `/leaderboards/${address}?timeframe=${timeframe}&network_id=${networkId}`,
       transformResponse: (response: GetLeaderboardByAddressData) =>
         camelize(response)
+    }),
+    getPortfolioByAddressAndNetwork: builder.query<
+      GetPortfolioByAddressAndNetworkData,
+      GetPortfolioByAddressAndNetworkArgs
+    >({
+      query: ({ address, networkId }) =>
+        `/portfolios/${address}?network_id=${networkId}`,
+      transformResponse: (response: GetPortfolioByAddressAndNetworkData) =>
+        getPortfolioByAddressAndNetworkTransformResponse(camelize(response))
     })
   })
 });
@@ -126,5 +140,6 @@ export const {
   useReloadPortfolioByAddressMutation,
   useGetAchievementsQuery,
   useGetLeaderboardByTimeframeQuery,
-  useGetLeaderboardByAddressQuery
+  useGetLeaderboardByAddressQuery,
+  useGetPortfolioByAddressAndNetworkQuery
 } = polkamarketsApi;
