@@ -105,3 +105,17 @@ export type GetLeaderboardByAddressArgs = {
   timeframe: LeaderboardTimeframe;
   networkId: string;
 };
+
+// getPortfolioByAddressAndNetwork
+export type GetPortfolioByAddressAndNetworkData = {
+  openPositions: number;
+  wonPositions: number;
+  closedMarketsProfit: number;
+  liquidityProvided: number;
+  firstPositionAt: number;
+};
+
+export type GetPortfolioByAddressAndNetworkArgs = {
+  address: string;
+  networkId: string;
+};
