@@ -1,7 +1,11 @@
 /* eslint-disable import/prefer-default-export */
+import { pick } from 'lodash';
 import { AchievementRarity } from 'types/achievement';
 
-import { GetAchievementsData } from './types';
+import {
+  GetAchievementsData,
+  GetPortfolioByAddressAndNetworkData
+} from './types';
 
 // getAchievements
 
@@ -37,4 +41,17 @@ export function getAchievementsTransformResponse(
       rarity: achievementRarity(achievement.occurrences)
     };
   });
+}
+
+// getPortfolioByAddressAndNetwork
+export function getPortfolioByAddressAndNetworkTransformResponse(
+  response: GetPortfolioByAddressAndNetworkData
+): GetPortfolioByAddressAndNetworkData {
+  return pick(response, [
+    'openPositions',
+    'wonPositions',
+    'closedMarketsProfit',
+    'liquidityProvided',
+    'firstPositionAt'
+  ]);
 }
