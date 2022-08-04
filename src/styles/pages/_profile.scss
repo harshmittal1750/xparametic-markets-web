@@ -4,4 +4,8 @@
   &__details {
     @include flex-column(flex-start, flex-start, px-to-rem(8px));
   }
+
+  &__history {
+    @include flex-row(flex-start, center, px-to-rem(8px));
+  }
 }

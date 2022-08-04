@@ -1,4 +1,9 @@
+import { fromTimestampToCustomFormatDate } from 'helpers/date';
+import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
+
 import { Text } from 'components/new';
+
+import { useNetwork } from 'hooks';
 
 import ProfileSummaryStat from './ProfileSummaryStat';
 
@@ -7,22 +12,65 @@ type ProfileSummaryProps = {
 };
 
 function ProfileSummary({ address }: ProfileSummaryProps) {
+  const { network } = useNetwork();
+  const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
+    address,
+    networkId: network.id
+  });
+
+  if (isLoading || !portfolio) return null;
+
+  const firstPrediction = fromTimestampToCustomFormatDate(
+    portfolio.firstPositionAt * 1000,
+    'MMMM DD, YYYY'
+  );
+
+  const totalPredictions = 2486;
+
   return (
     <div className="pm-p-profile-summary">
       <div className="pm-p-profile-summary__details">
         <Text as="span" fontSize="heading-2" fontWeight="bold" color="1">
           {address}
         </Text>
-        <div className="flex-row gap-3">
-          <span className="tiny-uppercase font-semibold text-3">
+        <div className="pm-p-profile-summary__history">
+          <Text
+            as="span"
+            fontSize="body-4"
+            fontWeight="semibold"
+            color="3"
+            transform="uppercase"
+          >
             {`First prediction: `}
-            <strong className="text-2">August 11, 2021</strong>
-          </span>
+            <Text
+              as="strong"
+              fontSize="body-4"
+              fontWeight="semibold"
+              color="2"
+              transform="uppercase"
+            >
+              {firstPrediction}
+            </Text>
+          </Text>
           <span className="pm-c-divider--circle" />
-          <span className="tiny-uppercase font-semibold text-3">
+          <Text
+            as="span"
+            fontSize="body-4"
+            fontWeight="semibold"
+            color="3"
+            transform="uppercase"
+          >
             {`Total predictions: `}
-            <strong className="text-2">2,489</strong>
-          </span>
+            <Text
+              as="strong"
+              fontSize="body-4"
+              fontWeight="semibold"
+              color="2"
+              transform="uppercase"
+            >
+              {totalPredictions}
+            </Text>
+          </Text>
         </div>
       </div>
       <div className="flex-row gap-5">
