@@ -42,11 +42,14 @@ type TextColor =
   | 'violetes-are-blue'
   | 'maximum-blue-green';
 
+type TextTransform = 'uppercase';
+
 type TextProps = {
   as?: TextType;
   fontSize?: TextFontSize;
   fontWeight?: TextFontWeight;
   color?: TextColor;
+  transform?: TextTransform;
   className?: string;
   style?: CSSProperties;
   children?: ReactNode;
@@ -57,6 +60,7 @@ function Text({
   fontSize = 'heading-1',
   fontWeight = 'regular',
   color,
+  transform,
   className,
   style,
   children
@@ -68,7 +72,8 @@ function Text({
         className,
         `text-${fontSize}`,
         `font-${fontWeight}`,
-        color && `text-${color}`
+        color && `text-${color}`,
+        transform
       ),
       style
     },
