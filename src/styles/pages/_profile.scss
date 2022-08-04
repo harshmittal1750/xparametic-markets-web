@@ -1,0 +1,7 @@
+.pm-p-profile-summary {
+  @include flex-row(space-between, center, px-to-rem(16px));
+
+  &__details {
+    @include flex-column(flex-start, flex-start, px-to-rem(8px));
+  }
+}

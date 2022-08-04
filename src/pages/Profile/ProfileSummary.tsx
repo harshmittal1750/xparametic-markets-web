@@ -1,12 +1,18 @@
+import { Text } from 'components/new';
+
 import ProfileSummaryStat from './ProfileSummaryStat';
 
-function ProfileSummary() {
+type ProfileSummaryProps = {
+  address: string;
+};
+
+function ProfileSummary({ address }: ProfileSummaryProps) {
   return (
-    <div className="flex-row wrap gap-5 justify-space-between">
-      <div className="flex-column gap-3">
-        <span className="text-heading-2 font-bold text-1">
-          0xc0ffee254729296a45a3885639AC7E10F9d54979
-        </span>
+    <div className="pm-p-profile-summary">
+      <div className="pm-p-profile-summary__details">
+        <Text as="span" fontSize="heading-2" fontWeight="bold" color="1">
+          {address}
+        </Text>
         <div className="flex-row gap-3">
           <span className="tiny-uppercase font-semibold text-3">
             {`First prediction: `}
