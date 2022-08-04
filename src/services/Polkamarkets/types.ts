@@ -1,5 +1,4 @@
 import { Market } from 'models/market';
-import { Portfolio } from 'models/portfolio';
 import { Achievement } from 'types/achievement';
 import {
   LeaderboardAchievement,
@@ -40,9 +39,17 @@ export type CreateMarketByIdArgs = {
 };
 
 // getPortfolioByAddress
-export type GetPortfolioByAddressData = Portfolio;
+export type GetPortfolioByAddressData = {
+  openPositions: number;
+  wonPositions: number;
+  closedMarketsProfit: number;
+  liquidityProvided: number;
+  firstPositionAt: number;
+};
+
 export type GetPortfolioByAddressArgs = {
   address: string;
+  networkId: string;
 };
 
 // reloadPortfolioByAddress
@@ -103,19 +110,5 @@ export type GetLeaderboardByAddressData = {
 export type GetLeaderboardByAddressArgs = {
   address: string;
   timeframe: LeaderboardTimeframe;
-  networkId: string;
-};
-
-// getPortfolioByAddressAndNetwork
-export type GetPortfolioByAddressAndNetworkData = {
-  openPositions: number;
-  wonPositions: number;
-  closedMarketsProfit: number;
-  liquidityProvided: number;
-  firstPositionAt: number;
-};
-
-export type GetPortfolioByAddressAndNetworkArgs = {
-  address: string;
   networkId: string;
 };
