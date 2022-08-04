@@ -29,7 +29,14 @@ type TextType =
   | 'i'
   | 'b';
 
-type TextFontSize = 'heading-1' | 'heading-2';
+type TextFontSize =
+  | 'heading-1'
+  | 'heading-2'
+  | 'heading-3'
+  | 'body-1'
+  | 'body-2'
+  | 'body-3'
+  | 'body-4';
 
 type TextFontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
 
