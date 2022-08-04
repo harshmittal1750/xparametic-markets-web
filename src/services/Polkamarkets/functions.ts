@@ -2,10 +2,7 @@
 import { pick } from 'lodash';
 import { AchievementRarity } from 'types/achievement';
 
-import {
-  GetAchievementsData,
-  GetPortfolioByAddressAndNetworkData
-} from './types';
+import { GetAchievementsData, GetPortfolioByAddressData } from './types';
 
 // getAchievements
 
@@ -43,10 +40,10 @@ export function getAchievementsTransformResponse(
   });
 }
 
-// getPortfolioByAddressAndNetwork
-export function getPortfolioByAddressAndNetworkTransformResponse(
-  response: GetPortfolioByAddressAndNetworkData
-): GetPortfolioByAddressAndNetworkData {
+// getPortfolioByAddress
+export function getPortfolioByAddressTransformResponse(
+  response: GetPortfolioByAddressData
+): GetPortfolioByAddressData {
   return pick(response, [
     'openPositions',
     'wonPositions',

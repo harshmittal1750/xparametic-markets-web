@@ -4,7 +4,7 @@ import { camelizeKeys } from 'humps';
 
 import {
   getAchievementsTransformResponse,
-  getPortfolioByAddressAndNetworkTransformResponse
+  getPortfolioByAddressTransformResponse
 } from './functions';
 import {
   GetMarketBySlugArgs,
@@ -26,9 +26,7 @@ import {
   GetLeaderboardByTimeframeData,
   GetLeaderboardByTimeframeArgs,
   GetLeaderboardByAddressData,
-  GetLeaderboardByAddressArgs,
-  GetPortfolioByAddressAndNetworkData,
-  GetPortfolioByAddressAndNetworkArgs
+  GetLeaderboardByAddressArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -80,9 +78,10 @@ const polkamarketsApi = createApi({
       GetPortfolioByAddressData,
       GetPortfolioByAddressArgs
     >({
-      query: ({ address }) => `/portfolios/${address}`,
+      query: ({ address, networkId }) =>
+        `/portfolios/${address}?network_id=${networkId}`,
       transformResponse: (response: GetPortfolioByAddressData) =>
-        camelize(response)
+        getPortfolioByAddressTransformResponse(camelize(response))
     }),
     reloadPortfolioByAddress: builder.mutation<
       ReloadPortfolioByAddressData,
@@ -115,15 +114,6 @@ const polkamarketsApi = createApi({
         `/leaderboards/${address}?timeframe=${timeframe}&network_id=${networkId}`,
       transformResponse: (response: GetLeaderboardByAddressData) =>
         camelize(response)
-    }),
-    getPortfolioByAddressAndNetwork: builder.query<
-      GetPortfolioByAddressAndNetworkData,
-      GetPortfolioByAddressAndNetworkArgs
-    >({
-      query: ({ address, networkId }) =>
-        `/portfolios/${address}?network_id=${networkId}`,
-      transformResponse: (response: GetPortfolioByAddressAndNetworkData) =>
-        getPortfolioByAddressAndNetworkTransformResponse(camelize(response))
     })
   })
 });
@@ -140,6 +130,5 @@ export const {
   useReloadPortfolioByAddressMutation,
   useGetAchievementsQuery,
   useGetLeaderboardByTimeframeQuery,
-  useGetLeaderboardByAddressQuery,
-  useGetPortfolioByAddressAndNetworkQuery
+  useGetLeaderboardByAddressQuery
 } = polkamarketsApi;
