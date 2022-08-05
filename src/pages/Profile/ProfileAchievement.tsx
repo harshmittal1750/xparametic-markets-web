@@ -13,7 +13,8 @@ function ProfileAchievement({
   achievement,
   backgroundColor
 }: ProfileAchievementProps) {
-  const { image, name, actionTitle, rarity } = achievement;
+  const { image, name, description, actionTitle, tokenCount, rarity } =
+    achievement;
 
   return (
     <a
@@ -25,9 +26,9 @@ function ProfileAchievement({
         <h4 className="pm-c-achievement__award-title heading-large bold">
           {name}
         </h4>
-        {/* <p className="pm-c-achievement__award-description caption medium">
-          {mock.description}
-        </p> */}
+        <p className="pm-c-achievement__award-description caption medium">
+          {description}
+        </p>
         <div className="flex-row justify-space-between align-center gap-5">
           <div className="flex-row justify-start align-center gap-3">
             <MedalIcon className="pm-c-achievement__medal-icon--unlocked" />
@@ -36,10 +37,10 @@ function ProfileAchievement({
             </h1>
           </div>
           <div className="flex-row align-center gap-3">
-            {/* <span className="pm-c-achievement__claim-count tiny-uppercase semibold">
-              {`${mock.tokenCount} claimed`}
+            <span className="pm-c-achievement__claim-count tiny-uppercase semibold">
+              {`${tokenCount} claimed`}
             </span>
-            <Divider variant="circle" /> */}
+            <Divider variant="circle" />
             <span
               className={`pm-c-achievement__rarity--${rarity} tiny-uppercase semibold`}
             >
