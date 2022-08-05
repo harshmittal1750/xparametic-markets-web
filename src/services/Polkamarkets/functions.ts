@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import { roundNumber } from 'helpers/math';
 import pick from 'lodash/pick';
 import snakeCase from 'lodash/snakeCase';
 import { AchievementAction, AchievementRarity } from 'types/achievement';
@@ -90,17 +91,17 @@ export function getLeaderboardByAddressTransformResponse(
 
 const feedActions = {
   buy: (shares: number, outcomeTitle?: string) =>
-    `User bought ${shares} shares of outcome ${outcomeTitle} of market`,
+    `User bought ${shares} shares of outcome ${outcomeTitle}`,
   sell: (shares: number, outcomeTitle?: string) =>
-    `User sold ${shares} shares of outcome ${outcomeTitle} of market`,
+    `User sold ${shares} shares of outcome ${outcomeTitle}`,
   add_liquidity: (shares: number, _outcomeTitle?: string) =>
-    `User added ${shares} liquidity shares to market`,
+    `User added ${shares} liquidity shares`,
   remove_liquidity: (shares: number, _outcomeTitle?: string) =>
-    `User removed ${shares} liquidity shares from market`,
+    `User removed ${shares} liquidity shares`,
   claim_winnings: (_shares: number, _outcomeTitle?: string) =>
-    'User won a prediction of market',
+    'User won a prediction',
   create_market: (_shares: number, _outcomeTitle?: string) =>
-    'User created the market'
+    'User created a market'
 };
 
 const feedAccentColors: { [key: string]: FeedActionAccentColor } = {
@@ -118,7 +119,10 @@ export function getPortfolioFeedByAddressTransformResponse(
   return response.map(feed => {
     return {
       ...feed,
-      actionTitle: feedActions[feed.action](feed.shares, feed.outcomeTitle),
+      actionTitle: feedActions[feed.action](
+        roundNumber(feed.shares, 3),
+        feed.outcomeTitle
+      ),
       accentColor: feedAccentColors[feed.action]
     };
   });
