@@ -86,7 +86,6 @@ function walletColumnRender({
   isLoggedInUser,
   address,
   place,
-  explorerURL,
   achievements
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
@@ -102,9 +101,7 @@ function walletColumnRender({
         className={`caption semibold text-${
           isLoggedInUser ? '1' : walletPlace.textColor
         }`}
-        target="_blank"
-        href={`${explorerURL}/address/${address}`}
-        rel="noreferrer"
+        href={`/user/${address}?m=f`}
       >
         {`${address.substring(0, 6)}...${address.substring(
           address.length - 4
@@ -182,7 +179,6 @@ export {
 export type PrepareLeaderboardTableRowsArgs = {
   rows?: GetLeaderboardByTimeframeData;
   ticker: string;
-  explorerURL: string;
   sortBy: string;
   loggedInUser?: string;
 };
@@ -190,7 +186,6 @@ export type PrepareLeaderboardTableRowsArgs = {
 function prepareLeaderboardTableRows({
   rows = [],
   ticker,
-  explorerURL,
   sortBy,
   loggedInUser
 }: PrepareLeaderboardTableRowsArgs): LeaderboardTableRow[] {
@@ -206,7 +201,6 @@ function prepareLeaderboardTableRows({
         isLoggedInUser,
         address: row.user,
         place: index + 1,
-        explorerURL,
         achievements: row.achievements
       },
       volume: {
@@ -296,14 +290,9 @@ export { prepareLeaderboardYourStatsRow };
 type TopWalletRenderArgs = {
   address: string;
   place: number;
-  explorerURL: string;
 };
 
-function topWalletColumnRender({
-  address,
-  place,
-  explorerURL
-}: TopWalletRenderArgs) {
+function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
     textColor: '1'
@@ -314,9 +303,7 @@ function topWalletColumnRender({
       {walletPlace.icon}
       <a
         className={`caption semibold text-${walletPlace.textColor}`}
-        target="_blank"
-        href={`${explorerURL}/address/${address}`}
-        rel="noreferrer"
+        href={`/user/${address}?m=f`}
       >
         {`${address.substring(0, 6)}...${address.substring(
           address.length - 4
@@ -345,13 +332,11 @@ function topWalletRowRender({ place, change }: topWalletRowRenderArgs) {
 type PrepareLeaderboardTopWalletsRowArgs = {
   rows?: GetLeaderboardByTimeframeData;
   sortBy: string;
-  explorerURL: string;
 };
 
 function prepareLeaderboardTopWalletsRow({
   rows,
-  sortBy,
-  explorerURL
+  sortBy
 }: PrepareLeaderboardTopWalletsRowArgs) {
   const sortedRows = orderBy(
     rows,
@@ -369,8 +354,7 @@ function prepareLeaderboardTopWalletsRow({
         ? {
             address: firstPlace.user,
             place: 1,
-            change: 'stable',
-            explorerURL
+            change: 'stable'
           }
         : null,
       render: topWalletRowRender
@@ -380,8 +364,7 @@ function prepareLeaderboardTopWalletsRow({
         ? {
             address: secondPlace.user,
             place: 2,
-            change: 'stable',
-            explorerURL
+            change: 'stable'
           }
         : null,
       render: topWalletRowRender
@@ -391,8 +374,7 @@ function prepareLeaderboardTopWalletsRow({
         ? {
             address: thirdPlace.user,
             place: 3,
-            change: 'stable',
-            explorerURL
+            change: 'stable'
           }
         : null,
       render: topWalletRowRender

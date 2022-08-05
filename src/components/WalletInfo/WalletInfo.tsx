@@ -46,11 +46,7 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
           </Button>
         ) : null}
       </Button>
-      <a
-        target="_blank"
-        href={`${network.explorerURL}/address/${address}`}
-        rel="noreferrer"
-      >
+      <a href={`/user/${address}?m=f`}>
         <Button
           variant="outline"
           color="default"
