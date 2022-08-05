@@ -19,7 +19,7 @@ function ProfileAchievement({
   return (
     <a
       className={`flex-row align-center padding-6 margin-right-4 width-full gap-6 bg-${backgroundColor}`}
-      href="/achievements"
+      href="/achievements?m=f"
     >
       <img src={image} alt={name} width={104} height={104} />
       <div className="flex-column gap-3 width-full">
