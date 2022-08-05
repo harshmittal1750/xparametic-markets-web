@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { preparePredictionStatisticsRow } from './prepare';
 import ProfileStats from './ProfileStats';
-import { PredictionStatisticsColumn } from './types';
+import { PredictionStatistics, PredictionStatisticsColumn } from './types';
 
 const columns: PredictionStatisticsColumn[] = [
   {
@@ -24,17 +24,19 @@ const columns: PredictionStatisticsColumn[] = [
 ];
 
 type ProfilePredictionStatisticsProps = {
+  statistics: PredictionStatistics;
   ticker: string;
   isLoading: boolean;
 };
 
 function ProfilePredictionStatistics({
+  statistics,
   ticker,
   isLoading
 }: ProfilePredictionStatisticsProps) {
   const row = useMemo(
-    () => preparePredictionStatisticsRow({ ticker }),
-    [ticker]
+    () => preparePredictionStatisticsRow({ statistics, ticker }),
+    [statistics, ticker]
   );
 
   return (

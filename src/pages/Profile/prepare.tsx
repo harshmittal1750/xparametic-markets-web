@@ -7,6 +7,7 @@ import {
 import {
   LeaderboardRanks,
   LeaderboardRanksRow,
+  PredictionStatistics,
   PredictionStatisticsRow
 } from './types';
 
@@ -46,29 +47,31 @@ function prepareLeaderboardRanksRow(
 }
 
 type PreparePredictionStatisticsRowArgs = {
+  statistics: PredictionStatistics;
   ticker: string;
 };
 
 function preparePredictionStatisticsRow({
+  statistics,
   ticker
 }: PreparePredictionStatisticsRowArgs): PredictionStatisticsRow {
   return {
     volume: {
       value: {
-        volume: 0.126,
+        volume: statistics.volume,
         ticker
       },
       render: volumeColumnRender
     },
     marketsCreated: {
-      value: 47
+      value: statistics.marketsCreated
     },
     wonPredictions: {
-      value: 12
+      value: statistics.wonPredictions
     },
     liquidityAdded: {
       value: {
-        liquidity: 0.126,
+        liquidity: statistics.liquidityAdded,
         ticker
       },
       render: liquidityColumnRender
