@@ -44,3 +44,13 @@
     @include flex-row(center, flex-start, px-to-rem(24px));
   }
 }
+
+.pm-p-profile-lists {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: px-to-rem(24px);
+
+  @include breakpoint-to('lg') {
+    grid-template-columns: repeat(2, minmax(px-to-rem(200px), 1fr));
+  }
+}

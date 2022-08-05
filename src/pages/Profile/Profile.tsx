@@ -16,7 +16,7 @@ function Profile() {
     <div className="pm-p-profile">
       <ProfileSummary address={address} />
       <ProfileYourStats address={address} />
-      <div className="flex-row gap-5 margin-top-6">
+      <div className="pm-p-profile-lists margin-top-6">
         <ProfileAchievements address={address} />
         <ProfileActivities address={address} />
       </div>
