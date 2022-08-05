@@ -2,6 +2,10 @@
   &__image {
     position: relative;
 
+    img {
+      filter: saturate(0);
+    }
+
     &::after {
       content: '';
       display: block;
@@ -14,30 +18,42 @@
       border-radius: 50%;
     }
 
-    &--won {
+    &--success {
       @extend .pm-c-activity__image;
       &::after {
-        background-color: $success-400;
+        background-color: $success-300;
         mix-blend-mode: multiply;
       }
     }
 
-    &--lost {
+    &--danger {
       @extend .pm-c-activity__image;
       &::after {
-        background-color: $danger-400;
+        background-color: $danger-300;
+        mix-blend-mode: multiply;
+      }
+    }
+
+    &--primary {
+      @extend .pm-c-activity__image;
+      &::after {
+        background-color: $primary-300;
         mix-blend-mode: multiply;
       }
     }
   }
 
   &__title {
-    &--won {
+    &--success {
       color: $success-300;
     }
 
-    &--lost {
+    &--danger {
       color: $danger-300;
+    }
+
+    &--primary {
+      color: $primary-300;
     }
   }
 }
