@@ -1,4 +1,5 @@
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
+import { roundNumber } from 'helpers/math';
 import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
 
 import { Text } from 'components/new';
@@ -13,10 +14,14 @@ type ProfileSummaryProps = {
 
 function ProfileSummary({ address }: ProfileSummaryProps) {
   const { network } = useNetwork();
+  const { currency } = network;
+
   const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id
   });
+
+  const ticker = currency.symbol || currency.ticker;
 
   if (isLoading || !portfolio) return null;
 
@@ -26,6 +31,18 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
   );
 
   const totalPredictions = 2486;
+
+  const totalEarnings = `${ticker} ${roundNumber(
+    portfolio.closedMarketsProfit,
+    3
+  )}`;
+
+  const liquidityProvided = `${ticker} ${roundNumber(
+    portfolio.liquidityProvided,
+    3
+  )}`;
+
+  const wonPredictions = `${portfolio.wonPositions}`;
 
   return (
     <div className="pm-p-profile-summary">
@@ -73,20 +90,20 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
           </Text>
         </div>
       </div>
-      <div className="flex-row gap-5">
+      <div className="pm-p-profile-summary__stats">
         <ProfileSummaryStat
           title="Total earnings"
-          value="$23,485"
+          value={totalEarnings}
           backgroundColor="yellow"
         />
         <ProfileSummaryStat
           title="Liquidity provided"
-          value="$11,482"
+          value={liquidityProvided}
           backgroundColor="pink"
         />
         <ProfileSummaryStat
           title="Won predictions"
-          value="1,248"
+          value={wonPredictions}
           backgroundColor="orange"
         />
       </div>

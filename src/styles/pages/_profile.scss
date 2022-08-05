@@ -1,5 +1,9 @@
 .pm-p-profile-summary {
-  @include flex-row(space-between, center, px-to-rem(16px));
+  @include flex-column(flex-start, flex-start, px-to-rem(32px));
+
+  @include breakpoint-to('xl') {
+    @include flex-row(space-between, flex-start, px-to-rem(32px));
+  }
 
   &__details {
     @include flex-column(flex-start, flex-start, px-to-rem(8px));
@@ -9,8 +13,21 @@
     @include flex-row(flex-start, center, px-to-rem(8px));
   }
 
+  &__stats {
+    display: grid;
+    gap: px-to-rem(16px);
+    grid-template-columns: repeat(auto-fit, minmax(px-to-rem(204px), 1fr));
+    width: 100%;
+
+    @include breakpoint-to('xl') {
+      grid-template-columns: repeat(auto-fit, minmax(px-to-rem(150px), 1fr));
+      max-width: px-to-rem(645px);
+    }
+  }
+
   &__stat {
     @include flex-column(flex-start, flex-start, px-to-rem(4px));
+    width: 100%;
     padding: px-to-rem(16px);
     border-radius: $border-radius--small;
   }
