@@ -1,3 +1,7 @@
+.pm-p-profile {
+  @include flex-column($gap: px-to-rem(16px));
+}
+
 .pm-p-profile-summary {
   @include flex-column(flex-start, flex-start, px-to-rem(32px));
 

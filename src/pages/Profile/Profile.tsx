@@ -13,7 +13,7 @@ function Profile() {
   const { address } = useParams<ProfileUrlParams>();
 
   return (
-    <div className="flex-column gap-5">
+    <div className="pm-p-profile">
       <ProfileSummary address={address} />
       <ProfileYourStats address={address} />
       <div className="flex-row gap-5 margin-top-6">
