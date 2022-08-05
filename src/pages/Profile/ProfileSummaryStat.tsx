@@ -16,7 +16,7 @@ function ProfileSummaryStat({
       className={`pm-p-profile-summary__stat bg-gradient-${backgroundColor}`}
     >
       <Text
-        className="text-white-50"
+        className="text-white-50 whitespace-nowrap"
         as="h5"
         fontSize="body-4"
         fontWeight="bold"
