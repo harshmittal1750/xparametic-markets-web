@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Dropdown } from 'components/new';
+import { Dropdown, Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
 
@@ -22,7 +22,9 @@ function ProfileYourStats() {
   return (
     <div className="flex-column gap-5">
       <div className="flex-row justify-space-between align-center padding-top-5">
-        <h2 className="text-heading-2 font-semibold text-1">Your Statistics</h2>
+        <Text as="h2" fontSize="heading-2" fontWeight="semibold" color="1">
+          Statistics
+        </Text>
         <Dropdown
           key="timeframe"
           defaultOption="1w"
