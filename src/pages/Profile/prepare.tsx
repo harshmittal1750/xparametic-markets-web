@@ -4,35 +4,41 @@ import {
   liquidityColumnRender
 } from 'pages/Leaderboard/prepare';
 
-import { LeaderboardRanksRow, PredictionStatisticsRow } from './types';
+import {
+  LeaderboardRanks,
+  LeaderboardRanksRow,
+  PredictionStatisticsRow
+} from './types';
 
-function prepareLeaderboardRanksRow(): LeaderboardRanksRow {
+function prepareLeaderboardRanksRow(
+  ranks: LeaderboardRanks
+): LeaderboardRanksRow {
   return {
     rankByVolume: {
       value: {
-        place: 3418,
-        change: 'up'
+        place: ranks.rankByVolume,
+        change: 'stable'
       },
       render: rankColumnRender
     },
     rankByMarketsCreated: {
       value: {
-        place: 3418,
-        change: 'down'
+        place: ranks.rankByMarketsCreated,
+        change: 'stable'
       },
       render: rankColumnRender
     },
     rankByWonPredictions: {
       value: {
-        place: 3418,
+        place: ranks.rankByWonPredictions,
         change: 'stable'
       },
       render: rankColumnRender
     },
     rankByLiquidityAdded: {
       value: {
-        place: 3418,
-        change: 'up'
+        place: ranks.rankByLiquidityAdded,
+        change: 'stable'
       },
       render: rankColumnRender
     }

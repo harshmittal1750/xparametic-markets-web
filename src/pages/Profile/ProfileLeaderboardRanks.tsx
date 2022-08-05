@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { prepareLeaderboardRanksRow } from './prepare';
 import ProfileStats from './ProfileStats';
-import { LeaderboardRanksColumn } from './types';
+import { LeaderboardRanks, LeaderboardRanksColumn } from './types';
 
 const columns: LeaderboardRanksColumn[] = [
   {
@@ -24,11 +24,15 @@ const columns: LeaderboardRanksColumn[] = [
 ];
 
 type ProfileLeaderboardRanksProps = {
+  ranks: LeaderboardRanks;
   isLoading: boolean;
 };
 
-function ProfileLeaderboardRanks({ isLoading }: ProfileLeaderboardRanksProps) {
-  const row = useMemo(() => prepareLeaderboardRanksRow(), []);
+function ProfileLeaderboardRanks({
+  ranks,
+  isLoading
+}: ProfileLeaderboardRanksProps) {
+  const row = useMemo(() => prepareLeaderboardRanksRow(ranks), [ranks]);
 
   return (
     <ProfileStats
