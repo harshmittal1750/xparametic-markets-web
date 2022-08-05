@@ -3,11 +3,13 @@ import { roundNumber } from 'helpers/math';
 import pick from 'lodash/pick';
 import snakeCase from 'lodash/snakeCase';
 import { AchievementAction, AchievementRarity } from 'types/achievement';
+import { LeaderboardAchievement } from 'types/leaderboard';
 import { FeedActionAccentColor } from 'types/portfolio';
 
 import {
   GetAchievementsData,
   GetLeaderboardByAddressData,
+  GetLeaderboardByTimeframeData,
   GetPortfolioByAddressData,
   GetPortfolioFeedByAddressData
 } from './types';
@@ -62,29 +64,49 @@ export function getPortfolioByAddressTransformResponse(
   ]);
 }
 
+// getLeaderboard
+
+function transformLeaderboardAchievements(
+  achievements: LeaderboardAchievement[]
+): LeaderboardAchievement[] {
+  return achievements.map(achievement => {
+    const actionAttribute = achievement.attributes.find(
+      att => att.traitType === 'Action'
+    )!;
+    const occurencesAttribute = achievement.attributes.find(
+      att => att.traitType === 'Occurrences'
+    )!;
+
+    return {
+      ...achievement,
+      action: actionAttribute.value as AchievementAction,
+      actionTitle: achievementActions[snakeCase(`${actionAttribute.value}`)](
+        occurencesAttribute.value
+      ),
+      rarity: achievementRarity(parseInt(`${occurencesAttribute.value}`, 10))
+    };
+  });
+}
+
+// getLeaderboardByTimeframe
+export function getLeaderboardByTimeframeTransformResponse(
+  response: GetLeaderboardByTimeframeData
+): GetLeaderboardByTimeframeData {
+  return response.map(user => {
+    return {
+      ...user,
+      achievements: transformLeaderboardAchievements(user.achievements)
+    };
+  });
+}
+
 // getLeaderboardByAddress
 export function getLeaderboardByAddressTransformResponse(
   response: GetLeaderboardByAddressData
 ): GetLeaderboardByAddressData {
   return {
     ...response,
-    achievements: response.achievements.map(achievement => {
-      const actionAttribute = achievement.attributes.find(
-        att => att.traitType === 'Action'
-      )!;
-      const occurencesAttribute = achievement.attributes.find(
-        att => att.traitType === 'Occurrences'
-      )!;
-
-      return {
-        ...achievement,
-        action: actionAttribute.value as AchievementAction,
-        actionTitle: achievementActions[snakeCase(`${actionAttribute.value}`)](
-          occurencesAttribute.value
-        ),
-        rarity: achievementRarity(parseInt(`${occurencesAttribute.value}`, 10))
-      };
-    })
+    achievements: transformLeaderboardAchievements(response.achievements)
   };
 }
 

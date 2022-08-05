@@ -66,32 +66,9 @@ export type GetAchievementsArgs = {
   networkId: string;
 };
 
-// getLeaderboardByTimeframe
-export type GetLeaderboardByTimeframeData = {
+export type GetLeaderboardBaseData = {
   user: string;
-  marketsCreated: number;
-  volume: number;
-  tvlVolume: number;
-  liquidity: number;
-  tvlLiquidity: number;
-  claimWinningsCount: number;
-  transactions: number;
-  achievements: {
-    id: number;
-    name: string;
-    image: string;
-  }[];
-}[];
-
-export type GetLeaderboardByTimeframeArgs = {
-  timeframe: LeaderboardTimeframe;
-  networkId: string;
-};
-
-// getLeaderboardByAddress
-export type GetLeaderboardByAddressData = {
-  user: string;
-  ens: any;
+  ens?: any;
   marketsCreated: number;
   volume: number;
   tvlVolume: number;
@@ -100,6 +77,18 @@ export type GetLeaderboardByAddressData = {
   claimWinningsCount: number;
   transactions: number;
   achievements: LeaderboardAchievement[];
+};
+
+// getLeaderboardByTimeframe
+export type GetLeaderboardByTimeframeData = GetLeaderboardBaseData[];
+
+export type GetLeaderboardByTimeframeArgs = {
+  timeframe: LeaderboardTimeframe;
+  networkId: string;
+};
+
+// getLeaderboardByAddress
+export type GetLeaderboardByAddressData = GetLeaderboardBaseData & {
   rank: {
     marketsCreated: number;
     volume: number;

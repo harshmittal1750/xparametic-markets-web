@@ -5,6 +5,7 @@ import { camelizeKeys } from 'humps';
 import {
   getAchievementsTransformResponse,
   getLeaderboardByAddressTransformResponse,
+  getLeaderboardByTimeframeTransformResponse,
   getPortfolioByAddressTransformResponse,
   getPortfolioFeedByAddressTransformResponse
 } from './functions';
@@ -106,9 +107,9 @@ const polkamarketsApi = createApi({
       GetLeaderboardByTimeframeArgs
     >({
       query: ({ timeframe, networkId }) =>
-        `/leaderboard?timeframe=${timeframe}&network_id=${networkId}`,
+        `/leaderboards?timeframe=${timeframe}&network_id=${networkId}`,
       transformResponse: (response: GetLeaderboardByTimeframeData) =>
-        camelize(response)
+        getLeaderboardByTimeframeTransformResponse(camelize(response))
     }),
     getLeaderboardByAddress: builder.query<
       GetLeaderboardByAddressData,
