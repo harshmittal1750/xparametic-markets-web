@@ -25,10 +25,12 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
 
   if (isLoading || !portfolio) return null;
 
-  const firstPrediction = fromTimestampToCustomFormatDate(
-    portfolio.firstPositionAt * 1000,
-    'MMMM DD, YYYY'
-  );
+  const firstPredictionAt = portfolio.firstPositionAt
+    ? fromTimestampToCustomFormatDate(
+        portfolio.firstPositionAt * 1000,
+        'MMMM DD, YYYY'
+      )
+    : null;
 
   const totalPredictions = portfolio.totalPositions;
 
@@ -51,25 +53,29 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
           {address}
         </Text>
         <div className="pm-p-profile-summary__history">
-          <Text
-            as="span"
-            fontSize="body-4"
-            fontWeight="semibold"
-            color="3"
-            transform="uppercase"
-          >
-            {`First prediction: `}
-            <Text
-              as="strong"
-              fontSize="body-4"
-              fontWeight="semibold"
-              color="2"
-              transform="uppercase"
-            >
-              {firstPrediction}
-            </Text>
-          </Text>
-          <span className="pm-c-divider--circle" />
+          {firstPredictionAt ? (
+            <>
+              <Text
+                as="span"
+                fontSize="body-4"
+                fontWeight="semibold"
+                color="3"
+                transform="uppercase"
+              >
+                {`First prediction: `}
+                <Text
+                  as="strong"
+                  fontSize="body-4"
+                  fontWeight="semibold"
+                  color="2"
+                  transform="uppercase"
+                >
+                  {firstPredictionAt}
+                </Text>
+              </Text>
+              <span className="pm-c-divider--circle" />
+            </>
+          ) : null}
           <Text
             as="span"
             fontSize="body-4"
