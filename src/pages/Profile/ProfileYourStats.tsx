@@ -8,7 +8,7 @@ import { useNetwork } from 'hooks';
 
 import ProfileLeaderboardRanks from './ProfileLeaderboardRanks';
 import ProfilePredictionStatistics from './ProfilePredictionStatistics';
-import { LeaderboardRanks } from './types';
+import { LeaderboardRanks, PredictionStatistics } from './types';
 
 type Timeframe = '1w' | '1m' | 'at';
 
@@ -41,6 +41,13 @@ function ProfileYourStats({ address }: ProfileYourStatsProps) {
     rankByLiquidityAdded: leaderboard.rank.tvlLiquidity
   };
 
+  const statistics: PredictionStatistics = {
+    volume: leaderboard.volume,
+    marketsCreated: leaderboard.marketsCreated,
+    wonPredictions: leaderboard.claimWinningsCount,
+    liquidityAdded: leaderboard.liquidity
+  };
+
   return (
     <div className="flex-column gap-5">
       <div className="flex-row justify-space-between align-center padding-top-5">
@@ -60,7 +67,11 @@ function ProfileYourStats({ address }: ProfileYourStatsProps) {
       </div>
       <div className="flex-row justify-center align-start gap-6">
         <ProfileLeaderboardRanks ranks={ranks} isLoading={false} />
-        <ProfilePredictionStatistics ticker={ticker} isLoading={false} />
+        <ProfilePredictionStatistics
+          statistics={statistics}
+          ticker={ticker}
+          isLoading={false}
+        />
       </div>
     </div>
   );
