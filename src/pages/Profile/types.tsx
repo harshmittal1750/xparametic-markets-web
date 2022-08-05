@@ -13,3 +13,9 @@ export type LeaderboardRanks = {
 // Prediction statistics
 export type PredictionStatisticsColumn = TableMiniColumn;
 export type PredictionStatisticsRow = TableMiniRow;
+export type PredictionStatistics = {
+  volume: number;
+  marketsCreated: number;
+  wonPredictions: number;
+  liquidityAdded: number;
+};
