@@ -4,6 +4,7 @@ import { camelizeKeys } from 'humps';
 
 import {
   getAchievementsTransformResponse,
+  getLeaderboardByAddressTransformResponse,
   getPortfolioByAddressTransformResponse
 } from './functions';
 import {
@@ -113,7 +114,7 @@ const polkamarketsApi = createApi({
       query: ({ address, timeframe, networkId }) =>
         `/leaderboards/${address}?timeframe=${timeframe}&network_id=${networkId}`,
       transformResponse: (response: GetLeaderboardByAddressData) =>
-        camelize(response)
+        getLeaderboardByAddressTransformResponse(camelize(response))
     })
   })
 });

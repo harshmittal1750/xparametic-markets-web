@@ -1,8 +1,13 @@
 /* eslint-disable import/prefer-default-export */
-import { pick } from 'lodash';
-import { AchievementRarity } from 'types/achievement';
+import pick from 'lodash/pick';
+import snakeCase from 'lodash/snakeCase';
+import { AchievementAction, AchievementRarity } from 'types/achievement';
 
-import { GetAchievementsData, GetPortfolioByAddressData } from './types';
+import {
+  GetAchievementsData,
+  GetLeaderboardByAddressData,
+  GetPortfolioByAddressData
+} from './types';
 
 // getAchievements
 
@@ -51,4 +56,30 @@ export function getPortfolioByAddressTransformResponse(
     'liquidityProvided',
     'firstPositionAt'
   ]);
+}
+
+// getLeaderboardByAddress
+export function getLeaderboardByAddressTransformResponse(
+  response: GetLeaderboardByAddressData
+): GetLeaderboardByAddressData {
+  return {
+    ...response,
+    achievements: response.achievements.map(achievement => {
+      const actionAttribute = achievement.attributes.find(
+        att => att.traitType === 'Action'
+      )!;
+      const occurencesAttribute = achievement.attributes.find(
+        att => att.traitType === 'Occurrences'
+      )!;
+
+      return {
+        ...achievement,
+        action: actionAttribute.value as AchievementAction,
+        actionTitle: achievementActions[snakeCase(`${actionAttribute.value}`)](
+          occurencesAttribute.value
+        ),
+        rarity: achievementRarity(parseInt(`${occurencesAttribute.value}`, 10))
+      };
+    })
+  };
 }
