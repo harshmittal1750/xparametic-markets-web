@@ -7,12 +7,19 @@ type ProfileActivityProps = {
 };
 
 function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
-  const { accentColor, imageUrl, marketTitle, actionTitle, timestamp } =
-    activity;
+  const {
+    accentColor,
+    imageUrl,
+    marketTitle,
+    marketSlug,
+    actionTitle,
+    timestamp
+  } = activity;
 
   return (
-    <div
+    <a
       className={`pm-c-activity flex-row align-center padding-y-7 padding-x-6 margin-right-4 gap-6 width-full bg-${backgroundColor}`}
+      href={`/markets/${marketSlug}`}
     >
       <div className={`pm-c-activity__image--${accentColor} border-radius-50`}>
         <img
@@ -34,7 +41,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
           {relativeTimeFromNow(timestamp * 1000)}
         </span>
       </div>
-    </div>
+    </a>
   );
 }
 
