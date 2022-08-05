@@ -19,7 +19,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
   return (
     <a
       className={`pm-c-activity flex-row align-center padding-y-7 padding-x-6 margin-right-4 gap-6 width-full bg-${backgroundColor}`}
-      href={`/markets/${marketSlug}`}
+      href={`/markets/${marketSlug}?m=f`}
     >
       <div className={`pm-c-activity__image--${accentColor} border-radius-50`}>
         <img
