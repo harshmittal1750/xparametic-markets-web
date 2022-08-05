@@ -32,15 +32,15 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
 
   const totalPredictions = 2486;
 
-  const totalEarnings = `${ticker} ${roundNumber(
+  const totalEarnings = `${roundNumber(
     portfolio.closedMarketsProfit,
     3
-  )}`;
+  )} ${ticker}`;
 
-  const liquidityProvided = `${ticker} ${roundNumber(
+  const liquidityProvided = `${roundNumber(
     portfolio.liquidityProvided,
     3
-  )}`;
+  )} ${ticker}`;
 
   const wonPredictions = `${portfolio.wonPositions}`;
 
