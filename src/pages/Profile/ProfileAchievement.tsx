@@ -18,7 +18,7 @@ function ProfileAchievement({
 
   return (
     <a
-      className={`flex-row align-center padding-6 margin-right-4 width-full gap-6 bg-${backgroundColor}`}
+      className={`pm-c-profile-achievement bg-${backgroundColor}`}
       href="/achievements?m=f"
     >
       <img src={image} alt={name} width={104} height={104} />
@@ -26,13 +26,13 @@ function ProfileAchievement({
         <h4 className="pm-c-achievement__award-title heading-large bold">
           {name}
         </h4>
-        <p className="pm-c-achievement__award-description caption medium">
+        <p className="pm-c-achievement__award-description pm-c-profile-achievement__description caption medium">
           {description}
         </p>
-        <div className="flex-row justify-space-between align-center gap-5">
+        <div className="pm-c-profile-achievement__stats">
           <div className="flex-row justify-start align-center gap-3">
             <MedalIcon className="pm-c-achievement__medal-icon--unlocked" />
-            <h1 className="pm-c-achievement__title--unlocked tiny-uppercase semibold">
+            <h1 className="pm-c-achievement__title--unlocked tiny-uppercase semibold whitespace-nowrap">
               {actionTitle}
             </h1>
           </div>
