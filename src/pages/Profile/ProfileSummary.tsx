@@ -30,7 +30,7 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
     'MMMM DD, YYYY'
   );
 
-  const totalPredictions = 2486;
+  const totalPredictions = portfolio.totalPositions;
 
   const totalEarnings = `${roundNumber(
     portfolio.closedMarketsProfit,
