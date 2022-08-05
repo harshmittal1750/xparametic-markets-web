@@ -5,7 +5,8 @@ import { camelizeKeys } from 'humps';
 import {
   getAchievementsTransformResponse,
   getLeaderboardByAddressTransformResponse,
-  getPortfolioByAddressTransformResponse
+  getPortfolioByAddressTransformResponse,
+  getPortfolioFeedByAddressTransformResponse
 } from './functions';
 import {
   GetMarketBySlugArgs,
@@ -27,7 +28,9 @@ import {
   GetLeaderboardByTimeframeData,
   GetLeaderboardByTimeframeArgs,
   GetLeaderboardByAddressData,
-  GetLeaderboardByAddressArgs
+  GetLeaderboardByAddressArgs,
+  GetPortfolioFeedByAddressData,
+  GetPortfolioFeedByAddressArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -115,6 +118,15 @@ const polkamarketsApi = createApi({
         `/leaderboards/${address}?timeframe=${timeframe}&network_id=${networkId}`,
       transformResponse: (response: GetLeaderboardByAddressData) =>
         getLeaderboardByAddressTransformResponse(camelize(response))
+    }),
+    getPortfolioFeedByAddress: builder.query<
+      GetPortfolioFeedByAddressData,
+      GetPortfolioFeedByAddressArgs
+    >({
+      query: ({ address, networkId }) =>
+        `/portfolios/${address}/feed?network_id=${networkId}`,
+      transformResponse: (response: GetPortfolioFeedByAddressData) =>
+        getPortfolioFeedByAddressTransformResponse(camelize(response))
     })
   })
 });
@@ -131,5 +143,6 @@ export const {
   useReloadPortfolioByAddressMutation,
   useGetAchievementsQuery,
   useGetLeaderboardByTimeframeQuery,
-  useGetLeaderboardByAddressQuery
+  useGetLeaderboardByAddressQuery,
+  useGetPortfolioFeedByAddressQuery
 } = polkamarketsApi;

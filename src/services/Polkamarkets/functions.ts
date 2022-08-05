@@ -2,11 +2,13 @@
 import pick from 'lodash/pick';
 import snakeCase from 'lodash/snakeCase';
 import { AchievementAction, AchievementRarity } from 'types/achievement';
+import { FeedActionAccentColor } from 'types/portfolio';
 
 import {
   GetAchievementsData,
   GetLeaderboardByAddressData,
-  GetPortfolioByAddressData
+  GetPortfolioByAddressData,
+  GetPortfolioFeedByAddressData
 } from './types';
 
 // getAchievements
@@ -82,4 +84,42 @@ export function getLeaderboardByAddressTransformResponse(
       };
     })
   };
+}
+
+// getPortfolioFeedByAddress
+
+const feedActions = {
+  buy: (shares: number, outcomeTitle?: string) =>
+    `User bought ${shares} shares of outcome ${outcomeTitle} of market`,
+  sell: (shares: number, outcomeTitle?: string) =>
+    `User sold ${shares} shares of outcome ${outcomeTitle} of market`,
+  add_liquidity: (shares: number, _outcomeTitle?: string) =>
+    `User added ${shares} liquidity shares to market`,
+  remove_liquidity: (shares: number, _outcomeTitle?: string) =>
+    `User removed ${shares} liquidity shares from market`,
+  claim_winnings: (_shares: number, _outcomeTitle?: string) =>
+    'User won a prediction of market',
+  create_market: (_shares: number, _outcomeTitle?: string) =>
+    'User created the market'
+};
+
+const feedAccentColors: { [key: string]: FeedActionAccentColor } = {
+  buy: 'success',
+  sell: 'danger',
+  add_liquidity: 'primary',
+  remove_liquidity: 'danger',
+  claim_winnings: 'success',
+  create_market: 'primary'
+};
+
+export function getPortfolioFeedByAddressTransformResponse(
+  response: GetPortfolioFeedByAddressData
+): GetPortfolioFeedByAddressData {
+  return response.map(feed => {
+    return {
+      ...feed,
+      actionTitle: feedActions[feed.action](feed.shares, feed.outcomeTitle),
+      accentColor: feedAccentColors[feed.action]
+    };
+  });
 }

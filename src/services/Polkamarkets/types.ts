@@ -5,6 +5,7 @@ import {
   LeaderboardTimeframe
 } from 'types/leaderboard';
 import { MarketState } from 'types/market';
+import { FeedActivity } from 'types/portfolio';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -110,5 +111,13 @@ export type GetLeaderboardByAddressData = {
 export type GetLeaderboardByAddressArgs = {
   address: string;
   timeframe: LeaderboardTimeframe;
+  networkId: string;
+};
+
+// getPortfolioFeedByAddress
+export type GetPortfolioFeedByAddressData = FeedActivity[];
+
+export type GetPortfolioFeedByAddressArgs = {
+  address: string;
   networkId: string;
 };
