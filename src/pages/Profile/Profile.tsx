@@ -18,7 +18,7 @@ function Profile() {
       <ProfileYourStats address={address} />
       <div className="flex-row gap-5 margin-top-6">
         <ProfileAchievements address={address} />
-        <ProfileActivities />
+        <ProfileActivities address={address} />
       </div>
     </div>
   );
