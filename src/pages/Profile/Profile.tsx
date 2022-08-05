@@ -15,7 +15,7 @@ function Profile() {
   return (
     <div className="flex-column gap-5">
       <ProfileSummary address={address} />
-      <ProfileYourStats />
+      <ProfileYourStats address={address} />
       <div className="flex-row gap-5 margin-top-6">
         <ProfileAchievements />
         <ProfileActivities />
