@@ -65,7 +65,7 @@ function ProfileYourStats({ address }: ProfileYourStatsProps) {
           onSelect={value => setTimeframe(value)}
         />
       </div>
-      <div className="flex-row justify-center align-start gap-6">
+      <div className="pm-p-profile-your-stats">
         <ProfileLeaderboardRanks ranks={ranks} isLoading={false} />
         <ProfilePredictionStatistics
           statistics={statistics}

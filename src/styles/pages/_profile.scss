@@ -36,3 +36,11 @@
     border-radius: $border-radius--small;
   }
 }
+
+.pm-p-profile-your-stats {
+  @include flex-column(flex-start, flex-start, px-to-rem(24px));
+
+  @include breakpoint-to('lg') {
+    @include flex-row(center, flex-start, px-to-rem(24px));
+  }
+}
