@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 
 import { ScrollableArea } from 'components';
@@ -23,6 +24,8 @@ function ProfileAchievements({ address }: ProfileAchievementsProps) {
   if (isLoading || !leaderboard) return null;
 
   const { achievements } = leaderboard;
+
+  if (isEmpty(achievements)) return null;
 
   return (
     <div className="flex-column gap-4 width-full">
