@@ -8,4 +8,10 @@
   &__history {
     @include flex-row(flex-start, center, px-to-rem(8px));
   }
+
+  &__stat {
+    @include flex-column(flex-start, flex-start, px-to-rem(4px));
+    padding: px-to-rem(16px);
+    border-radius: $border-radius--small;
+  }
 }

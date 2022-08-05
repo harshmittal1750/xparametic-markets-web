@@ -1,3 +1,5 @@
+import { Text } from 'components/new';
+
 type ProfileSummaryStatProps = {
   title: string;
   value: string;
@@ -11,10 +13,25 @@ function ProfileSummaryStat({
 }: ProfileSummaryStatProps) {
   return (
     <div
-      className={`flex-column justify-start align-start gap-2 padding-5 bg-gradient-${backgroundColor} border-radius-small`}
+      className={`pm-p-profile-summary__stat bg-gradient-${backgroundColor}`}
     >
-      <h5 className="tiny-uppercase font-bold text-white-50">{title}</h5>
-      <span className="body font-semibold text-light">{value}</span>
+      <Text
+        className="text-white-50"
+        as="h5"
+        fontSize="body-4"
+        fontWeight="bold"
+        transform="uppercase"
+      >
+        {title}
+      </Text>
+      <Text
+        className="text-light"
+        as="span"
+        fontSize="body-1"
+        fontWeight="semibold"
+      >
+        {value}
+      </Text>
     </div>
   );
 }
