@@ -25,7 +25,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
         <img
           className="border-radius-50"
           src={imageUrl}
-          alt={marketTitle}
+          alt=""
           width={64}
           height={64}
         />
