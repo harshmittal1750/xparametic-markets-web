@@ -16,8 +16,9 @@ function ProfileAchievement({
   const { image, name, actionTitle, rarity } = achievement;
 
   return (
-    <div
+    <a
       className={`flex-row align-center padding-6 margin-right-4 width-full gap-6 bg-${backgroundColor}`}
+      href="/achievements"
     >
       <img src={image} alt={name} width={104} height={104} />
       <div className="flex-column gap-3 width-full">
@@ -47,7 +48,7 @@ function ProfileAchievement({
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 }
 
