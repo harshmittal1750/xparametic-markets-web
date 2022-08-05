@@ -55,6 +55,7 @@ export function getPortfolioByAddressTransformResponse(
   return pick(response, [
     'openPositions',
     'wonPositions',
+    'totalPositions',
     'closedMarketsProfit',
     'liquidityProvided',
     'firstPositionAt'

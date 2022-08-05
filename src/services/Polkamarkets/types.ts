@@ -43,9 +43,10 @@ export type CreateMarketByIdArgs = {
 export type GetPortfolioByAddressData = {
   openPositions: number;
   wonPositions: number;
+  totalPositions: number;
   closedMarketsProfit: number;
   liquidityProvided: number;
-  firstPositionAt: number;
+  firstPositionAt?: number;
 };
 
 export type GetPortfolioByAddressArgs = {
