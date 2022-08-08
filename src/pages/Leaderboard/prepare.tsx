@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import isEmpty from 'lodash/isEmpty';
 import orderBy from 'lodash/orderBy';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
@@ -97,11 +99,11 @@ function walletColumnRender({
     <div className="pm-c-leaderboard-table__wallet">
       {walletPlace.icon}
       {isLoggedInUser ? <MyPlaceIcon /> : null}
-      <a
+      <Link
         className={`caption semibold text-${
           isLoggedInUser ? '1' : walletPlace.textColor
         }`}
-        href={`/user/${address}?m=f`}
+        to={`/user/${address}`}
       >
         {`${address.substring(0, 6)}...${address.substring(
           address.length - 4
@@ -109,7 +111,7 @@ function walletColumnRender({
         {isLoggedInUser ? (
           <span className="caption semibold text-3">{` (You)`}</span>
         ) : null}
-      </a>
+      </Link>
       {achievementsColumnRender(
         achievements,
         'medium',
@@ -305,14 +307,14 @@ function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
   return (
     <div className="pm-c-leaderboard-top-wallets__wallet">
       {walletPlace.icon}
-      <a
+      <Link
         className={`caption semibold text-${walletPlace.textColor}`}
-        href={`/user/${address}?m=f`}
+        to={`/user/${address}`}
       >
         {`${address.substring(0, 6)}...${address.substring(
           address.length - 4
         )}`}
-      </a>
+      </Link>
     </div>
   );
 }
