@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 import { MetaMaskIconSmall } from 'assets/icons';
 
@@ -46,7 +47,7 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
           </Button>
         ) : null}
       </Button>
-      <a href={`/user/${address}?m=f`}>
+      <Link to={`/user/${address}`}>
         <Button
           variant="outline"
           color="default"
@@ -60,7 +61,7 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
             address.length - 4
           )}`}
         </Button>
-      </a>
+      </Link>
     </div>
   );
 }
