@@ -2,6 +2,9 @@ import { fromTimestampToCustomFormatDate } from 'helpers/date';
 import { roundNumber } from 'helpers/math';
 import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
 
+import { ShareIcon } from 'assets/icons';
+
+import { Tooltip } from 'components';
 import { Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
@@ -71,6 +74,15 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
           >
             {addressEnd}
           </Text>
+          <Tooltip position="bottom-start" text="View on Explorer">
+            <a
+              target="_blank"
+              href={`${network.explorerURL}/address/${address}`}
+              rel="noreferrer"
+            >
+              <ShareIcon className="pm-p-profile-summary__explorer-icon" />
+            </a>
+          </Tooltip>
         </div>
         <div className="pm-p-profile-summary__history">
           {firstPredictionAt ? (
