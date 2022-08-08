@@ -4,7 +4,7 @@ import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { ScrollableArea } from 'components';
 import { Text } from 'components/new';
 
-import { useNetwork, useWindowDimensions } from 'hooks';
+import { useNetwork } from 'hooks';
 
 import ProfileAchievement from './ProfileAchievement';
 
