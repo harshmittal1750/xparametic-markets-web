@@ -114,17 +114,16 @@ export function getLeaderboardByAddressTransformResponse(
 
 const feedActions = {
   buy: (shares: number, outcomeTitle?: string) =>
-    `User bought ${shares} shares of outcome "${outcomeTitle}"`,
+    `Bought ${shares} shares of outcome "${outcomeTitle}"`,
   sell: (shares: number, outcomeTitle?: string) =>
-    `User sold ${shares} shares of outcome "${outcomeTitle}"`,
+    `Sold ${shares} shares of outcome "${outcomeTitle}"`,
   add_liquidity: (shares: number, _outcomeTitle?: string) =>
-    `User added ${shares} liquidity shares`,
+    `Added ${shares} liquidity shares`,
   remove_liquidity: (shares: number, _outcomeTitle?: string) =>
-    `User removed ${shares} liquidity shares`,
+    `Removed ${shares} liquidity shares`,
   claim_winnings: (_shares: number, _outcomeTitle?: string) =>
-    'User won a prediction',
-  create_market: (_shares: number, _outcomeTitle?: string) =>
-    'User created a market'
+    'Won a prediction',
+  create_market: (_shares: number, _outcomeTitle?: string) => 'Created a market'
 };
 
 const feedAccentColors: { [key: string]: FeedActionAccentColor } = {
