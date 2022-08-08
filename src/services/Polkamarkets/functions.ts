@@ -114,9 +114,9 @@ export function getLeaderboardByAddressTransformResponse(
 
 const feedActions = {
   buy: (shares: number, outcomeTitle?: string) =>
-    `User bought ${shares} shares of outcome ${outcomeTitle}`,
+    `User bought ${shares} shares of outcome "${outcomeTitle}"`,
   sell: (shares: number, outcomeTitle?: string) =>
-    `User sold ${shares} shares of outcome ${outcomeTitle}`,
+    `User sold ${shares} shares of outcome "${outcomeTitle}"`,
   add_liquidity: (shares: number, _outcomeTitle?: string) =>
     `User added ${shares} liquidity shares`,
   remove_liquidity: (shares: number, _outcomeTitle?: string) =>
