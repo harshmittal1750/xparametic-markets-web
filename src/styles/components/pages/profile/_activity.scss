@@ -1,4 +1,13 @@
 .pm-c-activity {
+  @include flex-column(flex-start, center, px-to-rem(24px));
+  padding: px-to-rem(32px) px-to-rem(24px);
+  margin-right: px-to-rem(12px);
+  width: 100%;
+
+  @include breakpoint-to('sm') {
+    @include flex-row(flex-start, center, px-to-rem(24px));
+  }
+
   &__image {
     position: relative;
 
@@ -43,7 +52,7 @@
     }
   }
 
-  &__title {
+  &__action-title {
     &--success {
       color: $success-300;
     }
@@ -55,5 +64,14 @@
     &--primary {
       color: $primary-300;
     }
+  }
+
+  &__title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    word-break: break-word;
   }
 }
