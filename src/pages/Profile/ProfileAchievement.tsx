@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { LeaderboardAchievement } from 'types/leaderboard';
 
 import { MedalIcon } from 'assets/icons';
@@ -17,9 +19,9 @@ function ProfileAchievement({
     achievement;
 
   return (
-    <a
+    <Link
       className={`pm-c-profile-achievement bg-${backgroundColor}`}
-      href="/achievements?m=f"
+      to="/achievements"
     >
       <img src={image} alt={name} width={104} height={104} />
       <div className="flex-column gap-3 width-full">
@@ -49,7 +51,7 @@ function ProfileAchievement({
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
