@@ -21,10 +21,7 @@
     display: none;
     position: absolute;
     z-index: 1;
-
-    @include breakpoint-to('sm') {
-      right: 0;
-    }
+    right: 0;
 
     &.visible {
       @include flex-column(center, flex-start);
