@@ -4,15 +4,19 @@ import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { ScrollableArea } from 'components';
 import { Text } from 'components/new';
 
-import { useNetwork } from 'hooks';
+import { useNetwork, useWindowDimensions } from 'hooks';
 
 import ProfileAchievement from './ProfileAchievement';
 
 type ProfileAchievementsProps = {
   address: string;
+  listHeight: number;
 };
 
-function ProfileAchievements({ address }: ProfileAchievementsProps) {
+function ProfileAchievements({
+  address,
+  listHeight
+}: ProfileAchievementsProps) {
   const { network } = useNetwork();
 
   const { data: leaderboard, isLoading } = useGetLeaderboardByAddressQuery({
@@ -36,7 +40,7 @@ function ProfileAchievements({ address }: ProfileAchievementsProps) {
         <ScrollableArea
           className="flex-column"
           scrollbarSize="sm"
-          style={{ height: 456 }}
+          style={{ height: listHeight }}
           fullwidth
         >
           {achievements.map((achievement, index) => (

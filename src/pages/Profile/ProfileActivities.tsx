@@ -8,9 +8,10 @@ import ProfileActivity from './ProfileActivity';
 
 type ProfileActivitiesProps = {
   address: string;
+  listHeight: number;
 };
 
-function ProfileActivities({ address }: ProfileActivitiesProps) {
+function ProfileActivities({ address, listHeight }: ProfileActivitiesProps) {
   const { network } = useNetwork();
 
   const { data: activities, isLoading } = useGetPortfolioFeedByAddressQuery({
@@ -27,7 +28,7 @@ function ProfileActivities({ address }: ProfileActivitiesProps) {
         <ScrollableArea
           className="flex-column"
           scrollbarSize="sm"
-          style={{ height: 456 }}
+          style={{ height: listHeight }}
           fullwidth
         >
           {activities.map((activity, index) => (
