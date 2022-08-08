@@ -4,6 +4,23 @@
 
 .pm-p-profile-summary {
   @include flex-column(flex-start, flex-start, px-to-rem(32px));
+  width: 100%;
+
+  &__address-group {
+    display: flex;
+    min-width: 0;
+    width: 100%;
+  }
+
+  &__address--start {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__address--end {
+    flex-shrink: 0;
+  }
 
   @include breakpoint-to('xl') {
     @include flex-row(space-between, flex-start, px-to-rem(32px));
@@ -11,6 +28,7 @@
 
   &__details {
     @include flex-column(flex-start, flex-start, px-to-rem(8px));
+    width: 100%;
   }
 
   &__history {

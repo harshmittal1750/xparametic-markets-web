@@ -25,6 +25,9 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
 
   if (isLoading || !portfolio) return null;
 
+  const addressStart = address.substring(0, address.length - 6);
+  const addressEnd = address.substring(address.length - 6, address.length);
+
   const firstPredictionAt = portfolio.firstPositionAt
     ? fromTimestampToCustomFormatDate(
         portfolio.firstPositionAt * 1000,
@@ -49,9 +52,26 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
   return (
     <div className="pm-p-profile-summary">
       <div className="pm-p-profile-summary__details">
-        <Text as="span" fontSize="heading-2" fontWeight="bold" color="1">
-          {address}
-        </Text>
+        <div className="pm-p-profile-summary__address-group">
+          <Text
+            className="pm-p-profile-summary__address--start"
+            as="span"
+            fontSize="heading-2"
+            fontWeight="bold"
+            color="1"
+          >
+            {addressStart}
+          </Text>
+          <Text
+            className="pm-p-profile-summary__address--end"
+            as="span"
+            fontSize="heading-2"
+            fontWeight="bold"
+            color="1"
+          >
+            {addressEnd}
+          </Text>
+        </div>
         <div className="pm-p-profile-summary__history">
           {firstPredictionAt ? (
             <>
