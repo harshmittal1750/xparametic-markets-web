@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useWindowDimensions } from 'hooks';
+import { closeRightSidebar } from 'redux/ducks/ui';
+
+import { useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks';
 
 import ProfileAchievements from './ProfileAchievements';
 import ProfileActivities from './ProfileActivities';
@@ -12,8 +15,21 @@ type ProfileUrlParams = {
 };
 
 function Profile() {
+  // Redux selectors
+  const rightSidebarIsVisible = useAppSelector(
+    state => state.ui.rightSidebar.visible
+  );
+
+  // Hooks
+  const dispatch = useAppDispatch();
   const { address } = useParams<ProfileUrlParams>();
   const { height } = useWindowDimensions();
+
+  useEffect(() => {
+    if (rightSidebarIsVisible) {
+      dispatch(closeRightSidebar());
+    }
+  }, [rightSidebarIsVisible, dispatch]);
 
   const listHeight = Math.min(Math.ceil(height * 0.5), 700);
 
