@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import { relativeTimeFromNow } from 'helpers/date';
 import { FeedActivity } from 'types/portfolio';
 
@@ -19,9 +21,9 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
   } = activity;
 
   return (
-    <a
+    <Link
       className={`pm-c-activity bg-${backgroundColor}`}
-      href={`/markets/${marketSlug}?m=f`}
+      to={`/markets/${marketSlug}`}
     >
       <div className={`pm-c-activity__image--${accentColor} border-radius-50`}>
         <img
@@ -61,7 +63,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
           {relativeTimeFromNow(timestamp * 1000)}
         </Text>
       </div>
-    </a>
+    </Link>
   );
 }
 
