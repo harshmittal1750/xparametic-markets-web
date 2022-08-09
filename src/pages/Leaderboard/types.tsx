@@ -14,7 +14,6 @@ export type LeaderboardTableRow = {
     isLoggedInUser: boolean;
     address: string;
     place: number;
-    explorerURL: string;
   };
   volume: {
     volume: number;

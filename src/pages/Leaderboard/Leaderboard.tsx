@@ -1,11 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { closeRightSidebar } from 'redux/ducks/ui';
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 
 import { Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
@@ -102,8 +103,12 @@ function Leaderboard() {
   // Redux selectors
   const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
   const ethAddress = useAppSelector(state => state.bepro.ethAddress);
+  const rightSidebarIsVisible = useAppSelector(
+    state => state.ui.rightSidebar.visible
+  );
 
   // Custom hooks
+  const dispatch = useAppDispatch();
   const { network } = useNetwork();
   const { currency } = network;
 
@@ -116,6 +121,12 @@ function Leaderboard() {
     timeframe,
     networkId: network.id
   });
+
+  useEffect(() => {
+    if (rightSidebarIsVisible) {
+      dispatch(closeRightSidebar());
+    }
+  }, [rightSidebarIsVisible, dispatch]);
 
   const userEthAddress = walletConnected ? ethAddress : undefined;
 
@@ -152,7 +163,6 @@ function Leaderboard() {
                 rows={data}
                 sortBy={tab.sortBy}
                 ticker={ticker}
-                explorerURL={network.explorerURL}
                 isLoading={isLoadingQuery}
               />
               <div className="flex-column gap-6 justify-start align-start">
@@ -162,14 +172,12 @@ function Leaderboard() {
                     rows={data}
                     sortBy={tab.sortBy}
                     ticker={ticker}
-                    explorerURL={network.explorerURL}
                     isLoading={isLoadingQuery}
                   />
                 ) : null}
                 <LeaderboardTopWallets
                   rows={data}
                   sortBy={tab.sortBy}
-                  explorerURL={network.explorerURL}
                   isLoading={isLoadingQuery}
                 />
               </div>

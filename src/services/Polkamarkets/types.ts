@@ -1,7 +1,11 @@
 import { Market } from 'models/market';
-import { Portfolio } from 'models/portfolio';
 import { Achievement } from 'types/achievement';
+import {
+  LeaderboardAchievement,
+  LeaderboardTimeframe
+} from 'types/leaderboard';
 import { MarketState } from 'types/market';
+import { FeedActivity } from 'types/portfolio';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -36,9 +40,18 @@ export type CreateMarketByIdArgs = {
 };
 
 // getPortfolioByAddress
-export type GetPortfolioByAddressData = Portfolio;
+export type GetPortfolioByAddressData = {
+  openPositions: number;
+  wonPositions: number;
+  totalPositions: number;
+  closedMarketsProfit: number;
+  liquidityProvided: number;
+  firstPositionAt?: number;
+};
+
 export type GetPortfolioByAddressArgs = {
   address: string;
+  networkId: string;
 };
 
 // reloadPortfolioByAddress
@@ -53,9 +66,9 @@ export type GetAchievementsArgs = {
   networkId: string;
 };
 
-// getLeaderboardByTimeframe
-export type GetLeaderboardByTimeframeData = {
+export type GetLeaderboardBaseData = {
   user: string;
+  ens?: any;
   marketsCreated: number;
   volume: number;
   tvlVolume: number;
@@ -63,14 +76,38 @@ export type GetLeaderboardByTimeframeData = {
   tvlLiquidity: number;
   claimWinningsCount: number;
   transactions: number;
-  achievements: {
-    id: number;
-    name: string;
-    image: string;
-  }[];
-}[];
+  achievements: LeaderboardAchievement[];
+};
+
+// getLeaderboardByTimeframe
+export type GetLeaderboardByTimeframeData = GetLeaderboardBaseData[];
 
 export type GetLeaderboardByTimeframeArgs = {
-  timeframe: '1w' | '1m' | 'at';
+  timeframe: LeaderboardTimeframe;
+  networkId: string;
+};
+
+// getLeaderboardByAddress
+export type GetLeaderboardByAddressData = GetLeaderboardBaseData & {
+  rank: {
+    marketsCreated: number;
+    volume: number;
+    tvlVolume: number;
+    tvlLiquidity: number;
+    claimWinningsCount: number;
+  };
+};
+
+export type GetLeaderboardByAddressArgs = {
+  address: string;
+  timeframe: LeaderboardTimeframe;
+  networkId: string;
+};
+
+// getPortfolioFeedByAddress
+export type GetPortfolioFeedByAddressData = FeedActivity[];
+
+export type GetPortfolioFeedByAddressArgs = {
+  address: string;
   networkId: string;
 };

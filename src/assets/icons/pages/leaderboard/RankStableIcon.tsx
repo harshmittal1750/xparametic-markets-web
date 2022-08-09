@@ -10,15 +10,15 @@ function RankStableIcon(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
+      width="21"
+      height="21"
       fill="none"
-      viewBox="0 0 20 20"
+      viewBox="0 0 21 21"
       {...props}
     >
       <rect
-        width="20"
-        height="20"
+        width="21"
+        height="21"
         y="0"
         fill={backgroundColor}
         fillOpacity="0.1"

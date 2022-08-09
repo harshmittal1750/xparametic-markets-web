@@ -19,6 +19,7 @@ const CreateMarket = lazy(() => import('pages/CreateMarket'));
 const RestrictedCountry = lazy(() => import('pages/RestrictedCountry'));
 const Achievements = lazy(() => import('pages/Achievements'));
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
+const Profile = lazy(() => import('pages/Profile'));
 
 const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
 
@@ -76,6 +77,7 @@ const AppRoutes = () => {
           <Route component={CreateMarket} path="/market/create" />
           <Route component={Achievements} path="/achievements" />
           <Route component={Leaderboard} path="/leaderboard" />
+          <Route component={Profile} path="/user/:address" />
         </Switch>
       </Suspense>
     </Layout>
