@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import { useGetPortfolioFeedByAddressQuery } from 'services/Polkamarkets';
 
 import { ScrollableArea } from 'components';
@@ -20,6 +21,8 @@ function ProfileActivities({ address, listHeight }: ProfileActivitiesProps) {
   });
 
   if (isLoading || !activities) return null;
+
+  if (isEmpty(activities)) return null;
 
   return (
     <div className="flex-column gap-4 width-full">
