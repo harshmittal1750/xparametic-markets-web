@@ -1,3 +1,4 @@
 import VoteArrows from './VoteArrows';
+import VoteModal from './VoteModal';
 
-export default VoteArrows;
+export { VoteArrows, VoteModal };

@@ -91,3 +91,31 @@
     }
   }
 }
+
+.pm-c-vote-modal {
+  @include flex-column(flex-start, flex-start, px-to-rem(32px));
+  padding: px-to-rem(32px);
+
+  background-color: var(--color-bg-2);
+  border: px-to-rem(1px) solid var(--color-border-1);
+  border-radius: $border-radius--small;
+
+  &__header {
+    @include flex-column(flex-start, flex-start, px-to-rem(24px));
+    width: 100%;
+  }
+
+  &__verify-market {
+    @include flex-row(flex-start, center, px-to-rem(10px));
+  }
+
+  &__body {
+    @include flex-column(flex-start, flex-start, px-to-rem(12px));
+    width: 100%;
+  }
+
+  &__footer {
+    @include flex-column(flex-start, center, px-to-rem(24px));
+    width: 100%;
+  }
+}
