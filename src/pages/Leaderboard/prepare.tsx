@@ -9,8 +9,6 @@ import {
   SecondPlaceIcon,
   ThirdPlaceIcon,
   MyPlaceIcon,
-  RankUpIcon,
-  RankDownIcon,
   RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
@@ -157,7 +155,7 @@ type RankColumnRenderArgs = {
   change: 'up' | 'down' | 'stable';
 };
 
-function rankColumnRender({ place, change }: RankColumnRenderArgs) {
+function rankColumnRender({ place }: RankColumnRenderArgs) {
   return (
     <div className="pm-c-leaderboard-table__rank">
       {place === 0 ? (
@@ -165,9 +163,6 @@ function rankColumnRender({ place, change }: RankColumnRenderArgs) {
       ) : (
         <span className="caption semibold text-1">{place}</span>
       )}
-      {/* {change === 'up' ? <RankUpIcon /> : null}
-      {change === 'down' ? <RankDownIcon /> : null}
-      {change === 'stable' ? <RankStableIcon /> : null} */}
     </div>
   );
 }
@@ -324,7 +319,7 @@ type topWalletRowRenderArgs = {
   change: 'up' | 'down' | 'stable';
 };
 
-function topWalletRowRender({ place, change }: topWalletRowRenderArgs) {
+function topWalletRowRender({ place }: topWalletRowRenderArgs) {
   return (
     <div className="pm-c-leaderboard-table__rank">
       <span className="caption semibold text-1">{place}</span>

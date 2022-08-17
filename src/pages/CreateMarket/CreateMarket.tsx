@@ -15,15 +15,13 @@ function CreateMarket() {
 
   const needsBuyPolk = polkBalance < requiredBalance;
 
-  async function getMinimumRequiredBalance() {
-    const beproService = new BeproService(networkConfig);
-
-    const response = await beproService.getMinimumRequiredBalance();
-    setRequiredBalance(response);
-  }
-
   useEffect(() => {
-    getMinimumRequiredBalance();
+    (async function getMinimumRequiredBalance() {
+      const beproService = new BeproService(networkConfig);
+
+      const response = await beproService.getMinimumRequiredBalance();
+      setRequiredBalance(response);
+    })();
   }, [polkBalance, networkConfig]);
 
   return (

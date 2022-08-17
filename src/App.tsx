@@ -24,6 +24,7 @@ const App = () => {
 
   useEffect(() => {
     setLocalStorageTheme(theme);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [theme]);
 
   useEffect(() => {

@@ -18,7 +18,8 @@ function Home() {
   const openMarkets = markets.filter(market => market.state === 'open');
   const closedMarkets = markets.filter(market => market.state === 'closed');
   const resolvedMarkets = markets.filter(market => market.state === 'resolved');
-  const favoritesMarkets = markets.filter(market =>
+  const favoritesMarkets = markets.filter(
+    market =>
       favoriteMarkets[`${market.networkId}`] &&
       favoriteMarkets[`${market.networkId}`].includes(market.id)
   );
