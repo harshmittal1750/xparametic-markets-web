@@ -38,7 +38,7 @@ type TextFontSize =
   | 'body-3'
   | 'body-4';
 
-type TextFontWeight = 'regular' | 'medium' | 'semibold' | 'bold';
+type TextFontWeight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold';
 
 type TextColor =
   | '1'
