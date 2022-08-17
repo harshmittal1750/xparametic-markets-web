@@ -1,0 +1,93 @@
+.pm-c-vote-arrows {
+  @include flex-row(space-between, center);
+
+  &__down,
+  &__up {
+    fill: hsl(216, 14, 60);
+    transition: 0.2s fill ease-in-out;
+  }
+
+  &__down {
+    &:hover {
+      fill: hsl(0, 91, 69);
+    }
+  }
+
+  &__up {
+    &:hover {
+      fill: hsl(158, 57, 61);
+    }
+  }
+
+  &--small {
+    @extend .pm-c-vote-arrows;
+    gap: px-to-rem(8px);
+    padding: px-to-rem(4px) px-to-rem(6px);
+
+    .pm-c-vote-arrows__down,
+    .pm-c-vote-arrows__up {
+      width: px-to-rem(10.05px);
+      height: px-to-rem(12px);
+    }
+
+    .pm-c-vote-arrows__counter {
+      @extend .text-caption-3;
+    }
+  }
+
+  &--normal {
+    @extend .pm-c-vote-arrows;
+    gap: px-to-rem(16px);
+    padding: px-to-rem(4px) px-to-rem(12px);
+    border: px-to-rem(1px) solid;
+    .pm-c-vote-arrows__down,
+    .pm-c-vote-arrows__up {
+      width: px-to-rem(11.72px);
+      height: px-to-rem(14px);
+    }
+
+    .pm-c-vote-arrows__counter {
+      @extend .text-caption-2;
+    }
+  }
+
+  &--large {
+    @extend .pm-c-vote-arrows;
+    gap: px-to-rem(8px);
+    padding: px-to-rem(12px) px-to-rem(16px);
+    border: px-to-rem(1px) solid;
+
+    .pm-c-vote-arrows__down,
+    .pm-c-vote-arrows__up {
+      width: px-to-rem(16.75px);
+      height: px-to-rem(20px);
+    }
+
+    .pm-c-vote-arrows__counter {
+      @extend .text-caption-1;
+    }
+  }
+
+  &--neutral {
+    background-color: hsl(218, 21%, 17%);
+    border-color: hsla(218, 19%, 29%, 1);
+  }
+
+  &--negative {
+    background-color: hsla(0, 91%, 69%, 0.1);
+    border-color: hsla(0, 91%, 69%, 0.2);
+
+    .pm-c-vote-arrows__down {
+      fill: hsl(0, 91, 69);
+    }
+  }
+
+  &--positive {
+    background-color: hsla(158, 58%, 62%, 0.1);
+    border-color: hsla(158, 58%, 62%, 0.2);
+
+    .pm-c-vote-arrows__up {
+      fill: hsl(158, 57, 61);
+    }
+  }
+}
