@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
+import { getNetworkBy } from 'helpers/network';
 import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
@@ -12,7 +13,6 @@ import { ArrowLeftIcon } from 'assets/icons';
 import { Tabs, Table, Text, Button, SEO } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
-import NETWORKS from 'hooks/useNetwork/networks';
 
 import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
@@ -39,13 +39,14 @@ const Market = () => {
   );
   const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
-  const resolveMarketNetwork = Object.values(NETWORKS).filter(
-    ({ id }) => id === market.networkId.toString()
-  )[0];
+  const resolvedMarketNetwork = getNetworkBy({
+    type: 'id',
+    value: market.networkId
+  });
   const resolvedEmptyDataDescription =
     network.id === market.networkId.toString()
       ? 'You have no positions.'
-      : `Switch network to ${resolveMarketNetwork?.name} to see your market positions.`;
+      : `Switch network to ${resolvedMarketNetwork?.name} to see your market positions.`;
 
   useEffect(() => {
     async function fetchMarket() {
