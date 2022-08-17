@@ -1,12 +1,19 @@
 import { useState } from 'react';
 
+import classNames from 'classnames';
+
 import { ArrowDown, ArrowUp } from 'assets/icons/components/vote';
 
 import Text from '../Text';
 
 const initialVotes = 0;
 
-function VoteArrows() {
+type VoteArrowsProps = {
+  size?: 'small' | 'normal' | 'large';
+  fullwidth?: boolean;
+};
+
+function VoteArrows({ size = 'normal', fullwidth }: VoteArrowsProps) {
   const [votes, setVotes] = useState(initialVotes);
   const [sentiment, setSentiment] = useState<
     'neutral' | 'positive' | 'negative'
@@ -26,7 +33,13 @@ function VoteArrows() {
   }
 
   return (
-    <div className={`pm-c-vote-arrows--normal pm-c-vote-arrows--${sentiment}`}>
+    <div
+      className={classNames(
+        `pm-c-vote-arrows--${size}`,
+        `pm-c-vote-arrows--${sentiment}`,
+        fullwidth && 'width-full'
+      )}
+    >
       <button
         type="button"
         className="pm-c-button--sm pm-c-button-normal--noborder"
