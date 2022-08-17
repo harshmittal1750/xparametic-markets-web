@@ -12,6 +12,7 @@ import { ArrowLeftIcon } from 'assets/icons';
 import { Tabs, Table, Text, Button, SEO } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import NETWORKS from 'hooks/useNetwork/networks';
 
 import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
@@ -30,15 +31,21 @@ const Market = () => {
   const history = useHistory();
   const currency = useAppSelector(state => state.market.market.currency);
   const { symbol, ticker } = currency;
-  const { network, setNetwork } = useNetwork();
+  const { network } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
+  const { actions, bondActions, networkId } = useAppSelector(
     state => state.bepro
   );
-
   const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
+  const resolveMarketNetwork = Object.values(NETWORKS).filter(
+    ({ id }) => id === market.networkId.toString()
+  )[0];
+  const resolvedEmptyDataDescription =
+    network.id === market.networkId.toString()
+      ? 'You have no positions.'
+      : `Switch network to ${resolveMarketNetwork?.name} to see your market positions.`;
 
   useEffect(() => {
     async function fetchMarket() {
@@ -68,6 +75,7 @@ const Market = () => {
         goToHomePage();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     error,
     history,
@@ -172,7 +180,7 @@ const Market = () => {
               columns={tableItems.columns}
               rows={tableItems.rows}
               isLoadingData={isLoading}
-              emptyDataDescription="You have no positions."
+              emptyDataDescription={resolvedEmptyDataDescription}
             />
           </Tabs.TabPane>
           {market.news && market.news.length > 0 ? (
