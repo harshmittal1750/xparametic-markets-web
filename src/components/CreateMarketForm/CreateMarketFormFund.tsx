@@ -28,15 +28,14 @@ function CreateMarketFormFund() {
     helpers.setValue(amount);
   }
 
-  async function getMarketFee() {
-    const beproService = new BeproService(networkConfig);
-
-    const response = await beproService.getMarketFee();
-    setFee(response);
-  }
-
   useEffect(() => {
-    getMarketFee();
+    (async function getMarketFee() {
+      const beproService = new BeproService(networkConfig);
+
+      const response = await beproService.getMarketFee();
+      setFee(response);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

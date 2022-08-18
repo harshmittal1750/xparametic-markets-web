@@ -97,6 +97,7 @@ function useNetwork() {
     }
 
     getCurrentEthereumNetworkId();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localNetwork]);
 
   useEffect(() => {
