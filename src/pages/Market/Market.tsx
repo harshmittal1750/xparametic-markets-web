@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
-import { getNetworkBy } from 'helpers/network';
 import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
@@ -39,14 +38,10 @@ const Market = () => {
   );
   const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
-  const resolvedMarketNetwork = getNetworkBy({
-    type: 'id',
-    value: market.networkId
-  });
-  const resolvedEmptyDataDescription =
-    network.id === market.networkId.toString()
-      ? 'You have no positions.'
-      : `Switch network to ${resolvedMarketNetwork?.name} to see your market positions.`;
+  const isDiffNetwork = network.id !== market.networkId.toString();
+  const resolvedEmptyDataDescription = isDiffNetwork
+    ? `Switch network to ${market.network.name} to see your market positions.`
+    : 'You have no positions.';
 
   useEffect(() => {
     async function fetchMarket() {
@@ -95,7 +90,9 @@ const Market = () => {
     );
 
   const tableItems = formatMarketPositions(
-    (actions as any).filter(action => action.marketId === market?.id),
+    ((isDiffNetwork ? [] : actions) as any).filter(
+      action => action.marketId === market?.id
+    ),
     (bondActions as any).filter(
       action => action.questionId === market?.questionId
     ),
