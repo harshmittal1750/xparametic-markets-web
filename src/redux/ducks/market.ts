@@ -118,6 +118,7 @@ const marketSlice = createSlice({
         return {
           payload: {
             ...market,
+            network,
             currency: network.currency,
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
