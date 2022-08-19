@@ -151,3 +151,4 @@ export {
   TradeForm,
   WalletInfo
 };
+export { default as Portal } from './Portal';
