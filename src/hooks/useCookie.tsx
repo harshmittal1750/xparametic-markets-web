@@ -1,6 +1,6 @@
 // https://medium.com/swlh/react-hooks-usecookie-hook-26ac06ff36b0
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -26,13 +26,15 @@ const setItem = (key, value) => {
 };
 
 const useCookie = (key, defaultValue) => {
-  const getCookie = () => getItem(key) || defaultValue;
-  const [cookie, setCookie] = useState(getCookie());
-
-  const updateCookie = value => {
-    setCookie(value);
-    setItem(key, value);
-  };
+  const item = getItem(key);
+  const [cookie, setCookie] = useState(item || defaultValue);
+  const updateCookie = useCallback(
+    value => {
+      setCookie(value);
+      setItem(key, value);
+    },
+    [key]
+  );
 
   return [cookie, updateCookie];
 };
