@@ -2,13 +2,16 @@ import { ReactNode } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
+import Portal from 'components/Portal';
+
 type ModalProps = {
   children: ReactNode;
+  show: boolean;
 };
 
-function Modal({ children }: ModalProps) {
-  return (
-    <div className="pm-c-modal__wrapper">
+export default function Modal({ children, show }: ModalProps) {
+  return show ? (
+    <Portal>
       <div className="pm-c-modal__overlay">
         <AnimatePresence>
           <motion.div
@@ -29,8 +32,6 @@ function Modal({ children }: ModalProps) {
           </motion.div>
         </AnimatePresence>
       </div>
-    </div>
-  );
+    </Portal>
+  ) : null;
 }
-
-export default Modal;
