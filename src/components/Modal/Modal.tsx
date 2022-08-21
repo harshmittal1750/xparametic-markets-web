@@ -42,7 +42,11 @@ export default function Modal({ children, onHide, show }: ModalProps) {
               className="pm-c-modal"
             >
               {onHide && (
-                <Button variant="ghost" onClick={onHide}>
+                <Button
+                  variant="ghost"
+                  onClick={onHide}
+                  className="pm-c-modal__close-button"
+                >
                   <RemoveOutlinedIcon />
                 </Button>
               )}
