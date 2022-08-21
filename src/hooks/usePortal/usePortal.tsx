@@ -1,8 +1,7 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 type UsePortalProps = {
-  mount?: boolean;
   onMount?: React.EffectCallback;
   onUnmount?(): void;
   root: Element | null;
@@ -29,14 +28,15 @@ function Portal({
 }
 
 export default function usePortal({
-  mount = false,
   onMount,
   onUnmount,
   root
 }: UsePortalProps) {
+  const [mount, setMount] = useState<boolean>(false);
+  const handleMount = useCallback(setMount, [setMount]);
   const handlePortal = useCallback(
     (_props: React.PropsWithChildren<Record<string, unknown>>) => {
-      if (root == null || !mount) return null;
+      if (!root || !mount) return null;
 
       const props = { root, onMount, onUnmount, ..._props };
 
@@ -46,5 +46,7 @@ export default function usePortal({
     [mount, root]
   );
 
-  return handlePortal;
+  return Object.assign(handlePortal, {
+    mount: handleMount
+  });
 }

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { RemoveOutlinedIcon } from 'assets/icons';
@@ -13,10 +14,15 @@ type ModalProps = React.PropsWithChildren<{
   onHide?(): void;
 }>;
 
-export default function Modal({ children, onHide, show }: ModalProps) {
+function Footer({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'footer'>) {
+  return <footer className={cn('pm-c-modal__footer', className)} {...props} />;
+}
+function Modal({ children, onHide, show }: ModalProps) {
   const Portal = usePortal({
     root: document.querySelector('[data-theme="dark"]'),
-    mount: show,
     onMount() {
       document.body.style.overflow = 'hidden';
     },
@@ -24,6 +30,11 @@ export default function Modal({ children, onHide, show }: ModalProps) {
       document.body.removeAttribute('style');
     }
   });
+
+  useEffect(() => {
+    Portal.mount(show);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show]);
 
   return (
     <Portal>
@@ -50,7 +61,7 @@ export default function Modal({ children, onHide, show }: ModalProps) {
                   <RemoveOutlinedIcon />
                 </Button>
               )}
-              <div className="pm-c-modal__content">{children}</div>
+              {children}
             </div>
           </motion.div>
         </AnimatePresence>
@@ -58,3 +69,5 @@ export default function Modal({ children, onHide, show }: ModalProps) {
     </Portal>
   );
 }
+
+export default Object.assign(Modal, { Footer });
