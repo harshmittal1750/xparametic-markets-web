@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -10,13 +10,13 @@ import { usePortal } from 'hooks';
 
 type ModalProps = React.PropsWithChildren<{
   show: boolean;
-  onClose?(): void;
+  onHide?(): void;
 }>;
 
-export default function Modal({ children, onClose, show }: ModalProps) {
+export default function Modal({ children, onHide, show }: ModalProps) {
   const Portal = usePortal({
     root: document.querySelector('[data-theme="dark"]'),
-    initialMount: show,
+    mount: show,
     onMount() {
       document.body.style.overflow = 'hidden';
     },
@@ -24,15 +24,6 @@ export default function Modal({ children, onClose, show }: ModalProps) {
       document.body.removeAttribute('style');
     }
   });
-
-  useEffect(() => {
-    if (!show) Portal.mount(false);
-  }, [Portal, show]);
-
-  function handleClose() {
-    onClose?.();
-    Portal.mount(false);
-  }
 
   return (
     <Portal>
@@ -50,8 +41,8 @@ export default function Modal({ children, onClose, show }: ModalProps) {
               aria-modal="true"
               className="pm-c-modal"
             >
-              {onClose && (
-                <Button variant="ghost" onClick={handleClose}>
+              {onHide && (
+                <Button variant="ghost" onClick={onHide}>
                   <RemoveOutlinedIcon />
                 </Button>
               )}
