@@ -131,3 +131,4 @@ export {
   WarningIcon,
   WhiteHouseIcon
 };
+export { default as RemoveOutlinedIcon } from './RemoveOutlinedIcon';
