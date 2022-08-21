@@ -19,3 +19,4 @@ export {
   useFavoriteMarkets,
   useWindowDimensions
 };
+export { default as usePortal } from './usePortal';
