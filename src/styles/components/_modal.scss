@@ -1,28 +1,33 @@
 .pm-c-modal {
   @include themes($modal-themes) {
-    width: fit-content;
+    gap: 32px;
+    width: 41rem;
     padding: $modal-padding-y $modal-padding-x;
     position: relative;
     background-color: themed('background');
     border: $modal-border-width solid themed('border');
     border-radius: $modal-border-radius;
     box-shadow: $modal-shadow themed('shadow');
-
     transition: all 0.2s ease-out;
+
+    &__header {
+      margin-bottom: 1.2rem;
+    }
+
+    &__footer {
+      display: flex;
+      gap: 1.6rem;
+      width: 100%;
+      margin-top: $modal-padding-y;
+    }
 
     &__close-button {
       position: absolute;
-      right: 12px;
-      top: 16px;
-    }
-
-    &__content {
-      width: fit-content;
-    }
-
-    &__wrapper {
-      width: fit-content;
-      height: fit-content;
+      right: 20px;
+      top: 20px;
+      width: 40px;
+      height: 40px;
+      padding: 0;
     }
 
     &__overlay {
@@ -31,7 +36,7 @@
       z-index: 9999;
 
       inset: 0;
-      padding: 0rem 2.4rem;
+      padding: $modal-padding-y;
 
       background: themed('overlay-background-color');
     }

@@ -20,6 +20,12 @@ function Footer({
 }: React.ComponentPropsWithoutRef<'footer'>) {
   return <footer className={cn('pm-c-modal__footer', className)} {...props} />;
 }
+function Header({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'header'>) {
+  return <header className={cn('pm-c-modal__header', className)} {...props} />;
+}
 function Modal({ children, onHide, show }: ModalProps) {
   const Portal = usePortal({
     root: document.querySelector('[data-theme="dark"]'),
@@ -70,4 +76,7 @@ function Modal({ children, onHide, show }: ModalProps) {
   );
 }
 
-export default Object.assign(Modal, { Footer });
+export default Object.assign(Modal, {
+  Header,
+  Footer
+});
