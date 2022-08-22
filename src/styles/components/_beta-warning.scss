@@ -2,7 +2,6 @@
   @include themes($beta-warning-themes) {
     @include flex-column(center, center, 3.2rem);
     width: 100%;
-    max-width: 41rem;
 
     &__header {
       @include flex-row(flex-start, center, 0.8rem);
