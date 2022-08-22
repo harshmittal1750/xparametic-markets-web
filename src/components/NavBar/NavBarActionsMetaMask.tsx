@@ -5,7 +5,9 @@ import { BeproService } from 'services';
 
 import { MetaMaskIcon } from 'assets/icons';
 
-import { Button, Modal, Text } from 'components';
+import { Button } from 'components/Button';
+import Modal from 'components/Modal';
+import Text from 'components/Text';
 
 import { useAppDispatch, useNetwork } from 'hooks';
 

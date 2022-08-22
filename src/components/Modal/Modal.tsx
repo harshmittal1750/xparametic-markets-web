@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { RemoveOutlinedIcon } from 'assets/icons';
 
-import { Button } from 'components';
+import { Button } from 'components/Button';
 
 import { usePortal } from 'hooks';
 
