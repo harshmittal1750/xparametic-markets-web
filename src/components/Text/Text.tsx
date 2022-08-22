@@ -57,7 +57,7 @@ type TextColor =
   | 'light-gray'
   | 'dark-gray';
 
-type TextProps = {
+export type TextProps = {
   /**
    * HTML text element
    * @default 'p'

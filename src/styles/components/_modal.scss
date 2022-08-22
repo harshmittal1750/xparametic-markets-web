@@ -1,6 +1,5 @@
 .pm-c-modal {
   @include themes($modal-themes) {
-    gap: 32px;
     width: 41rem;
     padding: $modal-padding-y $modal-padding-x;
     position: relative;
@@ -11,14 +10,27 @@
     transition: all 0.2s ease-out;
 
     &__header {
-      margin-bottom: 1.2rem;
+      margin-right: 6.4rem;
+    }
+
+    &__header-title {
+      font-weight: normal;
+      color: map-get(themed('text-colors'), 'primary');
+    }
+
+    &__section {
+      margin-top: 1.2rem;
+      margin-bottom: $modal-padding-y;
+    }
+
+    &__section-text {
+      color: map-get(themed('text-colors'), 'secondary');
     }
 
     &__footer {
       display: flex;
       gap: 1.6rem;
       width: 100%;
-      margin-top: $modal-padding-y;
     }
 
     &__close-button {

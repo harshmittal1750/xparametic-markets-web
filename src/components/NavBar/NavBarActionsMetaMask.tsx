@@ -7,7 +7,6 @@ import { MetaMaskIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import Modal from 'components/Modal';
-import Text from 'components/Text';
 
 import { useAppDispatch, useNetwork } from 'hooks';
 
@@ -40,16 +39,18 @@ export default function NavBarActionsMetamask() {
   return (
     <>
       <Modal show={show} onHide={handleHide}>
-        <NavBarActionsMetamaskStatus />
         <Modal.Header>
-          <Text color="light" scale="heading">
+          <NavBarActionsMetamaskStatus />
+          <Modal.HeaderTitle>
             Looks like your browser do not have Metamask installed.
-          </Text>
+          </Modal.HeaderTitle>
         </Modal.Header>
-        <Text color="light-gray" scale="caption">
-          Please follow up the instructions to install it, make sure your wallet
-          is unlocked with at least one account on it and try again.
-        </Text>
+        <Modal.Section>
+          <Modal.SectionText>
+            Please follow up the instructions to install it, make sure your
+            wallet is unlocked with at least one account on it and try again.
+          </Modal.SectionText>
+        </Modal.Section>
         <Modal.Footer>
           <Button
             fullwidth

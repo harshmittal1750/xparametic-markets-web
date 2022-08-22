@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { RemoveOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import Text, { TextProps } from 'components/Text';
 
 import { usePortal } from 'hooks';
 
@@ -19,6 +20,37 @@ function Footer({
   ...props
 }: React.ComponentPropsWithoutRef<'footer'>) {
   return <footer className={cn('pm-c-modal__footer', className)} {...props} />;
+}
+function SectionText({ children, className, ...props }: TextProps) {
+  return (
+    <Text
+      className={cn('pm-c-modal__section-text', className)}
+      scale="caption"
+      {...props}
+    >
+      {children}
+    </Text>
+  );
+}
+function Section({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'section'>) {
+  return (
+    <section className={cn('pm-c-modal__section', className)} {...props} />
+  );
+}
+function HeaderTitle({ className, ...props }: TextProps) {
+  return (
+    <Text
+      as="h1"
+      className={cn('pm-c-modal__header-title', className)}
+      scale="heading"
+      {...props}
+    >
+      Looks like your browser do not have Metamask installed.
+    </Text>
+  );
 }
 function Header({
   className,
@@ -39,12 +71,11 @@ function Modal({ children, onHide, show }: ModalProps) {
 
   useEffect(() => {
     Portal.mount(show);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [show]);
+  }, [Portal, show]);
 
   return (
     <Portal>
-      <div className="pm-c-modal__overlay">
+      <main className="pm-c-modal__overlay">
         <AnimatePresence>
           <motion.div
             layout
@@ -71,12 +102,15 @@ function Modal({ children, onHide, show }: ModalProps) {
             </div>
           </motion.div>
         </AnimatePresence>
-      </div>
+      </main>
     </Portal>
   );
 }
 
 export default Object.assign(Modal, {
   Header,
+  HeaderTitle,
+  Section,
+  SectionText,
   Footer
 });
