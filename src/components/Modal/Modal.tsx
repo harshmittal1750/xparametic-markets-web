@@ -28,7 +28,7 @@ function Header({
 }
 function Modal({ children, onHide, show }: ModalProps) {
   const Portal = usePortal({
-    root: document.querySelector('[data-theme="dark"]'),
+    root: document.body,
     onMount() {
       document.body.style.overflow = 'hidden';
     },
