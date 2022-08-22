@@ -20,6 +20,12 @@ export default function NavBarActionsMetamask() {
     setShow(false);
   }, []);
 
+  function handleInstall() {
+    window.open('https://metamask.io/download.html', '_blank');
+  }
+  function handleTryAgain() {
+    window.location.reload();
+  }
   async function handleMetamask() {
     if (!window.ethereum) {
       setShow(true);
@@ -43,10 +49,15 @@ export default function NavBarActionsMetamask() {
           is unlocked with at least one account on it and try again.
         </Text>
         <Modal.Footer>
-          <Button fullwidth color="primary" variant="outline">
+          <Button
+            fullwidth
+            color="primary"
+            variant="outline"
+            onClick={handleTryAgain}
+          >
             Try Again
           </Button>
-          <Button fullwidth color="primary">
+          <Button fullwidth color="primary" onClick={handleInstall}>
             Install
           </Button>
         </Modal.Footer>
