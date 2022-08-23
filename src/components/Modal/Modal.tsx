@@ -21,15 +21,13 @@ function Footer({
 }: React.ComponentPropsWithoutRef<'footer'>) {
   return <footer className={cn('pm-c-modal__footer', className)} {...props} />;
 }
-function SectionText({ children, className, ...props }: TextProps) {
+function SectionText({ className, ...props }: TextProps) {
   return (
     <Text
       className={cn('pm-c-modal__section-text', className)}
       scale="caption"
       {...props}
-    >
-      {children}
-    </Text>
+    />
   );
 }
 function Section({
@@ -44,12 +42,11 @@ function HeaderTitle({ className, ...props }: TextProps) {
   return (
     <Text
       as="h1"
+      fontWeight="medium"
       className={cn('pm-c-modal__header-title', className)}
       scale="heading"
       {...props}
-    >
-      Looks like your browser do not have Metamask installed.
-    </Text>
+    />
   );
 }
 function Header({
