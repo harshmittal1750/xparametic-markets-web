@@ -9,6 +9,10 @@ function MetaMaskIcon({ size = 16, ...props }: Props) {
       width={size}
       height={size}
       viewBox="0 0 256 256"
+      style={{
+        verticalAlign: 'middle',
+        fill: 'currentColor'
+      }}
       {...props}
     >
       <path

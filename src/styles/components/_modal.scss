@@ -24,6 +24,7 @@
 
     &__section-text {
       color: map-get(themed('text-colors'), 'secondary');
+      margin-bottom: 1.6rem;
     }
 
     &__footer {

@@ -1,52 +1,12 @@
 .pm-c-beta-warning {
   @include themes($beta-warning-themes) {
-    @include flex-column(center, center, 3.2rem);
-    width: 100%;
-
     &__header {
-      @include flex-row(flex-start, center, 0.8rem);
-      width: 100%;
+      color: map-get(themed('action-colors'), 'warning');
 
-      svg {
-        width: 1.6rem;
-        height: 1.6rem;
-
-        fill: map-get(themed('action-colors'), 'warning');
+      &--title {
+        margin-left: 0.8rem;
+        display: inline-block;
       }
-
-      span {
-        color: map-get(themed('action-colors'), 'warning');
-      }
-    }
-
-    &__description {
-      @include flex-column(center, center, 2.4rem);
-      width: 100%;
-
-      &--primary-text {
-        text-align: left;
-        white-space: pre-line;
-        color: map-get(themed('text-colors'), 'primary');
-      }
-
-      a {
-        color: map-get(themed('action-colors'), 'warning');
-      }
-
-      p {
-        text-align: left;
-        white-space: pre-line;
-        color: map-get(themed('text-colors'), 'secondary');
-
-        a {
-          color: map-get(themed('text-colors'), 'secondary');
-        }
-      }
-    }
-
-    &__actions {
-      @include flex-column(center, center, 2.4rem);
-      width: 100%;
     }
   }
 }
