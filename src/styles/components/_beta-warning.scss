@@ -1,11 +1,10 @@
 .pm-c-beta-warning {
   @include themes($beta-warning-themes) {
-    &__header {
+    &__header-title {
       color: map-get(themed('action-colors'), 'warning');
 
-      &--title {
-        margin-left: 0.8rem;
-        display: inline-block;
+      &__adornment {
+        margin-right: 0.8rem;
       }
     }
   }

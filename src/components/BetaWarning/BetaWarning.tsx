@@ -20,7 +20,7 @@ export default function BetaWarning() {
   );
   const [agreement, setAgreement] = useState(false);
   const [show, setShow] = useState(
-    (hasParam != null && hasParam !== 'f') || betaWarningCookie === 'true'
+    (hasParam && hasParam !== 'f') || betaWarningCookie === 'true'
   );
 
   function handleAgreement() {
@@ -33,13 +33,16 @@ export default function BetaWarning() {
 
   return (
     <Modal show={show}>
-      <Modal.Header className="pm-c-beta-warning__header">
-        <TwarningIcon size={16} />
+      <Modal.Header>
         <Modal.HeaderTitle
-          className="pm-c-beta-warning__header--title"
+          className="pm-c-beta-warning__header-title"
           scale="tiny-uppercase"
           fontWeight="semibold"
         >
+          <TwarningIcon
+            className="pm-c-beta-warning__header-title__adornment"
+            size={16}
+          />
           Warning
         </Modal.HeaderTitle>
       </Modal.Header>

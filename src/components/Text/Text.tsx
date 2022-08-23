@@ -104,10 +104,12 @@ function Text({
     as,
     {
       className: classNames(
-        className,
-        scale,
-        fontWeight,
-        color && `text-${color}`
+        {
+          [`text-${color}`]: color,
+          [scale]: scale,
+          [fontWeight]: fontWeight
+        },
+        className
       ),
       style
     },
