@@ -34,6 +34,7 @@ export default function usePortal({
 }: UsePortalProps) {
   const [mount, setMount] = useState<boolean>(false);
   const handleMount = useCallback(setMount, [setMount]);
+  const handleUnmount = useCallback(() => setMount(false), [setMount]);
   const handlePortal = useCallback(
     (_props: React.PropsWithChildren<Record<string, unknown>>) => {
       if (!root || !mount) return null;
@@ -47,6 +48,7 @@ export default function usePortal({
   );
 
   return Object.assign(handlePortal, {
-    mount: handleMount
+    mount: handleMount,
+    unmount: handleUnmount
   });
 }

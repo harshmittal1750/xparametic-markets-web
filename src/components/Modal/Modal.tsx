@@ -8,7 +8,7 @@ import { RemoveOutlinedIcon } from 'assets/icons';
 import { Button } from 'components/Button';
 import Text, { TextProps } from 'components/Text';
 
-import { usePortal } from 'hooks';
+import { usePortal, usePrevious } from 'hooks';
 
 type ModalProps = React.PropsWithChildren<{
   show: boolean;
@@ -56,6 +56,7 @@ function Header({
   return <header className={cn('pm-c-modal__header', className)} {...props} />;
 }
 function Modal({ children, onHide, show }: ModalProps) {
+  const { current: wasMounted } = usePrevious(show);
   const Portal = usePortal({
     root: document.body,
     onMount() {
@@ -67,21 +68,31 @@ function Modal({ children, onHide, show }: ModalProps) {
   });
 
   useEffect(() => {
-    Portal.mount(show);
-  }, [Portal, show]);
+    if (wasMounted && !show) {
+      setTimeout(() => {
+        Portal.unmount();
+      }, 1000);
+    } else {
+      Portal.mount(show);
+    }
+  }, [Portal, wasMounted, show]);
 
   return (
     <Portal>
-      <main className="pm-c-modal__overlay">
-        <AnimatePresence>
+      <AnimatePresence>
+        {show && (
           <motion.div
             layout
-            initial={{ opacity: 0, y: 30, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="presentation"
+            className="pm-c-modal__overlay"
           >
-            <div
-              role="dialog"
+            <motion.main
+              initial={{ y: 30, scale: 0.9 }}
+              animate={{ y: 0, scale: 1 }}
+              exit={{ y: 20, scale: 0.9 }}
               tabIndex={-1}
               aria-modal="true"
               className="pm-c-modal"
@@ -96,10 +107,10 @@ function Modal({ children, onHide, show }: ModalProps) {
                 </Button>
               )}
               {children}
-            </div>
+            </motion.main>
           </motion.div>
-        </AnimatePresence>
-      </main>
+        )}
+      </AnimatePresence>
     </Portal>
   );
 }
