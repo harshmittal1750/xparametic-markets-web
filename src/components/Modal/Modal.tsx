@@ -10,6 +10,11 @@ import Text, { TextProps } from 'components/Text';
 
 import { usePortal, usePrevious } from 'hooks';
 
+const MODAL = {
+  title: 'modal-title',
+  description: 'modal-description'
+};
+
 type ModalProps = React.PropsWithChildren<{
   show: boolean;
   onHide?(): void;
@@ -26,6 +31,7 @@ function SectionText({ className, ...props }: TextProps) {
     <Text
       className={cn('pm-c-modal__section-text', className)}
       scale="caption"
+      id={MODAL.title}
       {...props}
     />
   );
@@ -45,6 +51,7 @@ function HeaderTitle({ className, ...props }: TextProps) {
       fontWeight="medium"
       className={cn('pm-c-modal__header-title', className)}
       scale="heading"
+      id={MODAL.description}
       {...props}
     />
   );
@@ -95,6 +102,8 @@ function Modal({ children, onHide, show }: ModalProps) {
               exit={{ y: 20, scale: 0.9 }}
               tabIndex={-1}
               aria-modal="true"
+              aria-labelledby={MODAL.title}
+              aria-describedby={MODAL.description}
               className="pm-c-modal"
             >
               {onHide && (
