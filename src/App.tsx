@@ -34,7 +34,7 @@ const App = () => {
 
   return (
     <MuiPickersUtilsProvider utils={DayjsUtils}>
-      <MotionConfig reducedMotion="user" transition={{ duration: 0.3 }}>
+      <MotionConfig transition={{ duration: 0.3 }}>
         <FavoriteMarketsProvider>
           <SEO
             title="Polkamarkets - Autonomous Prediction Market Protocol"
