@@ -91,12 +91,12 @@ function Modal({ children, onHide, show }: ModalProps) {
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       if (
-        onHide &&
         wasMounted &&
         show &&
         !refModal.current?.contains(event.target as Node)
-      )
-        onHide();
+      ) {
+        onHide?.();
+      }
     }
 
     window.addEventListener('click', handleOutsideClick);

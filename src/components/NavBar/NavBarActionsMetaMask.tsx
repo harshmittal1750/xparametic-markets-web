@@ -21,19 +21,15 @@ export default function NavBarActionsMetamask() {
     setShow(false);
   }, []);
 
-  function handleInstall() {
-    window.open('https://metamask.io/download.html', '_blank');
-  }
   function handleTryAgain() {
     window.location.reload();
   }
-  async function handleMetamask() {
-    if (!window.ethereum) {
-      setShow(true);
-    } else {
-      await beproService.login();
-      dispatch(login(networkConfig));
-    }
+  function handleMetamaskModal() {
+    setShow(true);
+  }
+  async function handleMetamaskLogin() {
+    await beproService.login();
+    dispatch(login(networkConfig));
   }
 
   return (
@@ -60,16 +56,21 @@ export default function NavBarActionsMetamask() {
           >
             Try Again
           </Button>
-          <Button fullwidth color="primary" onClick={handleInstall}>
+          <a
+            href="https://metamask.io/download.html"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="pm-c-button-normal--primary pm-c-button--normal pm-c-button--fullwidth"
+          >
             Install
-          </Button>
+          </a>
         </Modal.Footer>
       </Modal>
       <Button
         variant="outline"
         color="default"
         size="sm"
-        onClick={handleMetamask}
+        onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
       >
         <MetaMaskIcon />
         Connect MetaMask
