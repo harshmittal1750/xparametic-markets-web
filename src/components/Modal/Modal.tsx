@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 
 import cn from 'classnames';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, MotionConfigContext } from 'framer-motion';
 
 import { RemoveOutlinedIcon } from 'assets/icons';
 
@@ -63,6 +63,10 @@ function Header({
   return <header className={cn('pm-c-modal__header', className)} {...props} />;
 }
 function Modal({ children, onHide, show }: ModalProps) {
+  const motionConfig = useContext(MotionConfigContext) as {
+    transition: { duration: number };
+  };
+  const refModal = useRef<HTMLElement>(null);
   const { current: wasMounted } = usePrevious(show);
   const Portal = usePortal({
     root: document.body,
@@ -78,11 +82,29 @@ function Modal({ children, onHide, show }: ModalProps) {
     if (wasMounted && !show) {
       setTimeout(() => {
         Portal.unmount();
-      }, 1000);
+      }, motionConfig.transition?.duration * 1000);
     } else {
       Portal.mount(show);
     }
-  }, [Portal, wasMounted, show]);
+  }, [Portal, wasMounted, show, motionConfig.transition?.duration]);
+
+  useEffect(() => {
+    function handleOutsideClick(event: MouseEvent) {
+      if (
+        onHide &&
+        wasMounted &&
+        show &&
+        !refModal.current?.contains(event.target as Node)
+      )
+        onHide();
+    }
+
+    window.addEventListener('click', handleOutsideClick);
+
+    return () => {
+      window.removeEventListener('click', handleOutsideClick);
+    };
+  }, [onHide, show, wasMounted]);
 
   return (
     <Portal>
@@ -97,6 +119,7 @@ function Modal({ children, onHide, show }: ModalProps) {
             className="pm-c-modal__overlay"
           >
             <motion.main
+              ref={refModal}
               initial={{ y: 30, scale: 0.9 }}
               animate={{ y: 0, scale: 1 }}
               exit={{ y: 20, scale: 0.9 }}
