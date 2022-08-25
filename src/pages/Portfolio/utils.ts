@@ -93,7 +93,7 @@ function formatMarketPositions(
     market.outcomes.forEach((outcome: Outcome) => {
       // ignoring zero balances
       if (portfolio[market.id]?.outcomes[outcome.id]?.shares >= 0.0005) {
-        const priceChart = outcome.priceCharts.find(
+        const priceChart = outcome.priceCharts?.find(
           chart => chart.timeframe === '24h'
         );
         const shares = portfolio[market.id]?.outcomes[outcome.id]?.shares;
