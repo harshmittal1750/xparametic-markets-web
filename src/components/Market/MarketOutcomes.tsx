@@ -58,7 +58,7 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
   }, [dispatch, isCurrentSelectedPrediction]);
 
   // using 7d timeframe
-  const marketPriceChart = outcome.priceCharts.find(
+  const marketPriceChart = outcome.priceCharts?.find(
     priceChart => priceChart.timeframe === '7d'
   );
   const marketPriceUp =
