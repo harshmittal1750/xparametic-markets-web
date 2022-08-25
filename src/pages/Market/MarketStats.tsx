@@ -13,7 +13,7 @@ function MarketStats({ market }: MarketStatsProps) {
   const currency = useAppSelector(state => state.market.market.currency);
   const { symbol } = currency;
   const outcomeStats = market.outcomes.map(outcome => {
-    const chartData = outcome.priceCharts.find(
+    const chartData = outcome.priceCharts?.find(
       chart => chart.timeframe === '24h'
     );
 
