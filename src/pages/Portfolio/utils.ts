@@ -93,21 +93,12 @@ function formatMarketPositions(
     market.outcomes.forEach((outcome: Outcome) => {
       // ignoring zero balances
       if (portfolio[market.id]?.outcomes[outcome.id]?.shares >= 0.0005) {
-        const priceChart = outcome.priceCharts?.find(
-          chart => chart.timeframe === '24h'
-        );
         const shares = portfolio[market.id]?.outcomes[outcome.id]?.shares;
         const price = {
           value: outcome.price,
           change: {
-            type:
-              !priceChart?.changePercent || priceChart?.changePercent > 0
-                ? 'up'
-                : 'down',
-            value: roundNumber(
-              Math.abs(priceChart?.changePercent || 0) * 100,
-              2
-            )
+            type: outcome.priceChange24h > 0 ? 'up' : 'down',
+            value: roundNumber(Math.abs(outcome.priceChange24h) * 100, 2)
           }
         };
         const buyPrice = portfolio[market.id]?.outcomes[outcome.id]?.price;
