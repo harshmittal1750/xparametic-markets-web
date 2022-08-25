@@ -4,7 +4,8 @@ import Modal from './Modal';
 
 const defaultProps = {
   show: false,
-  onHide: jest.fn()
+  onHide: jest.fn(),
+  name: 'test'
 };
 const defaultData = {
   title: 'Modal Title',
@@ -28,12 +29,12 @@ function renderHelper(props = defaultProps, data = defaultData) {
 }
 
 describe('Modal', () => {
-  it('should be rendered correctly', () => {
+  it('should not render', () => {
     renderHelper();
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
-  it('should be re-rendered correctly', () => {
+  it('should render correctly', () => {
     renderHelper({ ...defaultProps, show: true });
 
     expect(screen.getByRole('dialog')).toBeInTheDocument();

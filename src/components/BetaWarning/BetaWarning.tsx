@@ -32,7 +32,7 @@ export default function BetaWarning() {
   }
 
   return (
-    <Modal show={show}>
+    <Modal show={show} name="beta-warning">
       <Modal.Header>
         <Modal.HeaderTitle
           className="pm-c-beta-warning__header-title"

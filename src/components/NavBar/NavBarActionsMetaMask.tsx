@@ -34,7 +34,7 @@ export default function NavBarActionsMetamask() {
 
   return (
     <>
-      <Modal show={show} onHide={handleHide}>
+      <Modal show={show} onHide={handleHide} name="metamask-warning">
         <Modal.Header>
           <NavBarActionsMetamaskStatus />
           <Modal.HeaderTitle>

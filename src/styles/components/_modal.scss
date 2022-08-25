@@ -2,7 +2,6 @@
   @include themes($modal-themes) {
     width: 41rem;
     padding: $modal-padding-y $modal-padding-x;
-    position: relative;
     background-color: themed('background');
     border: $modal-border-width solid themed('border');
     border-radius: $modal-border-radius;
@@ -10,36 +9,36 @@
     transition: all 0.2s ease-out;
 
     &__header {
-      margin-right: 6.4rem;
-    }
+      position: relative;
 
-    &__header-title {
-      color: map-get(themed('text-colors'), 'primary');
+      &-hide {
+        position: absolute;
+        right: -12px;
+        top: -12px;
+        width: 40px;
+        height: 40px !important;
+        padding: 0px;
+      }
+
+      &-title {
+        color: map-get(themed('text-colors'), 'primary');
+      }
     }
 
     &__section {
       margin-top: 1.2rem;
       margin-bottom: $modal-padding-y;
-    }
 
-    &__section-text {
-      color: map-get(themed('text-colors'), 'secondary');
-      margin-bottom: 1.6rem;
+      &-text {
+        color: map-get(themed('text-colors'), 'secondary');
+        margin-bottom: 1.6rem;
+      }
     }
 
     &__footer {
       display: flex;
       gap: 1.6rem;
       width: 100%;
-    }
-
-    &__close-button {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      width: 40px;
-      height: 40px;
-      padding: 0;
     }
 
     &__overlay {

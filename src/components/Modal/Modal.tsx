@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import { useContext, useEffect, useMemo, useRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion, MotionConfigContext } from 'framer-motion';
@@ -16,47 +16,14 @@ import {
   ModalProps,
   ModalSectionProps
 } from './Modal.type';
-import { MODAL } from './Modal.util';
+import { MODAL, ModalContext } from './Modal.util';
 
-function Footer({ className, ...props }: ModalFooterProps) {
-  return <footer className={cn('pm-c-modal__footer', className)} {...props} />;
-}
-function SectionText({ className, ...props }: TextProps) {
-  return (
-    <Text
-      className={cn('pm-c-modal__section-text', className)}
-      scale="caption"
-      id={MODAL.title}
-      {...props}
-    />
-  );
-}
-function Section({ className, ...props }: ModalSectionProps) {
-  return (
-    <section className={cn('pm-c-modal__section', className)} {...props} />
-  );
-}
-function HeaderTitle({ className, ...props }: TextProps) {
-  return (
-    <Text
-      as="h2"
-      fontWeight="medium"
-      className={cn('pm-c-modal__header-title', className)}
-      scale="heading"
-      id={MODAL.description}
-      {...props}
-    />
-  );
-}
-function Header({ className, ...props }: ModalHeaderProps) {
-  return <header className={cn('pm-c-modal__header', className)} {...props} />;
-}
-function Modal({ children, onHide, show }: ModalProps) {
+function Modal({ children, onHide, show, name }: ModalProps) {
   const motionConfig = useContext(MotionConfigContext) as {
     transition: { duration: number };
   };
   const refModal = useRef<HTMLDivElement>(null);
-  const { current: wasMounted } = usePrevious(show);
+  const { current: showPrev } = usePrevious(show);
   const Portal = usePortal({
     root: document.body,
     onMount() {
@@ -66,19 +33,25 @@ function Modal({ children, onHide, show }: ModalProps) {
       document.body.removeAttribute('style');
     }
   });
+  const modalContextValue = useMemo(
+    () => ({
+      name,
+      onHide
+    }),
+    [name, onHide]
+  );
 
   useEffect(() => {
-    if (wasMounted && !show) {
+    if (showPrev && !show) {
       setTimeout(Portal.unmount, motionConfig.transition?.duration * 1000);
     } else {
       Portal.mount(show);
     }
-  }, [Portal, wasMounted, show, motionConfig.transition?.duration]);
-
+  }, [Portal, showPrev, show, motionConfig.transition?.duration]);
   useEffect(() => {
     function handleOutsideClick(event: MouseEvent) {
       if (
-        wasMounted &&
+        showPrev &&
         show &&
         !refModal.current?.contains(event.target as Node)
       ) {
@@ -91,48 +64,99 @@ function Modal({ children, onHide, show }: ModalProps) {
     return () => {
       window.removeEventListener('click', handleOutsideClick);
     };
-  }, [onHide, show, wasMounted]);
+  }, [onHide, show, showPrev]);
 
   return (
     <Portal>
-      <AnimatePresence>
-        {show && (
-          <motion.div
-            layout
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            role="presentation"
-            className="pm-c-modal__overlay"
-          >
+      <ModalContext.Provider value={modalContextValue}>
+        <AnimatePresence>
+          {show && (
             <motion.div
-              ref={refModal}
-              initial={{ y: 30, scale: 0.9 }}
-              animate={{ y: 0, scale: 1 }}
-              exit={{ y: 20, scale: 0.9 }}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby={MODAL.title}
-              aria-describedby={MODAL.description}
-              className="pm-c-modal"
+              layout
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              role="presentation"
+              className="pm-c-modal__overlay"
             >
-              {onHide && (
-                <Button
-                  variant="ghost"
-                  onClick={onHide}
-                  className="pm-c-modal__close-button"
-                  aria-label="Hide"
-                >
-                  <RemoveOutlinedIcon />
-                </Button>
-              )}
-              {children}
+              <motion.div
+                ref={refModal}
+                initial={{ y: 30, scale: 0.9 }}
+                animate={{ y: 0, scale: 1 }}
+                exit={{ y: 20, scale: 0.9 }}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={`${name}-${MODAL.title}`}
+                aria-describedby={`${name}-${MODAL.description}`}
+                className="pm-c-modal"
+              >
+                {children}
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </ModalContext.Provider>
     </Portal>
   );
+}
+function Header({ className, children, ...props }: ModalHeaderProps) {
+  return (
+    <ModalContext.Consumer>
+      {({ onHide }) => (
+        <header className={cn('pm-c-modal__header', className)} {...props}>
+          {children}
+          {onHide && (
+            <Button
+              variant="ghost"
+              onClick={onHide}
+              className="pm-c-modal__header-hide"
+              aria-label="Hide"
+            >
+              <RemoveOutlinedIcon />
+            </Button>
+          )}
+        </header>
+      )}
+    </ModalContext.Consumer>
+  );
+}
+function HeaderTitle({ className, ...props }: TextProps) {
+  return (
+    <ModalContext.Consumer>
+      {({ name }) => (
+        <Text
+          as="h2"
+          fontWeight="medium"
+          className={cn('pm-c-modal__header-title', className)}
+          scale="heading"
+          id={`${name}-${MODAL.title}`}
+          {...props}
+        />
+      )}
+    </ModalContext.Consumer>
+  );
+}
+function Section({ className, ...props }: ModalSectionProps) {
+  return (
+    <section className={cn('pm-c-modal__section', className)} {...props} />
+  );
+}
+function SectionText({ className, ...props }: TextProps) {
+  return (
+    <ModalContext.Consumer>
+      {({ name }) => (
+        <Text
+          className={cn('pm-c-modal__section-text', className)}
+          scale="caption"
+          id={`${name}-${MODAL.description}`}
+          {...props}
+        />
+      )}
+    </ModalContext.Consumer>
+  );
+}
+function Footer({ className, ...props }: ModalFooterProps) {
+  return <footer className={cn('pm-c-modal__footer', className)} {...props} />;
 }
 
 export default Object.assign(Modal, {
