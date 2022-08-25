@@ -24,6 +24,7 @@ export interface MarketInitialState {
   chartViews: Array<any>;
   chartViewType: string;
   isLoading: boolean;
+  isLoadingPriceCharts: boolean;
   error: any;
 }
 
@@ -59,6 +60,7 @@ const initialState: MarketInitialState = {
         marketId: '',
         title: '',
         price: 0,
+        priceChange24h: 0,
         change: {
           type: '',
           chartData: []
@@ -71,6 +73,7 @@ const initialState: MarketInitialState = {
         marketId: '',
         title: '',
         price: 0,
+        priceChange24h: 0,
         change: {
           type: '',
           chartData: []
@@ -95,6 +98,7 @@ const initialState: MarketInitialState = {
   chartViews: chartViewsEnum,
   chartViewType: 'marketOverview',
   isLoading: false,
+  isLoadingPriceCharts: false,
   error: null
 };
 
@@ -185,6 +189,25 @@ const marketSlice = createSlice({
         ...state.market,
         ...action.payload.data
       }
+    }),
+    priceChartsRequest: state => ({
+      ...state,
+      isLoadingPriceCharts: true,
+      error: null
+    }),
+    priceChartsSuccess: (state, action: PayloadAction<Market>) => ({
+      ...state,
+      isLoadingPriceCharts: false,
+      error: null,
+      market: {
+        ...state.market,
+        outcomes: action.payload.outcomes
+      }
+    }),
+    priceChartsError: (state, action) => ({
+      ...state,
+      isLoadingPriceCharts: false,
+      error: action.payload
     })
   }
 });
@@ -200,7 +223,10 @@ const {
   changeOutcomeData,
   changeQuestion,
   changeData,
-  setChartViewType
+  setChartViewType,
+  priceChartsRequest,
+  priceChartsSuccess,
+  priceChartsError
 } = marketSlice.actions;
 
 export {
@@ -221,6 +247,19 @@ export function getMarket(marketSlug: string) {
       dispatch(success(data));
     } catch (err) {
       dispatch(error(err));
+    }
+  };
+}
+
+export function getMarketPriceCharts(marketSlug: string) {
+  return async dispatch => {
+    dispatch(priceChartsRequest());
+    try {
+      const response = await marketService.getMarket(marketSlug);
+      const { data } = response;
+      dispatch(priceChartsSuccess(data));
+    } catch (err) {
+      dispatch(priceChartsError(err));
     }
   };
 }
