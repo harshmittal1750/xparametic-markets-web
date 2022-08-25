@@ -60,6 +60,7 @@ const initialState: MarketInitialState = {
         marketId: '',
         title: '',
         price: 0,
+        priceChange24h: 0,
         change: {
           type: '',
           chartData: []
@@ -72,6 +73,7 @@ const initialState: MarketInitialState = {
         marketId: '',
         title: '',
         price: 0,
+        priceChange24h: 0,
         change: {
           type: '',
           chartData: []
