@@ -23,7 +23,7 @@ export interface Outcome {
     type: string;
     chartData: any[];
   };
-  priceCharts: PriceChart[];
+  priceCharts?: PriceChart[];
   shares: number;
 }
 
