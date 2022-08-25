@@ -18,6 +18,7 @@ export interface Outcome {
   id: number | string;
   marketId: number | string;
   price: number;
+  priceChange24h: number;
   title: string;
   change: {
     type: string;
