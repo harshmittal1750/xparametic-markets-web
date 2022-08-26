@@ -16,7 +16,7 @@ function LiquidityFormDetails() {
     state => state.liquidity.transactionType
   );
   const market = useAppSelector(state => state.market.market);
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const feesEarned = portfolio[market.id]?.claimStatus.liquidityFees || 0;
 
   return (
