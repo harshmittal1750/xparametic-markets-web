@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
 import { Formik, Form } from 'formik';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 import * as marketService from 'services/Polkamarkets/market';
 import * as Yup from 'yup';
 
@@ -112,13 +112,13 @@ function CreateMarketForm() {
   }
 
   async function handleFormSubmit(values: CreateMarketFormData) {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
     const closingDate = new Date(values.closingDate).getTime() / 1000; // TODO: move to dayjs
     const outcomes = [values.firstOutcome.name, values.secondOutcome.name];
     // data format: "category;subcategory;resolutionSource"
     const data = `${values.category};${values.subcategory};${values.resolutionSource}`;
 
-    const response = await beproService.createMarket(
+    const response = await polkamarketsService.createMarket(
       values.question,
       values.image.hash,
       closingDate,
