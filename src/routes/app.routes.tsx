@@ -5,7 +5,7 @@ import { environment } from 'config';
 import { getUserCountry } from 'helpers/location';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
-import { fetchAditionalData } from 'redux/ducks/bepro';
+import { fetchAditionalData } from 'redux/ducks/polkamarkets';
 
 import { Layout } from 'components';
 
@@ -25,7 +25,9 @@ const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
 
 const AppRoutes = () => {
   const dispatch = useAppDispatch();
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
   const { network, networkConfig } = useNetwork();
 
   const isAllowedNetwork =
