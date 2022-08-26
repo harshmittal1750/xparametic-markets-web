@@ -26,8 +26,8 @@ function LiquidityFormInput() {
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
-  const balance = useAppSelector(state => state.bepro.ethBalance);
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
+  const balance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const currency = useAppSelector(state => state.market.market.currency);
 
   const amount = useAppSelector(state => state.liquidity.amount);
