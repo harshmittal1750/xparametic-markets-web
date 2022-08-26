@@ -5,7 +5,7 @@ import { Currency } from 'models/currency';
 import { changeQuestion } from 'redux/ducks/market';
 import { changeMarketQuestion } from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
-import { BeproService, PolkamarketsApiService } from 'services';
+import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import { PolkamarketsIconSmall } from 'assets/icons';
 
@@ -26,7 +26,7 @@ function ReportFormInput() {
   const dispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
 
-  const { polkBalance } = useAppSelector(state => state.bepro);
+  const { polkBalance } = useAppSelector(state => state.polkamarkets);
   const { finalizeTs } = useAppSelector(state => state.market.market.question);
   const { id, questionId, slug } = useAppSelector(state => state.market.market);
   const marketNetworkId = useAppSelector(
@@ -40,8 +40,8 @@ function ReportFormInput() {
   const timeLeftUntilDecision = relativeTimeToX(finalizeTs * 1000);
 
   async function fetchQuestion() {
-    const beproService = new BeproService(networkConfig);
-    const question = await beproService.getQuestion(questionId);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const question = await polkamarketsService.getQuestion(questionId);
     dispatch(changeQuestion(question));
     dispatch(changeMarketQuestion({ marketId: id, question }));
     // triggering cache reload action on api
@@ -49,7 +49,7 @@ function ReportFormInput() {
   }
 
   useEffect(() => {
-    // question outdated from api, fetching from bepro-js
+    // question outdated from api, fetching from polkamarkets-js
     if (isValidTimestamp && isOutdated) {
       fetchQuestion();
     }
