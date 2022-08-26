@@ -18,7 +18,7 @@ const PortfolioPage = () => {
     state => state.ui.rightSidebar.visible
   );
 
-  const ethAddress = useAppSelector(state => state.bepro.ethAddress);
+  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   useEffect(() => {
     if (rightSidebarIsVisible) {
