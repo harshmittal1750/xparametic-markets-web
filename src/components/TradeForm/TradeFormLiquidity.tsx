@@ -7,7 +7,7 @@ import { Button } from '../Button';
 
 function TradeFormLiquidity() {
   const dispatch = useAppDispatch();
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const marketId = useAppSelector(state => state.market.market.id);
 
   function handleAddLiquidity() {
