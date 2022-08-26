@@ -4,11 +4,11 @@ import { useLocation } from 'react-router-dom';
 import { useField, useFormikContext } from 'formik';
 import { roundNumber } from 'helpers/math';
 import has from 'lodash/has';
-import { fetchAditionalData, login } from 'redux/ducks/bepro';
 import { changeData, changeQuestion } from 'redux/ducks/market';
+import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import { selectOutcome } from 'redux/ducks/trade';
 import { closeReportForm, openTradeForm } from 'redux/ducks/ui';
-import { BeproService, PolkamarketsApiService } from 'services';
+import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import { QuestionIcon } from 'assets/icons';
 
@@ -66,7 +66,9 @@ function ReportFormActions({
 
   // Selectors
   const marketSlug = useAppSelector(state => state.market.market.slug);
-  const isPolkApproved = useAppSelector(state => state.bepro.polkApproved);
+  const isPolkApproved = useAppSelector(
+    state => state.polkamarkets.polkApproved
+  );
   const { id, questionId, networkId } = useAppSelector(
     state => state.market.market
   );
@@ -78,7 +80,7 @@ function ReportFormActions({
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
   const isWrongNetwork = network.id !== `${networkId}`;
-  const resolvedOutcomeId = BeproService.bytes32ToInt(bestAnswer);
+  const resolvedOutcomeId = PolkamarketsService.bytes32ToInt(bestAnswer);
 
   const isWinningOutcome = outcomeId =>
     `${resolvedOutcomeId}` === `${outcomeId}`;
@@ -90,12 +92,12 @@ function ReportFormActions({
     questionBond > 0;
 
   async function handleApprovePolk() {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsApprovingPolk(true);
 
     try {
-      const response = await beproService.approveRealitioERC20();
+      const response = await polkamarketsService.approveRealitioERC20();
       const { status, transactionHash } = response;
 
       if (status && transactionHash) {
@@ -117,14 +119,14 @@ function ReportFormActions({
   }
 
   async function handleBond() {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
     const polkamarketApiService = new PolkamarketsApiService();
 
     setIsBonding(true);
 
     try {
       // performing buy action on smart contract
-      const response = await beproService.placeBond(
+      const response = await polkamarketsService.placeBond(
         questionId,
         outcome.value,
         bond.value
@@ -148,7 +150,7 @@ function ReportFormActions({
       dispatch(fetchAditionalData(networkConfig));
 
       // updating question
-      const question = await beproService.getQuestion(questionId);
+      const question = await polkamarketsService.getQuestion(questionId);
       dispatch(changeQuestion(question));
     } catch (error) {
       setIsBonding(false);
@@ -156,11 +158,11 @@ function ReportFormActions({
   }
 
   async function handleResolve() {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsResolvingMarket(true);
     try {
-      const response = await beproService.resolveMarket(id);
+      const response = await polkamarketsService.resolveMarket(id);
 
       const { status, transactionHash } = response;
 
