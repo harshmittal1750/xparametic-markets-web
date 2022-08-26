@@ -51,9 +51,11 @@ function PortfolioTabs() {
     value => value === true
   );
 
-  const { bonds, portfolio, actions } = useAppSelector(state => state.bepro);
+  const { bonds, portfolio, actions } = useAppSelector(
+    state => state.polkamarkets
+  );
   const isLoadingPortfolio = useAppSelector(
-    state => state.bepro.isLoading.portfolio
+    state => state.polkamarkets.isLoading.portfolio
   );
 
   const marketPositions = formatMarketPositions(portfolio, markets, actions);
