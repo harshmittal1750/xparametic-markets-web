@@ -101,8 +101,10 @@ type Timeframe = '1w' | '1m' | 'at';
 
 function Leaderboard() {
   // Redux selectors
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
-  const ethAddress = useAppSelector(state => state.bepro.ethAddress);
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
+  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
   const rightSidebarIsVisible = useAppSelector(
     state => state.ui.rightSidebar.visible
   );
