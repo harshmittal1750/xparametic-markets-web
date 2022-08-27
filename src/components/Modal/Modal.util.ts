@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 import { ModalContextProps } from './Modal.type';
 
@@ -10,5 +10,9 @@ export const ModalContext = createContext<ModalContextProps>({
   name: '',
   onHide: undefined
 });
+
+export function useModalContext() {
+  return useContext(ModalContext);
+}
 
 ModalContext.displayName = 'ModalContext';

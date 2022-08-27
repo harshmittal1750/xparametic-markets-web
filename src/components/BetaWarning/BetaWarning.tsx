@@ -18,17 +18,17 @@ export default function BetaWarning() {
     'betaWarning',
     'true'
   );
-  const [agreement, setAgreement] = useState(false);
+  const [agreed, setAgreed] = useState(false);
   const [show, setShow] = useState(
-    (hasParam && hasParam !== 'f') || betaWarningCookie === 'true'
+    hasParam !== 'f' || betaWarningCookie === 'true'
   );
 
-  function handleAgreement() {
-    setAgreement(prevAgreement => !prevAgreement);
+  function handleAgreed() {
+    setAgreed(prevAgreement => !prevAgreement);
   }
-  function handleClose() {
-    setShow(false);
+  function handleProceed() {
     setBetaWarningCookie('false');
+    setShow(false);
   }
 
   return (
@@ -62,7 +62,7 @@ export default function BetaWarning() {
           By entering the website I confirm I am not a citizen or resident in
           the United States or its territories, nor a US person.
         </Modal.SectionText>
-        <Checkbox label="text" onChange={handleAgreement}>
+        <Checkbox label="text" onChange={handleAgreed}>
           <Text as="p" scale="caption" fontWeight="medium">
             <>
               {`I Agree to the `}
@@ -91,8 +91,8 @@ export default function BetaWarning() {
           variant="normal"
           color="warning"
           fullwidth
-          disabled={!agreement}
-          onClick={handleClose}
+          disabled={!agreed}
+          onClick={handleProceed}
         >
           Proceed
         </Button>
