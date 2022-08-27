@@ -14,7 +14,7 @@ We're currently running in closed Beta on the Kovan testnet. You can access it a
 
 ### 1. Required software
 
-- [Yarn](https://yarnpkg.com/) (`node v10`)
+- [Yarn](https://yarnpkg.com/) (`node v14.15.0 or later`)
 - MetaMask for [Chrome](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/)
 
 ### 2. Installing the app
