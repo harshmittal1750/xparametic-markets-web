@@ -8,7 +8,7 @@ Our web interface is built with React.
 
 The backend and Ethereum integrations are being developed through [`polkamarkets-js`](https://github.com/Polkamarkets/polkamarkets-js) package. You can have a look on our smart contract [here](https://github.com/Polkamarkets/polkamarkets-js/blob/main/contracts/PredictionMarket.sol).
 
-We're currently running in closed Beta on the Kovan testnet. You can access it at [https://app.polkamarkets.com](https://app.polkamarkets.com)
+We're currently running on [Moonbeam](https://moonbeam.network/) and [Moonriver](https://moonbeam.network/networks/moonriver/). You can access it at [https://app.polkamarkets.com](https://app.polkamarkets.com)
 
 ## Project Setup
 
