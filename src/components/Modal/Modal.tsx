@@ -28,11 +28,12 @@ function Modal({ children, onHide, show, name }: ModalProps) {
   });
   const Portal = usePortal({
     root: document.body,
-    onMount() {
+    onEffect() {
       document.body.style.overflow = 'hidden';
-    },
-    onUnmount() {
-      document.body.removeAttribute('style');
+
+      return () => {
+        document.body.removeAttribute('style');
+      };
     }
   });
   const modalContextValue = useMemo(

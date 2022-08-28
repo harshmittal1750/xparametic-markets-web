@@ -1,37 +1,19 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-type UsePortalProps = {
-  onMount?: React.EffectCallback;
-  onUnmount?(): void;
-  root: Element | null;
-};
-type PortalProps = {
-  root: Element;
-  onMount: UsePortalProps['onMount'];
-  onUnmount: UsePortalProps['onUnmount'];
-};
+import { PortalProps, UsePortalProps } from './usePortal.type';
 
 function Portal({
   children,
   root,
-  onMount,
-  onUnmount
+  onEffect
 }: React.PropsWithChildren<PortalProps>) {
-  useEffect(() => {
-    onMount?.();
-
-    return onUnmount;
-  }, [onMount, onUnmount]);
+  useEffect(() => onEffect?.(), [onEffect]);
 
   return createPortal(children, root);
 }
 
-export default function usePortal({
-  onMount,
-  onUnmount,
-  root
-}: UsePortalProps) {
+export default function usePortal({ onEffect, root }: UsePortalProps) {
   const [mount, setMount] = useState<boolean>(false);
   const handleMount = useCallback(setMount, [setMount]);
   const handleUnmount = useCallback(() => setMount(false), [setMount]);
@@ -39,7 +21,7 @@ export default function usePortal({
     (_props: React.PropsWithChildren<Record<string, unknown>>) => {
       if (!root || !mount) return null;
 
-      const props = { root, onMount, onUnmount, ..._props };
+      const props = { root, onEffect, ..._props };
 
       return <Portal {...props} />;
     },

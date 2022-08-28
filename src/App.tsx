@@ -22,7 +22,7 @@ const App = () => {
   const { current: themeCnPrev } = usePrevious(themeCn);
 
   document.documentElement.dataset.theme = theme;
-  if (themeCnPrev != null && themeCn !== themeCnPrev) {
+  if (themeCnPrev && themeCn !== themeCnPrev) {
     document.documentElement.classList.replace(themeCnPrev, themeCn);
   } else {
     document.documentElement.classList.add(themeCn);
