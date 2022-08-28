@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { TwarningIcon } from 'assets/icons';
@@ -23,11 +23,14 @@ export default function BetaWarning() {
     hasParam !== 'f' || betaWarningCookie === 'true'
   );
 
+  useEffect(() => {
+    setBetaWarningCookie(show.toString());
+  }, [setBetaWarningCookie, show]);
+
   function handleAgreed() {
-    setAgreed(prevAgreement => !prevAgreement);
+    setAgreed(prevAgreed => !prevAgreed);
   }
   function handleProceed() {
-    setBetaWarningCookie('false');
     setShow(false);
   }
 

@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import cn from 'classnames';
+
 import useAlertNotification from 'hooks/useAlertNotification';
 
 import BetaWarning from '../BetaWarning';
@@ -14,10 +16,7 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
-  // Hooks
   const { alertList } = useAlertNotification();
-
-  // Derivated state
   const hasAlertNotification = alertList.size > 0;
 
   return (
@@ -32,11 +31,10 @@ function Layout({ children }: LayoutProps) {
           <Sidebar />
         </nav>
         <ScrollableArea
-          className={`${
-            hasAlertNotification
-              ? 'pm-l-layout__scrollable-area--with-alert'
-              : 'pm-l-layout__scrollable-area'
-          } flex-column justify-space-between`}
+          className={cn('flex-column justify-space-between', {
+            'pm-l-layout__scrollable-area--with-alert': hasAlertNotification,
+            'pm-l-layout__scrollable-area': !hasAlertNotification
+          })}
         >
           <main className="pm-l-layout__main">{children}</main>
           <footer className="pm-l-layout__footer">
