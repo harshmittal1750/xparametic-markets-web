@@ -1,7 +1,7 @@
-import { useContext, useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import cn from 'classnames';
-import { AnimatePresence, motion, MotionConfigContext } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { RemoveOutlinedIcon } from 'assets/icons';
 
@@ -16,15 +16,14 @@ import {
   ModalProps,
   ModalSectionProps
 } from './Modal.type';
-import { MODAL, ModalContext, useModalContext } from './Modal.util';
+import { MODAL_DATA, ModalContext, useModalContext } from './Modal.util';
 
 function Modal({ children, onHide, show, name }: ModalProps) {
-  const motionConfig = useContext(MotionConfigContext) as {
-    transition: { duration: number };
-  };
   const { current: showPrev } = usePrevious(show);
-  const [refModal] = useClickOutside<HTMLDivElement>(() => {
-    if (showPrev && show) onHide?.();
+  const ref = useClickOutside<HTMLDivElement>({
+    onClickOutside() {
+      if (showPrev && show) onHide?.();
+    }
   });
   const Portal = usePortal({
     root: document.body,
@@ -36,25 +35,18 @@ function Modal({ children, onHide, show, name }: ModalProps) {
       };
     }
   });
-  const modalContextValue = useMemo(
-    () => ({
-      name,
-      onHide
-    }),
-    [name, onHide]
-  );
 
   useEffect(() => {
     if (showPrev && !show) {
-      setTimeout(Portal.unmount, motionConfig.transition?.duration * 1000);
+      setTimeout(Portal.unmount, 300);
     } else {
       Portal.mount(show);
     }
-  }, [Portal, showPrev, show, motionConfig.transition?.duration]);
+  }, [Portal, show, showPrev]);
 
   return (
     <Portal>
-      <ModalContext.Provider value={modalContextValue}>
+      <ModalContext.Provider value={{ name, onHide }}>
         <AnimatePresence>
           {show && (
             <motion.div
@@ -65,14 +57,14 @@ function Modal({ children, onHide, show, name }: ModalProps) {
               className="pm-c-modal__overlay"
             >
               <motion.div
-                ref={refModal}
+                ref={ref}
                 initial={{ y: 16 }}
                 animate={{ y: 0 }}
                 exit={{ y: 16 }}
                 role="dialog"
                 aria-modal="true"
-                aria-labelledby={`${name}-${MODAL.title}`}
-                aria-describedby={`${name}-${MODAL.description}`}
+                aria-labelledby={`${name}-${MODAL_DATA.title}`}
+                aria-describedby={`${name}-${MODAL_DATA.description}`}
                 className="pm-c-modal"
               >
                 {children}
@@ -112,7 +104,7 @@ function HeaderTitle({ className, ...props }: TextProps) {
       fontWeight="medium"
       className={cn('pm-c-modal__header-title', className)}
       scale="heading"
-      id={`${name}-${MODAL.title}`}
+      id={`${name}-${MODAL_DATA.title}`}
       {...props}
     />
   );
@@ -129,7 +121,7 @@ function SectionText({ className, ...props }: TextProps) {
     <Text
       className={cn('pm-c-modal__section-text', className)}
       scale="caption"
-      id={`${name}-${MODAL.description}`}
+      id={`${name}-${MODAL_DATA.description}`}
       {...props}
     />
   );

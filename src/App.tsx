@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { MotionConfig } from 'framer-motion';
 import { login } from 'redux/ducks/bepro';
 import Routes from 'routes';
 
@@ -34,16 +33,14 @@ const App = () => {
 
   return (
     <MuiPickersUtilsProvider utils={DayjsUtils}>
-      <MotionConfig transition={{ duration: 0.3 }}>
-        <FavoriteMarketsProvider>
-          <SEO
-            title="Polkamarkets - Autonomous Prediction Market Protocol"
-            description="Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot."
-            imageUrl={POLKAMARKETS_DEFAULT_BANNER}
-          />
-          <Routes />
-        </FavoriteMarketsProvider>
-      </MotionConfig>
+      <FavoriteMarketsProvider>
+        <SEO
+          title="Polkamarkets - Autonomous Prediction Market Protocol"
+          description="Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot."
+          imageUrl={POLKAMARKETS_DEFAULT_BANNER}
+        />
+        <Routes />
+      </FavoriteMarketsProvider>
     </MuiPickersUtilsProvider>
   );
 };
