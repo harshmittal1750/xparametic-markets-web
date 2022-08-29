@@ -30,7 +30,5 @@ export default function useCookie(
   const cookie = getItem(key);
   const setCookie = useCallback(value => setItem(key, value), [key]);
 
-  setCookie(defaultValue);
-
-  return [cookie, setCookie];
+  return [cookie || defaultValue, setCookie];
 }
