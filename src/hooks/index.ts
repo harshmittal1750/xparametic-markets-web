@@ -21,4 +21,4 @@ export {
 };
 export { default as usePortal } from './usePortal';
 export { default as usePrevious } from './usePrevious';
-export { default as useClickOutside } from './useClickOutside';
+export { default as useEnhancedRef } from './useEnhancedRef';

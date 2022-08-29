@@ -8,7 +8,7 @@ import { RemoveOutlinedIcon } from 'assets/icons';
 import { Button } from 'components/Button';
 import Text, { TextProps } from 'components/Text';
 
-import { useClickOutside, usePortal, usePrevious } from 'hooks';
+import { useEnhancedRef, usePortal, usePrevious } from 'hooks';
 
 import {
   ModalFooterProps,
@@ -20,7 +20,7 @@ import { MODAL_DATA, ModalContext, useModalContext } from './Modal.util';
 
 function Modal({ children, onHide, show, name }: ModalProps) {
   const { current: showPrev } = usePrevious(show);
-  const ref = useClickOutside<HTMLDivElement>({
+  const ref = useEnhancedRef<HTMLDivElement>({
     onClickOutside() {
       if (showPrev && show) onHide?.();
     }

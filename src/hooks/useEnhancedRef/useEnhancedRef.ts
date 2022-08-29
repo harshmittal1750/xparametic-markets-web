@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react';
 
-import { UseClickOutsideProps } from './useClickOutside.type';
+import { useEnhancedRefProps } from './useEnhancedRef.type';
 
-export default function useClickOutside<V extends HTMLElement>({
+export default function useEnhancedRef<V extends HTMLElement>({
   onClickOutside
-}: UseClickOutsideProps) {
+}: useEnhancedRefProps) {
   const ref = useRef<V>(null);
 
   useEffect(() => {
