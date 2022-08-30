@@ -101,9 +101,12 @@
   },
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*.tsx"],
+      "files": ["**/*.ts", "**/*.tsx", "**/*.test.js", "**/*.test.jsx"],
       "rules": {
         "react/prop-types": "off"
+      },
+      "env": {
+        "jest": true
       }
     }
   ]

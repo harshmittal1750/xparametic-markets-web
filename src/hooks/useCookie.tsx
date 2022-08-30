@@ -1,6 +1,6 @@
 // https://medium.com/swlh/react-hooks-usecookie-hook-26ac06ff36b0
 
-import { useState } from 'react';
+import { useCallback } from 'react';
 
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
@@ -9,9 +9,7 @@ dayjs.extend(utc);
 
 const getItem = key =>
   document.cookie.split('; ').reduce((total, currentCookie) => {
-    const item = currentCookie.split('=');
-    const storedKey = item[0];
-    const storedValue = item[1];
+    const [storedKey, storedValue] = currentCookie.split('=');
 
     return key === storedKey ? decodeURIComponent(storedValue) : total;
   }, '');
@@ -25,16 +23,12 @@ const setItem = (key, value) => {
     .toString()}; path=/`;
 };
 
-const useCookie = (key, defaultValue) => {
-  const getCookie = () => getItem(key) || defaultValue;
-  const [cookie, setCookie] = useState(getCookie());
+export default function useCookie(
+  key,
+  defaultValue
+): [string, (_value: unknown) => void] {
+  const cookie = getItem(key);
+  const setCookie = useCallback(value => setItem(key, value), [key]);
 
-  const updateCookie = value => {
-    setCookie(value);
-    setItem(key, value);
-  };
-
-  return [cookie, updateCookie];
-};
-
-export default useCookie;
+  return [cookie || defaultValue, setCookie];
+}
