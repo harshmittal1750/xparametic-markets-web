@@ -1,6 +1,9 @@
 import { useEffect, useRef } from 'react';
 
+import { edgeOf } from 'helpers';
+
 import { useEnhancedRefProps } from './useEnhancedRef.type';
+import { srElsList } from './useEnhancedRef.util';
 
 export default function useEnhancedRef<V extends HTMLElement>({
   onClickOutside,
@@ -12,7 +15,7 @@ export default function useEnhancedRef<V extends HTMLElement>({
     function handleOutsideClick(event: MouseEvent) {
       if (!ref.current?.contains(event.target as Node)) {
         onClickOutside?.();
-      } 
+      }
     }
 
     window.addEventListener('click', handleOutsideClick);
@@ -22,16 +25,19 @@ export default function useEnhancedRef<V extends HTMLElement>({
     };
   }, [onClickOutside]);
   useEffect(() => {
-    const srEls = ref.current?.querySelectorAll(
-      'a[href], button:not([disabled]), textarea, input, select'
-    );
+    const { current: node } = ref;
+    const srEls: Partial<Array<Element>> = [];
+
+    node?.querySelectorAll(srElsList).forEach(el => srEls.push(el));
+
+    const [elStart, elEnd] = edgeOf(srEls);
 
     if (trapFocus) {
-      if (document.activeElement !== ref.current) {
-        if (ref.current?.tabIndex === -1) {
-          ref.current?.setAttribute('tabIndex', '0');
+      if (document.activeElement !== node) {
+        if (node?.tabIndex === -1) {
+          node?.setAttribute('tabIndex', '0');
         }
-        ref.current?.focus();
+        node?.focus();
       }
     }
   });
