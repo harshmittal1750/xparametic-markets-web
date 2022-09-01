@@ -16,11 +16,12 @@ import {
   ModalProps,
   ModalSectionProps
 } from './Modal.type';
-import { MODAL_DATA, ModalContext, useModalContext } from './Modal.util';
+import { modalData, ModalContext, useModalContext } from './Modal.util';
 
 function Modal({ children, onHide, show, name }: ModalProps) {
   const { current: showPrev } = usePrevious(show);
   const ref = useEnhancedRef<HTMLDivElement>({
+    trapFocus: true,
     onClickOutside() {
       if (showPrev && show) onHide?.();
     }
@@ -63,8 +64,8 @@ function Modal({ children, onHide, show, name }: ModalProps) {
                 exit={{ y: 16 }}
                 role="dialog"
                 aria-modal="true"
-                aria-labelledby={`${name}-${MODAL_DATA.title}`}
-                aria-describedby={`${name}-${MODAL_DATA.description}`}
+                aria-labelledby={`${name}-${modalData.title}`}
+                aria-describedby={`${name}-${modalData.description}`}
                 className="pm-c-modal"
               >
                 {children}
@@ -104,7 +105,7 @@ function HeaderTitle({ className, ...props }: TextProps) {
       fontWeight="medium"
       className={cn('pm-c-modal__header-title', className)}
       scale="heading"
-      id={`${name}-${MODAL_DATA.title}`}
+      id={`${name}-${modalData.title}`}
       {...props}
     />
   );
@@ -121,7 +122,7 @@ function SectionText({ className, ...props }: TextProps) {
     <Text
       className={cn('pm-c-modal__section-text', className)}
       scale="caption"
-      id={`${name}-${MODAL_DATA.description}`}
+      id={`${name}-${modalData.description}`}
       {...props}
     />
   );
