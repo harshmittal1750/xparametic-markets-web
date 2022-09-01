@@ -2,12 +2,9 @@
   "compilerOptions": {
     "incremental": true,
     "outDir": "build/lib",
-    "target": "es5",
+    "target": "ES6",
     "module": "esnext",
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "lib": ["dom", "esnext"],
     "sourceMap": true,
     "importHelpers": true,
     "declaration": true,
@@ -32,12 +29,6 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "scripts"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "build", "scripts"]
 }
