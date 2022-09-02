@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
-import { openTradeForm } from 'redux/ducks/ui';
+import { closeRightSidebar, openTradeForm } from 'redux/ducks/ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
@@ -101,6 +101,20 @@ const Market = () => {
     network
   );
 
+  function resetTrade() {
+    dispatch(reset());
+  }
+
+  function closeTradeSidebar() {
+    dispatch(closeRightSidebar());
+  }
+
+  function backToMarkets() {
+    resetTrade();
+    closeTradeSidebar();
+    history.push('/');
+  }
+
   return (
     <div className="pm-p-market">
       <SEO
@@ -134,7 +148,7 @@ const Market = () => {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => history.push('/')}
+          onClick={() => backToMarkets()}
           aria-label="Back to Markets"
         >
           <ArrowLeftIcon />
