@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { RemoveOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import Listener from 'components/Listener';
 import Text, { TextProps } from 'components/Text';
 
 import { useEnhancedRef, usePortal, usePrevious } from 'hooks';
@@ -13,6 +14,7 @@ import { useEnhancedRef, usePortal, usePrevious } from 'hooks';
 import {
   ModalFooterProps,
   ModalHeaderProps,
+  ModalListenerProps,
   ModalProps,
   ModalSectionProps
 } from './Modal.type';
@@ -21,7 +23,6 @@ import { modalData, ModalContext, useModalContext } from './Modal.util';
 function Modal({ children, onHide, show, name }: ModalProps) {
   const { current: showPrev } = usePrevious(show);
   const ref = useEnhancedRef<HTMLDivElement>({
-    trapFocus: true,
     onClickOutside() {
       if (showPrev && show) onHide?.();
     }
@@ -57,19 +58,21 @@ function Modal({ children, onHide, show, name }: ModalProps) {
               role="presentation"
               className="pm-c-modal__overlay"
             >
-              <motion.div
-                ref={ref}
-                initial={{ y: 16 }}
-                animate={{ y: 0 }}
-                exit={{ y: 16 }}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={`${name}-${modalData.title}`}
-                aria-describedby={`${name}-${modalData.description}`}
-                className="pm-c-modal"
-              >
-                {children}
-              </motion.div>
+              <Listener.Focustrap<ModalListenerProps>>
+                <motion.div
+                  ref={ref}
+                  initial={{ y: 16 }}
+                  animate={{ y: 0 }}
+                  exit={{ y: 16 }}
+                  role="dialog"
+                  aria-modal="true"
+                  aria-labelledby={`${name}-${modalData.title}`}
+                  aria-describedby={`${name}-${modalData.description}`}
+                  className="pm-c-modal"
+                >
+                  {children}
+                </motion.div>
+              </Listener.Focustrap>
             </motion.div>
           )}
         </AnimatePresence>
