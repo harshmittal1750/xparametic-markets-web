@@ -8,7 +8,7 @@ import { RemoveOutlinedIcon } from 'assets/icons';
 import { Button } from 'components/Button';
 import Text, { TextProps } from 'components/Text';
 
-import { useClickaway, usePortal, usePrevious } from 'hooks';
+import { useClickaway, usePortal, usePrevious, useTrapfocus } from 'hooks';
 
 import {
   ModalFooterProps,
@@ -42,6 +42,7 @@ function Modal({ children, onHide, show, name }: ModalProps) {
   useClickaway(ref, () => {
     if (showPrev && show) onHide?.();
   });
+  useTrapfocus(ref);
 
   return (
     <Portal>
