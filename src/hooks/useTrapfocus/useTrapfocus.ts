@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 
 import usePrevious from 'hooks/usePrevious';
 
@@ -15,32 +15,39 @@ export default function useTrapfocus<V extends HTMLElement>(
 
   useEffect(() => {
     const { current: node } = ref;
+    const [start] = focusEdge(node);
+    start?.focus();
+
+    return () => {
+      (focusPrev as HTMLElement)?.focus();
+    };
+  }, [focusPrev, ref]);
+  useLayoutEffect(() => {
+    const { current: node } = ref;
     const [start, end] = focusEdge(node);
     const trapStart = document.getElementById('trap-start') as V;
     const trapEnd = document.getElementById('trap-end') as V;
 
-    function handleBlur(e) {
-      if (trapEnd === e.target) {
-        window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => trapStart?.focus());
-        });
-      }
-      e.preventDefault();
-    }
-    // todo: this is jumping in now
-    function handleFocus(e) {
-      if (e.target === trapEnd) {
-        start.focus();
-      }
+    function handleBlur() {
       window.clearTimeout(timer.current);
     }
+    function handleFocus(event: FocusEvent) {
+      if (event.target === trapStart) {
+        window.requestAnimationFrame(() => {
+          timer.current = window.setTimeout(() => end.focus());
+        });
+      }
+      if (event.target === trapEnd) {
+        window.requestAnimationFrame(() => {
+          timer.current = window.setTimeout(() => start.focus());
+        });
+      }
+    }
 
-    start?.focus();
     node?.addEventListener('focusout', handleBlur);
     node?.addEventListener('focusin', handleFocus);
 
     return () => {
-      (focusPrev as HTMLElement)?.focus();
       node?.removeEventListener('focusout', handleBlur);
       node?.removeEventListener('focusin', handleFocus);
     };
