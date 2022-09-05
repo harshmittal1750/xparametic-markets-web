@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import usePrevious from 'hooks/usePrevious';
 
@@ -7,7 +7,6 @@ import { focusEdge } from './useTrapfocus.util';
 export default function useTrapfocus<V extends HTMLElement>(
   ref: React.RefObject<V>
 ) {
-  const [focusEnd, setFocusEnd] = useState(false);
   const timer = useRef<Partial<number>>();
   // todo: this is losing previous when parent updates state
   const { current: focusPrev } = usePrevious<Element | null>(
@@ -17,31 +16,33 @@ export default function useTrapfocus<V extends HTMLElement>(
   useEffect(() => {
     const { current: node } = ref;
     const [start, end] = focusEdge(node);
+    const trapStart = document.getElementById('trap-start') as V;
+    const trapEnd = document.getElementById('trap-end') as V;
 
-    // todo: this is jumping out
     function handleBlur(e) {
-      e.preventDefault();
-
-      if (focusEnd && end === e.target) {
+      if (trapEnd === e.target) {
         window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => start.focus());
+          timer.current = window.setTimeout(() => trapStart?.focus());
         });
       }
-    }
-    function handleFocus(e) {
       e.preventDefault();
-      setFocusEnd(e.target === end);
+    }
+    // todo: this is jumping in now
+    function handleFocus(e) {
+      if (e.target === trapEnd) {
+        start.focus();
+      }
       window.clearTimeout(timer.current);
     }
 
     start?.focus();
-    node?.addEventListener('focusout', handleBlur, true);
-    node?.addEventListener('focusin', handleFocus, true);
+    node?.addEventListener('focusout', handleBlur);
+    node?.addEventListener('focusin', handleFocus);
 
     return () => {
       (focusPrev as HTMLElement)?.focus();
-      node?.removeEventListener('focusout', handleBlur, true);
-      node?.removeEventListener('focusin', handleFocus, true);
+      node?.removeEventListener('focusout', handleBlur);
+      node?.removeEventListener('focusin', handleFocus);
     };
   });
 }
