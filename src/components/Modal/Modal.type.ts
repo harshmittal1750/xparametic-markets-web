@@ -19,5 +19,3 @@ export type ModalSectionTextProps = TextProps;
 export type ModalFooterProps = React.ComponentPropsWithoutRef<'footer'>;
 
 export type ModalContextProps = Omit<ModalProps, 'show'>;
-
-export type ModalListenerProps = HTMLDivElement;

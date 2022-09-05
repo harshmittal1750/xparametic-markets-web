@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -6,15 +6,13 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { RemoveOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
-import Listener from 'components/Listener';
 import Text, { TextProps } from 'components/Text';
 
-import { useEnhancedRef, usePortal, usePrevious } from 'hooks';
+import { useClickaway, usePortal, usePrevious } from 'hooks';
 
 import {
   ModalFooterProps,
   ModalHeaderProps,
-  ModalListenerProps,
   ModalProps,
   ModalSectionProps
 } from './Modal.type';
@@ -22,11 +20,7 @@ import { modalData, ModalContext, useModalContext } from './Modal.util';
 
 function Modal({ children, onHide, show, name }: ModalProps) {
   const { current: showPrev } = usePrevious(show);
-  const ref = useEnhancedRef<HTMLDivElement>({
-    onClickOutside() {
-      if (showPrev && show) onHide?.();
-    }
-  });
+  const ref = useRef<HTMLDivElement>(null);
   const Portal = usePortal({
     root: document.body,
     onEffect() {
@@ -45,6 +39,9 @@ function Modal({ children, onHide, show, name }: ModalProps) {
       Portal.mount(show);
     }
   }, [Portal, show, showPrev]);
+  useClickaway(ref, () => {
+    if (showPrev && show) onHide?.();
+  });
 
   return (
     <Portal>
@@ -58,21 +55,19 @@ function Modal({ children, onHide, show, name }: ModalProps) {
               role="presentation"
               className="pm-c-modal__overlay"
             >
-              <Listener.Focustrap<ModalListenerProps>>
-                <motion.div
-                  ref={ref}
-                  initial={{ y: 16 }}
-                  animate={{ y: 0 }}
-                  exit={{ y: 16 }}
-                  role="dialog"
-                  aria-modal="true"
-                  aria-labelledby={`${name}-${modalData.title}`}
-                  aria-describedby={`${name}-${modalData.description}`}
-                  className="pm-c-modal"
-                >
-                  {children}
-                </motion.div>
-              </Listener.Focustrap>
+              <motion.div
+                ref={ref}
+                initial={{ y: 16 }}
+                animate={{ y: 0 }}
+                exit={{ y: 16 }}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={`${name}-${modalData.title}`}
+                aria-describedby={`${name}-${modalData.description}`}
+                className="pm-c-modal"
+              >
+                {children}
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>
