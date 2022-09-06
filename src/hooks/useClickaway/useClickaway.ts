@@ -4,7 +4,8 @@ import usePrevious from 'hooks/usePrevious';
 
 export default function useClickaway<V extends HTMLElement>(
   ref: React.RefObject<V>,
-  onClickaway?: () => void
+  onClickaway: () => void,
+  deps: (boolean | null | undefined)[] = [true]
 ) {
   const timer = useRef<Partial<number>>();
   const { current: tabindexPrev } = usePrevious(ref.current?.tabIndex);
@@ -16,7 +17,9 @@ export default function useClickaway<V extends HTMLElement>(
       window.clearTimeout(timer.current);
     }
     function handleBlur() {
-      timer.current = window.setTimeout(() => onClickaway?.());
+      timer.current = window.setTimeout(() => {
+        if (deps.every(Boolean)) onClickaway?.();
+      });
     }
 
     if (node?.tabIndex === -1) node?.setAttribute('tabIndex', '0');
@@ -28,5 +31,5 @@ export default function useClickaway<V extends HTMLElement>(
       node?.removeEventListener('focusin', handleFocus);
       node?.removeEventListener('focusout', handleBlur);
     };
-  }, [onClickaway, ref, tabindexPrev]);
+  }, [deps, onClickaway, ref, tabindexPrev]);
 }

@@ -39,9 +39,7 @@ function Modal({ children, onHide, show, name }: ModalProps) {
       Portal.mount(show);
     }
   }, [Portal, show, showPrev]);
-  useClickaway(ref, () => {
-    if (showPrev && show) onHide?.();
-  });
+  useClickaway(ref, () => onHide?.(), [showPrev, show]);
   useTrapfocus(ref);
 
   function handleKeyDown(event: React.KeyboardEvent) {
