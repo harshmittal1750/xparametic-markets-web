@@ -1,6 +1,11 @@
 # [_Required: Replace with the Story Name_](https://app.shortcut.com/polkamarkets/story/)
 
-_Required: PR description and not the its story self with the context of what was done before its opening!_
+_Required: PR description and not the its story self with the context of what was done before its opening! Fill down the references (1) below if necessary. It may help the reviewers find bugs and test the approach in the best way possible._
+
+### References
+<!-- Remove references subsection if it has no items -->
+
+1. [Example](https://developer.mozilla.org/en-US/);
 
 ![image](https://user-images.githubusercontent.com/16447765/188663770-80b5c7a5-6242-4142-89b0-67e50d8aa592.png)
 <!-- Replace this image with demo video or remove if it's not applied -->
