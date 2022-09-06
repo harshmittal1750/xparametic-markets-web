@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { login } from 'redux/ducks/bepro';
+import { login } from 'redux/ducks/polkamarkets';
 import Routes from 'routes';
 
 import { SEO } from 'components';

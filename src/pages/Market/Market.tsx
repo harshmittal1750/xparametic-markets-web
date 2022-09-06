@@ -34,7 +34,7 @@ const Market = () => {
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
   const { actions, bondActions, networkId } = useAppSelector(
-    state => state.bepro
+    state => state.polkamarkets
   );
   const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);

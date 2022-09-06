@@ -304,7 +304,7 @@ function formatReportPositions(bonds: Object, markets: Market[]) {
       const payout = bonds[market.questionId]?.claimed;
       let result = { type: 'awaiting_resolution' };
 
-      // TODO calculate states with bepro-js
+      // TODO calculate states with polkamarkets-js
       if (
         bonds[market.questionId]?.withdrawn ||
         (market.question.isClaimed && payout === 0)

@@ -19,7 +19,9 @@ function NetworkSwitch() {
   const { setNetwork } = useNetwork();
   const [isChangingNetwork, setIsChangingNetwork] = useState(false);
 
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
   const networkId = useAppSelector(state => state.market.market.networkId);
   const marketNetwork = getNetworkById(networkId);
 

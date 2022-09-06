@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NetworkConfig } from 'config/environment';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 
 const initialState = {
   isLoggedIn: false,
@@ -18,8 +18,8 @@ const initialState = {
   }
 };
 
-const beproSlice = createSlice({
-  name: 'bepro',
+const polkamarketsSlice = createSlice({
+  name: 'polkamarkets',
   initialState,
   reducers: {
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
@@ -75,7 +75,7 @@ const beproSlice = createSlice({
   }
 });
 
-export default beproSlice.reducer;
+export default polkamarketsSlice.reducer;
 
 const {
   changeIsLoggedIn,
@@ -89,29 +89,29 @@ const {
   changeBonds,
   changeBondActions,
   changeLoading
-} = beproSlice.actions;
+} = polkamarketsSlice.actions;
 
 // fetching initial wallet details
 function login(networkConfig: NetworkConfig) {
   return async dispatch => {
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
-    const isLoggedIn = await beproService.isLoggedIn();
+    const isLoggedIn = await polkamarketsService.isLoggedIn();
     dispatch(changeIsLoggedIn(isLoggedIn));
 
     if (isLoggedIn) {
-      await beproService.login();
+      await polkamarketsService.login();
 
-      const address = await beproService.getAddress();
+      const address = await polkamarketsService.getAddress();
       dispatch(changeEthAddress(address));
 
-      const balance = await beproService.getBalance();
+      const balance = await polkamarketsService.getBalance();
       dispatch(changeEthBalance(balance));
 
-      const polkBalance = await beproService.getERC20Balance();
+      const polkBalance = await polkamarketsService.getERC20Balance();
       dispatch(changePolkBalance(polkBalance));
 
-      const polkApproved = await beproService.isRealitioERC20Approved();
+      const polkApproved = await polkamarketsService.isRealitioERC20Approved();
       dispatch(changePolkApproved(polkApproved));
     }
   };
@@ -119,11 +119,11 @@ function login(networkConfig: NetworkConfig) {
 
 function fetchAditionalData(networkConfig: NetworkConfig) {
   return async dispatch => {
-    const beproService = new BeproService(networkConfig);
-    const isLoggedIn = await beproService.isLoggedIn();
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const isLoggedIn = await polkamarketsService.isLoggedIn();
 
     if (isLoggedIn) {
-      await beproService.login();
+      await polkamarketsService.login();
 
       dispatch(
         changeLoading({
@@ -132,10 +132,10 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
-      const portfolio = await beproService.getPortfolio();
+      const portfolio = await polkamarketsService.getPortfolio();
       dispatch(changePortfolio(portfolio));
 
-      const bonds = await beproService.getBonds();
+      const bonds = await polkamarketsService.getBonds();
       dispatch(changeBonds(bonds));
 
       dispatch(
@@ -145,10 +145,10 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
-      const actions = await beproService.getActions();
+      const actions = await polkamarketsService.getActions();
       dispatch(changeActions(actions));
 
-      const bondActions = await beproService.getBondActions();
+      const bondActions = await polkamarketsService.getBondActions();
       dispatch(changeBondActions(bondActions));
     }
   };

@@ -6,15 +6,15 @@ Polkamarkets is an Autonomous Prediction Market Protocol built for multi-chain i
 
 Our web interface is built with React.
 
-The backend is being developed in partnership with [Bepro.network](https://github.com/bepronetwork), through [`bepro-js`](https://github.com/bepronetwork/bepro-js). You can have a look on our smart contract [here](https://github.com/bepronetwork/bepro-js/blob/feature/prediction-markets/contracts/PredictionMarket.sol).
+The backend and Ethereum integrations are being developed through [`polkamarkets-js`](https://github.com/Polkamarkets/polkamarkets-js) package. You can have a look on our smart contract [here](https://github.com/Polkamarkets/polkamarkets-js/blob/main/contracts/PredictionMarket.sol).
 
-We're currently running in closed Beta on the Kovan testnet. You can access it at [https://app.polkamarkets.com](https://app.polkamarkets.com)
+We're currently running on [Moonbeam](https://moonbeam.network/) and [Moonriver](https://moonbeam.network/networks/moonriver/). You can access it at [https://app.polkamarkets.com](https://app.polkamarkets.com)
 
 ## Project Setup
 
 ### 1. Required software
 
-- [Yarn](https://yarnpkg.com/) (`node v10`)
+- [Yarn](https://yarnpkg.com/) (`node v14.15.0 or later`)
 - MetaMask for [Chrome](https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn?hl=en) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/ether-metamask/)
 
 ### 2. Installing the app

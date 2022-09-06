@@ -37,8 +37,8 @@ function TradeFormInput() {
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
-  const balance = useAppSelector(state => state.bepro.ethBalance);
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
+  const balance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const outcome = market.outcomes[selectedOutcomeId];
 

@@ -23,7 +23,7 @@ function TradeFormPredictions() {
   const symbol = useAppSelector(state => state.market.market.currency.symbol);
   const outcomes = useAppSelector(state => state.market.market.outcomes);
   const marketSlug = useAppSelector(state => state.market.market.slug);
-  const portfolio = useAppSelector(state => state.bepro.portfolio);
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
 
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
 

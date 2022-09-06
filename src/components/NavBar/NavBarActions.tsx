@@ -17,10 +17,12 @@ function NavBarActions() {
   const { show } = useAlertNotification();
   const { network } = useNetwork();
 
-  const walletConnected = useAppSelector(state => state.bepro.isLoggedIn);
-  const ethBalance = useAppSelector(state => state.bepro.ethBalance);
-  const polkBalance = useAppSelector(state => state.bepro.polkBalance);
-  const walletAddress = useAppSelector(state => state.bepro.ethAddress);
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
+  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
+  const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   // Example
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
-import { login } from 'redux/ducks/bepro';
-import { BeproService } from 'services';
+import { login } from 'redux/ducks/polkamarkets';
+import { PolkamarketsService } from 'services';
 
 import { MetaMaskIcon } from 'assets/icons';
 
@@ -15,7 +15,7 @@ import NavBarActionsMetamaskStatus from './NavBarActionsMetaMaskStatus';
 export default function NavBarActionsMetamask() {
   const dispatch = useAppDispatch();
   const { networkConfig } = useNetwork();
-  const beproService = new BeproService(networkConfig);
+  const polkamarketsService = new PolkamarketsService(networkConfig);
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => {
     setShow(false);
@@ -28,7 +28,7 @@ export default function NavBarActionsMetamask() {
     setShow(true);
   }
   async function handleMetamaskLogin() {
-    await beproService.login();
+    await polkamarketsService.login();
     dispatch(login(networkConfig));
   }
 
