@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 import { useEffect, useRef } from 'react';
 
 import cn from 'classnames';
@@ -68,11 +67,7 @@ function Modal({ children, onHide, show, name }: ModalProps) {
                 aria-describedby={`${name}-${modalData.description}`}
                 className="pm-c-modal"
               >
-                {/** todo: to be virtually created */}
-                <span tabIndex={0} id="trap-start" />
                 {children}
-                {/** todo: to be virtually created */}
-                <span tabIndex={0} id="trap-end" />
               </motion.div>
             </motion.div>
           )}

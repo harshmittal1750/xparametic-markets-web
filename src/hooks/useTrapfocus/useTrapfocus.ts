@@ -1,32 +1,32 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import usePrevious from 'hooks/usePrevious';
 
-import { focusEdge } from './useTrapfocus.util';
+import { focusEdge, insertTrappers } from './useTrapfocus.util';
 
 export default function useTrapfocus<V extends HTMLElement>(
   ref: React.RefObject<V>
 ) {
   const timer = useRef<Partial<number>>();
-  // todo: this is losing previous when parent updates state
   const { current: focusPrev } = usePrevious<Element | null>(
     document.activeElement
   );
 
   useEffect(() => {
     const { current: node } = ref;
-    const [start] = focusEdge(node);
-    start?.focus();
+    const trap = insertTrappers(node);
+
+    trap.start?.focus();
 
     return () => {
       (focusPrev as HTMLElement)?.focus();
     };
   }, [focusPrev, ref]);
-  useLayoutEffect(() => {
+  useEffect(() => {
     const { current: node } = ref;
-    const [start, end] = focusEdge(node);
-    const trapStart = document.getElementById('trap-start') as V;
-    const trapEnd = document.getElementById('trap-end') as V;
+    const edge = focusEdge(node);
+    const trapStart = node?.querySelector('[data-trap="start"]') as V;
+    const trapEnd = node?.querySelector('[data-trap="end"]') as V;
 
     function handleBlur() {
       window.clearTimeout(timer.current);
@@ -34,12 +34,12 @@ export default function useTrapfocus<V extends HTMLElement>(
     function handleFocus(event: FocusEvent) {
       if (event.target === trapStart) {
         window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => end.focus());
+          timer.current = window.setTimeout(() => edge.end.focus());
         });
       }
       if (event.target === trapEnd) {
         window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => start.focus());
+          timer.current = window.setTimeout(() => edge.start.focus());
         });
       }
     }

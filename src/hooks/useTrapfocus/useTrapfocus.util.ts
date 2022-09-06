@@ -3,8 +3,21 @@ export const focusEls =
 
 export function focusEdge<V extends HTMLElement | null>(node?: V) {
   const els = node?.querySelectorAll(focusEls);
-  const elStart = els?.[0] as HTMLElement;
-  const elEnd = els?.[els.length - 1] as HTMLElement;
+  const start = els?.[0] as HTMLElement;
+  const end = els?.[els.length - 1] as HTMLElement;
 
-  return [elStart, elEnd];
+  return { start, end };
+}
+export function insertTrappers<V extends HTMLElement | null>(node?: V) {
+  const start = document.createElement('span');
+  const end = document.createElement('span');
+
+  start.setAttribute('tabIndex', '0');
+  end.setAttribute('tabIndex', '0');
+  start.dataset.trap = 'start';
+  end.dataset.trap = 'end';
+  node?.insertBefore(start, node.firstChild);
+  node?.appendChild(end);
+
+  return { start, end };
 }
