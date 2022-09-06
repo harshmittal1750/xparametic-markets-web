@@ -2,7 +2,33 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NetworkConfig } from 'config/environment';
 import { PolkamarketsService } from 'services';
 
-const initialState = {
+export type Action = {
+  action: string;
+  marketId: number;
+  outcomeId: number;
+  shares: number;
+  value: number;
+  timestamp: number;
+  transactionHash: string;
+};
+
+export type PolkamarketsInitialState = {
+  isLoggedIn: boolean;
+  networkId: string;
+  ethAddress: string;
+  ethBalance: number;
+  polkBalance: number;
+  polkApproved: boolean;
+  portfolio: any;
+  actions: Action[];
+  bonds: any;
+  bondActions: any[];
+  isLoading: {
+    portfolio: boolean;
+  };
+};
+
+const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
   networkId: '',
   ethAddress: '',
