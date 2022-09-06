@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -44,6 +44,10 @@ function Modal({ children, onHide, show, name }: ModalProps) {
   });
   useTrapfocus(ref);
 
+  function handleKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Escape') onHide?.();
+  }
+
   return (
     <Portal>
       <ModalContext.Provider value={{ name, onHide }}>
@@ -55,6 +59,7 @@ function Modal({ children, onHide, show, name }: ModalProps) {
               exit={{ opacity: 0 }}
               role="presentation"
               className="pm-c-modal__overlay"
+              onKeyDown={handleKeyDown}
             >
               <motion.div
                 ref={ref}
