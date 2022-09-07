@@ -7,7 +7,7 @@ _Required: PR description and not the its story self with the context of what wa
 
 1. [Example](https://developer.mozilla.org/en-US/);
 
-![image](https://user-images.githubusercontent.com/16447765/188663770-80b5c7a5-6242-4142-89b0-67e50d8aa592.png)
+<img src="https://user-images.githubusercontent.com/16447765/188663770-80b5c7a5-6242-4142-89b0-67e50d8aa592.png" width="250" />
 <!-- Replace this image with demo video or remove if it's not applied -->
 
 ## 💡 Functionality
