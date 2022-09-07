@@ -55,7 +55,11 @@ function PortfolioTabs() {
     isLoading
   } = useAppSelector(state => state.polkamarkets);
 
-  const { portfolio: isLoadingPortfolio } = isLoading;
+  const {
+    portfolio: isLoadingPortfolio,
+    bonds: isLoadingBonds,
+    actions: isLoadingActions
+  } = isLoading;
 
   const marketsIds = [...marketsWithActions, ...marketsWithBonds];
 
@@ -65,7 +69,9 @@ function PortfolioTabs() {
         ids: marketsIds,
         networkId: network.id
       },
-      { skip: isEmpty(marketsIds) }
+      {
+        skip: isLoadingBonds || isLoadingActions || isEmpty(marketsIds)
+      }
     );
 
   const marketPositions = useMemo(
@@ -115,7 +121,9 @@ function PortfolioTabs() {
           <PortfolioMarketTable
             rows={marketPositions.rows}
             headers={marketPositions.headers}
-            isLoadingData={isLoadingMarkets || isLoadingPortfolio}
+            isLoadingData={
+              isLoadingMarkets || isLoadingPortfolio || isLoadingActions
+            }
           />
         ) : null}
         {currentTab === 'liquidityPositions' ? (
@@ -129,14 +137,14 @@ function PortfolioTabs() {
           <PortfolioReportTable
             rows={reportPositions.rows}
             headers={reportPositions.headers}
-            isLoadingData={isLoadingMarkets || isLoadingPortfolio}
+            isLoadingData={
+              isLoadingMarkets || isLoadingPortfolio || isLoadingBonds
+            }
           />
         ) : null}
       </div>
     </div>
   );
 }
-
-PortfolioTabs.displayName = 'PortfolioTabs';
 
 export default PortfolioTabs;
