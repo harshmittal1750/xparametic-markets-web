@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, useMemo, memo } from 'react';
 
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
@@ -68,9 +68,20 @@ function PortfolioTabs() {
       { skip: isEmpty(marketsIds) }
     );
 
-  const marketPositions = formatMarketPositions(portfolio, actions, markets);
-  const liquidityPositions = formatLiquidityPositions(portfolio, markets);
-  const reportPositions = formatReportPositions(bonds, markets);
+  const marketPositions = useMemo(
+    () => formatMarketPositions(portfolio, actions, markets),
+    [actions, markets, portfolio]
+  );
+
+  const liquidityPositions = useMemo(
+    () => formatLiquidityPositions(portfolio, markets),
+    [markets, portfolio]
+  );
+
+  const reportPositions = useMemo(
+    () => formatReportPositions(bonds, markets),
+    [bonds, markets]
+  );
 
   return (
     <div className="portfolio-tabs">
