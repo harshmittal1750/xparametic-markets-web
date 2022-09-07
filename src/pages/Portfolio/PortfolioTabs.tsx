@@ -1,6 +1,8 @@
 import { useState, memo } from 'react';
 
+import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
+import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
 
 import {
   ButtonGroup,
@@ -10,7 +12,7 @@ import {
   Filter
 } from 'components';
 
-import { useAppSelector, useAppDispatch } from 'hooks';
+import { useAppSelector, useAppDispatch, useNetwork } from 'hooks';
 
 import {
   formatLiquidityPositions,
@@ -41,24 +43,32 @@ function TabsFilter() {
 const PortfolioTabsFilter = memo(TabsFilter);
 
 function PortfolioTabs() {
+  const { network } = useNetwork();
   const [currentTab, setCurrentTab] = useState('marketPositions');
 
-  const markets = useAppSelector(state => state.markets.markets);
-  const isLoadingMarketsSelector = useAppSelector(
-    state => state.markets.isLoading
-  );
-  const isLoadingMarkets = Object.values(isLoadingMarketsSelector).some(
-    value => value === true
-  );
+  const {
+    bonds,
+    portfolio,
+    actions,
+    marketsWithActions,
+    marketsWithBonds,
+    isLoading
+  } = useAppSelector(state => state.polkamarkets);
 
-  const { bonds, portfolio, actions } = useAppSelector(
-    state => state.polkamarkets
-  );
-  const isLoadingPortfolio = useAppSelector(
-    state => state.polkamarkets.isLoading.portfolio
-  );
+  const { portfolio: isLoadingPortfolio } = isLoading;
 
-  const marketPositions = formatMarketPositions(portfolio, markets, actions);
+  const marketsIds = [...marketsWithActions, ...marketsWithBonds];
+
+  const { data: markets, isLoading: isLoadingMarkets } =
+    useGetMarketsByIdsQuery(
+      {
+        ids: marketsIds,
+        networkId: network.id
+      },
+      { skip: isEmpty(marketsIds) }
+    );
+
+  const marketPositions = formatMarketPositions(portfolio, actions, markets);
   const liquidityPositions = formatLiquidityPositions(portfolio, markets);
   const reportPositions = formatReportPositions(bonds, markets);
 
