@@ -8,6 +8,10 @@
     box-shadow: $modal-shadow themed('shadow');
     transition: all 0.2s ease-out;
 
+    &:focus {
+      outline: none;
+    }
+
     &__header {
       position: relative;
 

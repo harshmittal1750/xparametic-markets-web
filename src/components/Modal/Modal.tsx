@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,7 +8,7 @@ import { RemoveOutlinedIcon } from 'assets/icons';
 import { Button } from 'components/Button';
 import Text, { TextProps } from 'components/Text';
 
-import { useEnhancedRef, usePortal, usePrevious } from 'hooks';
+import { useClickaway, usePortal, usePrevious, useTrapfocus } from 'hooks';
 
 import {
   ModalFooterProps,
@@ -16,15 +16,11 @@ import {
   ModalProps,
   ModalSectionProps
 } from './Modal.type';
-import { MODAL_DATA, ModalContext, useModalContext } from './Modal.util';
+import { modalData, ModalContext, useModalContext } from './Modal.util';
 
 function Modal({ children, onHide, show, name }: ModalProps) {
   const { current: showPrev } = usePrevious(show);
-  const ref = useEnhancedRef<HTMLDivElement>({
-    onClickOutside() {
-      if (showPrev && show) onHide?.();
-    }
-  });
+  const ref = useRef<HTMLDivElement>(null);
   const Portal = usePortal({
     root: document.body,
     onEffect() {
@@ -43,6 +39,12 @@ function Modal({ children, onHide, show, name }: ModalProps) {
       Portal.mount(show);
     }
   }, [Portal, show, showPrev]);
+  useClickaway(ref, () => onHide?.(), [showPrev, show]);
+  useTrapfocus(ref);
+
+  function handleKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Escape') onHide?.();
+  }
 
   return (
     <Portal>
@@ -55,6 +57,7 @@ function Modal({ children, onHide, show, name }: ModalProps) {
               exit={{ opacity: 0 }}
               role="presentation"
               className="pm-c-modal__overlay"
+              onKeyDown={handleKeyDown}
             >
               <motion.div
                 ref={ref}
@@ -63,8 +66,8 @@ function Modal({ children, onHide, show, name }: ModalProps) {
                 exit={{ y: 16 }}
                 role="dialog"
                 aria-modal="true"
-                aria-labelledby={`${name}-${MODAL_DATA.title}`}
-                aria-describedby={`${name}-${MODAL_DATA.description}`}
+                aria-labelledby={`${name}-${modalData.title}`}
+                aria-describedby={`${name}-${modalData.description}`}
                 className="pm-c-modal"
               >
                 {children}
@@ -104,7 +107,7 @@ function HeaderTitle({ className, ...props }: TextProps) {
       fontWeight="medium"
       className={cn('pm-c-modal__header-title', className)}
       scale="heading"
-      id={`${name}-${MODAL_DATA.title}`}
+      id={`${name}-${modalData.title}`}
       {...props}
     />
   );
@@ -121,7 +124,7 @@ function SectionText({ className, ...props }: TextProps) {
     <Text
       className={cn('pm-c-modal__section-text', className)}
       scale="caption"
-      id={`${name}-${MODAL_DATA.description}`}
+      id={`${name}-${modalData.description}`}
       {...props}
     />
   );

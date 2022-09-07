@@ -2,7 +2,7 @@ import { createContext, useContext } from 'react';
 
 import { ModalContextProps } from './Modal.type';
 
-export const MODAL_DATA = {
+export const modalData = {
   title: 'modal-title',
   description: 'modal-description'
 };

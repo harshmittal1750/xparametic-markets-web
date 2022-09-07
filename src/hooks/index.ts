@@ -21,4 +21,5 @@ export {
 };
 export { default as usePortal } from './usePortal';
 export { default as usePrevious } from './usePrevious';
-export { default as useEnhancedRef } from './useEnhancedRef';
+export { default as useClickaway } from './useClickaway';
+export { default as useTrapfocus } from './useTrapfocus';
