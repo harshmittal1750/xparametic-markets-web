@@ -23,6 +23,7 @@ export type PolkamarketsInitialState = {
   actions: Action[];
   marketsWithActions: string[];
   bonds: any;
+  marketsWithBonds: string[];
   bondActions: any[];
   isLoading: {
     portfolio: boolean;
@@ -40,6 +41,7 @@ const initialState: PolkamarketsInitialState = {
   actions: [],
   marketsWithActions: [],
   bonds: {},
+  marketsWithBonds: [],
   bondActions: [],
   isLoading: {
     portfolio: false
@@ -97,6 +99,10 @@ const polkamarketsSlice = createSlice({
       ...state,
       bonds: action.payload
     }),
+    changeMarketsWithBonds: (state, action: PayloadAction<string[]>) => ({
+      ...state,
+      marketsWithBonds: action.payload
+    }),
     changeBondActions: (state, action: PayloadAction<any>) => ({
       ...state,
       bondActions: action.payload
@@ -127,6 +133,7 @@ const {
   changeActions,
   changeMarketsWithActions,
   changeBonds,
+  changeMarketsWithBonds,
   changeBondActions,
   changeLoading
 } = polkamarketsSlice.actions;
@@ -177,6 +184,9 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
 
       const bonds = await polkamarketsService.getBonds();
       dispatch(changeBonds(bonds));
+
+      const bondMarketIds = await polkamarketsService.getBondMarketIds();
+      dispatch(changeMarketsWithBonds(bondMarketIds));
 
       dispatch(
         changeLoading({
