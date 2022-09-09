@@ -16,9 +16,10 @@ import {
   WarningIcon
 } from 'assets/icons';
 
+import { Area } from 'components/plots';
+
 import { useAppDispatch, useAppSelector } from 'hooks';
 
-import MiniAreaChart from '../MiniAreaChart';
 import Text from '../Text';
 
 const outcomeStates = {
@@ -138,10 +139,12 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
         </div>
       ) : (
         <div className="pm-c-market-outcomes__item-chart">
-          <MiniAreaChart
-            serie={chartData}
-            color={marketPriceUp ? 'success' : 'danger'}
+          <Area
+            id={`${marketId}-${id}-${title}`}
+            data={chartData}
+            color={marketPriceUp ? 'green' : 'red'}
             width={48}
+            height={24}
           />
         </div>
       )}
