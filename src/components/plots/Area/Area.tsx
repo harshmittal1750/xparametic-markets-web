@@ -49,6 +49,7 @@ function Area({ id, width = 100, height = 50, data, color }: AreaProps) {
         stroke={`${colorVariant.stroke}57`}
         fillOpacity={1}
         fill={`url(#${id})`}
+        isAnimationActive={false}
       />
     </AreaChart>
   );
