@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createFocusTrap should create a focus trapper element correctly 1`] = `
+<span
+  data-testid="focus-trap-id"
+  tabindex="0"
+/>
+`;
