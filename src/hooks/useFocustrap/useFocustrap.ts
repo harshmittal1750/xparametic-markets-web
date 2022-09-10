@@ -5,7 +5,7 @@ import { getFocusEdge } from 'helpers';
 import useFocustrappers from 'hooks/useFocustrappers';
 import usePrevious from 'hooks/usePrevious';
 
-export default function useTrapfocus<V extends HTMLElement>(
+export default function useFocustrap<V extends HTMLElement>(
   ref: React.RefObject<V>
 ) {
   const focusTrappers = useFocustrappers();

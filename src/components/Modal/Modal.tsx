@@ -8,7 +8,7 @@ import { RemoveOutlinedIcon } from 'assets/icons';
 import { Button } from 'components/Button';
 import Text, { TextProps } from 'components/Text';
 
-import { useClickaway, usePortal, usePrevious, useTrapfocus } from 'hooks';
+import { useClickaway, usePortal, usePrevious, useFocustrap } from 'hooks';
 
 import {
   ModalFooterProps,
@@ -40,7 +40,7 @@ function Modal({ children, onHide, show, name }: ModalProps) {
     }
   }, [Portal, show, showPrev]);
   useClickaway(ref, () => onHide?.(), [showPrev, show]);
-  useTrapfocus(ref);
+  useFocustrap(ref);
 
   function handleKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Escape') onHide?.();
