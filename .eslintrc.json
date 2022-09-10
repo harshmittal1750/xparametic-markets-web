@@ -29,6 +29,8 @@
     "jsx-a11y"
   ],
   "rules": {
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["error"],
     "import/extensions": [
       "error",
       "ignorePackages",
@@ -71,13 +73,7 @@
     "react/require-default-props": "off",
     "import/no-unresolved": "error",
     "no-use-before-define": "off",
-    "no-unused-vars": [
-      "warn",
-      {
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }
-    ],
+    "no-unused-vars": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "@typescript-eslint/no-unused-vars": [
       "warn",
