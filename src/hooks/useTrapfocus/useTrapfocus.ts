@@ -1,12 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 
-import usePrevious from 'hooks/usePrevious';
+import { getFocusEdge } from 'helpers';
 
-import { focusEdge, insertTrappers } from './useTrapfocus.util';
+import useFocustrappers from 'hooks/useFocustrappers';
+import usePrevious from 'hooks/usePrevious';
 
 export default function useTrapfocus<V extends HTMLElement>(
   ref: React.RefObject<V>
 ) {
+  const focusTrappers = useFocustrappers();
   const timer = useRef<Partial<number>>();
   const { current: focusPrev } = usePrevious<Element | null>(
     document.activeElement
@@ -14,32 +16,28 @@ export default function useTrapfocus<V extends HTMLElement>(
 
   useEffect(() => {
     const { current: node } = ref;
-    const trap = insertTrappers(node);
 
-    trap.start?.focus();
+    if (!focusTrappers.isOn(node)) focusTrappers.insertOn(node);
+    focusTrappers.start.focus();
 
-    return () => {
-      (focusPrev as HTMLElement)?.focus();
-    };
-  }, [focusPrev, ref]);
+    return () => (focusPrev as HTMLElement)?.focus();
+  }, [focusPrev, focusTrappers, ref]);
   useEffect(() => {
     const { current: node } = ref;
-    const edge = focusEdge(node);
-    const trapStart = node?.querySelector('[data-trap="start"]') as V;
-    const trapEnd = node?.querySelector('[data-trap="end"]') as V;
+    const focusEdge = getFocusEdge(node);
 
     function handleBlur() {
       window.clearTimeout(timer.current);
     }
     function handleFocus(event: FocusEvent) {
-      if (event.target === trapStart) {
+      if (event.target === focusTrappers.start) {
         window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => edge.end.focus());
+          timer.current = window.setTimeout(() => focusEdge.end.focus());
         });
       }
-      if (event.target === trapEnd) {
+      if (event.target === focusTrappers.end) {
         window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => edge.start.focus());
+          timer.current = window.setTimeout(() => focusEdge.start.focus());
         });
       }
     }
