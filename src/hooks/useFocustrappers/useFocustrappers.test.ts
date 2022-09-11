@@ -2,9 +2,9 @@ import { getByTestId } from '@testing-library/react';
 import { act, renderHook } from '@testing-library/react-hooks';
 import { getFocusTrapId } from 'helpers';
 
-import useFocustrappers, { Trappers } from './useFocustrappers';
+import useFocustrappers, { Trap } from './useFocustrappers';
 
-function renderHookHelper() {
+function renderFocustrappers() {
   const el = document.createElement('div');
 
   return {
@@ -15,21 +15,18 @@ function renderHookHelper() {
 
 describe('useFocustrappers', () => {
   it('should return start and end focus trappers elements correctly', () => {
-    const { result } = renderHookHelper();
+    const { result } = renderFocustrappers();
 
-    expect(result.current.start).toHaveAttribute(
-      'data-testid',
-      getFocusTrapId(Trappers.START)
-    );
-    expect(result.current.start).toHaveAttribute('tabindex', '0');
-    expect(result.current.end).toHaveAttribute(
-      'data-testid',
-      getFocusTrapId(Trappers.END)
-    );
-    expect(result.current.end).toHaveAttribute('tabindex', '0');
+    Object.values(Trap).forEach(trap => {
+      expect(result.current[trap]).toHaveAttribute(
+        'data-testid',
+        getFocusTrapId(trap)
+      );
+      expect(result.current[trap]).toHaveAttribute('tabindex', '0');
+    });
   });
   it('should insert the focus trappers elements just once correctly', () => {
-    const { el, result, rerender } = renderHookHelper();
+    const { el, result, rerender } = renderFocustrappers();
 
     jest.spyOn(result.current, 'insertOn');
     act(() => {
@@ -38,12 +35,13 @@ describe('useFocustrappers', () => {
 
     rerender();
 
-    expect(getByTestId(el, getFocusTrapId(Trappers.START))).toBeTruthy();
-    expect(getByTestId(el, getFocusTrapId(Trappers.END))).toBeTruthy();
+    Object.values(Trap).forEach(trap =>
+      expect(getByTestId(el, getFocusTrapId(trap))).toBeTruthy()
+    );
     expect(result.current.insertOn).toHaveBeenCalledTimes(1);
   });
   it('should check if the focus trappers elements were inserted correctly', () => {
-    const { el, result } = renderHookHelper();
+    const { el, result } = renderFocustrappers();
     let isOn: boolean | undefined = false;
 
     act(() => {

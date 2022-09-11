@@ -2,14 +2,14 @@ import { useMemo } from 'react';
 
 import { createFocusTrap } from 'helpers';
 
-export enum Trappers {
+export enum Trap {
   START = 'start',
   END = 'end'
 }
 
 export default function useFocustrappers<V extends HTMLElement | null>() {
-  const trapStart = createFocusTrap(Trappers.START);
-  const trapEnd = createFocusTrap(Trappers.END);
+  const trapStart = createFocusTrap(Trap.START);
+  const trapEnd = createFocusTrap(Trap.END);
 
   return useMemo(
     () => ({
