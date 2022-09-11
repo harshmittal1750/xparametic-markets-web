@@ -1,14 +1,24 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 
-import { getFocusEdge } from 'helpers';
+import { createFocusTrap, getFocusEdge } from 'helpers';
 
-import useFocustrappers from 'hooks/useFocustrappers';
 import usePrevious from 'hooks/usePrevious';
+
+export enum Trap {
+  START = 'start',
+  END = 'end'
+}
 
 export default function useFocustrap<V extends HTMLElement>(
   ref: React.RefObject<V>
 ) {
-  const focusTrappers = useFocustrappers();
+  const focusTrappers = useMemo(
+    () => ({
+      start: createFocusTrap(Trap.START),
+      end: createFocusTrap(Trap.END)
+    }),
+    []
+  );
   const timer = useRef<Partial<number>>();
   const { current: focusPrev } = usePrevious<Element | null>(
     document.activeElement
@@ -17,7 +27,13 @@ export default function useFocustrap<V extends HTMLElement>(
   useEffect(() => {
     const { current: node } = ref;
 
-    if (!focusTrappers.isOn(node)) focusTrappers.insertOn(node);
+    if (
+      !node?.contains(focusTrappers.start) ||
+      !node?.contains(focusTrappers.end)
+    ) {
+      node?.insertBefore(focusTrappers.start, node.firstChild);
+      node?.appendChild(focusTrappers.end);
+    }
     focusTrappers.start.focus();
 
     return () => (focusPrev as HTMLElement)?.focus();

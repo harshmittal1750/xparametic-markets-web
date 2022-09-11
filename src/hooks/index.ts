@@ -23,4 +23,3 @@ export { default as usePortal } from './usePortal';
 export { default as usePrevious } from './usePrevious';
 export { default as useClickaway } from './useClickaway';
 export { default as useFocustrap } from './useFocustrap';
-export { default as useFocustrappers } from './useFocustrappers';
