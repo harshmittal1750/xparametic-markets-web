@@ -26,17 +26,22 @@ export default function useFocustrap<V extends HTMLElement>(
 
   useEffect(() => {
     const { current: node } = ref;
+    const nodeContainsFocusTrappers =
+      node?.contains(focusTrappers.start) && node?.contains(focusTrappers.end);
 
-    if (
-      !node?.contains(focusTrappers.start) ||
-      !node?.contains(focusTrappers.end)
-    ) {
+    if (!nodeContainsFocusTrappers) {
       node?.insertBefore(focusTrappers.start, node.firstChild);
       node?.appendChild(focusTrappers.end);
     }
     focusTrappers.start.focus();
 
-    return () => (focusPrev as HTMLElement)?.focus();
+    return () => {
+      if (nodeContainsFocusTrappers) {
+        node?.removeChild(focusTrappers.start);
+        node?.removeChild(focusTrappers.end);
+      }
+      (focusPrev as HTMLElement)?.focus();
+    };
   }, [focusPrev, focusTrappers, ref]);
   useEffect(() => {
     const { current: node } = ref;
