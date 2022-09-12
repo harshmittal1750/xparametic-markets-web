@@ -26,17 +26,17 @@ export default function useFocustrap<V extends HTMLElement>(
 
   useEffect(() => {
     const { current: node } = ref;
-    const nodeContainsFocusTrappers =
+    const hasFocusTrappers =
       node?.contains(focusTrappers.start) && node?.contains(focusTrappers.end);
 
-    if (!nodeContainsFocusTrappers) {
+    if (!hasFocusTrappers) {
       node?.insertBefore(focusTrappers.start, node.firstChild);
       node?.appendChild(focusTrappers.end);
     }
     focusTrappers.start.focus();
 
     return () => {
-      if (nodeContainsFocusTrappers) {
+      if (hasFocusTrappers) {
         node?.removeChild(focusTrappers.start);
         node?.removeChild(focusTrappers.end);
       }
@@ -69,6 +69,7 @@ export default function useFocustrap<V extends HTMLElement>(
     return () => {
       node?.removeEventListener('focusout', handleBlur);
       node?.removeEventListener('focusin', handleFocus);
+      handleBlur();
     };
   });
 }
