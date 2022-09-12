@@ -488,6 +488,19 @@ export default class PolkamarketsService {
     return response;
   }
 
+  public async getBondMarketIds(): Promise<string[]> {
+    // ensuring user has wallet connected
+    if (!this.address) return [];
+
+    const questions = await this.contracts.realitio.getMyQuestions();
+
+    const marketIds = await this.contracts.pm.getMarketIdsFromQuestions({
+      questions: questions.map(question => question.question)
+    });
+
+    return marketIds;
+  }
+
   public async getQuestion(questionId: string): Promise<Object> {
     const question = await this.contracts.realitio.getQuestion({ questionId });
 
