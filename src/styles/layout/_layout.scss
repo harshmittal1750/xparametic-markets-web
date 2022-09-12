@@ -1,6 +1,7 @@
 .pm-l-layout {
   @include themes($layout-themes) {
     display: grid;
+    height: 100%;
     max-width: 100%;
 
     grid-template-areas:
@@ -36,6 +37,7 @@
     &__main {
       grid-area: main;
 
+      height: 100%;
       padding: 2.4rem;
     }
 
