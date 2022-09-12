@@ -30,6 +30,7 @@ export default function useClickaway<V extends HTMLElement>(
       if (tabindexPrev === -1) node?.setAttribute('tabIndex', '-1');
       node?.removeEventListener('focusin', handleFocus);
       node?.removeEventListener('focusout', handleBlur);
+      handleFocus();
     };
   }, [deps, onClickaway, ref, tabindexPrev]);
 }
