@@ -12,6 +12,7 @@ import { useAppSelector } from 'hooks';
 
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
+import VirtualizedList from '../VirtualizedList';
 
 type MarketListAsyncProps = {
   id: string;
@@ -43,8 +44,10 @@ const MarketListAsync = ({
 
   if (isLoading[id])
     return (
-      <div className="pm-market__loading" style={{ paddingTop: '5rem' }}>
-        <span className="spinner--primary" />
+      <div className="pm-c-market-list__empty-state">
+        <div className="pm-c-market-list__empty-state__body">
+          <span className="spinner--primary" />
+        </div>
       </div>
     );
 
@@ -90,16 +93,17 @@ const MarketListAsync = ({
   }
 
   return (
-    <ul className="market-list">
-      {markets.map(market => (
-        <li
-          className="market-list__item"
-          key={`${market.id}-${market.networkId}`}
-        >
-          <PredictionCard market={market} />
-        </li>
-      ))}
-    </ul>
+    <div className="pm-c-market-list">
+      <VirtualizedList
+        height="100%"
+        data={markets}
+        itemContent={(_index, market) => (
+          <div className="pm-c-market-list__item">
+            <PredictionCard market={market} />
+          </div>
+        )}
+      />
+    </div>
   );
 };
 
