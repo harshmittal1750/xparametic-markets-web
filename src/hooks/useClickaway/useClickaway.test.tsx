@@ -6,35 +6,33 @@ import useClickaway from './useClickaway';
 
 const onClickaway = jest.fn();
 
-function ComponentWithClickaway({ lock }: { lock?: boolean }) {
+function ComponentWithClickaway({ deps }: { deps?: boolean[] }) {
   const ref = useRef(null);
 
-  useClickaway(ref, onClickaway, lock ? [false] : undefined);
+  useClickaway(ref, onClickaway, deps);
 
-  return (
-    <>
-      <div ref={ref}>inside</div>
-      <button type="button">outside</button>
-    </>
-  );
+  return <div ref={ref} data-testid="node" />;
 }
 
 describe('useClickaway', () => {
-  it('should mutate the referenced node correctly', () => {
+  it('mutates the referenced node', () => {
     render(<ComponentWithClickaway />);
+    const node = screen.getByTestId('node');
 
-    expect(screen.getByText('inside')).toHaveAttribute('tabindex', '0');
+    expect(node).toHaveAttribute('tabindex', '0');
   });
-  it('should call its handler correctly', async () => {
+  it('calls the passed callback', async () => {
     render(<ComponentWithClickaway />);
+    const node = screen.getByTestId('node');
 
-    fireEvent.focusOut(screen.getByText('inside'));
+    fireEvent.focusOut(node);
     await waitFor(() => expect(onClickaway).toHaveBeenCalledTimes(1));
   });
-  it('should not call its handler it is locked correctly', async () => {
-    render(<ComponentWithClickaway lock />);
+  it("doesn't call the passed callback", async () => {
+    render(<ComponentWithClickaway deps={[false]} />);
+    const node = screen.getByTestId('node');
 
-    fireEvent.focusOut(screen.getByText('inside'));
-    await waitFor(() => expect(onClickaway).not.toHaveBeenCalled());
+    fireEvent.focusOut(node);
+    expect(onClickaway).not.toHaveBeenCalled();
   });
 });
