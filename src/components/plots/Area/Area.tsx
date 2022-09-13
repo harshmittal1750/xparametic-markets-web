@@ -46,7 +46,8 @@ function Area({ id, width = 100, height = 50, data, color }: AreaProps) {
       <RechartsArea
         type="linear"
         dataKey="y"
-        stroke={`${colorVariant.stroke}57`}
+        strokeWidth={1.7}
+        stroke={colorVariant.stroke}
         fillOpacity={1}
         fill={`url(#${id})`}
         isAnimationActive={false}
