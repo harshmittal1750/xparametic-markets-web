@@ -20,14 +20,14 @@ function ComponentWithFocustrap() {
 }
 
 describe('useFocustrap', () => {
-  it('should insert the focus trappers elements correctly', () => {
+  it('inserts focus trappers nodes', () => {
     render(<ComponentWithFocustrap />);
 
     Object.values(Trap).forEach(trap =>
       expect(screen.getByTestId(getFocusTrapId(trap))).toBeTruthy()
     );
   });
-  it('should focus the start trapper element and trap it inside the container correctly', async () => {
+  it('focus the start trapper element and trap it inside the referenced node', async () => {
     render(<ComponentWithFocustrap />);
 
     const button = screen.getByText('button');
@@ -38,7 +38,7 @@ describe('useFocustrap', () => {
     userEvent.tab();
     await waitFor(() => expect(button).toHaveFocus());
   });
-  it('should focus the previous element on unmount back correctly', async () => {
+  it('focus the previous element back on its unmount', async () => {
     const { unmount } = render(<ComponentWithFocustrap />);
 
     expect(screen.getByTestId(getFocusTrapId(Trap.START))).toHaveFocus();
