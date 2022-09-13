@@ -144,7 +144,7 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
             data={chartData}
             color={marketPriceUp ? 'green' : 'red'}
             width={48}
-            height={24}
+            height={30}
           />
         </div>
       )}
