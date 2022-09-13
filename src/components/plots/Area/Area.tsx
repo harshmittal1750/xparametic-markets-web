@@ -1,7 +1,9 @@
+import { useMemo } from 'react';
+
 import { AreaChart, Area as RechartsArea } from 'recharts';
 
 import { AreaDataPoint } from './Area.type';
-import { colorVariants } from './Area.util';
+import { colorVariants, minMaxScaler } from './Area.util';
 
 type AreaProps = {
   id: string;
@@ -14,11 +16,13 @@ type AreaProps = {
 function Area({ id, width = 100, height = 50, data, color }: AreaProps) {
   const colorVariant = colorVariants[color];
 
+  const minMaxScaledData = useMemo(() => minMaxScaler(data), [data]);
+
   return (
     <AreaChart
       width={width}
       height={height}
-      data={data}
+      data={minMaxScaledData}
       margin={{
         top: 0,
         right: 0,
