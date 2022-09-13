@@ -45,7 +45,13 @@ export default function useFocustrap<V extends HTMLElement>(
   }, [focusPrev, focusTrappers, ref]);
   useEffect(() => {
     const { current: node } = ref;
-    const focusEdge = getFocusEdge(node);
+    const focusEdge = getFocusEdge(node, [
+      'a[href]',
+      'button:not([disabled])',
+      'textarea',
+      'input',
+      'select'
+    ]);
 
     function handleBlur() {
       window.clearTimeout(timer.current);

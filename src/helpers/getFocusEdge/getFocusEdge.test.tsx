@@ -2,19 +2,24 @@ import { render, screen } from '@testing-library/react';
 
 import getFocusEdge from './getFocusEdge';
 
-describe('getFocusEdge', () => {
-  it('should return start and end focusable elements correctly', () => {
-    const { container } = render(
-      <div>
-        <button type="button">start button</button>
-        <button type="button">another one</button>
-        <a href="./">end link</a>
-        <p>random paragraph</p>
-      </div>
-    );
-    const focusEdge = getFocusEdge(container);
+enum Defaults {
+  Start = 'START',
+  Mid = 'MIDDLE',
+  End = 'END'
+}
 
-    expect(screen.getByText(/start/i)).toEqual(focusEdge.start);
-    expect(screen.getByText(/end/i)).toEqual(focusEdge.end);
+describe('getFocusEdge', () => {
+  it('returns start and end filtered focusable nodes', () => {
+    const { container } = render(
+      <>
+        <button type="button">{Defaults.Start}</button>
+        <button type="button">{Defaults.Mid}</button>
+        <a href="./">{Defaults.End}</a>
+      </>
+    );
+    const focusEdge = getFocusEdge(container, ['button']);
+
+    expect(screen.getByText(Defaults.Start)).toEqual(focusEdge.start);
+    expect(screen.getByText(Defaults.Mid)).toEqual(focusEdge.end);
   });
 });
