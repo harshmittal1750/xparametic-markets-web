@@ -7,7 +7,7 @@ enum Trap {
 }
 
 describe('createFocusTrap', () => {
-  it('should create a focus trapper element correctly', () => {
+  it('returns the trapper node', () => {
     const focusTrap = createFocusTrap(Trap.ID);
 
     expect(focusTrap).toMatchSnapshot();
