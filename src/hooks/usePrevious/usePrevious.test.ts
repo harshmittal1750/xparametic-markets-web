@@ -2,12 +2,21 @@ import { renderHook } from '@testing-library/react-hooks';
 
 import usePrevious from './usePrevious';
 
-describe('usePrevious', () => {
-  it('should return the correct value', () => {
-    const value = 'render';
-    const { result, rerender } = renderHook(() => usePrevious(value));
+enum Defaults {
+  Prev = 'PREVIOUS',
+  Cur = 'CURRENT'
+}
 
-    rerender(value);
-    expect(result.current.current).toBe(value);
+describe('usePrevious', () => {
+  it('returns the previous provided value', () => {
+    const { result, rerender } = renderHook(
+      initialProps => usePrevious(initialProps.value),
+      { initialProps: { value: Defaults.Prev } }
+    );
+
+    rerender({
+      value: Defaults.Cur
+    });
+    expect(result.current.current).toBe(Defaults.Cur);
   });
 });
