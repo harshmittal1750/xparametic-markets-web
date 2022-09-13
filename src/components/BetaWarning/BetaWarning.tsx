@@ -14,18 +14,15 @@ import { useCookie } from 'hooks';
 export default function BetaWarning() {
   const location = useLocation();
   const hasParam = new URLSearchParams(location.search).get('m');
-  const [betaWarningCookie, setBetaWarningCookie] = useCookie(
-    'betaWarning',
-    'true'
-  );
+  const [cookie, setCookie] = useCookie({
+    betaWarning: true
+  });
   const [agreed, setAgreed] = useState(false);
-  const [show, setShow] = useState(
-    hasParam !== 'f' || betaWarningCookie === 'true'
-  );
+  const [show, setShow] = useState(hasParam !== 'f' || cookie === 'true');
 
   useEffect(() => {
-    setBetaWarningCookie(show.toString());
-  }, [setBetaWarningCookie, show]);
+    setCookie(show);
+  }, [setCookie, show]);
 
   function handleAgreed() {
     setAgreed(prevAgreed => !prevAgreed);
