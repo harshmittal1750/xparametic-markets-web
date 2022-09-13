@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import { AreaColor } from './Area.type';
+import { AreaColor, AreaDataPoint } from './Area.type';
 
 export const colorVariants: { [key: string]: AreaColor } = {
   green: {
@@ -13,3 +12,15 @@ export const colorVariants: { [key: string]: AreaColor } = {
     stroke: '#ef4444'
   }
 };
+
+export function minMaxScaler(data: AreaDataPoint[]) {
+  const values = data.map(point => point.y);
+
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+
+  return data.map(point => ({
+    ...point,
+    y: max - min === 0 ? 1 : (point.y - min) / (max - min)
+  }));
+}
