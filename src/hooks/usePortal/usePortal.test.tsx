@@ -1,46 +1,65 @@
-import { render, screen } from '@testing-library/react';
-import { act, renderHook } from '@testing-library/react-hooks';
+import { unmountComponentAtNode } from 'react-dom';
+
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import usePortal from './usePortal';
 
-const portal = {
-  root: document.body,
-  onEffect: jest.fn()
+const defaults = {
+  onEffect: jest.fn(),
+  root: null as HTMLElement | null
 };
 
-function renderPortal() {
-  return renderHook(() => usePortal(portal));
-}
-function ComponentWithPortal({ component: Portal }) {
-  return <Portal>portal</Portal>;
+function ComponentWithPortal() {
+  const Portal = usePortal(defaults);
+
+  return (
+    <>
+      <button type="button" onClick={() => Portal.mount(true)}>
+        mount
+      </button>
+      <button type="button" onClick={() => Portal.unmount()}>
+        unmount
+      </button>
+      <Portal>
+        <div>wrap</div>
+      </Portal>
+    </>
+  );
 }
 
+beforeEach(() => {
+  defaults.root = document.createElement('div');
+  defaults.root.setAttribute('id', 'root');
+  defaults.root.dataset.testid = 'root';
+  document.body.appendChild(defaults.root);
+  jest.resetAllMocks();
+});
+afterEach(() => {
+  if (defaults.root) unmountComponentAtNode(defaults.root);
+  defaults.root?.remove();
+  defaults.root = null;
+});
 describe('usePortal', () => {
-  it('should mount anything correctly', () => {
-    const { result } = renderPortal();
-    render(<ComponentWithPortal component={result.current} />);
+  it("doesn't mount without its callbacks", () => {
+    render(<ComponentWithPortal />);
 
-    expect(screen.queryByText('portal')).not.toBeInTheDocument();
+    expect(screen.queryByText('wrap')).not.toBeInTheDocument();
   });
-  it('should mount and unmount portal correctly', () => {
-    const { result } = renderPortal();
-    const { rerender } = render(
-      <ComponentWithPortal component={result.current} />
+  it('mounts into the provided root', () => {
+    render(<ComponentWithPortal />);
+    fireEvent.click(screen.getByText('mount'));
+
+    expect(screen.getByTestId('root')).toContainElement(
+      screen.getByText('wrap')
     );
+  });
+  it('unmounts from the provided root', () => {
+    render(<ComponentWithPortal />);
+    fireEvent.click(screen.getByText('mount'));
 
-    act(() => {
-      result.current.mount(true);
-    });
-    rerender(<ComponentWithPortal component={result.current} />);
+    expect(screen.getByText('wrap')).toBeInTheDocument();
+    fireEvent.click(screen.getByText('unmount'));
 
-    expect(portal.onEffect).toHaveBeenCalledTimes(1);
-    expect(screen.getByText('portal')).toBeInTheDocument();
-
-    act(() => {
-      result.current.unmount();
-    });
-    rerender(<ComponentWithPortal component={result.current} />);
-
-    expect(screen.queryByText('portal')).not.toBeInTheDocument();
+    expect(screen.queryByText('wrap')).not.toBeInTheDocument();
   });
 });
