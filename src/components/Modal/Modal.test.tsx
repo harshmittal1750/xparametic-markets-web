@@ -60,18 +60,19 @@ describe('Modal', () => {
       overflow: 'hidden'
     });
   });
-  it('renders accessible title and descriptio content', () => {
+  it('renders accessible title and description content', () => {
     const { elements } = renderModal();
 
-    expect(elements.root).toBeInTheDocument();
-    expect(elements.root).toHaveAccessibleName(`${A11y.Title}`);
-    expect(elements.root).toHaveAccessibleDescription(`${A11y.Description}`);
     expect(
       screen.getByRole('heading', {
         level: 2,
         name: `${A11y.Title}`
       })
     ).toBeInTheDocument();
+    expect(elements.root).toHaveAccessibleName(`${A11y.Title}`);
+
+    expect(screen.getByText(`${A11y.Description}`)).toBeInTheDocument();
+    expect(elements.root).toHaveAccessibleDescription(`${A11y.Description}`);
   });
   it('animates its overlay and root element', () => {
     const { elements } = renderModal();
