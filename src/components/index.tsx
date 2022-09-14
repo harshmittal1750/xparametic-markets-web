@@ -38,7 +38,6 @@ import MarketSelect from './MarketSelect';
 import Menu from './Menu';
 import MiniAreaChart from './MiniAreaChart';
 import MiniTable from './MiniTable';
-import Modal from './Modal';
 import ModalNotification from './ModalNotification';
 import NavBar from './NavBar';
 import NetworkInfo from './NetworkInfo';
@@ -114,7 +113,6 @@ export {
   Menu,
   MiniAreaChart,
   MiniTable,
-  Modal,
   ModalNotification,
   NavBar,
   NetworkInfo,
@@ -151,3 +149,15 @@ export {
   TradeForm,
   WalletInfo
 };
+export { default as Modal } from './Modal';
+export * from './Modal';
+
+export { default as ModalFooter } from './ModalFooter';
+
+export { default as ModalHeader } from './ModalHeader';
+
+export { default as ModalHeaderTitle } from './ModalHeaderTitle';
+
+export { default as ModalSection } from './ModalSection';
+
+export { default as ModalSectionText } from './ModalSectionText';
