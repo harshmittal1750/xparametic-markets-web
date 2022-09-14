@@ -18,7 +18,14 @@ export {
   useWindowDimensions
 };
 export { default as useClickaway } from './useClickaway';
+
 export { default as useCookie } from './useCookie';
+
 export { default as useFocustrap } from './useFocustrap';
+
+export { default as useModalContext } from './useModalContext';
+export * from './useModalContext';
+
 export { default as usePortal } from './usePortal';
+
 export { default as usePrevious } from './usePrevious';
