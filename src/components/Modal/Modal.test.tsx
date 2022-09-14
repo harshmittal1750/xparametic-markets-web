@@ -35,7 +35,7 @@ function renderModal() {
       </ModalFooter>
     </Modal>
   );
-  const els = {
+  const elements = {
     root: screen.getByRole('dialog', {
       name: `${A11y.Title}`
     }),
@@ -46,7 +46,7 @@ function renderModal() {
   };
 
   return {
-    els,
+    elements,
     ...result
   };
 }
@@ -60,47 +60,49 @@ describe('Modal', () => {
       overflow: 'hidden'
     });
   });
-  it('renders sr title', () => {
-    const { els } = renderModal();
+  it('renders accessible title and descriptio content', () => {
+    const { elements } = renderModal();
 
-    expect(els.root).toBeInTheDocument();
+    expect(elements.root).toBeInTheDocument();
+    expect(elements.root).toHaveAccessibleName(`${A11y.Title}`);
+    expect(elements.root).toHaveAccessibleDescription(`${A11y.Description}`);
     expect(
       screen.getByRole('heading', {
         level: 2,
         name: `${A11y.Title}`
       })
-    );
+    ).toBeInTheDocument();
   });
   it('animates its overlay and root element', () => {
-    const { els } = renderModal();
+    const { elements } = renderModal();
 
-    expect(els.overlay).toHaveStyle({
+    expect(elements.overlay).toHaveStyle({
       opacity: 0
     });
-    expect(els.root).toHaveStyle({
+    expect(elements.root).toHaveStyle({
       transform: 'translateY(16px) translateZ(0)'
     });
   });
   it('calls [onHide] throught useClickaway', async () => {
-    const { els } = renderModal();
+    const { elements } = renderModal();
 
-    fireEvent.focusOut(els.root);
+    fireEvent.focusOut(elements.root);
     await waitFor(() => expect(defaultProps.onHide).toHaveBeenCalled());
   });
   it('calls [onHide] throught Escape keydown', () => {
-    const { els } = renderModal();
+    const { elements } = renderModal();
 
-    fireEvent.keyDown(els.overlay, { key: 'Escape' });
+    fireEvent.keyDown(elements.overlay, { key: 'Escape' });
     expect(defaultProps.onHide).toHaveBeenCalled();
   });
   // todo: positions focus trapper elements in order
   it('traps focus on focusable elements inside it throught useFocustrap', async () => {
-    const { els } = renderModal();
+    const { elements } = renderModal();
 
     expect(screen.getByTestId(getFocusTrapId('start'))).toHaveFocus();
 
     userEvent.tab();
-    expect(els.hide).toHaveFocus();
+    expect(elements.hide).toHaveFocus();
 
     userEvent.tab();
     expect(
@@ -110,6 +112,6 @@ describe('Modal', () => {
     ).toHaveFocus();
 
     userEvent.tab();
-    await waitFor(() => expect(els.hide).toHaveFocus());
+    await waitFor(() => expect(elements.hide).toHaveFocus());
   });
 });
