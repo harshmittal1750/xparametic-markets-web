@@ -1,27 +1,21 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-import {
-  useClickaway,
-  usePortal,
-  usePrevious,
-  useFocustrap,
-  ModalContext
-} from 'hooks';
+import { RemoveOutlinedIcon } from 'assets/icons';
+
+import { Button } from 'components/Button';
+
+import { useClickaway, usePortal, usePrevious, useFocustrap } from 'hooks';
 
 import { ModalProps } from './Modal.type';
 
-export default function Modal({ children, onHide, show, name }: ModalProps) {
-  const modalContextValue = useMemo(
-    () => ({
-      name,
-      onHide,
-      labelledby: 'modal-title',
-      describedby: 'modal-description'
-    }),
-    [name, onHide]
-  );
+export default function Modal({
+  children,
+  onHide,
+  show,
+  ...props
+}: ModalProps) {
   const { current: showPrev } = usePrevious(show);
   const ref = useRef<HTMLDivElement>(null);
   const Portal = usePortal({
@@ -51,34 +45,41 @@ export default function Modal({ children, onHide, show, name }: ModalProps) {
 
   return (
     <Portal>
-      <ModalContext.Provider value={modalContextValue}>
-        <AnimatePresence>
-          {show && (
+      <AnimatePresence>
+        {show && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="presentation"
+            className="pm-c-modal__overlay"
+            onKeyDown={handleKeyDown}
+          >
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              role="presentation"
-              className="pm-c-modal__overlay"
-              onKeyDown={handleKeyDown}
+              ref={ref}
+              initial={{ y: 16 }}
+              animate={{ y: 0 }}
+              exit={{ y: 16 }}
+              role="dialog"
+              aria-modal="true"
+              className="pm-c-modal"
+              {...props}
             >
-              <motion.div
-                ref={ref}
-                initial={{ y: 16 }}
-                animate={{ y: 0 }}
-                exit={{ y: 16 }}
-                role="dialog"
-                aria-modal="true"
-                aria-labelledby={`${name}-${modalContextValue.labelledby}`}
-                aria-describedby={`${name}-${modalContextValue.describedby}`}
-                className="pm-c-modal"
-              >
-                {children}
-              </motion.div>
+              {onHide && (
+                <Button
+                  variant="ghost"
+                  onClick={onHide}
+                  className="pm-c-modal__header-hide"
+                  aria-label="Hide"
+                >
+                  <RemoveOutlinedIcon />
+                </Button>
+              )}
+              {children}
             </motion.div>
-          )}
-        </AnimatePresence>
-      </ModalContext.Provider>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Portal>
   );
 }

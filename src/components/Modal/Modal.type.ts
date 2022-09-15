@@ -1,7 +1,6 @@
 import React from 'react';
 
-export type ModalProps = React.PropsWithChildren<{
-  name: string;
+export interface ModalProps extends React.ComponentPropsWithRef<'div'> {
   onHide?(): void;
   show: boolean;
-}>;
+}

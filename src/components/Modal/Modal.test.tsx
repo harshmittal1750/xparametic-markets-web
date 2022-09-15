@@ -8,27 +8,29 @@ import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 
+import { FocusTrap } from 'hooks';
+
 import Modal from './Modal';
 
 const defaultProps = {
   show: true,
   onHide: jest.fn(),
-  name: 'test'
+  'aria-labelledby': 'test-modal-name',
+  'aria-describedby': 'test-moda-description'
 };
-
-enum A11y {
-  Title,
-  Description
-}
 
 function renderModal() {
   const result = render(
     <Modal {...defaultProps}>
       <ModalHeader>
-        <ModalHeaderTitle>{A11y.Title}</ModalHeaderTitle>
+        <ModalHeaderTitle id={defaultProps['aria-labelledby']}>
+          {defaultProps['aria-labelledby']}
+        </ModalHeaderTitle>
       </ModalHeader>
       <ModalSection>
-        <ModalSectionText>{A11y.Description}</ModalSectionText>
+        <ModalSectionText id={defaultProps['aria-describedby']}>
+          {defaultProps['aria-describedby']}
+        </ModalSectionText>
       </ModalSection>
       <ModalFooter>
         <button type="button">action</button>
@@ -37,7 +39,7 @@ function renderModal() {
   );
   const elements = {
     root: screen.getByRole('dialog', {
-      name: `${A11y.Title}`
+      name: defaultProps['aria-labelledby']
     }),
     overlay: screen.getByRole('presentation'),
     hide: screen.getByRole('button', {
@@ -52,55 +54,27 @@ function renderModal() {
 }
 
 describe('Modal', () => {
-  // todo: renders its content throught usePortal
-  it('locks body overflow', () => {
-    renderModal();
+  it('renders nothing without [show=true]', () => {
+    render(<Modal show={false} />);
 
-    expect(document.body).toHaveStyle({
-      overflow: 'hidden'
-    });
+    expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
   });
-  it('renders accessible title and description content', () => {
-    const { elements } = renderModal();
-
-    expect(
-      screen.getByRole('heading', {
-        level: 2,
-        name: `${A11y.Title}`
-      })
-    ).toBeInTheDocument();
-    expect(elements.root).toHaveAccessibleName(`${A11y.Title}`);
-
-    expect(screen.getByText(`${A11y.Description}`)).toBeInTheDocument();
-    expect(elements.root).toHaveAccessibleDescription(`${A11y.Description}`);
-  });
-  it('animates its overlay and root element', () => {
-    const { elements } = renderModal();
-
-    expect(elements.overlay).toHaveStyle({
-      opacity: 0
-    });
-    expect(elements.root).toHaveStyle({
-      transform: 'translateY(16px) translateZ(0)'
-    });
-  });
-  it('calls [onHide] throught useClickaway', async () => {
+  it('calls [onHide] through useClickaway', async () => {
     const { elements } = renderModal();
 
     fireEvent.focusOut(elements.root);
     await waitFor(() => expect(defaultProps.onHide).toHaveBeenCalled());
   });
-  it('calls [onHide] throught Escape keydown', () => {
+  it('calls [onHide] through Escape keydown', () => {
     const { elements } = renderModal();
 
     fireEvent.keyDown(elements.overlay, { key: 'Escape' });
     expect(defaultProps.onHide).toHaveBeenCalled();
   });
-  // todo: positions focus trapper elements in order
-  it('traps focus on focusable elements inside it throught useFocustrap', async () => {
+  it('traps focus on focusable elements inside it through useFocustrap', async () => {
     const { elements } = renderModal();
 
-    expect(screen.getByTestId(getFocusTrapId('start'))).toHaveFocus();
+    expect(screen.getByTestId(getFocusTrapId(FocusTrap.Start))).toHaveFocus();
 
     userEvent.tab();
     expect(elements.hide).toHaveFocus();
@@ -114,5 +88,40 @@ describe('Modal', () => {
 
     userEvent.tab();
     await waitFor(() => expect(elements.hide).toHaveFocus());
+  });
+  it('locks body overflow', () => {
+    renderModal();
+
+    expect(document.body).toHaveStyle({
+      overflow: 'hidden'
+    });
+  });
+  it('renders accessible title and description content', () => {
+    const { elements } = renderModal();
+
+    expect(
+      screen.getByRole('heading', {
+        level: 2,
+        name: defaultProps['aria-labelledby']
+      })
+    ).toBeInTheDocument();
+    expect(elements.root).toHaveAccessibleName(defaultProps['aria-labelledby']);
+
+    expect(
+      screen.getByText(defaultProps['aria-describedby'])
+    ).toBeInTheDocument();
+    expect(elements.root).toHaveAccessibleDescription(
+      defaultProps['aria-describedby']
+    );
+  });
+  it('animates its overlay and root element', () => {
+    const { elements } = renderModal();
+
+    expect(elements.overlay).toHaveStyle({
+      opacity: 0
+    });
+    expect(elements.root).toHaveStyle({
+      transform: 'translateY(16px) translateZ(0)'
+    });
   });
 });

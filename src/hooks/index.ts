@@ -22,9 +22,7 @@ export { default as useClickaway } from './useClickaway';
 export { default as useCookie } from './useCookie';
 
 export { default as useFocustrap } from './useFocustrap';
-
-export { default as useModalContext } from './useModalContext';
-export * from './useModalContext';
+export * from './useFocustrap';
 
 export { default as usePortal } from './usePortal';
 
