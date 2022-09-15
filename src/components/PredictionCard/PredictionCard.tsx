@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Market as MarketInterface } from 'models/market';
@@ -37,6 +38,4 @@ function PredictionCard({ market }: PredictionCardProps) {
   );
 }
 
-PredictionCard.displayName = 'PredictionCard';
-
-export default PredictionCard;
+export default memo(PredictionCard);
