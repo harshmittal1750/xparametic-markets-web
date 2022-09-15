@@ -23,3 +23,4 @@ export { default as usePortal } from './usePortal';
 export { default as usePrevious } from './usePrevious';
 export { default as useClickaway } from './useClickaway';
 export { default as useTrapfocus } from './useTrapfocus';
+export { default as useFooterVisibility } from './useFooterVisibility';
