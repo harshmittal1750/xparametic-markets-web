@@ -1,4 +1,4 @@
-import { useEffect, memo } from 'react';
+import { useEffect, memo, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
@@ -8,7 +8,7 @@ import { InfoIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useFooterVisibility } from 'hooks';
 
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
@@ -28,6 +28,7 @@ const MarketListAsync = ({
   markets
 }: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
+  const { show, hide } = useFooterVisibility();
   const { isLoading, error } = useAppSelector(state => state.markets);
 
   useEffect(() => {
@@ -36,11 +37,23 @@ const MarketListAsync = ({
     }
   }, [dispatch, asyncAction, filterBy]);
 
-  function refreshMarkets() {
+  useEffect(() => {
+    if (!isEmpty(markets)) {
+      hide();
+    }
+    return () => show();
+  }, [dispatch, markets, hide, show]);
+
+  const refreshMarkets = useCallback(() => {
     if (!isEmpty(filterBy)) {
       dispatch(asyncAction(filterBy));
     }
-  }
+  }, [asyncAction, dispatch, filterBy]);
+
+  const setFooterVisibility = useCallback(
+    (atBottom: boolean) => (atBottom ? show() : hide()),
+    [hide, show]
+  );
 
   if (isLoading[id])
     return (
@@ -102,6 +115,7 @@ const MarketListAsync = ({
             <PredictionCard market={market} />
           </div>
         )}
+        atBottom={atBottom => setFooterVisibility(atBottom)}
       />
     </div>
   );
