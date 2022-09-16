@@ -18,17 +18,17 @@ const defaultProps = {
 };
 
 function renderModal() {
+  const a11y = {
+    name: defaultProps['aria-labelledby'],
+    desc: defaultProps['aria-describedby']
+  };
   const result = render(
     <Modal {...defaultProps}>
       <ModalHeader>
-        <ModalHeaderTitle id={defaultProps['aria-labelledby']}>
-          {defaultProps['aria-labelledby']}
-        </ModalHeaderTitle>
+        <ModalHeaderTitle id={a11y.name}>{a11y.name}</ModalHeaderTitle>
       </ModalHeader>
       <ModalSection>
-        <ModalSectionText id={defaultProps['aria-describedby']}>
-          {defaultProps['aria-describedby']}
-        </ModalSectionText>
+        <ModalSectionText id={a11y.desc}>{a11y.desc}</ModalSectionText>
       </ModalSection>
       <ModalFooter>
         <button type="button">action</button>
@@ -37,15 +37,20 @@ function renderModal() {
   );
   const elements = {
     root: screen.getByRole('dialog', {
-      name: defaultProps['aria-labelledby']
+      name: a11y.name
     }),
     overlay: screen.getByRole('presentation'),
     hide: screen.getByRole('button', {
       name: 'Hide'
+    }),
+    title: screen.getByRole('heading', {
+      level: 2,
+      name: a11y.name
     })
   };
 
   return {
+    a11y,
     elements,
     ...result
   };
@@ -95,22 +100,13 @@ describe('Modal', () => {
     });
   });
   it('renders accessible title and description content', () => {
-    const { elements } = renderModal();
+    const { elements, a11y } = renderModal();
 
-    expect(
-      screen.getByRole('heading', {
-        level: 2,
-        name: defaultProps['aria-labelledby']
-      })
-    ).toBeInTheDocument();
-    expect(elements.root).toHaveAccessibleName(defaultProps['aria-labelledby']);
+    expect(elements.title).toBeInTheDocument();
+    expect(elements.root).toHaveAccessibleName(a11y.name);
 
-    expect(
-      screen.getByText(defaultProps['aria-describedby'])
-    ).toBeInTheDocument();
-    expect(elements.root).toHaveAccessibleDescription(
-      defaultProps['aria-describedby']
-    );
+    expect(screen.getByText(a11y.desc)).toBeInTheDocument();
+    expect(elements.root).toHaveAccessibleDescription(a11y.desc);
   });
   it('animates its overlay and root element', () => {
     const { elements } = renderModal();
