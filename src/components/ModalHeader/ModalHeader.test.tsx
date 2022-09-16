@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import cn from 'classnames';
 
 import ModalHeader from './ModalHeader';
 
@@ -17,5 +18,24 @@ describe('ModalHeader', () => {
       })
     ).toBeInTheDocument();
   });
-  // todo: renders Hide button
+  it('accepts extra [className]', () => {
+    render(
+      <ModalHeader
+        className={cn('class', {
+          name: true
+        })}
+      >
+        header
+      </ModalHeader>
+    );
+
+    expect(screen.getByText('header')).toHaveClass(
+      'pm-c-modal__header class name'
+    );
+  });
+  it('accepts extra props', () => {
+    render(<ModalHeader data-testid="header" />);
+
+    expect(screen.getByTestId('header')).toBeInTheDocument();
+  });
 });
