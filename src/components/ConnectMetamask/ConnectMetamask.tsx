@@ -16,6 +16,8 @@ import Pill from 'components/Pill';
 
 import { useAppDispatch, useNetwork } from 'hooks';
 
+import { connectMetamaskProps } from './ConnectMetamask.util';
+
 export default function ConnectMetamask() {
   const dispatch = useAppDispatch();
   const { networkConfig } = useNetwork();
@@ -38,7 +40,7 @@ export default function ConnectMetamask() {
 
   return (
     <>
-      <Modal show={show} onHide={handleHide} name="metamask-warning">
+      <Modal show={show} onHide={handleHide} {...connectMetamaskProps}>
         <ModalHeader>
           <div className="pm-l-navbar__actions-metamask__status">
             <MetaMaskIcon size={40} />
@@ -46,12 +48,12 @@ export default function ConnectMetamask() {
               <WarningOutlinedIcon />
             </Pill>
           </div>
-          <ModalHeaderTitle>
+          <ModalHeaderTitle id={connectMetamaskProps['aria-labelledby']}>
             Looks like your browser do not have Metamask installed.
           </ModalHeaderTitle>
         </ModalHeader>
         <ModalSection>
-          <ModalSectionText>
+          <ModalSectionText id={connectMetamaskProps['aria-describedby']}>
             Please follow up the instructions to install it, make sure your
             wallet is unlocked with at least one account on it and try again.
           </ModalSectionText>

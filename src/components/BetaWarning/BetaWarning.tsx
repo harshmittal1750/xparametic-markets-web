@@ -16,6 +16,8 @@ import Text from 'components/Text';
 
 import { useCookie } from 'hooks';
 
+import { betaWarningProps } from './BetaWarning.util';
+
 export default function BetaWarning() {
   const location = useLocation();
   const hasParam = new URLSearchParams(location.search).get('m');
@@ -37,12 +39,13 @@ export default function BetaWarning() {
   }
 
   return (
-    <Modal show={show} name="beta-warning">
+    <Modal show={show} {...betaWarningProps}>
       <ModalHeader>
         <ModalHeaderTitle
           className="pm-c-beta-warning__header-title"
           scale="tiny-uppercase"
           fontWeight="semibold"
+          id={betaWarningProps['aria-labelledby']}
         >
           <TwarningIcon
             className="pm-c-beta-warning__header-title__adornment"
@@ -63,7 +66,7 @@ export default function BetaWarning() {
           with the Polkamarkets Protocol Smart Contracts via your Web 3 injected
           wallet.
         </ModalSectionText>
-        <ModalSectionText>
+        <ModalSectionText id={betaWarningProps['aria-describedby']}>
           By entering the website I confirm I am not a citizen or resident in
           the United States or its territories, nor a US person.
         </ModalSectionText>
