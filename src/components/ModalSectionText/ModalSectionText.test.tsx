@@ -1,13 +1,32 @@
 import { render, screen } from '@testing-library/react';
+import cn from 'classnames';
 
-import ModalHeaderSection from './ModalSectionText';
+import ModalSectionText from './ModalSectionText';
 
-describe('ModalHeaderSection', () => {
+describe('ModalSectionText', () => {
   it('renders its children', () => {
-    render(<ModalHeaderSection>text</ModalHeaderSection>);
+    render(<ModalSectionText>text</ModalSectionText>);
 
     expect(screen.getByText('text')).toBeInTheDocument();
   });
-  // todo: classname
-  // todo: id
+  it('accepts extra [className]', () => {
+    render(
+      <ModalSectionText
+        className={cn('class', {
+          name: true
+        })}
+      >
+        header
+      </ModalSectionText>
+    );
+
+    expect(screen.getByText('header')).toHaveClass(
+      'pm-c-modal__section-text class name'
+    );
+  });
+  it('accepts extra props', () => {
+    render(<ModalSectionText id="text">text</ModalSectionText>);
+
+    expect(screen.getByText('text')).toHaveAttribute('id', 'text');
+  });
 });
