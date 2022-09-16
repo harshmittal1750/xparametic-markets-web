@@ -1,23 +1,26 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 
-import { createFocusTrap, getFocusEdge } from 'helpers';
-
 import usePrevious from 'hooks/usePrevious';
 
-export enum Trap {
-  START = 'start',
-  END = 'end'
-}
-
 export default function useFocustrap<V extends HTMLElement>(
-  ref: React.RefObject<V>
+  ref: React.RefObject<V>,
+  focusableElements: string[],
+  trappersId: Record<'start' | 'end', string>
 ) {
-  const focusTrappers = useMemo(
-    () => ({
-      start: createFocusTrap(Trap.START),
-      end: createFocusTrap(Trap.END)
-    }),
-    []
+  const focusTrap = useMemo(
+    () =>
+      Object.keys(trappersId).reduce((acc, cur) => {
+        const trapEl = document.createElement('span');
+
+        trapEl.setAttribute('tabIndex', '0');
+        trapEl.dataset.testid = trappersId[cur];
+
+        return {
+          ...acc,
+          [cur]: trapEl
+        };
+      }, {} as Record<'start' | 'end', HTMLSpanElement>),
+    [trappersId]
   );
   const timer = useRef<Partial<number>>();
   const { current: focusPrev } = usePrevious<Element | null>(
@@ -26,43 +29,41 @@ export default function useFocustrap<V extends HTMLElement>(
 
   useEffect(() => {
     const { current: node } = ref;
-    const hasFocusTrappers =
-      node?.contains(focusTrappers.start) && node?.contains(focusTrappers.end);
+    const hasFocusTrap =
+      node?.contains(focusTrap.start) && node?.contains(focusTrap.end);
 
-    if (!hasFocusTrappers) {
-      node?.insertBefore(focusTrappers.start, node.firstChild);
-      node?.appendChild(focusTrappers.end);
+    if (!hasFocusTrap) {
+      node?.insertBefore(focusTrap.start, node.firstChild);
+      node?.appendChild(focusTrap.end);
     }
-    focusTrappers.start.focus();
+    focusTrap.start.focus();
 
     return () => {
-      if (hasFocusTrappers) {
-        node?.removeChild(focusTrappers.start);
-        node?.removeChild(focusTrappers.end);
+      if (hasFocusTrap) {
+        node?.removeChild(focusTrap.start);
+        node?.removeChild(focusTrap.end);
       }
       (focusPrev as HTMLElement)?.focus();
     };
-  }, [focusPrev, focusTrappers, ref]);
+  }, [focusPrev, focusTrap, ref]);
   useEffect(() => {
     const { current: node } = ref;
-    const focusEdge = getFocusEdge(node, [
-      'a[href]',
-      'button:not([disabled])',
-      'textarea',
-      'input',
-      'select'
-    ]);
+    const els = node?.querySelectorAll(focusableElements?.join(', '));
+    const focusEdge = {
+      start: els?.[0] as HTMLElement,
+      end: els?.[els.length - 1] as HTMLElement
+    };
 
     function handleBlur() {
       window.clearTimeout(timer.current);
     }
     function handleFocus(event: FocusEvent) {
-      if (event.target === focusTrappers.start) {
+      if (event.target === focusTrap.start) {
         window.requestAnimationFrame(() => {
           timer.current = window.setTimeout(() => focusEdge.end.focus());
         });
       }
-      if (event.target === focusTrappers.end) {
+      if (event.target === focusTrap.end) {
         window.requestAnimationFrame(() => {
           timer.current = window.setTimeout(() => focusEdge.start.focus());
         });

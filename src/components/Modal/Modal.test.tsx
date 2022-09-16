@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getFocusTrapId } from 'helpers';
 
 import ModalFooter from 'components/ModalFooter';
 import ModalHeader from 'components/ModalHeader';
@@ -8,15 +7,14 @@ import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 
-import { FocusTrap } from 'hooks';
-
 import Modal from './Modal';
+import { modalTrappersId } from './Modal.util';
 
 const defaultProps = {
   show: true,
   onHide: jest.fn(),
   'aria-labelledby': 'test-modal-name',
-  'aria-describedby': 'test-moda-description'
+  'aria-describedby': 'test-modal-description'
 };
 
 function renderModal() {
@@ -74,7 +72,7 @@ describe('Modal', () => {
   it('traps focus on focusable elements inside it through useFocustrap', async () => {
     const { elements } = renderModal();
 
-    expect(screen.getByTestId(getFocusTrapId(FocusTrap.Start))).toHaveFocus();
+    expect(screen.getByTestId(modalTrappersId.start)).toHaveFocus();
 
     userEvent.tab();
     expect(elements.hide).toHaveFocus();

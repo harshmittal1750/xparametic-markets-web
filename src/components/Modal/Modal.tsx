@@ -9,6 +9,7 @@ import { Button } from 'components/Button';
 import { useClickaway, usePortal, usePrevious, useFocustrap } from 'hooks';
 
 import { ModalProps } from './Modal.type';
+import { modalTrappersId } from './Modal.util';
 
 export default function Modal({
   children,
@@ -37,7 +38,11 @@ export default function Modal({
     }
   }, [Portal, show, showPrev]);
   useClickaway(ref, () => onHide?.(), [showPrev, show]);
-  useFocustrap(ref);
+  useFocustrap(
+    ref,
+    ['a[href]', 'button:not([disabled])', 'textarea', 'input', 'select'],
+    modalTrappersId
+  );
 
   function handleKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Escape') onHide?.();

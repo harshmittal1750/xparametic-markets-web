@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`createFocusTrap returns the trapper node 1`] = `
-<span
-  data-testid="focus-trap-id"
-  tabindex="0"
-/>
-`;

@@ -3,14 +3,18 @@ import { useRef } from 'react';
 import { waitFor } from '@testing-library/dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { getFocusTrapId } from 'helpers';
 
-import useFocustrap, { Trap } from './useFocustrap';
+import useFocustrap from './useFocustrap';
+
+const trappersId = {
+  start: 'start',
+  end: 'end'
+};
 
 function ComponentWithFocustrap() {
   const ref = useRef(null);
 
-  useFocustrap(ref);
+  useFocustrap(ref, ['button'], trappersId);
 
   return (
     <div ref={ref}>
@@ -23,8 +27,8 @@ describe('useFocustrap', () => {
   it('inserts focus trappers nodes', () => {
     render(<ComponentWithFocustrap />);
 
-    Object.values(Trap).forEach(trap =>
-      expect(screen.getByTestId(getFocusTrapId(trap))).toBeTruthy()
+    Object.values(trappersId).forEach(trap =>
+      expect(screen.getByTestId(trap)).toBeTruthy()
     );
   });
   it('focus the start trapper element and trap it inside the referenced node', async () => {
@@ -32,7 +36,7 @@ describe('useFocustrap', () => {
 
     const button = screen.getByText('button');
 
-    expect(screen.getByTestId(getFocusTrapId(Trap.START))).toHaveFocus();
+    expect(screen.getByTestId(trappersId.start)).toHaveFocus();
     userEvent.tab();
     expect(button).toHaveFocus();
     userEvent.tab();
@@ -41,10 +45,10 @@ describe('useFocustrap', () => {
   it('focus the previous element back on its unmount', async () => {
     const { unmount } = render(<ComponentWithFocustrap />);
 
-    expect(screen.getByTestId(getFocusTrapId(Trap.START))).toHaveFocus();
+    expect(screen.getByTestId(trappersId.start)).toHaveFocus();
     unmount();
-    Object.values(Trap).forEach(trap =>
-      expect(screen.queryByTestId(getFocusTrapId(trap))).not.toBeInTheDocument()
+    Object.values(trappersId).forEach(trap =>
+      expect(screen.queryByTestId(trap)).not.toBeInTheDocument()
     );
     expect(document.body).toHaveFocus();
   });
