@@ -1,5 +1,4 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import _dayjs from 'dayjs';
 import mockDate from 'mockdate';
 
 import useCookie from './useCookie';
