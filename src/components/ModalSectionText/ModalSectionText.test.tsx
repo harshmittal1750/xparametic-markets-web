@@ -1,7 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import cn from 'classnames';
+import { renderClassName } from 'helpers/test';
 
 import ModalSectionText from './ModalSectionText';
+import ModalSectionTextStyles from './ModalSectionText.module.scss';
 
 describe('ModalSectionText', () => {
   it('renders its children', () => {
@@ -10,19 +12,15 @@ describe('ModalSectionText', () => {
     expect(screen.getByText('text')).toBeInTheDocument();
   });
   it('accepts extra [className]', () => {
+    const className = renderClassName({
+      withClassName: ModalSectionTextStyles.root
+    });
+
     render(
-      <ModalSectionText
-        className={cn('class', {
-          name: true
-        })}
-      >
-        header
-      </ModalSectionText>
+      <ModalSectionText className={className.input}>header</ModalSectionText>
     );
 
-    expect(screen.getByText('header')).toHaveClass(
-      'pm-c-modal__section-text class name'
-    );
+    expect(screen.getByText('header')).toHaveClass(className.expected);
   });
   it('accepts extra props', () => {
     render(<ModalSectionText id="text">text</ModalSectionText>);
