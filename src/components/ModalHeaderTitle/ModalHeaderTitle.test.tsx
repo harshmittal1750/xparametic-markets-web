@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import cn from 'classnames';
+import { renderClassName } from 'helpers/test';
 
 import ModalHeaderTitle from './ModalHeaderTitle';
+import ModalHeaderTitleStyles from './ModalHeaderTitle.module.scss';
 
 describe('ModalHeaderTitle', () => {
   it('renders its children', () => {
@@ -15,19 +16,15 @@ describe('ModalHeaderTitle', () => {
     ).toBeInTheDocument();
   });
   it('accepts extra [className]', () => {
+    const className = renderClassName({
+      withClassName: ModalHeaderTitleStyles.root
+    });
+
     render(
-      <ModalHeaderTitle
-        className={cn('class', {
-          name: true
-        })}
-      >
-        header
-      </ModalHeaderTitle>
+      <ModalHeaderTitle className={className.input}>header</ModalHeaderTitle>
     );
 
-    expect(screen.getByText('header')).toHaveClass(
-      'pm-c-modal__header-title class name'
-    );
+    expect(screen.getByText('header')).toHaveClass(className.expected);
   });
   it('accepts extra props', () => {
     render(<ModalHeaderTitle id="title">title</ModalHeaderTitle>);
