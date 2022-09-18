@@ -1,5 +1,6 @@
 import cn from 'classnames';
 
+import ModalSectionStyles from './ModalSection.module.scss';
 import type { ModalSectionProps } from './ModalSection.type';
 
 export default function ModalSection({
@@ -7,6 +8,6 @@ export default function ModalSection({
   ...props
 }: ModalSectionProps) {
   return (
-    <section className={cn('pm-c-modal__section', className)} {...props} />
+    <section className={cn(ModalSectionStyles.root, className)} {...props} />
   );
 }
