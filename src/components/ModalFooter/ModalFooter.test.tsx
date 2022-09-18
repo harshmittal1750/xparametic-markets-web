@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import cn from 'classnames';
+import { renderClassName } from 'helpers/test';
 
 import ModalFooter from './ModalFooter';
+import ModalFooterStyles from './ModalFooter.module.scss';
 
 describe('ModalFooter', () => {
   it('renders its children', () => {
@@ -14,19 +15,13 @@ describe('ModalFooter', () => {
     expect(screen.getByText('test')).toBeInTheDocument();
   });
   it('accepts extra [className]', () => {
-    render(
-      <ModalFooter
-        className={cn('class', {
-          name: true
-        })}
-      >
-        footer
-      </ModalFooter>
-    );
+    const className = renderClassName({
+      withClassName: ModalFooterStyles.root
+    });
 
-    expect(screen.getByText('footer')).toHaveClass(
-      'pm-c-modal__footer class name'
-    );
+    render(<ModalFooter className={className.input}>footer</ModalFooter>);
+
+    expect(screen.getByText('footer')).toHaveClass(className.expected);
   });
   it('accepts extra props', () => {
     render(<ModalFooter data-testid="footer" />);
