@@ -2,6 +2,7 @@ import cn from 'classnames';
 
 import Text from 'components/Text';
 
+import ModalSectionTextStyles from './ModalSectionText.module.scss';
 import type { ModalSectionTextProps } from './ModalSectionText.type';
 
 export default function ModalSectionText({
@@ -10,7 +11,7 @@ export default function ModalSectionText({
 }: ModalSectionTextProps) {
   return (
     <Text
-      className={cn('pm-c-modal__section-text', className)}
+      className={cn(ModalSectionTextStyles.root, className)}
       scale="caption"
       {...props}
     />
