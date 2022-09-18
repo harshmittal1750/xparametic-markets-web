@@ -2,6 +2,7 @@ import cn from 'classnames';
 
 import Text from 'components/Text';
 
+import ModalHeaderTitleStyles from './ModalHeaderTitle.module.scss';
 import type { ModalHeaderTitleProps } from './ModalHeaderTitle.type';
 
 export default function ModalHeaderTitle({
@@ -12,7 +13,7 @@ export default function ModalHeaderTitle({
     <Text
       as="h2"
       fontWeight="medium"
-      className={cn('pm-c-modal__header-title', className)}
+      className={cn(ModalHeaderTitleStyles.root, className)}
       scale="heading"
       {...props}
     />
