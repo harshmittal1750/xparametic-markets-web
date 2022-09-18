@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import cn from 'classnames';
+import { renderClassName } from 'helpers/test';
 
 import ModalSection from './ModalSection';
+import ModalSectionStyles from './ModalSection.module.scss';
 
 describe('ModalSection', () => {
   it('renders its children', () => {
@@ -14,19 +15,13 @@ describe('ModalSection', () => {
     expect(screen.getByText('test')).toBeInTheDocument();
   });
   it('accepts extra [className]', () => {
-    render(
-      <ModalSection
-        className={cn('class', {
-          name: true
-        })}
-      >
-        footer
-      </ModalSection>
-    );
+    const className = renderClassName({
+      withClassName: ModalSectionStyles.root
+    });
 
-    expect(screen.getByText('footer')).toHaveClass(
-      'pm-c-modal__section class name'
-    );
+    render(<ModalSection className={className.input}>footer</ModalSection>);
+
+    expect(screen.getByText('footer')).toHaveClass(className.expected);
   });
   it('accepts extra props', () => {
     render(<ModalSection data-testid="footer" />);
