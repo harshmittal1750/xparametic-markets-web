@@ -1,9 +1,10 @@
-import React from 'react';
-
 import cn from 'classnames';
 
+import ModalFooterStyles from './ModalFooter.module.scss';
 import type { ModalFooterProps } from './ModalFooter.type';
 
 export default function ModalFooter({ className, ...props }: ModalFooterProps) {
-  return <footer className={cn('pm-c-modal__footer', className)} {...props} />;
+  return (
+    <footer className={cn(ModalFooterStyles.root, className)} {...props} />
+  );
 }
