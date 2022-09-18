@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
+import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { RemoveOutlinedIcon } from 'assets/icons';
@@ -8,6 +9,7 @@ import { Button } from 'components/Button';
 
 import { useClickaway, usePortal, usePrevious, useFocustrap } from 'hooks';
 
+import ModalStyles from './Modal.module.scss';
 import { ModalProps } from './Modal.type';
 import { modalTrappersId } from './Modal.util';
 
@@ -60,6 +62,7 @@ export default function Modal({
             className="pm-c-modal__overlay"
             onKeyDown={handleKeyDown}
           >
+            {/** todo: fix type */}
             <motion.div
               ref={ref}
               initial={{ y: 16 }}
@@ -67,14 +70,16 @@ export default function Modal({
               exit={{ y: 16 }}
               role="dialog"
               aria-modal="true"
-              className="pm-c-modal"
+              // todo: allow extend
+              className={cn(ModalStyles.root)}
               {...props}
             >
               {onHide && (
                 <Button
                   variant="ghost"
                   onClick={onHide}
-                  className="pm-c-modal__header-hide"
+                  // todo: allow extend
+                  className={cn(ModalStyles.hide)}
                   aria-label="Hide"
                 >
                   <RemoveOutlinedIcon />

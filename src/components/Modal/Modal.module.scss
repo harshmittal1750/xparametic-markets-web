@@ -1,0 +1,24 @@
+.root {
+  @include themes($modal-themes) {
+    width: 41rem;
+    padding: $modal-padding-y $modal-padding-x;
+    background-color: themed('background');
+    border: $modal-border-width solid themed('border');
+    border-radius: $modal-border-radius;
+    box-shadow: $modal-shadow themed('shadow');
+    transition: all 0.2s ease-out;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.hide {
+  position: absolute;
+  right: -12px;
+  top: -12px;
+  width: 40px;
+  height: 40px !important;
+  padding: 0px;
+}
