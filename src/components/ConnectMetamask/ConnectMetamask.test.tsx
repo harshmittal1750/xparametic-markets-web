@@ -218,7 +218,6 @@ describe('ConnectMetamask', () => {
 
     assertions.connectMetamask();
 
-    // todo: this is causing memory leak
     expect(assertions.getElements().modal).not.toBeInTheDocument();
     await waitFor(() => {
       expect(PolkamarketsService.prototype.login).toHaveBeenCalledTimes(1);
