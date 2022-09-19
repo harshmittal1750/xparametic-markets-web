@@ -22,7 +22,8 @@ export { default as useClickaway } from './useClickaway';
 export { default as useCookie } from './useCookie';
 
 export { default as useFocustrap } from './useFocustrap';
-export * from './useFocustrap';
+
+export { default as useMounted } from './useMounted';
 
 export { default as usePortal } from './usePortal';
 
