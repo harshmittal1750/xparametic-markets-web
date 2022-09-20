@@ -1,37 +1,50 @@
 import { useRef } from 'react';
 
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
+import { renderHook } from '@testing-library/react-hooks';
 
 import useClickaway from './useClickaway';
 
-const onClickaway = jest.fn();
+function renderClickaway() {
+  const node = document.createElement('div');
+  const onClickaway = jest.fn();
 
-function ComponentWithClickaway({ deps }: { deps?: boolean[] }) {
-  const ref = useRef(null);
+  return {
+    node,
+    onClickaway,
+    ...renderHook(
+      initialProps => {
+        const ref = useRef(node);
 
-  useClickaway(ref, onClickaway, deps);
-
-  return <div ref={ref} data-testid="node" />;
+        return useClickaway(ref, onClickaway, initialProps.deps);
+      },
+      {
+        initialProps: {
+          deps: [true]
+        }
+      }
+    )
+  };
 }
 
 describe('useClickaway', () => {
   it('mutates the referenced node', () => {
-    render(<ComponentWithClickaway />);
-    const node = screen.getByTestId('node');
+    const { node } = renderClickaway();
 
     expect(node).toHaveAttribute('tabindex', '0');
   });
-  it('calls the passed callback', async () => {
-    render(<ComponentWithClickaway />);
-    const node = screen.getByTestId('node');
+  it('calls [onClickaway] when clicks away node', async () => {
+    const { node, onClickaway } = renderClickaway();
 
     fireEvent.focusOut(node);
     await waitFor(() => expect(onClickaway).toHaveBeenCalledTimes(1));
   });
-  it("doesn't call the passed callback", async () => {
-    render(<ComponentWithClickaway deps={[false]} />);
-    const node = screen.getByTestId('node');
+  it("doesn't call [onClickaway] if the deps doesn't allow it", async () => {
+    const { node, onClickaway, rerender } = renderClickaway();
 
+    rerender({
+      deps: [false]
+    });
     fireEvent.focusOut(node);
     expect(onClickaway).not.toHaveBeenCalled();
   });
