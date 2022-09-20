@@ -8,14 +8,6 @@ import { PolkamarketsService } from 'services';
 import ConnectMetamask from './ConnectMetamask';
 
 const { location, ethereum } = window;
-const windowMock = {
-  ethereum: {
-    on: jest.fn()
-  },
-  location: {
-    reload: jest.fn()
-  }
-};
 
 function Wrapper({
   // 🐛 BACKLOG: to be imported from some high-level app component
@@ -34,7 +26,7 @@ function renderConnectMetamask({
 }: {
   isMetamaskInstalled: boolean;
 }) {
-  window.ethereum = isMetamaskInstalled && windowMock.ethereum;
+  if (!isMetamaskInstalled) window.ethereum = null;
 
   const result = render(<ConnectMetamask />, {
     wrapper: Wrapper
@@ -80,7 +72,7 @@ jest.mock('react-router-dom', () => ({
   })
 }));
 
-beforeAll(() => {
+beforeEach(() => {
   delete window.ethereum;
   // @ts-expect-error
   delete window.location;
@@ -88,23 +80,26 @@ beforeAll(() => {
   Object.defineProperties(window, {
     ethereum: {
       writable: true,
-      value: windowMock.ethereum
+      value: {
+        on: jest.fn()
+      }
     },
     location: {
       configurable: true,
-      value: windowMock.location
+      value: {
+        reload: jest.fn()
+      }
     }
   });
 });
-afterAll(() => {
+afterEach(() => {
   Object.defineProperties(window, {
     ethereum: {
-      writable: true,
-      value: ethereum
+      ...ethereum
     },
+    // @ts-expect-error
     location: {
-      configurable: true,
-      value: location
+      ...location
     }
   });
   jest.clearAllMocks();
@@ -192,8 +187,6 @@ describe('ConnectMetamask', () => {
     );
   });
   it('allows to try again by reloading the page', () => {
-    jest.spyOn(windowMock.location, 'reload');
-
     const { assertions } = renderConnectMetamask({
       isMetamaskInstalled: false
     });
@@ -206,7 +199,7 @@ describe('ConnectMetamask', () => {
 
     expect(buttonTryagain).toBeInTheDocument();
     fireEvent.click(buttonTryagain);
-    expect(windowMock.location.reload).toHaveBeenCalledTimes(1);
+    expect(window.location.reload).toHaveBeenCalledTimes(1);
   });
   it('calls the PolkamarketsServices API if it is installed', async () => {
     PolkamarketsService.prototype.login = jest.fn();
