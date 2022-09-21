@@ -4,6 +4,13 @@ import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 
 dayjs.extend(utc);
+
+/**
+ * Hook with cookie getter and setter, that uses the Document interface object.
+ * @param {string} key The cookie name.
+ * @param {string} defaultValue The default value that will be returned if no cookie was found with the provided cookie's name.
+ * @returns {[cookie, setCookie]} An array with the first value being the returned cookie, and the second as a callback for a setter of a new cookie.
+ */
 export default function useCookie<V>(key: string, defaultValue?: V) {
   const value = useMemo(
     () =>
