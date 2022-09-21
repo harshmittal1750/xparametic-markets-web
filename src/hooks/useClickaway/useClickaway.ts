@@ -5,7 +5,7 @@ import usePrevious from 'hooks/usePrevious';
 export default function useClickaway<V extends HTMLElement>(
   ref: React.RefObject<V>,
   onClickaway: () => void,
-  deps: (boolean | null | undefined)[] = [true]
+  deps: boolean[] = [true]
 ) {
   const timer = useRef<Partial<number>>();
   const { current: tabindexPrev } = usePrevious(ref.current?.tabIndex);

@@ -52,7 +52,7 @@ export default function Modal({
       window.clearTimeout(timer.current);
     };
   }, [Portal, didMount, show, showPrev]);
-  useClickaway(ref, () => onHide?.(), [showPrev, show]);
+  useClickaway(ref, () => onHide?.(), [!!showPrev, show]);
   useFocustrap(
     ref,
     ['a[href]', 'button:not([disabled])', 'textarea', 'input', 'select'],
