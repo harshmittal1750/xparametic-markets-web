@@ -1,7 +1,6 @@
 import { useRef } from 'react';
 
-import { waitFor } from '@testing-library/dom';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import useFocustrap from './useFocustrap';
@@ -42,7 +41,7 @@ describe('useFocustrap', () => {
     userEvent.tab();
     await waitFor(() => expect(button).toHaveFocus());
   });
-  it('focus the previous element back on its unmount', async () => {
+  it('focus the previous element back on the referenced node unmount', async () => {
     const { unmount } = render(<ComponentWithFocustrap />);
 
     expect(screen.getByTestId(trappersId.start)).toHaveFocus();
