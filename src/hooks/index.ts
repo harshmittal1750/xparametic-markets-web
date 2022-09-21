@@ -23,7 +23,7 @@ export { default as useCookie } from './useCookie';
 
 export { default as useFocustrap } from './useFocustrap';
 
-export { default as useMounted } from './useMounted';
+export { default as useMount } from './useMount';
 
 export { default as usePortal } from './usePortal';
 
