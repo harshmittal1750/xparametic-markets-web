@@ -12,7 +12,7 @@ import {
   usePortal,
   usePrevious,
   useFocustrap,
-  useMounted
+  useMount
 } from 'hooks';
 
 import ModalStyles from './Modal.module.scss';
@@ -26,9 +26,10 @@ export default function Modal({
   className,
   ...props
 }: ModalProps) {
-  const isMounted = useMounted();
+  const { current: didMount } = useMount();
   const { current: showPrev } = usePrevious(show);
   const ref = useRef<HTMLDivElement>(null);
+  const timer = useRef<Partial<number>>();
   const Portal = usePortal({
     root: document.body,
     onEffect() {
@@ -41,12 +42,16 @@ export default function Modal({
   });
 
   useEffect(() => {
-    if (showPrev && !show && isMounted.current) {
-      setTimeout(Portal.unmount, 300);
+    if (showPrev && !show && didMount) {
+      timer.current = window.setTimeout(Portal.unmount, 300);
     } else {
       Portal.mount(show);
     }
-  }, [Portal, isMounted, show, showPrev]);
+
+    return () => {
+      window.clearTimeout(timer.current);
+    };
+  }, [Portal, didMount, show, showPrev]);
   useClickaway(ref, () => onHide?.(), [showPrev, show]);
   useFocustrap(
     ref,
