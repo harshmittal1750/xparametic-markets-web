@@ -1,5 +1,3 @@
 .root {
-  @include themes($modal-themes) {
-    color: map-get(themed('text-colors'), 'primary');
-  }
+  color: var(--ModalHeaderTitle-root--color);
 }

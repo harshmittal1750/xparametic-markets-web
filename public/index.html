@@ -59,6 +59,34 @@
       type="font/woff2"
       crossorigin="anonymous"
     />
+    <!-- CSS Vars -->
+    <style type="text/css">
+      :root {
+        --Modal-root--background: linear-gradient(
+          180deg,
+          rgba(248, 250, 255, 0.82) 0%,
+          rgba(248, 250, 255, 0.88) 100%
+        );
+        --Modal-dialog--background-color: #f8faff;
+        --Modal-dialog--border-color: #e3e7f0;
+        --Modal-dialog--box-shadow-color: rgba(137, 158, 198, 0.17);
+        --ModalHeaderTitle-root--color: #313a4c;
+        --ModalSectionText-root--color: #8193ae;
+      }
+
+      [class='theme--dark'] {
+        --Modal-root--background: linear-gradient(
+          180deg,
+          rgba(14, 16, 22, 0.82) 0%,
+          rgba(14, 16, 22, 0.88) 100%
+        );
+        --Modal-dialog--background-color: #0e1016;
+        --Modal-dialog--border-color: #252c3b;
+        --Modal-dialog--box-shadow-color: rgba(0, 0, 0, 0.4);
+        --ModalHeaderTitle-root--color: #f3f4f6;
+        --ModalSectionText-root--color: #637084;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

@@ -1,9 +1,7 @@
 .root {
-  @include themes($modal-themes) {
-    color: map-get(themed('text-colors'), 'secondary');
+  color: var(--ModalSectionText-root--color);
 
-    &:not(:last-child) {
-      margin-bottom: 1.6rem;
-    }
+  &:not(:last-child) {
+    margin-bottom: 1.6rem;
   }
 }
