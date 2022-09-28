@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import usePrevious from 'hooks/usePrevious';
+import useTimeoutEffect from 'hooks/useTimeoutEffect';
 
 /**
  * Invokes the `onClickaway` args when the user clicks outside a specific node, if all dependencies is true.
@@ -13,18 +14,18 @@ export default function useClickaway<V extends HTMLElement>(
   onClickaway: () => void,
   deps: boolean[] = [true]
 ) {
-  const timer = useRef<Partial<number>>();
+  const timeoutEffect = useTimeoutEffect();
   const { current: tabindexPrev } = usePrevious(ref.current?.tabIndex);
 
   useEffect(() => {
     const { current: node } = ref;
 
     function handleFocus() {
-      window.clearTimeout(timer.current);
+      timeoutEffect.clear();
     }
     function handleBlur() {
-      timer.current = window.setTimeout(() => {
-        if (deps.every(Boolean)) onClickaway?.();
+      timeoutEffect(() => {
+        if (deps.every(Boolean)) onClickaway();
       });
     }
 
@@ -36,7 +37,6 @@ export default function useClickaway<V extends HTMLElement>(
       if (tabindexPrev === -1) node?.setAttribute('tabIndex', '-1');
       node?.removeEventListener('focusin', handleFocus);
       node?.removeEventListener('focusout', handleBlur);
-      handleFocus();
     };
-  }, [deps, onClickaway, ref, tabindexPrev]);
+  }, [deps, onClickaway, ref, tabindexPrev, timeoutEffect]);
 }
