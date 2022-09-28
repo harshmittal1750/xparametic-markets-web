@@ -152,7 +152,6 @@ export {
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as Modal } from './Modal';
-export * from './Modal';
 
 export { default as ModalFooter } from './ModalFooter';
 

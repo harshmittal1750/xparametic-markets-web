@@ -1,26 +1,11 @@
-import { Provider } from 'react-redux';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
-
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import store from 'redux/store';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
+import { renderWithProviders } from 'helpers/test';
 import { PolkamarketsService } from 'services';
 
 import ConnectMetamask from './ConnectMetamask';
 
 const { location, ethereum } = window;
 
-function Wrapper({
-  // 🐛 BACKLOG: to be imported from some high-level app component
-  children
-}: React.PropsWithChildren<Record<string, unknown>>) {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <MemoryRouter>{children}</MemoryRouter>
-      </BrowserRouter>
-    </Provider>
-  );
-}
 function renderConnectMetamask({
   isMetamaskInstalled
 }: {
@@ -28,9 +13,6 @@ function renderConnectMetamask({
 }) {
   if (!isMetamaskInstalled) window.ethereum = null;
 
-  const result = render(<ConnectMetamask />, {
-    wrapper: Wrapper
-  });
   const a11y = {
     // 🐛 BACKLOG: to be moved to i18n
     name: 'Looks like your browser do not have Metamask installed.',
@@ -38,13 +20,15 @@ function renderConnectMetamask({
   };
   const assertions = {
     getElements() {
+      const dialog = screen.queryByRole('dialog', {
+        name: a11y.name
+      }) as HTMLElement;
+
       return {
         buttonConnectMetamask: screen.getByRole('button', {
           name: 'Connect MetaMask'
         }),
-        modal: screen.queryByRole('dialog', {
-          name: a11y.name
-        }) as HTMLElement
+        dialog
       };
     },
     connectMetamask() {
@@ -58,7 +42,7 @@ function renderConnectMetamask({
   return {
     a11y,
     assertions,
-    ...result
+    ...renderWithProviders(<ConnectMetamask />)
   };
 }
 
@@ -111,9 +95,9 @@ describe('ConnectMetamask', () => {
     });
 
     expect(assertions.getElements().buttonConnectMetamask).toBeInTheDocument();
-    expect(assertions.getElements().modal).not.toBeInTheDocument();
+    expect(assertions.getElements().dialog).not.toBeInTheDocument();
   });
-  it('renders its warning modal if it is not installed', () => {
+  it('renders its warning dialog if it is not installed', () => {
     const { a11y, assertions } = renderConnectMetamask({
       isMetamaskInstalled: false
     });
@@ -126,14 +110,14 @@ describe('ConnectMetamask', () => {
         name: a11y.name
       })
     ).toBeInTheDocument();
-    expect(assertions.getElements().modal).toHaveAccessibleName(a11y.name);
+    expect(assertions.getElements().dialog).toHaveAccessibleName(a11y.name);
 
     expect(screen.getByText(a11y.desc)).toBeInTheDocument();
-    expect(assertions.getElements().modal).toHaveAccessibleDescription(
+    expect(assertions.getElements().dialog).toHaveAccessibleDescription(
       a11y.desc
     );
   });
-  it('allows to close its warning modal through Hide button', async () => {
+  it('allows to close its warning dialog through Hide button', async () => {
     const { assertions } = renderConnectMetamask({
       isMetamaskInstalled: false
     });
@@ -151,7 +135,7 @@ describe('ConnectMetamask', () => {
       expect(screen.queryByRole('presentation')).not.toBeInTheDocument();
     });
   });
-  it('allows to close its warning modal through click away', async () => {
+  it('allows to close its warning dialog through click away', async () => {
     const { a11y, assertions } = renderConnectMetamask({
       isMetamaskInstalled: false
     });
@@ -211,7 +195,7 @@ describe('ConnectMetamask', () => {
 
     assertions.connectMetamask();
 
-    expect(assertions.getElements().modal).not.toBeInTheDocument();
+    expect(assertions.getElements().dialog).not.toBeInTheDocument();
     await waitFor(() => {
       expect(PolkamarketsService.prototype.login).toHaveBeenCalledTimes(1);
     });
