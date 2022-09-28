@@ -1,28 +1,33 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import usePrevious from 'hooks/usePrevious';
+import useTimeoutEffect from 'hooks/useTimeoutEffect';
 
+/**
+ * Trap focus inside a specific node.
+ * @param {{ current: HTMLElement }} ref React ref object forked from the specified node. See [useRef](https://reactjs.org/docs/hooks-reference.html#useref).
+ * @param focusableElements List of elements CSS-like to be focus when it is trapped.
+ * @param trappersId The IDs for the required trappers elements. This is usefull for tests.
+ */
 export default function useFocustrap<V extends HTMLElement>(
   ref: React.RefObject<V>,
   focusableElements: string[],
   trappersId: Record<'start' | 'end', string>
 ) {
-  const focusTrap = useMemo(
-    () =>
-      Object.keys(trappersId).reduce((acc, cur) => {
-        const trapEl = document.createElement('span');
+  const focusTrap = useMemo(() => {
+    return Object.keys(trappersId).reduce((acc, cur) => {
+      const trapEl = document.createElement('span');
 
-        trapEl.setAttribute('tabIndex', '0');
-        trapEl.dataset.testid = trappersId[cur];
+      trapEl.setAttribute('tabIndex', '0');
+      trapEl.dataset.testid = trappersId[cur];
 
-        return {
-          ...acc,
-          [cur]: trapEl
-        };
-      }, {} as Record<'start' | 'end', HTMLSpanElement>),
-    [trappersId]
-  );
-  const timer = useRef<Partial<number>>();
+      return {
+        ...acc,
+        [cur]: trapEl
+      };
+    }, {} as Record<'start' | 'end', HTMLSpanElement>);
+  }, [trappersId]);
+  const timeoutEffect = useTimeoutEffect();
   const { current: focusPrev } = usePrevious<Element | null>(
     document.activeElement
   );
@@ -55,17 +60,17 @@ export default function useFocustrap<V extends HTMLElement>(
     };
 
     function handleBlur() {
-      window.clearTimeout(timer.current);
+      timeoutEffect.clear();
     }
     function handleFocus(event: FocusEvent) {
       if (event.target === focusTrap.start) {
         window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => focusEdge.end.focus());
+          timeoutEffect(() => focusEdge.end.focus());
         });
       }
       if (event.target === focusTrap.end) {
         window.requestAnimationFrame(() => {
-          timer.current = window.setTimeout(() => focusEdge.start.focus());
+          timeoutEffect(() => focusEdge.start.focus());
         });
       }
     }
@@ -76,7 +81,6 @@ export default function useFocustrap<V extends HTMLElement>(
     return () => {
       node?.removeEventListener('focusout', handleBlur);
       node?.removeEventListener('focusin', handleFocus);
-      handleBlur();
     };
   });
 }
