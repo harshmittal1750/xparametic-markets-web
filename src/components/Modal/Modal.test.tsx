@@ -26,7 +26,12 @@ function renderModal() {
     withClassName: ModalStyles.dialog
   });
   const result = render(
-    <Modal className={cn(className.input)} {...defaultProps}>
+    <Modal
+      className={{
+        dialog: cn(className.input)
+      }}
+      {...defaultProps}
+    >
       <ModalHeader>
         <ModalHeaderTitle id={defaultProps['aria-labelledby']}>
           {defaultProps['aria-labelledby']}
