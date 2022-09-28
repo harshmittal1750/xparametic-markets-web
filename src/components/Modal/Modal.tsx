@@ -12,11 +12,12 @@ import {
   usePortal,
   usePrevious,
   useFocustrap,
-  useMount
+  useMount,
+  useTimeoutEffect
 } from 'hooks';
 
-import ModalStyles from './Modal.module.scss';
-import { ModalProps } from './Modal.type';
+import ModalClasses from './Modal.module.scss';
+import type { ModalProps } from './Modal.type';
 import { modalTrappersId } from './Modal.util';
 
 export default function Modal({
@@ -29,7 +30,7 @@ export default function Modal({
   const { current: didMount } = useMount();
   const { current: showPrev } = usePrevious(show);
   const ref = useRef<HTMLDivElement>(null);
-  const timer = useRef<Partial<number>>();
+  const timeoutEffect = useTimeoutEffect();
   const Portal = usePortal({
     root: document.body,
     onEffect() {
@@ -42,16 +43,12 @@ export default function Modal({
   });
 
   useEffect(() => {
-    if (showPrev && !show && didMount) {
-      timer.current = window.setTimeout(Portal.unmount, 300);
+    if (showPrev && !show) {
+      if (didMount) timeoutEffect(Portal.unmount, 300);
     } else {
       Portal.mount(show);
     }
-
-    return () => {
-      window.clearTimeout(timer.current);
-    };
-  }, [Portal, didMount, show, showPrev]);
+  }, [Portal, didMount, show, showPrev, timeoutEffect]);
   useClickaway(ref, () => onHide?.(), [!!showPrev, show]);
   useFocustrap(
     ref,
@@ -72,8 +69,7 @@ export default function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             role="presentation"
-            // todo: allow extend
-            className={cn(ModalStyles.root)}
+            className={cn(ModalClasses.root, className?.root)}
             onKeyDown={handleKeyDown}
           >
             <motion.div
@@ -83,15 +79,14 @@ export default function Modal({
               exit={{ y: 16 }}
               role="dialog"
               aria-modal="true"
-              className={cn(ModalStyles.dialog, className)}
+              className={cn(ModalClasses.dialog, className?.dialog)}
               {...props}
             >
               {onHide && (
                 <Button
                   variant="ghost"
                   onClick={onHide}
-                  // todo: allow extend
-                  className={cn(ModalStyles.hide)}
+                  className={cn(ModalClasses.hide, className?.hide)}
                   aria-label="Hide"
                 >
                   <RemoveOutlinedIcon />
