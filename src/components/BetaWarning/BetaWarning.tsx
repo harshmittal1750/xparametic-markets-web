@@ -21,16 +21,18 @@ import { betaWarningProps } from './BetaWarning.util';
 export default function BetaWarning() {
   const location = useLocation();
   const hasParam = new URLSearchParams(location.search).get('m');
-  const [cookie, setCookie] = useCookie('betaWarning', true);
+  const [betaWarningCookie, setBetaWarningCookie] = useCookie(
+    'betaWarning',
+    'true'
+  );
   const [agreed, setAgreed] = useState(false);
   const [show, setShow] = useState(
-    hasParam !== 'f' || cookie?.toString() === 'true'
+    hasParam !== 'f' || betaWarningCookie === 'true'
   );
 
   useEffect(() => {
-    setCookie(show);
-  }, [setCookie, show]);
-
+    setBetaWarningCookie(show?.toString());
+  }, [setBetaWarningCookie, show]);
   function handleAgreed() {
     setAgreed(prevAgreed => !prevAgreed);
   }
