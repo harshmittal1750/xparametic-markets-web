@@ -25,21 +25,17 @@ function Home() {
   );
 
   return (
-    <div className="pm-home">
-      <div className="pm-home__content">
-        <HomeMobileInfo />
-        <HomeCategories />
-        <HomeTabs
-          openMarkets={openMarkets}
-          closedMarkets={closedMarkets}
-          resolvedMarkets={resolvedMarkets}
-          favoritesMarkets={favoritesMarkets}
-        />
-      </div>
+    <div className="pm-p-home">
+      <HomeMobileInfo />
+      <HomeCategories />
+      <HomeTabs
+        openMarkets={openMarkets}
+        closedMarkets={closedMarkets}
+        resolvedMarkets={resolvedMarkets}
+        favoritesMarkets={favoritesMarkets}
+      />
     </div>
   );
 }
-
-Home.displayName = 'Home';
 
 export default Home;

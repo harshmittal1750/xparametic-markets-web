@@ -2,7 +2,37 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { NetworkConfig } from 'config/environment';
 import { PolkamarketsService } from 'services';
 
-const initialState = {
+export type Action = {
+  action: string;
+  marketId: number;
+  outcomeId: number;
+  shares: number;
+  value: number;
+  timestamp: number;
+  transactionHash: string;
+};
+
+export type PolkamarketsInitialState = {
+  isLoggedIn: boolean;
+  networkId: string;
+  ethAddress: string;
+  ethBalance: number;
+  polkBalance: number;
+  polkApproved: boolean;
+  portfolio: any;
+  actions: Action[];
+  marketsWithActions: string[];
+  bonds: any;
+  marketsWithBonds: string[];
+  bondActions: any[];
+  isLoading: {
+    portfolio: boolean;
+    bonds: boolean;
+    actions: boolean;
+  };
+};
+
+const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
   networkId: '',
   ethAddress: '',
@@ -11,10 +41,14 @@ const initialState = {
   polkApproved: false,
   portfolio: {},
   actions: [],
+  marketsWithActions: [],
   bonds: {},
+  marketsWithBonds: [],
   bondActions: [],
   isLoading: {
-    portfolio: false
+    portfolio: false,
+    bonds: false,
+    actions: false
   }
 };
 
@@ -50,13 +84,28 @@ const polkamarketsSlice = createSlice({
       ...state,
       portfolio: action.payload
     }),
-    changeActions: (state, action: PayloadAction<any>) => ({
+    changeActions: (state, action: PayloadAction<Action[]>) => ({
       ...state,
       actions: action.payload
     }),
+    changeMarketsWithActions: {
+      reducer: (state, action: PayloadAction<string[]>) => ({
+        ...state,
+        marketsWithActions: action.payload
+      }),
+      prepare: (actions: Action[]) => {
+        return {
+          payload: actions.map(action => action.marketId.toString())
+        };
+      }
+    },
     changeBonds: (state, action: PayloadAction<Object>) => ({
       ...state,
       bonds: action.payload
+    }),
+    changeMarketsWithBonds: (state, action: PayloadAction<string[]>) => ({
+      ...state,
+      marketsWithBonds: action.payload
     }),
     changeBondActions: (state, action: PayloadAction<any>) => ({
       ...state,
@@ -86,7 +135,9 @@ const {
   changePolkApproved,
   changePortfolio,
   changeActions,
+  changeMarketsWithActions,
   changeBonds,
+  changeMarketsWithBonds,
   changeBondActions,
   changeLoading
 } = polkamarketsSlice.actions;
@@ -132,11 +183,28 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
+      dispatch(
+        changeLoading({
+          key: 'bonds',
+          value: true
+        })
+      );
+
+      dispatch(
+        changeLoading({
+          key: 'actions',
+          value: true
+        })
+      );
+
       const portfolio = await polkamarketsService.getPortfolio();
       dispatch(changePortfolio(portfolio));
 
       const bonds = await polkamarketsService.getBonds();
       dispatch(changeBonds(bonds));
+
+      const bondMarketIds = await polkamarketsService.getBondMarketIds();
+      dispatch(changeMarketsWithBonds(bondMarketIds));
 
       dispatch(
         changeLoading({
@@ -145,8 +213,23 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
-      const actions = await polkamarketsService.getActions();
+      dispatch(
+        changeLoading({
+          key: 'bonds',
+          value: false
+        })
+      );
+
+      const actions = (await polkamarketsService.getActions()) as Action[];
       dispatch(changeActions(actions));
+      dispatch(changeMarketsWithActions(actions));
+
+      dispatch(
+        changeLoading({
+          key: 'actions',
+          value: false
+        })
+      );
 
       const bondActions = await polkamarketsService.getBondActions();
       dispatch(changeBondActions(bondActions));

@@ -31,15 +31,17 @@ function Layout({ children }: LayoutProps) {
           <Sidebar />
         </nav>
         <ScrollableArea
-          className={cn('flex-column justify-space-between', {
+          className={cn({
             'pm-l-layout__scrollable-area--with-alert': hasAlertNotification,
             'pm-l-layout__scrollable-area': !hasAlertNotification
           })}
         >
-          <main className="pm-l-layout__main">{children}</main>
-          <footer className="pm-l-layout__footer">
-            <Footer />
-          </footer>
+          <main className="pm-l-layout__main">
+            {children}
+            <footer className="pm-l-layout__footer">
+              <Footer />
+            </footer>
+          </main>
         </ScrollableArea>
         <ScrollableArea>
           <aside className="pm-l-layout__aside">

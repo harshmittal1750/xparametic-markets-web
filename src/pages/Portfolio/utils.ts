@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import { Market, Outcome } from 'models/market';
 import { Portfolio } from 'models/portfolio';
+import { Action } from 'redux/ducks/polkamarkets';
+import { GetMarketsByIdsData } from 'services/Polkamarkets/types';
 
 function generateRandomNumberBetween(min: number, max: number) {
   return Math.random() * (max - min + 1) + min;
@@ -37,8 +39,8 @@ function generateChartRandomData(reverse = false) {
 
 function formatMarketPositions(
   portfolio: Object,
-  markets: Market[],
-  actions: any[]
+  actions: Action[],
+  markets?: GetMarketsByIdsData
 ) {
   const headers = [
     {
@@ -89,7 +91,7 @@ function formatMarketPositions(
   const rows: any[] = [];
 
   // looping through outcomes array and showing positions where user holds shares
-  markets.forEach((market: Market) => {
+  markets?.forEach(market => {
     market.outcomes.forEach((outcome: Outcome) => {
       // ignoring zero balances
       if (portfolio[market.id]?.outcomes[outcome.id]?.shares >= 0.0005) {
@@ -126,7 +128,7 @@ function formatMarketPositions(
             action =>
               action.action === 'Claim Voided' &&
               action.outcomeId === outcome.id &&
-              action.marketId === market.id
+              action.marketId.toString() === market.id
           )
         ) {
           result = { type: 'claimed_voided' };
@@ -176,7 +178,10 @@ function formatMarketPositions(
   return { headers, rows };
 }
 
-function formatLiquidityPositions(portfolio: Object, markets: Market[]) {
+function formatLiquidityPositions(
+  portfolio: Object,
+  markets?: GetMarketsByIdsData
+) {
   const headers = [
     { title: 'Market', key: 'market', align: 'left', sortBy: 'market.id' },
     { title: 'Shares', key: 'shares', align: 'center', sortBy: 'shares' },
@@ -194,7 +199,7 @@ function formatLiquidityPositions(portfolio: Object, markets: Market[]) {
   const rows: any[] = [];
 
   // looping through outcomes array and showing positions where user holds shares
-  markets.forEach((market: Market) => {
+  markets?.forEach((market: Market) => {
     // ignoring zero balances
     if (portfolio[market.id]?.liquidity?.shares > 0.0005) {
       const shares = portfolio[market.id]?.liquidity?.shares;
@@ -286,7 +291,7 @@ function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
   ];
 }
 
-function formatReportPositions(bonds: Object, markets: Market[]) {
+function formatReportPositions(bonds: Object, markets?: GetMarketsByIdsData) {
   const headers = [
     { title: 'Market', key: 'market', align: 'left', sortBy: 'market.id' },
     { title: 'Reported', key: 'value', align: 'center', sortBy: 'value' },
@@ -297,7 +302,7 @@ function formatReportPositions(bonds: Object, markets: Market[]) {
   const rows: any[] = [];
 
   // looping through outcomes array and showing positions where user holds shares
-  markets.forEach((market: Market) => {
+  markets?.forEach((market: Market) => {
     // ignoring zero balances
     if (bonds[market.questionId]?.total > 0) {
       const value = bonds[market.questionId]?.total;

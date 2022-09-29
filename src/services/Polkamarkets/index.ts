@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
 import { camelizeKeys } from 'humps';
+import uniq from 'lodash/uniq';
 
 import {
   getAchievementsTransformResponse,
@@ -54,7 +55,8 @@ const polkamarketsApi = createApi({
       transformResponse: (response: GetMarketsByStateData) => camelize(response)
     }),
     getMarketsByIds: builder.query<GetMarketsByIdsData, GetMarketsByIdsArgs>({
-      query: ({ ids }) => `/markets?id=${ids.join(',')}`,
+      query: ({ ids, networkId }) =>
+        `/markets?id=${uniq(ids).join(',')}&network_id=${networkId}`,
       transformResponse: (response: GetMarketsByIdsData) => camelize(response)
     }),
     reloadMarketBySlug: builder.mutation<

@@ -68,6 +68,7 @@ import ToastNotification from './ToastNotification';
 import ToggleSwitch from './ToggleSwitch';
 import Tooltip from './Tooltip';
 import TradeForm from './TradeForm';
+import VirtualizedList from './VirtualizedList';
 import WalletInfo from './WalletInfo';
 
 export {
@@ -147,6 +148,7 @@ export {
   ButtonGroup,
   ToggleSwitch,
   TradeForm,
+  VirtualizedList,
   WalletInfo
 };
 export { default as ConnectMetamask } from './ConnectMetamask';
