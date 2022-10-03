@@ -1,0 +1,25 @@
+.root {
+  vertical-align: middle;
+  display: inherit;
+  fill: currentColor;
+}
+
+.sm {
+  width: var(--size-12pxInRem);
+  height: var(--size-12pxInRem);
+}
+
+.md {
+  width: var(--size-16pxInRem);
+  height: var(--size-16pxInRem);
+}
+
+.lg {
+  width: var(--size-24pxInRem);
+  height: var(--size-24pxInRem);
+}
+
+.xl {
+  width: var(--size-40pxInRem);
+  height: var(--size-40pxInRem);
+}
