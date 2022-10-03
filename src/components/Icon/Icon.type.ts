@@ -4,7 +4,7 @@ import { ICONS } from './Icon.utils';
 
 export type Icons = keyof typeof ICONS;
 
-export interface IconProps extends React.ComponentPropsWithoutRef<'svg'> {
+export interface IconProps extends React.ComponentPropsWithRef<'svg'> {
   size?: 'sm' | 'md' | 'lg';
   accessible?: boolean;
 }
