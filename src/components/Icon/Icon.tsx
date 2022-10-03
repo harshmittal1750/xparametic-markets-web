@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 import cn from 'classnames';
 
-import IconStyles from './Icon.module.scss';
+import IconClasses from './Icon.module.scss';
 import type { IconProps, Icons } from './Icon.type';
 import { ICONS } from './Icon.utils';
 
@@ -11,9 +11,9 @@ function IconRoot({ accessible, size = 'md', ...props }: IconProps) {
     <svg
       viewBox="0 0 24 24"
       focusable="false"
-      className={cn(IconStyles.root, {
-        [IconStyles.sm]: size === 'sm',
-        [IconStyles.md]: size === 'md'
+      className={cn(IconClasses.root, {
+        [IconClasses.sm]: size === 'sm',
+        [IconClasses.md]: size === 'md'
       })}
       {...(accessible && {
         'aria-hidden': 'true'
