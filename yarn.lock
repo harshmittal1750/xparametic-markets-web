@@ -3256,7 +3256,7 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@transak/transak-sdk@^1.0.31":
+"@transak/transak-sdk@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@transak/transak-sdk/-/transak-sdk-1.2.2.tgz#f4ad6d0cfe80ae448c6f14304fd51a8447403972"
   integrity sha512-yUgURhqBPVlqJdtTJjJA58GXZjsRUjfphL/mx0vMSdfAlfArrvlmy/nkYcO7ACEngoSCtcecjDd1umwXSHABxA==
