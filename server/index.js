@@ -1,8 +1,11 @@
 /* eslint-disable import-helpers/order-imports */
 require('dotenv').config();
 const express = require('express');
+const helmet = require('helmet');
 
 const app = express();
+app.use(helmet.frameguard({ action: 'deny' }));
+
 const port = process.env.PORT || 5000;
 const fs = require('fs');
 const path = require('path');
@@ -57,6 +60,26 @@ app.get('/portfolio', (request, response) => {
 });
 
 app.get('/achievements', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
+app.get('/leaderboard', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
+app.get('/user/:address', (request, response) => {
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
