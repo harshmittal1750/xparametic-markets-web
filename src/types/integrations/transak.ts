@@ -15,8 +15,8 @@ export type TransakUserData = {
 };
 
 export type TransakConfig = {
-  apiKey: string;
-  environment?: 'STAGING' | 'PRODUCTION';
+  apiKey?: string;
+  environment?: string;
   cryptoCurrencyCode?: string;
   defaultCryptoCurrency?: string;
   cryptoCurrencyList?: string;
