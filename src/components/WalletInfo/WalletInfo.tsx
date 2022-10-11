@@ -28,7 +28,10 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
         variant="outline"
         color="base"
         size="sm"
-        style={{ padding: '0.4rem 1.4rem', paddingRight: '0.5rem' }}
+        style={{
+          padding: '0.4rem 1.4rem',
+          height: '100%'
+        }}
       >
         {wallets[0].balance}
         {wallets[0].currencyIcon}
@@ -40,7 +43,7 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
         variant="outline"
         color="base"
         size="sm"
-        style={{ padding: '0.4rem 1.4rem', paddingRight: '0.5rem' }}
+        style={{ padding: '0.4rem 1.4rem', height: '100%' }}
       >
         {wallets[1].balance}
         {wallets[1].currencyIcon}
