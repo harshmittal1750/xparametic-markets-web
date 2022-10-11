@@ -40,12 +40,19 @@ describe('Icon', () => {
 
     expect(container.childNodes[0]).toHaveAttribute('viewBox', '0 0 24 24');
     expect(container.childNodes[0]).toHaveAttribute('focusable', 'false');
-    expect(container.childNodes[0]).toHaveClass(IconClasses.root);
+    expect(container.childNodes[0]).toHaveAttribute('aria-hidden', 'true');
+    expect(container.childNodes[0]).toHaveClass(
+      IconClasses.root,
+      IconClasses.md
+    );
   });
   it('is accessible if [accessible=true]', () => {
     render(<Icon.Menu accessible />);
 
-    expect(screen.getByTitle('Menu')).toBeInTheDocument();
+    const iconMenu = screen.getByTitle('Menu');
+
+    expect(iconMenu).toBeInTheDocument();
+    expect(iconMenu).not.toHaveAttribute('aria-hidden');
   });
   it('is sizing responsive', () => {
     const sizes = ['sm', 'md'] as const;
