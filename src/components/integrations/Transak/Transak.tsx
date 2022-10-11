@@ -84,7 +84,7 @@ function transakReducer(state: TransakInitialState, action: TransakAction) {
 
 const baseConfig: TransakConfig = {
   apiKey: environment.TRANSAK_API_KEY!,
-  environment: 'STAGING',
+  environment: environment.TRANSAK_ENVIRONMENT! as any, // TODO: improve this
   themeColor: '000000',
   hostURL: window.location.origin,
   widgetHeight: '700px',
@@ -92,11 +92,10 @@ const baseConfig: TransakConfig = {
 };
 
 function buildCustomConfig({
-  network,
   cryptoCurrencyCode,
   walletAddress
 }): TransakConfig {
-  return { ...baseConfig, network, cryptoCurrencyCode, walletAddress };
+  return { ...baseConfig, cryptoCurrencyCode, walletAddress };
 }
 
 function Transak() {
@@ -106,11 +105,10 @@ function Transak() {
   );
 
   const { network } = useNetwork();
-  const walletAddress = useAppSelector(state => state.bepro.ethAddress);
+  const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   const transak = useMemo(() => {
     const transakConfig = buildCustomConfig({
-      network: 'mainnet',
       cryptoCurrencyCode: network.currency.ticker,
       walletAddress
     });
