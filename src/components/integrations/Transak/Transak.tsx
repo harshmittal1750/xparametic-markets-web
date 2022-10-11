@@ -2,6 +2,8 @@ import { useReducer, useEffect, useMemo } from 'react';
 
 import TransakSDK from '@transak/transak-sdk';
 import { environment } from 'config';
+import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
 import { TransakConfig } from 'types/integrations/transak';
 
 import { useAppSelector, useNetwork } from 'hooks';
@@ -82,9 +84,21 @@ function transakReducer(state: TransakInitialState, action: TransakAction) {
   }
 }
 
+const transakEnviroments = ['STAGING', 'PRODUCTION'] as const;
+
+function isValidApiKey(transakApiKey?: string) {
+  return !isUndefined(transakApiKey) && !isEmpty(transakApiKey);
+}
+
+function isValidEnvironment(
+  transakEnvironment?
+): transakEnvironment is typeof transakEnviroments[number] {
+  return transakEnviroments.includes(transakEnvironment);
+}
+
 const baseConfig: TransakConfig = {
-  apiKey: environment.TRANSAK_API_KEY!,
-  environment: environment.TRANSAK_ENVIRONMENT! as any, // TODO: improve this
+  apiKey: environment.TRANSAK_API_KEY,
+  environment: environment.TRANSAK_ENVIRONMENT,
   themeColor: '000000',
   hostURL: window.location.origin,
   widgetHeight: '700px',
@@ -98,14 +112,18 @@ function buildCustomConfig({
   return { ...baseConfig, cryptoCurrencyCode, walletAddress };
 }
 
+const isValidCustomConfig = (customConfig: TransakConfig) =>
+  isValidApiKey(customConfig.apiKey) &&
+  isValidEnvironment(customConfig.environment);
+
 function Transak() {
+  const { network } = useNetwork();
+  const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+
   const [transakState, transakDispatch] = useReducer(
     transakReducer,
     initialState
   );
-
-  const { network } = useNetwork();
-  const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   const transak = useMemo(() => {
     const transakConfig = buildCustomConfig({
@@ -113,18 +131,26 @@ function Transak() {
       walletAddress
     });
 
+    const isValidConfig = isValidCustomConfig(transakConfig);
+
+    if (!isValidConfig) return undefined;
+
     return new TransakSDK(transakConfig);
   }, [network, walletAddress]);
 
   useEffect(() => {
-    transak.on(transak.ALL_EVENTS, data => {
-      transakDispatch({ type: data.eventName });
-    });
+    if (transak) {
+      transak.on(transak.ALL_EVENTS, data => {
+        transakDispatch({ type: data.eventName });
+      });
+    }
   }, [transak]);
 
   function openWidget() {
     transak.init();
   }
+
+  if (!transak) return null;
 
   return (
     <Button
