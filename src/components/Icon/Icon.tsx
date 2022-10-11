@@ -15,7 +15,7 @@ function IconRoot({ accessible, size = 'md', ...props }: IconProps) {
         [IconClasses.sm]: size === 'sm',
         [IconClasses.md]: size === 'md'
       })}
-      {...(accessible && {
+      {...(!accessible && {
         'aria-hidden': 'true'
       })}
       {...props}
