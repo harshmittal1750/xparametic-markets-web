@@ -4,10 +4,14 @@ import classNames from 'classnames';
 import { setFilter } from 'redux/ducks/markets';
 import { openSidebar, closeSidebar } from 'redux/ducks/ui';
 
-import { MarketsIcon, PortfolioIcon, AchievementsIcon } from 'assets/icons';
+import {
+  HamburguerMenuIcon,
+  ArrowBackIcon,
+  MarketsIcon,
+  PortfolioIcon,
+  AchievementsIcon
+} from 'assets/icons';
 import { LeaderboardIcon } from 'assets/icons/pages/leaderboard';
-
-import Icon from 'components/Icon';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 import useCategories from 'hooks/useCategories';
@@ -44,7 +48,7 @@ const Sidebar = () => {
           onClick={() => toggleCollapsed()}
           aria-label="Toggle sidebar"
         >
-          {collapsed ? <Icon.Menu accessible /> : <Icon.MenuBack />}
+          {collapsed ? <HamburguerMenuIcon /> : <ArrowBackIcon />}
         </Button>
       </div>
       <div className="sidebar__content">
