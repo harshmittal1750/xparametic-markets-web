@@ -13,7 +13,8 @@ function IconRoot({ accessible, size = 'md', ...props }: IconProps) {
       focusable="false"
       className={cn(IconClasses.root, {
         [IconClasses.sm]: size === 'sm',
-        [IconClasses.md]: size === 'md'
+        [IconClasses.md]: size === 'md',
+        [IconClasses.lg]: size === 'lg'
       })}
       {...(!accessible && {
         'aria-hidden': 'true'
