@@ -6,7 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
 import { TransakConfig } from 'types/integrations/transak';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useNetwork, useWindowDimensions } from 'hooks';
 
 import { Button } from '../../Button';
 
@@ -101,15 +101,15 @@ const baseConfig: TransakConfig = {
   environment: environment.TRANSAK_ENVIRONMENT,
   themeColor: '000000',
   hostURL: window.location.origin,
-  widgetHeight: '700px',
   widgetWidth: '500px'
 };
 
 function buildCustomConfig({
+  widgetHeight,
   cryptoCurrencyCode,
   walletAddress
 }): TransakConfig {
-  return { ...baseConfig, cryptoCurrencyCode, walletAddress };
+  return { ...baseConfig, widgetHeight, cryptoCurrencyCode, walletAddress };
 }
 
 const isValidCustomConfig = (customConfig: TransakConfig) =>
@@ -118,7 +118,10 @@ const isValidCustomConfig = (customConfig: TransakConfig) =>
 
 function Transak() {
   const { network } = useNetwork();
+  const { height } = useWindowDimensions();
   const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+
+  const widgetHeight = Math.min(Math.ceil(height * 0.72), 720);
 
   const [transakState, transakDispatch] = useReducer(
     transakReducer,
@@ -127,6 +130,7 @@ function Transak() {
 
   const transak = useMemo(() => {
     const transakConfig = buildCustomConfig({
+      widgetHeight: `${widgetHeight}px`,
       cryptoCurrencyCode: network.currency.ticker,
       walletAddress
     });
@@ -136,7 +140,7 @@ function Transak() {
     if (!isValidConfig) return undefined;
 
     return new TransakSDK(transakConfig);
-  }, [network, walletAddress]);
+  }, [network.currency.ticker, widgetHeight, walletAddress]);
 
   useEffect(() => {
     if (transak) {
