@@ -41,6 +41,8 @@ yarn install
 
 #### Module build failed from SyntaxError
 
+A
+
 1. Clean up cache
 
 ```shell
@@ -49,7 +51,7 @@ yarn cache clean
 
 2. Try again
 
-> Shorthand commands: `yarn cache clean && start-storybook -p 6006 -s public`
+> Shorthand commands: `yarn cache clean && yarn storybook`
 
 #### Babel loader crashing between React JS Scripts
 
