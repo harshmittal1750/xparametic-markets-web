@@ -1,23 +1,31 @@
+import { memo } from 'react';
+
 import cn from 'classnames';
 
+import * as Svgs from './__svgs__';
 import IconClasses from './Icon.module.scss';
 import type { IconProps } from './Icon.type';
 
-export default function Icon({ accessible, size = 'md', ...props }: IconProps) {
+function Icon({ size = 'md', name, ...props }: IconProps) {
+  const { title } = props;
+  const Component = Svgs[name];
+
   return (
-    <svg
-      viewBox="0 0 24 24"
+    <Component
       focusable="false"
       className={cn(IconClasses.root, {
         [IconClasses.sm]: size === 'sm',
         [IconClasses.md]: size === 'md',
         [IconClasses.lg]: size === 'lg'
       })}
-      {...(!accessible && {
+      {...(!title && {
         'aria-hidden': 'true'
       })}
       {...props}
     />
   );
 }
+
 Icon.displayName = 'Icon';
+
+export default memo(Icon, Object.is);

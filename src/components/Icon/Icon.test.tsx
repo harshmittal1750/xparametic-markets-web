@@ -4,10 +4,9 @@ import Icon from './Icon';
 import IconClasses from './Icon.module.scss';
 
 describe('Icon', () => {
-  it('renders its default props', () => {
-    const { container } = render(<Icon />);
+  it('renders its injected props', () => {
+    const { container } = render(<Icon name="Arrow" />);
 
-    expect(container.childNodes[0]).toHaveAttribute('viewBox', '0 0 24 24');
     expect(container.childNodes[0]).toHaveAttribute('focusable', 'false');
     expect(container.childNodes[0]).toHaveAttribute('aria-hidden', 'true');
     expect(container.childNodes[0]).toHaveClass(
@@ -15,25 +14,10 @@ describe('Icon', () => {
       IconClasses.md
     );
   });
-  it('renders a path element', () => {
-    const path = 'path';
-    const { container } = render(
-      <Icon>
-        <path d={path} />
-      </Icon>
-    );
+  it('is accessible if it has [title]', () => {
+    render(<Icon name="Arrow" title="back to somewhere else" />);
 
-    expect(container.childNodes[0].childNodes[0]).toHaveAttribute('d', path);
-  });
-  it('is accessible if [accessible=true]', () => {
-    const title = 'title';
-    render(
-      <Icon accessible>
-        <title>{title}</title>
-      </Icon>
-    );
-
-    const icon = screen.getByTitle(title);
+    const icon = screen.getByTitle(/back to somewhere else/);
 
     expect(icon).toBeInTheDocument();
     expect(icon).not.toHaveAttribute('aria-hidden');
@@ -42,7 +26,7 @@ describe('Icon', () => {
     const sizes = ['sm', 'md', 'lg'] as const;
 
     sizes.forEach(size => {
-      const { container } = render(<Icon size={size} />);
+      const { container } = render(<Icon name="Arrow" size={size} />);
 
       expect(container.childNodes[0]).toHaveClass(IconClasses[size]);
     });
