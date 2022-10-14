@@ -19,3 +19,19 @@
   width: var(--size-24pxInRem);
   height: var(--size-24pxInRem);
 }
+
+.left {
+  transform: rotate(0deg);
+}
+
+.up {
+  transform: rotate(90deg);
+}
+
+.right {
+  transform: rotate(180deg);
+}
+
+.down {
+  transform: rotate(270deg);
+}

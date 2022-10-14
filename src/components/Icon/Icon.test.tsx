@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 
 import Icon from './Icon';
 import IconClasses from './Icon.module.scss';
+import { dirs, sizes } from './Icon.util';
 
 describe('Icon', () => {
   it('renders its injected props', () => {
@@ -23,12 +24,17 @@ describe('Icon', () => {
     expect(icon).not.toHaveAttribute('aria-hidden');
   });
   it('is sizing responsive', () => {
-    const sizes = ['sm', 'md', 'lg'] as const;
-
     sizes.forEach(size => {
       const { container } = render(<Icon name="Arrow" size={size} />);
 
       expect(container.childNodes[0]).toHaveClass(IconClasses[size]);
+    });
+  });
+  it('is direction-responsive', () => {
+    dirs.forEach(dir => {
+      const { container } = render(<Icon name="Arrow" dir={dir} />);
+
+      expect(container.childNodes[0]).toHaveClass(IconClasses[dir]);
     });
   });
 });
