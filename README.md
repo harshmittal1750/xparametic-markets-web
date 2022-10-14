@@ -41,8 +41,6 @@ yarn install
 
 #### Module build failed from SyntaxError
 
-A
-
 1. Clean up cache
 
 ```shell
