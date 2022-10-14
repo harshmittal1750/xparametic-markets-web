@@ -6,6 +6,7 @@ import { MetaMaskIcon } from 'assets/icons';
 import { useNetwork } from 'hooks';
 
 import { Button } from '../Button';
+import { Transak } from '../integrations';
 
 type Wallet = {
   id: string;
@@ -23,15 +24,26 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
 
   return (
     <div className="pm-c-wallet-info">
-      <Button variant="outline" color="base" size="sm">
-        {wallets[0].balance}
-        {wallets[0].currencyIcon}
-      </Button>
       <Button
         variant="outline"
         color="base"
         size="sm"
-        style={{ padding: '0.4rem 1.4rem', paddingRight: '0.5rem' }}
+        style={{
+          padding: '0.4rem 1.4rem',
+          height: '100%'
+        }}
+      >
+        {wallets[0].balance}
+        {wallets[0].currencyIcon}
+
+        <Transak />
+      </Button>
+
+      <Button
+        variant="outline"
+        color="base"
+        size="sm"
+        style={{ padding: '0.4rem 1.4rem', height: '100%' }}
       >
         {wallets[1].balance}
         {wallets[1].currencyIcon}

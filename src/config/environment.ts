@@ -3,6 +3,8 @@ import isUndefined from 'lodash/isUndefined';
 
 const environmentConfigVariables = [
   'ERC20_CONTRACT_ADDRESS',
+  'TRANSAK_API_KEY',
+  'TRANSAK_ENVIRONMENT',
   'IP_API_KEY',
   'NETWORK_ID',
   'POLKAMARKETS_API_URL',
