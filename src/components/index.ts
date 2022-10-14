@@ -153,7 +153,7 @@ export {
 };
 export { default as ConnectMetamask } from './ConnectMetamask';
 
-export { default as Icon } from './Icon';
+export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
 export { default as Modal } from './Modal';
