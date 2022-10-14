@@ -16,9 +16,10 @@ import {
   WarningIcon
 } from 'assets/icons';
 
+import { Area } from 'components/plots';
+
 import { useAppDispatch, useAppSelector } from 'hooks';
 
-import MiniAreaChart from '../MiniAreaChart';
 import Text from '../Text';
 
 const outcomeStates = {
@@ -44,6 +45,7 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
 
   const { id, marketId, title, price } = outcome;
 
+  const isCurrentSelectedMarket = marketId === selectedMarketId;
   const isCurrentSelectedPrediction =
     marketId === selectedMarketId && id === selectedOutcomeId;
 
@@ -58,7 +60,7 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
   }, [dispatch, isCurrentSelectedPrediction]);
 
   // using 7d timeframe
-  const marketPriceChart = outcome.priceCharts.find(
+  const marketPriceChart = outcome.priceCharts?.find(
     priceChart => priceChart.timeframe === '7d'
   );
   const marketPriceUp =
@@ -73,7 +75,10 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
     } else {
       dispatch(openTradeForm());
     }
-    dispatch(marketSelected(market));
+
+    if (!isCurrentSelectedMarket) {
+      dispatch(marketSelected(market));
+    }
 
     if (!isCurrentSelectedPrediction) {
       dispatch(selectOutcome(market.id, outcome.id));
@@ -134,10 +139,12 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
         </div>
       ) : (
         <div className="pm-c-market-outcomes__item-chart">
-          <MiniAreaChart
-            serie={chartData}
-            color={marketPriceUp ? 'success' : 'danger'}
+          <Area
+            id={`${marketId}-${id}-${title}`}
+            data={chartData}
+            color={marketPriceUp ? 'green' : 'red'}
             width={48}
+            height={30}
           />
         </div>
       )}

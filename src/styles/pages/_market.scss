@@ -46,6 +46,8 @@
       grid-template-rows: auto auto auto auto auto auto;
     }
 
+    height: fit-content;
+
     &__analytics {
       grid-area: analytics;
     }

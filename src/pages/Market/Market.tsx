@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
-import { openTradeForm } from 'redux/ducks/ui';
+import { closeRightSidebar, openTradeForm } from 'redux/ducks/ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
@@ -30,15 +30,18 @@ const Market = () => {
   const history = useHistory();
   const currency = useAppSelector(state => state.market.market.currency);
   const { symbol, ticker } = currency;
-  const { network, setNetwork } = useNetwork();
+  const { network } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions, isLoggedIn, networkId } = useAppSelector(
-    state => state.bepro
+  const { actions, bondActions, networkId } = useAppSelector(
+    state => state.polkamarkets
   );
-
   const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
+  const isDiffNetwork = network.id !== market.networkId.toString();
+  const resolvedEmptyDataDescription = isDiffNetwork
+    ? `Switch network to ${market.network.name} to see your market positions.`
+    : 'You have no positions.';
 
   useEffect(() => {
     async function fetchMarket() {
@@ -68,6 +71,7 @@ const Market = () => {
         goToHomePage();
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     error,
     history,
@@ -86,7 +90,9 @@ const Market = () => {
     );
 
   const tableItems = formatMarketPositions(
-    (actions as any).filter(action => action.marketId === market?.id),
+    ((isDiffNetwork ? [] : actions) as any).filter(
+      action => action.marketId === market?.id
+    ),
     (bondActions as any).filter(
       action => action.questionId === market?.questionId
     ),
@@ -94,6 +100,20 @@ const Market = () => {
     symbol || ticker,
     network
   );
+
+  function resetTrade() {
+    dispatch(reset());
+  }
+
+  function closeTradeSidebar() {
+    dispatch(closeRightSidebar());
+  }
+
+  function backToMarkets() {
+    resetTrade();
+    closeTradeSidebar();
+    history.push('/');
+  }
 
   return (
     <div className="pm-p-market">
@@ -128,7 +148,7 @@ const Market = () => {
         <Button
           variant="outline"
           size="sm"
-          onClick={() => history.push('/')}
+          onClick={() => backToMarkets()}
           aria-label="Back to Markets"
         >
           <ArrowLeftIcon />
@@ -172,7 +192,7 @@ const Market = () => {
               columns={tableItems.columns}
               rows={tableItems.rows}
               isLoadingData={isLoading}
-              emptyDataDescription="You have no positions."
+              emptyDataDescription={resolvedEmptyDataDescription}
             />
           </Tabs.TabPane>
           {market.news && market.news.length > 0 ? (

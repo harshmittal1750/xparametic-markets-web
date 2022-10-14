@@ -4,7 +4,11 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { environment } from 'config';
 import { NetworkConfig } from 'config/environment';
 import { toHexadecimal } from 'helpers/string';
-import { changeNetworkId, fetchAditionalData, login } from 'redux/ducks/bepro';
+import {
+  changeNetworkId,
+  fetchAditionalData,
+  login
+} from 'redux/ducks/polkamarkets';
 import store from 'redux/store';
 
 import { useAppDispatch } from 'hooks';
@@ -47,9 +51,11 @@ function useNetwork() {
 
   // Redux state selectors
   const metamaskWalletIsConnected = useAppSelector(
-    state => state.bepro.isLoggedIn
+    state => state.polkamarkets.isLoggedIn
   );
-  const metamaskNetworkId = useAppSelector(state => state.bepro.networkId);
+  const metamaskNetworkId = useAppSelector(
+    state => state.polkamarkets.networkId
+  );
 
   // Derivated state
   const metamaskNetwork = metamaskNetworkId
@@ -97,6 +103,7 @@ function useNetwork() {
     }
 
     getCurrentEthereumNetworkId();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localNetwork]);
 
   useEffect(() => {

@@ -16,6 +16,7 @@
 // 2. Vendors
 @import 'vendors/apex-charts';
 @import 'vendors/rc-slider';
+@import 'vendors/transak';
 
 // 3. Base stuff
 @import 'base/reset';
@@ -33,6 +34,7 @@
 @import 'components/alert-notification';
 @import 'components/amount-input';
 @import 'components/badge';
+@import 'components/modal';
 @import 'components/beta-warning';
 @import 'components/breadcrumb';
 @import 'components/button';
@@ -59,7 +61,6 @@
 @import 'components/market-table';
 @import 'components/menu';
 @import 'components/mini-table';
-@import 'components/modal';
 @import 'components/modal-notification';
 @import 'components/network-info';
 @import 'components/networks';
@@ -102,3 +103,4 @@
 @import 'pages/profile';
 
 // 7. Themes
+@import 'theme';

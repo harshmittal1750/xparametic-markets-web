@@ -29,7 +29,7 @@ const MarketChart = () => {
   );
 
   const series = predictions.map(prediction => {
-    const chart = prediction.priceCharts.find(
+    const chart = prediction.priceCharts?.find(
       priceChart => priceChart.timeframe === timeframe?.id
     );
 

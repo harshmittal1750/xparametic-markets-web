@@ -1,36 +1,102 @@
-import { ReactNode } from 'react';
+import React, { useEffect, useRef } from 'react';
 
+import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
-type ModalProps = {
-  children: ReactNode;
-};
+import { RemoveOutlinedIcon } from 'assets/icons';
 
-function Modal({ children }: ModalProps) {
+import { Button } from 'components/Button';
+
+import {
+  useClickaway,
+  usePortal,
+  usePrevious,
+  useFocustrap,
+  useMount,
+  useTimeoutEffect
+} from 'hooks';
+
+import ModalClasses from './Modal.module.scss';
+import type { ModalProps } from './Modal.type';
+import { modalTrappersId } from './Modal.util';
+
+export default function Modal({
+  children,
+  onHide,
+  show,
+  className,
+  ...props
+}: ModalProps) {
+  const { current: didMount } = useMount();
+  const { current: showPrev } = usePrevious(show);
+  const ref = useRef<HTMLDivElement>(null);
+  const timeoutEffect = useTimeoutEffect();
+  const Portal = usePortal({
+    root: document.body,
+    onEffect() {
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.body.removeAttribute('style');
+      };
+    }
+  });
+
+  useEffect(() => {
+    if (showPrev && !show) {
+      if (didMount) timeoutEffect(Portal.unmount, 300);
+    } else {
+      Portal.mount(show);
+    }
+  }, [Portal, didMount, show, showPrev, timeoutEffect]);
+  useClickaway(ref, () => onHide?.(), [!!showPrev, show]);
+  useFocustrap(
+    ref,
+    ['a[href]', 'button:not([disabled])', 'textarea', 'input', 'select'],
+    modalTrappersId
+  );
+
+  function handleKeyDown(event: React.KeyboardEvent) {
+    if (event.key === 'Escape') onHide?.();
+  }
+
   return (
-    <div className="pm-c-modal__wrapper">
-      <div className="pm-c-modal__overlay">
-        <AnimatePresence>
+    <Portal>
+      <AnimatePresence>
+        {show && (
           <motion.div
-            layout
-            initial={{ opacity: 0, y: 30, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 20, scale: 0.9 }}
-            role="status"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            role="presentation"
+            className={cn(ModalClasses.root, className?.root)}
+            onKeyDown={handleKeyDown}
           >
-            <section
+            <motion.div
+              ref={ref}
+              initial={{ y: 16 }}
+              animate={{ y: 0 }}
+              exit={{ y: 16 }}
               role="dialog"
-              tabIndex={-1}
               aria-modal="true"
-              className="pm-c-modal"
+              className={cn(ModalClasses.dialog, className?.dialog)}
+              {...props}
             >
-              <div className="pm-c-modal__content">{children}</div>
-            </section>
+              {onHide && (
+                <Button
+                  variant="ghost"
+                  onClick={onHide}
+                  className={cn(ModalClasses.hide, className?.hide)}
+                  aria-label="Hide"
+                >
+                  <RemoveOutlinedIcon />
+                </Button>
+              )}
+              {children}
+            </motion.div>
           </motion.div>
-        </AnimatePresence>
-      </div>
-    </div>
+        )}
+      </AnimatePresence>
+    </Portal>
   );
 }
-
-export default Modal;

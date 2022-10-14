@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { login, fetchAditionalData } from 'redux/ducks/bepro';
 import { reset } from 'redux/ducks/liquidity';
+import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
 import { closeLiquidityForm } from 'redux/ducks/ui';
-import { BeproService, PolkamarketsApiService } from 'services';
+import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
@@ -33,7 +33,7 @@ function LiquidityFormActions() {
 
   // terms currently disabled
   const acceptedTerms = true;
-  const ethAddress = useAppSelector(state => state.bepro.ethAddress);
+  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   const [isLoading, setIsLoading] = useState(false);
   const { show, close } = useToastNotification();
@@ -54,13 +54,13 @@ function LiquidityFormActions() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
 
     try {
       // performing buy action on smart contract
-      const response = await beproService.addLiquidity(marketId, amount);
+      const response = await polkamarketsService.addLiquidity(marketId, amount);
 
       setIsLoading(false);
 
@@ -87,13 +87,16 @@ function LiquidityFormActions() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const beproService = new BeproService(networkConfig);
+    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
 
     try {
       // performing buy action on smart contract
-      const response = await beproService.removeLiquidity(marketId, amount);
+      const response = await polkamarketsService.removeLiquidity(
+        marketId,
+        amount
+      );
 
       setIsLoading(false);
 

@@ -32,7 +32,6 @@ import MarketsIcon from './MarketsIcon';
 import MedalIcon from './MedalIcon';
 import MediumIcon from './MediumIcon';
 import MetaMaskIcon from './MetaMaskIcon';
-import MetaMaskIconSmall from './MetaMaskIconSmall';
 import MoonbeamIcon from './MoonbeamIcon';
 import MoonIcon from './MoonIcon';
 import MoonriverIcon from './MoonriverIcon';
@@ -99,7 +98,6 @@ export {
   MedalIcon,
   MediumIcon,
   MetaMaskIcon,
-  MetaMaskIconSmall,
   MoonbeamIcon,
   MoonriverIcon,
   MoonIcon,
@@ -131,3 +129,5 @@ export {
   WarningIcon,
   WhiteHouseIcon
 };
+export { default as RemoveOutlinedIcon } from './RemoveOutlinedIcon';
+export { default as WarningOutlinedIcon } from './WarningOutlinedIcon';

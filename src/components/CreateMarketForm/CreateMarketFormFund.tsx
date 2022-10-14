@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
-import { BeproService } from 'services';
+import { PolkamarketsService } from 'services';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -22,21 +22,20 @@ function CreateMarketFormFund() {
   const [field, _meta, helpers] = useField('liquidity');
   const [fee, setFee] = useState(0);
 
-  const balance = useAppSelector(state => state.bepro.ethBalance);
+  const balance = useAppSelector(state => state.polkamarkets.ethBalance);
 
   function handleChangeAmount(amount: number) {
     helpers.setValue(amount);
   }
 
-  async function getMarketFee() {
-    const beproService = new BeproService(networkConfig);
-
-    const response = await beproService.getMarketFee();
-    setFee(response);
-  }
-
   useEffect(() => {
-    getMarketFee();
+    (async function getMarketFee() {
+      const polkamarketsService = new PolkamarketsService(networkConfig);
+
+      const response = await polkamarketsService.getMarketFee();
+      setFee(response);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
