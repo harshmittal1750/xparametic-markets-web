@@ -53,6 +53,7 @@ const initialState: MarketInitialState = {
     networkId: '',
     network: {} as Network,
     currency: {} as Currency,
+    votes: { up: 0, down: 0 },
     resolvedOutcomeId: -1,
     outcomes: [
       {
