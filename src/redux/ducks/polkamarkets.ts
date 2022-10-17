@@ -25,10 +25,12 @@ export type PolkamarketsInitialState = {
   bonds: any;
   marketsWithBonds: string[];
   bondActions: any[];
+  votes: Object;
   isLoading: {
     portfolio: boolean;
     bonds: boolean;
     actions: boolean;
+    votes: boolean;
   };
 };
 
@@ -45,10 +47,12 @@ const initialState: PolkamarketsInitialState = {
   bonds: {},
   marketsWithBonds: [],
   bondActions: [],
+  votes: {},
   isLoading: {
     portfolio: false,
     bonds: false,
-    actions: false
+    actions: false,
+    votes: false
   }
 };
 
@@ -111,6 +115,10 @@ const polkamarketsSlice = createSlice({
       ...state,
       bondActions: action.payload
     }),
+    changeVotes: (state, action: PayloadAction<Object>) => ({
+      ...state,
+      votes: action.payload
+    }),
     changeLoading: (
       state,
       action: PayloadAction<{ key: string; value: boolean }>
@@ -139,6 +147,7 @@ const {
   changeBonds,
   changeMarketsWithBonds,
   changeBondActions,
+  changeVotes,
   changeLoading
 } = polkamarketsSlice.actions;
 
@@ -197,6 +206,13 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
+      dispatch(
+        changeLoading({
+          key: 'votes',
+          value: true
+        })
+      );
+
       const portfolio = await polkamarketsService.getPortfolio();
       dispatch(changePortfolio(portfolio));
 
@@ -205,6 +221,9 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
 
       const bondMarketIds = await polkamarketsService.getBondMarketIds();
       dispatch(changeMarketsWithBonds(bondMarketIds));
+
+      const votes = await polkamarketsService.getUserVotes();
+      dispatch(changeVotes(votes));
 
       dispatch(
         changeLoading({
@@ -216,6 +235,13 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
       dispatch(
         changeLoading({
           key: 'bonds',
+          value: false
+        })
+      );
+
+      dispatch(
+        changeLoading({
+          key: 'votes',
           value: false
         })
       );
