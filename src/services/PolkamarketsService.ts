@@ -66,6 +66,7 @@ export default class PolkamarketsService {
     this.getRealitioERC20Contract();
     this.getERC20Contract();
     this.getAchievementsContract();
+    this.getVotingContract();
   }
 
   public getPredictionMarketContract() {
@@ -89,6 +90,12 @@ export default class PolkamarketsService {
   public getAchievementsContract() {
     this.contracts.achievements = this.polkamarkets.getAchievementsContract({
       contractAddress: this.achievementsContractAddress
+    });
+  }
+
+  public getVotingContract() {
+    this.contracts.voting = this.polkamarkets.getVotingContract({
+      contractAddress: this.votingContractAddress
     });
   }
 
