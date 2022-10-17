@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { ArrowDown, ArrowUp } from 'assets/icons/components/vote';
 
-import Text from '../Text';
+import Text from '../new/Text';
 
 const initialVotes = 0;
 

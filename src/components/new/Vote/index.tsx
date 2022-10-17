@@ -1,4 +1,4 @@
-import VoteArrows from './VoteArrows';
+/* eslint-disable import/prefer-default-export */
 import VoteModal from './VoteModal';
 
-export { VoteArrows, VoteModal };
+export { VoteModal };

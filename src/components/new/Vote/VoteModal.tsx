@@ -3,8 +3,8 @@ import { VerifiedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 
+import VoteArrows from '../../VoteArrows';
 import Text from '../Text';
-import VoteArrows from './VoteArrows';
 
 function VoteModal() {
   return (
