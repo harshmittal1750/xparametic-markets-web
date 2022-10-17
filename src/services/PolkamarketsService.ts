@@ -23,6 +23,8 @@ export default class PolkamarketsService {
 
   public achievementsContractAddress: string | undefined;
 
+  public votingContractAddress: string | undefined;
+
   // util functions
   static bytes32ToInt(bytes32Str: string): number {
     return Number(realitioLib.bytes32ToString(bytes32Str, { type: 'int' }));
@@ -38,6 +40,7 @@ export default class PolkamarketsService {
       ERC20_CONTRACT_ADDRESS,
       REALITIO_ERC20_CONTRACT_ADDRESS,
       ACHIEVEMENTS_CONTRACT_ADDRESS,
+      VOTING_CONTRACT_ADDRESS,
       WEB3_PROVIDER,
       WEB3_EVENTS_PROVIDER
     }: NetworkConfig = environment.NETWORKS[environment.NETWORK_ID || 42]
@@ -46,6 +49,7 @@ export default class PolkamarketsService {
     this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
     this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
     this.achievementsContractAddress = ACHIEVEMENTS_CONTRACT_ADDRESS;
+    this.votingContractAddress = VOTING_CONTRACT_ADDRESS;
 
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
