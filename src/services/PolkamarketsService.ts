@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
@@ -522,7 +523,6 @@ export default class PolkamarketsService {
 
   public async getAchievements(): Promise<Object> {
     // TODO improve this: contract might not be defined for network
-    // eslint-disable-next-line no-underscore-dangle
     if (!this.contracts.achievements.getContract()._address) return {};
 
     // ensuring user has wallet connected
@@ -541,6 +541,22 @@ export default class PolkamarketsService {
 
     const response = await this.contracts.achievements.claimAchievement({
       achievementId
+    });
+
+    return response;
+  }
+
+  // Voting contract functions
+
+  public async getUserVotes(): Promise<Object> {
+    // TODO improve this: contract might not be defined for network
+    if (!this.contracts.voting.getContract()._address) return {};
+
+    // ensuring user has wallet connected
+    if (!this.address) return {};
+
+    const response = await this.contracts.voting.getUserVotes({
+      user: this.address
     });
 
     return response;
