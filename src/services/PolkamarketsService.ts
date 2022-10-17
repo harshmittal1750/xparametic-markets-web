@@ -561,4 +561,40 @@ export default class PolkamarketsService {
 
     return response;
   }
+
+  public async upvoteItem(itemId) {
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.upvoteItem({ itemId });
+
+    return response;
+  }
+
+  public async downvoteItem(itemId) {
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.downvoteItem({ itemId });
+
+    return response;
+  }
+
+  public async removeUpvoteItem(itemId) {
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.removeUpvoteItem({ itemId });
+
+    return response;
+  }
+
+  public async removeDownvoteItem(itemId) {
+    // ensuring user has wallet connected
+    if (!this.address) return false;
+
+    const response = await this.contracts.voting.removeDownvoteItem({ itemId });
+
+    return response;
+  }
 }
