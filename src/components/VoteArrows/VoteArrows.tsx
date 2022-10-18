@@ -1,66 +1,68 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 
-import classNames from 'classnames';
+import cn from 'classnames';
 
 import { ArrowDown, ArrowUp } from 'assets/icons/components/vote';
 
 import Text from '../new/Text';
+import VoteArrowsClasses from './VoteArrows.module.scss';
+import voteArrowsReducer, {
+  VoteArrowsActions,
+  VoteArrowsState
+} from './VoteArrows.reducer';
 
-const initialVotes = 0;
+const voteArrowsReducerInitialState: VoteArrowsState = {
+  initialCounter: 0,
+  counter: 0,
+  sentiment: 'neutral'
+};
 
 type VoteArrowsProps = {
-  size?: 'small' | 'normal' | 'large';
+  size?: 'sm' | 'md' | 'lg';
   fullwidth?: boolean;
 };
 
-function VoteArrows({ size = 'normal', fullwidth }: VoteArrowsProps) {
-  const [votes, setVotes] = useState(initialVotes);
-  const [sentiment, setSentiment] = useState<
-    'neutral' | 'positive' | 'negative'
-  >('neutral');
+function VoteArrows({ size = 'lg', fullwidth = false }: VoteArrowsProps) {
+  const [state, dispatch] = useReducer(
+    voteArrowsReducer,
+    voteArrowsReducerInitialState
+  );
 
-  function handleChangeVote(vote: 'up' | 'down') {
-    const newVotes = vote === 'up' ? votes + 1 : votes - 1;
-    const newSentiment = vote === 'up' ? 'positive' : 'negative';
-
-    setVotes(newVotes);
-
-    if (newVotes === initialVotes) {
-      setSentiment('neutral');
-    } else {
-      setSentiment(newSentiment);
-    }
-  }
+  const { sentiment, counter } = state;
 
   return (
     <div
-      className={classNames(
-        `pm-c-vote-arrows--${size}`,
-        `pm-c-vote-arrows--${sentiment}`,
-        fullwidth && 'width-full'
-      )}
+      className={cn(VoteArrowsClasses.root, {
+        [VoteArrowsClasses.sm]: size === 'sm',
+        [VoteArrowsClasses.md]: size === 'md',
+        [VoteArrowsClasses.lg]: size === 'lg',
+        [VoteArrowsClasses.fullwidth]: fullwidth,
+        [VoteArrowsClasses.neutral]: sentiment === 'neutral',
+        [VoteArrowsClasses.positive]: sentiment === 'positive',
+        [VoteArrowsClasses.negative]: sentiment === 'negative'
+      })}
     >
       <button
         type="button"
-        className="pm-c-button--sm pm-c-button-normal--noborder"
-        onClick={() => handleChangeVote('down')}
+        className={VoteArrowsClasses.button}
+        onClick={() => dispatch({ type: VoteArrowsActions.DOWNVOTE })}
       >
-        <ArrowDown className="pm-c-vote-arrows__down" />
+        <ArrowDown className={VoteArrowsClasses.down} />
       </button>
       <Text
-        className="pm-c-vote-arrows__counter"
+        className={VoteArrowsClasses.counter}
         as="span"
         fontWeight="extrabold"
         color="2"
       >
-        {votes}
+        {counter}
       </Text>
       <button
         type="button"
-        className="pm-c-button--sm pm-c-button-normal--noborder"
-        onClick={() => handleChangeVote('up')}
+        className={VoteArrowsClasses.button}
+        onClick={() => dispatch({ type: VoteArrowsActions.UPVOTE })}
       >
-        <ArrowUp className="pm-c-vote-arrows__up" />
+        <ArrowUp className={VoteArrowsClasses.up} />
       </button>
     </div>
   );
