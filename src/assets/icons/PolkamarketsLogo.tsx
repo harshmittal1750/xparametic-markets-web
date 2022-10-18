@@ -3,8 +3,8 @@ import React from 'react';
 function PolkamarketsLogo() {
   return (
     <svg
-      width="183"
-      height="36"
+      height="24"
+      style={{ transform: 'translateY(-4%)' }}
       viewBox="0 0 183 36"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
