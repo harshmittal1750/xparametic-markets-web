@@ -1,5 +1,7 @@
 import { Market } from 'models/market';
 
+import VoteArrows from 'components/VoteArrows';
+
 import MarketFooterActions from './MarketFooterActions';
 import MarketFooterStats from './MarketFooterStats';
 import MarketFooterTags from './MarketFooterTags';
@@ -15,6 +17,7 @@ function MarketFooter({ market }: MarketFooterProps) {
       <div className="pm-c-market-footer__group--row">
         <MarketFooterActions market={market} />
         <MarketFooterTags market={market} />
+        <VoteArrows />
       </div>
     </div>
   );
