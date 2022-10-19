@@ -1,34 +1,83 @@
-import { useReducer } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import cn from 'classnames';
+import { Market } from 'models/market';
+import { PolkamarketsService } from 'services';
 
 import { ArrowDown, ArrowUp } from 'assets/icons/components/vote';
 
+import { useAppSelector, useNetwork } from 'hooks';
+
 import Text from '../new/Text';
 import VoteArrowsClasses from './VoteArrows.module.scss';
-import voteArrowsReducer, {
-  VoteArrowsActions,
-  VoteArrowsState
-} from './VoteArrows.reducer';
-
-const voteArrowsReducerInitialState: VoteArrowsState = {
-  initialCounter: 0,
-  counter: 0,
-  sentiment: 'neutral'
-};
 
 type VoteArrowsProps = {
+  marketId: Market['id'];
+  marketNetworkId: Market['networkId'];
+  votes: Market['votes'];
   size?: 'sm' | 'md' | 'lg';
   fullwidth?: boolean;
 };
 
-function VoteArrows({ size = 'lg', fullwidth = false }: VoteArrowsProps) {
-  const [state, dispatch] = useReducer(
-    voteArrowsReducer,
-    voteArrowsReducerInitialState
+function VoteArrows({
+  marketId,
+  marketNetworkId,
+  votes,
+  size = 'lg',
+  fullwidth = false
+}: VoteArrowsProps) {
+  const { network, networkConfig } = useNetwork();
+  const { votes: userVotes } = useAppSelector(state => state.polkamarkets);
+  const [counter, setCounter] = useState(votes.up - votes.down);
+
+  const isAMarketFromCurrentNetwork = marketNetworkId === network.id;
+  const userHasVotedInCurrentMarket = Object.keys(userVotes).includes(marketId);
+
+  const userVoteInCurrentMarket = useMemo(
+    () =>
+      isAMarketFromCurrentNetwork && userHasVotedInCurrentMarket
+        ? userVotes[marketId]
+        : { downvoted: false, upvoted: false },
+    [
+      isAMarketFromCurrentNetwork,
+      marketId,
+      userHasVotedInCurrentMarket,
+      userVotes
+    ]
   );
 
-  const { sentiment, counter } = state;
+  const isNeutral =
+    !userVoteInCurrentMarket.upvoted && !userVoteInCurrentMarket.downvoted;
+  const isPositive = userVoteInCurrentMarket.upvoted;
+  const isNegative = userVoteInCurrentMarket.downvoted;
+
+  const downvoteAction = useCallback(async () => {
+    const { downvoted } = userVoteInCurrentMarket;
+
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+
+    if (downvoted) {
+      setCounter(counter + 1);
+      await polkamarketsService.removeDownvoteItem(marketId);
+    } else {
+      setCounter(counter - 1);
+      await polkamarketsService.downvoteItem(marketId);
+    }
+  }, [counter, marketId, networkConfig, userVoteInCurrentMarket]);
+
+  const upvoteAction = useCallback(async () => {
+    const { upvoted } = userVoteInCurrentMarket;
+
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+
+    if (upvoted) {
+      setCounter(counter - 1);
+      await polkamarketsService.removeUpvoteItem(marketId);
+    } else {
+      setCounter(counter + 1);
+      await polkamarketsService.upvoteItem(marketId);
+    }
+  }, [counter, marketId, networkConfig, userVoteInCurrentMarket]);
 
   return (
     <div
@@ -37,15 +86,15 @@ function VoteArrows({ size = 'lg', fullwidth = false }: VoteArrowsProps) {
         [VoteArrowsClasses.md]: size === 'md',
         [VoteArrowsClasses.lg]: size === 'lg',
         [VoteArrowsClasses.fullwidth]: fullwidth,
-        [VoteArrowsClasses.neutral]: sentiment === 'neutral',
-        [VoteArrowsClasses.positive]: sentiment === 'positive',
-        [VoteArrowsClasses.negative]: sentiment === 'negative'
+        [VoteArrowsClasses.neutral]: isNeutral,
+        [VoteArrowsClasses.positive]: isPositive,
+        [VoteArrowsClasses.negative]: isNegative
       })}
     >
       <button
         type="button"
         className={VoteArrowsClasses.button}
-        onClick={() => dispatch({ type: VoteArrowsActions.DOWNVOTE })}
+        onClick={() => downvoteAction()}
       >
         <ArrowDown className={VoteArrowsClasses.down} />
       </button>
@@ -60,7 +109,7 @@ function VoteArrows({ size = 'lg', fullwidth = false }: VoteArrowsProps) {
       <button
         type="button"
         className={VoteArrowsClasses.button}
-        onClick={() => dispatch({ type: VoteArrowsActions.UPVOTE })}
+        onClick={() => upvoteAction()}
       >
         <ArrowUp className={VoteArrowsClasses.up} />
       </button>
