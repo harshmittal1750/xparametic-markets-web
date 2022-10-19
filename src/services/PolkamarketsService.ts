@@ -564,6 +564,9 @@ export default class PolkamarketsService {
 
   public async upvoteItem(itemId) {
     // ensuring user has wallet connected
+    await this.login();
+
+    // ensuring user has wallet connected
     if (!this.address) return false;
 
     const response = await this.contracts.voting.upvoteItem({ itemId });
@@ -572,6 +575,9 @@ export default class PolkamarketsService {
   }
 
   public async downvoteItem(itemId) {
+    // ensuring user has wallet connected
+    await this.login();
+
     // ensuring user has wallet connected
     if (!this.address) return false;
 
@@ -582,6 +588,9 @@ export default class PolkamarketsService {
 
   public async removeUpvoteItem(itemId) {
     // ensuring user has wallet connected
+    await this.login();
+
+    // ensuring user has wallet connected
     if (!this.address) return false;
 
     const response = await this.contracts.voting.removeUpvoteItem({ itemId });
@@ -590,6 +599,9 @@ export default class PolkamarketsService {
   }
 
   public async removeDownvoteItem(itemId) {
+    // ensuring user has wallet connected
+    await this.login();
+
     // ensuring user has wallet connected
     if (!this.address) return false;
 
