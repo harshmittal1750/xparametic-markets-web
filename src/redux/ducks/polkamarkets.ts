@@ -12,6 +12,8 @@ export type Action = {
   transactionHash: string;
 };
 
+export type Votes = { [key: string]: { upvoted: boolean; downvoted: boolean } };
+
 export type PolkamarketsInitialState = {
   isLoggedIn: boolean;
   networkId: string;
@@ -25,7 +27,7 @@ export type PolkamarketsInitialState = {
   bonds: any;
   marketsWithBonds: string[];
   bondActions: any[];
-  votes: Object;
+  votes: Votes;
   isLoading: {
     portfolio: boolean;
     bonds: boolean;
@@ -115,7 +117,7 @@ const polkamarketsSlice = createSlice({
       ...state,
       bondActions: action.payload
     }),
-    changeVotes: (state, action: PayloadAction<Object>) => ({
+    changeVotes: (state, action: PayloadAction<Votes>) => ({
       ...state,
       votes: action.payload
     }),
@@ -222,7 +224,7 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
       const bondMarketIds = await polkamarketsService.getBondMarketIds();
       dispatch(changeMarketsWithBonds(bondMarketIds));
 
-      const votes = await polkamarketsService.getUserVotes();
+      const votes = (await polkamarketsService.getUserVotes()) as Votes;
       dispatch(changeVotes(votes));
 
       dispatch(
