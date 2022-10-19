@@ -20,6 +20,7 @@ function MarketFooter({ market }: MarketFooterProps) {
         <MarketFooterActions market={market} />
         <MarketFooterTags market={market} />
         <VoteArrows
+          size="sm"
           marketId={id}
           marketSlug={slug}
           marketNetworkId={network.id}
