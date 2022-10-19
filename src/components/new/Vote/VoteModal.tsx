@@ -40,7 +40,7 @@ function VoteModal() {
           </Text>
         </div>
       </div>
-      <VoteArrows size="lg" fullwidth />
+      {/* <VoteArrows size="lg" fullwidth /> */}
       <div className="pm-c-vote-modal__footer">
         <Button size="normal" variant="subtle" color="default" fullwidth>
           Know more
