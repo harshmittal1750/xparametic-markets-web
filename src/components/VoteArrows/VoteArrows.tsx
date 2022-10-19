@@ -2,7 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 
 import cn from 'classnames';
 import { Market } from 'models/market';
-import { PolkamarketsService } from 'services';
+import { PolkamarketsApiService, PolkamarketsService } from 'services';
 
 import { ArrowDown, ArrowUp } from 'assets/icons/components/vote';
 
@@ -13,6 +13,7 @@ import VoteArrowsClasses from './VoteArrows.module.scss';
 
 type VoteArrowsProps = {
   marketId: Market['id'];
+  marketSlug: Market['slug'];
   marketNetworkId: Market['networkId'];
   votes: Market['votes'];
   size?: 'sm' | 'md' | 'lg';
@@ -21,6 +22,7 @@ type VoteArrowsProps = {
 
 function VoteArrows({
   marketId,
+  marketSlug,
   marketNetworkId,
   votes,
   size = 'lg',
@@ -55,29 +57,35 @@ function VoteArrows({
     const { downvoted } = userVoteInCurrentMarket;
 
     const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketApiService = new PolkamarketsApiService();
 
     if (downvoted) {
       setCounter(counter + 1);
       await polkamarketsService.removeDownvoteItem(marketId);
+      polkamarketApiService.reloadMarket(marketSlug);
     } else {
       setCounter(counter - 1);
       await polkamarketsService.downvoteItem(marketId);
+      polkamarketApiService.reloadMarket(marketSlug);
     }
-  }, [counter, marketId, networkConfig, userVoteInCurrentMarket]);
+  }, [counter, marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
 
   const upvoteAction = useCallback(async () => {
     const { upvoted } = userVoteInCurrentMarket;
 
     const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketApiService = new PolkamarketsApiService();
 
     if (upvoted) {
       setCounter(counter - 1);
       await polkamarketsService.removeUpvoteItem(marketId);
+      polkamarketApiService.reloadMarket(marketSlug);
     } else {
       setCounter(counter + 1);
       await polkamarketsService.upvoteItem(marketId);
+      polkamarketApiService.reloadMarket(marketSlug);
     }
-  }, [counter, marketId, networkConfig, userVoteInCurrentMarket]);
+  }, [counter, marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
 
   return (
     <div
