@@ -161,7 +161,7 @@ function VoteArrows({
         type="button"
         className={VoteArrowsClasses.button}
         onClick={() => handleDownvote()}
-        disabled={isLoading}
+        disabled={!isAMarketFromCurrentNetwork || isLoading}
       >
         <ArrowDown className={VoteArrowsClasses.down} />
       </button>
@@ -177,7 +177,7 @@ function VoteArrows({
         type="button"
         className={VoteArrowsClasses.button}
         onClick={() => handleUpvote()}
-        disabled={isLoading}
+        disabled={!isAMarketFromCurrentNetwork || isLoading}
       >
         <ArrowUp className={VoteArrowsClasses.up} />
       </button>
