@@ -9,7 +9,6 @@ import Footer from '../Footer';
 import NavBar from '../NavBar';
 import RightSidebar from '../RightSidebar';
 import ScrollableArea from '../ScrollableArea';
-import Sidebar from '../Sidebar';
 
 type LayoutProps = {
   children: ReactNode;
@@ -27,9 +26,6 @@ function Layout({ children }: LayoutProps) {
           <div id="alert-notification-portal" className="pm-l-layout__alert" />
           <NavBar />
         </header>
-        <nav className="pm-l-layout__nav">
-          <Sidebar />
-        </nav>
         <ScrollableArea
           className={cn({
             'pm-l-layout__scrollable-area--with-alert': hasAlertNotification,

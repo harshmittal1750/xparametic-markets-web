@@ -5,10 +5,10 @@
     max-width: 100%;
 
     grid-template-areas:
-      'nav header header'
-      'nav main aside'
-      'nav main aside';
-    grid-template-columns: auto minmax(0, 1fr) auto;
+      'header header'
+      'main aside'
+      'main aside';
+    grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows: auto 1fr auto;
 
     background-color: themed('background-color');
@@ -28,10 +28,6 @@
       @include breakpoint-to('md') {
         display: inline;
       }
-    }
-
-    &__nav {
-      grid-area: nav;
     }
 
     &__main {
