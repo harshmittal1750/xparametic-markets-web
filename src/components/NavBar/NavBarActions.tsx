@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import { formatNumberToString } from 'helpers/math';
 
 import { EthereumIcon, PolkamarketsIconSmall, SunIcon } from 'assets/icons';
@@ -9,10 +7,8 @@ import ConnectMetamask from 'components/ConnectMetamask';
 import WalletInfo from 'components/WalletInfo';
 
 import { useAppSelector, useNetwork } from 'hooks';
-import useAlertNotification from 'hooks/useAlertNotification';
 
 function NavBarActions() {
-  const { show } = useAlertNotification();
   const { network } = useNetwork();
 
   const walletConnected = useAppSelector(
@@ -21,10 +17,6 @@ function NavBarActions() {
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-
-  useEffect(() => {
-    show('beta-testing');
-  }, [show, walletConnected]);
 
   return (
     <div className="pm-l-navbar__actions">
