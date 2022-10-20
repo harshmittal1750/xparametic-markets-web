@@ -1,9 +1,5 @@
 import { ReactNode } from 'react';
 
-import cn from 'classnames';
-
-import useAlertNotification from 'hooks/useAlertNotification';
-
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
 import NavBar from '../NavBar';
@@ -15,23 +11,14 @@ type LayoutProps = {
 };
 
 function Layout({ children }: LayoutProps) {
-  const { alertList } = useAlertNotification();
-  const hasAlertNotification = alertList.size > 0;
-
   return (
     <>
       <BetaWarning />
       <div className="pm-l-layout">
         <header className="pm-l-layout__header sticky">
-          <div id="alert-notification-portal" className="pm-l-layout__alert" />
           <NavBar />
         </header>
-        <ScrollableArea
-          className={cn({
-            'pm-l-layout__scrollable-area--with-alert': hasAlertNotification,
-            'pm-l-layout__scrollable-area': !hasAlertNotification
-          })}
-        >
+        <ScrollableArea className="pm-l-layout__scrollable-area">
           <main className="pm-l-layout__main">
             {children}
             <footer className="pm-l-layout__footer">
@@ -41,7 +28,7 @@ function Layout({ children }: LayoutProps) {
         </ScrollableArea>
         <ScrollableArea>
           <aside className="pm-l-layout__aside">
-            <RightSidebar hasAlertNotification={hasAlertNotification} />
+            <RightSidebar />
           </aside>
         </ScrollableArea>
         <div id="toast-notification-portal" />
