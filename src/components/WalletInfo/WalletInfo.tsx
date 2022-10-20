@@ -1,7 +1,4 @@
 import { ReactNode } from 'react';
-import { Link } from 'react-router-dom';
-
-import { MetaMaskIcon } from 'assets/icons';
 
 import { useNetwork } from 'hooks';
 
@@ -28,27 +25,10 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
         variant="outline"
         color="base"
         size="sm"
-        style={{
-          padding: '0.4rem 1.4rem',
-          height: '100%'
-        }}
-      >
-        {wallets[0].balance}
-        {wallets[0].currencyIcon}
-
-        <Transak />
-      </Button>
-
-      <Button
-        variant="outline"
-        color="base"
-        size="sm"
         style={{ padding: '0.4rem 1.4rem', height: '100%' }}
       >
         {wallets[1].balance}
-        {wallets[1].currencyIcon}
-
-        {network.buyEc20Url ? (
+        {network.buyEc20Url && (
           <Button
             color="primary"
             size="sm"
@@ -57,23 +37,29 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
           >
             Buy $POLK
           </Button>
-        ) : null}
+        )}
       </Button>
-      <Link to={`/user/${address}`}>
+      <Button
+        variant="outline"
+        color="base"
+        size="sm"
+        style={{
+          padding: '0.4rem 1.4rem',
+          height: '100%'
+        }}
+      >
+        {wallets[0].balance}
+        ETH
         <Button
-          variant="outline"
           color="default"
           size="sm"
-          noHover
-          aria-label="Address"
+          style={{ padding: '0.5rem 1rem' }}
+          onClick={() => window.open(network.buyEc20Url, '_blank')}
         >
-          <MetaMaskIcon />
-
-          {`${address.substring(0, 4)}...${address.substring(
-            address.length - 4
-          )}`}
+          {address.match(/^\d\w{4}|\d\w{4}$/gm)?.join('...')}
         </Button>
-      </Link>
+        <Transak />
+      </Button>
     </div>
   );
 }

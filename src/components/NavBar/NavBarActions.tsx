@@ -2,12 +2,10 @@ import { useEffect } from 'react';
 
 import { formatNumberToString } from 'helpers/math';
 
-import { PolkamarketsIconSmall } from 'assets/icons';
+import { EthereumIcon, PolkamarketsIconSmall, SunIcon } from 'assets/icons';
 
-import { AlertInline } from 'components/Alert';
+import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
-import Link from 'components/Link';
-import Networks from 'components/Networks';
 import WalletInfo from 'components/WalletInfo';
 
 import { useAppSelector, useNetwork } from 'hooks';
@@ -24,31 +22,12 @@ function NavBarActions() {
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
-  // Example
   useEffect(() => {
     show('beta-testing');
   }, [show, walletConnected]);
 
   return (
     <div className="pm-l-navbar__actions">
-      <AlertInline
-        id="beta-testing"
-        variant="warning"
-        description={
-          <>
-            {`Welcome to Polkamarkets! You’re on ${network.name} and placing predictions with ${network.currency.ticker}. Your `}
-            <Link
-              title="feedback"
-              target="_blank"
-              href="//discord.gg/Szjn2EEf7w"
-              rel="noreferrer"
-              variant="warning"
-            />
-            {` is highly appreciated 🎉`}
-          </>
-        }
-      />
-      {network && network.key !== 'unknown' ? <Networks /> : null}
       {walletConnected ? (
         <WalletInfo
           wallets={[
@@ -68,6 +47,12 @@ function NavBarActions() {
       ) : (
         <ConnectMetamask />
       )}
+      <Button variant="outline" color="default">
+        <SunIcon />
+      </Button>
+      <Button variant="outline" color="default">
+        <EthereumIcon />
+      </Button>
     </div>
   );
 }

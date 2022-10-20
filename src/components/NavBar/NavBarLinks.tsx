@@ -3,7 +3,7 @@ import * as RouterDom from 'react-router-dom';
 const marketsPathname = 'Markets';
 const pathnames = [marketsPathname, 'Portfolio', 'Achievements', 'Leaderboard'];
 
-export default function NavLinks() {
+export default function NavBarLinks() {
   return (
     <nav className="pm-l-navbar__nav">
       {pathnames.map(_pathname => {
