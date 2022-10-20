@@ -70,7 +70,7 @@
   background-color: unset;
   border: none;
 
-  :disabled {
+  &:disabled {
     pointer-events: none;
   }
 }
