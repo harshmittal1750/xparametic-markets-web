@@ -21,13 +21,12 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
 
   return (
     <div className="pm-c-wallet-info">
-      <Button
-        variant="outline"
-        color="base"
-        size="sm"
+      <div
+        className="pm-c-button-outline--base pm-c-button--sm"
         style={{ padding: '0.4rem 1.4rem', height: '100%' }}
       >
-        {wallets[1].balance}
+        {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+        {wallets[1].balance} POLK
         {network.buyEc20Url && (
           <Button
             color="primary"
@@ -38,18 +37,16 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
             Buy $POLK
           </Button>
         )}
-      </Button>
-      <Button
-        variant="outline"
-        color="base"
-        size="sm"
+      </div>
+      <div
+        className="pm-c-button-outline--base pm-c-button--sm"
         style={{
           padding: '0.4rem 1.4rem',
           height: '100%'
         }}
       >
-        {wallets[0].balance}
-        ETH
+        {/* eslint-disable react/jsx-one-expression-per-line */}
+        {wallets[0].balance} ETH
         <Button
           color="default"
           size="sm"
@@ -59,7 +56,7 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
           {address.match(/^\d\w{4}|\d\w{4}$/gm)?.join('...')}
         </Button>
         <Transak />
-      </Button>
+      </div>
     </div>
   );
 }
