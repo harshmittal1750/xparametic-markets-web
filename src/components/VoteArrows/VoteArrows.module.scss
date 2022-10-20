@@ -69,6 +69,10 @@
   margin: 0px;
   background-color: unset;
   border: none;
+
+  :disabled {
+    pointer-events: none;
+  }
 }
 
 .up,

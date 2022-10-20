@@ -11,7 +11,10 @@ import { useAppSelector, useNetwork } from 'hooks';
 import Text from '../new/Text';
 import VoteArrowsClasses from './VoteArrows.module.scss';
 import voteArrowsReducer, {
-  VoteArrowsActions,
+  upvote,
+  removeUpvote,
+  downvote,
+  removeDownvote,
   VoteArrowsState
 } from './VoteArrows.reducer';
 import { VoteArrowsSentiment } from './VoteArrows.type';
@@ -33,9 +36,13 @@ function VoteArrows({
   size = 'lg',
   fullwidth = false
 }: VoteArrowsProps) {
+  // Custom hooks
   const { network, networkConfig } = useNetwork();
+
+  // Redux selectors
   const { votes: userVotes } = useAppSelector(state => state.polkamarkets);
 
+  // Derivated state
   const isAMarketFromCurrentNetwork = marketNetworkId === network.id;
   const userHasVotedInCurrentMarket = Object.keys(userVotes).includes(
     marketId.toString()
@@ -58,19 +65,25 @@ function VoteArrows({
     !userVoteInCurrentMarket.upvoted && !userVoteInCurrentMarket.downvoted;
   const isPositive = userVoteInCurrentMarket.upvoted;
 
-  let initalSentiment: VoteArrowsSentiment;
+  // Reducer initial state
+
+  const initialCounter = votes.up - votes.down;
+
+  let initialSentiment: VoteArrowsSentiment;
   if (isNeutral) {
-    initalSentiment = 'neutral';
+    initialSentiment = 'neutral';
   } else if (isPositive) {
-    initalSentiment = 'positive';
+    initialSentiment = 'positive';
   } else {
-    initalSentiment = 'negative';
+    initialSentiment = 'negative';
   }
 
   const voteArrowsReducerInitalState: VoteArrowsState = {
-    initialCounter: votes.up - votes.down,
-    counter: votes.up - votes.down,
-    sentiment: initalSentiment
+    initialCounter,
+    counter: initialCounter,
+    initialSentiment,
+    sentiment: initialSentiment,
+    isLoading: false
   };
 
   const [state, dispatch] = useReducer(
@@ -78,39 +91,57 @@ function VoteArrows({
     voteArrowsReducerInitalState
   );
 
-  const { counter, sentiment } = state;
+  const { counter, sentiment, isLoading } = state;
 
-  const downvoteAction = useCallback(async () => {
-    const { downvoted } = userVoteInCurrentMarket;
+  // Handlers
 
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-    const polkamarketApiService = new PolkamarketsApiService();
-
-    if (downvoted) {
-      await polkamarketsService.removeDownvoteItem(marketId);
-      polkamarketApiService.reloadMarket(marketSlug);
-      dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE });
-    } else {
-      await polkamarketsService.downvoteItem(marketId);
-      polkamarketApiService.reloadMarket(marketSlug);
-      dispatch({ type: VoteArrowsActions.DOWNVOTE });
-    }
-  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
-
-  const upvoteAction = useCallback(async () => {
+  const handleUpvote = useCallback(async () => {
     const { upvoted } = userVoteInCurrentMarket;
 
     const polkamarketsService = new PolkamarketsService(networkConfig);
-    const polkamarketApiService = new PolkamarketsApiService();
+    const polkamarketsApiService = new PolkamarketsApiService();
 
     if (upvoted) {
-      await polkamarketsService.removeUpvoteItem(marketId);
-      polkamarketApiService.reloadMarket(marketSlug);
-      dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE });
+      await removeUpvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
     } else {
-      await polkamarketsService.upvoteItem(marketId);
-      polkamarketApiService.reloadMarket(marketSlug);
-      dispatch({ type: VoteArrowsActions.UPVOTE });
+      await upvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
+    }
+  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
+
+  const handleDownvote = useCallback(async () => {
+    const { downvoted } = userVoteInCurrentMarket;
+
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsApiService = new PolkamarketsApiService();
+
+    if (downvoted) {
+      await removeDownvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
+    } else {
+      await downvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
     }
   }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
 
@@ -129,7 +160,8 @@ function VoteArrows({
       <button
         type="button"
         className={VoteArrowsClasses.button}
-        onClick={() => downvoteAction()}
+        onClick={() => handleDownvote()}
+        disabled={isLoading}
       >
         <ArrowDown className={VoteArrowsClasses.down} />
       </button>
@@ -144,7 +176,8 @@ function VoteArrows({
       <button
         type="button"
         className={VoteArrowsClasses.button}
-        onClick={() => upvoteAction()}
+        onClick={() => handleUpvote()}
+        disabled={isLoading}
       >
         <ArrowUp className={VoteArrowsClasses.up} />
       </button>
