@@ -67,7 +67,7 @@ function VoteArrows({
 
   // Reducer initial state
 
-  const initialCounter = votes.up - votes.down;
+  const initialCounter = { up: votes.up, down: votes.down };
 
   let initialSentiment: VoteArrowsSentiment;
   if (isNeutral) {
@@ -171,7 +171,7 @@ function VoteArrows({
         fontWeight="extrabold"
         color="2"
       >
-        {counter}
+        {counter.up - counter.down}
       </Text>
       <button
         type="button"

@@ -21,9 +21,14 @@ type VoteArrowsAction = {
   type: VoteArrowsActions;
 };
 
+type VoteArrowsCounter = {
+  up: number;
+  down: number;
+};
+
 export type VoteArrowsState = {
-  initialCounter: number;
-  counter: number;
+  initialCounter: VoteArrowsCounter;
+  counter: VoteArrowsCounter;
   initialSentiment: VoteArrowsSentiment;
   sentiment: VoteArrowsSentiment;
   isLoading: boolean;
@@ -39,7 +44,16 @@ function voteArrowsReducer(
     case VoteArrowsActions.UPVOTE_REQUEST:
       return {
         ...state,
-        counter: state.initialCounter + 1,
+        counter:
+          state.sentiment === 'neutral'
+            ? {
+                ...state.initialCounter,
+                up: state.initialCounter.up + 1
+              }
+            : {
+                up: state.initialCounter.up + 1,
+                down: state.initialCounter.down - 1
+              },
         sentiment: 'positive',
         isLoading: true
       };
@@ -58,7 +72,13 @@ function voteArrowsReducer(
     case VoteArrowsActions.DOWNVOTE_REQUEST:
       return {
         ...state,
-        counter: state.initialCounter - 1,
+        counter:
+          state.sentiment === 'neutral'
+            ? { ...state.initialCounter, down: state.initialCounter.down + 1 }
+            : {
+                up: state.initialCounter.up - 1,
+                down: state.initialCounter.down + 1
+              },
         sentiment: 'negative',
         isLoading: true
       };
