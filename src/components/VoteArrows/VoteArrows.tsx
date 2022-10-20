@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useReducer } from 'react';
 
 import cn from 'classnames';
 import { Market } from 'models/market';
@@ -10,6 +10,11 @@ import { useAppSelector, useNetwork } from 'hooks';
 
 import Text from '../new/Text';
 import VoteArrowsClasses from './VoteArrows.module.scss';
+import voteArrowsReducer, {
+  VoteArrowsActions,
+  VoteArrowsState
+} from './VoteArrows.reducer';
+import { VoteArrowsSentiment } from './VoteArrows.type';
 
 type VoteArrowsProps = {
   marketId: Market['id'];
@@ -30,10 +35,11 @@ function VoteArrows({
 }: VoteArrowsProps) {
   const { network, networkConfig } = useNetwork();
   const { votes: userVotes } = useAppSelector(state => state.polkamarkets);
-  const [counter, setCounter] = useState(votes.up - votes.down);
 
   const isAMarketFromCurrentNetwork = marketNetworkId === network.id;
-  const userHasVotedInCurrentMarket = Object.keys(userVotes).includes(marketId);
+  const userHasVotedInCurrentMarket = Object.keys(userVotes).includes(
+    marketId.toString()
+  );
 
   const userVoteInCurrentMarket = useMemo(
     () =>
@@ -51,7 +57,28 @@ function VoteArrows({
   const isNeutral =
     !userVoteInCurrentMarket.upvoted && !userVoteInCurrentMarket.downvoted;
   const isPositive = userVoteInCurrentMarket.upvoted;
-  const isNegative = userVoteInCurrentMarket.downvoted;
+
+  let initalSentiment: VoteArrowsSentiment;
+  if (isNeutral) {
+    initalSentiment = 'neutral';
+  } else if (isPositive) {
+    initalSentiment = 'positive';
+  } else {
+    initalSentiment = 'negative';
+  }
+
+  const voteArrowsReducerInitalState: VoteArrowsState = {
+    initialCounter: votes.up - votes.down,
+    counter: votes.up - votes.down,
+    sentiment: initalSentiment
+  };
+
+  const [state, dispatch] = useReducer(
+    voteArrowsReducer,
+    voteArrowsReducerInitalState
+  );
+
+  const { counter, sentiment } = state;
 
   const downvoteAction = useCallback(async () => {
     const { downvoted } = userVoteInCurrentMarket;
@@ -60,15 +87,15 @@ function VoteArrows({
     const polkamarketApiService = new PolkamarketsApiService();
 
     if (downvoted) {
-      setCounter(counter + 1);
       await polkamarketsService.removeDownvoteItem(marketId);
       polkamarketApiService.reloadMarket(marketSlug);
+      dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE });
     } else {
-      setCounter(counter - 1);
       await polkamarketsService.downvoteItem(marketId);
       polkamarketApiService.reloadMarket(marketSlug);
+      dispatch({ type: VoteArrowsActions.DOWNVOTE });
     }
-  }, [counter, marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
+  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
 
   const upvoteAction = useCallback(async () => {
     const { upvoted } = userVoteInCurrentMarket;
@@ -77,15 +104,15 @@ function VoteArrows({
     const polkamarketApiService = new PolkamarketsApiService();
 
     if (upvoted) {
-      setCounter(counter - 1);
       await polkamarketsService.removeUpvoteItem(marketId);
       polkamarketApiService.reloadMarket(marketSlug);
+      dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE });
     } else {
-      setCounter(counter + 1);
       await polkamarketsService.upvoteItem(marketId);
       polkamarketApiService.reloadMarket(marketSlug);
+      dispatch({ type: VoteArrowsActions.UPVOTE });
     }
-  }, [counter, marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
+  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
 
   return (
     <div
@@ -94,9 +121,9 @@ function VoteArrows({
         [VoteArrowsClasses.md]: size === 'md',
         [VoteArrowsClasses.lg]: size === 'lg',
         [VoteArrowsClasses.fullwidth]: fullwidth,
-        [VoteArrowsClasses.neutral]: isNeutral,
-        [VoteArrowsClasses.positive]: isPositive,
-        [VoteArrowsClasses.negative]: isNegative
+        [VoteArrowsClasses.neutral]: sentiment === 'neutral',
+        [VoteArrowsClasses.positive]: sentiment === 'positive',
+        [VoteArrowsClasses.negative]: sentiment === 'negative'
       })}
     >
       <button
