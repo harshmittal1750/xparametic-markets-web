@@ -47,14 +47,12 @@ function WalletInfo({ wallets, address }: WalletInfoProps) {
       >
         {/* eslint-disable react/jsx-one-expression-per-line */}
         {wallets[0].balance} ETH
-        <Button
-          color="default"
-          size="sm"
+        <span
+          className="pm-c-button-normal--default pm-c-button--sm"
           style={{ padding: '0.5rem 1rem' }}
-          onClick={() => window.open(network.buyEc20Url, '_blank')}
         >
           {address.match(/^\d\w{4}|\d\w{4}$/gm)?.join('...')}
-        </Button>
+        </span>
         <Transak />
       </div>
     </div>
