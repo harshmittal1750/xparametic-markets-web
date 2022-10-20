@@ -1,5 +1,4 @@
 import { Alert, AlertMini, AlertMinimal } from './Alert';
-import AlertNotification from './AlertNotification';
 import AmountInput from './AmountInput';
 import AreaChart from './AreaChart';
 import Badge from './Badge';
@@ -74,7 +73,6 @@ export {
   Alert,
   AlertMini,
   AlertMinimal,
-  AlertNotification,
   AmountInput,
   AreaChart,
   Badge,
