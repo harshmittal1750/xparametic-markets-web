@@ -19,6 +19,7 @@ function MarketFooter({ market }: MarketFooterProps) {
       <div className="pm-c-market-footer__group--row">
         <MarketFooterActions market={market} />
         <MarketFooterTags market={market} />
+        <div className="pm-c-market-footer__divider--circle" />
         <VoteArrows
           key={slug}
           size="sm"
