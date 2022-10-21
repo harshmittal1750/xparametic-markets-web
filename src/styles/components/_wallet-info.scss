@@ -5,6 +5,10 @@
   &__currency {
     padding: 4px 12px;
 
+    &__ticker {
+      color: #b5d2fe;
+    }
+
     &__address {
       background-color: rgb(255 255 255 / 0.1);
       border-color: transparent;

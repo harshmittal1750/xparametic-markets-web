@@ -14,7 +14,8 @@ function WalletInfo() {
     <div className="pm-c-wallet-info">
       <div className="pm-c-button-outline--base pm-c-button--sm pm-c-wallet-info__currency">
         {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
-        {formatNumberToString(polkBalance)} POLK
+        {formatNumberToString(polkBalance)}{' '}
+        <span className="pm-c-wallet-info__currency__ticker">POLK</span>
         {network.buyEc20Url && (
           <a
             className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button"
@@ -29,7 +30,9 @@ function WalletInfo() {
       <div className="pm-c-button-outline--base pm-c-button--sm pm-c-wallet-info__currency">
         {/* eslint-disable react/jsx-one-expression-per-line */}
         {ethBalance.toFixed(4)}{' '}
-        {network.currency.name.match(/\w{3}/)?.[0].toUpperCase()}
+        <span className="pm-c-wallet-info__currency__ticker">
+          {network.currency.name.match(/\w{3}/)?.[0].toUpperCase()}
+        </span>
         <span className="pm-c-button-normal--default pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__address">
           {walletAddress.match(/^\d\w{4}|\d\w{4}$/gm)?.join('...')}
         </span>
