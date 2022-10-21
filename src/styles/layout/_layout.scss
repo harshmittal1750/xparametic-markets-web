@@ -16,8 +16,6 @@
 
     &__header {
       grid-area: header;
-      z-index: 1000;
-
       background-color: themed('background-color');
       transition: background-color 0.2s ease-in-out 0s;
     }

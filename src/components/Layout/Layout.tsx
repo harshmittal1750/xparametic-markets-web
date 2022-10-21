@@ -10,9 +10,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <div className="pm-l-layout">
       <BetaWarning />
-      <header className="pm-l-layout__header sticky">
-        <NavBar />
-      </header>
+      <NavBar />
       <ScrollableArea className="pm-l-layout__scrollable-area">
         <main className="pm-l-layout__main">
           {children}
