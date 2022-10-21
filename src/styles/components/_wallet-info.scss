@@ -1,4 +1,17 @@
 .pm-c-wallet-info {
   @include flex-row;
   gap: 0.8rem;
+
+  &__currency {
+    padding: 4px 12px;
+
+    &__address {
+      background-color: rgb(255 255 255 / 0.1);
+      border-color: transparent;
+    }
+
+    &__button {
+      padding: 4px 12px;
+    }
+  }
 }
