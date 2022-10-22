@@ -1,21 +1,25 @@
 .pm-c-wallet-info {
   @include flex-row;
   gap: 0.8rem;
+  align-items: center;
 
   &__currency {
-    padding: 4px 12px;
+    padding: 4px 4px 4px 12px;
+    border: 1px solid #252c3b;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    letter-spacing: -0.014rem;
+    color: #f3f4f6;
 
     &__ticker {
       color: #b5d2fe;
     }
 
-    &__address {
-      background-color: rgb(255 255 255 / 0.1) !important;
-      border-color: transparent !important;
-    }
-
     &__button {
-      padding: 4px 12px;
+      margin-left: 12px;
+      max-height: 32px;
     }
   }
 }
