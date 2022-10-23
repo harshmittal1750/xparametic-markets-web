@@ -8,14 +8,12 @@ import { Transak } from '../integrations';
 
 function WalletInfo() {
   const { network } = useNetwork();
-  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
-  const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
-  const walletAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const appState = useAppSelector(state => state);
 
   return (
     <div className="pm-c-wallet-info">
       <div className="pm-c-wallet-info__currency">
-        {formatNumberToString(polkBalance)}
+        {formatNumberToString(appState.polkamarkets.polkBalance)}
         <span className="pm-c-wallet-info__currency__ticker"> POLK</span>
         {network.buyEc20Url && (
           <a
@@ -29,16 +27,18 @@ function WalletInfo() {
         )}
       </div>
       <div className="pm-c-wallet-info__currency">
-        {ethBalance.toFixed(4)}
+        {appState.polkamarkets.ethBalance.toFixed(4)}
         <span className="pm-c-wallet-info__currency__ticker">
           {' '}
           {network.currency.name.match(/\w{3}/)?.[0].toUpperCase()}
         </span>
         <Link
-          to={`/user/${walletAddress}`}
+          to={`/user/${appState.polkamarkets.ethAddress}`}
           className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button"
         >
-          {walletAddress.match(/^\d\w{4}|\d\w{4}$/gm)?.join('...')}
+          {appState.polkamarkets.ethAddress
+            .match(/^\d\w{4}|\d\w{4}$/gm)
+            ?.join('...')}
         </Link>
         <Transak />
       </div>

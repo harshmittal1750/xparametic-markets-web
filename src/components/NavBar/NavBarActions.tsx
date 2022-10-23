@@ -8,11 +8,9 @@ import { useAppSelector, useTheme } from 'hooks';
 
 function NavBarActions() {
   const theme = useTheme();
-  const walletConnected = useAppSelector(
-    state => state.polkamarkets.isLoggedIn
-  );
-  const themeIcon = theme.theme === 'dark' ? <SunIcon /> : <MoonIcon />;
-  const themeAnti = theme.theme === 'dark' ? 'light' : 'dark';
+  const appState = useAppSelector(state => state);
+  const isThemeDark = theme.theme === 'dark';
+  const themeAnti = isThemeDark ? 'light' : 'dark';
 
   function handleClickTheme() {
     theme.setTheme(themeAnti);
@@ -20,14 +18,14 @@ function NavBarActions() {
 
   return (
     <div className="pm-l-layout__header__actions">
-      {walletConnected ? <WalletInfo /> : <ConnectMetamask />}
+      {appState.polkamarkets.isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
       <Button
         variant="outline"
         color="default"
-        aria-label={`Switch to ${themeAnti} theme`}
+        aria-label={`Switch to ${isThemeDark ? 'light' : 'dark'} theme`}
         onClick={handleClickTheme}
       >
-        {themeIcon}
+        {isThemeDark ? <SunIcon /> : <MoonIcon />}
       </Button>
       <Button variant="outline" color="default">
         <EthereumIcon />
