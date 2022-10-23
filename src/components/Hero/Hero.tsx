@@ -6,16 +6,12 @@ interface HeroProps extends React.ComponentPropsWithoutRef<'section'> {
   image?: React.CSSProperties['backgroundImage'];
 }
 
-export default function Hero({ image, ...props }: HeroProps) {
+export default function Hero({ image, className, ...props }: HeroProps) {
+  const style = {
+    '--background-image': `url(${image})`
+  } as React.CSSProperties;
+
   return (
-    <section
-      className={cn('pm-c-hero')}
-      style={
-        {
-          '--background-image': `url(${image})`
-        } as React.CSSProperties
-      }
-      {...props}
-    />
+    <section className={cn('pm-c-hero', className)} style={style} {...props} />
   );
 }

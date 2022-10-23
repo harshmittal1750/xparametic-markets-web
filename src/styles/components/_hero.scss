@@ -1,8 +1,6 @@
 .pm-c-hero {
-  min-height: 274px;
-  padding: 64px 40px;
+  padding: 40px calc(61.8% - 40px) 40px 40px;
   border-radius: 16px;
-  margin-bottom: 20px;
   background: linear-gradient(
       90deg,
       rgba(16, 65, 110, 0.8) 0%,
@@ -13,4 +11,5 @@
   background-clip: border-box;
   background-repeat: no-repeat;
   background-size: cover;
+  background-position: center;
 }

@@ -1,10 +1,9 @@
 import { filteredMarketsSelector } from 'redux/ducks/markets';
 
-import { Hero } from 'components';
-
 import { useAppSelector, useFavoriteMarkets } from 'hooks';
 import useCategories from 'hooks/useCategories';
 
+import HomeHero from './HomeHero';
 import HomeTabs from './HomeTabs';
 
 function Home() {
@@ -26,9 +25,7 @@ function Home() {
 
   return (
     <div className="pm-p-home">
-      <Hero image="https://e0.365dm.com/16/11/2048x1152/skysports-graham-stack-kerala-blasters-goalkeeper_3842503.jpg">
-        teste
-      </Hero>
+      <HomeHero />
       <HomeTabs
         openMarkets={openMarkets}
         closedMarkets={closedMarkets}
