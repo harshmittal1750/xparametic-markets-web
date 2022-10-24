@@ -70,6 +70,7 @@ import Tooltip from './Tooltip';
 import TradeForm from './TradeForm';
 import VirtualizedList from './VirtualizedList';
 import VoteArrows from './VoteArrows';
+import VoteModal from './VoteModal';
 import WalletInfo from './WalletInfo';
 
 export {
@@ -151,6 +152,7 @@ export {
   TradeForm,
   VirtualizedList,
   VoteArrows,
+  VoteModal,
   WalletInfo
 };
 export { default as ConnectMetamask } from './ConnectMetamask';

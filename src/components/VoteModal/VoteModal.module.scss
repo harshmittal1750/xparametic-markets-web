@@ -1,0 +1,40 @@
+.dialog {
+  width: 474px;
+}
+
+.headerTitle {
+  text-align: start;
+}
+
+.verifyMarket {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--size-12);
+  margin-bottom: var(--size-24);
+}
+
+.alert {
+  margin-top: var(--size-32);
+}
+
+.alertHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-12);
+}
+
+.alertHeaderTitle {
+  display: inline-flex;
+  gap: var(--size-16);
+  align-items: center;
+}
+
+.warningIcon {
+  flex-shrink: 0;
+  fill: $warning-500;
+}
+
+.buyPOLK {
+  padding: 5px 10px;
+}
