@@ -12,6 +12,7 @@ import ModalHeader from 'components/ModalHeader';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
+import NetworkSwitch from 'components/Networks/NetworkSwitch';
 
 import { useAppSelector, useNetwork } from 'hooks';
 
@@ -19,7 +20,11 @@ import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
 import { voteModalProps } from './VoteModal.util';
 
-function VoteModal() {
+type VoteModalProps = {
+  marketNetworkId: number;
+};
+
+function VoteModal({ marketNetworkId }: VoteModalProps) {
   // Custom hooks
   const { network, networkConfig } = useNetwork();
   const { buyEc20Url } = network;
@@ -44,6 +49,7 @@ function VoteModal() {
   }, [polkBalance, networkConfig]);
 
   // Derivated state
+  const isWrongNetwork = network.id !== marketNetworkId.toString();
   const needsBuyPolk = polkBalance < requiredBalance;
 
   // Actions
@@ -97,6 +103,9 @@ function VoteModal() {
         </ModalSectionText>
       </ModalSection>
       <ModalFooter>
+        {isWrongNetwork ? (
+          <NetworkSwitch targetNetworkId={marketNetworkId.toString()} />
+        ) : null}
         <Text as="p" fontSize="body-2" fontWeight="medium" color="3">
           {`By clicking you’re agreeing to our `}
           <a
