@@ -7,6 +7,7 @@ import { TwarningIcon, VerifiedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import Modal from 'components/Modal';
+import ModalContent from 'components/ModalContent';
 import ModalFooter from 'components/ModalFooter';
 import ModalHeader from 'components/ModalHeader';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
@@ -21,7 +22,7 @@ import VoteModalClasses from './VoteModal.module.scss';
 import { voteModalProps } from './VoteModal.util';
 
 type VoteModalProps = {
-  marketNetworkId: number;
+  marketNetworkId: string;
 };
 
 function VoteModal({ marketNetworkId }: VoteModalProps) {
@@ -33,7 +34,7 @@ function VoteModal({ marketNetworkId }: VoteModalProps) {
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
 
   // Local state
-  const [show, setShow] = useState(false);
+  const [show, _setShow] = useState(false);
   const [requiredBalance, setRequiredBalance] = useState(0);
   const [isLoadingBuyPolk, setIsLoadingBuyPolk] = useState(false);
 
@@ -49,7 +50,7 @@ function VoteModal({ marketNetworkId }: VoteModalProps) {
   }, [polkBalance, networkConfig]);
 
   // Derivated state
-  const isWrongNetwork = network.id !== marketNetworkId.toString();
+  const isWrongNetwork = network.id !== marketNetworkId;
   const needsBuyPolk = polkBalance < requiredBalance;
 
   // Actions
@@ -63,62 +64,69 @@ function VoteModal({ marketNetworkId }: VoteModalProps) {
 
   return (
     <Modal show={show} className={{ dialog: VoteModalClasses.dialog }}>
-      <ModalHeader>
-        <div className={VoteModalClasses.verifyMarket}>
-          <VerifiedIcon size="sm" />
-          <Text
-            as="span"
-            fontSize="body-4"
-            fontWeight="semibold"
-            transform="uppercase"
-            color="violets-are-blue"
+      <ModalContent>
+        <ModalHeader>
+          <div className={VoteModalClasses.verifyMarket}>
+            <VerifiedIcon size="sm" />
+            <Text
+              as="span"
+              fontSize="body-4"
+              fontWeight="semibold"
+              transform="uppercase"
+              color="violets-are-blue"
+            >
+              Verify market
+            </Text>
+          </div>
+          <ModalHeaderTitle
+            className={VoteModalClasses.headerTitle}
+            id={voteModalProps['aria-labelledby']}
           >
-            Verify market
-          </Text>
-        </div>
-        <ModalHeaderTitle
-          className={VoteModalClasses.headerTitle}
-          id={voteModalProps['aria-labelledby']}
-        >
-          {`Polkamarkets is running in Beta is currently underdoing `}
-          <a
-            className={cn(
-              'pm-c-link',
-              'text-heading-2',
-              'font-medium',
-              'text-violets-are-blue'
-            )}
-            href="www.polkamarkets.com"
-          >
-            auditing procedures
-          </a>
-          .
-        </ModalHeaderTitle>
-      </ModalHeader>
-      <ModalSection>
-        <ModalSectionText id={voteModalProps['aria-describedby']}>
-          {`I'm baby mlkshk cornhole cray selvage vaporware pinterest typewriter
+            {`Polkamarkets is running in Beta is currently underdoing `}
+            <a
+              className={cn(
+                'pm-c-link',
+                'text-heading-2',
+                'font-medium',
+                'text-violets-are-blue'
+              )}
+              href="www.polkamarkets.com"
+            >
+              auditing procedures
+            </a>
+            .
+          </ModalHeaderTitle>
+        </ModalHeader>
+        <ModalSection>
+          <ModalSectionText id={voteModalProps['aria-describedby']}>
+            {`I'm baby mlkshk cornhole cray selvage vaporware pinterest typewriter
             tonx messenger bag chia leggings. Cronut affogato vinyl cold-pressed
             shaman fashion axe thundercats.`}
-        </ModalSectionText>
-      </ModalSection>
-      <ModalFooter>
-        {isWrongNetwork ? (
-          <NetworkSwitch targetNetworkId={marketNetworkId.toString()} />
-        ) : null}
-        <Text as="p" fontSize="body-2" fontWeight="medium" color="3">
-          {`By clicking you’re agreeing to our `}
-          <a
-            className={cn('pm-c-link', 'text-body-2', 'font-medium', 'text-3')}
-            href="https://www.polkamarkets.com/legal/terms-conditions"
-          >
-            Terms and Conditions
-          </a>
-          .
-        </Text>
-      </ModalFooter>
+          </ModalSectionText>
+        </ModalSection>
+        <ModalFooter>
+          {isWrongNetwork ? (
+            <NetworkSwitch targetNetworkId={marketNetworkId} />
+          ) : null}
+          <Text as="p" fontSize="body-2" fontWeight="medium" color="3">
+            {`By clicking you’re agreeing to our `}
+            <a
+              className={cn(
+                'pm-c-link',
+                'text-body-2',
+                'font-medium',
+                'text-3'
+              )}
+              href="https://www.polkamarkets.com/legal/terms-conditions"
+            >
+              Terms and Conditions
+            </a>
+            .
+          </Text>
+        </ModalFooter>
+      </ModalContent>
       {needsBuyPolk ? (
-        <div role="alert" className={VoteModalClasses.alert}>
+        <ModalContent>
           <div className={VoteModalClasses.alertHeader}>
             <div className={VoteModalClasses.alertHeaderTitle}>
               <TwarningIcon
@@ -130,8 +138,7 @@ function VoteModal({ marketNetworkId }: VoteModalProps) {
               </Text>
             </div>
             <Button
-              className={VoteModalClasses.buyPOLK}
-              size="sm"
+              size="xs"
               color="primary"
               onClick={handleBuyPolk}
               disabled={isLoadingBuyPolk}
@@ -139,7 +146,7 @@ function VoteModal({ marketNetworkId }: VoteModalProps) {
               Buy $POLK
             </Button>
           </div>
-        </div>
+        </ModalContent>
       ) : null}
     </Modal>
   );
