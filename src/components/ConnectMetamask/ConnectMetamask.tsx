@@ -9,6 +9,7 @@ import { Button } from 'components/Button';
 import Modal from 'components/Modal';
 import ModalFooter from 'components/ModalFooter';
 import ModalHeader from 'components/ModalHeader';
+import ModalHeaderHide from 'components/ModalHeaderHide';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
@@ -42,6 +43,7 @@ export default function ConnectMetamask() {
     <>
       <Modal show={show} onHide={handleHide} {...connectMetamaskProps}>
         <ModalHeader>
+          <ModalHeaderHide onClick={handleHide} />
           <div className="pm-l-navbar__actions-metamask__status">
             <MetaMaskIcon size={40} />
             <Pill variant="normal" color="danger">

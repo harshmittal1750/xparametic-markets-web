@@ -163,6 +163,8 @@ export { default as ModalFooter } from './ModalFooter';
 
 export { default as ModalHeader } from './ModalHeader';
 
+export { default as ModalHeaderHide } from './ModalHeaderHide';
+
 export { default as ModalHeaderTitle } from './ModalHeaderTitle';
 
 export { default as ModalSection } from './ModalSection';

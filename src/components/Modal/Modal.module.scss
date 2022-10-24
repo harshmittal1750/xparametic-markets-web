@@ -3,7 +3,6 @@
   position: fixed;
   z-index: 9999;
   inset: 0;
-  padding: 3.2rem;
   background: linear-gradient(
     180deg,
     var(--color-background-secondary) 0%,
@@ -13,7 +12,6 @@
 
 .dialog {
   // todo: add will-change property
-  position: relative;
   margin: auto;
   transition: all 0.2s ease-out; // todo: replace 'all' for the actual animated properties
   width: 41rem;
@@ -26,13 +24,4 @@
   &:focus {
     outline: none;
   }
-}
-
-.hide {
-  position: absolute;
-  right: 20px;
-  top: 20px;
-  width: 40px;
-  height: 40px !important;
-  padding: 0px !important;
 }
