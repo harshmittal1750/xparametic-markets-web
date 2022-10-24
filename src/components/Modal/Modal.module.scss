@@ -11,15 +11,8 @@
 }
 
 .dialog {
-  // todo: add will-change property
   margin: auto;
-  transition: all 0.2s ease-out; // todo: replace 'all' for the actual animated properties
   width: 41rem;
-  padding: 3.2rem;
-  background-color: var(--color-background-primary);
-  border: 0.1rem solid var(--color-border);
-  border-radius: 0.4rem;
-  box-shadow: 0rem 0.4rem 2.4rem var(--color-shadow);
 
   &:focus {
     outline: none;
