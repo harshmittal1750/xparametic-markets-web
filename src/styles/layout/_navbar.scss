@@ -2,7 +2,7 @@
   @include themes($navbar-themes) {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #252c3b;
+    border-bottom: 1px solid themed('border-bottom-color');
     width: 100%;
     padding-left: 24px;
     padding-right: 24px;
@@ -19,18 +19,17 @@
       margin-right: auto;
 
       &-link {
-        color: #637084;
+        color: themed('text');
         font-size: 1.2rem;
         text-decoration: none;
         font-weight: 700;
         text-transform: uppercase;
         cursor: pointer;
-        will-change: color;
         transition: color 0.3s ease 0s;
         margin-right: 24px;
 
         &.active {
-          color: #f9fafb;
+          color: themed('text-active');
         }
       }
     }
