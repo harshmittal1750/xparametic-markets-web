@@ -80,13 +80,16 @@ function NetworkSwitch() {
 
   return (
     <Button
-      color="warning"
+      className={NetworkSwitchClasses.button}
+      variant="subtle"
+      color="default"
       fullwidth
       onClick={() => handleChangeNetwork()}
       loading={isChangingNetwork}
       disabled={isChangingNetwork}
     >
       Switch Network
+      {marketNetwork.currency.icon}
     </Button>
   );
 }
