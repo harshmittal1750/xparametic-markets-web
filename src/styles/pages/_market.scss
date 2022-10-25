@@ -61,7 +61,7 @@
       display: none;
 
       @include breakpoint-to('md') {
-        @include flex-row(flex-end, center);
+        @include flex-row(flex-end, center, var(--size-12));
       }
     }
 

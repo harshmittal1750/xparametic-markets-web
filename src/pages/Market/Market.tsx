@@ -9,7 +9,7 @@ import { closeRightSidebar, openTradeForm } from 'redux/ducks/ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import { Tabs, Table, Text, Button, SEO } from 'components';
+import { Tabs, Table, Text, Button, SEO, VoteArrows } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -145,6 +145,13 @@ const Market = () => {
         />
       </div>
       <div className="pm-p-market__actions">
+        <VoteArrows
+          size="md"
+          marketId={market.id}
+          marketNetworkId={market.networkId}
+          marketSlug={market.slug}
+          votes={market.votes}
+        />
         <Button
           variant="outline"
           size="sm"
