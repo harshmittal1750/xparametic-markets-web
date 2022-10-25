@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useReducer, useState } from 'react';
+import { useCallback, useReducer } from 'react';
 
 import cn from 'classnames';
 import { Market } from 'models/market';
@@ -18,7 +18,9 @@ import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 import NetworkSwitch from 'components/Networks/NetworkSwitch';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import { useVote } from 'contexts/vote';
+
+import { useAppDispatch } from 'hooks';
 
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
@@ -56,19 +58,15 @@ function VoteModal({
   initialSentiment
 }: VoteModalProps) {
   // Custom hooks
-  const appDispatch = useAppDispatch();
-  const { network, networkConfig } = useNetwork();
+  const { network, networkConfig, userPolkBalance, userRequiredPolkBalance } =
+    useVote();
   const { buyEc20Url } = network;
 
-  // Redux selectors
-  const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
-
-  // Local state
-  const [requiredBalance, setRequiredBalance] = useState(0);
+  const appDispatch = useAppDispatch();
 
   // Derivated state from props
-  const isWrongNetwork = network.id !== marketNetworkId;
-  const needsBuyPolk = polkBalance < requiredBalance;
+  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const needsBuyPolk = userPolkBalance < userRequiredPolkBalance;
 
   const voteArrowsReducerInitalState: VoteArrowsState = {
     initialCounter,
@@ -84,17 +82,6 @@ function VoteModal({
   );
 
   const { counter, sentiment, isLoading } = state;
-
-  // Async actions
-  useEffect(() => {
-    async function getMinimumRequiredBalance() {
-      const polkamarketsService = new PolkamarketsService(networkConfig);
-
-      const response = await polkamarketsService.getMinimumRequiredBalance();
-      setRequiredBalance(response);
-    }
-    getMinimumRequiredBalance();
-  }, [polkBalance, networkConfig]);
 
   // Handlers
   const handleUpvote = useCallback(async () => {
@@ -274,7 +261,7 @@ function VoteModal({
                 className={VoteModalClasses.warningIcon}
               />
               <Text as="p" fontSize="body-2" fontWeight="semibold" color="1">
-                {`To be able to vote you need to have at least ${requiredBalance} POLK`}
+                {`To be able to vote you need to have at least ${userRequiredPolkBalance} POLK`}
               </Text>
             </div>
             <Button size="xs" color="primary" onClick={handleBuyPolk}>
