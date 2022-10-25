@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
 
 import cn from 'classnames';
-import { PolkamarketsService } from 'services';
+import { Market } from 'models/market';
+import { PolkamarketsApiService, PolkamarketsService } from 'services';
 
 import { TwarningIcon, VerifiedIcon } from 'assets/icons';
+import { ArrowDown, ArrowUp } from 'assets/icons/components/vote';
 
 import { Button } from 'components/Button';
 import Modal from 'components/Modal';
@@ -19,24 +21,94 @@ import { useAppSelector, useNetwork } from 'hooks';
 
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
+import voteArrowsReducer, {
+  downvote,
+  removeDownvote,
+  removeUpvote,
+  upvote,
+  VoteArrowsState
+} from './VoteModal.reducer';
+import { VoteArrowsSentiment } from './VoteModal.type';
 import { voteModalProps } from './VoteModal.util';
 
 type VoteModalProps = {
-  marketNetworkId: string;
+  marketId: Market['id'];
+  marketSlug: Market['slug'];
+  marketNetworkId: Market['networkId'];
+  votes: Market['votes'];
 };
 
-function VoteModal({ marketNetworkId }: VoteModalProps) {
+function VoteModal({
+  marketId,
+  marketSlug,
+  marketNetworkId,
+  votes
+}: VoteModalProps) {
   // Custom hooks
   const { network, networkConfig } = useNetwork();
   const { buyEc20Url } = network;
 
   // Redux selectors
+  const { votes: userVotes } = useAppSelector(state => state.polkamarkets);
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
 
   // Local state
-  const [show, _setShow] = useState(false);
+  const [show, setShow] = useState(false);
   const [requiredBalance, setRequiredBalance] = useState(0);
   const [isLoadingBuyPolk, setIsLoadingBuyPolk] = useState(false);
+
+  // Derivated state from props
+  const isAMarketFromCurrentNetwork = marketNetworkId === network.id;
+  const userHasVotedInCurrentMarket = Object.keys(userVotes).includes(
+    marketId.toString()
+  );
+
+  const isWrongNetwork = network.id !== marketNetworkId;
+  const needsBuyPolk = polkBalance < requiredBalance;
+
+  const userVoteInCurrentMarket = useMemo(
+    () =>
+      isAMarketFromCurrentNetwork && userHasVotedInCurrentMarket
+        ? userVotes[marketId]
+        : { downvoted: false, upvoted: false },
+    [
+      isAMarketFromCurrentNetwork,
+      marketId,
+      userHasVotedInCurrentMarket,
+      userVotes
+    ]
+  );
+
+  const isNeutral =
+    !userVoteInCurrentMarket.upvoted && !userVoteInCurrentMarket.downvoted;
+  const isPositive = userVoteInCurrentMarket.upvoted;
+
+  // Reducer initial state
+  const initialCounter = { up: votes.up, down: votes.down };
+
+  let initialSentiment: VoteArrowsSentiment;
+  if (isNeutral) {
+    initialSentiment = 'neutral';
+  } else if (isPositive) {
+    initialSentiment = 'positive';
+  } else {
+    initialSentiment = 'negative';
+  }
+
+  const voteArrowsReducerInitalState: VoteArrowsState = {
+    initialCounter,
+    counter: initialCounter,
+    initialSentiment,
+    sentiment: initialSentiment,
+    isLoading: false
+  };
+
+  const [state, dispatch] = useReducer(
+    voteArrowsReducer,
+    voteArrowsReducerInitalState
+  );
+
+  const { counter, sentiment, isLoading } = state;
 
   // Async actions
   useEffect(() => {
@@ -49,11 +121,57 @@ function VoteModal({ marketNetworkId }: VoteModalProps) {
     getMinimumRequiredBalance();
   }, [polkBalance, networkConfig]);
 
-  // Derivated state
-  const isWrongNetwork = network.id !== marketNetworkId;
-  const needsBuyPolk = polkBalance < requiredBalance;
+  // Handlers
+  const handleUpvote = useCallback(async () => {
+    const { upvoted } = userVoteInCurrentMarket;
 
-  // Actions
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsApiService = new PolkamarketsApiService();
+
+    if (upvoted) {
+      await removeUpvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
+    } else {
+      await upvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
+    }
+  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
+
+  const handleDownvote = useCallback(async () => {
+    const { downvoted } = userVoteInCurrentMarket;
+
+    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsApiService = new PolkamarketsApiService();
+
+    if (downvoted) {
+      await removeDownvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
+    } else {
+      await downvote({
+        dispatch,
+        polkamarketsService,
+        marketId,
+        polkamarketsApiService,
+        marketSlug
+      });
+    }
+  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
+
   const handleBuyPolk = useCallback(async () => {
     setIsLoadingBuyPolk(true);
 
@@ -97,17 +215,53 @@ function VoteModal({ marketNetworkId }: VoteModalProps) {
             .
           </ModalHeaderTitle>
         </ModalHeader>
-        <ModalSection>
+        <ModalSection className={VoteModalClasses.section}>
           <ModalSectionText id={voteModalProps['aria-describedby']}>
             {`I'm baby mlkshk cornhole cray selvage vaporware pinterest typewriter
             tonx messenger bag chia leggings. Cronut affogato vinyl cold-pressed
             shaman fashion axe thundercats.`}
           </ModalSectionText>
         </ModalSection>
-        <ModalFooter>
+        <div className={VoteModalClasses.body}>
+          <div
+            className={cn(VoteModalClasses.arrows, {
+              [VoteModalClasses.neutral]: sentiment === 'neutral',
+              [VoteModalClasses.positive]: sentiment === 'positive',
+              [VoteModalClasses.negative]: sentiment === 'negative',
+              [VoteModalClasses.disabled]:
+                !isAMarketFromCurrentNetwork || isLoading
+            })}
+          >
+            <button
+              type="button"
+              className={VoteModalClasses.button}
+              onClick={() => handleDownvote()}
+              disabled={!isAMarketFromCurrentNetwork || isLoading}
+            >
+              <ArrowDown className={VoteModalClasses.down} />
+            </button>
+            <Text
+              className={VoteModalClasses.counter}
+              as="span"
+              fontWeight="extrabold"
+              color="2"
+            >
+              {counter.up - counter.down}
+            </Text>
+            <button
+              type="button"
+              className={VoteModalClasses.button}
+              onClick={() => handleUpvote()}
+              disabled={!isAMarketFromCurrentNetwork || isLoading}
+            >
+              <ArrowUp className={VoteModalClasses.up} />
+            </button>
+          </div>
           {isWrongNetwork ? (
             <NetworkSwitch targetNetworkId={marketNetworkId} />
           ) : null}
+        </div>
+        <ModalFooter className={VoteModalClasses.footer}>
           <Text as="p" fontSize="body-2" fontWeight="medium" color="3">
             {`By clicking you’re agreeing to our `}
             <a
