@@ -1,14 +1,15 @@
-import { EthereumIcon, MoonIcon, SunIcon } from 'assets/icons';
+import { EthereumIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
+import Icon from 'components/Icon';
 import WalletInfo from 'components/WalletInfo';
 
 import { useAppSelector, useTheme } from 'hooks';
 
 function NavBarActions() {
   const theme = useTheme();
-  const appState = useAppSelector(state => state);
+  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const isThemeDark = theme.theme === 'dark';
   const themeAnti = isThemeDark ? 'light' : 'dark';
 
@@ -18,14 +19,14 @@ function NavBarActions() {
 
   return (
     <div className="pm-l-layout__header__actions">
-      {appState.polkamarkets.isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
+      {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
       <Button
         variant="outline"
         color="default"
         aria-label={`Switch to ${isThemeDark ? 'light' : 'dark'} theme`}
         onClick={handleClickTheme}
       >
-        {isThemeDark ? <SunIcon /> : <MoonIcon />}
+        <Icon name={isThemeDark ? 'Sun' : 'Moon'} />
       </Button>
       <Button variant="outline" color="default">
         <EthereumIcon />
