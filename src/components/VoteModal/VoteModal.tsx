@@ -221,7 +221,8 @@ function VoteModal({
             </button>
             {isLoading ? (
               <span
-                className={cn('spinner--primary', VoteModalClasses.spinner)}
+                className="spinner--primary"
+                style={{ width: 38, height: 38 }}
               />
             ) : (
               <Text
