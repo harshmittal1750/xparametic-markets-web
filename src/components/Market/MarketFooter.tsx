@@ -11,10 +11,7 @@ type MarketFooterProps = {
 };
 
 function MarketFooter({ market }: MarketFooterProps) {
-  const { id, slug, state, network, votes, verified } = market;
-
-  const isVerified = verified;
-  const isOpen = state === 'open';
+  const { id, slug, state, network, votes } = market;
 
   return (
     <div className="pm-c-market-footer">
@@ -22,20 +19,16 @@ function MarketFooter({ market }: MarketFooterProps) {
       <div className="pm-c-market-footer__group--row">
         <MarketFooterActions market={market} />
         <MarketFooterTags market={market} />
-        {!isVerified && isOpen ? (
-          <>
-            <div className="pm-c-market-footer__divider--circle" />
-            <VoteArrows
-              key={slug}
-              size="sm"
-              marketId={id}
-              marketSlug={slug}
-              marketNetworkId={network.id}
-              marketState={state}
-              votes={votes}
-            />
-          </>
-        ) : null}
+        <div className="pm-c-market-footer__divider--circle" />
+        <VoteArrows
+          key={slug}
+          size="sm"
+          marketId={id}
+          marketSlug={slug}
+          marketNetworkId={network.id}
+          marketState={state}
+          votes={votes}
+        />
       </div>
     </div>
   );
