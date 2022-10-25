@@ -153,6 +153,12 @@ export { default as Hero } from './Hero';
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
+export { default as List } from './List';
+
+export { default as ListItem } from './ListItem';
+
+export { default as ListItemText } from './ListItemText';
+
 export { default as Modal } from './Modal';
 
 export { default as ModalFooter } from './ModalFooter';

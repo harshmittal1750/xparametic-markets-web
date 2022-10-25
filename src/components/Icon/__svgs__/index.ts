@@ -6,6 +6,7 @@ export { ReactComponent as Chevron } from './Chevron.svg';
 export { ReactComponent as Cross } from './Cross.svg';
 export { ReactComponent as CrossFilled } from './CrossFilled.svg';
 export { ReactComponent as Delta } from './Delta.svg';
+export { ReactComponent as Ethereum } from './Ethereum.svg';
 export { ReactComponent as Explore } from './Explore.svg';
 export { ReactComponent as Filter } from './Filter.svg';
 export { ReactComponent as Grid } from './Grid.svg';

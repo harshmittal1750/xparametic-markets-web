@@ -1,0 +1,11 @@
+.root {
+  height: 44px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #252c3b;
+  }
+}
