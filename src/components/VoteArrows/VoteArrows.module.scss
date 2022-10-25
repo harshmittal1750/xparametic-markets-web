@@ -15,13 +15,11 @@
 }
 
 .sm,
-.md,
-.lg {
+.md {
   border-radius: var(--size-4);
 }
 
-.md,
-.lg {
+.md {
   border: 1px solid;
 }
 
@@ -43,24 +41,6 @@
   .counter {
     font-size: var(--size-16--rem);
   }
-}
-
-.lg {
-  gap: var(--size-8);
-  padding: var(--size-12) var(--size-16);
-
-  .up,
-  .down {
-    height: var(--size-20);
-  }
-
-  .counter {
-    font-size: var(--size-28--rem);
-  }
-}
-
-.fullwidth {
-  width: 100%;
 }
 
 .button {
