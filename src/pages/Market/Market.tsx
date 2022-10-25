@@ -43,9 +43,6 @@ const Market = () => {
     ? `Switch network to ${market.network.name} to see your market positions.`
     : 'You have no positions.';
 
-  const isVerified = market.verified;
-  const isOpen = market.state === 'open';
-
   useEffect(() => {
     async function fetchMarket() {
       dispatch(reset());
@@ -148,16 +145,14 @@ const Market = () => {
         />
       </div>
       <div className="pm-p-market__actions">
-        {!isVerified && isOpen ? (
-          <VoteArrows
-            size="md"
-            marketId={market.id}
-            marketNetworkId={market.networkId}
-            marketSlug={market.slug}
-            marketState={market.state}
-            votes={market.votes}
-          />
-        ) : null}
+        <VoteArrows
+          size="md"
+          marketId={market.id}
+          marketNetworkId={market.networkId}
+          marketSlug={market.slug}
+          marketState={market.state}
+          votes={market.votes}
+        />
         <Button
           variant="outline"
           size="sm"
