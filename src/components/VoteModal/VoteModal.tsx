@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
 
 import cn from 'classnames';
 import { Market } from 'models/market';
@@ -12,6 +12,7 @@ import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalFooter from 'components/ModalFooter';
 import ModalHeader from 'components/ModalHeader';
+import ModalHeaderHide from 'components/ModalHeaderHide';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
@@ -32,68 +33,39 @@ import { VoteArrowsSentiment } from './VoteModal.type';
 import { voteModalProps } from './VoteModal.util';
 
 type VoteModalProps = {
+  show: boolean;
+  onHide: () => void;
   marketId: Market['id'];
   marketSlug: Market['slug'];
   marketNetworkId: Market['networkId'];
-  votes: Market['votes'];
+  userVote: { upvoted: boolean; downvoted: boolean };
+  initialCounter: { up: number; down: number };
+  initialSentiment: VoteArrowsSentiment;
 };
 
 function VoteModal({
+  show,
+  onHide,
   marketId,
   marketSlug,
   marketNetworkId,
-  votes
+  userVote,
+  initialCounter,
+  initialSentiment
 }: VoteModalProps) {
   // Custom hooks
   const { network, networkConfig } = useNetwork();
   const { buyEc20Url } = network;
 
   // Redux selectors
-  const { votes: userVotes } = useAppSelector(state => state.polkamarkets);
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
 
   // Local state
-  const [show, setShow] = useState(false);
   const [requiredBalance, setRequiredBalance] = useState(0);
-  const [isLoadingBuyPolk, setIsLoadingBuyPolk] = useState(false);
 
   // Derivated state from props
-  const isAMarketFromCurrentNetwork = marketNetworkId === network.id;
-  const userHasVotedInCurrentMarket = Object.keys(userVotes).includes(
-    marketId.toString()
-  );
-
   const isWrongNetwork = network.id !== marketNetworkId;
   const needsBuyPolk = polkBalance < requiredBalance;
-
-  const userVoteInCurrentMarket = useMemo(
-    () =>
-      isAMarketFromCurrentNetwork && userHasVotedInCurrentMarket
-        ? userVotes[marketId]
-        : { downvoted: false, upvoted: false },
-    [
-      isAMarketFromCurrentNetwork,
-      marketId,
-      userHasVotedInCurrentMarket,
-      userVotes
-    ]
-  );
-
-  const isNeutral =
-    !userVoteInCurrentMarket.upvoted && !userVoteInCurrentMarket.downvoted;
-  const isPositive = userVoteInCurrentMarket.upvoted;
-
-  // Reducer initial state
-  const initialCounter = { up: votes.up, down: votes.down };
-
-  let initialSentiment: VoteArrowsSentiment;
-  if (isNeutral) {
-    initialSentiment = 'neutral';
-  } else if (isPositive) {
-    initialSentiment = 'positive';
-  } else {
-    initialSentiment = 'negative';
-  }
 
   const voteArrowsReducerInitalState: VoteArrowsState = {
     initialCounter,
@@ -123,7 +95,7 @@ function VoteModal({
 
   // Handlers
   const handleUpvote = useCallback(async () => {
-    const { upvoted } = userVoteInCurrentMarket;
+    const { upvoted } = userVote;
 
     const polkamarketsService = new PolkamarketsService(networkConfig);
     const polkamarketsApiService = new PolkamarketsApiService();
@@ -145,10 +117,10 @@ function VoteModal({
         marketSlug
       });
     }
-  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
+  }, [marketId, marketSlug, networkConfig, userVote]);
 
   const handleDownvote = useCallback(async () => {
-    const { downvoted } = userVoteInCurrentMarket;
+    const { downvoted } = userVote;
 
     const polkamarketsService = new PolkamarketsService(networkConfig);
     const polkamarketsApiService = new PolkamarketsApiService();
@@ -170,20 +142,17 @@ function VoteModal({
         marketSlug
       });
     }
-  }, [marketId, marketSlug, networkConfig, userVoteInCurrentMarket]);
+  }, [marketId, marketSlug, networkConfig, userVote]);
 
   const handleBuyPolk = useCallback(async () => {
-    setIsLoadingBuyPolk(true);
-
     window.open(buyEc20Url, '_blank');
-
-    setIsLoadingBuyPolk(false);
   }, [buyEc20Url]);
 
   return (
     <Modal show={show} className={{ dialog: VoteModalClasses.dialog }}>
       <ModalContent>
         <ModalHeader>
+          <ModalHeaderHide onClick={onHide} />
           <div className={VoteModalClasses.verifyMarket}>
             <VerifiedIcon size="sm" />
             <Text
@@ -228,15 +197,14 @@ function VoteModal({
               [VoteModalClasses.neutral]: sentiment === 'neutral',
               [VoteModalClasses.positive]: sentiment === 'positive',
               [VoteModalClasses.negative]: sentiment === 'negative',
-              [VoteModalClasses.disabled]:
-                !isAMarketFromCurrentNetwork || isLoading
+              [VoteModalClasses.disabled]: isWrongNetwork || isLoading
             })}
           >
             <button
               type="button"
               className={VoteModalClasses.button}
-              onClick={() => handleDownvote()}
-              disabled={!isAMarketFromCurrentNetwork || isLoading}
+              onClick={handleDownvote}
+              disabled={isWrongNetwork || isLoading}
             >
               <ArrowDown className={VoteModalClasses.down} />
             </button>
@@ -251,8 +219,8 @@ function VoteModal({
             <button
               type="button"
               className={VoteModalClasses.button}
-              onClick={() => handleUpvote()}
-              disabled={!isAMarketFromCurrentNetwork || isLoading}
+              onClick={handleUpvote}
+              disabled={isWrongNetwork || isLoading}
             >
               <ArrowUp className={VoteModalClasses.up} />
             </button>
@@ -291,12 +259,7 @@ function VoteModal({
                 {`To be able to vote you need to have at least ${requiredBalance} POLK`}
               </Text>
             </div>
-            <Button
-              size="xs"
-              color="primary"
-              onClick={handleBuyPolk}
-              disabled={isLoadingBuyPolk}
-            >
+            <Button size="xs" color="primary" onClick={handleBuyPolk}>
               Buy $POLK
             </Button>
           </div>
