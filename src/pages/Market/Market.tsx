@@ -11,6 +11,8 @@ import { ArrowLeftIcon } from 'assets/icons';
 
 import { Tabs, Table, Text, Button, SEO, VoteArrows } from 'components';
 
+import { VoteProvider } from 'contexts/vote';
+
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import MarketAnalytics from './MarketAnalytics';
@@ -145,14 +147,16 @@ const Market = () => {
         />
       </div>
       <div className="pm-p-market__actions">
-        <VoteArrows
-          size="md"
-          marketId={market.id}
-          marketNetworkId={market.networkId}
-          marketSlug={market.slug}
-          marketState={market.state}
-          votes={market.votes}
-        />
+        <VoteProvider>
+          <VoteArrows
+            size="md"
+            marketId={market.id}
+            marketNetworkId={market.networkId}
+            marketSlug={market.slug}
+            marketState={market.state}
+            votes={market.votes}
+          />
+        </VoteProvider>
         <Button
           variant="outline"
           size="sm"
