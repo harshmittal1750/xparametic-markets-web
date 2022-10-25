@@ -305,3 +305,15 @@ export function getFavoriteMarkets(favoriteMarkets: FavoriteMarketsByNetwork) {
     );
   };
 }
+
+export function reloadMarketBySlug(marketState: string, marketSlug: string) {
+  return async dispatch => {
+    try {
+      const response = await marketService.getMarket(marketSlug);
+      const { data } = response;
+      dispatch(changeMarketData({ marketId: data.id, data }));
+    } catch (err) {
+      dispatch(error({ type: marketState, error: err }));
+    }
+  };
+}
