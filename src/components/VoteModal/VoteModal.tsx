@@ -18,7 +18,7 @@ import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 import NetworkSwitch from 'components/Networks/NetworkSwitch';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
@@ -38,6 +38,7 @@ type VoteModalProps = {
   marketId: Market['id'];
   marketSlug: Market['slug'];
   marketNetworkId: Market['networkId'];
+  marketState: Market['state'];
   userVote: { upvoted: boolean; downvoted: boolean };
   initialCounter: { up: number; down: number };
   initialSentiment: VoteArrowsSentiment;
@@ -49,11 +50,13 @@ function VoteModal({
   marketId,
   marketSlug,
   marketNetworkId,
+  marketState,
   userVote,
   initialCounter,
   initialSentiment
 }: VoteModalProps) {
   // Custom hooks
+  const appDispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
   const { buyEc20Url } = network;
 
@@ -102,22 +105,26 @@ function VoteModal({
 
     if (upvoted) {
       await removeUpvote({
+        appDispatch,
         dispatch,
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        marketState
       });
     } else {
       await upvote({
+        appDispatch,
         dispatch,
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        marketState
       });
     }
-  }, [marketId, marketSlug, networkConfig, userVote]);
+  }, [appDispatch, marketId, marketSlug, marketState, networkConfig, userVote]);
 
   const handleDownvote = useCallback(async () => {
     const { downvoted } = userVote;
@@ -127,22 +134,26 @@ function VoteModal({
 
     if (downvoted) {
       await removeDownvote({
+        appDispatch,
         dispatch,
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        marketState
       });
     } else {
       await downvote({
+        appDispatch,
         dispatch,
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        marketState
       });
     }
-  }, [marketId, marketSlug, networkConfig, userVote]);
+  }, [appDispatch, marketId, marketSlug, marketState, networkConfig, userVote]);
 
   const handleBuyPolk = useCallback(async () => {
     window.open(buyEc20Url, '_blank');
@@ -208,14 +219,20 @@ function VoteModal({
             >
               <ArrowDown className={VoteModalClasses.down} />
             </button>
-            <Text
-              className={VoteModalClasses.counter}
-              as="span"
-              fontWeight="extrabold"
-              color="2"
-            >
-              {counter.up - counter.down}
-            </Text>
+            {isLoading ? (
+              <span
+                className={cn('spinner--primary', VoteModalClasses.spinner)}
+              />
+            ) : (
+              <Text
+                className={VoteModalClasses.counter}
+                as="span"
+                fontWeight="extrabold"
+                color="2"
+              >
+                {counter.up - counter.down}
+              </Text>
+            )}
             <button
               type="button"
               className={VoteModalClasses.button}
