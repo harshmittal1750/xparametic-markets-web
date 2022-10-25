@@ -8,7 +8,7 @@ import { ArrowDown, ArrowUp } from 'assets/icons/components/vote';
 import VoteModal from 'components/VoteModal';
 import { VoteArrowsSentiment } from 'components/VoteModal/VoteModal.type';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useVote } from 'contexts/vote';
 
 import Text from '../new/Text';
 import VoteArrowsClasses from './VoteArrows.module.scss';
@@ -31,16 +31,13 @@ function VoteArrows({
   votes
 }: VoteArrowsProps) {
   // Custom hooks
-  const { network } = useNetwork();
-
-  // Redux selectors
-  const { votes: userVotes } = useAppSelector(state => state.polkamarkets);
+  const { network, userVotes } = useVote();
 
   // Local state
   const [show, setShow] = useState(false);
 
   // Derivated state
-  const isAMarketFromCurrentNetwork = marketNetworkId === network.id;
+  const isAMarketFromCurrentNetwork = `${marketNetworkId}` === network.id;
   const userHasVotedInCurrentMarket = Object.keys(userVotes).includes(
     marketId.toString()
   );
