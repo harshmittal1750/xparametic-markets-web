@@ -184,6 +184,13 @@ const marketSlice = createSlice({
         question: action.payload
       }
     }),
+    changeVotes: (state, action) => ({
+      ...state,
+      market: {
+        ...state.market,
+        votes: action.payload
+      }
+    }),
     changeData: (state, action) => ({
       ...state,
       market: {
@@ -223,6 +230,7 @@ const {
   clearMarket,
   changeOutcomeData,
   changeQuestion,
+  changeVotes,
   changeData,
   setChartViewType,
   priceChartsRequest,
@@ -235,6 +243,7 @@ export {
   clearMarket,
   changeOutcomeData,
   changeQuestion,
+  changeVotes,
   changeData,
   setChartViewType
 };
