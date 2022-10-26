@@ -101,7 +101,7 @@ function voteArrowsReducer(
     case VoteArrowsActions.REMOVE_UPVOTE_REQUEST:
       return {
         ...state,
-        counter: state.initialCounter,
+        counter: { ...state.initialCounter, up: state.initialCounter.up - 1 },
         sentiment: 'neutral',
         isLoading: true
       };
