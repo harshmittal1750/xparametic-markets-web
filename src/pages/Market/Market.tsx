@@ -149,11 +149,11 @@ const Market = () => {
       <div className="pm-p-market__actions">
         <VoteProvider>
           <VoteArrows
+            key={market.slug}
             size="md"
             marketId={market.id}
             marketNetworkId={market.networkId}
             marketSlug={market.slug}
-            marketState={market.state}
             votes={market.votes}
           />
         </VoteProvider>
