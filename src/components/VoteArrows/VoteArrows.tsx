@@ -90,6 +90,8 @@ function VoteArrows({
         initialSentiment={sentiment}
       />
       <div
+        role="button"
+        tabIndex={0}
         className={cn(VoteArrowsClasses.root, {
           [VoteArrowsClasses.sm]: size === 'sm',
           [VoteArrowsClasses.md]: size === 'md',
@@ -97,12 +99,10 @@ function VoteArrows({
           [VoteArrowsClasses.positive]: sentiment === 'positive',
           [VoteArrowsClasses.negative]: sentiment === 'negative'
         })}
+        onClick={handleShow}
+        onKeyPress={handleShow}
       >
-        <button
-          type="button"
-          className={VoteArrowsClasses.button}
-          onClick={handleShow}
-        >
+        <button type="button" className={VoteArrowsClasses.button}>
           <ArrowDown className={VoteArrowsClasses.down} />
         </button>
         <Text
@@ -113,11 +113,7 @@ function VoteArrows({
         >
           {counter.up - counter.down}
         </Text>
-        <button
-          type="button"
-          className={VoteArrowsClasses.button}
-          onClick={handleShow}
-        >
+        <button type="button" className={VoteArrowsClasses.button}>
           <ArrowUp className={VoteArrowsClasses.up} />
         </button>
       </div>
