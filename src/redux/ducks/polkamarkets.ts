@@ -121,6 +121,22 @@ const polkamarketsSlice = createSlice({
       ...state,
       votes: action.payload
     }),
+    changeVoteByMarketId: (
+      state,
+      action: PayloadAction<{
+        marketId: string;
+        vote: { upvoted: boolean; downvoted: boolean };
+      }>
+    ) => {
+      const { marketId, vote } = action.payload;
+      return {
+        ...state,
+        votes: {
+          ...state.votes,
+          [marketId]: vote
+        }
+      };
+    },
     changeLoading: (
       state,
       action: PayloadAction<{ key: string; value: boolean }>
@@ -150,6 +166,7 @@ const {
   changeMarketsWithBonds,
   changeBondActions,
   changeVotes,
+  changeVoteByMarketId,
   changeLoading
 } = polkamarketsSlice.actions;
 
@@ -276,6 +293,7 @@ export {
   changeActions,
   changeBonds,
   changeBondActions,
+  changeVoteByMarketId,
   login,
   fetchAditionalData
 };
