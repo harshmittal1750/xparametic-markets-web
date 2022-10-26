@@ -1,7 +1,11 @@
 import { useCallback, useReducer } from 'react';
+import { useLocation } from 'react-router-dom';
 
 import cn from 'classnames';
 import { Market } from 'models/market';
+import { changeVotes } from 'redux/ducks/market';
+import { changeMarketVotesById } from 'redux/ducks/markets';
+import { changeVoteByMarketId } from 'redux/ducks/polkamarkets';
 import { PolkamarketsApiService, PolkamarketsService } from 'services';
 
 import { TwarningIcon, VerifiedIcon } from 'assets/icons';
@@ -19,6 +23,8 @@ import ModalSectionText from 'components/ModalSectionText';
 import NetworkSwitch from 'components/Networks/NetworkSwitch';
 
 import { useVote } from 'contexts/vote';
+
+import { useAppDispatch } from 'hooks';
 
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
@@ -59,9 +65,13 @@ function VoteModal({
     useVote();
   const { buyEc20Url } = network;
 
+  const appDispatch = useAppDispatch();
+  const location = useLocation();
+
   // Derivated state from props
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
   const needsBuyPolk = userPolkBalance < userRequiredPolkBalance;
+  const isMarketPage = location.pathname === `/markets/${marketSlug}`;
 
   const voteArrowsReducerInitalState: VoteArrowsState = {
     initialCounter,
@@ -78,12 +88,36 @@ function VoteModal({
 
   const { counter, sentiment, isLoading } = state;
 
-  // Handlers
+  // Actions
+  const updateUserVoteByMarketId = useCallback(() => {
+    appDispatch(
+      changeVoteByMarketId({
+        marketId,
+        vote: {
+          upvoted: sentiment === 'positive',
+          downvoted: sentiment === 'negative'
+        }
+      })
+    );
+  }, [appDispatch, marketId, sentiment]);
 
+  const updateMarketVotes = useCallback(() => {
+    if (isMarketPage) {
+      appDispatch(changeVotes(counter));
+    } else {
+      appDispatch(changeMarketVotesById({ marketId, votes: counter }));
+    }
+  }, [appDispatch, counter, isMarketPage, marketId]);
+
+  // Handlers
   const handleHide = useCallback(() => {
+    updateMarketVotes();
+    updateUserVoteByMarketId();
+
     dispatch({ type: VoteArrowsActions.RESET });
+
     onHide();
-  }, [onHide]);
+  }, [onHide, updateMarketVotes, updateUserVoteByMarketId]);
 
   const handleUpvote = useCallback(async () => {
     const { upvoted } = userVote;
