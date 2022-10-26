@@ -33,7 +33,6 @@ import voteArrowsReducer, {
   removeDownvote,
   removeUpvote,
   upvote,
-  VoteArrowsActions,
   VoteArrowsState
 } from './VoteModal.reducer';
 import { VoteArrowsSentiment } from './VoteModal.type';
@@ -78,6 +77,7 @@ function VoteModal({
     counter: initialCounter,
     initialSentiment,
     sentiment: initialSentiment,
+    userVote,
     isLoading: false
   };
 
@@ -86,20 +86,17 @@ function VoteModal({
     voteArrowsReducerInitalState
   );
 
-  const { counter, sentiment, isLoading } = state;
+  const { counter, sentiment, userVote: currentUserVote, isLoading } = state;
 
   // Actions
   const updateUserVoteByMarketId = useCallback(() => {
     appDispatch(
       changeVoteByMarketId({
         marketId,
-        vote: {
-          upvoted: sentiment === 'positive',
-          downvoted: sentiment === 'negative'
-        }
+        vote: currentUserVote
       })
     );
-  }, [appDispatch, marketId, sentiment]);
+  }, [appDispatch, currentUserVote, marketId]);
 
   const updateMarketVotes = useCallback(() => {
     if (isMarketPage) {
@@ -114,13 +111,11 @@ function VoteModal({
     updateMarketVotes();
     updateUserVoteByMarketId();
 
-    dispatch({ type: VoteArrowsActions.RESET });
-
     onHide();
   }, [onHide, updateMarketVotes, updateUserVoteByMarketId]);
 
   const handleUpvote = useCallback(async () => {
-    const { upvoted } = userVote;
+    const { upvoted } = currentUserVote;
 
     const polkamarketsService = new PolkamarketsService(networkConfig);
     const polkamarketsApiService = new PolkamarketsApiService();
@@ -142,10 +137,10 @@ function VoteModal({
         marketSlug
       });
     }
-  }, [marketId, marketSlug, networkConfig, userVote]);
+  }, [currentUserVote, marketId, marketSlug, networkConfig]);
 
   const handleDownvote = useCallback(async () => {
-    const { downvoted } = userVote;
+    const { downvoted } = currentUserVote;
 
     const polkamarketsService = new PolkamarketsService(networkConfig);
     const polkamarketsApiService = new PolkamarketsApiService();
@@ -167,7 +162,7 @@ function VoteModal({
         marketSlug
       });
     }
-  }, [marketId, marketSlug, networkConfig, userVote]);
+  }, [currentUserVote, marketId, marketSlug, networkConfig]);
 
   const handleBuyPolk = useCallback(async () => {
     window.open(buyEc20Url, '_blank');
