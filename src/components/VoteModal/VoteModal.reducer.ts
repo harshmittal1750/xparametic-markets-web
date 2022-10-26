@@ -140,8 +140,8 @@ function voteArrowsReducer(
     case VoteArrowsActions.RESET:
       return {
         ...state,
-        counter: state.initialCounter,
-        sentiment: state.initialSentiment,
+        initialCounter: state.counter,
+        initialSentiment: state.sentiment,
         isLoading: false
       };
     default:
