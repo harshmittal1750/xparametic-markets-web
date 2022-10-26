@@ -1,6 +1,4 @@
 import { Market } from 'models/market';
-import { reloadMarketBySlug } from 'redux/ducks/markets';
-import { AppDispatch } from 'redux/store';
 import { PolkamarketsApiService, PolkamarketsService } from 'services';
 
 import { VoteArrowsSentiment } from './VoteModal.type';
@@ -154,31 +152,25 @@ function voteArrowsReducer(
 export default voteArrowsReducer;
 
 type VoteArrowsActionArgs = {
-  appDispatch: AppDispatch;
   dispatch: (value: VoteArrowsAction) => void;
   polkamarketsService: PolkamarketsService;
   marketId: Market['id'];
   polkamarketsApiService: PolkamarketsApiService;
   marketSlug: Market['slug'];
-  marketState: Market['state'];
 };
 
 async function upvote({
-  appDispatch,
   dispatch,
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug,
-  marketState
+  marketSlug
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.UPVOTE_REQUEST });
 
   try {
     await polkamarketsService.upvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
-    await appDispatch(reloadMarketBySlug(marketState, marketSlug));
-
     dispatch({ type: VoteArrowsActions.UPVOTE_SUCCESS });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.UPVOTE_FAILURE });
@@ -186,21 +178,17 @@ async function upvote({
 }
 
 async function removeUpvote({
-  appDispatch,
   dispatch,
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug,
-  marketState
+  marketSlug
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_REQUEST });
 
   try {
     await polkamarketsService.removeUpvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
-    await appDispatch(reloadMarketBySlug(marketState, marketSlug));
-
     dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_SUCCESS });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_FAILURE });
@@ -208,21 +196,17 @@ async function removeUpvote({
 }
 
 async function downvote({
-  appDispatch,
   dispatch,
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug,
-  marketState
+  marketSlug
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.DOWNVOTE_REQUEST });
 
   try {
     await polkamarketsService.downvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
-    await appDispatch(reloadMarketBySlug(marketState, marketSlug));
-
     dispatch({ type: VoteArrowsActions.DOWNVOTE_SUCCESS });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.DOWNVOTE_FAILURE });
@@ -230,21 +214,17 @@ async function downvote({
 }
 
 async function removeDownvote({
-  appDispatch,
   dispatch,
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug,
-  marketState
+  marketSlug
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_REQUEST });
 
   try {
     await polkamarketsService.removeDownvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
-    await appDispatch(reloadMarketBySlug(marketState, marketSlug));
-
     dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_SUCCESS });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_FAILURE });
