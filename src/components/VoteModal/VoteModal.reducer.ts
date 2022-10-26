@@ -17,7 +17,8 @@ export enum VoteArrowsActions {
   REMOVE_UPVOTE_FAILURE = 'REMOVE_UPVOTE_FAILURE',
   REMOVE_DOWNVOTE_REQUEST = 'REMOVE_DOWNVOTE_REQUEST',
   REMOVE_DOWNVOTE_SUCCESS = 'REMOVE_DOWNVOTE_SUCCESS',
-  REMOVE_DOWNVOTE_FAILURE = 'REMOVE_DOWNVOTE_FAILURE'
+  REMOVE_DOWNVOTE_FAILURE = 'REMOVE_DOWNVOTE_FAILURE',
+  RESET = 'RESET'
 }
 
 type VoteArrowsAction = {
@@ -129,6 +130,13 @@ function voteArrowsReducer(
         isLoading: false
       };
     case VoteArrowsActions.REMOVE_DOWNVOTE_FAILURE:
+      return {
+        ...state,
+        counter: state.initialCounter,
+        sentiment: state.initialSentiment,
+        isLoading: false
+      };
+    case VoteArrowsActions.RESET:
       return {
         ...state,
         counter: state.initialCounter,
