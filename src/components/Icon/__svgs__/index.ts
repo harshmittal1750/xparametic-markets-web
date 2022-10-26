@@ -17,6 +17,7 @@ export { ReactComponent as Menu } from './Menu.svg';
 export { ReactComponent as MenuBack } from './MenuBack.svg';
 export { ReactComponent as Moon } from './Moon.svg';
 export { ReactComponent as Share } from './Share.svg';
+export { ReactComponent as Sparkles } from './Sparkles.svg';
 export { ReactComponent as Star } from './Star.svg';
 export { ReactComponent as Sun } from './Sun.svg';
 export { ReactComponent as Todo } from './Todo.svg';
