@@ -18,7 +18,6 @@ type VoteArrowsProps = {
   marketId: Market['id'];
   marketSlug: Market['slug'];
   marketNetworkId: Market['networkId'];
-  marketState: Market['state'];
   votes: Market['votes'];
 };
 
@@ -27,7 +26,6 @@ function VoteArrows({
   marketId,
   marketSlug,
   marketNetworkId,
-  marketState,
   votes
 }: VoteArrowsProps) {
   // Custom hooks
@@ -87,7 +85,6 @@ function VoteArrows({
         marketId={marketId}
         marketNetworkId={marketNetworkId}
         marketSlug={marketSlug}
-        marketState={marketState}
         userVote={userVoteInCurrentMarket}
         initialCounter={counter}
         initialSentiment={sentiment}
