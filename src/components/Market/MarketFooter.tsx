@@ -11,7 +11,7 @@ type MarketFooterProps = {
 };
 
 function MarketFooter({ market }: MarketFooterProps) {
-  const { id, slug, state, network, votes } = market;
+  const { id, slug, network, votes } = market;
 
   return (
     <div className="pm-c-market-footer">
@@ -26,7 +26,6 @@ function MarketFooter({ market }: MarketFooterProps) {
           marketId={id}
           marketSlug={slug}
           marketNetworkId={network.id}
-          marketState={state}
           votes={votes}
         />
       </div>
