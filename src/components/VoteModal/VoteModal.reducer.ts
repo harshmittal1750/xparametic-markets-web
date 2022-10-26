@@ -28,11 +28,17 @@ type VoteArrowsCounter = {
   down: number;
 };
 
+type UserVote = {
+  upvoted: boolean;
+  downvoted: boolean;
+};
+
 export type VoteArrowsState = {
   initialCounter: VoteArrowsCounter;
   counter: VoteArrowsCounter;
   initialSentiment: VoteArrowsSentiment;
   sentiment: VoteArrowsSentiment;
+  userVote: UserVote;
   isLoading: boolean;
 };
 
@@ -62,6 +68,7 @@ function voteArrowsReducer(
     case VoteArrowsActions.UPVOTE_SUCCESS:
       return {
         ...state,
+        userVote: { upvoted: true, downvoted: false },
         isLoading: false
       };
     case VoteArrowsActions.UPVOTE_FAILURE:
@@ -87,6 +94,7 @@ function voteArrowsReducer(
     case VoteArrowsActions.DOWNVOTE_SUCCESS:
       return {
         ...state,
+        userVote: { upvoted: false, downvoted: true },
         isLoading: false
       };
     case VoteArrowsActions.DOWNVOTE_FAILURE:
@@ -106,6 +114,7 @@ function voteArrowsReducer(
     case VoteArrowsActions.REMOVE_UPVOTE_SUCCESS:
       return {
         ...state,
+        userVote: { upvoted: false, downvoted: false },
         isLoading: false
       };
     case VoteArrowsActions.REMOVE_UPVOTE_FAILURE:
@@ -128,6 +137,7 @@ function voteArrowsReducer(
     case VoteArrowsActions.REMOVE_DOWNVOTE_SUCCESS:
       return {
         ...state,
+        userVote: { upvoted: false, downvoted: false },
         isLoading: false
       };
     case VoteArrowsActions.REMOVE_DOWNVOTE_FAILURE:
@@ -172,6 +182,7 @@ async function upvote({
     await polkamarketsService.upvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
     dispatch({ type: VoteArrowsActions.UPVOTE_SUCCESS });
+    dispatch({ type: VoteArrowsActions.RESET });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.UPVOTE_FAILURE });
   }
@@ -190,6 +201,7 @@ async function removeUpvote({
     await polkamarketsService.removeUpvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
     dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_SUCCESS });
+    dispatch({ type: VoteArrowsActions.RESET });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_FAILURE });
   }
@@ -208,6 +220,7 @@ async function downvote({
     await polkamarketsService.downvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
     dispatch({ type: VoteArrowsActions.DOWNVOTE_SUCCESS });
+    dispatch({ type: VoteArrowsActions.RESET });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.DOWNVOTE_FAILURE });
   }
@@ -226,6 +239,7 @@ async function removeDownvote({
     await polkamarketsService.removeDownvoteItem(marketId);
     await polkamarketsApiService.reloadMarket(marketSlug);
     dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_SUCCESS });
+    dispatch({ type: VoteArrowsActions.RESET });
   } catch (error) {
     dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_FAILURE });
   }
