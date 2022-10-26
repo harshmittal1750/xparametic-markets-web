@@ -146,6 +146,8 @@ export {
   VirtualizedList,
   WalletInfo
 };
+export { default as Adornment } from './Adornment';
+
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as Hero } from './Hero';
