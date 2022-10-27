@@ -21,6 +21,7 @@ export enum VoteArrowsActions {
 
 type VoteArrowsAction = {
   type: VoteArrowsActions;
+  payload?: any;
 };
 
 type VoteArrowsCounter = {
@@ -33,12 +34,18 @@ type UserVote = {
   downvoted: boolean;
 };
 
+type Transaction = {
+  state: 'not_started' | 'request' | 'success' | 'failure';
+  successHash: string | null;
+};
+
 export type VoteArrowsState = {
   initialCounter: VoteArrowsCounter;
   counter: VoteArrowsCounter;
   initialSentiment: VoteArrowsSentiment;
   sentiment: VoteArrowsSentiment;
   userVote: UserVote;
+  transaction: Transaction;
   isLoading: boolean;
 };
 
@@ -46,7 +53,7 @@ function voteArrowsReducer(
   state: VoteArrowsState,
   action: VoteArrowsAction
 ): VoteArrowsState {
-  const { type } = action;
+  const { type, payload } = action;
 
   switch (type) {
     case VoteArrowsActions.UPVOTE_REQUEST:
@@ -63,12 +70,20 @@ function voteArrowsReducer(
                 down: state.initialCounter.down - 1
               },
         sentiment: 'positive',
+        transaction: {
+          state: 'request',
+          successHash: null
+        },
         isLoading: true
       };
     case VoteArrowsActions.UPVOTE_SUCCESS:
       return {
         ...state,
         userVote: { upvoted: true, downvoted: false },
+        transaction: {
+          state: 'success',
+          successHash: payload.successHash
+        },
         isLoading: false
       };
     case VoteArrowsActions.UPVOTE_FAILURE:
@@ -76,6 +91,10 @@ function voteArrowsReducer(
         ...state,
         counter: state.initialCounter,
         sentiment: state.initialSentiment,
+        transaction: {
+          state: 'failure',
+          successHash: null
+        },
         isLoading: false
       };
     case VoteArrowsActions.DOWNVOTE_REQUEST:
@@ -89,12 +108,20 @@ function voteArrowsReducer(
                 down: state.initialCounter.down + 1
               },
         sentiment: 'negative',
+        transaction: {
+          state: 'request',
+          successHash: null
+        },
         isLoading: true
       };
     case VoteArrowsActions.DOWNVOTE_SUCCESS:
       return {
         ...state,
         userVote: { upvoted: false, downvoted: true },
+        transaction: {
+          state: 'success',
+          successHash: payload.successHash
+        },
         isLoading: false
       };
     case VoteArrowsActions.DOWNVOTE_FAILURE:
@@ -102,6 +129,10 @@ function voteArrowsReducer(
         ...state,
         counter: state.initialCounter,
         sentiment: state.initialSentiment,
+        transaction: {
+          state: 'failure',
+          successHash: null
+        },
         isLoading: false
       };
     case VoteArrowsActions.REMOVE_UPVOTE_REQUEST:
@@ -109,12 +140,20 @@ function voteArrowsReducer(
         ...state,
         counter: { ...state.initialCounter, up: state.initialCounter.up - 1 },
         sentiment: 'neutral',
+        transaction: {
+          state: 'request',
+          successHash: null
+        },
         isLoading: true
       };
     case VoteArrowsActions.REMOVE_UPVOTE_SUCCESS:
       return {
         ...state,
         userVote: { upvoted: false, downvoted: false },
+        transaction: {
+          state: 'success',
+          successHash: payload.successHash
+        },
         isLoading: false
       };
     case VoteArrowsActions.REMOVE_UPVOTE_FAILURE:
@@ -122,6 +161,10 @@ function voteArrowsReducer(
         ...state,
         counter: state.initialCounter,
         sentiment: state.initialSentiment,
+        transaction: {
+          state: 'failure',
+          successHash: null
+        },
         isLoading: false
       };
     case VoteArrowsActions.REMOVE_DOWNVOTE_REQUEST:
@@ -132,12 +175,20 @@ function voteArrowsReducer(
           down: state.initialCounter.down - 1
         },
         sentiment: 'neutral',
+        transaction: {
+          state: 'request',
+          successHash: null
+        },
         isLoading: true
       };
     case VoteArrowsActions.REMOVE_DOWNVOTE_SUCCESS:
       return {
         ...state,
         userVote: { upvoted: false, downvoted: false },
+        transaction: {
+          state: 'success',
+          successHash: payload.successHash
+        },
         isLoading: false
       };
     case VoteArrowsActions.REMOVE_DOWNVOTE_FAILURE:
@@ -145,6 +196,10 @@ function voteArrowsReducer(
         ...state,
         counter: state.initialCounter,
         sentiment: state.initialSentiment,
+        transaction: {
+          state: 'failure',
+          successHash: null
+        },
         isLoading: false
       };
     case VoteArrowsActions.RESET:
@@ -167,6 +222,7 @@ type VoteArrowsActionArgs = {
   marketId: Market['id'];
   polkamarketsApiService: PolkamarketsApiService;
   marketSlug: Market['slug'];
+  showToastNotification: (id: string) => void;
 };
 
 async function upvote({
@@ -174,15 +230,25 @@ async function upvote({
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug
+  marketSlug,
+  showToastNotification
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.UPVOTE_REQUEST });
 
   try {
-    await polkamarketsService.upvoteItem(marketId);
-    await polkamarketsApiService.reloadMarket(marketSlug);
-    dispatch({ type: VoteArrowsActions.UPVOTE_SUCCESS });
-    dispatch({ type: VoteArrowsActions.RESET });
+    const response = await polkamarketsService.upvoteItem(marketId);
+    const { status, transactionHash } = response;
+
+    if (status && transactionHash) {
+      dispatch({
+        type: VoteArrowsActions.UPVOTE_SUCCESS,
+        payload: { successHash: transactionHash }
+      });
+      showToastNotification(`vote-${marketSlug}-success`);
+      dispatch({ type: VoteArrowsActions.RESET });
+    }
+
+    polkamarketsApiService.reloadMarket(marketSlug);
   } catch (error) {
     dispatch({ type: VoteArrowsActions.UPVOTE_FAILURE });
   }
@@ -193,15 +259,25 @@ async function removeUpvote({
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug
+  marketSlug,
+  showToastNotification
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_REQUEST });
 
   try {
-    await polkamarketsService.removeUpvoteItem(marketId);
-    await polkamarketsApiService.reloadMarket(marketSlug);
-    dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_SUCCESS });
-    dispatch({ type: VoteArrowsActions.RESET });
+    const response = await polkamarketsService.removeUpvoteItem(marketId);
+    const { status, transactionHash } = response;
+
+    if (status && transactionHash) {
+      dispatch({
+        type: VoteArrowsActions.REMOVE_UPVOTE_SUCCESS,
+        payload: { successHash: transactionHash }
+      });
+      showToastNotification(`vote-${marketSlug}-success`);
+      dispatch({ type: VoteArrowsActions.RESET });
+    }
+
+    polkamarketsApiService.reloadMarket(marketSlug);
   } catch (error) {
     dispatch({ type: VoteArrowsActions.REMOVE_UPVOTE_FAILURE });
   }
@@ -212,15 +288,25 @@ async function downvote({
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug
+  marketSlug,
+  showToastNotification
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.DOWNVOTE_REQUEST });
 
   try {
-    await polkamarketsService.downvoteItem(marketId);
-    await polkamarketsApiService.reloadMarket(marketSlug);
-    dispatch({ type: VoteArrowsActions.DOWNVOTE_SUCCESS });
-    dispatch({ type: VoteArrowsActions.RESET });
+    const response = await polkamarketsService.downvoteItem(marketId);
+    const { status, transactionHash } = response;
+
+    if (status && transactionHash) {
+      dispatch({
+        type: VoteArrowsActions.DOWNVOTE_SUCCESS,
+        payload: { successHash: transactionHash }
+      });
+      showToastNotification(`vote-${marketSlug}-success`);
+      dispatch({ type: VoteArrowsActions.RESET });
+    }
+
+    polkamarketsApiService.reloadMarket(marketSlug);
   } catch (error) {
     dispatch({ type: VoteArrowsActions.DOWNVOTE_FAILURE });
   }
@@ -231,15 +317,25 @@ async function removeDownvote({
   polkamarketsService,
   marketId,
   polkamarketsApiService,
-  marketSlug
+  marketSlug,
+  showToastNotification
 }: VoteArrowsActionArgs) {
   dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_REQUEST });
 
   try {
-    await polkamarketsService.removeDownvoteItem(marketId);
-    await polkamarketsApiService.reloadMarket(marketSlug);
-    dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_SUCCESS });
-    dispatch({ type: VoteArrowsActions.RESET });
+    const response = await polkamarketsService.removeDownvoteItem(marketId);
+    const { status, transactionHash } = response;
+
+    if (status && transactionHash) {
+      dispatch({
+        type: VoteArrowsActions.REMOVE_DOWNVOTE_SUCCESS,
+        payload: { successHash: transactionHash }
+      });
+      showToastNotification(`vote-${marketSlug}-success`);
+      dispatch({ type: VoteArrowsActions.RESET });
+    }
+
+    polkamarketsApiService.reloadMarket(marketSlug);
   } catch (error) {
     dispatch({ type: VoteArrowsActions.REMOVE_DOWNVOTE_FAILURE });
   }
