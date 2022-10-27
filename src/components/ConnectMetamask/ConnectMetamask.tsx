@@ -42,7 +42,14 @@ export default function ConnectMetamask() {
 
   return (
     <>
-      <Modal show={show} onHide={handleHide} {...connectMetamaskProps}>
+      <Modal
+        show={show}
+        backdrop
+        centered
+        size="sm"
+        onHide={handleHide}
+        {...connectMetamaskProps}
+      >
         <ModalContent>
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />
