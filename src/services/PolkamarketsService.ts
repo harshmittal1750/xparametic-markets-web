@@ -548,6 +548,12 @@ export default class PolkamarketsService {
 
   // Voting contract functions
 
+  public async getMinimumVotingRequiredBalance(): Promise<number> {
+    const requiredBalance = await this.contracts.voting.getMinimumRequiredBalance();
+
+    return requiredBalance;
+  }
+
   public async getUserVotes(): Promise<Object> {
     // TODO improve this: contract might not be defined for network
     if (!this.contracts.voting.getContract()._address) return {};

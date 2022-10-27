@@ -276,7 +276,7 @@ function VoteModal({
                 className={VoteModalClasses.warningIcon}
               />
               <Text as="p" fontSize="body-2" fontWeight="semibold" color="1">
-                {`To be able to vote you need to have at least ${userRequiredPolkBalance} POLK`}
+                In order to be able to vote, you need hold POLK in your balance.
               </Text>
             </div>
             <Button size="xs" color="primary" onClick={handleBuyPolk}>
