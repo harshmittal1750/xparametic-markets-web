@@ -29,6 +29,7 @@ import { useVote } from 'contexts/vote';
 import { useAppDispatch } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
+import Link from '../Link';
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
 import voteArrowsReducer, {
@@ -246,33 +247,27 @@ function VoteModal({
                 transform="uppercase"
                 color="violets-are-blue"
               >
-                Verify market
+                Vote market
               </Text>
             </div>
             <ModalHeaderTitle
               className={VoteModalClasses.headerTitle}
               id={voteModalProps['aria-labelledby']}
             >
-              {`Polkamarkets is running in Beta is currently underdoing `}
-              <a
-                className={cn(
-                  'pm-c-link',
-                  'text-heading-2',
-                  'font-medium',
-                  'text-violets-are-blue'
-                )}
-                href="www.polkamarkets.com"
-              >
-                auditing procedures
-              </a>
-              .
+              Market curation in the Polkamarkets app is done through voting.
             </ModalHeaderTitle>
           </ModalHeader>
           <ModalSection className={VoteModalClasses.section}>
             <ModalSectionText id={voteModalProps['aria-describedby']}>
-              {`I'm baby mlkshk cornhole cray selvage vaporware pinterest typewriter
-            tonx messenger bag chia leggings. Cronut affogato vinyl cold-pressed
-            shaman fashion axe thundercats.`}
+              {`Markets are upvoted/downvoted by the community and the ones with the most votes become verified. The more votes a market has, the more it is likely to be a reliable market. `}
+              <Link
+                title="Learn more"
+                href="https://help.polkamarkets.com/"
+                aria-label="Learn more"
+                target="_blank"
+                rel="noreferrer"
+                variant="information"
+              />
             </ModalSectionText>
           </ModalSection>
           <div className={VoteModalClasses.body}>
@@ -324,6 +319,8 @@ function VoteModal({
                   'text-3'
                 )}
                 href="https://www.polkamarkets.com/legal/terms-conditions"
+                target="_blank"
+                rel="noreferrer"
               >
                 Terms and Conditions
               </a>
