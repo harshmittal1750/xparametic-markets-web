@@ -224,7 +224,7 @@ function VoteModal({
               type="button"
               className={VoteModalClasses.button}
               onClick={handleDownvote}
-              disabled={isWrongNetwork || isLoading}
+              disabled={isWrongNetwork || needsBuyPolk || isLoading}
             >
               <ArrowDown className={VoteModalClasses.down} />
             </button>
@@ -240,7 +240,7 @@ function VoteModal({
               type="button"
               className={VoteModalClasses.button}
               onClick={handleUpvote}
-              disabled={isWrongNetwork || isLoading}
+              disabled={isWrongNetwork || needsBuyPolk || isLoading}
             >
               <ArrowUp className={VoteModalClasses.up} />
             </button>
