@@ -287,14 +287,18 @@ function VoteModal({
               >
                 <ArrowDown className={VoteModalClasses.down} />
               </button>
-              <Text
-                className={VoteModalClasses.counter}
-                as="span"
-                fontWeight="extrabold"
-                color="2"
-              >
-                {counter.up - counter.down}
-              </Text>
+              {isLoading ? (
+                <span className="spinner--primary" />
+              ) : (
+                <Text
+                  className={VoteModalClasses.counter}
+                  as="span"
+                  fontWeight="extrabold"
+                  color="2"
+                >
+                  {counter.up - counter.down}
+                </Text>
+              )}
               <button
                 type="button"
                 className={VoteModalClasses.button}
