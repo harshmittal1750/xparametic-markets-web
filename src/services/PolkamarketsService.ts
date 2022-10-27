@@ -549,7 +549,8 @@ export default class PolkamarketsService {
   // Voting contract functions
 
   public async getMinimumVotingRequiredBalance(): Promise<number> {
-    const requiredBalance = await this.contracts.voting.getMinimumRequiredBalance();
+    const requiredBalance =
+      await this.contracts.voting.getMinimumRequiredBalance();
 
     return requiredBalance;
   }
