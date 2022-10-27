@@ -71,6 +71,7 @@
 
     &__charts {
       grid-area: charts;
+      overflow: hidden;
     }
 
     &__stats {
