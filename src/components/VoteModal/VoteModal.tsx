@@ -247,19 +247,19 @@ function VoteModal({
                 transform="uppercase"
                 color="violets-are-blue"
               >
-                Vote market
+                Market curation
               </Text>
             </div>
             <ModalHeaderTitle
               className={VoteModalClasses.headerTitle}
               id={voteModalProps['aria-labelledby']}
             >
-              Market curation in the Polkamarkets app is done through voting.
+              Upvote or downvote to curate markets
             </ModalHeaderTitle>
           </ModalHeader>
           <ModalSection className={VoteModalClasses.section}>
             <ModalSectionText id={voteModalProps['aria-describedby']}>
-              {`Markets are upvoted/downvoted by the community and the ones with the most votes become verified. The more votes a market has, the more it is likely to be a reliable market. `}
+              {`Markets are curated by the POLK holder community. Markets with more upvotes than downvotes are marked as Verified. `}
               <Link
                 title="Learn more"
                 href="https://help.polkamarkets.com/"
