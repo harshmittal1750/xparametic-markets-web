@@ -341,8 +341,15 @@ function VoteModal({
                   className={VoteModalClasses.warningIcon}
                 />
                 <Text as="p" fontSize="body-2" fontWeight="semibold" color="1">
-                  In order to be able to vote, you need hold POLK in your
-                  balance.
+                  {`You need to have POLK in your wallet to curate markets. `}
+                  <Link
+                    title="Learn more"
+                    href="https://help.polkamarkets.com/"
+                    aria-label="Learn more"
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="information"
+                  />
                 </Text>
               </div>
               <Button size="xs" color="primary" onClick={handleBuyPolk}>
