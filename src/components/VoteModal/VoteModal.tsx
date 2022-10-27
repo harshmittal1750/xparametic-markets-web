@@ -21,10 +21,13 @@ import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 import NetworkSwitch from 'components/Networks/NetworkSwitch';
+import Toast from 'components/Toast';
+import ToastNotification from 'components/ToastNotification';
 
 import { useVote } from 'contexts/vote';
 
 import { useAppDispatch } from 'hooks';
+import useToastNotification from 'hooks/useToastNotification';
 
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
@@ -66,6 +69,8 @@ function VoteModal({
 
   const appDispatch = useAppDispatch();
   const location = useLocation();
+  const { show: showToastNotification, close: closeToastNotification } =
+    useToastNotification();
 
   // Derivated state from props
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
@@ -78,6 +83,10 @@ function VoteModal({
     initialSentiment,
     sentiment: initialSentiment,
     userVote,
+    transaction: {
+      state: 'not_started',
+      successHash: null
+    },
     isLoading: false
   };
 
@@ -86,7 +95,13 @@ function VoteModal({
     voteArrowsReducerInitalState
   );
 
-  const { counter, sentiment, userVote: currentUserVote, isLoading } = state;
+  const {
+    counter,
+    sentiment,
+    userVote: currentUserVote,
+    transaction,
+    isLoading
+  } = state;
 
   // Actions
   const updateUserVoteByMarketId = useCallback(() => {
@@ -108,11 +123,13 @@ function VoteModal({
 
   // Handlers
   const handleHide = useCallback(() => {
-    updateMarketVotes();
-    updateUserVoteByMarketId();
+    if (!isLoading) {
+      updateMarketVotes();
+      updateUserVoteByMarketId();
 
-    onHide();
-  }, [onHide, updateMarketVotes, updateUserVoteByMarketId]);
+      onHide();
+    }
+  }, [isLoading, onHide, updateMarketVotes, updateUserVoteByMarketId]);
 
   const handleUpvote = useCallback(async () => {
     const { upvoted } = currentUserVote;
@@ -126,7 +143,8 @@ function VoteModal({
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        showToastNotification
       });
     } else {
       await upvote({
@@ -134,10 +152,17 @@ function VoteModal({
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        showToastNotification
       });
     }
-  }, [currentUserVote, marketId, marketSlug, networkConfig]);
+  }, [
+    currentUserVote,
+    marketId,
+    marketSlug,
+    networkConfig,
+    showToastNotification
+  ]);
 
   const handleDownvote = useCallback(async () => {
     const { downvoted } = currentUserVote;
@@ -151,7 +176,8 @@ function VoteModal({
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        showToastNotification
       });
     } else {
       await downvote({
@@ -159,133 +185,173 @@ function VoteModal({
         polkamarketsService,
         marketId,
         polkamarketsApiService,
-        marketSlug
+        marketSlug,
+        showToastNotification
       });
     }
-  }, [currentUserVote, marketId, marketSlug, networkConfig]);
+  }, [
+    currentUserVote,
+    marketId,
+    marketSlug,
+    networkConfig,
+    showToastNotification
+  ]);
 
   const handleBuyPolk = useCallback(async () => {
     window.open(buyEc20Url, '_blank');
   }, [buyEc20Url]);
 
   return (
-    <Modal show={show} className={{ dialog: VoteModalClasses.dialog }}>
-      <ModalContent>
-        <ModalHeader>
-          <ModalHeaderHide onClick={handleHide} />
-          <div className={VoteModalClasses.verifyMarket}>
-            <VerifiedIcon size="sm" />
-            <Text
-              as="span"
-              fontSize="body-4"
-              fontWeight="semibold"
-              transform="uppercase"
-              color="violets-are-blue"
-            >
-              Verify market
-            </Text>
-          </div>
-          <ModalHeaderTitle
-            className={VoteModalClasses.headerTitle}
-            id={voteModalProps['aria-labelledby']}
+    <>
+      {transaction.state === 'success' ? (
+        <ToastNotification id={`vote-${marketSlug}-success`} duration={10000}>
+          <Toast
+            variant="success"
+            title="Success"
+            description="Your transaction is completed!"
           >
-            {`Polkamarkets is running in Beta is currently underdoing `}
-            <a
-              className={cn(
-                'pm-c-link',
-                'text-heading-2',
-                'font-medium',
-                'text-violets-are-blue'
-              )}
-              href="www.polkamarkets.com"
-            >
-              auditing procedures
-            </a>
-            .
-          </ModalHeaderTitle>
-        </ModalHeader>
-        <ModalSection className={VoteModalClasses.section}>
-          <ModalSectionText id={voteModalProps['aria-describedby']}>
-            {`I'm baby mlkshk cornhole cray selvage vaporware pinterest typewriter
-            tonx messenger bag chia leggings. Cronut affogato vinyl cold-pressed
-            shaman fashion axe thundercats.`}
-          </ModalSectionText>
-        </ModalSection>
-        <div className={VoteModalClasses.body}>
-          <div
-            className={cn(VoteModalClasses.arrows, {
-              [VoteModalClasses.neutral]: sentiment === 'neutral',
-              [VoteModalClasses.positive]: sentiment === 'positive',
-              [VoteModalClasses.negative]: sentiment === 'negative',
-              [VoteModalClasses.disabled]: isWrongNetwork || isLoading
-            })}
-          >
-            <button
-              type="button"
-              className={VoteModalClasses.button}
-              onClick={handleDownvote}
-              disabled={isWrongNetwork || needsBuyPolk || isLoading}
-            >
-              <ArrowDown className={VoteModalClasses.down} />
-            </button>
-            <Text
-              className={VoteModalClasses.counter}
-              as="span"
-              fontWeight="extrabold"
-              color="2"
-            >
-              {counter.up - counter.down}
-            </Text>
-            <button
-              type="button"
-              className={VoteModalClasses.button}
-              onClick={handleUpvote}
-              disabled={isWrongNetwork || needsBuyPolk || isLoading}
-            >
-              <ArrowUp className={VoteModalClasses.up} />
-            </button>
-          </div>
-          {isWrongNetwork ? (
-            <NetworkSwitch targetNetworkId={marketNetworkId} />
-          ) : null}
-        </div>
-        <ModalFooter className={VoteModalClasses.footer}>
-          <Text as="p" fontSize="body-2" fontWeight="medium" color="3">
-            {`By clicking you’re agreeing to our `}
-            <a
-              className={cn(
-                'pm-c-link',
-                'text-body-2',
-                'font-medium',
-                'text-3'
-              )}
-              href="https://www.polkamarkets.com/legal/terms-conditions"
-            >
-              Terms and Conditions
-            </a>
-            .
-          </Text>
-        </ModalFooter>
-      </ModalContent>
-      {needsBuyPolk ? (
+            <Toast.Actions>
+              <a
+                target="_blank"
+                href={`${network.explorerURL}/tx/${transaction.successHash}`}
+                rel="noreferrer"
+              >
+                <Button size="sm" color="success">
+                  View on Explorer
+                </Button>
+              </a>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() =>
+                  closeToastNotification(`vote-${marketSlug}-success`)
+                }
+              >
+                Dismiss
+              </Button>
+            </Toast.Actions>
+          </Toast>
+        </ToastNotification>
+      ) : null}
+      <Modal show={show} className={{ dialog: VoteModalClasses.dialog }}>
         <ModalContent>
-          <div className={VoteModalClasses.alertHeader}>
-            <div className={VoteModalClasses.alertHeaderTitle}>
-              <TwarningIcon
-                size={24}
-                className={VoteModalClasses.warningIcon}
-              />
-              <Text as="p" fontSize="body-2" fontWeight="semibold" color="1">
-                In order to be able to vote, you need hold POLK in your balance.
+          <ModalHeader>
+            <ModalHeaderHide onClick={handleHide} />
+            <div className={VoteModalClasses.verifyMarket}>
+              <VerifiedIcon size="sm" />
+              <Text
+                as="span"
+                fontSize="body-4"
+                fontWeight="semibold"
+                transform="uppercase"
+                color="violets-are-blue"
+              >
+                Verify market
               </Text>
             </div>
-            <Button size="xs" color="primary" onClick={handleBuyPolk}>
-              Buy $POLK
-            </Button>
+            <ModalHeaderTitle
+              className={VoteModalClasses.headerTitle}
+              id={voteModalProps['aria-labelledby']}
+            >
+              {`Polkamarkets is running in Beta is currently underdoing `}
+              <a
+                className={cn(
+                  'pm-c-link',
+                  'text-heading-2',
+                  'font-medium',
+                  'text-violets-are-blue'
+                )}
+                href="www.polkamarkets.com"
+              >
+                auditing procedures
+              </a>
+              .
+            </ModalHeaderTitle>
+          </ModalHeader>
+          <ModalSection className={VoteModalClasses.section}>
+            <ModalSectionText id={voteModalProps['aria-describedby']}>
+              {`I'm baby mlkshk cornhole cray selvage vaporware pinterest typewriter
+            tonx messenger bag chia leggings. Cronut affogato vinyl cold-pressed
+            shaman fashion axe thundercats.`}
+            </ModalSectionText>
+          </ModalSection>
+          <div className={VoteModalClasses.body}>
+            <div
+              className={cn(VoteModalClasses.arrows, {
+                [VoteModalClasses.neutral]: sentiment === 'neutral',
+                [VoteModalClasses.positive]: sentiment === 'positive',
+                [VoteModalClasses.negative]: sentiment === 'negative',
+                [VoteModalClasses.disabled]: isWrongNetwork || isLoading
+              })}
+            >
+              <button
+                type="button"
+                className={VoteModalClasses.button}
+                onClick={handleDownvote}
+                disabled={isWrongNetwork || needsBuyPolk || isLoading}
+              >
+                <ArrowDown className={VoteModalClasses.down} />
+              </button>
+              <Text
+                className={VoteModalClasses.counter}
+                as="span"
+                fontWeight="extrabold"
+                color="2"
+              >
+                {counter.up - counter.down}
+              </Text>
+              <button
+                type="button"
+                className={VoteModalClasses.button}
+                onClick={handleUpvote}
+                disabled={isWrongNetwork || needsBuyPolk || isLoading}
+              >
+                <ArrowUp className={VoteModalClasses.up} />
+              </button>
+            </div>
+            {isWrongNetwork ? (
+              <NetworkSwitch targetNetworkId={marketNetworkId} />
+            ) : null}
           </div>
+          <ModalFooter className={VoteModalClasses.footer}>
+            <Text as="p" fontSize="body-2" fontWeight="medium" color="3">
+              {`By clicking you’re agreeing to our `}
+              <a
+                className={cn(
+                  'pm-c-link',
+                  'text-body-2',
+                  'font-medium',
+                  'text-3'
+                )}
+                href="https://www.polkamarkets.com/legal/terms-conditions"
+              >
+                Terms and Conditions
+              </a>
+              .
+            </Text>
+          </ModalFooter>
         </ModalContent>
-      ) : null}
-    </Modal>
+        {needsBuyPolk ? (
+          <ModalContent>
+            <div className={VoteModalClasses.alertHeader}>
+              <div className={VoteModalClasses.alertHeaderTitle}>
+                <TwarningIcon
+                  size={24}
+                  className={VoteModalClasses.warningIcon}
+                />
+                <Text as="p" fontSize="body-2" fontWeight="semibold" color="1">
+                  In order to be able to vote, you need hold POLK in your
+                  balance.
+                </Text>
+              </div>
+              <Button size="xs" color="primary" onClick={handleBuyPolk}>
+                Buy $POLK
+              </Button>
+            </div>
+          </ModalContent>
+        ) : null}
+      </Modal>
+    </>
   );
 }
 
