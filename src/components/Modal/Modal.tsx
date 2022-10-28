@@ -79,9 +79,9 @@ export default function Modal({
           >
             <motion.div
               ref={ref}
-              initial={{ y: 16 }}
+              initial={{ y: 8 }}
               animate={{ y: 0 }}
-              exit={{ y: 16 }}
+              exit={{ y: 8 }}
               role="dialog"
               aria-modal="true"
               className={cn(
