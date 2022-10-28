@@ -262,7 +262,7 @@ function VoteModal({
               {`Markets are curated by the POLK holder community. Markets with more upvotes than downvotes are marked as Verified. `}
               <Link
                 title="Learn more"
-                href="https://help.polkamarkets.com/"
+                href="https://help.polkamarkets.com/en/articles/6686769-how-to-curate-prediction-markets"
                 aria-label="Learn more"
                 target="_blank"
                 rel="noreferrer"
@@ -344,7 +344,7 @@ function VoteModal({
                   {`You need to have POLK in your wallet to curate markets. `}
                   <Link
                     title="Learn more"
-                    href="https://help.polkamarkets.com/"
+                    href="https://help.polkamarkets.com/en/articles/6686769-how-to-curate-prediction-markets"
                     aria-label="Learn more"
                     target="_blank"
                     rel="noreferrer"
