@@ -235,14 +235,14 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
       const portfolio = await polkamarketsService.getPortfolio();
       dispatch(changePortfolio(portfolio));
 
+      const votes = (await polkamarketsService.getUserVotes()) as Votes;
+      dispatch(changeVotes(votes));
+
       const bonds = await polkamarketsService.getBonds();
       dispatch(changeBonds(bonds));
 
       const bondMarketIds = await polkamarketsService.getBondMarketIds();
       dispatch(changeMarketsWithBonds(bondMarketIds));
-
-      const votes = (await polkamarketsService.getUserVotes()) as Votes;
-      dispatch(changeVotes(votes));
 
       dispatch(
         changeLoading({
