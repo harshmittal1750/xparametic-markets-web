@@ -1,5 +1,7 @@
 import { filteredMarketsSelector } from 'redux/ducks/markets';
 
+import { VoteProvider } from 'contexts/vote';
+
 import { useAppSelector, useFavoriteMarkets } from 'hooks';
 import useCategories from 'hooks/useCategories';
 
@@ -28,12 +30,14 @@ function Home() {
     <div className="pm-p-home">
       <HomeMobileInfo />
       <HomeCategories />
-      <HomeTabs
-        openMarkets={openMarkets}
-        closedMarkets={closedMarkets}
-        resolvedMarkets={resolvedMarkets}
-        favoritesMarkets={favoritesMarkets}
-      />
+      <VoteProvider>
+        <HomeTabs
+          openMarkets={openMarkets}
+          closedMarkets={closedMarkets}
+          resolvedMarkets={resolvedMarkets}
+          favoritesMarkets={favoritesMarkets}
+        />
+      </VoteProvider>
     </div>
   );
 }

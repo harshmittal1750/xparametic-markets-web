@@ -3,10 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { RemoveOutlinedIcon } from 'assets/icons';
-
-import { Button } from 'components/Button';
-
 import {
   useClickaway,
   usePortal,
@@ -21,7 +17,6 @@ import type { ModalProps } from './Modal.type';
 import { modalTrappersId } from './Modal.util';
 
 export default function Modal({
-  children,
   onHide,
   show,
   className,
@@ -81,19 +76,7 @@ export default function Modal({
               aria-modal="true"
               className={cn(ModalClasses.dialog, className?.dialog)}
               {...props}
-            >
-              {onHide && (
-                <Button
-                  variant="ghost"
-                  onClick={onHide}
-                  className={cn(ModalClasses.hide, className?.hide)}
-                  aria-label="Hide"
-                >
-                  <RemoveOutlinedIcon />
-                </Button>
-              )}
-              {children}
-            </motion.div>
+            />
           </motion.div>
         )}
       </AnimatePresence>
