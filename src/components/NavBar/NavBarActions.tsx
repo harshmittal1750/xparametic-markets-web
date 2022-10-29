@@ -1,10 +1,10 @@
-import type React from 'react';
 import { useCallback, useState } from 'react';
 
 import Adornment from 'components/Adornment';
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
 import Icon from 'components/Icon';
+import type { IconProps } from 'components/Icon';
 import List from 'components/List';
 import ListItem from 'components/ListItem';
 import ListItemText from 'components/ListItemText';
@@ -15,29 +15,21 @@ import { useAppSelector, useTheme } from 'hooks';
 
 import NavbarClasses from './NavBar.module.scss';
 
-const arrChains = [
-  {
-    name: 'Ethereum',
-    iconName: 'Ethereum',
-    onClick: () => {}
-  },
-  {
-    name: 'Binance',
-    iconName: 'Ethereum',
-    onClick: () => {}
-  },
-  {
-    name: 'Moonriver',
-    iconName: 'Ethereum',
-    onClick: () => {}
-  }
-] as const;
+const arrChains = ['Ethereum', 'Binance', 'Moonriver'];
 
 export default function NavBarActions() {
   const theme = useTheme();
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const [show, setShow] = useState(false);
+  const [appChain, setAppChain] = useState<IconProps['name']>('Ethereum');
   const handleHide = useCallback(() => setShow(false), []);
+  const handleAppChain = useCallback(
+    _chain => () => {
+      handleHide();
+      setAppChain(_chain);
+    },
+    [handleHide]
+  );
   const isThemeDark = theme.theme === 'dark';
   const themeAnti = isThemeDark ? 'light' : 'dark';
 
@@ -66,7 +58,7 @@ export default function NavBarActions() {
           aria-label="Switch chain"
           onClick={handleChains}
         >
-          <Icon name="Ethereum" />
+          <Icon name={appChain} />
         </Button>
       </div>
       <Modal
@@ -77,14 +69,22 @@ export default function NavBarActions() {
         }}
       >
         <List>
-          {arrChains.map(chain => (
-            <ListItem key={chain.name}>
-              <Adornment edge="start">
-                <Icon name={chain.iconName} />
-              </Adornment>
-              <ListItemText>{chain.name}</ListItemText>
-            </ListItem>
-          ))}
+          {arrChains.map(_chain => {
+            const chain = _chain as IconProps['name'];
+
+            return (
+              <ListItem
+                key={chain}
+                onClick={handleAppChain(chain)}
+                role="button"
+              >
+                <Adornment edge="start">
+                  <Icon name={chain} />
+                </Adornment>
+                <ListItemText>{chain}</ListItemText>
+              </ListItem>
+            );
+          })}
         </List>
       </Modal>
     </>
