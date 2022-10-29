@@ -1,4 +1,5 @@
 export { ReactComponent as Arrow } from './Arrow.svg';
+export { ReactComponent as Binance } from './Binance.svg';
 export { ReactComponent as Bitcoin } from './Bitcoin.svg';
 export { ReactComponent as Check } from './Check.svg';
 export { ReactComponent as CheckFilled } from './CheckFilled.svg';
@@ -16,6 +17,7 @@ export { ReactComponent as Medal } from './Medal.svg';
 export { ReactComponent as Menu } from './Menu.svg';
 export { ReactComponent as MenuBack } from './MenuBack.svg';
 export { ReactComponent as Moon } from './Moon.svg';
+export { ReactComponent as Moonriver } from './Moonriver.svg';
 export { ReactComponent as Share } from './Share.svg';
 export { ReactComponent as Sparkles } from './Sparkles.svg';
 export { ReactComponent as Star } from './Star.svg';
