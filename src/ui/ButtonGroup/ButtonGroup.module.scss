@@ -1,0 +1,24 @@
+.root {
+  display: flex;
+}
+
+.buttons {
+  &:not(:last-child, :first-child) {
+    border-radius: 0px;
+  }
+  &:not(:first-child) {
+    margin-left: -1px;
+  }
+  &:first-child {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+  &:last-child {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+}
+
+.actived {
+  background-color: #1b2332 !important;
+}
