@@ -17,9 +17,5 @@
 }
 
 .actived {
-  background-color: #171b23 !important;
-
-  .theme--light & {
-    background-color: #fbfcfe;
-  }
+  background-color: var(--color-text-quinary) !important;
 }
