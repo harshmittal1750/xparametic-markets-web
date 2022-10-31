@@ -1,4 +1,6 @@
-import { Breadcrumb, Button, Hero, Text } from 'components';
+import { Hero } from 'ui';
+
+import { Breadcrumb, Button, Text } from 'components';
 
 export default function HomeHero() {
   return (

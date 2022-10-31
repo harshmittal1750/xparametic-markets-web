@@ -1,13 +1,11 @@
 import { useCallback, useState } from 'react';
 
-import Adornment from 'components/Adornment';
+import { Adornment, List, ListItem, ListItemText } from 'ui';
+
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
 import Icon from 'components/Icon';
 import type { IconProps } from 'components/Icon';
-import List from 'components/List';
-import ListItem from 'components/ListItem';
-import ListItemText from 'components/ListItemText';
 import Modal from 'components/Modal';
 import WalletInfo from 'components/WalletInfo';
 
@@ -77,6 +75,7 @@ export default function NavBarActions() {
                 key={chain}
                 onClick={handleAppChain(chain)}
                 role="button"
+                tabIndex={0}
               >
                 <Adornment edge="start">
                   <Icon name={chain} />
