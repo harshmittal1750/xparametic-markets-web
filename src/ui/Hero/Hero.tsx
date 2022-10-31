@@ -2,6 +2,8 @@ import type React from 'react';
 
 import cn from 'classnames';
 
+import HeroClasses from './Hero.module.scss';
+
 interface HeroProps extends React.ComponentPropsWithoutRef<'section'> {
   image?: React.CSSProperties['backgroundImage'];
 }
@@ -12,6 +14,10 @@ export default function Hero({ image, className, ...props }: HeroProps) {
   } as React.CSSProperties;
 
   return (
-    <section className={cn('pm-c-hero', className)} style={style} {...props} />
+    <section
+      className={cn(HeroClasses.root, className)}
+      style={style}
+      {...props}
+    />
   );
 }
