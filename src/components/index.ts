@@ -69,6 +69,8 @@ import ToggleSwitch from './ToggleSwitch';
 import Tooltip from './Tooltip';
 import TradeForm from './TradeForm';
 import VirtualizedList from './VirtualizedList';
+import VoteArrows from './VoteArrows';
+import VoteModal from './VoteModal';
 import WalletInfo from './WalletInfo';
 
 export {
@@ -149,6 +151,8 @@ export {
   ToggleSwitch,
   TradeForm,
   VirtualizedList,
+  VoteArrows,
+  VoteModal,
   WalletInfo
 };
 export { default as ConnectMetamask } from './ConnectMetamask';
@@ -158,9 +162,13 @@ export type { IconProps } from './Icon';
 
 export { default as Modal } from './Modal';
 
+export { default as ModalContent } from './ModalContent';
+
 export { default as ModalFooter } from './ModalFooter';
 
 export { default as ModalHeader } from './ModalHeader';
+
+export { default as ModalHeaderHide } from './ModalHeaderHide';
 
 export { default as ModalHeaderTitle } from './ModalHeaderTitle';
 
