@@ -6,9 +6,6 @@
   &:not(:last-child, :first-child) {
     border-radius: 0px;
   }
-  &:not(:first-child) {
-    margin-left: -1px;
-  }
   &:first-child {
     border-top-right-radius: 0px;
     border-bottom-right-radius: 0px;
