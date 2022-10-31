@@ -1,4 +1,4 @@
-import * as RouterDom from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const marketsPathname = 'Markets';
 const pathnames = [marketsPathname, 'Portfolio', 'Achievements', 'Leaderboard'];
@@ -12,7 +12,7 @@ export default function NavBarLinks() {
         }`;
 
         return (
-          <RouterDom.NavLink
+          <NavLink
             key={_pathname}
             to={pathname}
             className="pm-l-layout__header__nav-link"
@@ -20,7 +20,7 @@ export default function NavBarLinks() {
             isActive={(_, location) => location.pathname === pathname}
           >
             {_pathname}
-          </RouterDom.NavLink>
+          </NavLink>
         );
       })}
     </nav>
