@@ -13,7 +13,9 @@ import { useAppSelector, useTheme } from 'hooks';
 
 import NavbarClasses from './NavBar.module.scss';
 
-const arrChains = ['Ethereum', 'Binance', 'Moonriver'];
+const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as Array<
+  IconProps['name']
+>;
 
 export default function NavBarActions() {
   const theme = useTheme();
@@ -67,23 +69,19 @@ export default function NavBarActions() {
         }}
       >
         <List>
-          {arrChains.map(_chain => {
-            const chain = _chain as IconProps['name'];
-
-            return (
-              <ListItem
-                key={chain}
-                onClick={handleAppChain(chain)}
-                role="button"
-                tabIndex={0}
-              >
-                <Adornment edge="start">
-                  <Icon name={chain} />
-                </Adornment>
-                <ListItemText>{chain}</ListItemText>
-              </ListItem>
-            );
-          })}
+          {arrChains.map(chain => (
+            <ListItem
+              key={chain}
+              onClick={handleAppChain(chain)}
+              role="button"
+              tabIndex={0}
+            >
+              <Adornment edge="start">
+                <Icon name={chain} />
+              </Adornment>
+              <ListItemText>{chain}</ListItemText>
+            </ListItem>
+          ))}
         </List>
       </Modal>
     </>

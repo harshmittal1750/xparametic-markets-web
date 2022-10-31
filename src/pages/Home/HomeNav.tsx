@@ -4,6 +4,8 @@ import { ButtonGroup } from 'ui';
 
 import { Button, Icon, IconProps, SearchBar } from 'components';
 
+const filters = ['List', 'Grid'] as Array<IconProps['name']>;
+
 export default function HomeNav() {
   const [filter, setFilter] = useState(0);
   const handleFilter = useCallback(index => () => setFilter(index), []);
@@ -25,21 +27,17 @@ export default function HomeNav() {
         className="pm-p-home__navigation__actions"
       />
       <ButtonGroup actived={filter} className="pm-p-home__navigation__actions">
-        {['List', 'Grid'].map((_button, index) => {
-          const button = _button as IconProps['name'];
-
-          return (
-            <Button
-              key={button}
-              variant="outline"
-              color="default"
-              aria-label={`Show by ${button}`}
-              onClick={handleFilter(index)}
-            >
-              <Icon name={button} />
-            </Button>
-          );
-        })}
+        {filters.map((button, index) => (
+          <Button
+            key={button}
+            variant="outline"
+            color="default"
+            aria-label={`Show by ${button}`}
+            onClick={handleFilter(index)}
+          >
+            <Icon name={button} />
+          </Button>
+        ))}
       </ButtonGroup>
       <Button
         variant="outline"
