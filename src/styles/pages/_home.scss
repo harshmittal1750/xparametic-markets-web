@@ -4,6 +4,17 @@
   width: 100%;
   margin: px-to-rem(0px) auto;
 
+  &__hero {
+    &__breadcrumb {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    &__heading {
+      margin-bottom: 16px;
+    }
+  }
+
   &__navigation {
     display: flex;
 
