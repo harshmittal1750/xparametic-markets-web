@@ -1,5 +1,7 @@
 export { default as Adornment } from './Adornment';
 
+export { default as Button } from './Button';
+
 export { default as ButtonGroup } from './ButtonGroup';
 
 export { default as Hero } from './Hero';
