@@ -13,3 +13,7 @@ export { default as ListItem } from './ListItem';
 export { default as ListItemText } from './ListItemText';
 
 export { default as useMedia } from './useMedia';
+
+export { default as useTheme } from './useTheme';
+export { ThemeContext, ThemeProvider } from './useTheme';
+export type { ThemeModes, SeThemeMode } from './useTheme';

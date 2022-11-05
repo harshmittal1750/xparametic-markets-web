@@ -1,7 +1,7 @@
-import { useMemo, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 export default function useMedia(query: string) {
-  const mql = useMemo(() => window.matchMedia(query), [query]);
+  const [mql] = useState(() => window.matchMedia(query));
   const [media, setMedia] = useState(() => mql.matches);
 
   useLayoutEffect(() => {

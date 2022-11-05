@@ -22,7 +22,7 @@
   --color-text-secondary: var(--neutral-500);
   --color-text-quinary: rgb(var(--color-text-rgb) / var(--alpha-quinary));
 
-  &[class='theme--dark'] {
+  &[data-theme='dark'] {
     --color-background--rgb: var(--neutral-900--rgb);
     --color-text-rgb: var(--neutral-200--rgb);
 
