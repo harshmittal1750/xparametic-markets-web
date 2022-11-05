@@ -1,10 +1,11 @@
-import { SVGProps, memo } from 'react';
+import { memo } from 'react';
 
-import { useTheme } from 'hooks';
+import { useTheme } from 'ui';
 
-function RepeatCycleIcon(props: SVGProps<SVGSVGElement>) {
-  const { theme } = useTheme();
-  const accentColor = theme === 'dark' ? '#637084' : '#8293AE';
+function RepeatCycleIcon(props: React.SVGProps<SVGSVGElement>) {
+  const theme = useTheme();
+  const accentColor = theme.mode === 'dark' ? '#637084' : '#8293AE';
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

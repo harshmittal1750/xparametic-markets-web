@@ -2,8 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
 import dayjs from 'dayjs';
-
-import { useTheme } from 'hooks';
+import { useTheme } from 'ui';
 
 import generateCustomOptions from './options';
 
@@ -25,11 +24,9 @@ type LineChartProps = {
 
 function LineChart({ series, ticker, height = 200 }: LineChartProps) {
   const [width, setWidth] = useState('99%');
-
-  const { theme } = useTheme();
-
+  const theme = useTheme();
   const customOptions = useMemo(
-    () => generateCustomOptions(theme, ticker),
+    () => generateCustomOptions(theme.mode, ticker),
     [theme, ticker]
   );
 

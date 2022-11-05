@@ -1,11 +1,10 @@
-import { SVGProps, memo } from 'react';
+import { memo } from 'react';
 
-import { useTheme } from 'hooks';
+import { useTheme } from 'ui';
 
-function RankStableIcon(props: SVGProps<SVGSVGElement>) {
-  const { theme } = useTheme();
-
-  const backgroundColor = theme === 'dark' ? '#FFFFFF' : '#000000';
+function RankStableIcon(props: React.SVGProps<SVGSVGElement>) {
+  const theme = useTheme();
+  const backgroundColor = theme.mode === 'dark' ? '#FFFFFF' : '#000000';
 
   return (
     <svg

@@ -1,14 +1,20 @@
-/* eslint-disable no-nested-ternary */
-import 'react-datepicker/dist/react-datepicker.css';
 import { DateTimePicker } from '@material-ui/pickers';
 import { useField, useFormikContext } from 'formik';
 import styled from 'styled-components';
-
-import { useTheme } from 'hooks';
+import { Theme, useTheme } from 'ui';
 
 import InputErrorMessage from './InputErrorMessage';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const StyledDateTimePicker = styled(DateTimePicker)`
+type StyledDateTimePickerProps = { theme: Theme; $hasError: boolean };
+
+function handleColor(props: StyledDateTimePickerProps) {
+  const renderDark = props.theme.mode === 'dark' ? '#252c3b' : '#e0e2e7';
+
+  return props.$hasError ? '#e12d39' : renderDark;
+}
+
+const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
   .MuiOutlinedInput-input {
     padding: 1.2rem;
 
@@ -18,7 +24,7 @@ const StyledDateTimePicker = styled(DateTimePicker)`
     line-height: 1.5;
     letter-spacing: -0.014rem;
 
-    color: ${props => (props.theme === 'dark' ? '#f9fafb' : '#171b23')};
+    color: ${props => (props.theme.mode === 'dark' ? '#f9fafb' : '#171b23')};
     border: 0.1rem solid transparent;
 
     &:hover,
@@ -29,24 +35,12 @@ const StyledDateTimePicker = styled(DateTimePicker)`
 
   .MuiOutlinedInput-root {
     outline: none;
-    border: 0.1rem solid
-      ${props =>
-        props.$hasError
-          ? '#e12d39'
-          : props.theme === 'dark'
-          ? '#252c3b'
-          : '#e0e2e7'};
+    border: 0.1rem solid ${handleColor};
     transition: 0.2s border ease-out;
 
     &:hover {
       outline: none;
-      border: 0.1rem solid
-        ${props =>
-          props.$hasError
-            ? '#e12d39'
-            : props.theme === 'dark'
-            ? '#637084'
-            : '#c2cad6'};
+      border: 0.1rem solid ${handleColor};
     }
 
     &.Mui-focused fieldset {
@@ -68,7 +62,7 @@ type DateInputProps = {
 };
 
 function DateInput({ label, name, description }: DateInputProps) {
-  const { theme } = useTheme();
+  const theme = useTheme();
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
 
@@ -88,7 +82,7 @@ function DateInput({ label, name, description }: DateInputProps) {
       </label>
       <StyledDateTimePicker
         theme={theme}
-        $hasError={hasError}
+        $hasError={!!hasError}
         inputVariant="outlined"
         disablePast
         error={false}
