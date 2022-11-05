@@ -16,4 +16,4 @@ export { default as useMedia } from './useMedia';
 
 export { default as useTheme } from './useTheme';
 export { ThemeContext, ThemeProvider } from './useTheme';
-export type { ThemeModes, SeThemeMode } from './useTheme';
+export type { Theme } from './useTheme';
