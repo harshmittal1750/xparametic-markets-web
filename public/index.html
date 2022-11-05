@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#3033be" />
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
@@ -31,34 +31,47 @@
     />
     <meta property="twitter:image" content="__META_TWITTER_IMAGE__" />
 
-    <link
-      rel="preload"
-      href="/assets/fonts/Gilroy-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/Gilroy-Medium.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/Gilroy-SemiBold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/assets/fonts/Gilroy-Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+    <style type="text/css">
+      @font-face {
+        font-family: 'Gilroy';
+        src: local('Gilroy'),
+          url('./typeface/Gilroy-Regular.woff2') format('woff2');
+        font-weight: 400;
+        font-style: normal;
+        font-display: auto;
+        font-stretch: normal;
+      }
+
+      @font-face {
+        font-family: 'Gilroy';
+        src: local('Gilroy'),
+          url('./typeface/Gilroy-Medium.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+        font-display: auto;
+        font-stretch: normal;
+      }
+
+      @font-face {
+        font-family: 'Gilroy';
+        src: local('Gilroy'),
+          url('./typeface/Gilroy-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+        font-display: auto;
+        font-stretch: normal;
+      }
+
+      @font-face {
+        font-family: 'Gilroy';
+        src: local('Gilroy'),
+          url('./typeface/Gilroy-Bold.woff2') format('woff2');
+        font-weight: 700;
+        font-style: normal;
+        font-display: auto;
+        font-stretch: normal;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

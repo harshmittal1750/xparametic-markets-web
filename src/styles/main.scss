@@ -18,10 +18,6 @@
 @import 'vendors/rc-slider';
 @import 'vendors/transak';
 
-// 3. Base stuff
-@import 'base/reset';
-@import 'base/typography';
-
 // 4. Layout-related sections
 @import 'layout/layout';
 @import 'layout/navbar';
@@ -99,6 +95,3 @@
 @import 'pages/achievements';
 @import 'pages/leaderboard';
 @import 'pages/profile';
-
-// 7. Themes
-@import 'theme';
