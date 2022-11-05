@@ -1,35 +1,26 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
-
-import store from 'redux/store';
-
-import { ScrollToTop } from 'components';
-
-import ThemeProvider from 'contexts/theme';
+import { StrictMode } from 'react';
+import { render } from 'react-dom';
 
 import App from './App';
-import reportWebVitals from './reportWebVitals';
 
 import 'styles/main.scss';
+import type { ReportHandler } from 'web-vitals';
 
-const render = () => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <ThemeProvider>
-        <Provider store={store}>
-          <Router>
-            <ScrollToTop />
-            <App />
-          </Router>
-        </Provider>
-      </ThemeProvider>
-    </React.StrictMode>,
-    document.getElementById('root')
-  );
-};
+render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+  document.getElementById('root')
+);
 
-render();
-
-reportWebVitals();
+((onPerfEntry?: ReportHandler) => {
+  if (onPerfEntry && onPerfEntry instanceof Function) {
+    import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
+      getCLS(onPerfEntry);
+      getFID(onPerfEntry);
+      getFCP(onPerfEntry);
+      getLCP(onPerfEntry);
+      getTTFB(onPerfEntry);
+    });
+  }
+})();
