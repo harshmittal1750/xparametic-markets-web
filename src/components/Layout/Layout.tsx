@@ -1,6 +1,9 @@
-import { useAppDispatch, useNetwork } from 'hooks';
 import { useEffect } from 'react';
+
 import { login } from 'redux/ducks/polkamarkets';
+
+import { useAppDispatch, useNetwork } from 'hooks';
+
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
 import NavBar from '../NavBar';

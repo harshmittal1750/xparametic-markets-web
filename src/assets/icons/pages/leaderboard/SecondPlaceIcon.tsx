@@ -1,11 +1,11 @@
-import { SVGProps, memo } from 'react';
+import { memo } from 'react';
 
-import { useTheme } from 'hooks';
+import { useTheme } from 'ui';
 
-function SecondPlaceIcon(props: SVGProps<SVGSVGElement>) {
-  const { theme } = useTheme();
+function SecondPlaceIcon(props: React.SVGProps<SVGSVGElement>) {
+  const theme = useTheme();
+  const backgroundColor = theme.mode === 'dark' ? '#3B4760' : '#C3CCDA';
 
-  const backgroundColor = theme === 'dark' ? '#3B4760' : '#C3CCDA';
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

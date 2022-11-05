@@ -126,7 +126,6 @@ export {
   ProbabilityInput,
   ProgressBar,
   ScrollableArea,
-  ScrollToTop,
   SearchBar,
   Select,
   SelectInput,

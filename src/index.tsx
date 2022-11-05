@@ -1,10 +1,11 @@
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
 
+import type { ReportHandler } from 'web-vitals';
+
 import App from './App';
 
 import 'styles/main.scss';
-import type { ReportHandler } from 'web-vitals';
 
 render(
   <StrictMode>
@@ -13,7 +14,7 @@ render(
   document.getElementById('root')
 );
 
-((onPerfEntry?: ReportHandler) => {
+(function reportWebVitals(onPerfEntry?: ReportHandler) {
   if (onPerfEntry && onPerfEntry instanceof Function) {
     import('web-vitals').then(({ getCLS, getFID, getFCP, getLCP, getTTFB }) => {
       getCLS(onPerfEntry);
