@@ -14,6 +14,6 @@ export { default as ListItemText } from './ListItemText';
 
 export { default as useMedia } from './useMedia';
 
-export { default as useTheme } from './useTheme';
-export { ThemeContext, ThemeProvider } from './useTheme';
+export { default as ThemeProvider } from './useTheme';
+export { ThemeContext, useTheme } from './useTheme';
 export type { Theme } from './useTheme';

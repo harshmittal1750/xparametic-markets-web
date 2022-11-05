@@ -1,20 +1,13 @@
-import type React from 'react';
-import { createContext } from 'react';
-
 import useMedia from 'ui/useMedia';
 
 import { useLocalStorage } from 'hooks';
 
-import { Theme } from './useTheme.type';
+import { Theme, ThemeProviderProps } from './Theme.type';
+import { ThemeContext } from './Theme.utils';
 
-export const ThemeContext = createContext<Theme>({
-  mode: 'system',
-  setMode: () => {}
-});
+import './Theme.scss';
 
-ThemeContext.displayName = 'Theme';
-
-export function ThemeProvider(props: Omit<React.ProviderProps<{}>, 'value'>) {
+export default function ThemeProvider(props: ThemeProviderProps) {
   const [stored, setStored] = useLocalStorage<Theme['mode']>(
     'THEME_MODE',
     'system'
