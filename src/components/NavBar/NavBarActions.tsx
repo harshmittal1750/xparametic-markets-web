@@ -13,9 +13,7 @@ import { useAppSelector, useTheme } from 'hooks';
 
 import NavbarClasses from './NavBar.module.scss';
 
-const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as Array<
-  IconProps['name']
->;
+const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as IconProps['name'][];
 
 export default function NavBarActions() {
   const theme = useTheme();
@@ -76,7 +74,7 @@ export default function NavBarActions() {
               role="button"
               tabIndex={0}
             >
-              <Adornment edge="start">
+              <Adornment $edge="start">
                 <Icon name={chain} />
               </Adornment>
               <ListItemText>{chain}</ListItemText>

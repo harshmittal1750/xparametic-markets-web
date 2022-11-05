@@ -1,30 +1,28 @@
-import type React from 'react';
 import { Children, cloneElement } from 'react';
 
 import cn from 'classnames';
 
 import ButtonGroupClasses from './ButtonGroup.module.scss';
+import { ButtonGroupProps } from './ButtonGroup.type';
 
 export default function ButtonGroup({
   children,
   className,
-  actived,
+  $selected,
   ...props
-}: React.ComponentPropsWithoutRef<'div'> & {
-  actived: number;
-}) {
+}: ButtonGroupProps) {
   return (
     <div className={cn(ButtonGroupClasses.root, className)} {...props}>
       {Children.map(children, (child, index) => {
-        const btn1st = index === 0;
-        const btnLast = index === Children.count(children) - 1;
+        const buttonStart = index === 0;
+        const buttonEnd = index === Children.count(children) - 1;
 
         return cloneElement(child as React.ReactElement, {
-          className: cn(ButtonGroupClasses.buttons, {
-            [ButtonGroupClasses.actived]: index === actived,
-            [ButtonGroupClasses.start]: btn1st,
-            [ButtonGroupClasses.mid]: !(btn1st || btnLast),
-            [ButtonGroupClasses.end]: btnLast
+          className: cn({
+            [ButtonGroupClasses.selected]: index === $selected,
+            [ButtonGroupClasses.start]: buttonStart,
+            [ButtonGroupClasses.mid]: !(buttonStart || buttonEnd),
+            [ButtonGroupClasses.end]: buttonEnd
           })
         });
       })}

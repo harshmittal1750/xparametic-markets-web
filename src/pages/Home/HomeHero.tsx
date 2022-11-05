@@ -4,7 +4,7 @@ import { Breadcrumb, Button, Icon, Text } from 'components';
 
 export default function HomeHero() {
   return (
-    <Hero image="https://polkamarkets.infura-ipfs.io/ipfs/QmVk9KtoD8bhGCcviDYLjeVth9JBbjYpzSbyoVrg4j89FZ">
+    <Hero $imageUrl="https://polkamarkets.infura-ipfs.io/ipfs/QmVk9KtoD8bhGCcviDYLjeVth9JBbjYpzSbyoVrg4j89FZ">
       <div className="pm-p-home__hero__breadcrumb">
         <Icon name="Moonriver" />
         <Text
