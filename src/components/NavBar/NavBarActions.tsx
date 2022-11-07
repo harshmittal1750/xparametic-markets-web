@@ -1,13 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import {
-  Adornment,
-  List,
-  ListItem,
-  ListItemText,
-  ThemeModes,
-  useTheme
-} from 'ui';
+import { Adornment, List, ListItem, ListItemText } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -16,16 +9,11 @@ import type { IconProps } from 'components/Icon';
 import Modal from 'components/Modal';
 import WalletInfo from 'components/WalletInfo';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useTheme } from 'hooks';
 
 import NavbarClasses from './NavBar.module.scss';
 
 const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as IconProps['name'][];
-const themeIcons = {
-  light: 'Sun',
-  dark: 'Moon',
-  system: 'Sparkles'
-} as const;
 
 export default function NavBarActions() {
   const theme = useTheme();
@@ -40,31 +28,27 @@ export default function NavBarActions() {
     },
     [handleHide]
   );
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleTheme = useCallback(
-    (mode: ThemeModes) => theme.setMode(mode),
-    [theme]
-  );
+  const isThemeDark = theme.theme === 'dark';
+  const themeAnti = isThemeDark ? 'light' : 'dark';
 
+  function handleTheme() {
+    theme.setTheme(themeAnti);
+  }
   function handleChains() {
     setShow(true);
   }
 
   return (
     <>
-      <button type="button" onClick={() => theme.setMode('light')}>
-        light
-      </button>
-      <button type="button" onClick={() => theme.setMode('dark')}>
-        dark
-      </button>
-      <button type="button" onClick={() => theme.setMode('system')}>
-        system
-      </button>
       <div className="pm-l-layout__header__actions">
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
-        <Button variant="outline" color="default" aria-label="Switch theme">
-          <Icon name={themeIcons[theme.mode]} />
+        <Button
+          variant="outline"
+          color="default"
+          aria-label="Switch theme"
+          onClick={handleTheme}
+        >
+          <Icon name={isThemeDark ? 'Sun' : 'Moon'} />
         </Button>
         <Button
           variant="outline"
