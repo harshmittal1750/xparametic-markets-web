@@ -2,11 +2,10 @@ import { useState } from 'react';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
-import { useTheme } from 'ui';
 
 import { ChartHeader, LineChart, Text } from 'components';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useTheme } from 'hooks';
 
 const intervals = [
   { id: '24h', name: '24H', value: 24 },
@@ -16,7 +15,7 @@ const intervals = [
 ];
 
 const MarketChart = () => {
-  const theme = useTheme();
+  const { theme } = useTheme();
   const currency = useAppSelector(state => state.market.market.currency);
   const { ticker } = currency;
   const predictions = useAppSelector(state => state.market.market.outcomes);
@@ -71,7 +70,7 @@ const MarketChart = () => {
         ) : null}
         {chartViewType === 'tradingView' ? (
           <TradingViewWidget
-            theme={theme.mode === 'dark' ? Themes.DARK : Themes.LIGHT}
+            theme={theme === 'dark' ? Themes.DARK : Themes.LIGHT}
             width="100%"
             height={454}
             symbol={tradingViewSymbol}

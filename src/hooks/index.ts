@@ -4,11 +4,13 @@ import useFavoriteMarkets from './useFavoriteMarkets';
 import useLocalStorage from './useLocalStorage';
 import useNetwork from './useNetwork';
 import useSortableData from './useSortableData';
+import useTheme from './useTheme';
 import useWindowDimensions from './useWindowDimensions';
 
 export {
   useAppDispatch,
   useAppSelector,
+  useTheme,
   useLocalStorage,
   useNetwork,
   useSortableData,
