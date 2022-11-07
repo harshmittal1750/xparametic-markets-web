@@ -3,11 +3,14 @@ import { createContext } from 'react';
 
 import useMedia from 'ui/useMedia';
 
-import { useLocalStorage } from 'hooks';
+import { useLocalStorage, usePrevious } from 'hooks';
 
-import { Theme } from './useTheme.type';
+import { SeThemeMode, ThemeModes } from './useTheme.type';
 
-export const ThemeContext = createContext<Theme>({
+export const ThemeContext = createContext<{
+  mode: ThemeModes;
+  setMode: SeThemeMode;
+}>({
   mode: 'system',
   setMode: () => {}
 });
@@ -15,7 +18,7 @@ export const ThemeContext = createContext<Theme>({
 ThemeContext.displayName = 'Theme';
 
 export function ThemeProvider(props: Omit<React.ProviderProps<{}>, 'value'>) {
-  const [stored, setStored] = useLocalStorage<Theme['mode']>(
+  const [stored, setStored] = useLocalStorage<ThemeModes>(
     'THEME_MODE',
     'system'
   );

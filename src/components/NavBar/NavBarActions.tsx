@@ -1,6 +1,13 @@
 import { useCallback, useState } from 'react';
 
-import { Adornment, List, ListItem, ListItemText, Theme, useTheme } from 'ui';
+import {
+  Adornment,
+  List,
+  ListItem,
+  ListItemText,
+  ThemeModes,
+  useTheme
+} from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -35,7 +42,7 @@ export default function NavBarActions() {
   );
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleTheme = useCallback(
-    (mode: Theme['mode']) => theme.setMode(mode),
+    (mode: ThemeModes) => theme.setMode(mode),
     [theme]
   );
 
