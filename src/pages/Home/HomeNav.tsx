@@ -24,7 +24,7 @@ export default function HomeNav() {
         name="Search Markets"
         placeholder="Search markets"
         onSearch={() => {}}
-        className="pm-p-home__navigation__actions"
+        className={{ form: 'pm-p-home__navigation__actions' }}
       />
       <ButtonGroup actived={filter} className="pm-p-home__navigation__actions">
         {filters.map((button, index) => (
