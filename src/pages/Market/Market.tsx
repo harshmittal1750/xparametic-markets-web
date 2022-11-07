@@ -126,7 +126,7 @@ const Market = () => {
           market.subcategory,
           market.expiresAt
         )}
-        banner={market.bannerUrl}
+        imageUrl={market.bannerUrl}
       />
       <div className="pm-p-market__analytics">
         <MarketAnalytics

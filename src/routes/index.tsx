@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import AppRoutes from './app.routes';
 
 export default function Routes() {

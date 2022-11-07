@@ -33,19 +33,6 @@ const AppRoutes = () => {
   const isNetworkAllowed =
     !isWalletConnected ||
     Object.keys(environment.NETWORKS).includes(network.id);
-  const renderNetworkAllowed = !isNetworkAllowed ? (
-    <WrongNetwork />
-  ) : (
-    <Switch>
-      <Route component={Home} exact path="/" />
-      <Route component={Market} path="/markets" />
-      <Route component={Portfolio} path="/portfolio" />
-      <Route component={CreateMarket} path="/market/create" />
-      <Route component={Achievements} path="/achievements" />
-      <Route component={Leaderboard} path="/leaderboard" />
-      <Route component={Profile} path="/user/:address" />
-    </Switch>
-  );
 
   useEffect(() => {
     if (isNetworkAllowed && isWalletConnected) {
@@ -68,7 +55,21 @@ const AppRoutes = () => {
   return (
     <Layout>
       <Suspense fallback={null}>
-        {!isCountryAllowed ? <RestrictedCountry /> : renderNetworkAllowed}
+        {!isCountryAllowed ? (
+          <RestrictedCountry />
+        ) : !isNetworkAllowed ? (
+          <WrongNetwork />
+        ) : (
+          <Switch>
+            <Route component={Home} exact path="/" />
+            <Route component={Market} path="/markets" />
+            <Route component={Portfolio} path="/portfolio" />
+            <Route component={CreateMarket} path="/market/create" />
+            <Route component={Achievements} path="/achievements" />
+            <Route component={Leaderboard} path="/leaderboard" />
+            <Route component={Profile} path="/user/:address" />
+          </Switch>
+        )}
       </Suspense>
     </Layout>
   );
