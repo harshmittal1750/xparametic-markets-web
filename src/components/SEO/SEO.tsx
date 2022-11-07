@@ -1,16 +1,16 @@
 import { Helmet } from 'react-helmet';
 
 type SEOProps = {
-  title?: string;
-  description?: string;
-  banner?: string;
+  title: string;
+  description: string;
+  imageUrl?: string;
 };
 
-function SEO({
-  title = 'Polkamarkets - Autonomous Prediction Market Protocol',
-  description = 'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot.',
-  banner = `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`
-}: SEOProps) {
+const POLKAMARKETS_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`;
+
+function SEO({ title, description, imageUrl }: SEOProps) {
+  const image = imageUrl || POLKAMARKETS_DEFAULT_BANNER;
+
   return (
     <Helmet
       title={title}
@@ -22,7 +22,7 @@ function SEO({
         },
         {
           name: 'image',
-          content: banner
+          content: image
         },
         {
           property: 'og:url',
@@ -42,7 +42,7 @@ function SEO({
         },
         {
           property: 'og:image',
-          content: banner
+          content: image
         },
         {
           property: 'twitter:card',
@@ -58,7 +58,7 @@ function SEO({
         },
         {
           property: 'twitter:image',
-          content: banner
+          content: image
         }
       ]}
     />

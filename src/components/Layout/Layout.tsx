@@ -1,22 +1,12 @@
-import { useAppDispatch, useNetwork } from 'hooks';
-import { useEffect } from 'react';
-import { login } from 'redux/ducks/polkamarkets';
+import type React from 'react';
+
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
 import NavBar from '../NavBar';
 import RightSidebar from '../RightSidebar';
 import ScrollableArea from '../ScrollableArea';
 
-export default function Layout({
-  children
-}: React.PropsWithChildren<Record<string, unknown>>) {
-  const dispatch = useAppDispatch();
-  const { networkConfig } = useNetwork();
-
-  useEffect(() => {
-    dispatch(login(networkConfig));
-  }, [dispatch, networkConfig]);
-
+export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <div className="pm-l-layout">
       <BetaWarning />
