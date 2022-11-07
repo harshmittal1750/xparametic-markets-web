@@ -20,56 +20,67 @@ const RestrictedCountry = lazy(() => import('pages/RestrictedCountry'));
 const Achievements = lazy(() => import('pages/Achievements'));
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
 const Profile = lazy(() => import('pages/Profile'));
-const restrictedCountries =
-  process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+
+const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
 
 const AppRoutes = () => {
-  const [isCountryAllowed, setIsCountryAllowed] = useState(true);
   const dispatch = useAppDispatch();
-  const isWalletConnected = useAppSelector(
+  const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
   );
   const { network, networkConfig } = useNetwork();
-  const isNetworkAllowed =
-    !isWalletConnected ||
-    Object.keys(environment.NETWORKS).includes(network.id);
+
+  const isAllowedNetwork =
+    !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
+
+  const restrictedCountries = REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+  const [isAllowedCountry, setIsAllowedCountry] = useState(true);
 
   useEffect(() => {
-    if (isNetworkAllowed && isWalletConnected) {
+    if (isAllowedNetwork && walletConnected) {
       dispatch(fetchAditionalData(networkConfig));
     }
-  }, [dispatch, isNetworkAllowed, networkConfig, isWalletConnected]);
+  }, [dispatch, isAllowedNetwork, networkConfig, walletConnected]);
 
   useEffect(() => {
-    (async function handleUserCountry() {
+    async function fetchUserCountry() {
       if (!isUndefined(restrictedCountries) && !isEmpty(restrictedCountries)) {
         const userCountry = await getUserCountry();
 
-        setIsCountryAllowed(
+        setIsAllowedCountry(
           !restrictedCountries.includes(userCountry.countryCode)
         );
       }
-    })();
-  }, []);
+    }
+    fetchUserCountry();
+  }, [restrictedCountries]);
+
+  if (!isAllowedCountry)
+    return (
+      <Suspense fallback={null}>
+        <RestrictedCountry />
+      </Suspense>
+    );
+
+  if (!isAllowedNetwork)
+    return (
+      <Suspense fallback={null}>
+        <WrongNetwork />
+      </Suspense>
+    );
 
   return (
     <Layout>
       <Suspense fallback={null}>
-        {!isCountryAllowed ? (
-          <RestrictedCountry />
-        ) : !isNetworkAllowed ? (
-          <WrongNetwork />
-        ) : (
-          <Switch>
-            <Route component={Home} exact path="/" />
-            <Route component={Market} path="/markets" />
-            <Route component={Portfolio} path="/portfolio" />
-            <Route component={CreateMarket} path="/market/create" />
-            <Route component={Achievements} path="/achievements" />
-            <Route component={Leaderboard} path="/leaderboard" />
-            <Route component={Profile} path="/user/:address" />
-          </Switch>
-        )}
+        <Switch>
+          <Route component={Home} exact path="/" />
+          <Route component={Market} path="/markets" />
+          <Route component={Portfolio} path="/portfolio" />
+          <Route component={CreateMarket} path="/market/create" />
+          <Route component={Achievements} path="/achievements" />
+          <Route component={Leaderboard} path="/leaderboard" />
+          <Route component={Profile} path="/user/:address" />
+        </Switch>
       </Suspense>
     </Layout>
   );
