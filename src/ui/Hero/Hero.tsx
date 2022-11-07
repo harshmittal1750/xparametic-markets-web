@@ -1,11 +1,16 @@
+import type React from 'react';
+
 import cn from 'classnames';
 
 import HeroClasses from './Hero.module.scss';
-import { HeroProps } from './Hero.type';
 
-export default function Hero({ $imageUrl, className, ...props }: HeroProps) {
+interface HeroProps extends React.ComponentPropsWithoutRef<'section'> {
+  image?: React.CSSProperties['backgroundImage'];
+}
+
+export default function Hero({ image, className, ...props }: HeroProps) {
   const style = {
-    '--background-image': `url(${$imageUrl})`
+    '--background-image': `url(${image})`
   } as React.CSSProperties;
 
   return (

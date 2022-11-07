@@ -26,10 +26,7 @@ export default function HomeNav() {
         onSearch={() => {}}
         className="pm-p-home__navigation__actions"
       />
-      <ButtonGroup
-        $selected={filter}
-        className="pm-p-home__navigation__actions"
-      >
+      <ButtonGroup actived={filter} className="pm-p-home__navigation__actions">
         {filters.map((button, index) => (
           <Button
             key={button}
