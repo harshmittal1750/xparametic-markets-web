@@ -1,3 +1,3 @@
-export { default } from './ThemeProvider';
-export { ThemeContext, useTheme } from './Theme.utils';
-export type { Theme } from './Theme.type';
+export { default } from './useTheme';
+export { ThemeContext, ThemeProvider } from './useTheme.utils';
+export type { Theme } from './useTheme.type';

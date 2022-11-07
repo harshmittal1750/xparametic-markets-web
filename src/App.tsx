@@ -11,7 +11,7 @@ import { SEO } from 'components';
 
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
 
-import './styles/main.scss';
+import './ui/useTheme/useTheme.scss';
 
 export default function App() {
   return (

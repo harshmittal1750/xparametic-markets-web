@@ -73,8 +73,10 @@
 }
 
 html {
-  font: 500 1rem/1.5 'Gilroy', sans-serif;
   box-sizing: border-box;
+  color-scheme: light dark;
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
 }
 
 *,
@@ -84,9 +86,7 @@ html {
 }
 
 body {
-  color-scheme: light dark;
-  -webkit-font-smoothing: auto;
-  -moz-osx-font-smoothing: auto;
+  font: 500 1rem/1.5 'Gilroy', sans-serif;
   text-rendering: optimizeSpeed;
   margin: 0px;
   min-height: 100vh;
