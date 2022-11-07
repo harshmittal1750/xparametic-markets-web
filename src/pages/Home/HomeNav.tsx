@@ -1,14 +1,26 @@
 import { useCallback, useState } from 'react';
 
+import { setSearchQuery } from 'redux/ducks/markets';
 import { ButtonGroup } from 'ui';
 
 import { Button, Icon, IconProps, SearchBar } from 'components';
 
+import { useAppDispatch } from 'hooks';
+
 const filters = ['List', 'Grid'] as Array<IconProps['name']>;
 
 export default function HomeNav() {
+  const dispatch = useAppDispatch();
+
   const [filter, setFilter] = useState(0);
   const handleFilter = useCallback(index => () => setFilter(index), []);
+
+  const handleSearch = useCallback(
+    (text: string) => {
+      dispatch(setSearchQuery(text));
+    },
+    [dispatch]
+  );
 
   return (
     <div className="pm-p-home__navigation">
@@ -23,7 +35,7 @@ export default function HomeNav() {
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
-        onSearch={() => {}}
+        onSearch={handleSearch}
         className={{ form: 'pm-p-home__navigation__actions' }}
       />
       <ButtonGroup actived={filter} className="pm-p-home__navigation__actions">
