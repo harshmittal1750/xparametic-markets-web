@@ -1,6 +1,31 @@
-import { Button, Icon, SearchBar } from 'components';
+import { useCallback } from 'react';
+
+import { setSorter, setSorterByEndingSoon } from 'redux/ducks/markets';
+
+import { Button, Filter, Icon, SearchBar } from 'components';
+
+import { useAppDispatch } from 'hooks';
+
+import { filters } from './utils';
 
 export default function HomeNav() {
+  const dispatch = useAppDispatch();
+  const handleTouchedFilter = useCallback(
+    (touched: boolean) => {
+      dispatch(setSorterByEndingSoon(!touched));
+    },
+    [dispatch]
+  );
+
+  function handleSelectedFilter(filter: {
+    value: string | number;
+    optionalTrigger?: string;
+  }) {
+    dispatch(
+      setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
+    );
+  }
+
   return (
     <div className="pm-p-home__navigation">
       <Button
@@ -17,14 +42,14 @@ export default function HomeNav() {
         onSearch={() => {}}
         className="pm-p-home__navigation__actions"
       />
-      <Button
-        variant="outline"
-        size="xs"
+      <Filter
+        description="Sort by"
+        defaultOption="volumeEur"
+        options={filters}
+        onChange={handleSelectedFilter}
+        onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
-      >
-        SORT: LIQUIDITY
-        <Icon name="Chevron" dir="down" size="lg" />
-      </Button>
+      />
       <Button color="primary" size="sm">
         Create Market
       </Button>
