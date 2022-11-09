@@ -68,7 +68,7 @@ export default function NavBarActions() {
           dialog: NavbarClasses.widget
         }}
       >
-        <List>
+        <List $rounded>
           {arrChains.map(chain => (
             <ListItem
               key={chain}
