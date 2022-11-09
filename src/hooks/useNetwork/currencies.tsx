@@ -31,7 +31,7 @@ const GLMR: Currency = {
   ticker: 'GLMR',
   symbol: 'GLMR',
   icon: <MoonbeamIcon />,
-  iconName: 'Ethereum' // temp fix due to lack of Moonbeam icon
+  iconName: 'Moonbeam'
 };
 
 export { DEV, ETH, MOVR, GLMR };
