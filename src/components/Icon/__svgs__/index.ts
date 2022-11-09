@@ -17,6 +17,7 @@ export { ReactComponent as Medal } from './Medal.svg';
 export { ReactComponent as Menu } from './Menu.svg';
 export { ReactComponent as MenuBack } from './MenuBack.svg';
 export { ReactComponent as Moon } from './Moon.svg';
+export { ReactComponent as Moonbeam } from './Moonbeam.svg';
 export { ReactComponent as Moonriver } from './Moonriver.svg';
 export { ReactComponent as Share } from './Share.svg';
 export { ReactComponent as Sparkles } from './Sparkles.svg';
