@@ -8,7 +8,7 @@ import { useTheme } from 'hooks';
 
 import InputErrorMessage from './InputErrorMessage';
 
-const StyledDateTimePicker = styled(DateTimePicker)`
+const StyledDateTimePicker = styled(DateTimePicker)<{ $hasError: boolean }>`
   .MuiOutlinedInput-input {
     padding: 1.2rem;
 
@@ -88,7 +88,7 @@ function DateInput({ label, name, description }: DateInputProps) {
       </label>
       <StyledDateTimePicker
         theme={theme}
-        $hasError={hasError}
+        $hasError={!!hasError}
         inputVariant="outlined"
         disablePast
         error={false}
