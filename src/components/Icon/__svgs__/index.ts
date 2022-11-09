@@ -4,6 +4,7 @@ export { ReactComponent as Bitcoin } from './Bitcoin.svg';
 export { ReactComponent as Check } from './Check.svg';
 export { ReactComponent as CheckFilled } from './CheckFilled.svg';
 export { ReactComponent as Chevron } from './Chevron.svg';
+export { ReactComponent as Circle } from './Circle.svg';
 export { ReactComponent as Cross } from './Cross.svg';
 export { ReactComponent as CrossFilled } from './CrossFilled.svg';
 export { ReactComponent as Delta } from './Delta.svg';
