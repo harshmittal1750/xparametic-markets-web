@@ -1,12 +1,17 @@
 import { useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Adornment, Divider, List, ListItem, ListItemText } from 'ui';
+import { Adornment, Divider, List, ListItem, ListItemText, Radio } from 'ui';
 
 import { Button, Icon, Modal, ToggleSwitch } from 'components';
 
 function ListItemNested() {
   const [expand, setExpand] = useState(false);
+  const [radio, setRadio] = useState('Binance');
+
+  function handleRadio(event: React.ChangeEvent<HTMLInputElement>) {
+    setRadio(event.target.value);
+  }
 
   return (
     <>
@@ -26,27 +31,21 @@ function ListItemNested() {
           >
             <List
               style={{
-                backgroundColor: 'rgba(0, 0, 0, 0.23)'
+                backgroundColor: 'var(--color-background-primary)'
               }}
             >
-              <ListItem>
-                <ListItemText>Binance</ListItemText>
-                <Adornment edge="end">
-                  <Icon name="CheckFilled" size="lg" />
-                </Adornment>
-              </ListItem>
-              <ListItem>
-                <ListItemText>Moonbeam</ListItemText>
-                <Adornment edge="end">
-                  <Icon name="CheckFilled" size="lg" />
-                </Adornment>
-              </ListItem>
-              <ListItem>
-                <ListItemText>Ethereum</ListItemText>
-                <Adornment edge="end">
-                  <Icon name="CheckFilled" size="lg" />
-                </Adornment>
-              </ListItem>
+              {['Binance', 'Moonbeam', 'Ethereum'].map(network => (
+                <ListItem key={network}>
+                  <ListItemText>{network}</ListItemText>
+                  <Adornment edge="end">
+                    <Radio
+                      checked={network === radio}
+                      value={network}
+                      onChange={handleRadio}
+                    />
+                  </Adornment>
+                </ListItem>
+              ))}
             </List>
           </motion.div>
         )}
@@ -90,7 +89,7 @@ export default function HomeNavFilter() {
             width: 256,
             height: '100%',
             borderRight: '1px solid var(--color-border)',
-            backgroundColor: '#191C26'
+            backgroundColor: 'var(--color-surface)'
           }}
         >
           <ListItem>
