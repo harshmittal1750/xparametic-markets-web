@@ -2,10 +2,11 @@ import { useCallback } from 'react';
 
 import { setSorter, setSorterByEndingSoon } from 'redux/ducks/markets';
 
-import { Button, Filter, Icon, SearchBar } from 'components';
+import { Button, Filter, SearchBar } from 'components';
 
 import { useAppDispatch } from 'hooks';
 
+import HomeNavFilter from './HomeNavFilter';
 import { filters } from './utils';
 
 export default function HomeNav() {
@@ -28,14 +29,7 @@ export default function HomeNav() {
 
   return (
     <div className="pm-p-home__navigation">
-      <Button
-        variant="outline"
-        size="sm"
-        className="pm-p-home__navigation__actions"
-      >
-        <Icon name="Filter" />
-        Filter
-      </Button>
+      <HomeNavFilter />
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
