@@ -5,6 +5,8 @@
   margin: px-to-rem(0px) auto;
 
   &__hero {
+    margin-bottom: 20px;
+
     &__breadcrumb {
       display: flex;
       gap: 8px;

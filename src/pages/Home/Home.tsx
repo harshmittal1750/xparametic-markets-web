@@ -1,7 +1,5 @@
 import { filteredMarketsSelector } from 'redux/ducks/markets';
 
-import { MarketListAsync } from 'components';
-
 import { VoteProvider } from 'contexts/vote';
 
 import { useAppSelector, useFavoriteMarkets } from 'hooks';
