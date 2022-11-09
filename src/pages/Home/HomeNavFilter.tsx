@@ -9,16 +9,19 @@ function ListItemNested() {
   const [expand, setExpand] = useState(false);
   const [radio, setRadio] = useState('Binance');
 
+  function handleExpand() {
+    setExpand(prevExpand => !prevExpand);
+  }
   function handleRadio(event: React.ChangeEvent<HTMLInputElement>) {
     setRadio(event.target.value);
   }
 
   return (
     <>
-      <ListItem onClick={() => setExpand(prevExpand => !prevExpand)}>
+      <ListItem onClick={handleExpand}>
         <ListItemText>Network</ListItemText>
         <Adornment edge="end">
-          <Icon name="Chevron" size="lg" dir="down" />
+          <Icon name="Chevron" size="lg" dir={expand ? 'up' : 'down'} />
         </Adornment>
       </ListItem>
       <AnimatePresence>
