@@ -12,6 +12,6 @@ export { default as ListItem } from './ListItem';
 
 export { default as ListItemText } from './ListItemText';
 
-export { default as Radio } from './Radio';
+export { default as Toggle } from './Toggle';
 
 export { default as useMedia } from './useMedia';
