@@ -84,7 +84,6 @@ export default function HomeNavFilter() {
         initial={{ x: -304 }}
         animate={{ x: 0 }}
         exit={{ x: -304 }}
-        onHide={handleHide}
       >
         <Formik
           onSubmit={() => {}}
@@ -96,6 +95,12 @@ export default function HomeNavFilter() {
           }}
         >
           <List className="pm-p-home__filter-list">
+            <ListItem>
+              <ListItemText>Filter</ListItemText>
+              <Adornment edge="end">
+                <Icon name="Cross" onClick={handleHide} />
+              </Adornment>
+            </ListItem>
             <ListItem>
               <ListItemText>Verified</ListItemText>
               <Adornment edge="end">
