@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 import 'react-datepicker/dist/react-datepicker.css';
-import { DatePickerProps, DateTimePicker } from '@material-ui/pickers';
+import { DateTimePickerProps, DateTimePicker } from '@material-ui/pickers';
 import { useField, useFormikContext } from 'formik';
 import styled from 'styled-components';
 
@@ -61,7 +61,8 @@ const StyledDateTimePicker = styled(DateTimePicker)<{ $hasError: boolean }>`
   }
 `;
 
-interface DateInputProps extends Omit<DatePickerProps, 'value' | 'onChange'> {
+interface DateInputProps
+  extends Omit<DateTimePickerProps, 'value' | 'onChange'> {
   label?: string;
   name: string;
   description?: string;
