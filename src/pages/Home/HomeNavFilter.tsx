@@ -3,18 +3,9 @@ import { Fragment, useState } from 'react';
 
 import { Form, Formik } from 'formik';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Adornment, Divider, List, ListItem, ListItemText, Radio } from 'ui';
+import { Adornment, Divider, List, ListItem, ListItemText, Toggle } from 'ui';
 
 import { Button, DateInput, Icon, Modal, ToggleSwitch } from 'components';
-
-const networks = ['Binance', 'Moonbeam', 'Ethereum'];
-const endDates = [
-  'Any',
-  'Ends today',
-  'Ends this week',
-  'Ends this month',
-  'Custom'
-];
 
 export default function HomeNavFilter() {
   const [show, setShow] = useState(false);
@@ -22,9 +13,19 @@ export default function HomeNavFilter() {
     network: false,
     endDate: false
   });
-  const [radio, setRadio] = useState({
-    network: networks[0],
-    endDate: endDates[0]
+  const [toggle, setToggle] = useState({
+    network: {
+      Binance: false,
+      Moonbeam: false,
+      Ethereum: false
+    },
+    endDate: {
+      Any: false,
+      'Ends today': false,
+      'Ends this week': false,
+      'Ends this month': false,
+      Custom: false
+    }
   });
 
   function handleExpand(name: string) {
@@ -34,11 +35,14 @@ export default function HomeNavFilter() {
         [name]: !prevExpand[name]
       }));
   }
-  function handleRadio(name: string) {
+  function handleToggle(name: string) {
     return (event: React.ChangeEvent<HTMLInputElement>) =>
-      setRadio(prevRadio => ({
-        ...prevRadio,
-        [name]: event.target.value
+      setToggle(prevToggle => ({
+        ...prevToggle,
+        [name]: {
+          ...prevToggle[name],
+          [event.target.name]: event.target.checked
+        }
       }));
   }
   function handleShow() {
@@ -63,9 +67,9 @@ export default function HomeNavFilter() {
         show={show}
         backdrop
         fullScreen
-        initial={{ x: -256 }}
+        initial={{ x: -304 }}
         animate={{ x: 0 }}
-        exit={{ x: -256 }}
+        exit={{ x: -304 }}
         // onHide={handleHide}
       >
         <List
@@ -112,14 +116,16 @@ export default function HomeNavFilter() {
                     backgroundColor: 'var(--color-background-primary)'
                   }}
                 >
-                  {networks.map(network => (
+                  {Object.keys(toggle.network).map(network => (
                     <ListItem key={network}>
                       <ListItemText>{network}</ListItemText>
                       <Adornment edge="end">
-                        <Radio
-                          checked={network === radio.network}
+                        <Toggle
+                          type="checkbox"
+                          checked={toggle.network[network]}
                           value={network}
-                          onChange={handleRadio('network')}
+                          name={network}
+                          onChange={handleToggle('network')}
                         />
                       </Adornment>
                     </ListItem>
@@ -152,15 +158,17 @@ export default function HomeNavFilter() {
                     backgroundColor: 'var(--color-background-primary)'
                   }}
                 >
-                  {endDates.map(endDate => (
+                  {Object.keys(toggle.endDate).map(endDate => (
                     <Fragment key={endDate}>
                       <ListItem>
                         <ListItemText>{endDate}</ListItemText>
                         <Adornment edge="end">
-                          <Radio
-                            checked={endDate === radio.endDate}
+                          <Toggle
+                            type="checkbox"
+                            checked={toggle.endDate[endDate]}
                             value={endDate}
-                            onChange={handleRadio('endDate')}
+                            name={endDate}
+                            onChange={handleToggle('endDate')}
                           />
                         </Adornment>
                       </ListItem>
@@ -169,8 +177,8 @@ export default function HomeNavFilter() {
                           <Formik
                             onSubmit={() => {}}
                             initialValues={{
-                              start: '',
-                              end: ''
+                              start: null,
+                              end: null
                             }}
                           >
                             <Form
@@ -178,12 +186,22 @@ export default function HomeNavFilter() {
                                 display: 'flex',
                                 gap: 12,
                                 alignItems: 'center',
-                                marginBottom: 12
+                                marginBottom: 12,
+                                marginRight: -12,
+                                marginLeft: -12
                               }}
                             >
-                              <DateInput name="start" format="DD/MM/YYYY" />
+                              <DateInput
+                                name="start"
+                                emptyLabel="Start"
+                                format="DD/MM/YYYY"
+                              />
                               to
-                              <DateInput name="end" format="DD/MM/YYYY" />
+                              <DateInput
+                                name="end"
+                                emptyLabel="End"
+                                format="DD/MM/YYYY"
+                              />
                             </Form>
                           </Formik>
                         </ListItem>

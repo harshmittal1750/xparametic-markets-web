@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Adornment, List, ListItem, ListItemText, Radio } from 'ui';
+import { Adornment, List, ListItem, ListItemText, Toggle } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -74,7 +74,8 @@ export default function NavBarActions() {
               </Adornment>
               <ListItemText>{chain}</ListItemText>
               <Adornment edge="end">
-                <Radio
+                <Toggle
+                  type="radio"
                   value={chain}
                   checked={chain === appChain}
                   onChange={handleAppChain}
