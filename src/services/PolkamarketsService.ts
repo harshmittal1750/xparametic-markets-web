@@ -77,7 +77,7 @@ export default class PolkamarketsService {
   }
 
   public getERC20Contract() {
-    this.contracts.erc20 = this.polkamarkets.getERC20Contract({
+    this.contracts.erc20 = this.polkamarkets.getFantasyERC20Contract({
       contractAddress: this.erc20ContractAddress
     });
   }
@@ -349,6 +349,36 @@ export default class PolkamarketsService {
     const balance = await this.contracts.erc20.getTokenAmount(this.address);
 
     return parseFloat(balance) || 0;
+  }
+
+  public async isPolkClaimed(): Promise<boolean> {
+    if (!this.address) return false;
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await this.contracts.erc20.__init__();
+
+    // returns user balance in ETH
+    const claimed = await this.contracts.erc20.hasUserClaimedTokens({
+      address: this.address
+    });
+
+    return claimed;
+  }
+
+  public async claimPolk(): Promise<boolean> {
+    // ensuring user has wallet connected
+    await this.login();
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await this.contracts.erc20.__init__();
+
+    await this.contracts.erc20.claimTokens({
+      address: this.address
+    });
+
+    return true;
   }
 
   public async approveERC20(address: string, amount: number): Promise<any[]> {
