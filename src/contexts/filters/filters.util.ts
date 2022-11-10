@@ -178,7 +178,7 @@ function createDepthPaths(filtersState: FiltersState): FiltersState {
         options: dropdown.options.map((option, optionIndex) => {
           return {
             ...option,
-            path: `[${dropdownIndex}].[${optionIndex}].selected`
+            path: `[${dropdownIndex}].options[${optionIndex}].selected`
           };
         })
       };
