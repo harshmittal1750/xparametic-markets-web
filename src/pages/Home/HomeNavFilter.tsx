@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fragment, useState } from 'react';
 
-import { Form, Formik } from 'formik';
+import { Formik } from 'formik';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Adornment, Divider, List, ListItem, ListItemText, Toggle } from 'ui';
 
@@ -85,7 +84,7 @@ export default function HomeNavFilter() {
         initial={{ x: -304 }}
         animate={{ x: 0 }}
         exit={{ x: -304 }}
-        // onHide={handleHide}
+        onHide={handleHide}
       >
         <Formik
           onSubmit={() => {}}
