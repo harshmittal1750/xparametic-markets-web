@@ -5,7 +5,11 @@ import { Icon } from 'components';
 import ToggleClasses from './Toggle.module.scss';
 
 export default function Toggle(props: React.ComponentPropsWithoutRef<'input'>) {
-  const { checked } = props;
+  const { checked, type } = props;
+  const renderIcon = {
+    checkbox: checked ? 'CheckboxFilled' : 'Checkbox',
+    radio: checked ? 'RadioFilled' : 'Radio'
+  } as const;
 
   return (
     <span
@@ -14,10 +18,7 @@ export default function Toggle(props: React.ComponentPropsWithoutRef<'input'>) {
       })}
     >
       <input type="radio" className={ToggleClasses.input} {...props} />
-      <Icon
-        className={ToggleClasses.icon}
-        name={checked ? 'CheckFilled' : 'Circle'}
-      />
+      <Icon className={ToggleClasses.icon} name={renderIcon[type!]} />
     </span>
   );
 }
