@@ -28,4 +28,13 @@ export type FiltersContextState = {
       selected: Option['selected'];
     }) => void;
   };
+  selected: {
+    favorites: boolean;
+    dropdowns: {
+      networks: Option['value'][];
+      country: Option['value'][];
+      stage: Option['value'][];
+      state: Option['value'][];
+    };
+  };
 };

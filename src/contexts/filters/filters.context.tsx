@@ -49,6 +49,25 @@ function FiltersProvider({ children }) {
     []
   );
 
+  function pickSelectedOptions(options: Option[]) {
+    return options
+      .filter(option => option.selected)
+      .map(option => option.value);
+  }
+
+  const selectedOptions = useMemo(() => {
+    const { dropdowns } = state;
+    return {
+      favorites: state.favorites.checked,
+      dropdowns: {
+        networks: pickSelectedOptions(dropdowns.network.options),
+        country: pickSelectedOptions(dropdowns.country.options),
+        stage: pickSelectedOptions(dropdowns.stage.options),
+        state: pickSelectedOptions(dropdowns.state.options)
+      }
+    };
+  }, [state]);
+
   return (
     <FiltersContext.Provider
       value={{
@@ -56,7 +75,8 @@ function FiltersProvider({ children }) {
         controls: {
           toggleFavorites,
           toggleDropdownOption
-        }
+        },
+        selected: selectedOptions
       }}
     >
       {children}
