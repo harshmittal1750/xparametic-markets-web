@@ -2,40 +2,48 @@ import { useEffect, memo, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
+import { getFavoriteMarkets, getMarkets } from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
 
 import { InfoIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
 
-import { useAppSelector, useFooterVisibility } from 'hooks';
+import { useAppSelector, useFavoriteMarkets, useFooterVisibility } from 'hooks';
 
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
 import VirtualizedList from '../VirtualizedList';
 
 type MarketListAsyncProps = {
-  id: string;
-  asyncAction: any;
-  filterBy: any;
   markets: Market[];
 };
 
-const MarketListAsync = ({
-  id,
-  asyncAction,
-  filterBy,
-  markets
-}: MarketListAsyncProps) => {
+const MarketListAsync = ({ markets }: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
   const { show, hide } = useFooterVisibility();
   const { isLoading, error } = useAppSelector(state => state.markets);
 
+  const { favoriteMarkets } = useFavoriteMarkets();
+
+  const isLoadingMarkets = Object.values(isLoading).some(
+    state => state === true
+  );
+
+  const hasError = Object.values(error).some(
+    state => state !== null && state.message !== 'canceled'
+  );
+
+  const fetchMarkets = useCallback(async () => {
+    dispatch(getMarkets('open'));
+    dispatch(getMarkets('closed'));
+    dispatch(getMarkets('resolved'));
+    dispatch(getFavoriteMarkets(favoriteMarkets));
+  }, [dispatch, favoriteMarkets]);
+
   useEffect(() => {
-    if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy));
-    }
-  }, [dispatch, asyncAction, filterBy]);
+    fetchMarkets();
+  }, [fetchMarkets]);
 
   useEffect(() => {
     if (!isEmpty(markets)) {
@@ -45,17 +53,15 @@ const MarketListAsync = ({
   }, [dispatch, markets, hide, show]);
 
   const refreshMarkets = useCallback(() => {
-    if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy));
-    }
-  }, [asyncAction, dispatch, filterBy]);
+    fetchMarkets();
+  }, [fetchMarkets]);
 
   const setFooterVisibility = useCallback(
     (atBottom: boolean) => (atBottom ? show() : hide()),
     [hide, show]
   );
 
-  if (isLoading[id])
+  if (isLoadingMarkets)
     return (
       <div className="pm-c-market-list__empty-state">
         <div className="pm-c-market-list__empty-state__body">
@@ -64,7 +70,7 @@ const MarketListAsync = ({
       </div>
     );
 
-  if (error[id] && error[id].message !== 'canceled') {
+  if (hasError) {
     return (
       <div className="pm-c-market-list__error">
         <div className="pm-c-market-list__error__body">

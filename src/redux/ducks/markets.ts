@@ -313,7 +313,7 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   );
 };
 
-export function getMarkets(marketState: MarketState, networkId: string) {
+export function getMarkets(marketState: MarketState, networkId?: string) {
   return async dispatch => {
     dispatch(request(marketState));
     try {
