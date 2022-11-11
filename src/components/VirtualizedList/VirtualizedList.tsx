@@ -3,9 +3,10 @@ import { Virtuoso } from 'react-virtuoso';
 
 import { Hero } from 'ui';
 
-import Breadcrumb from 'components/Breadcrumb';
+import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
+import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
+
 import { Button } from 'components/Button';
-import Icon from 'components/Icon';
 import Text from 'components/Text';
 
 type VirtualizedListProps<T> = {
@@ -39,39 +40,35 @@ function VirtualizedList<T>({
     <Virtuoso
       components={{
         Header: () => (
-          <Hero
-            className="pm-p-home__hero"
-            image="https://polkamarkets.infura-ipfs.io/ipfs/QmVk9KtoD8bhGCcviDYLjeVth9JBbjYpzSbyoVrg4j89FZ"
-          >
-            <div className="pm-p-home__hero__breadcrumb">
-              <Icon name="Moonriver" />
+          <Hero className="pm-p-home__hero" image={heroBanner}>
+            <div className="pm-p-home__hero__content">
+              <div className="pm-p-home__hero__breadcrumb">
+                <Text
+                  as="span"
+                  scale="tiny-uppercase"
+                  fontWeight="semibold"
+                  color="white-50"
+                >
+                  Illuminate Fantasy League / World Cup 2022
+                </Text>
+              </div>
               <Text
-                as="span"
-                scale="tiny-uppercase"
-                fontWeight="semibold"
-                style={{
-                  color: '#F4B731'
-                }}
+                as="h2"
+                fontWeight="bold"
+                scale="heading-large"
+                color="light"
+                className="pm-p-home__hero__heading"
               >
-                DAI
+                Who will win the World Cup 2022?
               </Text>
-              <span className="pm-c-divider--circle" />
-              <Breadcrumb>
-                <Breadcrumb.Item>Sports</Breadcrumb.Item>
-                <Breadcrumb.Item>Soccer</Breadcrumb.Item>
-              </Breadcrumb>
+              <Button size="sm">View Market</Button>
             </div>
-            <Text
-              as="h2"
-              fontWeight="bold"
-              scale="heading-large"
-              color="light"
-              className="pm-p-home__hero__heading"
-            >
-              What will be the result of Man. Utd vs Man. City on 21st December
-              2021
-            </Text>
-            <Button size="sm">View Market</Button>
+            <img
+              alt="Illuminate Fantasy League"
+              width={293}
+              height={205}
+              src={heroLogo}
+            />
           </Hero>
         )
       }}
