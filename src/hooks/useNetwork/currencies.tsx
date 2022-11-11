@@ -1,6 +1,11 @@
 import { Currency } from 'types/currency';
 
-import { EthereumIcon, MoonbeamIcon, MoonriverIcon } from 'assets/icons';
+import {
+  EthereumIcon,
+  IFLIcon,
+  MoonbeamIcon,
+  MoonriverIcon
+} from 'assets/icons';
 
 const DEV: Currency = {
   name: 'Dev',
@@ -34,4 +39,12 @@ const GLMR: Currency = {
   iconName: 'Moonbeam'
 };
 
-export { DEV, ETH, MOVR, GLMR };
+const IFL: Currency = {
+  name: 'IFL',
+  ticker: 'IFL',
+  symbol: 'IFL',
+  icon: <IFLIcon />,
+  iconName: 'IFL'
+};
+
+export { DEV, ETH, MOVR, GLMR, IFL };
