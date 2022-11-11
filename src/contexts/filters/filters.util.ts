@@ -1,5 +1,7 @@
 import set from 'lodash/set';
 
+import { Network } from 'hooks/useNetwork/networks';
+
 import { FiltersState } from './filters.type';
 
 const filtersInitialState: FiltersState = {
@@ -11,162 +13,243 @@ const filtersInitialState: FiltersState = {
       title: 'Country',
       options: [
         {
-          title: 'Argentina',
+          label: 'Argentina',
+          value: 'Argentina',
           selected: false
         },
         {
-          title: 'Australia',
+          label: 'Australia',
+          value: 'Australia',
           selected: false
         },
         {
-          title: 'Belgium',
+          label: 'Belgium',
+          value: 'Belgium',
           selected: false
         },
         {
-          title: 'Brazil',
+          label: 'Brazil',
+          value: 'Brazil',
           selected: false
         },
         {
-          title: 'Cameroon',
+          label: 'Cameroon',
+          value: 'Cameroon',
           selected: false
         },
         {
-          title: 'Canada',
+          label: 'Canada',
+          value: 'Canada',
           selected: false
         },
         {
-          title: 'Costa Rica',
+          label: 'Costa Rica',
+          value: 'Costa Rica',
           selected: false
         },
         {
-          title: 'Croatia',
+          label: 'Croatia',
+          value: 'Croatia',
           selected: false
         },
         {
-          title: 'Denmark',
+          label: 'Denmark',
+          value: 'Denmark',
           selected: false
         },
         {
-          title: 'England',
+          label: 'Ecuador',
+          value: 'Ecuador',
           selected: false
         },
         {
-          title: 'France',
+          label: 'England',
+          value: 'England',
           selected: false
         },
         {
-          title: 'Germany',
+          label: 'France',
+          value: 'France',
           selected: false
         },
         {
-          title: 'Ghana',
+          label: 'Germany',
+          value: 'Germany',
           selected: false
         },
         {
-          title: 'Iran',
+          label: 'Ghana',
+          value: 'Ghana',
           selected: false
         },
         {
-          title: 'Japan',
+          label: 'Iran',
+          value: 'Iran',
           selected: false
         },
         {
-          title: 'Mexico',
+          label: 'Japan',
+          value: 'Japan',
           selected: false
         },
         {
-          title: 'Morocco',
+          label: 'Mexico',
+          value: 'Mexico',
           selected: false
         },
         {
-          title: 'Netherlands',
+          label: 'Morocco',
+          value: 'Morocco',
           selected: false
         },
         {
-          title: 'Poland',
+          label: 'Netherlands',
+          value: 'Netherlands',
           selected: false
         },
         {
-          title: 'Portugal',
+          label: 'Poland',
+          value: 'Poland',
           selected: false
         },
         {
-          title: 'Qatar',
+          label: 'Portugal',
+          value: 'Portugal',
           selected: false
         },
         {
-          title: 'Saudi Arabia',
+          label: 'Qatar',
+          value: 'Qatar',
           selected: false
         },
         {
-          title: 'Senegal',
+          label: 'Saudi Arabia',
+          value: 'Saudi Arabia',
           selected: false
         },
-        { title: 'Serbia', selected: false },
-        { title: 'South Korea', selected: false },
-        { title: 'Spain', selected: false },
-        { title: 'Switzerland', selected: false },
-        { title: 'Tunisia', selected: false },
-        { title: 'United States', selected: false },
-        { title: 'Uruguay', selected: false },
-        { title: 'Wales', selected: false }
+        {
+          label: 'Senegal',
+          value: 'Senegal',
+          selected: false
+        },
+        { label: 'Serbia', value: 'Serbia', selected: false },
+        { label: 'South Korea', value: 'South Korea', selected: false },
+        { label: 'Spain', value: 'Spain', selected: false },
+        { label: 'Switzerland', value: 'Switzerland', selected: false },
+        { label: 'Tunisia', value: 'Tunisia', selected: false },
+        { label: 'United States', value: 'United States', selected: false },
+        { label: 'Uruguay', value: 'Uruguay', selected: false },
+        { label: 'Wales', value: 'Wales', selected: false }
       ]
     },
     stage: {
       title: 'Stage',
       options: [
         {
-          title: 'Group A',
+          label: 'Group A',
+          value: 'Group A',
           selected: false
         },
         {
-          title: 'Group B',
+          label: 'Group B',
+          value: 'Group B',
           selected: false
         },
         {
-          title: 'Group C',
+          label: 'Group C',
+          value: 'Group C',
           selected: false
         },
         {
-          title: 'Group D',
+          label: 'Group D',
+          value: 'Group D',
           selected: false
         },
         {
-          title: 'Group E',
+          label: 'Group E',
+          value: 'Group E',
           selected: false
         },
         {
-          title: 'Group F',
+          label: 'Group F',
+          value: 'Group F',
           selected: false
         },
         {
-          title: 'Group G',
+          label: 'Group G',
+          value: 'Group G',
           selected: false
         },
         {
-          title: 'Group H',
+          label: 'Group H',
+          value: 'Group H',
           selected: false
         },
         {
-          title: 'Round of 16',
+          label: 'Round of 16',
+          value: 'Round of 16',
           selected: false
         },
         {
-          title: 'Quarter-finals',
+          label: 'Quarter-finals',
+          value: 'Quarter-finals',
           selected: false
         },
         {
-          title: 'Semi-finals',
+          label: 'Semi-finals',
+          value: 'Semi-finals',
           selected: false
         },
         {
-          title: 'Final',
+          label: 'Final',
+          value: 'Final',
+          selected: false
+        }
+      ]
+    },
+    state: {
+      title: 'Market State',
+      options: [
+        {
+          label: 'Open',
+          value: 'open',
+          selected: false
+        },
+        {
+          label: 'Closed',
+          value: 'closed',
+          selected: false
+        },
+        {
+          label: 'Resolved',
+          value: 'resolved',
           selected: false
         }
       ]
     }
   }
 };
+
+function addNetworks(filtersState: FiltersState, networks: Network[]) {
+  return {
+    ...filtersState,
+    dropdowns: {
+      ...filtersState.dropdowns,
+      network: {
+        title: 'Market Network',
+        options: [
+          ...networks.map(network => {
+            return {
+              label: network.name,
+              value: network.id,
+              selected: false
+            };
+          })
+        ]
+      }
+    }
+  };
+}
 
 function createDepthPaths(filtersState: FiltersState): FiltersState {
   const stateWithDepthPaths = filtersState;
@@ -185,4 +268,4 @@ function createDepthPaths(filtersState: FiltersState): FiltersState {
   return stateWithDepthPaths;
 }
 
-export { filtersInitialState, createDepthPaths };
+export { filtersInitialState, addNetworks, createDepthPaths };

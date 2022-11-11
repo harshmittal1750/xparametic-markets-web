@@ -1,17 +1,30 @@
 import { createContext, useCallback, useMemo, useReducer } from 'react';
 
+import { useNetworks } from 'contexts/networks';
+
 import filtersReducer, { FiltersActions } from './filters.reducer';
 import { FiltersContextState, Option } from './filters.type';
-import { createDepthPaths, filtersInitialState } from './filters.util';
+import {
+  addNetworks,
+  createDepthPaths,
+  filtersInitialState
+} from './filters.util';
 
 const FiltersContext = createContext<FiltersContextState>(
   {} as FiltersContextState
 );
 
 function FiltersProvider({ children }) {
+  const { networks } = useNetworks();
+
+  const filtersInitialStateWithNetworks = useMemo(
+    () => addNetworks(filtersInitialState, networks),
+    [networks]
+  );
+
   const filtersInitialStateWithDepthPaths = useMemo(
-    () => createDepthPaths(filtersInitialState),
-    []
+    () => createDepthPaths(filtersInitialStateWithNetworks),
+    [filtersInitialStateWithNetworks]
   );
 
   const [state, dispatch] = useReducer(

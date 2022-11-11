@@ -3,7 +3,8 @@ export type Switch = {
 };
 
 export type Option = {
-  title: string;
+  label: string;
+  value: string;
   selected: boolean;
   path?: string;
 };
