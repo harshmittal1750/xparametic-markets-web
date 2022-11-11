@@ -1,8 +1,8 @@
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
-import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
+import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
 function RightSidebar() {
   const rightSidebarIsVisible = useAppSelector(
@@ -37,7 +37,7 @@ function RightSidebar() {
   if (reportFormIsVisible)
     return (
       <div className="pm-l-right-sidebar">
-        <ReportForm />
+        <TradeFormClosed />
       </div>
     );
 
