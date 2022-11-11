@@ -1,19 +1,34 @@
-import { filteredMarketsSelector } from 'redux/ducks/markets';
+import { marketsSelector } from 'redux/ducks/markets';
 
 import { VoteProvider } from 'contexts/vote';
 
-import { useAppSelector, useFavoriteMarkets } from 'hooks';
-import useCategories from 'hooks/useCategories';
+import { useAppSelector, useFavoriteMarkets, useFilters } from 'hooks';
 
 import HomeNav from './HomeNav';
 import HomeTabs from './HomeTabs';
 
 export default function Home() {
-  const categories = useCategories();
-  const markets = useAppSelector(state =>
-    filteredMarketsSelector(state.markets, categories)
-  );
+  const {
+    state: { favorites },
+    selected
+  } = useFilters();
+  const { dropdowns } = selected;
+
   const { favoriteMarkets } = useFavoriteMarkets();
+
+  const markets = useAppSelector(state =>
+    marketsSelector({
+      state: state.markets,
+      filters: {
+        ...dropdowns,
+        favorites: {
+          checked: favorites.checked,
+          marketsByNetwork: favoriteMarkets
+        }
+      }
+    })
+  );
+
   const openMarkets = markets.filter(market => market.state === 'open');
   const closedMarkets = markets.filter(market => market.state === 'closed');
   const resolvedMarkets = markets.filter(market => market.state === 'resolved');
