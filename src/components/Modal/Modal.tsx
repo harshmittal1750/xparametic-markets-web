@@ -24,6 +24,7 @@ export default function Modal({
   centered,
   size,
   fullScreen,
+  disableFocustrap,
   ...props
 }: ModalProps) {
   const { current: didMount } = useMount();
@@ -49,11 +50,15 @@ export default function Modal({
     }
   }, [Portal, didMount, show, showPrev, timeoutEffect]);
   useClickaway(ref, () => onHide?.(), [!!showPrev, show]);
-  useFocustrap(
-    ref,
-    ['a[href]', 'button:not([disabled])', 'textarea', 'input', 'select'],
-    modalTrappersId
-  );
+
+  if (!disableFocustrap) {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useFocustrap(
+      ref,
+      ['a[href]', 'button:not([disabled])', 'textarea', 'input', 'select'],
+      modalTrappersId
+    );
+  }
 
   function handleKeyDown(event: React.KeyboardEvent) {
     if (event.key === 'Escape') onHide?.();
