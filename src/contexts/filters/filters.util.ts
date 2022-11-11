@@ -3,9 +3,6 @@ import set from 'lodash/set';
 import { FiltersState } from './filters.type';
 
 const filtersInitialState: FiltersState = {
-  verified: {
-    checked: true
-  },
   favorites: {
     checked: false
   },

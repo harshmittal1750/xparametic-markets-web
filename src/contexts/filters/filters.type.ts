@@ -14,7 +14,6 @@ export type Dropdown = {
 };
 
 export type FiltersState = {
-  verified: Switch;
   favorites: Switch;
   dropdowns: { [key: string]: Dropdown };
 };
@@ -22,7 +21,6 @@ export type FiltersState = {
 export type FiltersContextState = {
   state: FiltersState;
   controls: {
-    toggleVerified: () => void;
     toggleFavorites: () => void;
     toggleDropdownOption: (value: {
       path: Option['path'];

@@ -3,7 +3,6 @@ import set from 'lodash/set';
 import { FiltersState } from './filters.type';
 
 export enum FiltersActions {
-  TOGGLE_VERIFIED = 'TOGGLE_VERIFIED',
   TOGGLE_FAVORITES = 'TOGGLE_FAVORITES',
   TOGGLE_DROPDOWN_OPTION = 'TOGGLE_DROPDOWN_OPTION'
 }
@@ -14,7 +13,6 @@ type ToggleDropdownOptionPayload = {
 };
 
 type FiltersAction =
-  | { type: FiltersActions.TOGGLE_VERIFIED }
   | { type: FiltersActions.TOGGLE_FAVORITES }
   | {
       type: FiltersActions.TOGGLE_DROPDOWN_OPTION;
@@ -26,13 +24,6 @@ function filtersReducer(
   action: FiltersAction
 ): FiltersState {
   switch (action.type) {
-    case FiltersActions.TOGGLE_VERIFIED:
-      return {
-        ...state,
-        verified: {
-          checked: !state.verified.checked
-        }
-      };
     case FiltersActions.TOGGLE_FAVORITES:
       return {
         ...state,

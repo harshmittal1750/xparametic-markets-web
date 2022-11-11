@@ -19,10 +19,6 @@ function FiltersProvider({ children }) {
     filtersInitialStateWithDepthPaths
   );
 
-  const toggleVerified = useCallback(() => {
-    dispatch({ type: FiltersActions.TOGGLE_VERIFIED });
-  }, []);
-
   const toggleFavorites = useCallback(() => {
     dispatch({ type: FiltersActions.TOGGLE_FAVORITES });
   }, []);
@@ -45,7 +41,6 @@ function FiltersProvider({ children }) {
       value={{
         state,
         controls: {
-          toggleVerified,
           toggleFavorites,
           toggleDropdownOption
         }
