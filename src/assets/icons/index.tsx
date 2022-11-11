@@ -24,6 +24,7 @@ import FavoriteIcon from './FavoriteIcon';
 import GamingConsoleIcon from './GamingConsoleIcon';
 import GitHubIcon from './GitHubIcon';
 import HamburguerMenuIcon from './HamburguerMenuIcon';
+import IlluminateFantasyLeagueLogo from './IlluminateFantasyLeagueLogo';
 import InfoIcon from './InfoIcon';
 import LaptopIcon from './LaptopIcon';
 import LineChartIcon from './LineChartIcon';
@@ -89,6 +90,7 @@ export {
   FavoriteIcon,
   GamingConsoleIcon,
   GitHubIcon,
+  IlluminateFantasyLeagueLogo,
   InfoIcon,
   HamburguerMenuIcon,
   LaptopIcon,
