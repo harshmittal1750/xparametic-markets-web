@@ -5,7 +5,8 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import { AreaChart, Label, Text } from 'components';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
+import { IFL } from 'hooks/useNetwork/currencies';
 
 import { balance } from './mock';
 
@@ -16,9 +17,8 @@ const PortfolioChart = () => {
   const { holdingsValue, holdingsPerformance } = useAppSelector(
     state => state.portfolio.portfolio
   );
-  const {
-    network: { currency }
-  } = useNetwork();
+
+  const currency = IFL;
   const { ticker } = currency;
 
   const holdingsChartData = fromPriceChartToLineChartSeries(holdingsChart);

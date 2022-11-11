@@ -3,13 +3,12 @@ import { useMemo } from 'react';
 import { CategoryAnalytics } from 'components';
 
 import { useAppSelector, useNetwork } from 'hooks';
+import { IFL } from 'hooks/useNetwork/currencies';
 
 import { formatPortfolioAnalytics } from './utils';
 
 function PortfolioAnalytics() {
-  const {
-    network: { currency }
-  } = useNetwork();
+  const currency = IFL;
   const { ticker } = currency;
 
   const apiPortfolio = useAppSelector(state => state.portfolio.portfolio);

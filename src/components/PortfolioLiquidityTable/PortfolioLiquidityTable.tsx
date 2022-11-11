@@ -17,6 +17,7 @@ import {
   useNetwork,
   useSortableData
 } from 'hooks';
+import { IFL } from 'hooks/useNetwork/currencies';
 
 import { AlertMini } from '../Alert';
 import { Button } from '../Button';
@@ -36,10 +37,8 @@ const PortfolioLiquidityTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency },
-    networkConfig
-  } = useNetwork();
+  const { networkConfig } = useNetwork();
+  const currency = IFL;
   const { ticker, symbol } = currency;
   const filter = useAppSelector(state => state.portfolio.filter);
 
