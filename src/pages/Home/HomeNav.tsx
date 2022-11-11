@@ -1,14 +1,35 @@
 import { useCallback, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
+import { setSearchQuery } from 'redux/ducks/markets';
+import { closeRightSidebar } from 'redux/ducks/ui';
 import { ButtonGroup } from 'ui';
 
 import { Button, Icon, IconProps, SearchBar } from 'components';
 
+import { useAppDispatch } from 'hooks';
+
 const filters = ['List', 'Grid'] as Array<IconProps['name']>;
 
 export default function HomeNav() {
+  const dispatch = useAppDispatch();
+  const history = useHistory();
+
   const [filter, setFilter] = useState(0);
   const handleFilter = useCallback(index => () => setFilter(index), []);
+
+  const handleSearch = useCallback(
+    (text: string) => {
+      dispatch(setSearchQuery(text));
+    },
+    [dispatch]
+  );
+
+  const handleNavigateToCreateMarket = useCallback(() => {
+    dispatch(closeRightSidebar());
+
+    history.push('/market/create');
+  }, [dispatch, history]);
 
   return (
     <div className="pm-p-home__navigation">
@@ -23,8 +44,8 @@ export default function HomeNav() {
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"
-        onSearch={() => {}}
-        className="pm-p-home__navigation__actions"
+        onSearch={handleSearch}
+        className={{ form: 'pm-p-home__navigation__actions' }}
       />
       <ButtonGroup actived={filter} className="pm-p-home__navigation__actions">
         {filters.map((button, index) => (
@@ -47,7 +68,7 @@ export default function HomeNav() {
         SORT: LIQUIDITY
         <Icon name="Chevron" dir="down" size="lg" />
       </Button>
-      <Button color="primary" size="sm">
+      <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
         Create Market
       </Button>
     </div>

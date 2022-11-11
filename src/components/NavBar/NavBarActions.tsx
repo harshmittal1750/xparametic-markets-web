@@ -5,38 +5,41 @@ import { Adornment, List, ListItem, ListItemText } from 'ui';
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
 import Icon from 'components/Icon';
-import type { IconProps } from 'components/Icon';
 import Modal from 'components/Modal';
 import WalletInfo from 'components/WalletInfo';
+
+import { useNetworks } from 'contexts/networks';
 
 import { useAppSelector, useTheme } from 'hooks';
 
 import NavbarClasses from './NavBar.module.scss';
 
-const arrChains = ['Ethereum', 'Binance', 'Moonriver'] as Array<
-  IconProps['name']
->;
-
 export default function NavBarActions() {
   const theme = useTheme();
+  const { network: currentNetwork, networks, changeToNetwork } = useNetworks();
+
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+
   const [show, setShow] = useState(false);
-  const [appChain, setAppChain] = useState<IconProps['name']>('Ethereum');
+
   const handleHide = useCallback(() => setShow(false), []);
-  const handleAppChain = useCallback(
-    _chain => () => {
+
+  const handleChangeNetwork = useCallback(
+    network => () => {
       handleHide();
-      setAppChain(_chain);
+      changeToNetwork(network);
     },
-    [handleHide]
+    [changeToNetwork, handleHide]
   );
+
   const isThemeDark = theme.theme === 'dark';
   const themeAnti = isThemeDark ? 'light' : 'dark';
 
   function handleTheme() {
     theme.setTheme(themeAnti);
   }
-  function handleChains() {
+
+  function handleNetworks() {
     setShow(true);
   }
 
@@ -56,9 +59,9 @@ export default function NavBarActions() {
           variant="outline"
           color="default"
           aria-label="Switch chain"
-          onClick={handleChains}
+          onClick={handleNetworks}
         >
-          <Icon name={appChain} />
+          <Icon name={currentNetwork.currency.iconName} />
         </Button>
       </div>
       <Modal
@@ -69,17 +72,17 @@ export default function NavBarActions() {
         }}
       >
         <List>
-          {arrChains.map(chain => (
+          {networks.map(network => (
             <ListItem
-              key={chain}
-              onClick={handleAppChain(chain)}
+              key={network.id}
+              onClick={handleChangeNetwork(network)}
               role="button"
               tabIndex={0}
             >
               <Adornment edge="start">
-                <Icon name={chain} />
+                <Icon name={network.currency.iconName} />
               </Adornment>
-              <ListItemText>{chain}</ListItemText>
+              <ListItemText>{network.name}</ListItemText>
             </ListItem>
           ))}
         </List>
