@@ -8,6 +8,7 @@ import { Tooltip } from 'components';
 import { Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
+import { IFL } from 'hooks/useNetwork/currencies';
 
 import ProfileSummaryStat from './ProfileSummaryStat';
 
@@ -17,7 +18,7 @@ type ProfileSummaryProps = {
 
 function ProfileSummary({ address }: ProfileSummaryProps) {
   const { network } = useNetwork();
-  const { currency } = network;
+  const currency = IFL;
 
   const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
     address,

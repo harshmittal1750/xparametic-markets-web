@@ -5,6 +5,7 @@ import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Dropdown, Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
+import { IFL } from 'hooks/useNetwork/currencies';
 
 import ProfileLeaderboardRanks from './ProfileLeaderboardRanks';
 import ProfilePredictionStatistics from './ProfilePredictionStatistics';
@@ -19,7 +20,7 @@ type ProfileYourStatsProps = {
 function ProfileYourStats({ address }: ProfileYourStatsProps) {
   // Custom hooks
   const { network } = useNetwork();
-  const { currency } = network;
+  const currency = IFL;
 
   // Local state
   const [timeframe, setTimeframe] = useState<Timeframe>('1w');
