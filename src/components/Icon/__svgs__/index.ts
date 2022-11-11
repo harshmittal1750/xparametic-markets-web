@@ -12,6 +12,7 @@ export { ReactComponent as Ethereum } from './Ethereum.svg';
 export { ReactComponent as Explore } from './Explore.svg';
 export { ReactComponent as Filter } from './Filter.svg';
 export { ReactComponent as Grid } from './Grid.svg';
+export { ReactComponent as IFL } from './IFL.svg';
 export { ReactComponent as List } from './List.svg';
 export { ReactComponent as Magnifier } from './Magnifier.svg';
 export { ReactComponent as Medal } from './Medal.svg';
