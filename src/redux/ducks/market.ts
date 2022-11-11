@@ -4,6 +4,7 @@ import * as marketService from 'services/Polkamarkets/market';
 import { Currency } from 'types/currency';
 import { Network } from 'types/network';
 
+import { IFL } from 'hooks/useNetwork/currencies';
 import NETWORKS from 'hooks/useNetwork/networks';
 
 const chartViewsEnum = [
@@ -123,8 +124,11 @@ const marketSlice = createSlice({
         return {
           payload: {
             ...market,
-            network,
-            currency: network.currency,
+            network: {
+              ...network,
+              currency: IFL
+            },
+            currency: IFL,
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
@@ -145,11 +149,10 @@ const marketSlice = createSlice({
         market: action.payload
       }),
       prepare: (market: Market) => {
-        const network = getNetworkById(market.networkId);
         return {
           payload: {
             ...market,
-            currency: network.currency,
+            currency: IFL,
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
