@@ -27,14 +27,18 @@ function FiltersProvider({ children }) {
     dispatch({ type: FiltersActions.TOGGLE_FAVORITES });
   }, []);
 
-  const toggleDropdownOption = useCallback((path: Option['path']) => {
-    if (path) {
-      dispatch({
-        type: FiltersActions.TOGGLE_DROPDOWN_OPTION,
-        payload: { path }
-      });
-    }
-  }, []);
+  const toggleDropdownOption = useCallback(
+    (value: { path: Option['path']; selected: Option['selected'] }) => {
+      const { path, selected } = value;
+      if (path) {
+        dispatch({
+          type: FiltersActions.TOGGLE_DROPDOWN_OPTION,
+          payload: { path, selected }
+        });
+      }
+    },
+    []
+  );
 
   return (
     <FiltersContext.Provider

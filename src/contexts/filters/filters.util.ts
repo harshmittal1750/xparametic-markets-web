@@ -1,3 +1,5 @@
+import set from 'lodash/set';
+
 import { FiltersState } from './filters.type';
 
 const filtersInitialState: FiltersState = {
@@ -7,8 +9,8 @@ const filtersInitialState: FiltersState = {
   favorites: {
     checked: false
   },
-  dropdowns: [
-    {
+  dropdowns: {
+    country: {
       title: 'Country',
       options: [
         {
@@ -113,7 +115,7 @@ const filtersInitialState: FiltersState = {
         { title: 'Wales', selected: false }
       ]
     },
-    {
+    stage: {
       title: 'Stage',
       options: [
         {
@@ -166,24 +168,24 @@ const filtersInitialState: FiltersState = {
         }
       ]
     }
-  ]
+  }
 };
 
 function createDepthPaths(filtersState: FiltersState): FiltersState {
-  return {
-    ...filtersState,
-    dropdowns: filtersState.dropdowns.map((dropdown, dropdownIndex) => {
-      return {
-        ...dropdown,
-        options: dropdown.options.map((option, optionIndex) => {
-          return {
-            ...option,
-            path: `[${dropdownIndex}].options[${optionIndex}].selected`
-          };
-        })
-      };
-    })
-  };
+  const stateWithDepthPaths = filtersState;
+
+  Object.entries(stateWithDepthPaths.dropdowns).forEach(([key, dropdown]) => {
+    dropdown.options.forEach((_option, index) => {
+      const basePath = `${key}.options[${index}]`;
+      set(
+        stateWithDepthPaths,
+        `dropdowns.${basePath}.path`,
+        `${basePath}.selected`
+      );
+    });
+  });
+
+  return stateWithDepthPaths;
 }
 
 export { filtersInitialState, createDepthPaths };

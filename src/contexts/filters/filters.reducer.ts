@@ -1,4 +1,4 @@
-import update from 'lodash/update';
+import set from 'lodash/set';
 
 import { FiltersState } from './filters.type';
 
@@ -10,6 +10,7 @@ export enum FiltersActions {
 
 type ToggleDropdownOptionPayload = {
   path: string;
+  selected: boolean;
 };
 
 type FiltersAction =
@@ -42,10 +43,10 @@ function filtersReducer(
     case FiltersActions.TOGGLE_DROPDOWN_OPTION:
       return {
         ...state,
-        dropdowns: update(
+        dropdowns: set(
           state.dropdowns,
           action.payload.path,
-          option => !option
+          action.payload.selected
         )
       };
     default:
