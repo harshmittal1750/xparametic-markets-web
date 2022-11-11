@@ -32,9 +32,9 @@ export type FiltersContextState = {
     favorites: boolean;
     dropdowns: {
       networks: Option['value'][];
-      country: Option['value'][];
-      stage: Option['value'][];
-      state: Option['value'][];
+      countries: Option['value'][];
+      stages: Option['value'][];
+      states: Option['value'][];
     };
   };
 };

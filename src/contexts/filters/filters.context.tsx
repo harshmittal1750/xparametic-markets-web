@@ -61,9 +61,9 @@ function FiltersProvider({ children }) {
       favorites: state.favorites.checked,
       dropdowns: {
         networks: pickSelectedOptions(dropdowns.network.options),
-        country: pickSelectedOptions(dropdowns.country.options),
-        stage: pickSelectedOptions(dropdowns.stage.options),
-        state: pickSelectedOptions(dropdowns.state.options)
+        countries: pickSelectedOptions(dropdowns.country.options),
+        stages: pickSelectedOptions(dropdowns.stage.options),
+        states: pickSelectedOptions(dropdowns.state.options)
       }
     };
   }, [state]);
