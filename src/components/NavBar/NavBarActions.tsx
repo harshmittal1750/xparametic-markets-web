@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { Adornment, List, ListItem, ListItemText } from 'ui';
+import { Adornment, List, ListItem, ListItemText, Toggle } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -24,8 +24,8 @@ export default function NavBarActions() {
 
   const handleHide = useCallback(() => setShow(false), []);
 
-  const handleChangeNetwork = useCallback(
-    network => () => {
+  const handleAppChain = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, network) => {
       handleHide();
       changeToNetwork(network);
     },
@@ -71,18 +71,21 @@ export default function NavBarActions() {
           dialog: NavbarClasses.widget
         }}
       >
-        <List>
+        <List $rounded>
           {networks.map(network => (
-            <ListItem
-              key={network.id}
-              onClick={handleChangeNetwork(network)}
-              role="button"
-              tabIndex={0}
-            >
+            <ListItem key={network.id}>
               <Adornment edge="start">
                 <Icon name={network.currency.iconName} />
               </Adornment>
               <ListItemText>{network.name}</ListItemText>
+              <Adornment edge="end">
+                <Toggle
+                  type="radio"
+                  value={network.name}
+                  checked={network.id === currentNetwork.id}
+                  onChange={event => handleAppChain(event, network)}
+                />
+              </Adornment>
             </ListItem>
           ))}
         </List>
