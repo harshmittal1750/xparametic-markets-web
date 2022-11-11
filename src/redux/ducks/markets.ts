@@ -12,6 +12,7 @@ import { MarketState } from 'types/market';
 
 import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
+import { IFL } from 'hooks/useNetwork/currencies';
 import networks from 'hooks/useNetwork/networks';
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
@@ -113,7 +114,10 @@ const marketsSlice = createSlice({
 
               return {
                 ...market,
-                network
+                network: {
+                  ...network,
+                  currency: IFL
+                }
               } as Market;
             })
           },
