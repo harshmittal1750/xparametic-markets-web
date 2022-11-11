@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import usePrevious from 'hooks/usePrevious';
 import useTimeoutEffect from 'hooks/useTimeoutEffect';
@@ -14,7 +14,7 @@ export default function useFocustrap<V extends HTMLElement>(
   focusableElements: string[],
   trappersId: Record<'start' | 'end', string>
 ) {
-  const focusTrap = useMemo(() => {
+  const [focusTrap] = useState(() => {
     return Object.keys(trappersId).reduce((acc, cur) => {
       const trapEl = document.createElement('span');
 
@@ -26,13 +26,25 @@ export default function useFocustrap<V extends HTMLElement>(
         [cur]: trapEl
       };
     }, {} as Record<'start' | 'end', HTMLSpanElement>);
-  }, [trappersId]);
+  });
   const timeoutEffect = useTimeoutEffect();
   const { current: focusPrev } = usePrevious<Element | null>(
     document.activeElement
   );
 
-  useEffect(() => () => (focusPrev as HTMLElement)?.focus(), [focusPrev]);
+  useEffect(() => {
+    const { current: node } = ref;
+
+    if (node != null) {
+      node.insertBefore(focusTrap.start, node.firstChild);
+      node.appendChild(focusTrap.end);
+
+      if (node.contains(focusTrap.start)) focusTrap.start.focus();
+    }
+
+    return () => (focusPrev as HTMLElement)?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusPrev, ref]);
   useEffect(() => {
     const { current: node } = ref;
     const els = node?.querySelectorAll(focusableElements?.join(', '));
@@ -59,15 +71,10 @@ export default function useFocustrap<V extends HTMLElement>(
 
     node?.addEventListener('focusout', handleBlur);
     node?.addEventListener('focusin', handleFocus);
-    node?.insertBefore(focusTrap.start, node.firstChild);
-    node?.appendChild(focusTrap.end);
-    focusTrap.start?.focus();
 
     return () => {
       node?.removeEventListener('focusout', handleBlur);
       node?.removeEventListener('focusin', handleFocus);
-      node?.removeChild(focusTrap.start);
-      node?.removeChild(focusTrap.end);
     };
   });
 }
