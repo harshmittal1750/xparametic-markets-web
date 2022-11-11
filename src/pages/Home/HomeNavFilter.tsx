@@ -1,49 +1,85 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { Adornment, Divider, List, ListItem, ListItemText, Toggle } from 'ui';
 
 import { Button, Icon, Modal, ToggleSwitch } from 'components';
 
-import { useFilters } from 'hooks';
+import type { Dropdown } from 'contexts/filters/filters.type';
+
+import { useAppSelector, useFilters } from 'hooks';
+
+type ListItemNestedProps = {
+  onToggleChange: (
+    path?: string
+  ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+  subitems: Dropdown;
+};
+
+function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
+  const [expand, setExpand] = useState(false);
+
+  function handleExpand() {
+    setExpand(prevExpand => !prevExpand);
+  }
+
+  return (
+    <>
+      <ListItem onClick={handleExpand}>
+        <ListItemText>{subitems.title}</ListItemText>
+        <Adornment edge="end">
+          <Icon name="Chevron" size="lg" dir={expand ? 'up' : 'down'} />
+        </Adornment>
+      </ListItem>
+      <AnimatePresence>
+        {expand && (
+          <motion.div
+            style={{ overflow: 'hidden' }}
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+          >
+            <List className="pm-p-home__filter-list-sublist">
+              {subitems.options.map(option => (
+                <ListItem key={option.path}>
+                  <ListItemText>{option.label}</ListItemText>
+                  <Adornment edge="end">
+                    <Toggle
+                      type="checkbox"
+                      checked={option.selected}
+                      value={option.value}
+                      name={option.label}
+                      onChange={onToggleChange(option.path)}
+                    />
+                  </Adornment>
+                </ListItem>
+              ))}
+            </List>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
 
 export default function HomeNavFilter() {
   const {
-    state: { favorites, dropdowns },
+    state,
     controls: { toggleFavorites, toggleDropdownOption }
   } = useFilters();
-
-  const { network, country, stage, state } = dropdowns;
-
+  const isMarketsLoading = useAppSelector(_state =>
+    Object.values(_state.markets.isLoading).some(Boolean)
+  );
   const [show, setShow] = useState(false);
-  const [expand, setExpand] = useState({
-    network: false,
-    country: false,
-    stage: false,
-    state: false
-  });
-
   const handleShow = useCallback(() => {
     setShow(true);
   }, []);
-
   const handleHide = useCallback(() => {
     setShow(false);
   }, []);
-
-  const handleExpand = useCallback((name: string) => {
-    return () =>
-      setExpand(prevExpand => ({
-        ...prevExpand,
-        [name]: !prevExpand[name]
-      }));
-  }, []);
-
-  const handleChangeDropdownOption = useCallback(
-    (path?: string) => (event: ChangeEvent<HTMLInputElement>) => {
-      const { checked } = event.target;
-
-      toggleDropdownOption({ path, selected: checked });
+  const handleToggleChange = useCallback(
+    (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      toggleDropdownOption({ path, selected: event.target.checked });
     },
     [toggleDropdownOption]
   );
@@ -55,6 +91,7 @@ export default function HomeNavFilter() {
         size="sm"
         className="pm-p-home__navigation__actions"
         onClick={handleShow}
+        disabled={isMarketsLoading}
       >
         <Icon name="Filter" />
         Filter
@@ -63,6 +100,7 @@ export default function HomeNavFilter() {
         show={show}
         backdrop
         fullScreen
+        disableFocustrap
         initial={{ x: -304 }}
         animate={{ x: 0 }}
         exit={{ x: -304 }}
@@ -79,163 +117,20 @@ export default function HomeNavFilter() {
             <Adornment edge="end">
               <ToggleSwitch
                 name="favorites"
-                checked={favorites.checked}
+                checked={state.favorites.checked}
                 onChange={toggleFavorites}
               />
             </Adornment>
           </ListItem>
-          <Divider />
-          <ListItem onClick={handleExpand('network')}>
-            <ListItemText>{network.title}</ListItemText>
-            <Adornment edge="end">
-              <Icon
-                name="Chevron"
-                size="lg"
-                dir={expand.network ? 'up' : 'down'}
+          {Object.keys(state.dropdowns).map(dropdrown => (
+            <Fragment key={dropdrown}>
+              <Divider />
+              <ListItemNested
+                subitems={state.dropdowns[dropdrown]}
+                onToggleChange={handleToggleChange}
               />
-            </Adornment>
-          </ListItem>
-          <AnimatePresence>
-            {expand.network && (
-              <motion.div
-                style={{ overflow: 'hidden' }}
-                initial={{ height: 0 }}
-                animate={{ height: 'auto' }}
-                exit={{ height: 0 }}
-              >
-                <List className="pm-p-home__filter-list-sublist">
-                  {network.options.map(option => (
-                    <ListItem key={option.path}>
-                      <ListItemText>{option.label}</ListItemText>
-                      <Adornment edge="end">
-                        <Toggle
-                          type="checkbox"
-                          checked={option.selected}
-                          value={option.value}
-                          name={option.label}
-                          onChange={handleChangeDropdownOption(option.path)}
-                        />
-                      </Adornment>
-                    </ListItem>
-                  ))}
-                </List>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <Divider />
-          <ListItem onClick={handleExpand('country')}>
-            <ListItemText>{country.title}</ListItemText>
-            <Adornment edge="end">
-              <Icon
-                name="Chevron"
-                size="lg"
-                dir={expand.country ? 'up' : 'down'}
-              />
-            </Adornment>
-          </ListItem>
-          <AnimatePresence>
-            {expand.country && (
-              <motion.div
-                style={{ overflow: 'hidden' }}
-                initial={{ height: 0 }}
-                animate={{ height: 'auto' }}
-                exit={{ height: 0 }}
-              >
-                <List className="pm-p-home__filter-list-sublist">
-                  {country.options.map(option => (
-                    <ListItem key={option.path}>
-                      <ListItemText>{option.label}</ListItemText>
-                      <Adornment edge="end">
-                        <Toggle
-                          type="checkbox"
-                          checked={option.selected}
-                          value={option.value}
-                          name={option.label}
-                          onChange={handleChangeDropdownOption(option.path)}
-                        />
-                      </Adornment>
-                    </ListItem>
-                  ))}
-                </List>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <Divider />
-          <ListItem onClick={handleExpand('stage')}>
-            <ListItemText>{stage.title}</ListItemText>
-            <Adornment edge="end">
-              <Icon
-                name="Chevron"
-                size="lg"
-                dir={expand.stage ? 'up' : 'down'}
-              />
-            </Adornment>
-          </ListItem>
-          <AnimatePresence>
-            {expand.stage && (
-              <motion.div
-                style={{ overflow: 'hidden' }}
-                initial={{ height: 0 }}
-                animate={{ height: 'auto' }}
-                exit={{ height: 0 }}
-              >
-                <List className="pm-p-home__filter-list-sublist">
-                  {stage.options.map(option => (
-                    <ListItem key={option.path}>
-                      <ListItemText>{option.label}</ListItemText>
-                      <Adornment edge="end">
-                        <Toggle
-                          type="checkbox"
-                          checked={option.selected}
-                          value={option.value}
-                          name={option.label}
-                          onChange={handleChangeDropdownOption(option.path)}
-                        />
-                      </Adornment>
-                    </ListItem>
-                  ))}
-                </List>
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <Divider />
-          <ListItem onClick={handleExpand('state')}>
-            <ListItemText>{state.title}</ListItemText>
-            <Adornment edge="end">
-              <Icon
-                name="Chevron"
-                size="lg"
-                dir={expand.state ? 'up' : 'down'}
-              />
-            </Adornment>
-          </ListItem>
-          <AnimatePresence>
-            {expand.state && (
-              <motion.div
-                style={{ overflow: 'hidden' }}
-                initial={{ height: 0 }}
-                animate={{ height: 'auto' }}
-                exit={{ height: 0 }}
-              >
-                <List className="pm-p-home__filter-list-sublist">
-                  {state.options.map(option => (
-                    <ListItem key={option.path}>
-                      <ListItemText>{option.label}</ListItemText>
-                      <Adornment edge="end">
-                        <Toggle
-                          type="checkbox"
-                          checked={option.selected}
-                          value={option.value}
-                          name={option.label}
-                          onChange={handleChangeDropdownOption(option.path)}
-                        />
-                      </Adornment>
-                    </ListItem>
-                  ))}
-                </List>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            </Fragment>
+          ))}
         </List>
       </Modal>
     </>

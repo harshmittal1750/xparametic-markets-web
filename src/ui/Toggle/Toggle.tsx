@@ -11,7 +11,7 @@ interface ToggleProps extends Omit<ReactInputProps, 'type'> {
 
 export default function Toggle(props: ToggleProps) {
   const { checked, type } = props;
-  const renderIcon = {
+  const renderIconName = {
     checkbox: checked ? 'CheckboxFilled' : 'Checkbox',
     radio: checked ? 'RadioFilled' : 'Radio'
   } as const;
@@ -23,7 +23,7 @@ export default function Toggle(props: ToggleProps) {
       })}
     >
       <input className={ToggleClasses.input} {...props} />
-      <Icon className={ToggleClasses.icon} name={renderIcon[type!]} />
+      <Icon className={ToggleClasses.icon} name={renderIconName[type]} />
     </span>
   );
 }
