@@ -8,6 +8,8 @@ import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
+import { IFL } from 'hooks/useNetwork/currencies';
+
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
@@ -112,7 +114,7 @@ function Leaderboard() {
   // Custom hooks
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
-  const { currency } = network;
+  const currency = IFL;
 
   // Local state
   const [activeTab, setActiveTab] = useState('netVolume');
