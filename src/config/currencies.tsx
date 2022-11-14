@@ -7,25 +7,25 @@ const currencies: { [key: string]: Currency } = Object.freeze({
     name: 'Dev',
     ticker: 'DEV',
     symbol: 'Ξ',
-    icon: EthereumIcon
+    icon: <EthereumIcon />
   },
   ETH: {
     name: 'Ethereum',
     ticker: 'ETH',
     symbol: 'Ξ',
-    icon: EthereumIcon
+    icon: <EthereumIcon />
   },
   MOVR: {
     name: 'MOVR',
     ticker: 'MOVR',
     symbol: 'MOVR',
-    icon: MoonriverIcon
+    icon: <MoonriverIcon />
   },
   GLMR: {
     name: 'Moonbeam',
     ticker: 'GLMR',
     symbol: 'GLMR',
-    icon: MoonbeamIcon
+    icon: <MoonbeamIcon />
   }
 });
 
