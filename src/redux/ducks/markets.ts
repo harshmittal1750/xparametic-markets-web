@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment } from 'config';
+import { environment, networks } from 'config';
 import dayjs from 'dayjs';
 import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
@@ -11,9 +11,7 @@ import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
 
-import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
-
-import networks from 'hooks/useNetwork/networks';
+import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
