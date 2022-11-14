@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { networks } from 'config';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { Currency } from 'types/currency';
 import { Network } from 'types/network';
-
-import NETWORKS from 'hooks/useNetwork/networks';
 
 const chartViewsEnum = [
   { id: 'marketOverview', name: 'Market Overview', color: 'default' },
@@ -16,7 +15,7 @@ function toHex(value: string) {
 }
 
 function getNetworkById(id: string) {
-  return NETWORKS[toHex(id)];
+  return networks[toHex(id)];
 }
 
 export interface MarketInitialState {
