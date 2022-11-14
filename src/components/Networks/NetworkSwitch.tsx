@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
+import { networks } from 'config';
 import findKey from 'lodash/findKey';
 
 import { useAppSelector, useNetwork } from 'hooks';
-import networks from 'hooks/useNetwork/networks';
 
 import { Button } from '../Button';
 import NetworkSwitchClasses from './NetworkSwitch.module.scss';
