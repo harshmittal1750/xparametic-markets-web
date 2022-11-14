@@ -8,6 +8,7 @@ import store from 'redux/store';
 import { ScrollToTop } from 'components';
 
 import ThemeProvider from 'contexts/theme';
+import { NetworkProvider } from 'hooks/useNetwork';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -21,7 +22,9 @@ const render = () => {
         <Provider store={store}>
           <Router>
             <ScrollToTop />
-            <App />
+            <NetworkProvider>
+              <App />
+            </NetworkProvider>
           </Router>
         </Provider>
       </ThemeProvider>
