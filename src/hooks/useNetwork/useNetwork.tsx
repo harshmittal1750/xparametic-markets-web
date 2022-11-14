@@ -10,12 +10,13 @@ import {
   login
 } from 'redux/ducks/polkamarkets';
 import store from 'redux/store';
+import { Network } from 'types/network';
 
 import { useAppDispatch } from 'hooks';
 
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
-import NETWORKS, { Network } from './networks';
+import NETWORKS from './networks';
 
 declare global {
   interface Window {

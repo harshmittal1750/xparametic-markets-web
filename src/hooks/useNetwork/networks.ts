@@ -1,19 +1,7 @@
 import { environment } from 'config';
-import { Currency } from 'types/currency';
+import { Network } from 'types/network';
 
 import { DEV, ETH, MOVR, GLMR } from 'hooks/useNetwork/currencies';
-
-export type Network = {
-  id: string;
-  name: string;
-  key: string;
-  colorAccent: 'blue' | 'orange' | 'green';
-  currency: Currency;
-  decimals: number;
-  explorerURL: string;
-  rpcUrls: Array<string>;
-  buyEc20Url?: string;
-};
 
 const NETWORKS: {
   [key: string]: Network;
