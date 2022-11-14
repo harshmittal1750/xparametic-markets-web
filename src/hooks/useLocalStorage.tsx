@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-type SetValue<T> = Dispatch<SetStateAction<T>>;
+export type SetValue<T> = Dispatch<SetStateAction<T>>;
 
 /**
  * https://usehooks-typescript.com/react-hook/use-local-storage
