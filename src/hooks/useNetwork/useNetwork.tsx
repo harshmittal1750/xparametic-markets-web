@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { environment } from 'config';
+import { environment, networks } from 'config';
 import { NetworkConfig } from 'config/environment';
 import { toHexadecimal } from 'helpers/string';
 import {
@@ -15,8 +15,6 @@ import { Network } from 'types/network';
 import useAppDispatch from '../useAppDispatch';
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
-
-import { networks } from 'config';
 
 declare global {
   interface Window {
