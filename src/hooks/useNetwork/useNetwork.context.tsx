@@ -110,23 +110,23 @@ function NetworkProvider({ children }: NetworkProviderProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localNetwork]);
 
-  useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('chainChanged', () => {
-        history.push(`${location.pathname}?m=f`);
-        window.location.reload();
-      });
-    }
-  }, [history, location.pathname]);
+  function reloadWindow() {
+    history.push(`${location.pathname}?m=f`);
+    window.location.reload();
+  }
 
   useEffect(() => {
-    if (window.ethereum) {
-      window.ethereum.on('accountsChanged', () => {
-        history.push(`${location.pathname}?m=f`);
-        window.location.reload();
-      });
-    }
-  }, [history, location.pathname]);
+    window.ethereum?.on('chainChanged', reloadWindow);
+
+    return () => window.ethereum?.removeListener('chainChanged', reloadWindow);
+  }, []);
+
+  useEffect(() => {
+    window.ethereum?.on('accountsChanged', reloadWindow);
+
+    return () =>
+      window.ethereum?.removeListener('accountsChanged', reloadWindow);
+  }, []);
 
   return (
     <NetworkContext.Provider
