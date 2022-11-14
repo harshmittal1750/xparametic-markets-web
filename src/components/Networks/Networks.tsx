@@ -1,14 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 
 import classNames from 'classnames';
-import { environment } from 'config';
+import { environment, networks } from 'config';
 import findKey from 'lodash/findKey';
 import { Network } from 'types/network';
 
 import { CaretDownFilledIcon } from 'assets/icons';
 
 import { useAppSelector, useNetwork } from 'hooks';
-import networks from 'hooks/useNetwork/networks';
 
 import Text from '../Text';
 
