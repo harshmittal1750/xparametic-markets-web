@@ -71,7 +71,7 @@ export default class PolkamarketsService {
   }
 
   public getPredictionMarketContract() {
-    this.contracts.pm = this.polkamarkets.getPredictionMarketContract({
+    this.contracts.pm = this.polkamarkets.getPredictionMarketV2Contract({
       contractAddress: this.predictionMarketContractAddress
     });
   }
@@ -161,7 +161,7 @@ export default class PolkamarketsService {
     duration: number,
     outcomes: Array<string>,
     category: string,
-    ethAmount: number
+    value: number
   ) {
     // ensuring user has wallet connected
     await this.login();
@@ -172,8 +172,9 @@ export default class PolkamarketsService {
       duration,
       outcomes,
       category,
-      ethAmount,
-      oracleAddress: this.address
+      value,
+      oracleAddress: this.address,
+      token: this.erc20ContractAddress
     });
 
     return response;
@@ -182,7 +183,7 @@ export default class PolkamarketsService {
   public async buy(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number,
+    value: number,
     minOutcomeSharesToBuy: number
   ) {
     // ensuring user has wallet connected
@@ -191,7 +192,7 @@ export default class PolkamarketsService {
     const response = await this.contracts.pm.buy({
       marketId,
       outcomeId,
-      ethAmount,
+      value,
       minOutcomeSharesToBuy
     });
 
@@ -201,7 +202,7 @@ export default class PolkamarketsService {
   public async sell(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number,
+    value: number,
     maxOutcomeSharesToSell: number
   ) {
     // ensuring user has wallet connected
@@ -210,20 +211,20 @@ export default class PolkamarketsService {
     const response = await this.contracts.pm.sell({
       marketId,
       outcomeId,
-      ethAmount,
+      value,
       maxOutcomeSharesToSell
     });
 
     return response;
   }
 
-  public async addLiquidity(marketId: string | number, ethAmount: number) {
+  public async addLiquidity(marketId: string | number, value: number) {
     // ensuring user has wallet connected
     await this.login();
 
     const response = await this.contracts.pm.addLiquidity({
       marketId,
-      ethAmount
+      value
     });
 
     return response;
@@ -400,12 +401,12 @@ export default class PolkamarketsService {
   public async calcBuyAmount(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number
+    value: number
   ): Promise<number> {
     const response = await this.contracts.pm.calcBuyAmount({
       marketId,
       outcomeId,
-      ethAmount
+      value
     });
 
     return response;
@@ -414,12 +415,12 @@ export default class PolkamarketsService {
   public async calcSellAmount(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number
+    value: number
   ): Promise<number> {
     const response = await this.contracts.pm.calcSellAmount({
       marketId,
       outcomeId,
-      ethAmount
+      value
     });
 
     return response;
