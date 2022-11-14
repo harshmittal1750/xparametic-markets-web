@@ -12,11 +12,11 @@ import {
 import store from 'redux/store';
 import { Network } from 'types/network';
 
-import { useAppDispatch } from 'hooks';
-
+import useAppDispatch from '../useAppDispatch';
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
-import NETWORKS from './networks';
+
+import { networks } from 'config';
 
 declare global {
   interface Window {
@@ -32,10 +32,10 @@ function fetchUserData(networkConfig: NetworkConfig) {
 function useNetwork() {
   // Constants
   const DEFAULT_NETWORK_ID = toHexadecimal(environment.NETWORK_ID || 42);
-  const DEFAULT_NETWORK = NETWORKS[DEFAULT_NETWORK_ID];
+  const DEFAULT_NETWORK = networks[DEFAULT_NETWORK_ID];
   const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
 
-  const UNKNOWN_NETWORK = NETWORKS['0x270f'];
+  const UNKNOWN_NETWORK = networks['0x270f'];
 
   const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
 
@@ -60,12 +60,12 @@ function useNetwork() {
 
   // Derivated state
   const metamaskNetwork = metamaskNetworkId
-    ? NETWORKS[metamaskNetworkId] || UNKNOWN_NETWORK
+    ? networks[metamaskNetworkId] || UNKNOWN_NETWORK
     : null;
 
   const localEthereumNetworkId = toHexadecimal(localNetwork);
   const localEthereumNetwork =
-    NETWORKS[localEthereumNetworkId] || UNKNOWN_NETWORK;
+    networks[localEthereumNetworkId] || UNKNOWN_NETWORK;
 
   const [network, setNetwork] = useState<Network>(
     metamaskNetwork || localEthereumNetwork || DEFAULT_NETWORK
@@ -85,7 +85,7 @@ function useNetwork() {
         });
 
         const currentEthereumNetwork =
-          NETWORKS[currentEthereumNetworkId] || UNKNOWN_NETWORK;
+          networks[currentEthereumNetworkId] || UNKNOWN_NETWORK;
 
         setNetwork(currentEthereumNetwork);
 
