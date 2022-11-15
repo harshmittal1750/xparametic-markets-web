@@ -1,3 +1,5 @@
+import { newtonRaphson } from '@fvictorio/newton-raphson-method';
+import Big from 'big.js';
 import { roundNumber } from 'helpers/math';
 import { Market, Outcome } from 'models/market';
 import { TradeDetails } from 'redux/ducks/trade';
@@ -78,9 +80,14 @@ function calculateSharesBought(
   const fee = market.fee * ethAmount;
   const amount = ethAmount - fee;
 
-  // eslint-disable-next-line prettier/prettier
-  const newOutcomeShares =
-    market.liquidity ** 2 / (market.liquidity ** 2 / outcome.shares + amount);
+  // calculating product of all other outcome shares + amount
+  const product = market.outcomes.reduce((acc, cur) => {
+    if (cur.id === outcome.id) return acc;
+
+    return acc * (cur.shares + amount);
+  }, 1);
+
+  const newOutcomeShares = market.liquidity ** market.outcomes.length / product;
 
   const shares = outcome.shares - newOutcomeShares + amount || 0;
   const price = amount / shares || 0;
@@ -103,27 +110,43 @@ function calculateEthAmountSold(
   outcome: Outcome,
   shares: number
 ): TradeDetails {
-  // TODO: move formulas to polkamarketsjs
-  // x = 1/2 (-sqrt(a^2 - 2 a (y + z) + 4 b + (y + z)^2) + a + y + z)
-  // x = ETH amount user will receive
-  // y = # shares sold
-  // z = # selling shares available
-  // a = # opposite shares available
-  // b = product balance
-  const oppositeShares = market.liquidity ** 2 / outcome.shares;
+  const sharesBig = new Big(shares.toString());
 
-  const totalStake =
-    (1 / 2) *
-    (-1 *
-      Math.sqrt(
-        oppositeShares ** 2 -
-          2 * oppositeShares * (shares + outcome.shares) +
-          4 * market.liquidity ** 2 +
-          (shares + outcome.shares) ** 2
-      ) +
-      oppositeShares +
-      shares +
-      outcome.shares);
+  const outcomeSharesBig = new Big(outcome.shares.toString());
+  const otherOutcomeSharesBig = [] as any;
+
+  market.outcomes.forEach(marketOutcome => {
+    if (marketOutcome.id !== outcome.id) {
+      otherOutcomeSharesBig.push(new Big(marketOutcome.shares.toString()));
+    }
+  });
+
+  // Credit to Omen team for this formula
+  // https://github.com/protofire/omen-exchange/blob/29d0ab16bdafa5cc0d37933c1c7608a055400c73/app/src/util/tools/fpmm/trading/index.ts#L110
+  const totalStakeFunction = (f: Big) => {
+    // For three outcomes, where the first outcome is the one being sold, the formula is:
+    // f(r) = ((y - R) * (z - R)) * (x  + a - R) - x*y*z
+    // where:
+    //   `R` is r / (1 - fee)
+    //   `x`, `y`, `z` are the market maker holdings for each outcome
+    //   `a` is the amount of outcomes that are being sold
+    //   `r` (the unknown) is the amount of collateral that will be returned in exchange of `a` tokens
+    const firstTerm = otherOutcomeSharesBig
+      .map(h => h.minus(f))
+      .reduce((a, b) => a.mul(b));
+    const secondTerm = outcomeSharesBig.plus(sharesBig).minus(f);
+    const thirdTerm = otherOutcomeSharesBig.reduce(
+      (a, b) => a.mul(b),
+      outcomeSharesBig
+    );
+    return firstTerm.mul(secondTerm).minus(thirdTerm);
+  };
+
+  const totalStakeBig = newtonRaphson(totalStakeFunction, 0, {
+    maxIterations: 100
+  });
+  const totalStake = Number(totalStakeBig);
+
   const price = shares > 0 ? totalStake / shares : outcome.price;
 
   // ROI is not relevant on sell
