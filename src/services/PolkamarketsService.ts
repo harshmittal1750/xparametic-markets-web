@@ -375,9 +375,7 @@ export default class PolkamarketsService {
     // eslint-disable-next-line no-underscore-dangle
     await this.contracts.erc20.__init__();
 
-    await this.contracts.erc20.claimTokens({
-      address: this.address
-    });
+    await this.contracts.erc20.claimAndApproveTokens();
 
     return true;
   }
