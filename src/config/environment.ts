@@ -11,7 +11,8 @@ const environmentConfigVariables = [
   'PREDICTION_MARKET_CONTRACT_ADDRESS',
   'REALITIO_ERC20_CONTRACT_ADDRESS',
   'RESTRICTED_COUNTRIES',
-  'WEB3_PROVIDER'
+  'WEB3_PROVIDER',
+  'FEATURE_CLAIM'
 ] as const;
 
 export type EnvironmentConfigVariable =
