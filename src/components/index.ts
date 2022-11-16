@@ -156,6 +156,8 @@ export { default as ConnectMetamask } from './ConnectMetamask';
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
+export { default as Feature } from './Feature';
+
 export { default as Modal } from './Modal';
 
 export { default as ModalContent } from './ModalContent';
