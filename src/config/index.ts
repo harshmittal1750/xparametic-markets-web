@@ -1,9 +1,9 @@
-/* eslint-disable import/prefer-default-export */
 import enviromentConfig from './environment';
+import features from './features';
 
 export type {
   EnvironmentConfigVariable,
   EnvironmentConfig
 } from './environment';
 
-export { enviromentConfig as environment };
+export { enviromentConfig as environment, features };
