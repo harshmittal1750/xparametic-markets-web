@@ -1,67 +1,43 @@
 import { Link } from 'react-router-dom';
 
 import { formatNumberToString } from 'helpers/math';
-import { login } from 'redux/ducks/polkamarkets';
-import { PolkamarketsService } from 'services';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import Feature from 'components/Feature';
 
-import { Button } from '../Button';
+import { useAppSelector, useNetwork } from 'hooks';
+
 import { Transak } from '../integrations';
+import WalletInfoClaim from './WalletInfoClaim';
 
 function WalletInfo() {
-  const { network, networkConfig } = useNetwork();
-  const dispatch = useAppDispatch();
+  const { network } = useNetwork();
 
-  const appState = useAppSelector(state => state);
-  const isPolkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
-
-  async function handleClaim() {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
-    try {
-      // TODO spinner
-      // TODO toast
-
-      // performing claim action on smart contract
-      await polkamarketsService.claimPolk();
-      // updating wallet
-      await dispatch(login(networkConfig));
-    } catch (error) {
-      // TODO error handling
-    }
-
-    return true;
-  }
+  const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
+  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   return (
     <div className="pm-c-wallet-info">
       <div className="pm-c-wallet-info__currency">
-        {formatNumberToString(appState.polkamarkets.polkBalance)}
+        {formatNumberToString(polkBalance)}
         <span className="pm-c-wallet-info__currency__ticker"> IFL</span>
-        {network.buyEc20Url && (
-          <Button
-            className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button"
-            disabled={isPolkClaimed}
-            onClick={handleClaim}
-          >
-            {isPolkClaimed ? '$IFL Claimed' : 'Claim $IFL'}
-          </Button>
-        )}
+        {network.buyEc20Url ? (
+          <Feature name="claim">
+            <WalletInfoClaim />
+          </Feature>
+        ) : null}
       </div>
       <div className="pm-c-wallet-info__currency">
-        {appState.polkamarkets.ethBalance.toFixed(4)}
+        {ethBalance.toFixed(4)}
         <span className="pm-c-wallet-info__currency__ticker">
           {' '}
           {network.currency.ticker}
         </span>
         <Link
-          to={`/user/${appState.polkamarkets.ethAddress}`}
+          to={`/user/${ethAddress}`}
           className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button"
         >
-          {appState.polkamarkets.ethAddress
-            .match(/^\d\w{4}|\d\w{4}$/gm)
-            ?.join('...')}
+          {ethAddress.match(/^\d\w{4}|\d\w{4}$/gm)?.join('...')}
         </Link>
         <Transak />
       </div>
