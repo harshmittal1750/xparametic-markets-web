@@ -12,7 +12,7 @@ const environmentConfigVariables = [
   'REALITIO_ERC20_CONTRACT_ADDRESS',
   'RESTRICTED_COUNTRIES',
   'WEB3_PROVIDER',
-  'FEATURE_CLAIM'
+  'FEATURE_FANTASY'
 ] as const;
 
 export type EnvironmentConfigVariable =

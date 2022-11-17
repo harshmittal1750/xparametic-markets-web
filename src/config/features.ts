@@ -6,8 +6,12 @@ function toBoolean(value: string | undefined): boolean {
 
 const features = [
   {
-    name: 'claim',
-    enabled: toBoolean(environment.FEATURE_CLAIM)
+    name: 'fantasy',
+    enabled: toBoolean(environment.FEATURE_FANTASY)
+  },
+  {
+    name: 'regular',
+    enabled: !toBoolean(environment.FEATURE_FANTASY)
   }
 ] as const;
 

@@ -7,6 +7,7 @@ import Feature from 'components/Feature';
 import { useAppSelector, useNetwork } from 'hooks';
 
 import { Transak } from '../integrations';
+import WalletInfoBuy from './WalletInfoBuy';
 import WalletInfoClaim from './WalletInfoClaim';
 
 function WalletInfo() {
@@ -21,11 +22,12 @@ function WalletInfo() {
       <div className="pm-c-wallet-info__currency">
         {formatNumberToString(polkBalance)}
         <span className="pm-c-wallet-info__currency__ticker"> IFL</span>
-        {network.buyEc20Url ? (
-          <Feature name="claim">
-            <WalletInfoClaim />
-          </Feature>
-        ) : null}
+        <Feature name="fantasy">
+          <WalletInfoClaim />
+        </Feature>
+        <Feature name="regular">
+          <WalletInfoBuy />
+        </Feature>
       </div>
       <div className="pm-c-wallet-info__currency">
         {ethBalance.toFixed(4)}
