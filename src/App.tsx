@@ -13,7 +13,7 @@ import { NetworksProvider } from 'contexts/networks';
 
 import { useAppDispatch, useNetwork, usePrevious, useTheme } from 'hooks';
 
-const POLKAMARKETS_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`;
+const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.jpg`;
 
 const App = () => {
   const { theme } = useTheme();
@@ -39,9 +39,9 @@ const App = () => {
         <FiltersProvider>
           <FavoriteMarketsProvider>
             <SEO
-              title="Polkamarkets - Autonomous Prediction Market Protocol"
-              description="Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot."
-              imageUrl={POLKAMARKETS_DEFAULT_BANNER}
+              title="Illuminate Fantasy League, Powered By Polkamarkets"
+              description="Make predictions on World Cup 2022 results and win!"
+              imageUrl={IFL_DEFAULT_BANNER}
             />
             <Routes />
           </FavoriteMarketsProvider>
