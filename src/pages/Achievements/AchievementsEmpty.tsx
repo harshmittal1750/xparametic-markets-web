@@ -13,7 +13,7 @@ function AchievementsEmpty() {
           fontWeight="semibold"
           className="pm-p-achievements__empty__body-description"
         >
-          NFT Achievements coming in the upcoming days. Stay tuned 🔥
+          NFT Achievements coming in the upcoming days. Stay tuned!
         </Text>
       </div>
     </div>
