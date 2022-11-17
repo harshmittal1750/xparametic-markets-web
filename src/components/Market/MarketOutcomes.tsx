@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import classNames from 'classnames';
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
+import kebabCase from 'lodash/kebabCase';
 import { Market, Outcome } from 'models/market';
 import { marketSelected } from 'redux/ducks/market';
 import { selectOutcome } from 'redux/ducks/trade';
@@ -140,7 +141,7 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
       ) : (
         <div className="pm-c-market-outcomes__item-chart">
           <Area
-            id={`${marketId}-${id}-${title}`}
+            id={`${marketId}-${id}-${kebabCase(title)}`}
             data={chartData}
             color={marketPriceUp ? 'green' : 'red'}
             width={48}
