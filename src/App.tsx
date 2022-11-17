@@ -40,7 +40,7 @@ const App = () => {
           <FavoriteMarketsProvider>
             <SEO
               title="Illuminate Fantasy League, Powered By Polkamarkets"
-              description="Make predictions on World Cup 2022 results and win!"
+              description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
               imageUrl={IFL_DEFAULT_BANNER}
             />
             <Routes />
