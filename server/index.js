@@ -19,10 +19,9 @@ const {
 const indexPath = path.resolve(__dirname, '..', 'build', 'index.html');
 
 const defaultMetadata = {
-  title: 'Polkamarkets - Autonomous Prediction Market Protocol',
-  description:
-    'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot.',
-  image: '/polkamarkets_meta.jpg'
+  title: 'Illuminate Fantasy League, Powered By Polkamarkets',
+  description: 'Make predictions on World Cup 2022 results and win!',
+  image: '/ifl_meta.jpg'
 };
 
 const defaultMetadataTemplate = (request, htmlData) => {
