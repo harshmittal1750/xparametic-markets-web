@@ -6,7 +6,7 @@ type SEOProps = {
   imageUrl?: string;
 };
 
-const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.png`;
+const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.jpg`;
 
 function SEO({ title, description, imageUrl }: SEOProps) {
   const image = imageUrl || IFL_DEFAULT_BANNER;

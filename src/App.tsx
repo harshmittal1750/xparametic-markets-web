@@ -13,7 +13,7 @@ import { NetworksProvider } from 'contexts/networks';
 
 import { useAppDispatch, useNetwork, usePrevious, useTheme } from 'hooks';
 
-const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.png`;
+const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.jpg`;
 
 const App = () => {
   const { theme } = useTheme();
