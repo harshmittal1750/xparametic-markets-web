@@ -19,16 +19,16 @@ export type LeaderboardTableRow = {
     volume: number;
     ticker: string;
   };
-  marketsCreated: number;
+  // marketsCreated: number;
   wonPredictions: number;
   netVolume: {
     volume: number;
     ticker: string;
   };
-  netLiquidity: {
-    liquidity: number;
-    ticker: string;
-  };
+  // netLiquidity: {
+  //   liquidity: number;
+  //   ticker: string;
+  // };
   achievements: Achievement[];
   rank: {
     place: number;

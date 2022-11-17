@@ -27,11 +27,11 @@ const tabs = [
     title: 'Gross Volume',
     sortBy: 'volume'
   },
-  {
-    id: 'marketsCreated',
-    title: 'Markets Created',
-    sortBy: 'marketsCreated'
-  },
+  // {
+  //   id: 'marketsCreated',
+  //   title: 'Markets Created',
+  //   sortBy: 'marketsCreated'
+  // },
   {
     id: 'wonPredictions',
     title: 'Won Predictions',
@@ -42,11 +42,11 @@ const tabs = [
     title: 'Net Volume',
     sortBy: 'tvlVolume'
   },
-  {
-    id: 'netLiquidity',
-    title: 'Net Liquidity',
-    sortBy: 'tvlLiquidity'
-  }
+  // {
+  //   id: 'netLiquidity',
+  //   title: 'Net Liquidity',
+  //   sortBy: 'tvlLiquidity'
+  // }
 ];
 
 const columns: LeaderboardTableColumn[] = [
@@ -64,12 +64,12 @@ const columns: LeaderboardTableColumn[] = [
     width: 140,
     render: volumeColumnRender
   },
-  {
-    title: 'Markets Created',
-    key: 'marketsCreated',
-    align: 'right',
-    width: 140
-  },
+  // {
+  //   title: 'Markets Created',
+  //   key: 'marketsCreated',
+  //   align: 'right',
+  //   width: 140
+  // },
   {
     title: 'Won Predictions',
     key: 'wonPredictions',
@@ -83,13 +83,13 @@ const columns: LeaderboardTableColumn[] = [
     width: 140,
     render: volumeColumnRender
   },
-  {
-    title: 'Net Liquidity',
-    key: 'netLiquidity',
-    align: 'right',
-    width: 140,
-    render: liquidityColumnRender
-  },
+  // {
+  //   title: 'Net Liquidity',
+  //   key: 'netLiquidity',
+  //   align: 'right',
+  //   width: 140,
+  //   render: liquidityColumnRender
+  // },
   {
     title: 'Rank',
     key: 'rank',
