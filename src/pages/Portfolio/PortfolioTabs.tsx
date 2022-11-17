@@ -4,21 +4,11 @@ import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
 
-import {
-  ButtonGroup,
-  PortfolioLiquidityTable,
-  PortfolioMarketTable,
-  PortfolioReportTable,
-  Filter
-} from 'components';
+import { ButtonGroup, PortfolioMarketTable, Filter } from 'components';
 
 import { useAppSelector, useAppDispatch, useNetwork } from 'hooks';
 
-import {
-  formatLiquidityPositions,
-  formatMarketPositions,
-  formatReportPositions
-} from './utils';
+import { formatMarketPositions } from './utils';
 
 function TabsFilter() {
   const dispatch = useAppDispatch();
@@ -47,7 +37,6 @@ function PortfolioTabs() {
   const [currentTab, setCurrentTab] = useState('marketPositions');
 
   const {
-    bonds,
     portfolio,
     actions,
     marketsWithActions,
@@ -55,11 +44,8 @@ function PortfolioTabs() {
     isLoading
   } = useAppSelector(state => state.polkamarkets);
 
-  const {
-    portfolio: isLoadingPortfolio,
-    bonds: isLoadingBonds,
-    actions: isLoadingActions
-  } = isLoading;
+  const { portfolio: isLoadingPortfolio, actions: isLoadingActions } =
+    isLoading;
 
   const marketsIds = [...marketsWithActions, ...marketsWithBonds];
 
@@ -70,23 +56,13 @@ function PortfolioTabs() {
         networkId: network.id
       },
       {
-        skip: isLoadingBonds || isLoadingActions || isEmpty(marketsIds)
+        skip: isLoadingActions || isEmpty(marketsIds)
       }
     );
 
   const marketPositions = useMemo(
     () => formatMarketPositions(portfolio, actions, markets),
     [actions, markets, portfolio]
-  );
-
-  const liquidityPositions = useMemo(
-    () => formatLiquidityPositions(portfolio, markets),
-    [markets, portfolio]
-  );
-
-  const reportPositions = useMemo(
-    () => formatReportPositions(bonds, markets),
-    [bonds, markets]
   );
 
   return (
@@ -98,16 +74,6 @@ function PortfolioTabs() {
             {
               id: 'marketPositions',
               name: 'Market Positions',
-              color: 'default'
-            },
-            {
-              id: 'liquidityPositions',
-              name: 'Liquidity Positions',
-              color: 'default'
-            },
-            {
-              id: 'reportPositions',
-              name: 'Reports',
               color: 'default'
             }
           ]}
@@ -123,22 +89,6 @@ function PortfolioTabs() {
             headers={marketPositions.headers}
             isLoadingData={
               isLoadingMarkets || isLoadingPortfolio || isLoadingActions
-            }
-          />
-        ) : null}
-        {currentTab === 'liquidityPositions' ? (
-          <PortfolioLiquidityTable
-            rows={liquidityPositions.rows}
-            headers={liquidityPositions.headers}
-            isLoadingData={isLoadingMarkets || isLoadingPortfolio}
-          />
-        ) : null}
-        {currentTab === 'reportPositions' ? (
-          <PortfolioReportTable
-            rows={reportPositions.rows}
-            headers={reportPositions.headers}
-            isLoadingData={
-              isLoadingMarkets || isLoadingPortfolio || isLoadingBonds
             }
           />
         ) : null}
