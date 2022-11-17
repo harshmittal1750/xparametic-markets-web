@@ -60,37 +60,39 @@ export default function BetaWarning() {
         </ModalHeader>
         <ModalSection>
           <ModalSectionText>
-            Polkamarkets Protocol is a 100% decentralized protocol for
-            informational and educational purposes only. POLKAMARKET OÜ does not
-            take any custody, profits or host over any markets.
+            The Illuminate Fantasy League, powered by Polkamarkets (the “IFL” or
+            “Fantasy League” or “League”), is a fantasy game and does not
+            constitute any form or type of gambling or betting activity.
           </ModalSectionText>
           <ModalSectionText>
-            POLKAMARKET OÜ displays existing markets live on EVMs or sidechains
-            and is a graphical user interface for visualizing data and
-            interacting with the Polkamarkets Protocol Smart Contracts via your
-            Web 3 injected wallet.
+            Players will not make or be requested to make any payment or
+            contribution with financial value to enter and make predictions on
+            the Fantasy League.
           </ModalSectionText>
           <ModalSectionText id={betaWarningProps['aria-describedby']}>
-            By entering the website I confirm I am not a citizen or resident in
-            the United States or its territories, nor a US person.
+            The terms “buy”, “sell”, “price”, “reward”, “profit” or similar
+            terms, may be used in this website and refer exclusively to inherent
+            mechanics and features of prediction markets and shall not be
+            associated with transactions of financial value in the context of
+            the Fantasy League.
           </ModalSectionText>
           <Checkbox label="text" onChange={handleAgreed}>
             <Text as="p" scale="caption" fontWeight="medium">
               <>
-                {`I Agree to the `}
+                {`I have read and accept the `}
                 <Link
-                  title="Terms & Service"
+                  title="Documentation"
+                  scale="caption"
+                  fontWeight="medium"
+                  href="/docs"
+                  target="_blank"
+                />
+                {` and `}
+                <Link
+                  title="Terms & Conditions"
                   scale="caption"
                   fontWeight="medium"
                   href="https://www.polkamarkets.com/legal/terms-conditions"
-                  target="_blank"
-                />
-                {` & I am aware of the `}
-                <Link
-                  title="Risks & Disclosure"
-                  scale="caption"
-                  fontWeight="medium"
-                  href="https://docs.google.com/document/d/1TR8HYTBOhZeZOb0E5uAo8lbK4v0Oxv3JnQD_AdYENBY/edit"
                   target="_blank"
                 />
               </>
