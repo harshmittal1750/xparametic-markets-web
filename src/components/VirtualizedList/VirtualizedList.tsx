@@ -1,5 +1,4 @@
-import { ReactNode, useState, useEffect, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { ReactNode, useState, useEffect } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
 import { Hero } from 'ui';
@@ -9,8 +8,6 @@ import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.sv
 
 import { Button } from 'components/Button';
 import Text from 'components/Text';
-
-import { useAppDispatch } from 'hooks';
 
 type VirtualizedListProps<T> = {
   height: number | string;
@@ -25,9 +22,6 @@ function VirtualizedList<T>({
   itemContent,
   atBottom
 }: VirtualizedListProps<T>) {
-  const dispatch = useAppDispatch();
-  const history = useHistory();
-
   const [visibleRange, setVisibleRange] = useState({
     startIndex: 0,
     endIndex: 0
@@ -41,10 +35,6 @@ function VirtualizedList<T>({
   useEffect(() => {
     atBottom?.(isAtBottom);
   }, [atBottom, isAtBottom]);
-
-  const handleNavigateToDocs = useCallback(() => {
-    history.push('/docs');
-  }, [dispatch, history]);
 
   return (
     <Virtuoso
@@ -71,7 +61,11 @@ function VirtualizedList<T>({
               >
                 Place your World Cup predictions to win the IFL Title!
               </Text>
-              <Button size="sm" color="primary" onClick={handleNavigateToDocs}>
+              <Button
+                size="sm"
+                color="primary"
+                onClick={() => window.open('/docs', '_blank')}
+              >
                 About IFL
               </Button>
             </div>
