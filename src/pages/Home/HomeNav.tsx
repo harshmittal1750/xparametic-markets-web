@@ -9,6 +9,7 @@ import {
 import { closeRightSidebar } from 'redux/ducks/ui';
 
 import { Button, Filter, SearchBar } from 'components';
+import Feature from 'components/Feature';
 
 import { useAppDispatch } from 'hooks';
 
@@ -65,9 +66,15 @@ export default function HomeNav() {
         onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
       />
-      <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
-        Create Market
-      </Button>
+      <Feature name="regular">
+        <Button
+          color="primary"
+          size="sm"
+          onClick={handleNavigateToCreateMarket}
+        >
+          Create Market
+        </Button>
+      </Feature>
     </div>
   );
 }
