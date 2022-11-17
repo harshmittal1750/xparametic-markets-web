@@ -46,11 +46,6 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
     3
   )} ${ticker}`;
 
-  const liquidityProvided = `${roundNumber(
-    portfolio.liquidityProvided,
-    3
-  )} ${ticker}`;
-
   const wonPredictions = `${portfolio.wonPositions}`;
 
   return (
@@ -134,11 +129,6 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
           title="Total earnings"
           value={totalEarnings}
           backgroundColor="yellow"
-        />
-        <ProfileSummaryStat
-          title="Liquidity provided"
-          value={liquidityProvided}
-          backgroundColor="pink"
         />
         <ProfileSummaryStat
           title="Won predictions"
