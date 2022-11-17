@@ -15,26 +15,15 @@ function FooterTerms() {
         }}
       >
         <>
-          {`Polkamarkets Services and POLK Token (POLK) `}
+          {`The Illuminate Fantasy League, powered by Polkamarkets is a fantasy game. `}
           <Link
-            title="are not available in Excluded Jurisdictions."
+            title="Learn more in the documentation"
             scale="caption"
             fontWeight="medium"
-            className="pm-l-footer__terms-text-primary"
-            style={{
-              textDecoration: 'none'
-            }}
-            href="https://www.polkamarkets.com/legal/terms-conditions"
+            href="/docs"
             target="_blank"
           />
-          {` By accessing and using the interface you agree with our `}
-          <Link
-            title="Terms & Conditions"
-            scale="caption"
-            fontWeight="medium"
-            href="https://www.polkamarkets.com/legal/terms-conditions"
-            target="_blank"
-          />
+          .
         </>
       </Text>
     </div>
