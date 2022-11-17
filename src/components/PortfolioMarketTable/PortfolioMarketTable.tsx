@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import classnames from 'classnames';
+import { colorByOutcomeId } from 'helpers/color';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
@@ -197,9 +198,7 @@ const PortfolioMarketTable = ({
                   })}
                 >
                   <Badge
-                    color={
-                      market.outcomes[0].id === outcome.id ? 'purple' : 'pink'
-                    }
+                    color={colorByOutcomeId(outcome.id)}
                     label={`${outcome.title}`}
                     style={{ display: 'inline-flex' }}
                   />
