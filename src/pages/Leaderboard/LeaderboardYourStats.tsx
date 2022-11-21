@@ -20,10 +20,10 @@ const columns: TableMiniColumn[] = [
     key: 'volume',
     title: 'Volume'
   },
-  {
-    key: 'marketsCreated',
-    title: 'Markets Created'
-  },
+  // {
+  //   key: 'marketsCreated',
+  //   title: 'Markets Created'
+  // },
   {
     key: 'wonPredictions',
     title: 'Won Predictions'
@@ -32,10 +32,10 @@ const columns: TableMiniColumn[] = [
     key: 'netVolume',
     title: 'Net Volume'
   },
-  {
-    key: 'netLiquidity',
-    title: 'Net Liquidity'
-  },
+  // {
+  //   key: 'netLiquidity',
+  //   title: 'Net Liquidity'
+  // },
   {
     key: 'achievements',
     title: 'NFT Achievements'

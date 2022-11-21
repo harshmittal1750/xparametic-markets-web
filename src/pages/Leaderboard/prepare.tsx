@@ -208,16 +208,16 @@ function prepareLeaderboardTableRows({
         volume: row.volume,
         ticker
       },
-      marketsCreated: row.marketsCreated,
+      // marketsCreated: row.marketsCreated,
       wonPredictions: row.claimWinningsCount,
       netVolume: {
         volume: row.tvlVolume,
         ticker
       },
-      netLiquidity: {
-        liquidity: row.tvlLiquidity,
-        ticker
-      },
+      // netLiquidity: {
+      //   liquidity: row.tvlLiquidity,
+      //   ticker
+      // },
       achievements: row.achievements,
       rank: {
         place: index + 1,
@@ -253,9 +253,9 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
         : null,
       render: volumeColumnRender
     },
-    marketsCreated: {
-      value: yourStats ? yourStats.marketsCreated : null
-    },
+    // marketsCreated: {
+    //   value: yourStats ? yourStats.marketsCreated : null
+    // },
     wonPredictions: {
       value: yourStats ? yourStats.wonPredictions : null
     },
@@ -268,15 +268,15 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
         : null,
       render: volumeColumnRender
     },
-    netLiquidity: {
-      value: yourStats
-        ? {
-            liquidity: yourStats.netLiquidity.liquidity,
-            ticker: yourStats.netLiquidity.ticker
-          }
-        : null,
-      render: liquidityColumnRender
-    },
+    // netLiquidity: {
+    //   value: yourStats
+    //     ? {
+    //         liquidity: yourStats.netLiquidity.liquidity,
+    //         ticker: yourStats.netLiquidity.ticker
+    //       }
+    //     : null,
+    //   render: liquidityColumnRender
+    // },
     achievements: {
       value: yourStats ? yourStats.achievements : null,
       render: achievements => achievementsColumnRender(achievements, 'small')

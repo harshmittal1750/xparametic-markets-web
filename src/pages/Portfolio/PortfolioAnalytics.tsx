@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { CategoryAnalytics } from 'components';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 import { IFL } from 'hooks/useNetwork/currencies';
 
 import { formatPortfolioAnalytics } from './utils';

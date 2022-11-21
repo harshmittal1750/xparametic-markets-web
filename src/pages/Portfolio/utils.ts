@@ -267,26 +267,6 @@ function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
       },
       backgroundColor: 'blue',
       chartData: generateChartRandomData()
-    },
-    {
-      title: 'Liquidity provided',
-      value: `${roundNumber(portfolio.liquidityProvided, 3)} ${ticker}`,
-      change: {
-        type: 'up',
-        amount: 2.58
-      },
-      backgroundColor: 'pink',
-      chartData: generateChartRandomData()
-    },
-    {
-      title: 'Liquidity earnings',
-      value: `${roundNumber(portfolio.liquidityFeesEarned, 3)} ${ticker}`,
-      change: {
-        type: 'up',
-        amount: 2.58
-      },
-      backgroundColor: 'orange',
-      chartData: generateChartRandomData()
     }
   ];
 }
