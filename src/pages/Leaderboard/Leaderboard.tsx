@@ -116,7 +116,7 @@ function Leaderboard() {
   const currency = IFL;
 
   // Local state
-  const [activeTab, setActiveTab] = useState('netVolume');
+  const [activeTab, setActiveTab] = useState('wonPredictions');
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   // Query hooks
