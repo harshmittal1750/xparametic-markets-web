@@ -35,6 +35,11 @@ const tabs = [
     id: 'wonPredictions',
     title: 'Won Predictions',
     sortBy: 'claimWinningsCount'
+  },
+  {
+    id: 'transactions',
+    title: 'Transactions',
+    sortBy: 'transactions'
   }
   // {
   //   id: 'netVolume',
@@ -72,6 +77,12 @@ const columns: LeaderboardTableColumn[] = [
   {
     title: 'Won Predictions',
     key: 'wonPredictions',
+    align: 'right',
+    width: 140
+  },
+  {
+    title: 'Transactions',
+    key: 'transactions',
     align: 'right',
     width: 140
   },
@@ -124,6 +135,8 @@ function Leaderboard() {
     timeframe,
     networkId: network.id
   });
+
+  console.log(data);
 
   useEffect(() => {
     if (rightSidebarIsVisible) {

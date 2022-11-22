@@ -218,6 +218,7 @@ function prepareLeaderboardTableRows({
       //   liquidity: row.tvlLiquidity,
       //   ticker
       // },
+      transactions: row.transactions,
       achievements: row.achievements,
       rank: {
         place: index + 1,
@@ -277,6 +278,9 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
     //     : null,
     //   render: liquidityColumnRender
     // },
+    transactions: {
+      value: yourStats ? yourStats.transactions : null
+    },
     achievements: {
       value: yourStats ? yourStats.achievements : null,
       render: achievements => achievementsColumnRender(achievements, 'small')
