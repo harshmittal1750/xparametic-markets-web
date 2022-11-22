@@ -7,7 +7,6 @@ import { Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
-
 import { IFL } from 'hooks/useNetwork/currencies';
 
 import LeaderboardTable from './LeaderboardTable';
@@ -41,7 +40,7 @@ const tabs = [
     id: 'netVolume',
     title: 'Net Volume',
     sortBy: 'tvlVolume'
-  },
+  }
   // {
   //   id: 'netLiquidity',
   //   title: 'Net Liquidity',
@@ -118,7 +117,7 @@ function Leaderboard() {
 
   // Local state
   const [activeTab, setActiveTab] = useState('netVolume');
-  const [timeframe, setTimeframe] = useState<Timeframe>('1w');
+  const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   // Query hooks
   const { data, isLoading, isFetching } = useGetLeaderboardByTimeframeQuery({
@@ -148,7 +147,7 @@ function Leaderboard() {
         filters={[
           <Dropdown
             key="timeframe"
-            defaultOption="1w"
+            defaultOption="at"
             options={[
               { label: 'Weekly', value: '1w' },
               { label: 'Monthly', value: '1m' },
