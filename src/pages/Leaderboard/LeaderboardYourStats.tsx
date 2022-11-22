@@ -28,10 +28,10 @@ const columns: TableMiniColumn[] = [
     key: 'wonPredictions',
     title: 'Won Predictions'
   },
-  {
-    key: 'netVolume',
-    title: 'Net Volume'
-  },
+  // {
+  //   key: 'netVolume',
+  //   title: 'Net Volume'
+  // },
   // {
   //   key: 'netLiquidity',
   //   title: 'Net Liquidity'

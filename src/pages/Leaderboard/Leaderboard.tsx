@@ -35,12 +35,12 @@ const tabs = [
     id: 'wonPredictions',
     title: 'Won Predictions',
     sortBy: 'claimWinningsCount'
-  },
-  {
-    id: 'netVolume',
-    title: 'Net Volume',
-    sortBy: 'tvlVolume'
   }
+  // {
+  //   id: 'netVolume',
+  //   title: 'Net Volume',
+  //   sortBy: 'tvlVolume'
+  // }
   // {
   //   id: 'netLiquidity',
   //   title: 'Net Liquidity',
@@ -75,13 +75,13 @@ const columns: LeaderboardTableColumn[] = [
     align: 'right',
     width: 140
   },
-  {
-    title: 'Net Volume',
-    key: 'netVolume',
-    align: 'right',
-    width: 140,
-    render: volumeColumnRender
-  },
+  // {
+  //   title: 'Net Volume',
+  //   key: 'netVolume',
+  //   align: 'right',
+  //   width: 140,
+  //   render: volumeColumnRender
+  // },
   // {
   //   title: 'Net Liquidity',
   //   key: 'netLiquidity',

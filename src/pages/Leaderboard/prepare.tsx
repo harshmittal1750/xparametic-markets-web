@@ -210,10 +210,10 @@ function prepareLeaderboardTableRows({
       },
       // marketsCreated: row.marketsCreated,
       wonPredictions: row.claimWinningsCount,
-      netVolume: {
-        volume: row.tvlVolume,
-        ticker
-      },
+      // netVolume: {
+      //   volume: row.tvlVolume,
+      //   ticker
+      // },
       // netLiquidity: {
       //   liquidity: row.tvlLiquidity,
       //   ticker
@@ -259,15 +259,15 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
     wonPredictions: {
       value: yourStats ? yourStats.wonPredictions : null
     },
-    netVolume: {
-      value: yourStats
-        ? {
-            volume: yourStats.netVolume.volume,
-            ticker: yourStats.netVolume.ticker
-          }
-        : null,
-      render: volumeColumnRender
-    },
+    // netVolume: {
+    //   value: yourStats
+    //     ? {
+    //         volume: yourStats.netVolume.volume,
+    //         ticker: yourStats.netVolume.ticker
+    //       }
+    //     : null,
+    //   render: volumeColumnRender
+    // },
     // netLiquidity: {
     //   value: yourStats
     //     ? {
