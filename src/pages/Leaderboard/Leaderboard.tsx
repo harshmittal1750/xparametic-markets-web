@@ -23,7 +23,7 @@ import { LeaderboardTableColumn } from './types';
 const tabs = [
   {
     id: 'volume',
-    title: 'Gross Volume',
+    title: 'Volume',
     sortBy: 'volume'
   },
   // {
@@ -57,7 +57,7 @@ const columns: LeaderboardTableColumn[] = [
     render: walletColumnRender
   },
   {
-    title: 'Gross Volume',
+    title: 'Volume',
     key: 'volume',
     align: 'right',
     width: 140,
