@@ -136,8 +136,6 @@ function Leaderboard() {
     networkId: network.id
   });
 
-  console.log(data);
-
   useEffect(() => {
     if (rightSidebarIsVisible) {
       dispatch(closeRightSidebar());
