@@ -210,14 +210,15 @@ function prepareLeaderboardTableRows({
       },
       // marketsCreated: row.marketsCreated,
       wonPredictions: row.claimWinningsCount,
-      netVolume: {
-        volume: row.tvlVolume,
-        ticker
-      },
+      // netVolume: {
+      //   volume: row.tvlVolume,
+      //   ticker
+      // },
       // netLiquidity: {
       //   liquidity: row.tvlLiquidity,
       //   ticker
       // },
+      transactions: row.transactions,
       achievements: row.achievements,
       rank: {
         place: index + 1,
@@ -259,15 +260,15 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
     wonPredictions: {
       value: yourStats ? yourStats.wonPredictions : null
     },
-    netVolume: {
-      value: yourStats
-        ? {
-            volume: yourStats.netVolume.volume,
-            ticker: yourStats.netVolume.ticker
-          }
-        : null,
-      render: volumeColumnRender
-    },
+    // netVolume: {
+    //   value: yourStats
+    //     ? {
+    //         volume: yourStats.netVolume.volume,
+    //         ticker: yourStats.netVolume.ticker
+    //       }
+    //     : null,
+    //   render: volumeColumnRender
+    // },
     // netLiquidity: {
     //   value: yourStats
     //     ? {
@@ -277,6 +278,9 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
     //     : null,
     //   render: liquidityColumnRender
     // },
+    transactions: {
+      value: yourStats ? yourStats.transactions : null
+    },
     achievements: {
       value: yourStats ? yourStats.achievements : null,
       render: achievements => achievementsColumnRender(achievements, 'small')

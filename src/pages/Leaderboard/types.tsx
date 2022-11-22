@@ -21,14 +21,15 @@ export type LeaderboardTableRow = {
   };
   // marketsCreated: number;
   wonPredictions: number;
-  netVolume: {
-    volume: number;
-    ticker: string;
-  };
+  // netVolume: {
+  //   volume: number;
+  //   ticker: string;
+  // };
   // netLiquidity: {
   //   liquidity: number;
   //   ticker: string;
   // };
+  transactions: number;
   achievements: Achievement[];
   rank: {
     place: number;

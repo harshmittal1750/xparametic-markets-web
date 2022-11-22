@@ -7,7 +7,6 @@ import { Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
-
 import { IFL } from 'hooks/useNetwork/currencies';
 
 import LeaderboardTable from './LeaderboardTable';
@@ -24,7 +23,7 @@ import { LeaderboardTableColumn } from './types';
 const tabs = [
   {
     id: 'volume',
-    title: 'Gross Volume',
+    title: 'Volume',
     sortBy: 'volume'
   },
   // {
@@ -38,10 +37,15 @@ const tabs = [
     sortBy: 'claimWinningsCount'
   },
   {
-    id: 'netVolume',
-    title: 'Net Volume',
-    sortBy: 'tvlVolume'
-  },
+    id: 'transactions',
+    title: 'Transactions',
+    sortBy: 'transactions'
+  }
+  // {
+  //   id: 'netVolume',
+  //   title: 'Net Volume',
+  //   sortBy: 'tvlVolume'
+  // }
   // {
   //   id: 'netLiquidity',
   //   title: 'Net Liquidity',
@@ -58,7 +62,7 @@ const columns: LeaderboardTableColumn[] = [
     render: walletColumnRender
   },
   {
-    title: 'Gross Volume',
+    title: 'Volume',
     key: 'volume',
     align: 'right',
     width: 140,
@@ -77,12 +81,18 @@ const columns: LeaderboardTableColumn[] = [
     width: 140
   },
   {
-    title: 'Net Volume',
-    key: 'netVolume',
+    title: 'Transactions',
+    key: 'transactions',
     align: 'right',
-    width: 140,
-    render: volumeColumnRender
+    width: 140
   },
+  // {
+  //   title: 'Net Volume',
+  //   key: 'netVolume',
+  //   align: 'right',
+  //   width: 140,
+  //   render: volumeColumnRender
+  // },
   // {
   //   title: 'Net Liquidity',
   //   key: 'netLiquidity',
@@ -117,8 +127,8 @@ function Leaderboard() {
   const currency = IFL;
 
   // Local state
-  const [activeTab, setActiveTab] = useState('netVolume');
-  const [timeframe, setTimeframe] = useState<Timeframe>('1w');
+  const [activeTab, setActiveTab] = useState('wonPredictions');
+  const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   // Query hooks
   const { data, isLoading, isFetching } = useGetLeaderboardByTimeframeQuery({
@@ -148,7 +158,7 @@ function Leaderboard() {
         filters={[
           <Dropdown
             key="timeframe"
-            defaultOption="1w"
+            defaultOption="at"
             options={[
               { label: 'Weekly', value: '1w' },
               { label: 'Monthly', value: '1m' },
