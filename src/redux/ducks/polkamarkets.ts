@@ -16,7 +16,6 @@ export type Votes = { [key: string]: { upvoted: boolean; downvoted: boolean } };
 
 export type PolkamarketsInitialState = {
   isLoggedIn: boolean;
-  networkId: string;
   ethAddress: string;
   ethBalance: number;
   polkBalance: number;
@@ -38,7 +37,6 @@ export type PolkamarketsInitialState = {
 
 const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
-  networkId: '',
   ethAddress: '',
   ethBalance: 0,
   polkBalance: 0,
@@ -65,10 +63,6 @@ const polkamarketsSlice = createSlice({
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoggedIn: action.payload
-    }),
-    changeNetworkId: (state, action: PayloadAction<string>) => ({
-      ...state,
-      networkId: action.payload
     }),
     changeEthAddress: (state, action: PayloadAction<string>) => ({
       ...state,
@@ -154,7 +148,6 @@ export default polkamarketsSlice.reducer;
 
 const {
   changeIsLoggedIn,
-  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
@@ -284,7 +277,6 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
 
 export {
   changeIsLoggedIn,
-  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
