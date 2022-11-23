@@ -1,139 +1,128 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
-
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState
+} from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { environment, networks } from 'config';
-import { NetworkConfig } from 'config/environment';
 import { toHexadecimal } from 'helpers/string';
-import {
-  changeNetworkId,
-  fetchAditionalData,
-  login
-} from 'redux/ducks/polkamarkets';
-import store from 'redux/store';
-import { Network } from 'types/network';
+import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 
 import useAppDispatch from '../useAppDispatch';
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
-
 import { NetworkContextState } from './useNetwork.type';
-
-function fetchUserData(networkConfig: NetworkConfig) {
-  store.dispatch(login(networkConfig));
-  store.dispatch(fetchAditionalData(networkConfig));
-}
 
 export const NetworkContext = createContext<NetworkContextState>(
   {} as NetworkContextState
 );
+
+// Constants
+const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
+const DEFAULT_NETWORK_ID = toHexadecimal(environment.NETWORK_ID || 5);
+const DEFAULT_NETWORK = networks[DEFAULT_NETWORK_ID];
+const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
+
+const UNKNOWN_NETWORK = networks['0x270f'];
+
+function getNetwork(networkId) {
+  return networks[networkId] || UNKNOWN_NETWORK;
+}
 
 type NetworkProviderProps = {
   children: ReactNode;
 };
 
 function NetworkProvider({ children }: NetworkProviderProps) {
-  // Constants
-  const DEFAULT_NETWORK_ID = toHexadecimal(environment.NETWORK_ID || 42);
-  const DEFAULT_NETWORK = networks[DEFAULT_NETWORK_ID];
-  const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
-
-  const UNKNOWN_NETWORK = networks['0x270f'];
-
-  const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
-
-  // Third-party hooks
   const location = useLocation();
   const history = useHistory();
-
-  // Custom hooks
   const dispatch = useAppDispatch();
+
+  const walletIsConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
+
   const [localNetwork, setLocalNetwork] = useLocalStorage<string>(
     'localNetwork',
     DEFAULT_NETWORK.id
   );
 
-  // Redux state selectors
-  const metamaskWalletIsConnected = useAppSelector(
-    state => state.polkamarkets.isLoggedIn
-  );
-  const metamaskNetworkId = useAppSelector(
-    state => state.polkamarkets.networkId
-  );
+  const [metaMaskNetwork, setMetaMaskNetwork] = useState<string>();
 
-  // Derivated state
-  const metamaskNetwork = metamaskNetworkId
-    ? networks[metamaskNetworkId] || UNKNOWN_NETWORK
-    : null;
+  const setNetwork = useCallback(
+    (networkId: string) => {
+      const network = getNetwork(toHexadecimal(networkId));
 
-  const localEthereumNetworkId = toHexadecimal(localNetwork);
-  const localEthereumNetwork =
-    networks[localEthereumNetworkId] || UNKNOWN_NETWORK;
-
-  const [network, setNetwork] = useState<Network>(
-    metamaskNetwork || localEthereumNetwork || DEFAULT_NETWORK
-  );
-
-  const networkConfig = environment.NETWORKS[network.id];
-
-  if (metamaskNetwork && network !== metamaskNetwork) {
-    setNetwork(metamaskNetwork);
-  }
-
-  useEffect(() => {
-    async function getCurrentEthereumNetworkId() {
-      if (window.ethereum && metamaskWalletIsConnected) {
-        const currentEthereumNetworkId = await window.ethereum.request({
-          method: 'eth_chainId'
-        });
-
-        const currentEthereumNetwork =
-          networks[currentEthereumNetworkId] || UNKNOWN_NETWORK;
-
-        setNetwork(currentEthereumNetwork);
-
-        if (
-          metamaskWalletIsConnected &&
-          AVAILABLE_NETWORKS.includes(currentEthereumNetwork.id) &&
-          currentEthereumNetworkId !== metamaskNetworkId
-        ) {
-          fetchUserData(environment.NETWORKS[currentEthereumNetwork.id]);
-        }
-        // changing networkId on redux only after fetch portfolio has been called
-        dispatch(changeNetworkId(currentEthereumNetworkId));
-      } else {
-        setNetwork(localEthereumNetwork);
+      if (network.id !== localNetwork) {
+        setLocalNetwork(network.id);
       }
-    }
 
-    getCurrentEthereumNetworkId();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localNetwork]);
+      if (walletIsConnected && network.id !== metaMaskNetwork) {
+        setMetaMaskNetwork(network.id);
+      }
+    },
+    [localNetwork, metaMaskNetwork, setLocalNetwork, walletIsConnected]
+  );
 
-  function reloadWindow() {
+  const reloadWindow = useCallback(() => {
     history.push(`${location.pathname}?m=f`);
     window.location.reload();
-  }
+  }, [history, location.pathname]);
+
+  useEffect(() => {
+    async function getMetaMaskNetwork() {
+      const ethNetworkId = await window.ethereum.request({
+        method: 'eth_chainId'
+      });
+
+      const ethNetwork = getNetwork(ethNetworkId);
+
+      setNetwork(ethNetwork.id);
+    }
+
+    if (window.ethereum && walletIsConnected) {
+      getMetaMaskNetwork();
+    }
+  }, [setNetwork, walletIsConnected]);
+
+  const network = getNetwork(toHexadecimal(metaMaskNetwork || localNetwork));
+  const isAnAvailableNetwork = AVAILABLE_NETWORKS.includes(network.id);
+  const networkConfig =
+    environment.NETWORKS[network.id] || DEFAULT_NETWORK_CONFIG;
+
+  useEffect(() => {
+    async function fetchUserData() {
+      dispatch(login(networkConfig));
+      dispatch(fetchAditionalData(networkConfig));
+    }
+
+    if (walletIsConnected && isAnAvailableNetwork) {
+      fetchUserData();
+    }
+  }, [dispatch, isAnAvailableNetwork, networkConfig, walletIsConnected]);
 
   useEffect(() => {
     window.ethereum?.on('chainChanged', reloadWindow);
 
     return () => window.ethereum?.removeListener('chainChanged', reloadWindow);
-  }, []);
+  }, [reloadWindow]);
 
   useEffect(() => {
     window.ethereum?.on('accountsChanged', reloadWindow);
 
     return () =>
       window.ethereum?.removeListener('accountsChanged', reloadWindow);
-  }, []);
+  }, [reloadWindow]);
 
   return (
     <NetworkContext.Provider
       value={{
         network,
-        networkConfig: networkConfig || DEFAULT_NETWORK_CONFIG,
-        setNetwork: setLocalNetwork
+        networkConfig,
+        setNetwork
       }}
     >
       {children}

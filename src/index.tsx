@@ -8,6 +8,7 @@ import store from 'redux/store';
 import { ScrollToTop } from 'components';
 
 import ThemeProvider from 'contexts/theme';
+
 import { NetworkProvider } from 'hooks/useNetwork';
 
 import App from './App';
