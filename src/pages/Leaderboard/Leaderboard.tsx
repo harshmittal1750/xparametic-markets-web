@@ -13,6 +13,7 @@ import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
 import {
+  balanceColumnRender,
   liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
@@ -36,10 +37,15 @@ const tabs = [
     title: 'Won Predictions',
     sortBy: 'claimWinningsCount'
   },
+  // {
+  //   id: 'transactions',
+  //   title: 'Transactions',
+  //   sortBy: 'transactions'
+  // },
   {
-    id: 'transactions',
-    title: 'Transactions',
-    sortBy: 'transactions'
+    id: 'balance',
+    title: 'Balance',
+    sortBy: 'erc20Balance'
   }
   // {
   //   id: 'netVolume',
@@ -80,11 +86,18 @@ const columns: LeaderboardTableColumn[] = [
     align: 'right',
     width: 140
   },
+  // {
+  //   title: 'Transactions',
+  //   key: 'transactions',
+  //   align: 'right',
+  //   width: 140
+  // },
   {
-    title: 'Transactions',
-    key: 'transactions',
+    title: 'Balance',
+    key: 'balance',
     align: 'right',
-    width: 140
+    width: 140,
+    render: balanceColumnRender
   },
   // {
   //   title: 'Net Volume',

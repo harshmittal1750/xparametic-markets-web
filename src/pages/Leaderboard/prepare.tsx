@@ -150,6 +150,20 @@ function liquidityColumnRender({
   );
 }
 
+type BalanceColumnRenderArgs = {
+  balance: number;
+  ticker: string;
+};
+
+function balanceColumnRender({ balance, ticker }: BalanceColumnRenderArgs) {
+  return (
+    <span className="pm-c-leaderboard-table__balance caption semibold text-1">
+      {`${balance.toFixed(1)} `}
+      <strong className="caption semibold text-3">{ticker}</strong>
+    </span>
+  );
+}
+
 type RankColumnRenderArgs = {
   place: number;
   change: 'up' | 'down' | 'stable';
@@ -172,6 +186,7 @@ export {
   volumeColumnRender,
   achievementsColumnRender,
   liquidityColumnRender,
+  balanceColumnRender,
   rankColumnRender
 };
 
@@ -218,7 +233,11 @@ function prepareLeaderboardTableRows({
       //   liquidity: row.tvlLiquidity,
       //   ticker
       // },
-      transactions: row.transactions,
+      // transactions: row.transactions,
+      balance: {
+        balance: row.erc20Balance,
+        ticker
+      },
       achievements: row.achievements,
       rank: {
         place: index + 1,
@@ -278,8 +297,17 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
     //     : null,
     //   render: liquidityColumnRender
     // },
-    transactions: {
-      value: yourStats ? yourStats.transactions : null
+    // transactions: {
+    //   value: yourStats ? yourStats.transactions : null
+    // },
+    balance: {
+      value: yourStats
+        ? {
+            balance: yourStats.balance.balance,
+            ticker: yourStats.balance.ticker
+          }
+        : null,
+      render: balanceColumnRender
     },
     achievements: {
       value: yourStats ? yourStats.achievements : null,

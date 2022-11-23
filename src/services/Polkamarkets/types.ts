@@ -76,6 +76,7 @@ export type GetLeaderboardBaseData = {
   tvlLiquidity: number;
   claimWinningsCount: number;
   transactions: number;
+  erc20Balance: number;
   achievements: LeaderboardAchievement[];
 };
 

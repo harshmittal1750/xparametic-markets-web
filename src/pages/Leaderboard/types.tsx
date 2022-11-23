@@ -29,7 +29,11 @@ export type LeaderboardTableRow = {
   //   liquidity: number;
   //   ticker: string;
   // };
-  transactions: number;
+  // transactions: number;
+  balance: {
+    balance: number;
+    ticker: string;
+  };
   achievements: Achievement[];
   rank: {
     place: number;
