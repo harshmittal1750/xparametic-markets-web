@@ -35,9 +35,7 @@ const Market = () => {
   const { network } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions, networkId } = useAppSelector(
-    state => state.polkamarkets
-  );
+  const { actions, bondActions } = useAppSelector(state => state.polkamarkets);
   const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
   const isDiffNetwork = network.id !== market.networkId.toString();
@@ -74,15 +72,7 @@ const Market = () => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    error,
-    history,
-    isLoading,
-    market.id,
-    market.networkId,
-    network.id,
-    networkId
-  ]);
+  }, [error, history, isLoading, market.id, market.networkId, network.id]);
 
   if (!market || market.id === '' || isLoading)
     return (
