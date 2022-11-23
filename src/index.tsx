@@ -10,6 +10,7 @@ import { ScrollToTop } from 'components';
 import ThemeProvider from 'contexts/theme';
 
 import { NetworkProvider } from 'hooks/useNetwork';
+import { PolkamarketsServiceProvider } from 'hooks/usePolkamarketsService';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -24,7 +25,9 @@ const render = () => {
           <Router>
             <ScrollToTop />
             <NetworkProvider>
-              <App />
+              <PolkamarketsServiceProvider>
+                <App />
+              </PolkamarketsServiceProvider>
             </NetworkProvider>
           </Router>
         </Provider>
