@@ -105,6 +105,14 @@ export type GetLeaderboardByAddressArgs = {
   networkId: string;
 };
 
+// createLeaderboardGroup
+export type CreateLeaderboardGroupData = { slug: string };
+export type CreateLeaderboardGroupParams = {
+  title: string;
+  users: string[];
+  createdBy: string;
+};
+
 // getPortfolioFeedByAddress
 export type GetPortfolioFeedByAddressData = FeedActivity[];
 
