@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 
 import {
   setSearchQuery,
-  setSorter,
-  setSorterByEndingSoon
+  setSorter
+  // setSorterByEndingSoon
 } from 'redux/ducks/markets';
 import { closeRightSidebar } from 'redux/ducks/ui';
 
@@ -20,12 +20,12 @@ export default function HomeNav() {
   const dispatch = useAppDispatch();
   const history = useHistory();
 
-  const handleTouchedFilter = useCallback(
-    (touched: boolean) => {
-      dispatch(setSorterByEndingSoon(!touched));
-    },
-    [dispatch]
-  );
+  // const handleTouchedFilter = useCallback(
+  //   (touched: boolean) => {
+  //     dispatch(setSorterByEndingSoon(!touched));
+  //   },
+  //   [dispatch]
+  // );
 
   function handleSelectedFilter(filter: {
     value: string | number;
@@ -63,7 +63,7 @@ export default function HomeNav() {
         defaultOption="expiresAt"
         options={filters}
         onChange={handleSelectedFilter}
-        onTouch={handleTouchedFilter}
+        // onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
       />
       <Feature name="regular">
