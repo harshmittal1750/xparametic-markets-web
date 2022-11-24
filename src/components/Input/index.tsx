@@ -5,6 +5,7 @@ import Input from './Input';
 import OutcomeInput from './OutcomeInput';
 import ProbabilityInput from './ProbabilityInput';
 import SelectInput from './SelectInput';
+import TextArea from './TextArea';
 
 export {
   Input,
@@ -13,5 +14,6 @@ export {
   ImageUploadInput,
   SelectInput,
   DateInput,
-  AmountInput
+  AmountInput,
+  TextArea
 };
