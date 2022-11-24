@@ -2,6 +2,15 @@ import * as Yup from 'yup';
 
 import type { CreateLeaderboardGroupFormValues } from './CreateLeaderboardGroupForm.type';
 
+const formProps = {
+  create: {
+    submitTitle: 'Create'
+  },
+  edit: {
+    submitTitle: 'Save'
+  }
+};
+
 const initialValues: CreateLeaderboardGroupFormValues = {
   name: '',
   addresses: ''
@@ -28,4 +37,9 @@ const validationSchema = Yup.object().shape({
     .required('At least one address is required')
 });
 
-export { initialValues, validationSchema };
+const sanitizeSubmittedValues = (values: CreateLeaderboardGroupFormValues) => ({
+  title: values.name,
+  users: values.addresses.trim().split('\n')
+});
+
+export { formProps, initialValues, validationSchema, sanitizeSubmittedValues };
