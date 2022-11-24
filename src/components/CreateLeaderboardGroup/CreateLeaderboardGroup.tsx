@@ -53,6 +53,7 @@ function CreateLeaderboardGroup({
             mode={mode}
             previousValues={previousValues}
             slug={slug}
+            onHide={handleHide}
           />
         </ModalContent>
       </Modal>
