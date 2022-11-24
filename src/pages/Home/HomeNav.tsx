@@ -60,7 +60,7 @@ export default function HomeNav() {
       />
       <Filter
         description="Sort by"
-        defaultOption="volumeEur"
+        defaultOption="expiresAt"
         options={filters}
         onChange={handleSelectedFilter}
         onTouch={handleTouchedFilter}
