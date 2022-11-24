@@ -1,6 +1,8 @@
 import * as Yup from 'yup';
 
-const initialValues = {
+import type { CreateLeaderboardGroupFormValues } from './CreateLeaderboardGroupForm.type';
+
+const initialValues: CreateLeaderboardGroupFormValues = {
   name: '',
   addresses: ''
 };
