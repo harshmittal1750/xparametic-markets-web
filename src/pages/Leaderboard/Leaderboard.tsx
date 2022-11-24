@@ -7,13 +7,16 @@ import {
   useGetLeaderboardGroupBySlugQuery
 } from 'services/Polkamarkets';
 
-import { Tabs } from 'components';
+import { CreateLeaderboardGroup, Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import { IFL } from 'hooks/useNetwork/currencies';
 
-import { emptyLeaderboardRowWithoutUser } from './Leaderboard.util';
+import {
+  emptyLeaderboardRowWithoutUser,
+  sanitizePreviousCreateLeaderboardFormValues
+} from './Leaderboard.util';
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
@@ -24,7 +27,10 @@ import {
   volumeColumnRender,
   walletColumnRender
 } from './prepare';
-import { LeaderboardTableColumn } from './types';
+import type {
+  LeaderboardTableColumn,
+  CreateLeaderboardGroupState
+} from './types';
 
 const tabs = [
   {
@@ -221,9 +227,31 @@ function Leaderboard() {
 
   const userEthAddress = walletConnected ? ethAddress : undefined;
 
+  const createLeaderboardGroupState: CreateLeaderboardGroupState = {
+    enabled: walletConnected,
+    mode:
+      leaderboardGroup &&
+      leaderboardGroup.createdBy.toLowerCase() === ethAddress.toLowerCase()
+        ? 'edit'
+        : 'create',
+    previousValues: leaderboardGroup
+      ? sanitizePreviousCreateLeaderboardFormValues(leaderboardGroup)
+      : undefined,
+    slug: leaderboardGroup ? leaderboardGroup.slug : undefined
+  };
+
+  const { enabled, mode, previousValues } = createLeaderboardGroupState;
+
   return (
     <div className="pm-p-leaderboard">
       <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+      {enabled ? (
+        <CreateLeaderboardGroup
+          mode={mode}
+          previousValues={previousValues}
+          slug={slug}
+        />
+      ) : null}
       <Tabs
         direction="row"
         fullwidth

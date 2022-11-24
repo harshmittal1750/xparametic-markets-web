@@ -1,5 +1,9 @@
-/* eslint-disable import/prefer-default-export */
-import { GetLeaderboardBaseData } from 'services/Polkamarkets/types';
+import type {
+  GetLeaderboardBaseData,
+  GetLeaderboardGroupBySlugData
+} from 'services/Polkamarkets/types';
+
+import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderboardGroupForm';
 
 const emptyLeaderboardRowWithoutUser: Omit<GetLeaderboardBaseData, 'user'> = {
   marketsCreated: 0,
@@ -13,4 +17,16 @@ const emptyLeaderboardRowWithoutUser: Omit<GetLeaderboardBaseData, 'user'> = {
   achievements: []
 };
 
-export { emptyLeaderboardRowWithoutUser };
+const sanitizePreviousCreateLeaderboardFormValues = (
+  values: GetLeaderboardGroupBySlugData
+): CreateLeaderboardGroupFormValues => {
+  return {
+    name: values.title,
+    addresses: values.users.join('\n')
+  };
+};
+
+export {
+  emptyLeaderboardRowWithoutUser,
+  sanitizePreviousCreateLeaderboardFormValues
+};
