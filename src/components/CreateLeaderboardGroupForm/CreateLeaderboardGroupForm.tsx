@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { Formik, Form, FormikHelpers } from 'formik';
 import {
@@ -11,11 +12,8 @@ import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 import { Button } from 'components/Button';
 import { Input, TextArea } from 'components/Input';
 import ModalFooter from 'components/ModalFooter';
-import Toast from 'components/Toast';
-import ToastNotification from 'components/ToastNotification';
 
 import { useAppSelector } from 'hooks';
-import useToastNotification from 'hooks/useToastNotification';
 
 import CreateLeaderboardGroupFormClasses from './CreateLeaderboardGroupForm.module.scss';
 import type { CreateLeaderboardGroupFormValues } from './CreateLeaderboardGroupForm.type';
@@ -30,33 +28,55 @@ type CreateLeaderboardGroupFormProps = {
   mode: CreateLeaderboardGroupState['mode'];
   previousValues?: CreateLeaderboardGroupFormValues;
   slug?: string;
+  onHide: () => void;
 };
 
 function CreateLeaderboardGroupForm({
   mode,
   previousValues,
-  slug
+  slug,
+  onHide
 }: CreateLeaderboardGroupFormProps) {
+  const history = useHistory();
   const userEthAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
-  const { show: showToastNotification, close: closeToastNotification } =
-    useToastNotification();
+  const [
+    createLeaderboardGroup,
+    { data: createLeaderboardGroupData, isSuccess: isSuccessCreate }
+  ] = useCreateLeaderboardGroupMutation();
 
-  const [createLeaderboardGroup, { isSuccess: isSuccessCreate }] =
-    useCreateLeaderboardGroupMutation();
+  const [
+    editLeaderboardGroup,
+    { data: editLeaderboardGroupData, isSuccess: isSuccessEdit }
+  ] = useEditLeaderboardGroupMutation();
 
-  const [editLeaderboardGroup, { isSuccess: isSuccessEdit }] =
-    useEditLeaderboardGroupMutation();
+  const redirectToLeaderboardGroup = useCallback(
+    (leaderboardSlug: string) => {
+      history.push(`/leaderboard/${leaderboardSlug}?m=f`);
+      window.location.reload();
+    },
+    [history]
+  );
 
   useEffect(() => {
-    if (isSuccessCreate) {
-      showToastNotification('leaderboard-group--create');
+    if (isSuccessCreate && createLeaderboardGroupData) {
+      onHide();
+      redirectToLeaderboardGroup(createLeaderboardGroupData.slug);
     }
 
-    if (isSuccessEdit) {
-      showToastNotification('leaderboard-group--edit');
+    if (isSuccessEdit && editLeaderboardGroupData) {
+      onHide();
+      redirectToLeaderboardGroup(editLeaderboardGroupData.slug);
     }
-  }, [isSuccessCreate, isSuccessEdit, showToastNotification]);
+  }, [
+    createLeaderboardGroupData,
+    editLeaderboardGroupData,
+    history,
+    isSuccessCreate,
+    isSuccessEdit,
+    onHide,
+    redirectToLeaderboardGroup
+  ]);
 
   const handleCreate = useCallback(
     async values => {
@@ -89,68 +109,49 @@ function CreateLeaderboardGroupForm({
       } else if (mode === 'edit') {
         await handleEdit(sanitizedValues);
       }
+
+      actions.resetForm();
     },
     [handleCreate, handleEdit, mode]
   );
 
   return (
-    <>
-      <ToastNotification id={`leaderboard-group--${mode}`} duration={10000}>
-        <Toast
-          variant="success"
-          title="Success"
-          description={formProps[mode].successNotificationDescription}
-        >
-          <Toast.Actions>
+    <Formik
+      initialValues={previousValues || initialValues}
+      validationSchema={validationSchema}
+      onSubmit={handleSubmit}
+    >
+      {({ isSubmitting, dirty, isValid }) => (
+        <Form className={CreateLeaderboardGroupFormClasses.form}>
+          <Input
+            name="name"
+            label="Name"
+            placeholder="Leaderboard name"
+            disabled={isSubmitting}
+          />
+          <TextArea
+            name="addresses"
+            label="Addresses"
+            placeholder="Addresses (one per line)"
+            rows={8}
+            disabled={isSubmitting}
+          />
+          <ModalFooter>
             <Button
+              type="submit"
               size="sm"
-              variant="ghost"
-              onClick={() =>
-                closeToastNotification(`leaderboard-group--${mode}`)
-              }
+              variant="normal"
+              color="primary"
+              fullwidth
+              disabled={!dirty || !isValid || isSubmitting}
+              loading={isSubmitting}
             >
-              Dismiss
+              {formProps[mode].submitTitle}
             </Button>
-          </Toast.Actions>
-        </Toast>
-      </ToastNotification>
-      <Formik
-        initialValues={previousValues || initialValues}
-        validationSchema={validationSchema}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting, dirty, isValid }) => (
-          <Form className={CreateLeaderboardGroupFormClasses.form}>
-            <Input
-              name="name"
-              label="Name"
-              placeholder="Leaderboard name"
-              disabled={isSubmitting}
-            />
-            <TextArea
-              name="addresses"
-              label="Addresses"
-              placeholder="Addresses (one per line)"
-              rows={8}
-              disabled={isSubmitting}
-            />
-            <ModalFooter>
-              <Button
-                type="submit"
-                size="sm"
-                variant="normal"
-                color="primary"
-                fullwidth
-                disabled={!dirty || !isValid || isSubmitting}
-                loading={isSubmitting}
-              >
-                {formProps[mode].submitTitle}
-              </Button>
-            </ModalFooter>
-          </Form>
-        )}
-      </Formik>
-    </>
+          </ModalFooter>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
