@@ -10,7 +10,7 @@ import {
   getPortfolioByAddressTransformResponse,
   getPortfolioFeedByAddressTransformResponse
 } from './functions';
-import {
+import type {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
   GetMarketsByStateArgs,
@@ -36,7 +36,9 @@ import {
   CreateLeaderboardGroupData,
   CreateLeaderboardGroupParams,
   GetLeaderboardGroupBySlugData,
-  GetLeaderboardGroupBySlugArgs
+  GetLeaderboardGroupBySlugArgs,
+  EditLeaderboardGroupData,
+  EditLeaderboardGroupParams
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -142,6 +144,21 @@ const polkamarketsApi = createApi({
       transformResponse: (response: CreateLeaderboardGroupData) =>
         camelize(response)
     }),
+    editLeaderboardGroup: builder.mutation<
+      EditLeaderboardGroupData,
+      EditLeaderboardGroupParams
+    >({
+      query: ({ slug, title, users }) => ({
+        url: `/group_leaderboards/${slug}`,
+        method: 'PUT',
+        body: {
+          title,
+          users
+        }
+      }),
+      transformResponse: (response: EditLeaderboardGroupData) =>
+        camelize(response)
+    }),
     getLeaderboardGroupBySlug: builder.query<
       GetLeaderboardGroupBySlugData,
       GetLeaderboardGroupBySlugArgs
@@ -176,6 +193,7 @@ export const {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardByAddressQuery,
   useCreateLeaderboardGroupMutation,
+  useEditLeaderboardGroupMutation,
   useGetLeaderboardGroupBySlugQuery,
   useGetPortfolioFeedByAddressQuery
 } = polkamarketsApi;

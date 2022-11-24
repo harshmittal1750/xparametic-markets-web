@@ -114,6 +114,14 @@ export type CreateLeaderboardGroupParams = {
   createdBy: string;
 };
 
+// editLeaderboardGroup
+export type EditLeaderboardGroupData = LeaderboardGroup;
+export type EditLeaderboardGroupParams = {
+  slug: string;
+  title: string;
+  users: string[];
+};
+
 // getLeaderboardGroupBySlug
 export type GetLeaderboardGroupBySlugData = LeaderboardGroup;
 export type GetLeaderboardGroupBySlugArgs = {
