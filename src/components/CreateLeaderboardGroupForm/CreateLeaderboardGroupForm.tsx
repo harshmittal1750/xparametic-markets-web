@@ -87,9 +87,7 @@ function CreateLeaderboardGroupForm({
       if (mode === 'create') {
         await handleCreate(sanitizedValues);
       } else if (mode === 'edit') {
-        await handleEdit({
-          ...sanitizedValues
-        });
+        await handleEdit(sanitizedValues);
       }
     },
     [handleCreate, handleEdit, mode]
