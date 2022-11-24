@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { environment } from 'config';
-import dayjs from 'dayjs';
-import inRange from 'lodash/inRange';
+// import dayjs from 'dayjs';
+// import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
@@ -281,21 +281,21 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
         )
       : true;
 
-  const filterByisEndingSoon = expiresAt =>
-    inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
+  // const filterByisEndingSoon = expiresAt =>
+  //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
   function sorted(markets: Market[]) {
     if (state.sorter.sortBy) {
-      if (state.sorterByEndingSoon) {
-        return [
-          ...markets.filter(market => filterByisEndingSoon(market.expiresAt)),
-          ...orderBy(
-            markets.filter(market => !filterByisEndingSoon(market.expiresAt)),
-            [state.sorter.value],
-            [state.sorter.sortBy]
-          )
-        ];
-      }
+      // if (state.sorterByEndingSoon) {
+      //   return [
+      //     ...markets.filter(market => filterByisEndingSoon(market.expiresAt)),
+      //     ...orderBy(
+      //       markets.filter(market => !filterByisEndingSoon(market.expiresAt)),
+      //       [state.sorter.value],
+      //       [state.sorter.sortBy]
+      //     )
+      //   ];
+      // }
       return orderBy(markets, [state.sorter.value], [state.sorter.sortBy]);
     }
 

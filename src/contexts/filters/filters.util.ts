@@ -213,12 +213,12 @@ const filtersInitialState: FiltersState = {
         {
           label: 'Open',
           value: 'open',
-          selected: false
+          selected: true
         },
         {
           label: 'Closed',
           value: 'closed',
-          selected: false
+          selected: true
         },
         {
           label: 'Resolved',
