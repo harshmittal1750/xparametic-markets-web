@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
     .of(
       Yup.string()
         .matches(
-          /0x[a-fA-F0-9]{40}/,
+          /0[x, X][a-fA-F0-9]{40}/,
           ({ value }) =>
             `${value} should be a valid 42-character address starting with 0x`
         )
