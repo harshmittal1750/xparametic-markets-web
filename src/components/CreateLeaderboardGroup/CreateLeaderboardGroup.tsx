@@ -1,5 +1,7 @@
 import { useCallback, useState } from 'react';
 
+import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
+
 import { Button } from 'components/Button';
 import CreateLeaderboardGroupForm from 'components/CreateLeaderboardGroupForm';
 import Modal from 'components/Modal';
@@ -9,9 +11,19 @@ import ModalHeaderHide from 'components/ModalHeaderHide';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 
 import CreateLeaderboardGroupClasses from './CreateLeaderboardGroup.module.scss';
-import { ariaProps } from './CreateLeaderboardGroup.util';
+import { ariaProps, formProps } from './CreateLeaderboardGroup.util';
 
-function CreateLeaderboardGroup() {
+type CreateLeaderboardGroupProps = {
+  mode: CreateLeaderboardGroupState['mode'];
+  previousValues?: CreateLeaderboardGroupState['previousValues'];
+  slug?: string;
+};
+
+function CreateLeaderboardGroup({
+  mode,
+  previousValues,
+  slug
+}: CreateLeaderboardGroupProps) {
   const [show, setShow] = useState(false);
 
   const handleShow = useCallback(() => {
@@ -34,14 +46,18 @@ function CreateLeaderboardGroup() {
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />
             <ModalHeaderTitle id={ariaProps['aria-labelledby']}>
-              Create Leaderboard
+              {formProps[mode].title}
             </ModalHeaderTitle>
           </ModalHeader>
-          <CreateLeaderboardGroupForm />
+          <CreateLeaderboardGroupForm
+            mode={mode}
+            previousValues={previousValues}
+            slug={slug}
+          />
         </ModalContent>
       </Modal>
       <Button size="sm" variant="normal" color="primary" onClick={handleShow}>
-        Create group
+        {formProps[mode].actionTitle}
       </Button>
     </>
   );
