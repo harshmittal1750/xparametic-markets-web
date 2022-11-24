@@ -1,6 +1,6 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
-import { Formik, Form } from 'formik';
+import { Formik, Form, FormikHelpers } from 'formik';
 import {
   useCreateLeaderboardGroupMutation,
   useEditLeaderboardGroupMutation
@@ -11,8 +11,11 @@ import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 import { Button } from 'components/Button';
 import { Input, TextArea } from 'components/Input';
 import ModalFooter from 'components/ModalFooter';
+import Toast from 'components/Toast';
+import ToastNotification from 'components/ToastNotification';
 
 import { useAppSelector } from 'hooks';
+import useToastNotification from 'hooks/useToastNotification';
 
 import CreateLeaderboardGroupFormClasses from './CreateLeaderboardGroupForm.module.scss';
 import type { CreateLeaderboardGroupFormValues } from './CreateLeaderboardGroupForm.type';
@@ -36,11 +39,24 @@ function CreateLeaderboardGroupForm({
 }: CreateLeaderboardGroupFormProps) {
   const userEthAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
-  const [createLeaderboardGroup, { isLoading: isCreating }] =
+  const { show: showToastNotification, close: closeToastNotification } =
+    useToastNotification();
+
+  const [createLeaderboardGroup, { isSuccess: isSuccessCreate }] =
     useCreateLeaderboardGroupMutation();
 
-  const [editLeaderboardGroup, { isLoading: isEditing }] =
+  const [editLeaderboardGroup, { isSuccess: isSuccessEdit }] =
     useEditLeaderboardGroupMutation();
+
+  useEffect(() => {
+    if (isSuccessCreate) {
+      showToastNotification('leaderboard-group--create');
+    }
+
+    if (isSuccessEdit) {
+      showToastNotification('leaderboard-group--edit');
+    }
+  }, [isSuccessCreate, isSuccessEdit, showToastNotification]);
 
   const handleCreate = useCallback(
     async values => {
@@ -63,9 +79,11 @@ function CreateLeaderboardGroupForm({
   );
 
   const handleSubmit = useCallback(
-    async (values: CreateLeaderboardGroupFormValues) => {
+    async (
+      values: CreateLeaderboardGroupFormValues,
+      actions: FormikHelpers<CreateLeaderboardGroupFormValues>
+    ) => {
       const sanitizedValues = sanitizeSubmittedValues(values);
-
       if (mode === 'create') {
         await handleCreate(sanitizedValues);
       } else if (mode === 'edit') {
@@ -78,33 +96,63 @@ function CreateLeaderboardGroupForm({
   );
 
   return (
-    <Formik
-      initialValues={previousValues || initialValues}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      <Form className={CreateLeaderboardGroupFormClasses.form}>
-        <Input name="name" label="Name" placeholder="Leaderboard name" />
-        <TextArea
-          name="addresses"
-          label="Addresses"
-          placeholder="Addresses (one per line)"
-          rows={8}
-        />
-        <ModalFooter>
-          <Button
-            type="submit"
-            size="sm"
-            variant="normal"
-            color="primary"
-            fullwidth
-            loading={isCreating || isEditing}
-          >
-            {formProps[mode].submitTitle}
-          </Button>
-        </ModalFooter>
-      </Form>
-    </Formik>
+    <>
+      <ToastNotification id={`leaderboard-group--${mode}`} duration={10000}>
+        <Toast
+          variant="success"
+          title="Success"
+          description={formProps[mode].successNotificationDescription}
+        >
+          <Toast.Actions>
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() =>
+                closeToastNotification(`leaderboard-group--${mode}`)
+              }
+            >
+              Dismiss
+            </Button>
+          </Toast.Actions>
+        </Toast>
+      </ToastNotification>
+      <Formik
+        initialValues={previousValues || initialValues}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ isSubmitting, dirty, isValid }) => (
+          <Form className={CreateLeaderboardGroupFormClasses.form}>
+            <Input
+              name="name"
+              label="Name"
+              placeholder="Leaderboard name"
+              disabled={isSubmitting}
+            />
+            <TextArea
+              name="addresses"
+              label="Addresses"
+              placeholder="Addresses (one per line)"
+              rows={8}
+              disabled={isSubmitting}
+            />
+            <ModalFooter>
+              <Button
+                type="submit"
+                size="sm"
+                variant="normal"
+                color="primary"
+                fullwidth
+                disabled={!dirty || !isValid || isSubmitting}
+                loading={isSubmitting}
+              >
+                {formProps[mode].submitTitle}
+              </Button>
+            </ModalFooter>
+          </Form>
+        )}
+      </Formik>
+    </>
   );
 }
 

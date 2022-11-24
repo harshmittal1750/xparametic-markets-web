@@ -4,10 +4,12 @@ import type { CreateLeaderboardGroupFormValues } from './CreateLeaderboardGroupF
 
 const formProps = {
   create: {
-    submitTitle: 'Create'
+    submitTitle: 'Create',
+    successNotificationDescription: 'Leaderboard group created!'
   },
   edit: {
-    submitTitle: 'Save'
+    submitTitle: 'Save changes',
+    successNotificationDescription: 'Leaderboard group changed!'
   }
 };
 
