@@ -247,11 +247,11 @@ function Leaderboard() {
         <div className="flex-column gap-3">
           <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
           {leaderboardGroup ? (
-            <p className="caption medium text-2">
+            <p className="tiny medium text-2">
               {`Need help? Check out the `}
               <Link
                 title="docs"
-                scale="caption"
+                scale="tiny"
                 fontWeight="medium"
                 href="https://ifl.polkamarkets.com/docs/group-leaderboards"
                 target="_blank"
