@@ -7,7 +7,7 @@ import {
   useGetLeaderboardGroupBySlugQuery
 } from 'services/Polkamarkets';
 
-import { CreateLeaderboardGroup, Link, Tabs } from 'components';
+import { CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -32,6 +32,8 @@ import type {
   LeaderboardTableColumn,
   CreateLeaderboardGroupState
 } from './types';
+
+const IFL_META_LEADERBOARD = `${process.env.PUBLIC_URL}/ifl_meta_leaderboard.png`;
 
 const tabs = [
   {
@@ -244,6 +246,11 @@ function Leaderboard() {
 
   return (
     <div className="pm-p-leaderboard">
+      <SEO
+        title="Leaderboard - Illuminate Fantasy League, powered by Polkamarkets"
+        description="Rank up higher on the leaderboard and be the #1 forecaster of the Football World Cup. The best global players will earn prizes from the $1500 USD pool, distributed as gift cards."
+        imageUrl={IFL_META_LEADERBOARD}
+      />
       <div className="pm-p-leaderboard__header">
         <div className="flex-column gap-3">
           <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
