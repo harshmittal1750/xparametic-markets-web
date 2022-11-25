@@ -6,7 +6,7 @@ import { closeRightSidebar } from 'redux/ducks/ui';
 import { PolkamarketsService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 
-import { Button, Toast, ToastNotification } from 'components';
+import { Button, SEO, Toast, ToastNotification } from 'components';
 import {
   Achievement,
   AchievementFilter,
@@ -18,6 +18,8 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import AchievementsEmpty from './AchievementsEmpty';
 import AchievementsLoading from './AchievementsLoading';
+
+const IFL_META_ACHIEVEMENTS = `${process.env.PUBLIC_URL}/ifl_meta_achievements.png`;
 
 const achievementFilters: Item[] = [
   {
@@ -142,6 +144,11 @@ function Achievements() {
 
   return (
     <div className="pm-p-achievements flex-column gap-4">
+      <SEO
+        title="NFT Achievements - Illuminate Fantasy League, powered by Polkamarkets"
+        description="Predict Football World Cup match winners and grab your exclusive NFT Achievements. The Illuminate Fantasy League is a fantasy predictions tournament focused on the 2022 Football World Cup."
+        imageUrl={IFL_META_ACHIEVEMENTS}
+      />
       <div className="flex-row wrap justify-space-between align-center gap-6 padding-bottom-3">
         <h1 className="pm-p-achievements__title heading semibold">
           Achievements
