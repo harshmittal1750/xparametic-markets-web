@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Formik, Form, FormikHelpers } from 'formik';
+import { Formik, Form } from 'formik';
 import {
   useCreateLeaderboardGroupMutation,
   useEditLeaderboardGroupMutation
@@ -99,18 +99,13 @@ function CreateLeaderboardGroupForm({
   );
 
   const handleSubmit = useCallback(
-    async (
-      values: CreateLeaderboardGroupFormValues,
-      actions: FormikHelpers<CreateLeaderboardGroupFormValues>
-    ) => {
+    async (values: CreateLeaderboardGroupFormValues) => {
       const sanitizedValues = sanitizeSubmittedValues(values);
       if (mode === 'create') {
         await handleCreate(sanitizedValues);
       } else if (mode === 'edit') {
         await handleEdit(sanitizedValues);
       }
-
-      actions.resetForm();
     },
     [handleCreate, handleEdit, mode]
   );
