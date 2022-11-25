@@ -130,6 +130,7 @@ function CreateLeaderboardGroupForm({
             placeholder="Addresses (one per line)"
             rows={8}
             disabled={isSubmitting}
+            className={CreateLeaderboardGroupFormClasses.textarea}
           />
           <ModalFooter>
             <Button
