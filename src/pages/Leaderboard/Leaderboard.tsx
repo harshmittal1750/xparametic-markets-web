@@ -244,14 +244,16 @@ function Leaderboard() {
 
   return (
     <div className="pm-p-leaderboard">
-      <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-      {enabled ? (
-        <CreateLeaderboardGroup
-          mode={mode}
-          previousValues={previousValues}
-          slug={slug}
-        />
-      ) : null}
+      <div className="pm-p-leaderboard__header">
+        <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+        {enabled ? (
+          <CreateLeaderboardGroup
+            mode={mode}
+            previousValues={previousValues}
+            slug={slug}
+          />
+        ) : null}
+      </div>
       <Tabs
         direction="row"
         fullwidth
