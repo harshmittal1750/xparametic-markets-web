@@ -250,6 +250,7 @@ function Leaderboard() {
             mode={mode}
             previousValues={previousValues}
             slug={slug}
+            disabled={isLoadingQuery}
           />
         ) : null}
       </div>
