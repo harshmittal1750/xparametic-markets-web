@@ -7,10 +7,10 @@ export const ariaProps = {
 export const formProps = {
   create: {
     title: 'Create Leaderboard',
-    actionTitle: 'Create'
+    actionTitle: 'Create Leaderboard'
   },
   edit: {
     title: 'Edit Leaderboard',
-    actionTitle: 'Edit'
+    actionTitle: 'Edit Leaderboard'
   }
 };
