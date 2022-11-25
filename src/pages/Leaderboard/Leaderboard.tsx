@@ -7,7 +7,7 @@ import {
   useGetLeaderboardGroupBySlugQuery
 } from 'services/Polkamarkets';
 
-import { CreateLeaderboardGroup, Tabs } from 'components';
+import { CreateLeaderboardGroup, Link, Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -244,7 +244,21 @@ function Leaderboard() {
   return (
     <div className="pm-p-leaderboard">
       <div className="pm-p-leaderboard__header">
-        <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+        <div className="flex-column gap-3">
+          <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+          {leaderboardGroup ? (
+            <p className="caption medium text-2">
+              {`Need help? Check out the `}
+              <Link
+                title="docs"
+                scale="caption"
+                fontWeight="medium"
+                href="https://ifl.polkamarkets.com/docs/group-leaderboards"
+                target="_blank"
+              />
+            </p>
+          ) : null}
+        </div>
         {enabled ? (
           <CreateLeaderboardGroup
             mode={mode}
