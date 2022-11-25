@@ -249,9 +249,9 @@ function Leaderboard() {
           <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
           {leaderboardGroup ? (
             <p className="tiny medium text-2">
-              {`Need help? Check out the `}
+              {`Play the IFL with your friends, coworkers and community. `}
               <Link
-                title="docs"
+                title="Learn more"
                 scale="tiny"
                 fontWeight="medium"
                 href="https://ifl.polkamarkets.com/docs/group-leaderboards"
