@@ -17,12 +17,14 @@ type CreateLeaderboardGroupProps = {
   mode: CreateLeaderboardGroupState['mode'];
   previousValues?: CreateLeaderboardGroupState['previousValues'];
   slug?: string;
+  disabled?: boolean;
 };
 
 function CreateLeaderboardGroup({
   mode,
   previousValues,
-  slug
+  slug,
+  disabled
 }: CreateLeaderboardGroupProps) {
   const [show, setShow] = useState(false);
 
@@ -57,7 +59,13 @@ function CreateLeaderboardGroup({
           />
         </ModalContent>
       </Modal>
-      <Button size="sm" variant="normal" color="primary" onClick={handleShow}>
+      <Button
+        size="sm"
+        variant="normal"
+        color="primary"
+        onClick={handleShow}
+        disabled={disabled}
+      >
         {formProps[mode].actionTitle}
       </Button>
     </>
