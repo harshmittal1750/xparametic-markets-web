@@ -17,6 +17,7 @@ import {
   emptyLeaderboardRowWithoutUser,
   sanitizePreviousCreateLeaderboardFormValues
 } from './Leaderboard.util';
+import LeaderboardMyLeaderboards from './LeaderboardMyLeaderboards';
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
@@ -312,6 +313,9 @@ function Leaderboard() {
                   sortBy={tab.sortBy}
                   isLoading={isLoadingQuery}
                 />
+                {walletConnected ? (
+                  <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
+                ) : null}
               </div>
             </div>
           </Tabs.TabPane>
