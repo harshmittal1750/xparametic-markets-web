@@ -23,7 +23,7 @@ function ProfileYourStats({ address }: ProfileYourStatsProps) {
   const currency = IFL;
 
   // Local state
-  const [timeframe, setTimeframe] = useState<Timeframe>('1w');
+  const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   const { data: leaderboard, isLoading } = useGetLeaderboardByAddressQuery({
     address,
@@ -57,7 +57,7 @@ function ProfileYourStats({ address }: ProfileYourStatsProps) {
         </Text>
         <Dropdown
           key="timeframe"
-          defaultOption="1w"
+          defaultOption="at"
           options={[
             { label: 'Weekly', value: '1w' },
             { label: 'Monthly', value: '1m' },
