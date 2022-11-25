@@ -1,3 +1,4 @@
+import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderboardGroupForm';
 import { TableColumn } from 'components/new/Table';
 import { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
 
@@ -45,3 +46,10 @@ export type LeaderboardTableRow = {
 
 export type LeaderboardTopWalletsColumn = TableMiniColumn;
 export type LeaderboardTopWalletsRow = TableMiniRow;
+
+export type CreateLeaderboardGroupState = {
+  enabled: boolean;
+  mode: 'create' | 'edit';
+  previousValues?: CreateLeaderboardGroupFormValues;
+  slug?: string;
+};

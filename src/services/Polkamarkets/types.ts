@@ -2,6 +2,7 @@ import { Market } from 'models/market';
 import { Achievement } from 'types/achievement';
 import {
   LeaderboardAchievement,
+  LeaderboardGroup,
   LeaderboardTimeframe
 } from 'types/leaderboard';
 import { MarketState } from 'types/market';
@@ -103,6 +104,28 @@ export type GetLeaderboardByAddressArgs = {
   address: string;
   timeframe: LeaderboardTimeframe;
   networkId: string;
+};
+
+// createLeaderboardGroup
+export type CreateLeaderboardGroupData = { slug: string };
+export type CreateLeaderboardGroupParams = {
+  title: string;
+  users: string[];
+  createdBy: string;
+};
+
+// editLeaderboardGroup
+export type EditLeaderboardGroupData = LeaderboardGroup;
+export type EditLeaderboardGroupParams = {
+  slug: string;
+  title: string;
+  users: string[];
+};
+
+// getLeaderboardGroupBySlug
+export type GetLeaderboardGroupBySlugData = LeaderboardGroup;
+export type GetLeaderboardGroupBySlugArgs = {
+  slug: string;
 };
 
 // getPortfolioFeedByAddress

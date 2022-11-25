@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { closeRightSidebar } from 'redux/ducks/ui';
-import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
+import {
+  useGetLeaderboardByTimeframeQuery,
+  useGetLeaderboardGroupBySlugQuery
+} from 'services/Polkamarkets';
 
-import { Tabs } from 'components';
+import { CreateLeaderboardGroup, Link, Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import { IFL } from 'hooks/useNetwork/currencies';
 
+import {
+  emptyLeaderboardRowWithoutUser,
+  sanitizePreviousCreateLeaderboardFormValues
+} from './Leaderboard.util';
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
@@ -19,7 +27,10 @@ import {
   volumeColumnRender,
   walletColumnRender
 } from './prepare';
-import { LeaderboardTableColumn } from './types';
+import type {
+  LeaderboardTableColumn,
+  CreateLeaderboardGroupState
+} from './types';
 
 const tabs = [
   {
@@ -122,9 +133,15 @@ const columns: LeaderboardTableColumn[] = [
   }
 ];
 
+type LeaderboardURLParams = {
+  slug?: string;
+};
+
 type Timeframe = '1w' | '1m' | 'at';
 
 function Leaderboard() {
+  const { slug } = useParams<LeaderboardURLParams>();
+
   // Redux selectors
   const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
@@ -143,26 +160,114 @@ function Leaderboard() {
   const [activeTab, setActiveTab] = useState('wonPredictions');
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
-  // Query hooks
-  const { data, isLoading, isFetching } = useGetLeaderboardByTimeframeQuery({
-    timeframe,
-    networkId: network.id
-  });
-
   useEffect(() => {
     if (rightSidebarIsVisible) {
       dispatch(closeRightSidebar());
     }
   }, [rightSidebarIsVisible, dispatch]);
 
-  const userEthAddress = walletConnected ? ethAddress : undefined;
+  // Query hooks
+  const {
+    data: leaderboardByTimeframe,
+    isLoading: isLoadingLeaderboardByTimeframe,
+    isFetching: isFetchingLeaderboardByTimeframe
+  } = useGetLeaderboardByTimeframeQuery({
+    timeframe,
+    networkId: network.id
+  });
 
-  const isLoadingQuery = isLoading || isFetching;
+  const isLoadingLeaderboardByTimeframeQuery =
+    isLoadingLeaderboardByTimeframe || isFetchingLeaderboardByTimeframe;
+
+  const {
+    data: leaderboardGroup,
+    isLoading: isLoadingLeaderboardGroup,
+    isFetching: isFetchingLeaderboardGroup
+  } = useGetLeaderboardGroupBySlugQuery(
+    {
+      slug: slug || ''
+    },
+    { skip: isLoadingLeaderboardByTimeframeQuery || !slug }
+  );
+
+  const isLoadingGetLeaderboardGroupBySlugQuery =
+    isLoadingLeaderboardGroup || isFetchingLeaderboardGroup;
+
+  const data = useMemo(() => {
+    if (leaderboardByTimeframe && leaderboardGroup) {
+      return leaderboardGroup.users.map(user => {
+        const userInLeaderboardByTimeframe = leaderboardByTimeframe.find(
+          row => row.user === user
+        );
+
+        return (
+          userInLeaderboardByTimeframe || {
+            user,
+            ...emptyLeaderboardRowWithoutUser
+          }
+        );
+      });
+    }
+
+    if (leaderboardByTimeframe && !isLoadingLeaderboardGroup) {
+      return leaderboardByTimeframe;
+    }
+
+    return [];
+  }, [isLoadingLeaderboardGroup, leaderboardByTimeframe, leaderboardGroup]);
+
+  const isLoadingQuery =
+    isLoadingLeaderboardByTimeframeQuery ||
+    isLoadingGetLeaderboardGroupBySlugQuery;
   const ticker = currency.symbol || currency.ticker;
+
+  const leaderboardTitle = leaderboardGroup
+    ? `${leaderboardGroup.title} - Leaderboard`
+    : 'Leaderboard';
+
+  const userEthAddress = walletConnected ? ethAddress : undefined;
+  const leaderboardCreatedByUser =
+    leaderboardGroup &&
+    leaderboardGroup.createdBy.toLowerCase() === ethAddress.toLowerCase();
+
+  const createLeaderboardGroupState: CreateLeaderboardGroupState = {
+    enabled: walletConnected,
+    mode: leaderboardCreatedByUser ? 'edit' : 'create',
+    previousValues: leaderboardCreatedByUser
+      ? sanitizePreviousCreateLeaderboardFormValues(leaderboardGroup)
+      : undefined,
+    slug: leaderboardGroup ? leaderboardGroup.slug : undefined
+  };
+
+  const { enabled, mode, previousValues } = createLeaderboardGroupState;
 
   return (
     <div className="pm-p-leaderboard">
-      <h1 className="heading semibold text-1">Leaderboard</h1>
+      <div className="pm-p-leaderboard__header">
+        <div className="flex-column gap-3">
+          <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+          {leaderboardGroup ? (
+            <p className="tiny medium text-2">
+              {`Need help? Check out the `}
+              <Link
+                title="docs"
+                scale="tiny"
+                fontWeight="medium"
+                href="https://ifl.polkamarkets.com/docs/group-leaderboards"
+                target="_blank"
+              />
+            </p>
+          ) : null}
+        </div>
+        {enabled ? (
+          <CreateLeaderboardGroup
+            mode={mode}
+            previousValues={previousValues}
+            slug={slug}
+            disabled={isLoadingQuery}
+          />
+        ) : null}
+      </div>
       <Tabs
         direction="row"
         fullwidth

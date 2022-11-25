@@ -78,7 +78,7 @@ const AppRoutes = () => {
           <Route component={Portfolio} path="/portfolio" />
           <Route component={CreateMarket} path="/market/create" />
           <Route component={Achievements} path="/achievements" />
-          <Route component={Leaderboard} path="/leaderboard" />
+          <Route component={Leaderboard} path="/leaderboard/:slug?" />
           <Route component={Profile} path="/user/:address" />
         </Switch>
       </Suspense>
