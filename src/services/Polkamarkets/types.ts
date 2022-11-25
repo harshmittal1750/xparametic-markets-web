@@ -3,7 +3,8 @@ import { Achievement } from 'types/achievement';
 import {
   LeaderboardAchievement,
   LeaderboardGroup,
-  LeaderboardTimeframe
+  LeaderboardTimeframe,
+  UserLeaderboard
 } from 'types/leaderboard';
 import { MarketState } from 'types/market';
 import { FeedActivity } from 'types/portfolio';
@@ -127,6 +128,10 @@ export type GetLeaderboardGroupBySlugData = LeaderboardGroup;
 export type GetLeaderboardGroupBySlugArgs = {
   slug: string;
 };
+
+// getUserLeaderboards
+export type GetLeaderboardGroupsByUserData = UserLeaderboard[];
+export type GetLeaderboardGroupsByUserArgs = { user: string };
 
 // getPortfolioFeedByAddress
 export type GetPortfolioFeedByAddressData = FeedActivity[];

@@ -4,6 +4,7 @@ import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 
 import { Button } from 'components/Button';
 import CreateLeaderboardGroupForm from 'components/CreateLeaderboardGroupForm';
+import Link from 'components/Link';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalHeader from 'components/ModalHeader';
@@ -50,6 +51,16 @@ function CreateLeaderboardGroup({
             <ModalHeaderTitle id={ariaProps['aria-labelledby']}>
               {formProps[mode].title}
             </ModalHeaderTitle>
+            <p className="tiny medium text-2 margin-top-3">
+              {`Need help? Check out the `}
+              <Link
+                title="docs"
+                scale="tiny"
+                fontWeight="medium"
+                href="https://ifl.polkamarkets.com/docs/group-leaderboards"
+                target="_blank"
+              />
+            </p>
           </ModalHeader>
           <CreateLeaderboardGroupForm
             mode={mode}

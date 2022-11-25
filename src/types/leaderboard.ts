@@ -27,3 +27,10 @@ export type LeaderboardGroup = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type UserLeaderboard = {
+  id: number;
+  title: string;
+  slug: string;
+  admin: boolean;
+};
