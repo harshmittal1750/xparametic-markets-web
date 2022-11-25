@@ -247,18 +247,16 @@ function Leaderboard() {
       <div className="pm-p-leaderboard__header">
         <div className="flex-column gap-3">
           <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-          {leaderboardGroup ? (
-            <p className="tiny medium text-2">
-              {`Play the IFL with your friends, coworkers and community. `}
-              <Link
-                title="Learn more"
-                scale="tiny"
-                fontWeight="medium"
-                href="https://ifl.polkamarkets.com/docs/group-leaderboards"
-                target="_blank"
-              />
-            </p>
-          ) : null}
+          <p className="tiny medium text-2">
+            {`Play the IFL with your friends, coworkers and community. `}
+            <Link
+              title="Learn more"
+              scale="tiny"
+              fontWeight="medium"
+              href="https://ifl.polkamarkets.com/docs/group-leaderboards"
+              target="_blank"
+            />
+          </p>
         </div>
         {enabled ? (
           <CreateLeaderboardGroup
