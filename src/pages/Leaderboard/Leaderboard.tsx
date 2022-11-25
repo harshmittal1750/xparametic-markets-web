@@ -226,15 +226,14 @@ function Leaderboard() {
     : 'Leaderboard';
 
   const userEthAddress = walletConnected ? ethAddress : undefined;
+  const leaderboardCreatedByUser =
+    leaderboardGroup &&
+    leaderboardGroup.createdBy.toLowerCase() === ethAddress.toLowerCase();
 
   const createLeaderboardGroupState: CreateLeaderboardGroupState = {
     enabled: walletConnected,
-    mode:
-      leaderboardGroup &&
-      leaderboardGroup.createdBy.toLowerCase() === ethAddress.toLowerCase()
-        ? 'edit'
-        : 'create',
-    previousValues: leaderboardGroup
+    mode: leaderboardCreatedByUser ? 'edit' : 'create',
+    previousValues: leaderboardCreatedByUser
       ? sanitizePreviousCreateLeaderboardFormValues(leaderboardGroup)
       : undefined,
     slug: leaderboardGroup ? leaderboardGroup.slug : undefined
