@@ -38,7 +38,9 @@ import type {
   GetLeaderboardGroupBySlugData,
   GetLeaderboardGroupBySlugArgs,
   EditLeaderboardGroupData,
-  EditLeaderboardGroupParams
+  EditLeaderboardGroupParams,
+  GetLeaderboardGroupsByUserData,
+  GetLeaderboardGroupsByUserArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -167,6 +169,14 @@ const polkamarketsApi = createApi({
       transformResponse: (response: GetLeaderboardGroupBySlugData) =>
         camelize(response)
     }),
+    getLeaderboardGroupsByUser: builder.query<
+      GetLeaderboardGroupsByUserData,
+      GetLeaderboardGroupsByUserArgs
+    >({
+      query: ({ user }) => `/group_leaderboards/?user=${user}`,
+      transformResponse: (response: GetLeaderboardGroupsByUserData) =>
+        camelize(response)
+    }),
     getPortfolioFeedByAddress: builder.query<
       GetPortfolioFeedByAddressData,
       GetPortfolioFeedByAddressArgs
@@ -195,5 +205,6 @@ export const {
   useCreateLeaderboardGroupMutation,
   useEditLeaderboardGroupMutation,
   useGetLeaderboardGroupBySlugQuery,
+  useGetLeaderboardGroupsByUserQuery,
   useGetPortfolioFeedByAddressQuery
 } = polkamarketsApi;
