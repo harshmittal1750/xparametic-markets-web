@@ -38,7 +38,7 @@ function LeaderboardMyLeaderboards({
           style={{ border: 'none' }}
           styles="outline"
           variant="information"
-          description="You don't belong to any leaderboards."
+          description="You don't belong to any leaderboard."
         />
       ) : null}
       {!isLoading && !isEmpty(data) ? (
