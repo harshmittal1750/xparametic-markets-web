@@ -1,8 +1,9 @@
 .pm-p-home {
-  @include flex-column($gap: px-to-rem(24px));
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-24);
+
   height: 100%;
-  width: 100%;
-  margin: px-to-rem(0px) auto;
 
   &__hero {
     display: flex;
@@ -11,7 +12,7 @@
     gap: 24px;
 
     width: 100%;
-    margin-bottom: 20px;
+    margin-bottom: var(--grid-margin);
 
     &__content {
       display: block;
@@ -32,7 +33,7 @@
   &__navigation {
     display: flex;
 
-    &__actions {
+    &__actions:not(:last-child) {
       margin-right: 12px;
     }
   }

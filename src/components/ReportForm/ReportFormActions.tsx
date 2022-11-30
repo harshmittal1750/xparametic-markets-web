@@ -114,7 +114,7 @@ function ReportFormActions({
   }
 
   function handleCancel() {
-    dispatch(selectOutcome('', ''));
+    dispatch(selectOutcome('', '', ''));
     dispatch(closeReportForm());
   }
 

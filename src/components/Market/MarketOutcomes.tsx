@@ -43,12 +43,22 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
   );
+  const selectedMarketNetworkId = useAppSelector(
+    state => state.trade.selectedMarketNetworkId
+  );
 
   const { id, marketId, title, price } = outcome;
 
-  const isCurrentSelectedMarket = marketId === selectedMarketId;
+  const isCurrentSelectedMarketNetwork =
+    market.networkId === selectedMarketNetworkId;
+
+  const isCurrentSelectedMarket =
+    marketId === selectedMarketId && isCurrentSelectedMarketNetwork;
+
   const isCurrentSelectedPrediction =
-    marketId === selectedMarketId && id === selectedOutcomeId;
+    marketId === selectedMarketId &&
+    id === selectedOutcomeId &&
+    isCurrentSelectedMarketNetwork;
 
   const isMarketResolved = market.state === 'resolved';
   const isVoided = market.voided;
@@ -82,9 +92,9 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
     }
 
     if (!isCurrentSelectedPrediction) {
-      dispatch(selectOutcome(market.id, outcome.id));
+      dispatch(selectOutcome(market.id, market.networkId, outcome.id));
     } else {
-      dispatch(selectOutcome(market.id, ''));
+      dispatch(selectOutcome(market.id, market.networkId, ''));
       dispatch(closeTradeForm());
     }
   }

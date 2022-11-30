@@ -3,6 +3,7 @@ import { useState, useMemo, memo } from 'react';
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
+import { useMedia } from 'ui';
 
 import { ButtonGroup, PortfolioMarketTable, Filter } from 'components';
 
@@ -19,13 +20,14 @@ function TabsFilter() {
 
   return (
     <Filter
-      description="Filter by"
+      description="Filter:"
       defaultOption="open"
       options={[
         { value: 'open', name: 'Open' },
         { value: 'resolved', name: 'Resolved' }
       ]}
       onChange={handleChangeFilter}
+      className="portfolio-tabs__header-filter"
     />
   );
 }
@@ -35,7 +37,7 @@ const PortfolioTabsFilter = memo(TabsFilter);
 function PortfolioTabs() {
   const { network } = useNetwork();
   const [currentTab, setCurrentTab] = useState('marketPositions');
-
+  const isDesktop = useMedia('(min-width: 1024px)');
   const {
     portfolio,
     actions,
@@ -44,6 +46,7 @@ function PortfolioTabs() {
     isLoading
   } = useAppSelector(state => state.polkamarkets);
 
+  const positionsTypo = isDesktop ? ' Positions' : '';
   const { portfolio: isLoadingPortfolio, actions: isLoadingActions } =
     isLoading;
 
@@ -73,7 +76,7 @@ function PortfolioTabs() {
           buttons={[
             {
               id: 'marketPositions',
-              name: 'Market Positions',
+              name: `Market${positionsTypo}`,
               color: 'default'
             }
           ]}
@@ -86,7 +89,16 @@ function PortfolioTabs() {
         {currentTab === 'marketPositions' ? (
           <PortfolioMarketTable
             rows={marketPositions.rows}
-            headers={marketPositions.headers}
+            headers={
+              isDesktop
+                ? marketPositions.headers
+                : marketPositions.headers.filter(
+                    header =>
+                      header.key === 'market' ||
+                      header.key === 'outcome' ||
+                      header.key === 'profit'
+                  )
+            }
             isLoadingData={
               isLoadingMarkets || isLoadingPortfolio || isLoadingActions
             }

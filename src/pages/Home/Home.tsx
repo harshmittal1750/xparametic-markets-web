@@ -34,7 +34,7 @@ export default function Home() {
     <div className="pm-p-home">
       <HomeNav />
       <VoteProvider>
-        <MarketListAsync markets={markets} />
+        <MarketListAsync markets={markets} favoriteMarkets={favoriteMarkets} />
       </VoteProvider>
     </div>
   );

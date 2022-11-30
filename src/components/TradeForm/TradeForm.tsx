@@ -16,7 +16,9 @@ import TradeFormTypeSelector from './TradeFormTypeSelector';
 function TradeForm() {
   const dispatch = useAppDispatch();
 
-  const { id, outcomes } = useAppSelector(state => state.market.market);
+  const { id, networkId, outcomes } = useAppSelector(
+    state => state.market.market
+  );
   const marketState = useAppSelector(state => state.market.market.state);
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
@@ -33,9 +35,9 @@ function TradeForm() {
 
   useEffect(() => {
     if (!isCurrentSelectedMarket) {
-      dispatch(selectOutcome(id, outcomes[0].id));
+      dispatch(selectOutcome(id, networkId, outcomes[0].id));
     }
-  }, [isCurrentSelectedMarket, dispatch, id, outcomes]);
+  }, [isCurrentSelectedMarket, dispatch, id, outcomes, networkId]);
 
   if (isLoadingMarket) return null;
 

@@ -16,6 +16,9 @@ function TradeFormPredictions() {
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
   );
+  const selectedMarketNetworkId = useAppSelector(
+    state => state.trade.selectedMarketNetworkId
+  );
   const selectedOutcomeId = useAppSelector(
     state => state.trade.selectedOutcomeId
   );
@@ -30,7 +33,7 @@ function TradeFormPredictions() {
   if (!isMarketPage) return null;
 
   function handleChangeSelectedPrediction(id: string | number) {
-    dispatch(selectOutcome(selectedMarketId, id));
+    dispatch(selectOutcome(selectedMarketId, selectedMarketNetworkId, id));
   }
 
   return (

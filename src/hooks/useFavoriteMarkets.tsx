@@ -1,5 +1,5 @@
 /* eslint-disable import/no-cycle */
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 
 import uniq from 'lodash/uniq';
 import without from 'lodash/without';
@@ -11,19 +11,25 @@ function useFavoriteMarkets() {
     FavoriteMarketsContext
   );
 
-  function addFavoriteMarket(networkId: string, marketId: string) {
-    setFavoriteMarkets({
-      ...favoriteMarkets,
-      [networkId]: uniq([...(favoriteMarkets[networkId] || []), marketId])
-    });
-  }
+  const addFavoriteMarket = useCallback(
+    (networkId: string, marketId: string) => {
+      setFavoriteMarkets({
+        ...favoriteMarkets,
+        [networkId]: uniq([...(favoriteMarkets[networkId] || []), marketId])
+      });
+    },
+    [favoriteMarkets, setFavoriteMarkets]
+  );
 
-  function removeFavoriteMarket(networkId: string, marketId: string) {
-    setFavoriteMarkets({
-      ...favoriteMarkets,
-      [networkId]: [...without(favoriteMarkets[networkId] || [], marketId)]
-    });
-  }
+  const removeFavoriteMarket = useCallback(
+    (networkId: string, marketId: string) => {
+      setFavoriteMarkets({
+        ...favoriteMarkets,
+        [networkId]: [...without(favoriteMarkets[networkId] || [], marketId)]
+      });
+    },
+    [favoriteMarkets, setFavoriteMarkets]
+  );
 
   return {
     favoriteMarkets,

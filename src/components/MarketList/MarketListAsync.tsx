@@ -4,27 +4,76 @@ import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 import { getFavoriteMarkets, getMarkets } from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
+import { Hero, useMedia } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
+import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
+import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
 
-import { Button } from 'components/Button';
+import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
-import { useAppSelector, useFavoriteMarkets, useFooterVisibility } from 'hooks';
+import { useAppSelector, useFooterVisibility } from 'hooks';
 
+import { Button } from '../Button';
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
 import VirtualizedList from '../VirtualizedList';
 
+function MarketListHeader() {
+  return (
+    <Hero className="pm-p-home__hero" image={heroBanner}>
+      <div className="pm-p-home__hero__content">
+        <div className="pm-p-home__hero__breadcrumb">
+          <Text
+            as="span"
+            scale="tiny-uppercase"
+            fontWeight="semibold"
+            color="white-50"
+          >
+            Illuminate Fantasy League / World Cup 2022
+          </Text>
+        </div>
+        <Text
+          as="h2"
+          fontWeight="bold"
+          scale="heading-large"
+          color="light"
+          className="pm-p-home__hero__heading"
+        >
+          Place your World Cup predictions to win the IFL Title!
+        </Text>
+        <Button
+          size="sm"
+          color="primary"
+          onClick={() => window.open('/docs', '_blank')}
+        >
+          About IFL
+        </Button>
+      </div>
+      <img
+        alt="Illuminate Fantasy League"
+        width={293}
+        height={205}
+        src={heroLogo}
+      />
+    </Hero>
+  );
+}
+
 type MarketListAsyncProps = {
   markets: Market[];
+  favoriteMarkets: FavoriteMarketsByNetwork;
 };
 
-const MarketListAsync = ({ markets }: MarketListAsyncProps) => {
+const MarketListAsync = ({
+  markets,
+  favoriteMarkets
+}: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
+  const isDesktop = useMedia('(min-width: 1024px)');
+
   const { show, hide } = useFooterVisibility();
   const { isLoading, error } = useAppSelector(state => state.markets);
-
-  const { favoriteMarkets } = useFavoriteMarkets();
 
   const isLoadingMarkets = Object.values(isLoading).some(
     state => state === true
@@ -39,7 +88,8 @@ const MarketListAsync = ({ markets }: MarketListAsyncProps) => {
     dispatch(getMarkets('closed'));
     dispatch(getMarkets('resolved'));
     dispatch(getFavoriteMarkets(favoriteMarkets));
-  }, [dispatch, favoriteMarkets]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   useEffect(() => {
     fetchMarkets();
@@ -114,6 +164,7 @@ const MarketListAsync = ({ markets }: MarketListAsyncProps) => {
   return (
     <div className="pm-c-market-list">
       <VirtualizedList
+        components={{ Header: isDesktop ? MarketListHeader : undefined }}
         height="100%"
         data={markets}
         itemContent={(_index, market) => (

@@ -40,6 +40,7 @@ const GLMR: Currency = {
   iconName: 'Moonbeam'
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const IFL: Currency = {
   name: 'IFL',
   ticker: 'IFL',

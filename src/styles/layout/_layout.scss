@@ -25,13 +25,15 @@
 
       display: grid;
       grid-template-rows: 1fr auto;
-      padding: 24px 24px 12px 24px;
 
       height: 100%;
+      width: calc(100% + 7px);
+
+      padding-top: var(--grid-margin);
     }
 
     &__scrollable-area {
-      height: calc(100vh - 6.8rem);
+      height: calc(100vh - var(--header-y));
     }
 
     &__aside {

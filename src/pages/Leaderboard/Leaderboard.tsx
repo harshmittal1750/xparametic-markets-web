@@ -6,6 +6,7 @@ import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery
 } from 'services/Polkamarkets';
+import { useMedia } from 'ui';
 
 import { CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
 import { Dropdown } from 'components/new';
@@ -23,7 +24,7 @@ import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
 import {
   balanceColumnRender,
-  liquidityColumnRender,
+  // liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
   walletColumnRender
@@ -144,6 +145,7 @@ type Timeframe = '1w' | '1m' | 'at';
 
 function Leaderboard() {
   const { slug } = useParams<LeaderboardURLParams>();
+  const isDesktop = useMedia('(min-width: 1024px)');
 
   // Redux selectors
   const walletConnected = useAppSelector(
@@ -297,31 +299,40 @@ function Leaderboard() {
             <div className="flex-row gap-6 justify-space-between align-start width-full">
               <LeaderboardTable
                 loggedInUser={userEthAddress}
-                columns={columns}
+                columns={
+                  isDesktop
+                    ? columns
+                    : columns.filter(
+                        column =>
+                          column.key === activeTab || column.key === 'wallet'
+                      )
+                }
                 rows={data}
                 sortBy={tab.sortBy}
                 ticker={ticker}
                 isLoading={isLoadingQuery}
               />
-              <div className="flex-column gap-6 justify-start align-start">
-                {walletConnected ? (
-                  <LeaderboardYourStats
-                    loggedInUser={userEthAddress}
+              {isDesktop ? (
+                <div className="flex-column gap-6 justify-start align-start">
+                  {walletConnected ? (
+                    <LeaderboardYourStats
+                      loggedInUser={userEthAddress}
+                      rows={data}
+                      sortBy={tab.sortBy}
+                      ticker={ticker}
+                      isLoading={isLoadingQuery}
+                    />
+                  ) : null}
+                  <LeaderboardTopWallets
                     rows={data}
                     sortBy={tab.sortBy}
-                    ticker={ticker}
                     isLoading={isLoadingQuery}
                   />
-                ) : null}
-                <LeaderboardTopWallets
-                  rows={data}
-                  sortBy={tab.sortBy}
-                  isLoading={isLoadingQuery}
-                />
-                {walletConnected ? (
-                  <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
-                ) : null}
-              </div>
+                  {walletConnected ? (
+                    <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
+                  ) : null}
+                </div>
+              ) : null}
             </div>
           </Tabs.TabPane>
         ))}

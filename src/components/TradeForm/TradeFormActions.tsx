@@ -52,7 +52,7 @@ function TradeFormActions() {
   const [needsPricesRefresh, setNeedsPricesRefresh] = useState(false);
 
   function handleCancel() {
-    dispatch(selectOutcome('', ''));
+    dispatch(selectOutcome('', '', ''));
     dispatch(closeTradeForm());
   }
 

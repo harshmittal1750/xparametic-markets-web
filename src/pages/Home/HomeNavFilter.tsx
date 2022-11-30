@@ -62,21 +62,26 @@ function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
   );
 }
 
-export default function HomeNavFilter() {
+export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
   const {
     state,
     controls: { toggleFavorites, toggleDropdownOption }
   } = useFilters();
+
   const isMarketsLoading = useAppSelector(_state =>
     Object.values(_state.markets.isLoading).some(Boolean)
   );
+
   const [show, setShow] = useState(false);
+
   const handleShow = useCallback(() => {
     setShow(true);
   }, []);
+
   const handleHide = useCallback(() => {
     setShow(false);
   }, []);
+
   const handleToggleChange = useCallback(
     (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       toggleDropdownOption({ path, selected: event.target.checked });
@@ -92,15 +97,18 @@ export default function HomeNavFilter() {
         className="pm-p-home__navigation__actions"
         onClick={handleShow}
         disabled={isMarketsLoading}
+        style={{ display: 'inherit', height: 'auto' }}
+        {...(!isDesktop && { 'aria-label': 'Filter' })}
       >
         <Icon name="Filter" />
-        Filter
+        {isDesktop && 'Filter'}
       </Button>
       <Modal
         show={show}
+        onHide={handleHide}
         backdrop
         fullScreen
-        disableFocustrap
+        disableGutters
         initial={{ x: -304 }}
         animate={{ x: 0 }}
         exit={{ x: -304 }}
