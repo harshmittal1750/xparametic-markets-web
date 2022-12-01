@@ -7,7 +7,6 @@ import classnames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
-import { PolkamarketsService } from 'services';
 
 import {
   ArrowDownIcon,
@@ -20,6 +19,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useNetwork,
+  usePolkamarketsService,
   useSortableData
 } from 'hooks';
 
@@ -43,10 +43,10 @@ const PortfolioMarketTable = ({
   const dispatch = useAppDispatch();
   const history = useHistory();
   const {
-    network: { currency },
-    networkConfig
+    network: { currency }
   } = useNetwork();
   const { ticker, symbol } = currency;
+  const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);
 
   const [isLoadingClaimWinnings, setIsLoadingClaimWinnings] = useState({});
@@ -68,13 +68,11 @@ const PortfolioMarketTable = ({
   }
 
   async function updateWallet() {
-    await dispatch(login(networkConfig));
-    await dispatch(fetchAditionalData(networkConfig));
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleClaimWinnings(marketId) {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     handleChangeIsLoading(marketId, true);
 
     try {
@@ -90,8 +88,6 @@ const PortfolioMarketTable = ({
   }
 
   async function handleClaimVoided(marketId, outcomeId) {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     handleChangeIsLoadingVoided(marketId, outcomeId, true);
 
     try {

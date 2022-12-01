@@ -9,7 +9,12 @@ import { fetchAditionalData } from 'redux/ducks/polkamarkets';
 
 import { Layout } from 'components';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 
 const Home = lazy(() => import('pages/Home'));
 const Market = lazy(() => import('pages/Market'));
@@ -22,25 +27,33 @@ const Leaderboard = lazy(() => import('pages/Leaderboard'));
 const Profile = lazy(() => import('pages/Profile'));
 
 const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
+const restrictedCountries = REACT_APP_RESTRICTED_COUNTRIES?.split(',');
 
 const AppRoutes = () => {
   const dispatch = useAppDispatch();
   const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
   );
+
   const { network, networkConfig } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
 
   const isAllowedNetwork =
     !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
 
-  const restrictedCountries = REACT_APP_RESTRICTED_COUNTRIES?.split(',');
   const [isAllowedCountry, setIsAllowedCountry] = useState(true);
 
   useEffect(() => {
     if (isAllowedNetwork && walletConnected) {
-      dispatch(fetchAditionalData(networkConfig));
+      dispatch(fetchAditionalData(polkamarketsService));
     }
-  }, [dispatch, isAllowedNetwork, networkConfig, walletConnected]);
+  }, [
+    dispatch,
+    isAllowedNetwork,
+    networkConfig,
+    polkamarketsService,
+    walletConnected
+  ]);
 
   useEffect(() => {
     async function fetchUserCountry() {
@@ -53,7 +66,7 @@ const AppRoutes = () => {
       }
     }
     fetchUserCountry();
-  }, [restrictedCountries]);
+  }, []);
 
   if (!isAllowedCountry)
     return (

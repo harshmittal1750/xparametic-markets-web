@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NetworkConfig } from 'config/environment';
 import { PolkamarketsService } from 'services';
 
 export type Action = {
@@ -164,10 +163,8 @@ const {
 } = polkamarketsSlice.actions;
 
 // fetching initial wallet details
-function login(networkConfig: NetworkConfig) {
+function login(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     const isLoggedIn = await polkamarketsService.isLoggedIn();
     dispatch(changeIsLoggedIn(isLoggedIn));
 
@@ -189,9 +186,8 @@ function login(networkConfig: NetworkConfig) {
   };
 }
 
-function fetchAditionalData(networkConfig: NetworkConfig) {
+function fetchAditionalData(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
     const isLoggedIn = await polkamarketsService.isLoggedIn();
 
     if (isLoggedIn) {

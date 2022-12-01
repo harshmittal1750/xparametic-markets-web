@@ -10,7 +10,12 @@ import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
@@ -24,6 +29,7 @@ function TradeFormActions() {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
 
   // Market selectors
@@ -89,15 +95,13 @@ function TradeFormActions() {
   }
 
   async function updateWallet() {
-    await dispatch(login(networkConfig));
-    await dispatch(fetchAditionalData(networkConfig));
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleBuy() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -158,8 +162,6 @@ function TradeFormActions() {
   async function handleSell() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);

@@ -14,7 +14,12 @@ import { QuestionIcon } from 'assets/icons';
 
 import NetworkSwitch from 'components/Networks/NetworkSwitch';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Alert, AlertMinimal } from '../Alert';
@@ -36,7 +41,8 @@ function ReportFormActions({
   const dispatch = useAppDispatch();
   const { show, close } = useToastNotification();
   const { errors } = useFormikContext();
-  const { network, networkConfig } = useNetwork();
+  const { network } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
 
   // Form state
   const [outcome] = useField('outcome');
@@ -92,8 +98,6 @@ function ReportFormActions({
     questionBond > 0;
 
   async function handleApprovePolk() {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     setIsApprovingPolk(true);
 
     try {
@@ -106,7 +110,7 @@ function ReportFormActions({
         show('approvePolk');
       }
 
-      await dispatch(login(networkConfig));
+      await dispatch(login(polkamarketsService));
       setIsApprovingPolk(false);
     } catch (error) {
       setIsApprovingPolk(false);
@@ -119,7 +123,6 @@ function ReportFormActions({
   }
 
   async function handleBond() {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
     const polkamarketApiService = new PolkamarketsApiService();
 
     setIsBonding(true);
@@ -146,8 +149,8 @@ function ReportFormActions({
       polkamarketApiService.reloadMarket(marketSlug);
 
       // updating wallet
-      dispatch(login(networkConfig));
-      dispatch(fetchAditionalData(networkConfig));
+      dispatch(login(polkamarketsService));
+      dispatch(fetchAditionalData(polkamarketsService));
 
       // updating question
       const question = await polkamarketsService.getQuestion(questionId);
@@ -158,8 +161,6 @@ function ReportFormActions({
   }
 
   async function handleResolve() {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     setIsResolvingMarket(true);
     try {
       const response = await polkamarketsService.resolveMarket(id);
