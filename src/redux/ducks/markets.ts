@@ -63,7 +63,7 @@ const initialState: MarketsIntialState = {
   filterByVerified: true,
   sorterByEndingSoon: true,
   sorter: {
-    value: 'featured',
+    value: 'volumeEur',
     sortBy: undefined
   }
 };
