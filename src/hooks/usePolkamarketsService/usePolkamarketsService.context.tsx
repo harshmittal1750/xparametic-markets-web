@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from 'react';
+import { createContext, ReactNode, useMemo } from 'react';
 
 import { PolkamarketsService } from 'services';
 
@@ -20,7 +20,10 @@ function PolkamarketsServiceProvider({
 }: PolkamarketsServiceProviderProps) {
   const { networkConfig } = useNetwork();
 
-  const instance = new PolkamarketsService(networkConfig);
+  const instance = useMemo(
+    () => new PolkamarketsService(networkConfig),
+    [networkConfig]
+  );
 
   return (
     <PolkamarketsServiceContext.Provider
