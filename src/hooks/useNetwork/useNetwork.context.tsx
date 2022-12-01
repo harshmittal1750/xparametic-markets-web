@@ -3,6 +3,7 @@ import {
   ReactNode,
   useCallback,
   useEffect,
+  useMemo,
   useState
 } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -10,6 +11,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { environment, networks } from 'config';
 import { toHexadecimal } from 'helpers/string';
 import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
+import { PolkamarketsService } from 'services';
 
 import useAppDispatch from '../useAppDispatch';
 import useAppSelector from '../useAppSelector';
@@ -93,16 +95,31 @@ function NetworkProvider({ children }: NetworkProviderProps) {
   const networkConfig =
     environment.NETWORKS[network.id] || DEFAULT_NETWORK_CONFIG;
 
+  const polkamarketService = useMemo(
+    () => new PolkamarketsService(networkConfig),
+    [networkConfig]
+  );
+
+  useEffect(() => {
+    dispatch(login(polkamarketService));
+  }, [dispatch, polkamarketService]);
+
   useEffect(() => {
     async function fetchUserData() {
-      dispatch(login(networkConfig));
-      dispatch(fetchAditionalData(networkConfig));
+      dispatch(login(polkamarketService));
+      dispatch(fetchAditionalData(polkamarketService));
     }
 
     if (walletIsConnected && isAnAvailableNetwork) {
       fetchUserData();
     }
-  }, [dispatch, isAnAvailableNetwork, networkConfig, walletIsConnected]);
+  }, [
+    dispatch,
+    isAnAvailableNetwork,
+    networkConfig,
+    polkamarketService,
+    walletIsConnected
+  ]);
 
   useEffect(() => {
     window.ethereum?.on('chainChanged', reloadWindow);
