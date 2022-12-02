@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import cn from 'classnames';
 import { useMedia } from 'ui';
@@ -39,10 +39,35 @@ function Filter({
   className
 }: FilterProps) {
   const isDesktop = useMedia('(min-width: 1024px)');
+
+  const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option | undefined>();
   const [selectedOptionalTrigger, setSelectedOptionalTrigger] = useState<
     Trigger | undefined
   >();
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  function handleToggleDropdownVisibility() {
+    setDropdownIsVisible(!dropdownIsVisible);
+  }
+
+  function handleCloseDropdown() {
+    setDropdownIsVisible(false);
+  }
+
+  function handleClickOutside(event) {
+    if (ref.current && !ref.current.contains(event.target)) {
+      handleCloseDropdown();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  });
 
   useEffect(() => {
     const defaultSelectedOption = options.find(
@@ -98,7 +123,13 @@ function Filter({
   if (!selectedOption) return null;
 
   return (
-    <div className={cn('pm-c-filter', className)}>
+    <div
+      role="button"
+      tabIndex={0}
+      className={cn('pm-c-filter', className)}
+      onKeyPress={handleToggleDropdownVisibility}
+      onClick={handleToggleDropdownVisibility}
+    >
       <Text
         className="pm-c-filter__button"
         /* @ts-ignore */
@@ -117,7 +148,12 @@ function Filter({
           <Icon name="Sort" />
         )}
       </Text>
-      <div className="pm-c-filter__content">
+      <div
+        ref={ref}
+        className={cn('pm-c-filter__content', {
+          visible: dropdownIsVisible
+        })}
+      >
         {options.map(option => (
           <div key={option.value} className="pm-c-filter__group">
             <button
