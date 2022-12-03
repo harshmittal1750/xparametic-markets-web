@@ -227,7 +227,7 @@ function Leaderboard() {
   const ticker = currency.symbol || currency.ticker;
 
   const leaderboardTitle = leaderboardGroup
-    ? `${leaderboardGroup.title} - Leaderboard`
+    ? leaderboardGroup.title
     : 'Leaderboard';
 
   const userEthAddress = walletConnected ? ethAddress : undefined;
