@@ -27,7 +27,7 @@ function LeaderboardMyLeaderboards({
 
   return (
     <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1">
-      <h2 className="body semibold text-1">My Leaderboards</h2>
+      <h2 className="body semibold text-1">My Clubs</h2>
       {isLoading ? (
         <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
           <span className="spinner--primary" />
@@ -38,7 +38,7 @@ function LeaderboardMyLeaderboards({
           style={{ border: 'none' }}
           styles="outline"
           variant="information"
-          description="You don't belong to any leaderboard."
+          description="You don't belong to any club."
         />
       ) : null}
       {!isLoading && !isEmpty(data) ? (
@@ -54,7 +54,7 @@ function LeaderboardMyLeaderboards({
                   'text-3',
                   'text-1-on-hover'
                 )}
-                to={`/leaderboard/${leaderboard.slug}`}
+                to={`/clubs/${leaderboard.slug}`}
               >
                 {leaderboard.title}
               </Link>
