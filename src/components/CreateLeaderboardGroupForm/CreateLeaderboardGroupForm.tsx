@@ -52,7 +52,7 @@ function CreateLeaderboardGroupForm({
 
   const redirectToLeaderboardGroup = useCallback(
     (leaderboardSlug: string) => {
-      history.push(`/leaderboard/${leaderboardSlug}?m=f`);
+      history.push(`/clubs/${leaderboardSlug}?m=f`);
       window.location.reload();
     },
     [history]
@@ -121,7 +121,7 @@ function CreateLeaderboardGroupForm({
           <Input
             name="name"
             label="Name"
-            placeholder="Leaderboard name"
+            placeholder="Club name"
             disabled={isSubmitting}
           />
           <TextArea
