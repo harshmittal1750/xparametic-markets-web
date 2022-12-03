@@ -112,6 +112,7 @@ export type CreateLeaderboardGroupData = { slug: string };
 export type CreateLeaderboardGroupParams = {
   title: string;
   users: string[];
+  imageHash?: string;
   createdBy: string;
 };
 
@@ -127,6 +128,7 @@ export type EditLeaderboardGroupData = LeaderboardGroup;
 export type EditLeaderboardGroupParams = {
   slug: string;
   title: string;
+  imageHash: string;
   users: string[];
 };
 
