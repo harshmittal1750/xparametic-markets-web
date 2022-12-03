@@ -115,6 +115,13 @@ export type CreateLeaderboardGroupParams = {
   createdBy: string;
 };
 
+// joinLeaderboardGroup
+export type JoinLeaderboardGroupData = void;
+export type JoinLeaderboardGroupParams = {
+  slug: string;
+  user: string;
+};
+
 // editLeaderboardGroup
 export type EditLeaderboardGroupData = LeaderboardGroup;
 export type EditLeaderboardGroupParams = {
