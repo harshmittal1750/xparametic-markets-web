@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense, lazy } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { environment } from 'config';
 import { getUserCountry } from 'helpers/location';
@@ -78,7 +78,9 @@ const AppRoutes = () => {
           <Route component={Portfolio} path="/portfolio" />
           <Route component={CreateMarket} path="/market/create" />
           <Route component={Achievements} path="/achievements" />
-          <Route component={Leaderboard} path="/leaderboard/:slug?" />
+          <Route component={Leaderboard} exact path="/leaderboard" />
+          <Route component={Leaderboard} path="/clubs/:slug" />
+          <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
           <Route component={Profile} path="/user/:address" />
         </Switch>
       </Suspense>
