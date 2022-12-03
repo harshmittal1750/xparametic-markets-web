@@ -1,7 +1,9 @@
 import type {
   GetLeaderboardBaseData,
+  GetLeaderboardByTimeframeData,
   GetLeaderboardGroupBySlugData
 } from 'services/Polkamarkets/types';
+import type { LeaderboardGroup } from 'types/leaderboard';
 
 import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderboardGroupForm';
 
@@ -26,7 +28,35 @@ const sanitizePreviousCreateLeaderboardFormValues = (
   };
 };
 
+function buildLeaderboardData(
+  isLoadingLeaderboardGroup: boolean,
+  leaderboardGroup?: LeaderboardGroup,
+  leaderboardByTimeframe?: GetLeaderboardByTimeframeData
+): GetLeaderboardByTimeframeData {
+  if (leaderboardByTimeframe && leaderboardGroup) {
+    return leaderboardGroup.users.map(user => {
+      const userInLeaderboardByTimeframe = leaderboardByTimeframe.find(
+        row => row.user === user
+      );
+
+      return (
+        userInLeaderboardByTimeframe || {
+          user,
+          ...emptyLeaderboardRowWithoutUser
+        }
+      );
+    });
+  }
+
+  if (leaderboardByTimeframe && !isLoadingLeaderboardGroup) {
+    return leaderboardByTimeframe;
+  }
+
+  return [];
+}
+
 export {
   emptyLeaderboardRowWithoutUser,
-  sanitizePreviousCreateLeaderboardFormValues
+  sanitizePreviousCreateLeaderboardFormValues,
+  buildLeaderboardData
 };

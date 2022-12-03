@@ -1,21 +1,22 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { closeRightSidebar } from 'redux/ducks/ui';
 import {
   useGetLeaderboardByTimeframeQuery,
-  useGetLeaderboardGroupBySlugQuery
+  useGetLeaderboardGroupBySlugQuery,
+  useJoinLeaderboardGroupMutation
 } from 'services/Polkamarkets';
 import { useMedia } from 'ui';
 
-import { CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
+import { Button, CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import { IFL } from 'hooks/useNetwork/currencies';
 
 import {
-  emptyLeaderboardRowWithoutUser,
+  buildLeaderboardData,
   sanitizePreviousCreateLeaderboardFormValues
 } from './Leaderboard.util';
 import LeaderboardMyLeaderboards from './LeaderboardMyLeaderboards';
@@ -144,8 +145,13 @@ type LeaderboardURLParams = {
 type Timeframe = '1w' | '1m' | 'at';
 
 function Leaderboard() {
+  // Custom hooks
   const { slug } = useParams<LeaderboardURLParams>();
   const isDesktop = useMedia('(min-width: 1024px)');
+
+  const dispatch = useAppDispatch();
+  const { network } = useNetwork();
+  const currency = IFL;
 
   // Redux selectors
   const walletConnected = useAppSelector(
@@ -155,11 +161,6 @@ function Leaderboard() {
   const rightSidebarIsVisible = useAppSelector(
     state => state.ui.rightSidebar.visible
   );
-
-  // Custom hooks
-  const dispatch = useAppDispatch();
-  const { network } = useNetwork();
-  const currency = IFL;
 
   // Local state
   const [activeTab, setActiveTab] = useState('wonPredictions');
@@ -171,7 +172,7 @@ function Leaderboard() {
     }
   }, [rightSidebarIsVisible, dispatch]);
 
-  // Query hooks
+  // Queries
   const {
     data: leaderboardByTimeframe,
     isLoading: isLoadingLeaderboardByTimeframe,
@@ -187,7 +188,8 @@ function Leaderboard() {
   const {
     data: leaderboardGroup,
     isLoading: isLoadingLeaderboardGroup,
-    isFetching: isFetchingLeaderboardGroup
+    isFetching: isFetchingLeaderboardGroup,
+    refetch: refetchLeaderboardGroup
   } = useGetLeaderboardGroupBySlugQuery(
     {
       slug: slug || ''
@@ -198,45 +200,69 @@ function Leaderboard() {
   const isLoadingGetLeaderboardGroupBySlugQuery =
     isLoadingLeaderboardGroup || isFetchingLeaderboardGroup;
 
-  const data = useMemo(() => {
-    if (leaderboardByTimeframe && leaderboardGroup) {
-      return leaderboardGroup.users.map(user => {
-        const userInLeaderboardByTimeframe = leaderboardByTimeframe.find(
-          row => row.user === user
-        );
+  // Mutations
+  const [joinLeaderboard, { isLoading: isLoadingJoinLeaderboardGroup }] =
+    useJoinLeaderboardGroupMutation();
 
-        return (
-          userInLeaderboardByTimeframe || {
-            user,
-            ...emptyLeaderboardRowWithoutUser
-          }
-        );
-      });
-    }
+  const isLoadingJoinLeaderboardGroupMutation = isLoadingJoinLeaderboardGroup;
 
-    if (leaderboardByTimeframe && !isLoadingLeaderboardGroup) {
-      return leaderboardByTimeframe;
-    }
-
-    return [];
-  }, [isLoadingLeaderboardGroup, leaderboardByTimeframe, leaderboardGroup]);
+  // Loading state
 
   const isLoadingQuery =
     isLoadingLeaderboardByTimeframeQuery ||
     isLoadingGetLeaderboardGroupBySlugQuery;
-  const ticker = currency.symbol || currency.ticker;
 
+  // Derivated data
+
+  // Leaderboard
   const leaderboardTitle = leaderboardGroup
     ? leaderboardGroup.title
     : 'Leaderboard';
 
+  const data = useMemo(
+    () =>
+      buildLeaderboardData(
+        isLoadingLeaderboardGroup,
+        leaderboardGroup,
+        leaderboardByTimeframe
+      ),
+    [isLoadingLeaderboardGroup, leaderboardGroup, leaderboardByTimeframe]
+  );
+
+  // Currency
+  const ticker = currency.symbol || currency.ticker;
+
+  // Users
+  const usersInLeaderboard = useMemo(() => data.map(row => row.user), [data]);
+
+  // User
   const userEthAddress = walletConnected ? ethAddress : undefined;
+
+  const userInLeaderboard = useMemo(
+    () =>
+      userEthAddress ? usersInLeaderboard.includes(userEthAddress) : false,
+    [userEthAddress, usersInLeaderboard]
+  );
+
   const leaderboardCreatedByUser =
     leaderboardGroup &&
     leaderboardGroup.createdBy.toLowerCase() === ethAddress.toLowerCase();
 
-  const createLeaderboardGroupState: CreateLeaderboardGroupState = {
-    enabled: walletConnected,
+  // Features
+
+  // Join leaderboard
+  const joinGroupState = {
+    visible: !!leaderboardGroup,
+    disabled:
+      !walletConnected ||
+      userInLeaderboard ||
+      isLoadingGetLeaderboardGroupBySlugQuery,
+    joined: userInLeaderboard
+  };
+
+  // Create/Edit leaderboard
+  const createGroupState: CreateLeaderboardGroupState = {
+    visible: walletConnected,
     mode: leaderboardCreatedByUser ? 'edit' : 'create',
     previousValues: leaderboardCreatedByUser
       ? sanitizePreviousCreateLeaderboardFormValues(leaderboardGroup)
@@ -244,7 +270,23 @@ function Leaderboard() {
     slug: leaderboardGroup ? leaderboardGroup.slug : undefined
   };
 
-  const { enabled, mode, previousValues } = createLeaderboardGroupState;
+  // Handlers
+
+  const handleJoinLeaderboardGroup = useCallback(async () => {
+    if (leaderboardGroup && userEthAddress) {
+      await joinLeaderboard({
+        slug: leaderboardGroup.slug,
+        user: userEthAddress
+      });
+
+      await refetchLeaderboardGroup();
+    }
+  }, [
+    joinLeaderboard,
+    leaderboardGroup,
+    refetchLeaderboardGroup,
+    userEthAddress
+  ]);
 
   return (
     <div className="pm-p-leaderboard">
@@ -255,7 +297,20 @@ function Leaderboard() {
       />
       <div className="pm-p-leaderboard__header">
         <div className="flex-column gap-3">
-          <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+          <div className="flex-row gap-5 align-center">
+            <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+            {joinGroupState.visible ? (
+              <Button
+                size="xs"
+                color="default"
+                onClick={handleJoinLeaderboardGroup}
+                loading={isLoadingJoinLeaderboardGroupMutation}
+                disabled={joinGroupState.disabled}
+              >
+                {joinGroupState.joined ? 'Joined' : 'Join'}
+              </Button>
+            ) : null}
+          </div>
           <p className="tiny medium text-2">
             {`Play the IFL with your friends, coworkers and community. `}
             <Link
@@ -267,10 +322,10 @@ function Leaderboard() {
             />
           </p>
         </div>
-        {enabled ? (
+        {createGroupState.visible ? (
           <CreateLeaderboardGroup
-            mode={mode}
-            previousValues={previousValues}
+            mode={createGroupState.mode}
+            previousValues={createGroupState.previousValues}
             slug={slug}
             disabled={isLoadingQuery}
           />
