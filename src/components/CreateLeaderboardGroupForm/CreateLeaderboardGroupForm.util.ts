@@ -11,10 +11,17 @@ const formProps = {
   }
 };
 
-const initialValues: CreateLeaderboardGroupFormValues = {
-  name: '',
-  addresses: ''
-};
+function getInitialValues(user: string): CreateLeaderboardGroupFormValues {
+  return {
+    name: '',
+    addresses: user,
+    image: {
+      file: undefined,
+      hash: '',
+      isUploaded: false
+    }
+  };
+}
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
@@ -39,7 +46,13 @@ const validationSchema = Yup.object().shape({
 
 const sanitizeSubmittedValues = (values: CreateLeaderboardGroupFormValues) => ({
   title: values.name,
-  users: values.addresses.trim().split('\n')
+  users: values.addresses.trim().split('\n'),
+  imageHash: values.image.hash
 });
 
-export { formProps, initialValues, validationSchema, sanitizeSubmittedValues };
+export {
+  formProps,
+  getInitialValues,
+  validationSchema,
+  sanitizeSubmittedValues
+};

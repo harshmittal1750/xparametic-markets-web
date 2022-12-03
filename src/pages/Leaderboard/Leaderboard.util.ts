@@ -24,7 +24,13 @@ const sanitizePreviousCreateLeaderboardFormValues = (
 ): CreateLeaderboardGroupFormValues => {
   return {
     name: values.title,
-    addresses: values.users.join('\n')
+    image: {
+      file: undefined,
+      hash: values.imageUrl ? values.imageUrl.split('/').pop() || '' : '',
+      isUploaded: false
+    },
+    addresses: values.users.join('\n'),
+    imageUrl: values.imageUrl
   };
 };
 
