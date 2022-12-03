@@ -25,6 +25,9 @@ function getInitialValues(user: string): CreateLeaderboardGroupFormValues {
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
+  image: Yup.object().shape({
+    hash: Yup.string()
+  }),
   addresses: Yup.array()
     .transform(function toArray(value, originalValue) {
       if (this.isType(value) && value !== null) {
