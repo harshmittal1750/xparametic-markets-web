@@ -296,31 +296,42 @@ function Leaderboard() {
         imageUrl={IFL_META_LEADERBOARD}
       />
       <div className="pm-p-leaderboard__header">
-        <div className="flex-column gap-3">
-          <div className="flex-row gap-5 align-center">
-            <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-            {joinGroupState.visible ? (
-              <Button
-                size="xs"
-                color="default"
-                onClick={handleJoinLeaderboardGroup}
-                loading={isLoadingJoinLeaderboardGroupMutation}
-                disabled={joinGroupState.disabled}
-              >
-                {joinGroupState.joined ? 'Joined' : 'Join'}
-              </Button>
-            ) : null}
-          </div>
-          <p className="tiny medium text-2">
-            {`Play the IFL with your friends, coworkers and community. `}
-            <Link
-              title="Learn more"
-              scale="tiny"
-              fontWeight="medium"
-              href="https://ifl.polkamarkets.com/docs/clubs"
-              target="_blank"
+        <div className="flex-row gap-5 align-center">
+          {leaderboardGroup?.imageUrl ? (
+            <img
+              className="pm-c-market__body-image"
+              alt={leaderboardGroup.title}
+              src={leaderboardGroup.imageUrl}
+              width={66}
+              height={66}
             />
-          </p>
+          ) : null}
+          <div className="flex-column gap-3">
+            <div className="flex-row gap-5 align-center">
+              <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
+              {joinGroupState.visible ? (
+                <Button
+                  size="xs"
+                  color="default"
+                  onClick={handleJoinLeaderboardGroup}
+                  loading={isLoadingJoinLeaderboardGroupMutation}
+                  disabled={joinGroupState.disabled}
+                >
+                  {joinGroupState.joined ? 'Joined' : 'Join'}
+                </Button>
+              ) : null}
+            </div>
+            <p className="tiny medium text-2">
+              {`Play the IFL with your friends, coworkers and community. `}
+              <Link
+                title="Learn more"
+                scale="tiny"
+                fontWeight="medium"
+                href="https://ifl.polkamarkets.com/docs/clubs"
+                target="_blank"
+              />
+            </p>
+          </div>
         </div>
         {createGroupState.visible ? (
           <CreateLeaderboardGroup
