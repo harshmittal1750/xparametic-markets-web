@@ -72,6 +72,7 @@ type ImageContext = {
 type ImageUploadInputProps = {
   label?: string;
   name: string;
+  initialImagePreviewURL?: string;
   notUploadedActionLabel: string;
   uploadedActionLabel: string;
   description?: string;
@@ -80,6 +81,7 @@ type ImageUploadInputProps = {
 function ImageUploadInput({
   label,
   name,
+  initialImagePreviewURL,
   notUploadedActionLabel,
   uploadedActionLabel,
   ...props
@@ -90,7 +92,7 @@ function ImageUploadInput({
   const [isCroppingImage, setIsCroppingImage] = useState(false);
   const [croppedImagePreviewURL, setCropperImagePreviewURL] = useState<
     undefined | string
-  >(undefined);
+  >(initialImagePreviewURL);
   const [invalidImageError, setInvalidImageError] = useState<
     undefined | string
   >(undefined);
