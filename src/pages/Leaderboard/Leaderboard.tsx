@@ -317,7 +317,7 @@ function Leaderboard() {
               title="Learn more"
               scale="tiny"
               fontWeight="medium"
-              href="https://ifl.polkamarkets.com/docs/group-leaderboards"
+              href="https://ifl.polkamarkets.com/docs/clubs"
               target="_blank"
             />
           </p>
