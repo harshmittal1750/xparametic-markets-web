@@ -1,7 +1,13 @@
 import { NavLink } from 'react-router-dom';
 
 const marketsPathname = 'Markets';
-const pathnames = [marketsPathname, 'Portfolio', 'Achievements', 'Leaderboard'];
+const pathnames = [
+  marketsPathname,
+  'Portfolio',
+  'Achievements',
+  'Leaderboard',
+  'Clubs'
+];
 
 export default function NavBarLinks() {
   return (
