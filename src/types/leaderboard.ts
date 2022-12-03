@@ -21,6 +21,7 @@ export type LeaderboardTimeframe = '1w' | '1m' | 'at';
 export type LeaderboardGroup = {
   id: number;
   title: string;
+  imageUrl: string;
   slug: string;
   createdBy: string;
   users: string[];

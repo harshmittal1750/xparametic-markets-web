@@ -6,6 +6,8 @@ import { useField, useFormikContext } from 'formik';
 import * as ipfsService from 'services/Polkamarkets/ipfs';
 
 import ImageCropper from 'components/ImageCropper';
+import Modal from 'components/Modal';
+import ModalContent from 'components/ModalContent';
 
 import Text from '../Text';
 import InputErrorMessage from './InputErrorMessage';
@@ -59,7 +61,7 @@ function ImageUploadButton({
   );
 }
 
-type ThumbnailContext = {
+type ImageContext = {
   image: {
     hash: string;
     file: any;
@@ -70,6 +72,7 @@ type ThumbnailContext = {
 type ImageUploadInputProps = {
   label?: string;
   name: string;
+  initialImagePreviewURL?: string;
   notUploadedActionLabel: string;
   uploadedActionLabel: string;
   description?: string;
@@ -78,18 +81,18 @@ type ImageUploadInputProps = {
 function ImageUploadInput({
   label,
   name,
+  initialImagePreviewURL,
   notUploadedActionLabel,
   uploadedActionLabel,
   ...props
 }: ImageUploadInputProps & React.InputHTMLAttributes<HTMLInputElement>) {
-  const { setFieldValue, setFieldTouched } =
-    useFormikContext<ThumbnailContext>();
+  const { setFieldValue, setFieldTouched } = useFormikContext<ImageContext>();
   const [field, meta] = useField(name);
   const [isUploading, setIsUploading] = useState(false);
   const [isCroppingImage, setIsCroppingImage] = useState(false);
   const [croppedImagePreviewURL, setCropperImagePreviewURL] = useState<
     undefined | string
-  >(undefined);
+  >(initialImagePreviewURL);
   const [invalidImageError, setInvalidImageError] = useState<
     undefined | string
   >(undefined);
@@ -176,19 +179,21 @@ function ImageUploadInput({
 
   return (
     <>
-      <ImageCropper
-        visible={isCroppingImage}
-        image={field.value.file}
-        onCrop={handleCroppedImage}
-        onCancel={handleCancelCropImage}
-      />
+      <Modal show={isCroppingImage} size="md" centered backdrop>
+        <ModalContent>
+          <ImageCropper
+            image={field.value.file}
+            onCrop={handleCroppedImage}
+            onCancel={handleCancelCropImage}
+          />
+        </ModalContent>
+      </Modal>
       <div className="pm-c-input__group">
         {label ? (
           <label htmlFor={name} className="pm-c-input__label--default">
             {label}
           </label>
         ) : null}
-
         <input
           type="file"
           accept="image/png, image/jpg, image/jpeg"

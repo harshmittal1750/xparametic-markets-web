@@ -1,7 +1,9 @@
 import type {
   GetLeaderboardBaseData,
+  GetLeaderboardByTimeframeData,
   GetLeaderboardGroupBySlugData
 } from 'services/Polkamarkets/types';
+import type { LeaderboardGroup } from 'types/leaderboard';
 
 import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderboardGroupForm';
 
@@ -22,11 +24,45 @@ const sanitizePreviousCreateLeaderboardFormValues = (
 ): CreateLeaderboardGroupFormValues => {
   return {
     name: values.title,
-    addresses: values.users.join('\n')
+    image: {
+      file: undefined,
+      hash: values.imageUrl ? values.imageUrl.split('/').pop() || '' : '',
+      isUploaded: false
+    },
+    addresses: values.users.join('\n'),
+    imageUrl: values.imageUrl
   };
 };
 
+function buildLeaderboardData(
+  isLoadingLeaderboardGroup: boolean,
+  leaderboardGroup?: LeaderboardGroup,
+  leaderboardByTimeframe?: GetLeaderboardByTimeframeData
+): GetLeaderboardByTimeframeData {
+  if (leaderboardByTimeframe && leaderboardGroup) {
+    return leaderboardGroup.users.map(user => {
+      const userInLeaderboardByTimeframe = leaderboardByTimeframe.find(
+        row => row.user === user
+      );
+
+      return (
+        userInLeaderboardByTimeframe || {
+          user,
+          ...emptyLeaderboardRowWithoutUser
+        }
+      );
+    });
+  }
+
+  if (leaderboardByTimeframe && !isLoadingLeaderboardGroup) {
+    return leaderboardByTimeframe;
+  }
+
+  return [];
+}
+
 export {
   emptyLeaderboardRowWithoutUser,
-  sanitizePreviousCreateLeaderboardFormValues
+  sanitizePreviousCreateLeaderboardFormValues,
+  buildLeaderboardData
 };

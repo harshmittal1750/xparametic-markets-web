@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
 import { camelizeKeys } from 'humps';
+import identity from 'lodash/identity';
+import pickBy from 'lodash/pickBy';
 import uniq from 'lodash/uniq';
 
 import {
@@ -40,7 +42,9 @@ import type {
   EditLeaderboardGroupData,
   EditLeaderboardGroupParams,
   GetLeaderboardGroupsByUserData,
-  GetLeaderboardGroupsByUserArgs
+  GetLeaderboardGroupsByUserArgs,
+  JoinLeaderboardGroupData,
+  JoinLeaderboardGroupParams
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -134,14 +138,18 @@ const polkamarketsApi = createApi({
       CreateLeaderboardGroupData,
       CreateLeaderboardGroupParams
     >({
-      query: ({ title, users, createdBy }) => ({
+      query: ({ title, users, imageHash, createdBy }) => ({
         url: `/group_leaderboards`,
         method: 'POST',
-        body: {
-          title,
-          users,
-          created_by: createdBy
-        }
+        body: pickBy(
+          {
+            title,
+            users,
+            image_hash: imageHash,
+            created_by: createdBy
+          },
+          identity
+        )
       }),
       transformResponse: (response: CreateLeaderboardGroupData) =>
         camelize(response)
@@ -150,16 +158,29 @@ const polkamarketsApi = createApi({
       EditLeaderboardGroupData,
       EditLeaderboardGroupParams
     >({
-      query: ({ slug, title, users }) => ({
+      query: ({ slug, title, imageHash, users }) => ({
         url: `/group_leaderboards/${slug}`,
         method: 'PUT',
         body: {
           title,
+          image_hash: imageHash,
           users
         }
       }),
       transformResponse: (response: EditLeaderboardGroupData) =>
         camelize(response)
+    }),
+    joinLeaderboardGroup: builder.mutation<
+      JoinLeaderboardGroupData,
+      JoinLeaderboardGroupParams
+    >({
+      query: ({ slug, user }) => ({
+        url: `/group_leaderboards/${slug}/join`,
+        method: 'POST',
+        body: {
+          user
+        }
+      })
     }),
     getLeaderboardGroupBySlug: builder.query<
       GetLeaderboardGroupBySlugData,
@@ -204,6 +225,7 @@ export const {
   useGetLeaderboardByAddressQuery,
   useCreateLeaderboardGroupMutation,
   useEditLeaderboardGroupMutation,
+  useJoinLeaderboardGroupMutation,
   useGetLeaderboardGroupBySlugQuery,
   useGetLeaderboardGroupsByUserQuery,
   useGetPortfolioFeedByAddressQuery

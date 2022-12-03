@@ -9,7 +9,7 @@ import { CrownIcon } from 'assets/icons';
 
 import { AlertMini } from 'components';
 
-import LeaderboardMyLeaderboardsClasses from './LeaderboardMyLeaderboards.module.scss';
+import ClubsMyClubsClasses from './ClubsMyClubs.module.scss';
 
 type LeaderboardMyLeaderboardsProps = {
   loggedInUser?: string;
@@ -26,7 +26,7 @@ function LeaderboardMyLeaderboards({
   );
 
   return (
-    <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1">
+    <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1 width-full">
       <h2 className="body semibold text-1">My Clubs</h2>
       {isLoading ? (
         <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
@@ -38,7 +38,7 @@ function LeaderboardMyLeaderboards({
           style={{ border: 'none' }}
           styles="outline"
           variant="information"
-          description="You don't belong to any club."
+          description="You don't belong to any Clubs yet. Create a Club, or use the invite link if you have received one"
         />
       ) : null}
       {!isLoading && !isEmpty(data) ? (
@@ -48,7 +48,7 @@ function LeaderboardMyLeaderboards({
               {leaderboard.admin ? <CrownIcon /> : null}
               <Link
                 className={cn(
-                  LeaderboardMyLeaderboardsClasses.leaderboardTitle,
+                  ClubsMyClubsClasses.clubTitle,
                   'tiny-uppercase',
                   'bold',
                   'text-3',

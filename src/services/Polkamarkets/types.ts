@@ -112,7 +112,15 @@ export type CreateLeaderboardGroupData = { slug: string };
 export type CreateLeaderboardGroupParams = {
   title: string;
   users: string[];
+  imageHash?: string;
   createdBy: string;
+};
+
+// joinLeaderboardGroup
+export type JoinLeaderboardGroupData = void;
+export type JoinLeaderboardGroupParams = {
+  slug: string;
+  user: string;
 };
 
 // editLeaderboardGroup
@@ -120,6 +128,7 @@ export type EditLeaderboardGroupData = LeaderboardGroup;
 export type EditLeaderboardGroupParams = {
   slug: string;
   title: string;
+  imageHash: string;
   users: string[];
 };
 

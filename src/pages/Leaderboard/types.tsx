@@ -48,7 +48,7 @@ export type LeaderboardTopWalletsColumn = TableMiniColumn;
 export type LeaderboardTopWalletsRow = TableMiniRow;
 
 export type CreateLeaderboardGroupState = {
-  enabled: boolean;
+  visible: boolean;
   mode: 'create' | 'edit';
   previousValues?: CreateLeaderboardGroupFormValues;
   slug?: string;

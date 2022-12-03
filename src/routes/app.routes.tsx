@@ -1,5 +1,5 @@
 import { useEffect, useState, Suspense, lazy } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { environment } from 'config';
 import { getUserCountry } from 'helpers/location';
@@ -19,6 +19,7 @@ const CreateMarket = lazy(() => import('pages/CreateMarket'));
 const RestrictedCountry = lazy(() => import('pages/RestrictedCountry'));
 const Achievements = lazy(() => import('pages/Achievements'));
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
+const Clubs = lazy(() => import('pages/Clubs'));
 const Profile = lazy(() => import('pages/Profile'));
 
 const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
@@ -78,7 +79,10 @@ const AppRoutes = () => {
           <Route component={Portfolio} path="/portfolio" />
           <Route component={CreateMarket} path="/market/create" />
           <Route component={Achievements} path="/achievements" />
-          <Route component={Leaderboard} path="/leaderboard/:slug?" />
+          <Route component={Leaderboard} exact path="/leaderboard" />
+          <Route component={Clubs} exact path="/clubs" />
+          <Route component={Leaderboard} path="/clubs/:slug" />
+          <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
           <Route component={Profile} path="/user/:address" />
         </Switch>
       </Suspense>

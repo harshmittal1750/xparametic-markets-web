@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Formik, Form } from 'formik';
@@ -10,7 +10,7 @@ import {
 import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 
 import { Button } from 'components/Button';
-import { Input, TextArea } from 'components/Input';
+import { ImageUploadInput, Input, TextArea } from 'components/Input';
 import ModalFooter from 'components/ModalFooter';
 
 import { useAppSelector } from 'hooks';
@@ -19,7 +19,7 @@ import CreateLeaderboardGroupFormClasses from './CreateLeaderboardGroupForm.modu
 import type { CreateLeaderboardGroupFormValues } from './CreateLeaderboardGroupForm.type';
 import {
   formProps,
-  initialValues,
+  getInitialValues,
   sanitizeSubmittedValues,
   validationSchema
 } from './CreateLeaderboardGroupForm.util';
@@ -40,6 +40,11 @@ function CreateLeaderboardGroupForm({
   const history = useHistory();
   const userEthAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
+  const initialValues = useMemo(
+    () => getInitialValues(userEthAddress),
+    [userEthAddress]
+  );
+
   const [
     createLeaderboardGroup,
     { data: createLeaderboardGroupData, isSuccess: isSuccessCreate }
@@ -52,7 +57,7 @@ function CreateLeaderboardGroupForm({
 
   const redirectToLeaderboardGroup = useCallback(
     (leaderboardSlug: string) => {
-      history.push(`/leaderboard/${leaderboardSlug}?m=f`);
+      history.push(`/clubs/${leaderboardSlug}?m=f`);
       window.location.reload();
     },
     [history]
@@ -121,8 +126,15 @@ function CreateLeaderboardGroupForm({
           <Input
             name="name"
             label="Name"
-            placeholder="Leaderboard name"
+            placeholder="Club name"
             disabled={isSubmitting}
+          />
+          <ImageUploadInput
+            name="image"
+            label="Image"
+            initialImagePreviewURL={(previousValues || initialValues).imageUrl}
+            notUploadedActionLabel="Upload"
+            uploadedActionLabel="Re-upload"
           />
           <TextArea
             name="addresses"
