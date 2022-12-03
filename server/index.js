@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { getMarket } = require('./api/market');
+const { getLeaderboardGroupBySlug } = require('./api/group_leaderboards');
 const {
   formatMarketMetadata,
   replaceToMetadataTemplate
@@ -32,6 +33,12 @@ const metadataByPage = {
     description:
       'Predict Football World Cup match winners and grab your exclusive NFT Achievements. The Illuminate Fantasy League is a fantasy predictions tournament focused on the 2022 Football World Cup.',
     image: '/ifl_meta_achievements.png'
+  },
+  clubs: {
+    title: 'Clubs - Illuminate Fantasy League, powered by Polkamarkets',
+    description:
+      "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
+    image: '/ifl_meta_clubs.png'
   },
   leaderboard: {
     title: 'Leaderboard - Illuminate Fantasy League, powered by Polkamarkets',
@@ -110,7 +117,51 @@ app.get('/achievements', (request, response) => {
   });
 });
 
-app.get('/leaderboard/:slug?', (request, response) => {
+app.get('/clubs', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+    return response.send(metadataByPageTemplate('clubs', request, htmlData));
+  });
+});
+
+app.get('/clubs/:slug', async (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    const groupSlug = request.params.slug;
+
+    try {
+      const leaderboardGroup = await getLeaderboardGroupBySlug(groupSlug);
+      const { title, bannerUrl } = leaderboardGroup.data;
+
+      return response.send(
+        replaceToMetadataTemplate({
+          htmlData,
+          url: `${request.headers['x-forwarded-proto'] || 'http'}://${
+            request.headers.host
+          }/clubs/${request.params.slug}`,
+          title:
+            `${title} - Illuminate Fantasy League` || defaultMetadata.title,
+          description:
+            metadataByPage.clubs.description || defaultMetadata.description,
+          image:
+            bannerUrl ||
+            `${request.headers['x-forwarded-proto'] || 'http'}://${
+              request.headers.host
+            }${defaultMetadata.image}`
+        })
+      );
+    } catch (e) {
+      return response.send(defaultMetadataTemplate(request, htmlData));
+    }
+  });
+});
+
+app.get('/leaderboard', (request, response) => {
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
@@ -119,6 +170,10 @@ app.get('/leaderboard/:slug?', (request, response) => {
       metadataByPageTemplate('leaderboard', request, htmlData)
     );
   });
+});
+
+app.get('/leaderboard/:slug', async (request, response) => {
+  response.redirect(`/clubs/${request.params.slug}`);
 });
 
 app.get('/user/:address', (request, response) => {
