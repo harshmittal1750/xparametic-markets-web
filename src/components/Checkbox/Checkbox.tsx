@@ -19,11 +19,11 @@ function Checkbox({
   ...props
 }: CheckboxProps & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
-    <span className="pm-c-checkbox caption medium">
+    <label className="pm-c-checkbox caption medium" htmlFor={label}>
       <input id={label} type="checkbox" {...props} />
       {children || label}
       <span className="pm-c-checkbox__checkmark" />
-    </span>
+    </label>
   );
 }
 

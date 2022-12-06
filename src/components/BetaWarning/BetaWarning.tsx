@@ -77,13 +77,7 @@ export default function BetaWarning() {
             the Fantasy League.
           </ModalSectionText>
           <Checkbox label="text" onChange={handleAgreed}>
-            <Text
-              as="label"
-              scale="caption"
-              fontWeight="medium"
-              // @ts-ignore
-              htmlFor="text"
-            >
+            <Text as="span" scale="caption" fontWeight="medium">
               I have read and accept the Documentation and Terms & Conditions.
             </Text>
           </Checkbox>
