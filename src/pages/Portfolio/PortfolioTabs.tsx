@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from 'react';
+import { useState, useMemo, memo, useCallback } from 'react';
 
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
@@ -32,6 +32,36 @@ function TabsFilter() {
   );
 }
 
+const responsiveMarkets = ['market', 'outcome', 'profit'];
+
+function useResponsivePositions({ headers, rows }) {
+  const handleHeaders = useCallback(
+    header =>
+      header.key === 'market' ||
+      header.key === 'outcome' ||
+      header.key === 'profit',
+    []
+  );
+  const handleRows = useCallback(
+    (row, index) =>
+      Object.keys(row)
+        .filter(key => responsiveMarkets.includes(key))
+        .reduce(
+          (acc, key) => ({
+            ...acc,
+            [key]: rows[index][key]
+          }),
+          {}
+        ),
+    [rows]
+  );
+
+  return {
+    headers: headers.filter(handleHeaders),
+    rows: rows.map(handleRows)
+  };
+}
+
 const PortfolioTabsFilter = memo(TabsFilter);
 
 function PortfolioTabs() {
@@ -46,7 +76,6 @@ function PortfolioTabs() {
     isLoading
   } = useAppSelector(state => state.polkamarkets);
 
-  const positionsTypo = isDesktop ? ' Positions' : '';
   const { portfolio: isLoadingPortfolio, actions: isLoadingActions } =
     isLoading;
 
@@ -62,11 +91,12 @@ function PortfolioTabs() {
         skip: isLoadingActions || isEmpty(marketsIds)
       }
     );
-
   const marketPositions = useMemo(
     () => formatMarketPositions(portfolio, actions, markets),
     [actions, markets, portfolio]
   );
+  const responsivePositions = useResponsivePositions(marketPositions);
+  const positions = isDesktop ? marketPositions : responsivePositions;
 
   return (
     <div className="portfolio-tabs">
@@ -76,7 +106,7 @@ function PortfolioTabs() {
           buttons={[
             {
               id: 'marketPositions',
-              name: `Market${positionsTypo}`,
+              name: 'Market Positions',
               color: 'default'
             }
           ]}
@@ -88,17 +118,8 @@ function PortfolioTabs() {
       <div className="portfolio-tabs__content">
         {currentTab === 'marketPositions' ? (
           <PortfolioMarketTable
-            rows={marketPositions.rows}
-            headers={
-              isDesktop
-                ? marketPositions.headers
-                : marketPositions.headers.filter(
-                    header =>
-                      header.key === 'market' ||
-                      header.key === 'outcome' ||
-                      header.key === 'profit'
-                  )
-            }
+            rows={positions.rows}
+            headers={positions.headers}
             isLoadingData={
               isLoadingMarkets || isLoadingPortfolio || isLoadingActions
             }
