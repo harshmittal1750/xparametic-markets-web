@@ -9,19 +9,17 @@ type MarketCardProps = {
   market: MarketInterface;
 };
 
-function MarketAvatar(props: Record<'src' | 'alt', string>) {
-  return (
-    <figure className="pm-c-market__body-avatar">
-      {/* eslint-disable-next-line jsx-a11y/alt-text */}
-      <img className="pm-c-market__body-image" {...props} />
-    </figure>
-  );
-}
 function Market({ market }: MarketCardProps) {
   return (
     <div className="pm-c-market">
       <div className="pm-c-market__body">
-        <MarketAvatar src={market.imageUrl} alt="Market Avatar" />
+        <figure className="pm-c-market__body-avatar">
+          <img
+            className="pm-c-market__body-image"
+            src={market.imageUrl}
+            alt="Market Avatar"
+          />
+        </figure>
         <div className="pm-c-market__body-details">
           <Breadcrumb>
             <Breadcrumb.Item>{`${market.category.toLowerCase()}`}</Breadcrumb.Item>
