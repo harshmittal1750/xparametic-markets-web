@@ -7,3 +7,17 @@
   -webkit-box-orient: vertical;
   word-break: break-all;
 }
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-color: rgb(255 255 255 / 0.2);
+  border-radius: 20px;
+}
+
+.icon {
+  color: #ffb743;
+  display: unset;
+  margin-right: 8px;
+  vertical-align: sub;
+}
