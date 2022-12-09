@@ -309,16 +309,14 @@ function Leaderboard() {
           <div className="flex-column gap-3">
             <div className="flex-row gap-5 align-center">
               <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-              {joinGroupState.visible ? (
-                <Button
+              {createGroupState.visible && createGroupState.mode === 'edit' ? (
+                <CreateLeaderboardGroup
+                  mode={createGroupState.mode}
+                  previousValues={createGroupState.previousValues}
+                  slug={slug}
+                  disabled={isLoadingQuery}
                   size="xs"
-                  color="default"
-                  onClick={handleJoinLeaderboardGroup}
-                  loading={isLoadingJoinLeaderboardGroupMutation}
-                  disabled={joinGroupState.disabled}
-                >
-                  {joinGroupState.joined ? 'Joined' : 'Join'}
-                </Button>
+                />
               ) : null}
             </div>
             <p className="tiny medium text-2">
@@ -333,13 +331,24 @@ function Leaderboard() {
             </p>
           </div>
         </div>
-        {createGroupState.visible ? (
+        {createGroupState.visible && !joinGroupState.visible ? (
           <CreateLeaderboardGroup
             mode={createGroupState.mode}
             previousValues={createGroupState.previousValues}
             slug={slug}
             disabled={isLoadingQuery}
           />
+        ) : null}
+        {joinGroupState.visible ? (
+          <Button
+            size="sm"
+            color="default"
+            onClick={handleJoinLeaderboardGroup}
+            loading={isLoadingJoinLeaderboardGroupMutation}
+            disabled={joinGroupState.disabled}
+          >
+            {joinGroupState.joined ? 'Joined' : 'Join Club'}
+          </Button>
         ) : null}
       </div>
       <Tabs
