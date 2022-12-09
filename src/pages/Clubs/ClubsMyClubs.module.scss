@@ -13,11 +13,20 @@
   height: 40px;
   background-color: rgb(255 255 255 / 0.2);
   border-radius: 20px;
+  overflow: hidden;
+  display: flex;
 }
 
-.icon {
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.initials {
+  margin: auto;
+}
+
+.adornment {
   color: #ffb743;
-  display: unset;
-  margin-right: 8px;
-  vertical-align: sub;
+  margin-right: 4px;
 }
