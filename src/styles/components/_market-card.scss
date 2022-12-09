@@ -1,17 +1,30 @@
 .pm-c-market {
   @include themes($market-themes) {
     &__body {
-      @include flex-column(center, center);
-
-      @include breakpoint-to('md') {
-        @include flex-row;
-      }
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       gap: 2.4rem;
+
+      @media (min-width: 1024px) {
+        & {
+          align-items: flex-start;
+          flex-direction: initial;
+          text-align: initial;
+        }
+      }
+
+      &-avatar {
+        overflow: hidden;
+        flex-shrink: 0;
+        display: inherit;
+        border-radius: 32px;
+      }
 
       &-image {
         object-fit: cover;
-        border-radius: 50%;
-
+        transform: scale(1.4);
         height: 6.4rem;
         width: 6.4rem;
       }

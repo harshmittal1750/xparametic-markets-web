@@ -77,30 +77,12 @@ export default function BetaWarning() {
             the Fantasy League.
           </ModalSectionText>
           <Checkbox label="text" onChange={handleAgreed}>
-            <Text as="p" scale="caption" fontWeight="medium">
-              <>
-                {`I have read and accept the `}
-                <Link
-                  title="Documentation"
-                  scale="caption"
-                  fontWeight="medium"
-                  href="/docs"
-                  target="_blank"
-                />
-                {` and `}
-                <Link
-                  title="Terms & Conditions"
-                  scale="caption"
-                  fontWeight="medium"
-                  href="https://www.polkamarkets.com/legal/terms-conditions"
-                  target="_blank"
-                />
-              </>
-              .
+            <Text as="span" scale="caption" fontWeight="medium">
+              I have read and accept the Documentation and Terms & Conditions.
             </Text>
           </Checkbox>
         </ModalSection>
-        <ModalFooter>
+        <ModalFooter className="pm-c-beta-warning__footer">
           <Button
             variant="normal"
             color="warning"
@@ -110,6 +92,23 @@ export default function BetaWarning() {
           >
             Proceed
           </Button>
+          <Text as="p" color="gray">
+            <Link
+              title="Documentation"
+              scale="caption"
+              fontWeight="medium"
+              href="/docs"
+              target="_blank"
+            />
+            {' • '}
+            <Link
+              title="Terms & Conditions"
+              scale="caption"
+              fontWeight="medium"
+              href="https://www.polkamarkets.com/legal/terms-conditions"
+              target="_blank"
+            />
+          </Text>
         </ModalFooter>
       </ModalContent>
     </Modal>
