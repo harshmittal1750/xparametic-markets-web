@@ -137,6 +137,7 @@ function CreateLeaderboardGroupForm({
             uploadedActionLabel="Re-upload"
           />
           <TextArea
+            hidden={mode === 'create'}
             name="addresses"
             label="Addresses"
             placeholder="Addresses (one per line)"
