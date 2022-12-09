@@ -34,4 +34,5 @@ export type UserLeaderboard = {
   title: string;
   slug: string;
   admin: boolean;
+  imageUrl: string | null;
 };
