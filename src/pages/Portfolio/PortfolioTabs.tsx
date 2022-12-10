@@ -1,4 +1,4 @@
-import { useState, useMemo, memo, useCallback } from 'react';
+import { useState, useMemo, memo } from 'react';
 
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
@@ -32,35 +32,21 @@ function TabsFilter() {
   );
 }
 
-const responsiveMarkets = ['market', 'outcome', 'profit'];
-
-function useResponsivePositions({ headers, rows }) {
-  const handleHeaders = useCallback(
-    header =>
-      header.key === 'market' ||
-      header.key === 'outcome' ||
-      header.key === 'profit',
-    []
-  );
-  const handleRows = useCallback(
-    (row, index) =>
-      Object.keys(row)
-        .filter(key => responsiveMarkets.includes(key))
-        .reduce(
-          (acc, key) => ({
-            ...acc,
-            [key]: rows[index][key]
-          }),
-          {}
-        ),
-    [rows]
-  );
-
-  return {
-    headers: headers.filter(handleHeaders),
-    rows: rows.map(handleRows)
-  };
-}
+const defaultColsArr = ['market', 'outcome', 'profit'];
+const getDefaultCols = ({ headers, rows }) => ({
+  headers: headers.filter(({ key }) => defaultColsArr.includes(key)),
+  rows: rows.map((row: {}, index: number) =>
+    Object.keys(row)
+      .filter(key => defaultColsArr.includes(key))
+      .reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: rows[index][key]
+        }),
+        {}
+      )
+  )
+});
 
 const PortfolioTabsFilter = memo(TabsFilter);
 
@@ -95,8 +81,9 @@ function PortfolioTabs() {
     () => formatMarketPositions(portfolio, actions, markets),
     [actions, markets, portfolio]
   );
-  const responsivePositions = useResponsivePositions(marketPositions);
-  const positions = isDesktop ? marketPositions : responsivePositions;
+  const positions = isDesktop
+    ? marketPositions
+    : getDefaultCols(marketPositions);
 
   return (
     <div className="portfolio-tabs">
