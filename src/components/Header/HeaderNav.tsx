@@ -7,6 +7,8 @@ import { Button } from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 
+import HeaderClasses from './Header.module.scss';
+
 const marketsPathname = 'Markets';
 const pathnames = [
   marketsPathname,
@@ -16,7 +18,7 @@ const pathnames = [
   'Clubs'
 ];
 
-function NavMenuLinks({ children }: React.PropsWithChildren<{}>) {
+function HeaderNavMenu({ children }: React.PropsWithChildren<{}>) {
   const [show, setShow] = useState(false);
 
   return (
@@ -30,15 +32,15 @@ function NavMenuLinks({ children }: React.PropsWithChildren<{}>) {
     </>
   );
 }
-export default function NavMenu({ isDesktop }: { isDesktop: boolean }) {
-  const NavMenuWrapper = isDesktop ? Fragment : NavMenuLinks;
+export default function HeaderNav({ isDesktop }: { isDesktop: boolean }) {
+  const HeaderNavWrapper = isDesktop ? Fragment : HeaderNavMenu;
 
   return (
-    <nav className="pm-l-layout__header__nav">
-      <Link to="/" aria-label="Homepage" className="pm-l-layout__header__logos">
+    <nav className={HeaderClasses.nav}>
+      <Link to="/" aria-label="Homepage" className={HeaderClasses.logos}>
         <IlluminateFantasyLeagueLogo />
       </Link>
-      <NavMenuWrapper>
+      <HeaderNavWrapper>
         <ul>
           {pathnames.map(_pathname => {
             const pathname = `/${
@@ -46,19 +48,20 @@ export default function NavMenu({ isDesktop }: { isDesktop: boolean }) {
             }`;
 
             return (
-              <NavLink
-                key={_pathname}
-                to={pathname}
-                className="pm-l-layout__header__nav-link"
-                activeClassName="active"
-                isActive={(_, location) => location.pathname === pathname}
-              >
-                {_pathname}
-              </NavLink>
+              <li key={_pathname}>
+                <NavLink
+                  to={pathname}
+                  className="pm-l-layout__header__nav-link"
+                  activeClassName="active"
+                  isActive={(_, location) => location.pathname === pathname}
+                >
+                  {_pathname}
+                </NavLink>
+              </li>
             );
           })}
         </ul>
-      </NavMenuWrapper>
+      </HeaderNavWrapper>
     </nav>
   );
 }

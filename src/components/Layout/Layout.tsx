@@ -2,7 +2,7 @@ import { Container } from 'ui';
 
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import RightSidebar from '../RightSidebar';
 import ScrollableArea from '../ScrollableArea';
 
@@ -10,7 +10,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <div className="pm-l-layout">
       <BetaWarning />
-      <NavBar />
+      <Header />
       <ScrollableArea className="pm-l-layout__scrollable-area">
         <Container className="pm-l-layout__main">
           {children}

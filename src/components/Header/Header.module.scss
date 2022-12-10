@@ -1,0 +1,43 @@
+.container {
+  align-items: center;
+  transition: background-color 200ms ease-in-out;
+  background-color: var(--color-background-primary);
+  min-height: var(--header-y);
+}
+.root {
+  border-bottom: 1px solid #252c3b;
+  display: flex;
+  grid-area: header;
+}
+.nav {
+  display: flex;
+  flex-grow: 1;
+}
+.logos {
+  display: inherit;
+  margin-right: auto;
+  @media (min-width: 1024px) {
+    margin-right: 24px;
+  }
+}
+.actions {
+  display: flex;
+  gap: 1.6rem;
+  border-top: 1px solid #252c3b;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  bottom: 0px;
+  left: 0px;
+  margin-left: auto;
+  @media (min-width: 1024px) {
+    border-top: initial;
+    position: initial;
+    width: initial;
+  }
+}
+.widget {
+  position: absolute;
+  right: 24px;
+  top: 68px;
+}

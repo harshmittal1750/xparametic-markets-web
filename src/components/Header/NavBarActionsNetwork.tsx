@@ -8,7 +8,7 @@ import Modal from 'components/Modal';
 
 import { useNetworks } from 'contexts/networks';
 
-import NavbarClasses from './NavBar.module.scss';
+import NavbarClasses from './Header.module.scss';
 
 export default function NavBarActionsNetwork() {
   const { network: currentNetwork, networks, changeToNetwork } = useNetworks();
