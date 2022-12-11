@@ -13,6 +13,36 @@
   display: flex;
   flex-grow: 1;
 }
+.list {
+  @media (min-width: 1024px) {
+    display: inherit;
+    align-items: center;
+  }
+}
+.item {
+  margin-bottom: 12px;
+  @media (min-width: 1024px) {
+    margin-right: 24px;
+    margin-bottom: initial;
+  }
+}
+.link {
+  display: flex;
+  height: 48px;
+  align-items: center;
+  color: #637084;
+  font-size: 2rem;
+  text-decoration: none;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: color 0.3s ease 0s;
+  @media (min-width: 1024px) {
+    font-size: 1.2rem;
+  }
+}
+.active {
+  color: #f9fafb;
+}
 .logos {
   display: inherit;
   margin-right: auto;
@@ -40,4 +70,14 @@
   position: absolute;
   right: 24px;
   top: 68px;
+}
+.modal {
+  background-color: rgba(15, 17, 25, 0.75);
+  backdrop-filter: blur(2px);
+}
+.header {
+  height: var(--header-y);
+}
+.hide {
+  float: right;
 }
