@@ -10,5 +10,6 @@ export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
   centered?: boolean;
   size?: 'sm' | 'md' | 'lg';
   fullScreen?: boolean;
+  fullWidth?: boolean;
   disableGutters?: boolean;
 }

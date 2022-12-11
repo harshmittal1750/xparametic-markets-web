@@ -24,6 +24,7 @@ export default function Modal({
   centered,
   size,
   fullScreen,
+  fullWidth,
   disableGutters,
   ...props
 }: ModalProps) {
@@ -94,7 +95,8 @@ export default function Modal({
                   [ModalClasses.sm]: size === 'sm',
                   [ModalClasses.md]: size === 'md',
                   [ModalClasses.lg]: size === 'lg',
-                  [ModalClasses.fullScreen]: fullScreen
+                  [ModalClasses.fullScreen]: fullScreen,
+                  [ModalClasses.fullWidth]: fullWidth
                 },
                 className?.dialog
               )}
