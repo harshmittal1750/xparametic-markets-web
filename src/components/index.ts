@@ -152,7 +152,10 @@ export {
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
+
 export { default as CreateLeaderboardGroupForm } from './CreateLeaderboardGroupForm';
+
+export { default as CreateMarket } from './CreateMarket';
 
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';

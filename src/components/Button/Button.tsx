@@ -17,7 +17,7 @@ export type ButtonColor =
 
 type ButtonSize = 'normal' | 'sm' | 'xs';
 
-type ButtonProps = {
+export type ButtonProps = {
   /**
    * Variant to use
    * @default 'normal'
