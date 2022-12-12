@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import { formatNumberToString } from 'helpers/math';
+import { useMedia } from 'ui';
 
 import Feature from 'components/Feature';
 
@@ -10,7 +11,8 @@ import { Transak } from '../integrations';
 import WalletInfoBuy from './WalletInfoBuy';
 import WalletInfoClaim from './WalletInfoClaim';
 
-function WalletInfo() {
+export default function WalletInfo() {
+  const isDesktop = useMedia('(min-width: 1024px)');
   const { network } = useNetwork();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
@@ -21,12 +23,16 @@ function WalletInfo() {
       <div className="pm-c-wallet-info__currency">
         {formatNumberToString(polkBalance)}
         <span className="pm-c-wallet-info__currency__ticker"> IFL</span>
-        <Feature name="fantasy">
-          <WalletInfoClaim />
-        </Feature>
-        <Feature name="regular">
-          <WalletInfoBuy />
-        </Feature>
+        {isDesktop && (
+          <>
+            <Feature name="fantasy">
+              <WalletInfoClaim />
+            </Feature>
+            <Feature name="regular">
+              <WalletInfoBuy />
+            </Feature>
+          </>
+        )}
       </div>
       <div className="pm-c-wallet-info__currency">
         {ethBalance.toFixed(4)}
@@ -34,16 +40,18 @@ function WalletInfo() {
           {' '}
           {network.currency.ticker}
         </span>
-        <Link
-          to={`/user/${ethAddress}`}
-          className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button"
-        >
-          {ethAddress.match(/^.{2}|.{2}$/gm)?.join('...')}
-        </Link>
-        <Transak />
+        {isDesktop && (
+          <>
+            <Link
+              to={`/user/${ethAddress}`}
+              className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button"
+            >
+              {ethAddress.match(/^.{3}|.{3}$/gm)?.join('...')}
+            </Link>
+            <Transak />
+          </>
+        )}
       </div>
     </div>
   );
 }
-
-export default WalletInfo;

@@ -1,6 +1,8 @@
 import { Fragment, useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 
+import { useMedia } from 'ui';
+
 import { IlluminateFantasyLeagueLogo } from 'assets/icons';
 
 import { Button } from 'components/Button';
@@ -63,8 +65,8 @@ function HeaderNavMenu({
         show={show}
         fullScreen
         fullWidth
+        backdrop
         className={{
-          root: HeaderClasses.modal,
           dialog: HeaderClasses.dialog
         }}
       >
@@ -115,7 +117,8 @@ function HeaderNavMenu({
     </>
   );
 }
-export default function HeaderNav({ isDesktop }: { isDesktop: boolean }) {
+export default function HeaderNav() {
+  const isDesktop = useMedia('(min-width: 1024px)');
   const MenuComponent = isDesktop ? Fragment : HeaderNavMenu;
 
   return (

@@ -71,16 +71,8 @@
   right: 24px;
   top: 68px;
 }
-.modal {
-  background-color: rgba(15, 17, 25, 0.6);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-
-  @supports (
-    (-webkit-backdrop-filter: blur(8px)) or (backdrop-filter: blur(8px))
-  ) {
-    background-color: rgba(15, 17, 25, 0.8);
-  }
+.settings {
+  margin-left: auto;
 }
 .dialog {
   display: flex;
