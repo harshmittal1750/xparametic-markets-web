@@ -13,7 +13,7 @@ import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Text from 'components/Text';
 
-import HeaderClasses from './Header.module.scss';
+import HeaderNavClasses from './HeaderNav.module.scss';
 
 const marketsPathname = 'Markets';
 const pathnames = [
@@ -69,30 +69,30 @@ function HeaderNavModal({
         fullWidth
         backdrop
         className={{
-          dialog: HeaderClasses.dialog
+          dialog: HeaderNavClasses.dialog
         }}
       >
-        <header className={HeaderClasses.header}>
+        <header className={HeaderNavClasses.header}>
           <Button
             size="xs"
             variant="ghost"
             onClick={handleHide}
-            className={HeaderClasses.hide}
+            className={HeaderNavClasses.hide}
           >
             <Icon name="Cross" size="lg" />
           </Button>
         </header>
         {typeof children === 'function' ? children(handleHide) : children}
-        <footer className={HeaderClasses.footer}>
+        <footer className={HeaderNavClasses.footer}>
           <Text
             color="gray"
             scale="tiny-uppercase"
             fontWeight="bold"
-            className={HeaderClasses.title}
+            className={HeaderNavClasses.title}
           >
             Join our community
           </Text>
-          <ul className={HeaderClasses.socials}>
+          <ul className={HeaderNavClasses.socials}>
             {socials.map(social => (
               <li key={social.name}>
                 <Text
@@ -102,19 +102,19 @@ function HeaderNavModal({
                   target="_blank"
                   rel="noopener noreferrer"
                   color="gray"
-                  className={HeaderClasses.social}
+                  className={HeaderNavClasses.social}
                 >
                   <Icon
                     title={social.name}
                     name={social.name}
-                    className={HeaderClasses.icon}
+                    className={HeaderNavClasses.icon}
                   />
                 </Text>
               </li>
             ))}
           </ul>
           <Feature name="regular">
-            <CreateMarket fullwidth className={HeaderClasses.createMarket} />
+            <CreateMarket fullwidth className={HeaderNavClasses.createMarket} />
           </Feature>
         </footer>
       </Modal>
@@ -127,18 +127,18 @@ function HeaderNavMenu({
   NavLinkProps?: Omit<ReactRouterDom.NavLinkProps, 'to'>;
 }) {
   return (
-    <ul className={HeaderClasses.list}>
+    <ul className={HeaderNavClasses.list}>
       {pathnames.map(_pathname => {
         const pathname = `/${
           _pathname === marketsPathname ? '' : _pathname.toLowerCase()
         }`;
 
         return (
-          <li key={_pathname} className={HeaderClasses.item}>
+          <li key={_pathname} className={HeaderNavClasses.item}>
             <NavLink
               to={pathname}
-              className={HeaderClasses.link}
-              activeClassName={HeaderClasses.active}
+              className={HeaderNavClasses.link}
+              activeClassName={HeaderNavClasses.active}
               isActive={(_, location) => location.pathname === pathname}
               {...NavLinkProps}
             >
@@ -152,20 +152,20 @@ function HeaderNavMenu({
 }
 export default function HeaderNav() {
   const isDesktop = useMedia('(min-width: 1024px)');
-  const MenuComponent = isDesktop ? Fragment : HeaderNavModal;
+  const HeaderNavMnodalComponent = isDesktop ? Fragment : HeaderNavModal;
 
   return (
-    <nav className={HeaderClasses.nav}>
-      <Link to="/" aria-label="Homepage" className={HeaderClasses.logos}>
+    <nav className={HeaderNavClasses.root}>
+      <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
         <IlluminateFantasyLeagueLogo />
       </Link>
-      <MenuComponent>
+      <HeaderNavMnodalComponent>
         {isDesktop ? (
           <HeaderNavMenu />
         ) : (
           handleHide => <HeaderNavMenu NavLinkProps={{ onClick: handleHide }} />
         )}
-      </MenuComponent>
+      </HeaderNavMnodalComponent>
     </nav>
   );
 }
