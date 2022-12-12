@@ -4,8 +4,10 @@ import { NavLink, Link } from 'react-router-dom';
 import { IlluminateFantasyLeagueLogo } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import CreateMarket from 'components/CreateMarket';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
+import Text from 'components/Text';
 
 import HeaderClasses from './Header.module.scss';
 
@@ -17,6 +19,32 @@ const pathnames = [
   'Leaderboard',
   'Clubs'
 ];
+const socials = [
+  {
+    name: 'Twitter',
+    href: 'https://twitter.com/polkamarkets'
+  },
+  {
+    name: 'Medium',
+    href: 'https://blog.polkamarkets.com/'
+  },
+  {
+    name: 'Telegram',
+    href: 'https://t.me/polkamarkets_announcements'
+  },
+  {
+    name: 'Youtube',
+    href: 'https://www.youtube.com/channel/UCKAefRG1MgYMnBmgRYhisTQ'
+  },
+  {
+    name: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/polkamarkets'
+  },
+  {
+    name: 'GitHub',
+    href: 'https://github.com/Polkamarkets'
+  }
+] as const;
 
 function HeaderNavMenu({
   children
@@ -36,7 +64,8 @@ function HeaderNavMenu({
         fullScreen
         fullWidth
         className={{
-          root: HeaderClasses.modal
+          root: HeaderClasses.modal,
+          dialog: HeaderClasses.dialog
         }}
       >
         <header className={HeaderClasses.header}>
@@ -50,6 +79,38 @@ function HeaderNavMenu({
           </Button>
         </header>
         {children(handleHide)}
+        <footer className={HeaderClasses.footer}>
+          <Text
+            color="gray"
+            scale="tiny-uppercase"
+            fontWeight="bold"
+            className={HeaderClasses.title}
+          >
+            Join our community
+          </Text>
+          <ul className={HeaderClasses.socials}>
+            {socials.map(social => (
+              <li key={social.name}>
+                <Text
+                  // @ts-ignore
+                  as="a"
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  color="gray"
+                  className={HeaderClasses.social}
+                >
+                  <Icon
+                    title={social.name}
+                    name={social.name}
+                    className={HeaderClasses.icon}
+                  />
+                </Text>
+              </li>
+            ))}
+          </ul>
+          <CreateMarket fullwidth />
+        </footer>
       </Modal>
     </>
   );

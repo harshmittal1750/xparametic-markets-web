@@ -34,7 +34,7 @@ export default function HeaderActions({ isDesktop }: { isDesktop: boolean }) {
         aria-label="Switch theme"
         onClick={handleTheme}
       >
-        <Icon name="Sparkles" />
+        <Icon name="Gear" />
       </Button>
     </RootComponent>
   );
