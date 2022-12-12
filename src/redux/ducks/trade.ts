@@ -14,6 +14,7 @@ export interface TradeDetails {
 const initialState = {
   type: 'buy',
   selectedMarketId: '',
+  selectedMarketNetworkId: '',
   selectedOutcomeId: '',
   amount: 0,
   maxAmount: 0,
@@ -46,6 +47,7 @@ const tradeSlice = createSlice({
     outcomeSelected: (state, action) => ({
       ...state,
       selectedMarketId: action.payload.marketId,
+      selectedMarketNetworkId: action.payload.marketNetworkId,
       selectedOutcomeId: action.payload.outcomeId
     }),
     setTradeDetails: (state, action: PayloadAction<TradeDetails>) => ({
@@ -95,8 +97,12 @@ export {
   reset
 };
 
-export function selectOutcome(marketId: string, outcomeId: string | number) {
+export function selectOutcome(
+  marketId: string,
+  marketNetworkId: string,
+  outcomeId: string | number
+) {
   return async dispatch => {
-    dispatch(outcomeSelected({ marketId, outcomeId }));
+    dispatch(outcomeSelected({ marketId, marketNetworkId, outcomeId }));
   };
 }

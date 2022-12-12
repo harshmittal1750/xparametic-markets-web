@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { currencies } from 'config';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 
 import { Dropdown, Text } from 'components/new';
@@ -10,6 +11,8 @@ import ProfileLeaderboardRanks from './ProfileLeaderboardRanks';
 import ProfilePredictionStatistics from './ProfilePredictionStatistics';
 import { LeaderboardRanks, PredictionStatistics } from './types';
 
+const { IFL } = currencies;
+
 type Timeframe = '1w' | '1m' | 'at';
 
 type ProfileYourStatsProps = {
@@ -19,10 +22,10 @@ type ProfileYourStatsProps = {
 function ProfileYourStats({ address }: ProfileYourStatsProps) {
   // Custom hooks
   const { network } = useNetwork();
-  const { currency } = network;
+  const currency = IFL;
 
   // Local state
-  const [timeframe, setTimeframe] = useState<Timeframe>('1w');
+  const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   const { data: leaderboard, isLoading } = useGetLeaderboardByAddressQuery({
     address,
@@ -56,7 +59,7 @@ function ProfileYourStats({ address }: ProfileYourStatsProps) {
         </Text>
         <Dropdown
           key="timeframe"
-          defaultOption="1w"
+          defaultOption="at"
           options={[
             { label: 'Weekly', value: '1w' },
             { label: 'Monthly', value: '1m' },

@@ -2,7 +2,9 @@ import { Market } from 'models/market';
 import { Achievement } from 'types/achievement';
 import {
   LeaderboardAchievement,
-  LeaderboardTimeframe
+  LeaderboardGroup,
+  LeaderboardTimeframe,
+  UserLeaderboard
 } from 'types/leaderboard';
 import { MarketState } from 'types/market';
 import { FeedActivity } from 'types/portfolio';
@@ -76,6 +78,7 @@ export type GetLeaderboardBaseData = {
   tvlLiquidity: number;
   claimWinningsCount: number;
   transactions: number;
+  erc20Balance: number;
   achievements: LeaderboardAchievement[];
 };
 
@@ -103,6 +106,41 @@ export type GetLeaderboardByAddressArgs = {
   timeframe: LeaderboardTimeframe;
   networkId: string;
 };
+
+// createLeaderboardGroup
+export type CreateLeaderboardGroupData = { slug: string };
+export type CreateLeaderboardGroupParams = {
+  title: string;
+  users: string[];
+  imageHash?: string;
+  createdBy: string;
+};
+
+// joinLeaderboardGroup
+export type JoinLeaderboardGroupData = void;
+export type JoinLeaderboardGroupParams = {
+  slug: string;
+  user: string;
+};
+
+// editLeaderboardGroup
+export type EditLeaderboardGroupData = LeaderboardGroup;
+export type EditLeaderboardGroupParams = {
+  slug: string;
+  title: string;
+  imageHash: string;
+  users: string[];
+};
+
+// getLeaderboardGroupBySlug
+export type GetLeaderboardGroupBySlugData = LeaderboardGroup;
+export type GetLeaderboardGroupBySlugArgs = {
+  slug: string;
+};
+
+// getUserLeaderboards
+export type GetLeaderboardGroupsByUserData = UserLeaderboard[];
+export type GetLeaderboardGroupsByUserArgs = { user: string };
 
 // getPortfolioFeedByAddress
 export type GetPortfolioFeedByAddressData = FeedActivity[];

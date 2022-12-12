@@ -20,6 +20,11 @@ export default function Modal({
   onHide,
   show,
   className,
+  backdrop,
+  centered,
+  size,
+  fullScreen,
+  disableGutters,
   ...props
 }: ModalProps) {
   const { current: didMount } = useMount();
@@ -64,17 +69,35 @@ export default function Modal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             role="presentation"
-            className={cn(ModalClasses.root, className?.root)}
+            className={cn(
+              ModalClasses.root,
+              {
+                [ModalClasses.backdrop]: backdrop,
+                [ModalClasses.flex]: centered,
+                [ModalClasses.gutters]: !disableGutters
+              },
+              className?.root
+            )}
             onKeyDown={handleKeyDown}
           >
             <motion.div
               ref={ref}
-              initial={{ y: 16 }}
+              initial={{ y: 8 }}
               animate={{ y: 0 }}
-              exit={{ y: 16 }}
+              exit={{ y: 8 }}
               role="dialog"
               aria-modal="true"
-              className={cn(ModalClasses.dialog, className?.dialog)}
+              className={cn(
+                ModalClasses.dialog,
+                {
+                  [ModalClasses.center]: centered,
+                  [ModalClasses.sm]: size === 'sm',
+                  [ModalClasses.md]: size === 'md',
+                  [ModalClasses.lg]: size === 'lg',
+                  [ModalClasses.fullScreen]: fullScreen
+                },
+                className?.dialog
+              )}
               {...props}
             />
           </motion.div>

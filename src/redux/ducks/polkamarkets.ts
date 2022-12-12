@@ -19,6 +19,7 @@ export type PolkamarketsInitialState = {
   ethBalance: number;
   polkBalance: number;
   polkApproved: boolean;
+  polkClaimed: boolean;
   portfolio: any;
   actions: Action[];
   marketsWithActions: string[];
@@ -40,6 +41,7 @@ const initialState: PolkamarketsInitialState = {
   ethBalance: 0,
   polkBalance: 0,
   polkApproved: false,
+  polkClaimed: false,
   portfolio: {},
   actions: [],
   marketsWithActions: [],
@@ -78,6 +80,10 @@ const polkamarketsSlice = createSlice({
     changePolkApproved: (state, action: PayloadAction<boolean>) => ({
       ...state,
       polkApproved: action.payload
+    }),
+    changePolkClaimed: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      polkClaimed: action.payload
     }),
     changePortfolio: (state, action: PayloadAction<Object>) => ({
       ...state,
@@ -151,6 +157,7 @@ const {
   changeEthBalance,
   changePolkBalance,
   changePolkApproved,
+  changePolkClaimed,
   changePortfolio,
   changeActions,
   changeMarketsWithActions,
@@ -179,6 +186,9 @@ function login(polkamarketsService: PolkamarketsService) {
 
       const polkBalance = await polkamarketsService.getERC20Balance();
       dispatch(changePolkBalance(polkBalance));
+
+      const polkClaimed = await polkamarketsService.isPolkClaimed();
+      dispatch(changePolkClaimed(polkClaimed));
 
       const polkApproved = await polkamarketsService.isRealitioERC20Approved();
       dispatch(changePolkApproved(polkApproved));
@@ -277,6 +287,7 @@ export {
   changeEthBalance,
   changePolkBalance,
   changePolkApproved,
+  changePolkClaimed,
   changePortfolio,
   changeActions,
   changeBonds,

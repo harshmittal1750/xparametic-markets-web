@@ -26,8 +26,7 @@
       height: fit-content;
     }
 
-    &__notification-overlay,
-    &__image-cropper-overlay {
+    &__notification-overlay {
       @include flex-column(flex-start, center);
       position: absolute;
       z-index: 100;
@@ -37,11 +36,6 @@
 
       padding-top: 7.5rem;
       background: themed('notification-overlay-background-color');
-    }
-
-    &__image-cropper-overlay {
-      margin-top: -2.5rem;
-      margin-left: -2.5rem;
     }
   }
 }

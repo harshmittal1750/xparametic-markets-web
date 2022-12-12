@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { getMarket } = require('./api/market');
+const { getLeaderboardGroupBySlug } = require('./api/group_leaderboards');
 const {
   formatMarketMetadata,
   replaceToMetadataTemplate
@@ -19,10 +20,38 @@ const {
 const indexPath = path.resolve(__dirname, '..', 'build', 'index.html');
 
 const defaultMetadata = {
-  title: 'Polkamarkets - Autonomous Prediction Market Protocol',
+  title: 'Illuminate Fantasy League, Powered By Polkamarkets',
   description:
-    'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot.',
-  image: '/polkamarkets_meta.jpg'
+    'The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!',
+  image: '/ifl_meta.jpg'
+};
+
+const metadataByPage = {
+  achievements: {
+    title:
+      'NFT Achievements - Illuminate Fantasy League, powered by Polkamarkets',
+    description:
+      'Predict Football World Cup match winners and grab your exclusive NFT Achievements. The Illuminate Fantasy League is a fantasy predictions tournament focused on the 2022 Football World Cup.',
+    image: '/ifl_meta_achievements.png'
+  },
+  clubs: {
+    title: 'Clubs - Illuminate Fantasy League, powered by Polkamarkets',
+    description:
+      "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
+    image: '/ifl_meta_clubs.png'
+  },
+  leaderboard: {
+    title: 'Leaderboard - Illuminate Fantasy League, powered by Polkamarkets',
+    description:
+      'Rank up higher on the leaderboard and be the #1 forecaster of the Football World Cup. The best global players will earn prizes from the $1500 USD pool, distributed as gift cards.',
+    image: '/ifl_meta_leaderboard.png'
+  },
+  portfolio: {
+    title: 'Portfolio - Illuminate Fantasy League, powered by Polkamarkets',
+    description:
+      'Participate in the Illuminate Fantasy League and compete with your friends, coworkers or other community members. Predict Football World Cup match winners and manage your portfolio outcome shares with a seamless and user friendly page.',
+    image: '/ifl_meta_portfolio.png'
+  }
 };
 
 const defaultMetadataTemplate = (request, htmlData) => {
@@ -36,6 +65,22 @@ const defaultMetadataTemplate = (request, htmlData) => {
     image: `${request.headers['x-forwarded-proto'] || 'http'}://${
       request.headers.host
     }${defaultMetadata.image}`
+  });
+};
+
+const metadataByPageTemplate = (page, request, htmlData) => {
+  const metadata = metadataByPage[page];
+
+  return replaceToMetadataTemplate({
+    htmlData,
+    url: `${request.headers['x-forwarded-proto'] || 'http'}://${
+      request.headers.host
+    }${request.url}`,
+    title: metadata.title,
+    description: metadata.description,
+    image: `${request.headers['x-forwarded-proto'] || 'http'}://${
+      request.headers.host
+    }${metadata.image}`
   });
 };
 
@@ -54,8 +99,9 @@ app.get('/portfolio', (request, response) => {
     if (error) {
       return response.status(404).end();
     }
-
-    return response.send(defaultMetadataTemplate(request, htmlData));
+    return response.send(
+      metadataByPageTemplate('portfolio', request, htmlData)
+    );
   });
 });
 
@@ -65,7 +111,53 @@ app.get('/achievements', (request, response) => {
       return response.status(404).end();
     }
 
-    return response.send(defaultMetadataTemplate(request, htmlData));
+    return response.send(
+      metadataByPageTemplate('achievements', request, htmlData)
+    );
+  });
+});
+
+app.get('/clubs', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+    return response.send(metadataByPageTemplate('clubs', request, htmlData));
+  });
+});
+
+app.get('/clubs/:slug', async (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    const groupSlug = request.params.slug;
+
+    try {
+      const leaderboardGroup = await getLeaderboardGroupBySlug(groupSlug);
+      const { title, bannerUrl } = leaderboardGroup.data;
+
+      return response.send(
+        replaceToMetadataTemplate({
+          htmlData,
+          url: `${request.headers['x-forwarded-proto'] || 'http'}://${
+            request.headers.host
+          }/clubs/${request.params.slug}`,
+          title:
+            `${title} - Illuminate Fantasy League` || defaultMetadata.title,
+          description:
+            metadataByPage.clubs.description || defaultMetadata.description,
+          image:
+            bannerUrl ||
+            `${request.headers['x-forwarded-proto'] || 'http'}://${
+              request.headers.host
+            }${defaultMetadata.image}`
+        })
+      );
+    } catch (e) {
+      return response.send(defaultMetadataTemplate(request, htmlData));
+    }
   });
 });
 
@@ -74,9 +166,14 @@ app.get('/leaderboard', (request, response) => {
     if (error) {
       return response.status(404).end();
     }
-
-    return response.send(defaultMetadataTemplate(request, htmlData));
+    return response.send(
+      metadataByPageTemplate('leaderboard', request, htmlData)
+    );
   });
+});
+
+app.get('/leaderboard/:slug', async (request, response) => {
+  response.redirect(`/clubs/${request.params.slug}`);
 });
 
 app.get('/user/:address', (request, response) => {

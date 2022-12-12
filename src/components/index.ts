@@ -1,5 +1,4 @@
-import { Alert, AlertMini, AlertInline, AlertMinimal } from './Alert';
-import AlertNotification from './AlertNotification';
+import { Alert, AlertMini, AlertMinimal } from './Alert';
 import AmountInput from './AmountInput';
 import AreaChart from './AreaChart';
 import Badge from './Badge';
@@ -58,7 +57,6 @@ import ScrollToTop from './ScrollToTop';
 import SearchBar from './SearchBar';
 import Select from './Select';
 import SEO from './SEO';
-import Sidebar from './Sidebar';
 import StepSlider from './StepSlider';
 import Table from './Table';
 import Tabs from './Tabs';
@@ -76,9 +74,7 @@ import WalletInfo from './WalletInfo';
 export {
   Alert,
   AlertMini,
-  AlertInline,
   AlertMinimal,
-  AlertNotification,
   AmountInput,
   AreaChart,
   Badge,
@@ -136,7 +132,6 @@ export {
   Select,
   SelectInput,
   SEO,
-  Sidebar,
   ReportForm,
   Ribbon,
   RightSidebar,
@@ -155,10 +150,16 @@ export {
   VoteModal,
   WalletInfo
 };
+
 export { default as ConnectMetamask } from './ConnectMetamask';
+
+export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
+export { default as CreateLeaderboardGroupForm } from './CreateLeaderboardGroupForm';
 
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
+
+export { default as Feature } from './Feature';
 
 export { default as Modal } from './Modal';
 

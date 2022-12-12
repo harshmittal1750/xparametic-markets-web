@@ -1,17 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment, networks } from 'config';
-import dayjs from 'dayjs';
-import inRange from 'lodash/inRange';
+import { environment, networks, currencies } from 'config';
+// import dayjs from 'dayjs';
+// import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
-import { Category } from 'models/category';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
 
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
+
+const { IFL } = currencies;
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
@@ -36,7 +37,7 @@ export interface MarketsIntialState {
     resolved: any;
     favorites: any;
   };
-  filter: string;
+  searchQuery: string;
   filterByVerified: boolean;
   sorterByEndingSoon: boolean;
   sorter: {
@@ -59,7 +60,7 @@ const initialState: MarketsIntialState = {
     resolved: null,
     favorites: null
   },
-  filter: '',
+  searchQuery: '',
   filterByVerified: true,
   sorterByEndingSoon: true,
   sorter: {
@@ -112,7 +113,10 @@ const marketsSlice = createSlice({
 
               return {
                 ...market,
-                network
+                network: {
+                  ...network,
+                  currency: IFL
+                }
               } as Market;
             })
           },
@@ -134,9 +138,9 @@ const marketsSlice = createSlice({
         [action.payload.type]: action.payload.error
       }
     }),
-    setFilter: (state, action: PayloadAction<string>) => ({
+    setSearchQuery: (state, action: PayloadAction<string>) => ({
       ...state,
-      filter: action.payload
+      searchQuery: action.payload
     }),
     setFilterByVerified: (state, action: PayloadAction<boolean>) => ({
       ...state,
@@ -210,9 +214,9 @@ const {
   request,
   success,
   error,
-  setFilter,
   setFilterByVerified,
   setSorterByEndingSoon,
+  setSearchQuery,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -221,9 +225,9 @@ const {
 } = marketsSlice.actions;
 
 export {
-  setFilter,
   setFilterByVerified,
   setSorterByEndingSoon,
+  setSearchQuery,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -231,29 +235,66 @@ export {
   changeMarketData
 };
 
-export const filteredMarketsSelector = (
-  state: MarketsIntialState,
-  categories: Category[]
-) => {
-  const regExpFromFilter = new RegExp(state.filter, 'i');
-  const regExpFullFilter = new RegExp(`^${state.filter}$`, 'i');
-  const verifiedFilter = verified =>
-    state.filterByVerified ? state.filterByVerified && verified : true;
-  const isEndingSoonFilter = expiresAt =>
-    inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
+type MarketsSelectorArgs = {
+  state: MarketsIntialState;
+  filters: {
+    favorites: {
+      checked: boolean;
+      marketsByNetwork: FavoriteMarketsByNetwork;
+    };
+    networks: string[];
+    countries: string[];
+    stages: string[];
+    states: string[];
+  };
+};
+
+export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
+  const regExpFromSearchQuery = new RegExp(state.searchQuery, 'i');
+
+  const filterByFavorite = (id, networkId) =>
+    filters.favorites.checked
+      ? filters.favorites.marketsByNetwork[`${networkId}`] &&
+        filters.favorites.marketsByNetwork[`${networkId}`].includes(id)
+      : true;
+
+  const filterByNetworkId = networkId =>
+    !isEmpty(filters.networks)
+      ? filters.networks.includes(`${networkId}`)
+      : true;
+
+  const filterByState = marketState =>
+    !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
+
+  const filterByCountryInTitle = title =>
+    !isEmpty(filters.countries)
+      ? filters.countries.some(country =>
+          title.toLowerCase().includes(country.toLowerCase())
+        )
+      : true;
+
+  const filterMarketsByStageInTitle = title =>
+    !isEmpty(filters.stages)
+      ? filters.stages.some(stage =>
+          title.toLowerCase().includes(stage.toLowerCase())
+        )
+      : true;
+
+  // const filterByisEndingSoon = expiresAt =>
+  //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
   function sorted(markets: Market[]) {
     if (state.sorter.sortBy) {
-      if (state.sorterByEndingSoon) {
-        return [
-          ...markets.filter(market => isEndingSoonFilter(market.expiresAt)),
-          ...orderBy(
-            markets.filter(market => !isEndingSoonFilter(market.expiresAt)),
-            [state.sorter.value],
-            [state.sorter.sortBy]
-          )
-        ];
-      }
+      // if (state.sorterByEndingSoon) {
+      //   return [
+      //     ...markets.filter(market => filterByisEndingSoon(market.expiresAt)),
+      //     ...orderBy(
+      //       markets.filter(market => !filterByisEndingSoon(market.expiresAt)),
+      //       [state.sorter.value],
+      //       [state.sorter.sortBy]
+      //     )
+      //   ];
+      // }
       return orderBy(markets, [state.sorter.value], [state.sorter.sortBy]);
     }
 
@@ -261,22 +302,21 @@ export const filteredMarketsSelector = (
   }
 
   return sorted(
-    categories.some(category => category.title.match(regExpFullFilter))
-      ? state.markets.filter(
-          ({ category, verified }) =>
-            category.match(regExpFullFilter) && verifiedFilter(verified)
-        )
-      : state.markets.filter(
-          ({ category, subcategory, title, verified }) =>
-            (category.match(regExpFromFilter) ||
-              subcategory.match(regExpFromFilter) ||
-              title.match(regExpFromFilter)) &&
-            verifiedFilter(verified)
-        )
+    state.markets.filter(
+      market =>
+        (market.category.match(regExpFromSearchQuery) ||
+          market.subcategory.match(regExpFromSearchQuery) ||
+          market.title.match(regExpFromSearchQuery)) &&
+        filterByFavorite(market.id, market.networkId) &&
+        filterByNetworkId(market.networkId) &&
+        filterByState(market.state) &&
+        filterByCountryInTitle(market.title) &&
+        filterMarketsByStageInTitle(market.title)
+    )
   );
 };
 
-export function getMarkets(marketState: MarketState, networkId: string) {
+export function getMarkets(marketState: MarketState, networkId?: string) {
   return async dispatch => {
     dispatch(request(marketState));
     try {

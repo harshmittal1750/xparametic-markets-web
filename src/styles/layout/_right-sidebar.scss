@@ -11,14 +11,7 @@
   flex-shrink: 0;
 
   width: fit-content;
-  height: calc(100vh - #{$navbar-height});
+  height: calc(100vh - var(--header-y));
 
   padding: 2.4rem;
-}
-
-.pm-l-right-sidebar--with-notification {
-  @extend .pm-l-right-sidebar;
-
-  top: #{$navbar-height + $alert-notification-height};
-  height: calc(100vh - #{$navbar-height + $alert-notification-height});
 }

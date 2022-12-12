@@ -6,4 +6,9 @@ export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
   onHide?(): void;
   show: boolean;
   className?: Partial<Record<ModalComponents, string>>;
+  backdrop?: boolean;
+  centered?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  fullScreen?: boolean;
+  disableGutters?: boolean;
 }

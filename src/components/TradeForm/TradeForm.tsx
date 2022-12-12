@@ -10,14 +10,15 @@ import TradeFormCharts from './TradeFormCharts';
 import TradeFormClosed from './TradeFormClosed';
 import TradeFormDetails from './TradeFormDetails';
 import TradeFormInput from './TradeFormInput';
-import TradeFormLiquidity from './TradeFormLiquidity';
 import TradeFormPredictions from './TradeFormPredictions';
 import TradeFormTypeSelector from './TradeFormTypeSelector';
 
 function TradeForm() {
   const dispatch = useAppDispatch();
 
-  const { id, outcomes } = useAppSelector(state => state.market.market);
+  const { id, networkId, outcomes } = useAppSelector(
+    state => state.market.market
+  );
   const marketState = useAppSelector(state => state.market.market.state);
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
@@ -34,9 +35,9 @@ function TradeForm() {
 
   useEffect(() => {
     if (!isCurrentSelectedMarket) {
-      dispatch(selectOutcome(id, outcomes[0].id));
+      dispatch(selectOutcome(id, networkId, outcomes[0].id));
     }
-  }, [isCurrentSelectedMarket, dispatch, id, outcomes]);
+  }, [isCurrentSelectedMarket, dispatch, id, outcomes, networkId]);
 
   if (isLoadingMarket) return null;
 
@@ -47,7 +48,6 @@ function TradeForm() {
       <div className="pm-c-trade-form__group" style={{ gap: '1.6rem' }}>
         <TradeFormCharts />
         <TradeFormPredictions />
-        <TradeFormLiquidity />
       </div>
       <div className="pm-c-trade-form__group" style={{ gap: '2.4rem' }}>
         <TradeFormTypeSelector />

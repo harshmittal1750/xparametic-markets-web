@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import classnames from 'classnames';
+import { currencies } from 'config';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
@@ -13,7 +14,6 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 import {
   useAppDispatch,
   useAppSelector,
-  useNetwork,
   usePolkamarketsService,
   useSortableData
 } from 'hooks';
@@ -22,6 +22,8 @@ import { AlertMini } from '../Alert';
 import { Button } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
+
+const { IFL } = currencies;
 
 type MarketTableProps = {
   rows: any[];
@@ -36,9 +38,8 @@ const PortfolioLiquidityTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency }
-  } = useNetwork();
+
+  const currency = IFL;
   const { ticker, symbol } = currency;
   const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);

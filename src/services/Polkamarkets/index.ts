@@ -1,6 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { environment } from 'config';
 import { camelizeKeys } from 'humps';
+import identity from 'lodash/identity';
+import pickBy from 'lodash/pickBy';
 import uniq from 'lodash/uniq';
 
 import {
@@ -10,7 +12,7 @@ import {
   getPortfolioByAddressTransformResponse,
   getPortfolioFeedByAddressTransformResponse
 } from './functions';
-import {
+import type {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
   GetMarketsByStateArgs,
@@ -32,7 +34,17 @@ import {
   GetLeaderboardByAddressData,
   GetLeaderboardByAddressArgs,
   GetPortfolioFeedByAddressData,
-  GetPortfolioFeedByAddressArgs
+  GetPortfolioFeedByAddressArgs,
+  CreateLeaderboardGroupData,
+  CreateLeaderboardGroupParams,
+  GetLeaderboardGroupBySlugData,
+  GetLeaderboardGroupBySlugArgs,
+  EditLeaderboardGroupData,
+  EditLeaderboardGroupParams,
+  GetLeaderboardGroupsByUserData,
+  GetLeaderboardGroupsByUserArgs,
+  JoinLeaderboardGroupData,
+  JoinLeaderboardGroupParams
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -122,6 +134,70 @@ const polkamarketsApi = createApi({
       transformResponse: (response: GetLeaderboardByAddressData) =>
         getLeaderboardByAddressTransformResponse(camelize(response))
     }),
+    createLeaderboardGroup: builder.mutation<
+      CreateLeaderboardGroupData,
+      CreateLeaderboardGroupParams
+    >({
+      query: ({ title, users, imageHash, createdBy }) => ({
+        url: `/group_leaderboards`,
+        method: 'POST',
+        body: pickBy(
+          {
+            title,
+            users,
+            image_hash: imageHash,
+            created_by: createdBy
+          },
+          identity
+        )
+      }),
+      transformResponse: (response: CreateLeaderboardGroupData) =>
+        camelize(response)
+    }),
+    editLeaderboardGroup: builder.mutation<
+      EditLeaderboardGroupData,
+      EditLeaderboardGroupParams
+    >({
+      query: ({ slug, title, imageHash, users }) => ({
+        url: `/group_leaderboards/${slug}`,
+        method: 'PUT',
+        body: {
+          title,
+          image_hash: imageHash,
+          users
+        }
+      }),
+      transformResponse: (response: EditLeaderboardGroupData) =>
+        camelize(response)
+    }),
+    joinLeaderboardGroup: builder.mutation<
+      JoinLeaderboardGroupData,
+      JoinLeaderboardGroupParams
+    >({
+      query: ({ slug, user }) => ({
+        url: `/group_leaderboards/${slug}/join`,
+        method: 'POST',
+        body: {
+          user
+        }
+      })
+    }),
+    getLeaderboardGroupBySlug: builder.query<
+      GetLeaderboardGroupBySlugData,
+      GetLeaderboardGroupBySlugArgs
+    >({
+      query: ({ slug }) => `/group_leaderboards/${slug}`,
+      transformResponse: (response: GetLeaderboardGroupBySlugData) =>
+        camelize(response)
+    }),
+    getLeaderboardGroupsByUser: builder.query<
+      GetLeaderboardGroupsByUserData,
+      GetLeaderboardGroupsByUserArgs
+    >({
+      query: ({ user }) => `/group_leaderboards/?user=${user}`,
+      transformResponse: (response: GetLeaderboardGroupsByUserData) =>
+        camelize(response)
+    }),
     getPortfolioFeedByAddress: builder.query<
       GetPortfolioFeedByAddressData,
       GetPortfolioFeedByAddressArgs
@@ -147,5 +223,10 @@ export const {
   useGetAchievementsQuery,
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardByAddressQuery,
+  useCreateLeaderboardGroupMutation,
+  useEditLeaderboardGroupMutation,
+  useJoinLeaderboardGroupMutation,
+  useGetLeaderboardGroupBySlugQuery,
+  useGetLeaderboardGroupsByUserQuery,
   useGetPortfolioFeedByAddressQuery
 } = polkamarketsApi;

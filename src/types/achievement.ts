@@ -20,4 +20,5 @@ export type Achievement = {
   verified: boolean;
   status: string;
   tokenCount: number;
+  meta: Object | null;
 };

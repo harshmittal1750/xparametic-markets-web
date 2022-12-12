@@ -5,10 +5,12 @@ import Routes from 'routes';
 import { SEO } from 'components';
 
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
+import { FiltersProvider } from 'contexts/filters';
+import { NetworksProvider } from 'contexts/networks';
 
 import { usePrevious, useTheme } from 'hooks';
 
-const POLKAMARKETS_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`;
+const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.jpg`;
 
 const App = () => {
   const { theme } = useTheme();
@@ -24,14 +26,18 @@ const App = () => {
 
   return (
     <MuiPickersUtilsProvider utils={DayjsUtils}>
-      <FavoriteMarketsProvider>
-        <SEO
-          title="Polkamarkets - Autonomous Prediction Market Protocol"
-          description="Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange, based on Polkadot."
-          imageUrl={POLKAMARKETS_DEFAULT_BANNER}
-        />
-        <Routes />
-      </FavoriteMarketsProvider>
+      <NetworksProvider>
+        <FiltersProvider>
+          <FavoriteMarketsProvider>
+            <SEO
+              title="Illuminate Fantasy League, Powered By Polkamarkets"
+              description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
+              imageUrl={IFL_DEFAULT_BANNER}
+            />
+            <Routes />
+          </FavoriteMarketsProvider>
+        </FiltersProvider>
+      </NetworksProvider>
     </MuiPickersUtilsProvider>
   );
 };

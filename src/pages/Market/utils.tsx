@@ -2,6 +2,7 @@
 import React from 'react';
 
 import dayjs from 'dayjs';
+import { colorByOutcomeId } from 'helpers/color';
 import { fromTimestampToDate, toUTC } from 'helpers/date';
 import { roundNumber } from 'helpers/math';
 import { capitalize } from 'helpers/string';
@@ -135,14 +136,7 @@ function formatMarketPositions(
         outcome: {
           value: outcome ? (
             <Badge
-              color={
-                // eslint-disable-next-line no-nested-ternary
-                outcomeId === -1
-                  ? 'warning'
-                  : market.outcomes[0].id === outcomeId
-                  ? 'purple'
-                  : 'pink'
-              }
+              color={outcomeId === -1 ? 'warning' : colorByOutcomeId(outcomeId)}
               label={`${outcome}`}
             />
           ) : null,

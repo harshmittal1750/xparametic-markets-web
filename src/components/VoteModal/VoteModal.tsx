@@ -234,7 +234,13 @@ function VoteModal({
           </Toast>
         </ToastNotification>
       ) : null}
-      <Modal show={show} className={{ dialog: VoteModalClasses.dialog }}>
+      <Modal
+        show={show}
+        backdrop
+        centered
+        className={{ dialog: VoteModalClasses.dialog }}
+        onHide={handleHide}
+      >
         <ModalContent>
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />

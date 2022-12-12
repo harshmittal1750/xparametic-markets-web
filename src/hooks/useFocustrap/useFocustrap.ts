@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import usePrevious from 'hooks/usePrevious';
 import useTimeoutEffect from 'hooks/useTimeoutEffect';
@@ -14,7 +14,7 @@ export default function useFocustrap<V extends HTMLElement>(
   focusableElements: string[],
   trappersId: Record<'start' | 'end', string>
 ) {
-  const focusTrap = useMemo(() => {
+  const [focusTrap] = useState(() => {
     return Object.keys(trappersId).reduce((acc, cur) => {
       const trapEl = document.createElement('span');
 
@@ -26,7 +26,7 @@ export default function useFocustrap<V extends HTMLElement>(
         [cur]: trapEl
       };
     }, {} as Record<'start' | 'end', HTMLSpanElement>);
-  }, [trappersId]);
+  });
   const timeoutEffect = useTimeoutEffect();
   const { current: focusPrev } = usePrevious<Element | null>(
     document.activeElement
@@ -34,23 +34,17 @@ export default function useFocustrap<V extends HTMLElement>(
 
   useEffect(() => {
     const { current: node } = ref;
-    const hasFocusTrap =
-      node?.contains(focusTrap.start) && node?.contains(focusTrap.end);
 
-    if (!hasFocusTrap) {
-      node?.insertBefore(focusTrap.start, node.firstChild);
-      node?.appendChild(focusTrap.end);
+    if (node != null) {
+      node.insertBefore(focusTrap.start, node.firstChild);
+      node.appendChild(focusTrap.end);
+
+      if (node.contains(focusTrap.start)) focusTrap.start.focus();
     }
-    focusTrap.start.focus();
 
-    return () => {
-      if (hasFocusTrap) {
-        node?.removeChild(focusTrap.start);
-        node?.removeChild(focusTrap.end);
-      }
-      (focusPrev as HTMLElement)?.focus();
-    };
-  }, [focusPrev, focusTrap, ref]);
+    return () => (focusPrev as HTMLElement)?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusPrev, ref]);
   useEffect(() => {
     const { current: node } = ref;
     const els = node?.querySelectorAll(focusableElements?.join(', '));
@@ -65,12 +59,12 @@ export default function useFocustrap<V extends HTMLElement>(
     function handleFocus(event: FocusEvent) {
       if (event.target === focusTrap.start) {
         window.requestAnimationFrame(() => {
-          timeoutEffect(() => focusEdge.end.focus());
+          timeoutEffect(() => focusEdge.end?.focus());
         });
       }
       if (event.target === focusTrap.end) {
         window.requestAnimationFrame(() => {
-          timeoutEffect(() => focusEdge.start.focus());
+          timeoutEffect(() => focusEdge.start?.focus());
         });
       }
     }

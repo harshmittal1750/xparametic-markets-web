@@ -13,7 +13,7 @@ function AchievementsEmpty() {
           fontWeight="semibold"
           className="pm-p-achievements__empty__body-description"
         >
-          There are no available achievements.
+          NFT Achievements coming in the upcoming days. Stay tuned!
         </Text>
       </div>
     </div>

@@ -1,47 +1,38 @@
-import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { setFilter } from 'redux/ducks/markets';
+import cn from 'classnames';
+import { Container, useMedia } from 'ui';
 
-import { PolkamarketsIcon, BetaTagIcon } from 'assets/icons';
+import { IlluminateFantasyLeagueLogo } from 'assets/icons';
 
-import { useTheme } from 'hooks';
+import NavBarClasses from './NavBar.module.scss';
+import NavBarActionsInfo from './NavBarActionsInfo';
+import NavBarActionsNetwork from './NavBarActionsNetwork';
+import NavBarActionsTheme from './NavBarActionsTheme';
+import NavBarLinks from './NavBarLinks';
 
-import NavBarActions from './NavBarActions';
-import NavBarDropdownMenu from './NavBarDropdownMenu';
-import NavBarMenu from './NavBarMenu';
-import NavBarSearch from './NavBarSearch';
-
-const RISK_DISCLOSURE_DOC_URL =
-  'https://docs.google.com/document/d/1TR8HYTBOhZeZOb0E5uAo8lbK4v0Oxv3JnQD_AdYENBY/edit';
-
-function NavBar() {
-  const dispatch = useDispatch();
-  const { theme } = useTheme();
-
-  function handleNavigation() {
-    // clearing categories/search filter
-    dispatch(setFilter(''));
-  }
+export default function NavBar() {
+  const isDesktop = useMedia('(min-width: 1024px)');
 
   return (
-    <div className="pm-l-navbar">
-      <figure className="pm-l-navbar__icon">
-        <Link to="/" aria-label="Home" onClick={handleNavigation}>
-          <PolkamarketsIcon />
-        </Link>
-        <a href={RISK_DISCLOSURE_DOC_URL} target="_blank" rel="noreferrer">
-          <BetaTagIcon theme={theme} />
-        </a>
-      </figure>
-      <NavBarSearch />
-      <NavBarMenu />
-      <NavBarActions />
-      <NavBarDropdownMenu />
-    </div>
+    <Container as="header" className="pm-l-layout__header">
+      <Link to="/" aria-label="Homepage" className="pm-l-layout__header__logos">
+        <IlluminateFantasyLeagueLogo />
+      </Link>
+      {isDesktop && <NavBarLinks />}
+      <div
+        className={cn('pm-l-layout__header__actions', NavBarClasses.actions)}
+      >
+        {isDesktop && (
+          <>
+            <NavBarActionsInfo />
+            <NavBarActionsNetwork />
+          </>
+        )}
+        <NavBarActionsTheme />
+      </div>
+    </Container>
   );
 }
 
 NavBar.displayName = 'NavBar';
-
-export default NavBar;

@@ -18,12 +18,15 @@ import CaretUpIcon from './CaretUpIcon';
 import ChartGrowthIcon from './ChartGrowthIcon';
 import CheckIcon from './CheckIcon';
 import CloseIcon from './CloseIcon';
+import CrownIcon from './CrownIcon';
 import EthereumIcon from './EthereumIcon';
 import ExploreIcon from './ExploreIcon';
 import FavoriteIcon from './FavoriteIcon';
 import GamingConsoleIcon from './GamingConsoleIcon';
 import GitHubIcon from './GitHubIcon';
 import HamburguerMenuIcon from './HamburguerMenuIcon';
+import IFLIcon from './IFLIcon';
+import IlluminateFantasyLeagueLogo from './IlluminateFantasyLeagueLogo';
 import InfoIcon from './InfoIcon';
 import LaptopIcon from './LaptopIcon';
 import LineChartIcon from './LineChartIcon';
@@ -84,11 +87,14 @@ export {
   ChartGrowthIcon,
   CheckIcon,
   CloseIcon,
+  CrownIcon,
   EthereumIcon,
   ExploreIcon,
   FavoriteIcon,
   GamingConsoleIcon,
   GitHubIcon,
+  IFLIcon,
+  IlluminateFantasyLeagueLogo,
   InfoIcon,
   HamburguerMenuIcon,
   LaptopIcon,

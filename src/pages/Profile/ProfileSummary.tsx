@@ -1,3 +1,4 @@
+import { currencies } from 'config';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
 import { roundNumber } from 'helpers/math';
 import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
@@ -11,13 +12,16 @@ import { useNetwork } from 'hooks';
 
 import ProfileSummaryStat from './ProfileSummaryStat';
 
+const { IFL } = currencies;
+
 type ProfileSummaryProps = {
   address: string;
 };
 
 function ProfileSummary({ address }: ProfileSummaryProps) {
   const { network } = useNetwork();
-  const { currency } = network;
+
+  const currency = IFL;
 
   const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
     address,
@@ -42,11 +46,6 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
 
   const totalEarnings = `${roundNumber(
     portfolio.closedMarketsProfit,
-    3
-  )} ${ticker}`;
-
-  const liquidityProvided = `${roundNumber(
-    portfolio.liquidityProvided,
     3
   )} ${ticker}`;
 
@@ -133,11 +132,6 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
           title="Total earnings"
           value={totalEarnings}
           backgroundColor="yellow"
-        />
-        <ProfileSummaryStat
-          title="Liquidity provided"
-          value={liquidityProvided}
-          backgroundColor="pink"
         />
         <ProfileSummaryStat
           title="Won predictions"

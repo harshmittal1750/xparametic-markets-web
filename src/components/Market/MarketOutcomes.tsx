@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import classNames from 'classnames';
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
+import kebabCase from 'lodash/kebabCase';
 import { Market, Outcome } from 'models/market';
 import { marketSelected } from 'redux/ducks/market';
 import { selectOutcome } from 'redux/ducks/trade';
@@ -42,12 +43,22 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
   );
+  const selectedMarketNetworkId = useAppSelector(
+    state => state.trade.selectedMarketNetworkId
+  );
 
   const { id, marketId, title, price } = outcome;
 
-  const isCurrentSelectedMarket = marketId === selectedMarketId;
+  const isCurrentSelectedMarketNetwork =
+    market.networkId === selectedMarketNetworkId;
+
+  const isCurrentSelectedMarket =
+    marketId === selectedMarketId && isCurrentSelectedMarketNetwork;
+
   const isCurrentSelectedPrediction =
-    marketId === selectedMarketId && id === selectedOutcomeId;
+    marketId === selectedMarketId &&
+    id === selectedOutcomeId &&
+    isCurrentSelectedMarketNetwork;
 
   const isMarketResolved = market.state === 'resolved';
   const isVoided = market.voided;
@@ -81,9 +92,9 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
     }
 
     if (!isCurrentSelectedPrediction) {
-      dispatch(selectOutcome(market.id, outcome.id));
+      dispatch(selectOutcome(market.id, market.networkId, outcome.id));
     } else {
-      dispatch(selectOutcome(market.id, ''));
+      dispatch(selectOutcome(market.id, market.networkId, ''));
       dispatch(closeTradeForm());
     }
   }
@@ -140,7 +151,7 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
       ) : (
         <div className="pm-c-market-outcomes__item-chart">
           <Area
-            id={`${marketId}-${id}-${title}`}
+            id={`${marketId}-${id}-${kebabCase(title)}`}
             data={chartData}
             color={marketPriceUp ? 'green' : 'red'}
             width={48}

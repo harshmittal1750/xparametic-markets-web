@@ -10,7 +10,8 @@ function TWarningIcon({ size = 12, ...props }: Props) {
       height={size}
       viewBox="0 0 12 12"
       style={{
-        verticalAlign: 'middle'
+        verticalAlign: 'middle',
+        fill: 'currentColor'
       }}
       {...props}
     >

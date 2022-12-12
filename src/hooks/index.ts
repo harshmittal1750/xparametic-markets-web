@@ -34,3 +34,5 @@ export { default as usePrevious } from './usePrevious';
 export { default as useTimeoutEffect } from './useTimeoutEffect';
 
 export { default as useFooterVisibility } from './useFooterVisibility';
+
+export { default as useFilters } from './useFilters';

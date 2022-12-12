@@ -1,9 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { networks } from 'config';
+import { networks, currencies } from 'config';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { Currency } from 'types/currency';
 import { Network } from 'types/network';
+
+const { IFL } = currencies;
 
 const chartViewsEnum = [
   { id: 'marketOverview', name: 'Market Overview', color: 'default' },
@@ -122,8 +124,11 @@ const marketSlice = createSlice({
         return {
           payload: {
             ...market,
-            network,
-            currency: network.currency,
+            network: {
+              ...network,
+              currency: IFL
+            },
+            currency: IFL,
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
@@ -144,11 +149,10 @@ const marketSlice = createSlice({
         market: action.payload
       }),
       prepare: (market: Market) => {
-        const network = getNetworkById(market.networkId);
         return {
           payload: {
             ...market,
-            currency: network.currency,
+            currency: IFL,
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))

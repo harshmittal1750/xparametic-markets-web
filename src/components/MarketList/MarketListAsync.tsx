@@ -2,40 +2,98 @@ import { useEffect, memo, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
+import { getFavoriteMarkets, getMarkets } from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
+import { Hero, useMedia } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
+import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
+import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
 
-import { Button } from 'components/Button';
+import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
 import { useAppSelector, useFooterVisibility } from 'hooks';
 
+import { Button } from '../Button';
 import PredictionCard from '../PredictionCard';
 import Text from '../Text';
 import VirtualizedList from '../VirtualizedList';
 
+function MarketListHeader() {
+  return (
+    <Hero className="pm-p-home__hero" image={heroBanner}>
+      <div className="pm-p-home__hero__content">
+        <div className="pm-p-home__hero__breadcrumb">
+          <Text
+            as="span"
+            scale="tiny-uppercase"
+            fontWeight="semibold"
+            color="white-50"
+          >
+            Illuminate Fantasy League / World Cup 2022
+          </Text>
+        </div>
+        <Text
+          as="h2"
+          fontWeight="bold"
+          scale="heading-large"
+          color="light"
+          className="pm-p-home__hero__heading"
+        >
+          Place your World Cup predictions to win the IFL Title!
+        </Text>
+        <Button
+          size="sm"
+          color="primary"
+          onClick={() => window.open('/docs', '_blank')}
+        >
+          About IFL
+        </Button>
+      </div>
+      <img
+        alt="Illuminate Fantasy League"
+        width={293}
+        height={205}
+        src={heroLogo}
+      />
+    </Hero>
+  );
+}
+
 type MarketListAsyncProps = {
-  id: string;
-  asyncAction: any;
-  filterBy: any;
   markets: Market[];
+  favoriteMarkets: FavoriteMarketsByNetwork;
 };
 
 const MarketListAsync = ({
-  id,
-  asyncAction,
-  filterBy,
-  markets
+  markets,
+  favoriteMarkets
 }: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
+  const isDesktop = useMedia('(min-width: 1024px)');
+
   const { show, hide } = useFooterVisibility();
   const { isLoading, error } = useAppSelector(state => state.markets);
 
+  const isLoadingMarkets = Object.values(isLoading).some(
+    state => state === true
+  );
+
+  const hasError = Object.values(error).some(
+    state => state !== null && state.message !== 'canceled'
+  );
+
+  const fetchMarkets = useCallback(async () => {
+    dispatch(getMarkets('open'));
+    dispatch(getMarkets('closed'));
+    dispatch(getMarkets('resolved'));
+    dispatch(getFavoriteMarkets(favoriteMarkets));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
+
   useEffect(() => {
-    if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy));
-    }
-  }, [dispatch, asyncAction, filterBy]);
+    fetchMarkets();
+  }, [fetchMarkets]);
 
   useEffect(() => {
     if (!isEmpty(markets)) {
@@ -45,17 +103,15 @@ const MarketListAsync = ({
   }, [dispatch, markets, hide, show]);
 
   const refreshMarkets = useCallback(() => {
-    if (!isEmpty(filterBy)) {
-      dispatch(asyncAction(filterBy));
-    }
-  }, [asyncAction, dispatch, filterBy]);
+    fetchMarkets();
+  }, [fetchMarkets]);
 
   const setFooterVisibility = useCallback(
     (atBottom: boolean) => (atBottom ? show() : hide()),
     [hide, show]
   );
 
-  if (isLoading[id])
+  if (isLoadingMarkets)
     return (
       <div className="pm-c-market-list__empty-state">
         <div className="pm-c-market-list__empty-state__body">
@@ -64,7 +120,7 @@ const MarketListAsync = ({
       </div>
     );
 
-  if (error[id] && error[id].message !== 'canceled') {
+  if (hasError) {
     return (
       <div className="pm-c-market-list__error">
         <div className="pm-c-market-list__error__body">
@@ -108,6 +164,7 @@ const MarketListAsync = ({
   return (
     <div className="pm-c-market-list">
       <VirtualizedList
+        components={{ Header: isDesktop ? MarketListHeader : undefined }}
         height="100%"
         data={markets}
         itemContent={(_index, market) => (

@@ -150,6 +150,20 @@ function liquidityColumnRender({
   );
 }
 
+type BalanceColumnRenderArgs = {
+  balance: number;
+  ticker: string;
+};
+
+function balanceColumnRender({ balance, ticker }: BalanceColumnRenderArgs) {
+  return (
+    <span className="pm-c-leaderboard-table__balance caption semibold text-1">
+      {`${balance.toFixed(1)} `}
+      <strong className="caption semibold text-3">{ticker}</strong>
+    </span>
+  );
+}
+
 type RankColumnRenderArgs = {
   place: number;
   change: 'up' | 'down' | 'stable';
@@ -172,6 +186,7 @@ export {
   volumeColumnRender,
   achievementsColumnRender,
   liquidityColumnRender,
+  balanceColumnRender,
   rankColumnRender
 };
 
@@ -208,14 +223,19 @@ function prepareLeaderboardTableRows({
         volume: row.volume,
         ticker
       },
-      marketsCreated: row.marketsCreated,
+      // marketsCreated: row.marketsCreated,
       wonPredictions: row.claimWinningsCount,
-      netVolume: {
-        volume: row.tvlVolume,
-        ticker
-      },
-      netLiquidity: {
-        liquidity: row.tvlLiquidity,
+      // netVolume: {
+      //   volume: row.tvlVolume,
+      //   ticker
+      // },
+      // netLiquidity: {
+      //   liquidity: row.tvlLiquidity,
+      //   ticker
+      // },
+      // transactions: row.transactions,
+      balance: {
+        balance: row.erc20Balance,
         ticker
       },
       achievements: row.achievements,
@@ -253,29 +273,41 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
         : null,
       render: volumeColumnRender
     },
-    marketsCreated: {
-      value: yourStats ? yourStats.marketsCreated : null
-    },
+    // marketsCreated: {
+    //   value: yourStats ? yourStats.marketsCreated : null
+    // },
     wonPredictions: {
       value: yourStats ? yourStats.wonPredictions : null
     },
-    netVolume: {
+    // netVolume: {
+    //   value: yourStats
+    //     ? {
+    //         volume: yourStats.netVolume.volume,
+    //         ticker: yourStats.netVolume.ticker
+    //       }
+    //     : null,
+    //   render: volumeColumnRender
+    // },
+    // netLiquidity: {
+    //   value: yourStats
+    //     ? {
+    //         liquidity: yourStats.netLiquidity.liquidity,
+    //         ticker: yourStats.netLiquidity.ticker
+    //       }
+    //     : null,
+    //   render: liquidityColumnRender
+    // },
+    // transactions: {
+    //   value: yourStats ? yourStats.transactions : null
+    // },
+    balance: {
       value: yourStats
         ? {
-            volume: yourStats.netVolume.volume,
-            ticker: yourStats.netVolume.ticker
+            balance: yourStats.balance.balance,
+            ticker: yourStats.balance.ticker
           }
         : null,
-      render: volumeColumnRender
-    },
-    netLiquidity: {
-      value: yourStats
-        ? {
-            liquidity: yourStats.netLiquidity.liquidity,
-            ticker: yourStats.netLiquidity.ticker
-          }
-        : null,
-      render: liquidityColumnRender
+      render: balanceColumnRender
     },
     achievements: {
       value: yourStats ? yourStats.achievements : null,

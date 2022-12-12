@@ -1,9 +1,10 @@
 import { ReactNode, useState, useEffect } from 'react';
-import { Virtuoso } from 'react-virtuoso';
+import { Virtuoso, Components } from 'react-virtuoso';
 
 type VirtualizedListProps<T> = {
   height: number | string;
   data?: T[];
+  components?: Components;
   itemContent: (_index: number, _item: T) => ReactNode;
   atBottom?: (_atBottom: boolean) => void;
 };
@@ -11,6 +12,7 @@ type VirtualizedListProps<T> = {
 function VirtualizedList<T>({
   height,
   data = [],
+  components,
   itemContent,
   atBottom
 }: VirtualizedListProps<T>) {
@@ -30,6 +32,7 @@ function VirtualizedList<T>({
 
   return (
     <Virtuoso
+      components={components}
       style={{
         height
       }}

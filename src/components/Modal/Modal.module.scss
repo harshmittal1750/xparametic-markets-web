@@ -1,8 +1,10 @@
 .root {
-  display: flex;
   position: fixed;
-  z-index: 9999;
+  z-index: 1200;
   inset: 0;
+}
+
+.backdrop {
   background: linear-gradient(
     180deg,
     var(--color-background-secondary) 0%,
@@ -11,10 +13,36 @@
 }
 
 .dialog {
-  margin: auto;
-  width: 41rem;
-
   &:focus {
     outline: none;
   }
+}
+
+.flex {
+  display: flex;
+}
+
+.center {
+  margin: auto;
+}
+
+.sm {
+  width: 400px;
+}
+
+.md {
+  width: 800px;
+}
+
+.lg {
+  width: 1200px;
+}
+
+.fullScreen {
+  height: 100%;
+  display: inline-block;
+}
+
+.gutters {
+  padding: var(--grid-margin);
 }

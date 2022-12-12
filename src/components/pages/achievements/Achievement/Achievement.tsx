@@ -59,7 +59,8 @@ function Achievement({
   rarity,
   status,
   tokenCount,
-  onClaimCompleted
+  onClaimCompleted,
+  meta
 }: AchievementProps & AditionalAchievementProps) {
   const { networkConfig } = useNetwork();
   const [isClaimingNFT, setIsClaimingNFT] = useState(false);
@@ -115,6 +116,7 @@ function Achievement({
                 className={`pm-c-achievement__title--${status} tiny-uppercase semibold`}
               >
                 {actionTitle}
+                {meta && ' (Knockout Stage)'}
               </h1>
             </div>
             <h4 className="pm-c-achievement__award-title heading-large bold">

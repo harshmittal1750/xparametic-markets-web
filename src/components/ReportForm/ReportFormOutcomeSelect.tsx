@@ -12,6 +12,9 @@ function ReportFormOutcomeSelect() {
   // Selectors
   const { outcomes, questionId } = useAppSelector(state => state.market.market);
   const marketId = useAppSelector(state => state.market.market.id);
+  const marketNetworkId = useAppSelector(
+    state => state.market.market.networkId
+  );
   const isMarketQuestionFinalized = useAppSelector(
     state => state.market.market.question.isFinalized
   );
@@ -31,7 +34,7 @@ function ReportFormOutcomeSelect() {
     outcomes.indexOf(outcome) === 0 ? 'blue' : 'pink';
 
   function handleOutcomeSelect(id: string) {
-    selectOutcome(marketId, id);
+    selectOutcome(marketId, marketNetworkId, id);
     helpers.setValue(id);
   }
 

@@ -14,7 +14,7 @@ function MarketStats({ market }: MarketStatsProps) {
   const { symbol } = currency;
   const outcomeStats = market.outcomes.map(outcome => {
     const chartData = outcome.priceCharts?.find(
-      chart => chart.timeframe === '24h'
+      chart => chart.timeframe === '7d'
     );
 
     const changePercent = chartData?.changePercent ?? 0;
@@ -30,6 +30,32 @@ function MarketStats({ market }: MarketStatsProps) {
 
   return (
     <div className="pm-p-market__stats">
+      {outcomeStats.map(outcomeStat => (
+        <Card
+          className="pm-p-market__stats-item"
+          size="lg"
+          key={outcomeStat.title}
+          title={
+            <Text
+              as="label"
+              scale="tiny-uppercase"
+              fontWeight="bold"
+              color="gray"
+            >
+              {outcomeStat.title}
+            </Text>
+          }
+        >
+          <Text
+            as="p"
+            scale="body"
+            fontWeight="semibold"
+            color={outcomeStat.changeColor as any}
+          >
+            {`${roundNumber(outcomeStat.price, 3)} ${symbol}`}
+          </Text>
+        </Card>
+      ))}
       <Card
         className="pm-p-market__stats-item"
         size="lg"
@@ -40,7 +66,7 @@ function MarketStats({ market }: MarketStatsProps) {
             fontWeight="bold"
             color="gray"
           >
-            {outcomeStats[0].title}
+            State
           </Text>
         }
       >
@@ -50,83 +76,7 @@ function MarketStats({ market }: MarketStatsProps) {
           fontWeight="semibold"
           className="pm-p-market__stats-item__price"
         >
-          {`${roundNumber(outcomeStats[0].price, 3)} ${symbol}`}
-        </Text>
-      </Card>
-      <Card
-        className="pm-p-market__stats-item"
-        size="lg"
-        title={
-          <Text
-            as="label"
-            scale="tiny-uppercase"
-            fontWeight="bold"
-            color="gray"
-          >
-            24H %
-          </Text>
-        }
-      >
-        <Text
-          as="p"
-          scale="body"
-          fontWeight="semibold"
-          // eslint-disable-next-line no-undef
-          color={outcomeStats[0].changeColor as any}
-        >
-          {`${roundNumber(
-            Math.abs(outcomeStats[0].changePercent || 0) * 100,
-            2
-          )}%`}
-        </Text>
-      </Card>
-      <Card
-        className="pm-p-market__stats-item"
-        size="lg"
-        title={
-          <Text
-            as="label"
-            scale="tiny-uppercase"
-            fontWeight="bold"
-            color="gray"
-          >
-            {outcomeStats[1].title}
-          </Text>
-        }
-      >
-        <Text
-          as="p"
-          scale="body"
-          fontWeight="semibold"
-          className="pm-p-market__stats-item__price"
-        >
-          {`${roundNumber(outcomeStats[1].price, 3)} ${symbol}`}
-        </Text>
-      </Card>
-      <Card
-        className="pm-p-market__stats-item"
-        size="lg"
-        title={
-          <Text
-            as="label"
-            scale="tiny-uppercase"
-            fontWeight="bold"
-            color="gray"
-          >
-            24H %
-          </Text>
-        }
-      >
-        <Text
-          as="p"
-          scale="body"
-          fontWeight="semibold"
-          color={outcomeStats[1].changeColor as any}
-        >
-          {`${roundNumber(
-            Math.abs(outcomeStats[1].changePercent || 0) * 100,
-            2
-          )}%`}
+          {market.state.toUpperCase()}
         </Text>
       </Card>
     </div>

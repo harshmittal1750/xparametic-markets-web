@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import classnames from 'classnames';
+import { currencies } from 'config';
+import { colorByOutcomeId } from 'helpers/color';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
@@ -18,7 +20,6 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
-  useNetwork,
   usePolkamarketsService,
   useSortableData
 } from 'hooks';
@@ -28,6 +29,8 @@ import Badge from '../Badge';
 import { Button } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
+
+const { IFL } = currencies;
 
 type MarketTableProps = {
   rows: any[];
@@ -42,9 +45,9 @@ const PortfolioMarketTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency }
-  } = useNetwork();
+
+  const currency = IFL;
+
   const { ticker, symbol } = currency;
   const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);
@@ -193,9 +196,7 @@ const PortfolioMarketTable = ({
                   })}
                 >
                   <Badge
-                    color={
-                      market.outcomes[0].id === outcome.id ? 'purple' : 'pink'
-                    }
+                    color={colorByOutcomeId(outcome.id)}
                     label={`${outcome.title}`}
                     style={{ display: 'inline-flex' }}
                   />

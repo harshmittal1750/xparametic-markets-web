@@ -1,0 +1,11 @@
+.modalDialog {
+  width: 100%;
+  max-width: 480px;
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-32);
+  background-color: var(--color-bg-3);
+}

@@ -1,5 +1,6 @@
 import currencies from './currencies';
 import enviromentConfig from './environment';
+import features from './features';
 import networks from './networks';
 
 export type {
@@ -7,4 +8,4 @@ export type {
   EnvironmentConfig
 } from './environment';
 
-export { currencies, enviromentConfig as environment, networks };
+export { currencies, enviromentConfig as environment, features, networks };

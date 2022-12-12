@@ -1,45 +1,41 @@
-import { filteredMarketsSelector } from 'redux/ducks/markets';
+import { marketsSelector } from 'redux/ducks/markets';
+
+import { MarketListAsync } from 'components';
 
 import { VoteProvider } from 'contexts/vote';
 
-import { useAppSelector, useFavoriteMarkets } from 'hooks';
-import useCategories from 'hooks/useCategories';
+import { useAppSelector, useFavoriteMarkets, useFilters } from 'hooks';
 
-import HomeCategories from './HomeCategories';
-import HomeMobileInfo from './HomeMobileInfo';
-import HomeTabs from './HomeTabs';
+import HomeNav from './HomeNav';
 
-function Home() {
-  const categories = useCategories();
-  const markets = useAppSelector(state =>
-    filteredMarketsSelector(state.markets, categories)
-  );
+export default function Home() {
+  const {
+    state: { favorites },
+    selected
+  } = useFilters();
+  const { dropdowns } = selected;
 
   const { favoriteMarkets } = useFavoriteMarkets();
 
-  const openMarkets = markets.filter(market => market.state === 'open');
-  const closedMarkets = markets.filter(market => market.state === 'closed');
-  const resolvedMarkets = markets.filter(market => market.state === 'resolved');
-  const favoritesMarkets = markets.filter(
-    market =>
-      favoriteMarkets[`${market.networkId}`] &&
-      favoriteMarkets[`${market.networkId}`].includes(market.id)
+  const markets = useAppSelector(state =>
+    marketsSelector({
+      state: state.markets,
+      filters: {
+        ...dropdowns,
+        favorites: {
+          checked: favorites.checked,
+          marketsByNetwork: favoriteMarkets
+        }
+      }
+    })
   );
 
   return (
     <div className="pm-p-home">
-      <HomeMobileInfo />
-      <HomeCategories />
+      <HomeNav />
       <VoteProvider>
-        <HomeTabs
-          openMarkets={openMarkets}
-          closedMarkets={closedMarkets}
-          resolvedMarkets={resolvedMarkets}
-          favoritesMarkets={favoritesMarkets}
-        />
+        <MarketListAsync markets={markets} favoriteMarkets={favoriteMarkets} />
       </VoteProvider>
     </div>
   );
 }
-
-export default Home;

@@ -10,18 +10,23 @@ type MarketCardProps = {
 };
 
 function Market({ market }: MarketCardProps) {
-  const { imageUrl, category, subcategory, title } = market;
   return (
     <div className="pm-c-market">
       <div className="pm-c-market__body">
-        <img className="pm-c-market__body-image" src={imageUrl} alt="" />
+        <figure className="pm-c-market__body-avatar">
+          <img
+            className="pm-c-market__body-image"
+            src={market.imageUrl}
+            alt="Market Avatar"
+          />
+        </figure>
         <div className="pm-c-market__body-details">
           <Breadcrumb>
-            <Breadcrumb.Item>{`${category.toLowerCase()}`}</Breadcrumb.Item>
-            <Breadcrumb.Item>{subcategory}</Breadcrumb.Item>
+            <Breadcrumb.Item>{`${market.category.toLowerCase()}`}</Breadcrumb.Item>
+            <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
           </Breadcrumb>
           <Text as="p" scale="body" fontWeight="medium">
-            {title}
+            {market.title}
           </Text>
         </div>
       </div>
