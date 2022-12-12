@@ -171,7 +171,7 @@ function Transak() {
       loading={transakState.loading}
       disabled={transakState.widgetOpen}
     >
-      {`Buy $${network.currency.ticker}`}
+      Buy {network.currency.ticker}
     </Button>
   );
 }

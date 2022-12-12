@@ -57,7 +57,7 @@ function HeaderNavMenu({
   return (
     <>
       <Button size="xs" variant="ghost" onClick={() => setShow(true)}>
-        <Icon name="Menu" />
+        <Icon name="Menu" size="lg" />
       </Button>
       <Modal
         show={show}
@@ -75,7 +75,7 @@ function HeaderNavMenu({
             onClick={handleHide}
             className={HeaderClasses.hide}
           >
-            <Icon name="Cross" />
+            <Icon name="Cross" size="lg" />
           </Button>
         </header>
         {children(handleHide)}
@@ -109,7 +109,7 @@ function HeaderNavMenu({
               </li>
             ))}
           </ul>
-          <CreateMarket fullwidth />
+          <CreateMarket fullwidth className={HeaderClasses.createMarket} />
         </footer>
       </Modal>
     </>

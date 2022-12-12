@@ -53,7 +53,7 @@ export type ButtonProps = {
    * @default 'false'
    */
   loading?: boolean;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 /**
  * Button to trigger an operation
@@ -71,7 +71,7 @@ function Button({
   onClick,
   className,
   ...props
-}: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+}: ButtonProps) {
   const ref = useRef<HTMLButtonElement>(null);
 
   const [width, setWidth] = useState(0);

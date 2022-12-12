@@ -1,11 +1,16 @@
 .pm-c-wallet-info {
   @include themes($navbar-themes) {
     @include flex-row;
-    gap: 0.8rem;
+    gap: 8px;
     align-items: center;
 
     &__currency {
-      padding: 4px 4px 4px 12px;
+      display: inherit;
+      align-items: center;
+      height: 44px;
+      gap: 4px;
+      padding-left: 12px;
+      padding-right: 4px;
       border: 1px solid themed('border-bottom-color');
       border-radius: 4px;
       font-weight: 600;
@@ -16,10 +21,10 @@
 
       &__ticker {
         color: #b5d2fe;
+        margin-right: 8px;
       }
 
       &__button {
-        margin-left: 12px;
         max-height: 32px;
       }
     }

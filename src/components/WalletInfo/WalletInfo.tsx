@@ -12,7 +12,6 @@ import WalletInfoClaim from './WalletInfoClaim';
 
 function WalletInfo() {
   const { network } = useNetwork();
-
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
@@ -39,7 +38,7 @@ function WalletInfo() {
           to={`/user/${ethAddress}`}
           className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button"
         >
-          {ethAddress.match(/^\d\w{4}|\d\w{4}$/gm)?.join('...')}
+          {ethAddress.match(/^.{2}|.{2}$/gm)?.join('...')}
         </Link>
         <Transak />
       </div>
