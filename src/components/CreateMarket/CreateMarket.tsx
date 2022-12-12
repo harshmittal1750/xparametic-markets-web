@@ -5,7 +5,6 @@ import { closeRightSidebar } from 'redux/ducks/ui';
 
 import { Button } from 'components/Button';
 import type { ButtonProps } from 'components/Button';
-import Feature from 'components/Feature';
 
 import { useAppDispatch } from 'hooks';
 
@@ -18,15 +17,13 @@ export default function CreateMarket(props: ButtonProps) {
   }, [dispatch, history]);
 
   return (
-    <Feature name="regular">
-      <Button
-        color="primary"
-        size="sm"
-        onClick={handleNavigateToCreateMarket}
-        {...props}
-      >
-        Create Market
-      </Button>
-    </Feature>
+    <Button
+      color="primary"
+      size="sm"
+      onClick={handleNavigateToCreateMarket}
+      {...props}
+    >
+      Create Market
+    </Button>
   );
 }

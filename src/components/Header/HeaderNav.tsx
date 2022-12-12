@@ -1,5 +1,6 @@
 import { Fragment, useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import type ReactRouterDom from 'react-router-dom';
 
 import { useMedia } from 'ui';
 
@@ -7,6 +8,7 @@ import { IlluminateFantasyLeagueLogo } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';
+import Feature from 'components/Feature';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Text from 'components/Text';
@@ -48,10 +50,10 @@ const socials = [
   }
 ] as const;
 
-function HeaderNavMenu({
+function HeaderNavModal({
   children
 }: {
-  children(arg: () => void): React.ReactNode;
+  children: ((arg: () => void) => React.ReactNode) | React.ReactNode;
 }) {
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
@@ -80,7 +82,7 @@ function HeaderNavMenu({
             <Icon name="Cross" size="lg" />
           </Button>
         </header>
-        {children(handleHide)}
+        {typeof children === 'function' ? children(handleHide) : children}
         <footer className={HeaderClasses.footer}>
           <Text
             color="gray"
@@ -111,15 +113,46 @@ function HeaderNavMenu({
               </li>
             ))}
           </ul>
-          <CreateMarket fullwidth className={HeaderClasses.createMarket} />
+          <Feature name="regular">
+            <CreateMarket fullwidth className={HeaderClasses.createMarket} />
+          </Feature>
         </footer>
       </Modal>
     </>
   );
 }
+function HeaderNavMenu({
+  NavLinkProps
+}: {
+  NavLinkProps?: Omit<ReactRouterDom.NavLinkProps, 'to'>;
+}) {
+  return (
+    <ul className={HeaderClasses.list}>
+      {pathnames.map(_pathname => {
+        const pathname = `/${
+          _pathname === marketsPathname ? '' : _pathname.toLowerCase()
+        }`;
+
+        return (
+          <li key={_pathname} className={HeaderClasses.item}>
+            <NavLink
+              to={pathname}
+              className={HeaderClasses.link}
+              activeClassName={HeaderClasses.active}
+              isActive={(_, location) => location.pathname === pathname}
+              {...NavLinkProps}
+            >
+              {_pathname}
+            </NavLink>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
 export default function HeaderNav() {
   const isDesktop = useMedia('(min-width: 1024px)');
-  const MenuComponent = isDesktop ? Fragment : HeaderNavMenu;
+  const MenuComponent = isDesktop ? Fragment : HeaderNavModal;
 
   return (
     <nav className={HeaderClasses.nav}>
@@ -127,28 +160,10 @@ export default function HeaderNav() {
         <IlluminateFantasyLeagueLogo />
       </Link>
       <MenuComponent>
-        {handleHide => (
-          <ul className={HeaderClasses.list}>
-            {pathnames.map(_pathname => {
-              const pathname = `/${
-                _pathname === marketsPathname ? '' : _pathname.toLowerCase()
-              }`;
-
-              return (
-                <li key={_pathname} className={HeaderClasses.item}>
-                  <NavLink
-                    to={pathname}
-                    className={HeaderClasses.link}
-                    activeClassName={HeaderClasses.active}
-                    isActive={(_, location) => location.pathname === pathname}
-                    onClick={handleHide}
-                  >
-                    {_pathname}
-                  </NavLink>
-                </li>
-              );
-            })}
-          </ul>
+        {isDesktop ? (
+          <HeaderNavMenu />
+        ) : (
+          handleHide => <HeaderNavMenu NavLinkProps={{ onClick: handleHide }} />
         )}
       </MenuComponent>
     </nav>
