@@ -4,7 +4,6 @@
   border-top: 1px solid #252c3b;
   position: fixed;
   width: 100%;
-  z-index: 1300;
   bottom: 0px;
   left: 0px;
   @media (min-width: 1024px) {
@@ -12,8 +11,10 @@
     border-top: unset;
     position: unset;
     width: unset;
-    z-index: unset;
   }
+}
+.high {
+  z-index: 1300;
 }
 .settings {
   margin-left: auto;

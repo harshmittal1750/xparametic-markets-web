@@ -3,7 +3,7 @@ import { Fragment, useCallback, useEffect, useState } from 'react';
 import cn from 'classnames';
 import {
   Adornment,
-  Container,
+  ContainerClasses,
   List,
   ListItem,
   ListItemText,
@@ -54,7 +54,6 @@ export default function HeaderActions() {
     [handleHide, networks]
   );
   const isThemeDark = theme.theme === 'dark';
-  const HeaderActionsComponent = isDesktop ? 'div' : Container;
   const HeaderActionsRootComponent = isDesktop
     ? Fragment
     : HeaderActionsWrapper;
@@ -68,9 +67,11 @@ export default function HeaderActions() {
 
   return (
     <HeaderActionsRootComponent>
-      <HeaderActionsComponent
+      <div
         className={cn(HeaderActionsClasses.root, {
-          [HeaderClasses.container]: !isDesktop
+          [HeaderClasses.container]: !isDesktop,
+          [ContainerClasses.root]: !isDesktop,
+          [HeaderActionsClasses.high]: show
         })}
       >
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
@@ -92,7 +93,7 @@ export default function HeaderActions() {
             <Icon name={networks.network.currency.iconName} />
           </Button>
         </div>
-      </HeaderActionsComponent>
+      </div>
       <Modal
         disableGutters
         onHide={handleHide}
@@ -113,9 +114,7 @@ export default function HeaderActions() {
         <List className={HeaderActionsClasses.list}>
           {networks.networks.map(network => (
             <ListItem key={network.id}>
-              <Adornment edge="start">
-                <Icon name={network.currency.iconName} />
-              </Adornment>
+              <Icon name={network.currency.iconName} />
               <ListItemText>{network.name}</ListItemText>
               <Adornment edge="end">
                 <Toggle
