@@ -152,20 +152,20 @@ function HeaderNavMenu({
 }
 export default function HeaderNav() {
   const isDesktop = useMedia('(min-width: 1024px)');
-  const HeaderNavMnodalComponent = isDesktop ? Fragment : HeaderNavModal;
+  const HeaderNavModalComponent = isDesktop ? Fragment : HeaderNavModal;
 
   return (
     <nav className={HeaderNavClasses.root}>
       <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
         <IlluminateFantasyLeagueLogo />
       </Link>
-      <HeaderNavMnodalComponent>
+      <HeaderNavModalComponent>
         {isDesktop ? (
           <HeaderNavMenu />
         ) : (
           handleHide => <HeaderNavMenu NavLinkProps={{ onClick: handleHide }} />
         )}
-      </HeaderNavMnodalComponent>
+      </HeaderNavModalComponent>
     </nav>
   );
 }

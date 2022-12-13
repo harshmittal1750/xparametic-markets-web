@@ -4,7 +4,7 @@
   border-top: 1px solid #252c3b;
   position: fixed;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   bottom: 0px;
   left: 0px;
   margin-left: auto;
@@ -14,11 +14,38 @@
     width: unset;
   }
 }
-.widget {
-  position: absolute;
-  right: 24px;
-  top: 68px;
-}
 .settings {
   margin-left: auto;
+}
+.modal {
+  z-index: 1;
+}
+.widget {
+  background-color: var(--color-surface);
+  height: var(--height);
+  border-radius: 20px;
+  padding-bottom: var(--header-y);
+  @media (min-width: 1024px) {
+    padding-bottom: unset;
+    position: absolute;
+    min-width: 240px;
+    right: 24px;
+    top: 68px;
+  }
+}
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-bottom: 1px solid #252c3b;
+}
+.title {
+  margin-right: auto;
+}
+.list {
+  background-color: transparent;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
