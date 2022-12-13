@@ -170,6 +170,7 @@ function Transak() {
       onClick={openWidget}
       loading={transakState.loading}
       disabled={transakState.widgetOpen}
+      className="pm-c-wallet-info__currency__button pm-c-wallet-info__currency__buy"
     >
       {`Buy $${network.currency.ticker}`}
     </Button>

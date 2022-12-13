@@ -81,16 +81,18 @@ export default function HeaderActions() {
             color="default"
             aria-label="Switch theme"
             onClick={handleTheme}
+            className={HeaderActionsClasses.switch}
           >
-            <Icon name={isThemeDark ? 'Sun' : 'Moon'} />
+            <Icon name={isThemeDark ? 'Sun' : 'Moon'} size="lg" />
           </Button>
           <Button
-            variant="outline"
+            variant="ghost"
             color="default"
             aria-label="Switch network"
             onClick={handleNetworks}
+            className={HeaderActionsClasses.switch}
           >
-            <Icon name={networks.network.currency.iconName} />
+            <Icon name={networks.network.currency.iconName} size="xl" />
           </Button>
         </div>
       </div>

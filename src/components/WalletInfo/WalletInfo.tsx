@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { formatNumberToString } from 'helpers/math';
 import { useMedia } from 'ui';
 
+import { Button } from 'components/Button';
 import Feature from 'components/Feature';
 
 import { useAppSelector, useNetwork } from 'hooks';
 
 import { Transak } from '../integrations';
-import WalletInfoBuy from './WalletInfoBuy';
 import WalletInfoClaim from './WalletInfoClaim';
 
 export default function WalletInfo() {
@@ -28,13 +28,21 @@ export default function WalletInfo() {
             <Feature name="fantasy">
               <WalletInfoClaim />
             </Feature>
-            <Feature name="regular">
-              <WalletInfoBuy />
-            </Feature>
+            {network.buyEc20Url && (
+              <Feature name="regular">
+                <Button
+                  className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button"
+                  style={{ padding: '0.5rem 1rem' }}
+                  onClick={() => window.open(network.buyEc20Url, '_blank')}
+                >
+                  Buy $POLK
+                </Button>
+              </Feature>
+            )}
           </>
         )}
       </div>
-      <div className="pm-c-wallet-info__currency">
+      <div className="pm-c-wallet-info__currency pm-c-wallet-info__profile">
         {ethBalance.toFixed(4)}
         <span className="pm-c-wallet-info__currency__ticker">
           {' '}

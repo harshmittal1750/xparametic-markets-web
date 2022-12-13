@@ -4,6 +4,11 @@
     gap: 8px;
     align-items: center;
 
+    &__profile {
+      background-color: rgba(93, 85, 250, 0.1);
+      border: 1px solid rgba(93, 85, 250, 0.5) !important;
+    }
+
     &__currency {
       display: inherit;
       align-items: center;
@@ -26,6 +31,15 @@
 
       &__button {
         max-height: 32px;
+      }
+
+      &__buy {
+        border: unset;
+        background: linear-gradient(
+          90deg,
+          rgba(93, 85, 250, 0.5) 0%,
+          rgba(177, 85, 250, 0.5) 100%
+        );
       }
     }
   }
