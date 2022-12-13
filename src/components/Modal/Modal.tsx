@@ -95,7 +95,7 @@ export default function Modal({
                 [ModalClasses.flex]: centered,
                 [ModalClasses.gutters]: !disableGutters
               },
-              className?.root
+              className?.backdrop
             )}
             onKeyDown={handleKeyDown}
           >

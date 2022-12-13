@@ -1,6 +1,6 @@
 import type { HTMLMotionProps } from 'framer-motion';
 
-type ModalComponents = 'root' | 'dialog' | 'hide';
+type ModalComponents = 'backdrop' | 'dialog';
 
 export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
   onHide?(): void;
