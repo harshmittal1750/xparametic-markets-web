@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -16,22 +16,16 @@ import ModalClasses from './Modal.module.scss';
 import type { ModalProps } from './Modal.type';
 import { modalTrappersId } from './Modal.util';
 
-export default function Modal({
-  onHide,
+function ModalWrapper({
+  children,
   show,
-  className,
-  backdrop,
-  centered,
-  size,
-  fullScreen,
-  fullWidth,
-  disableGutters,
-  ...props
-}: ModalProps) {
-  const { current: didMount } = useMount();
-  const { current: showPrev } = usePrevious(show);
-  const ref = useRef<HTMLDivElement>(null);
-  const timeoutEffect = useTimeoutEffect();
+  showPrev,
+  didMount
+}: React.PropsWithChildren<{
+  showPrev?: boolean | null;
+  show?: boolean;
+  didMount?: boolean;
+}>) {
   const Portal = usePortal({
     root: document.body,
     onEffect() {
@@ -42,14 +36,36 @@ export default function Modal({
       };
     }
   });
+  const timeoutEffect = useTimeoutEffect();
 
   useEffect(() => {
     if (showPrev && !show) {
       if (didMount) timeoutEffect(Portal.unmount, 300);
     } else {
-      Portal.mount(show);
+      Portal.mount(!!show);
     }
   }, [Portal, didMount, show, showPrev, timeoutEffect]);
+
+  return <Portal>{children}</Portal>;
+}
+export default function Modal({
+  onHide,
+  show,
+  className,
+  backdrop,
+  centered,
+  size,
+  fullScreen,
+  fullWidth,
+  disableGutters,
+  disablePortal,
+  ...props
+}: ModalProps) {
+  const { current: didMount } = useMount();
+  const { current: showPrev } = usePrevious(show);
+  const ref = useRef<HTMLDivElement>(null);
+  const ModalWrapperComponent = disablePortal ? Fragment : ModalWrapper;
+
   useClickaway(ref, () => onHide?.(), [!!showPrev, show]);
   useFocustrap(
     ref,
@@ -62,7 +78,9 @@ export default function Modal({
   }
 
   return (
-    <Portal>
+    <ModalWrapperComponent
+      {...(!disablePortal && { show, showPrev, didMount })}
+    >
       <AnimatePresence>
         {show && (
           <motion.div
@@ -105,6 +123,6 @@ export default function Modal({
           </motion.div>
         )}
       </AnimatePresence>
-    </Portal>
+    </ModalWrapperComponent>
   );
 }
