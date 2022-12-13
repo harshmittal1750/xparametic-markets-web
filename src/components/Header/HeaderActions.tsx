@@ -6,7 +6,6 @@ import {
   ContainerClasses,
   List,
   ListItem,
-  ListItemText,
   Toggle,
   useMedia
 } from 'ui';
@@ -15,6 +14,7 @@ import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
+import Text from 'components/Text';
 import WalletInfo from 'components/WalletInfo';
 
 import { useNetworks } from 'contexts/networks';
@@ -43,9 +43,9 @@ export default function HeaderActions() {
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
   const handleChangeNetwork = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (name: string) => () => {
       const [network] = networks.networks.filter(
-        ({ name }) => name === event.target.value
+        _network => _network.name === name
       );
 
       handleHide();
@@ -111,19 +111,46 @@ export default function HeaderActions() {
           exit: { bottom: '-100%' }
         })}
       >
+        {!isDesktop && (
+          <header className={HeaderActionsClasses.header}>
+            <Text
+              color="light"
+              scale="heading"
+              fontWeight="bold"
+              className={HeaderActionsClasses.title}
+            >
+              Select Network
+            </Text>
+            <Adornment edge="end">
+              <Button
+                size="xs"
+                variant="ghost"
+                color="default"
+                aria-label="Settings"
+                onClick={handleHide}
+              >
+                <Icon name="Cross" size="lg" />
+              </Button>
+            </Adornment>
+          </header>
+        )}
         <List className={HeaderActionsClasses.list}>
           {networks.networks.map(network => (
-            <ListItem key={network.id}>
-              <Icon name={network.currency.iconName} />
-              <ListItemText>{network.name}</ListItemText>
-              <Adornment edge="end">
-                <Toggle
-                  type="radio"
-                  value={network.name}
-                  checked={network.id === networks.network.id}
-                  onChange={handleChangeNetwork}
-                />
-              </Adornment>
+            <ListItem key={network.id} className={HeaderActionsClasses.item}>
+              <Button
+                variant="ghost"
+                fullwidth
+                onClick={handleChangeNetwork(network.name)}
+                className={cn(HeaderActionsClasses.button, {
+                  [HeaderActionsClasses.selected]:
+                    network.id === networks.network.id
+                })}
+              >
+                <span className={HeaderActionsClasses.icon}>
+                  <Icon name={network.currency.iconName} size="xl" />
+                </span>
+                <Text fontWeight="semibold">{network.name}</Text>
+              </Button>
             </ListItem>
           ))}
         </List>
