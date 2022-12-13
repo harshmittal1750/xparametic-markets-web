@@ -4,7 +4,13 @@ import cn from 'classnames';
 
 import * as Svgs from './__svgs__';
 import IconClasses from './Icon.module.scss';
-import type { IconProps } from './Icon.type';
+
+export interface IconProps extends React.ComponentPropsWithRef<'svg'> {
+  dir?: 'left' | 'up' | 'right' | 'down';
+  name: keyof typeof Svgs;
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  title?: string;
+}
 
 function Icon({ size = 'md', name, dir, className, ...props }: IconProps) {
   const { title } = props;
@@ -19,6 +25,7 @@ function Icon({ size = 'md', name, dir, className, ...props }: IconProps) {
           [IconClasses.sm]: size === 'sm',
           [IconClasses.md]: size === 'md',
           [IconClasses.lg]: size === 'lg',
+          [IconClasses.xl]: size === 'xl',
           [IconClasses.left]: dir === 'left',
           [IconClasses.up]: dir === 'up',
           [IconClasses.right]: dir === 'right',
