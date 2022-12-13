@@ -1,16 +1,16 @@
 import type { HTMLMotionProps } from 'framer-motion';
 
-type ModalComponents = 'backdrop' | 'dialog';
+type ModalComponents = 'root' | 'backdrop' | 'dialog';
 
 export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
   onHide?(): void;
   show: boolean;
   className?: Partial<Record<ModalComponents, string>>;
-  backdrop?: boolean;
   centered?: boolean;
   size?: 'sm' | 'md' | 'lg';
   fullScreen?: boolean;
   fullWidth?: boolean;
   disableGutters?: boolean;
   disablePortal?: boolean;
+  disableOverlay?: boolean;
 }

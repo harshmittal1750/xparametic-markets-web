@@ -1,10 +1,9 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, useCallback, useEffect, useRef } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import {
-  useClickaway,
   usePortal,
   usePrevious,
   useFocustrap,
@@ -52,30 +51,34 @@ export default function Modal({
   onHide,
   show,
   className,
-  backdrop,
   centered,
   size,
   fullScreen,
   fullWidth,
   disableGutters,
   disablePortal,
+  disableOverlay,
   ...props
 }: ModalProps) {
   const { current: didMount } = useMount();
   const { current: showPrev } = usePrevious(show);
   const ref = useRef<HTMLDivElement>(null);
+  const handleRootKeydown = useCallback(
+    (event: React.KeyboardEvent) => {
+      if (onHide) {
+        if (event.key === 'Escape') onHide();
+      }
+    },
+    [onHide]
+  );
+  const handleBackdropClick = useCallback(() => onHide?.(), [onHide]);
   const ModalWrapperComponent = disablePortal ? Fragment : ModalWrapper;
 
-  useClickaway(ref, () => onHide?.(), [!!showPrev, show]);
   useFocustrap(
     ref,
     ['a[href]', 'button:not([disabled])', 'textarea', 'input', 'select'],
     modalTrappersId
   );
-
-  function handleKeyDown(event: React.KeyboardEvent) {
-    if (event.key === 'Escape') onHide?.();
-  }
 
   return (
     <ModalWrapperComponent
@@ -91,14 +94,24 @@ export default function Modal({
             className={cn(
               ModalClasses.root,
               {
-                [ModalClasses.backdrop]: backdrop,
                 [ModalClasses.flex]: centered,
                 [ModalClasses.gutters]: !disableGutters
               },
-              className?.backdrop
+              className?.root
             )}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleRootKeydown}
           >
+            <div
+              aria-hidden="true"
+              className={cn(
+                ModalClasses.backdrop,
+                {
+                  [ModalClasses.overlay]: !disableOverlay
+                },
+                className?.backdrop
+              )}
+              onClick={handleBackdropClick}
+            />
             <motion.div
               ref={ref}
               initial={{ y: 8 }}

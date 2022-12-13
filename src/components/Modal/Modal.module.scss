@@ -5,6 +5,12 @@
 }
 
 .backdrop {
+  position: absolute;
+  inset: 0px;
+  z-index: -1;
+}
+
+.overlay {
   background-color: rgba(15, 17, 25, 0.6);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
@@ -47,7 +53,7 @@
   display: inline-block;
 }
 
-.fullScreen {
+.fullWidth {
   width: 100%;
 }
 
