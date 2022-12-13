@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { setSearchQuery, setSorter } from 'redux/ducks/markets';
 import { useMedia } from 'ui';
 
-import { CreateMarket, Filter, SearchBar } from 'components';
+import { CreateMarket, Feature, Filter, SearchBar } from 'components';
 
 import { useAppDispatch } from 'hooks';
 
@@ -43,10 +43,13 @@ export default function HomeNav() {
         defaultOption="expiresAt"
         options={filters}
         onChange={handleSelectedFilter}
-        // onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
       />
-      {isDesktop && <CreateMarket />}
+      {isDesktop && (
+        <Feature name="regular">
+          <CreateMarket />
+        </Feature>
+      )}
     </div>
   );
 }
