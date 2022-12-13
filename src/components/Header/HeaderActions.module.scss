@@ -1,27 +1,27 @@
 .root {
   display: flex;
-  gap: 1.6rem;
+  gap: 16px;
   border-top: 1px solid #252c3b;
   position: fixed;
   width: 100%;
-  z-index: 2;
+  z-index: 1300;
   bottom: 0px;
   left: 0px;
-  margin-left: auto;
   @media (min-width: 1024px) {
+    margin-left: auto;
     border-top: unset;
     position: unset;
     width: unset;
+    z-index: unset;
   }
 }
-.backdrop {
-  z-index: 1;
+.settings {
+  margin-left: auto;
 }
 .dialog {
   border-radius: 16px;
   background-color: var(--color-surface);
   position: absolute;
-  width: 100%;
   @media (min-width: 1024px) {
     max-width: 240px;
     right: 24px;

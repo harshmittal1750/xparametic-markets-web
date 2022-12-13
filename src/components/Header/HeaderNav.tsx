@@ -67,7 +67,6 @@ function HeaderNavModal({
         show={show}
         fullScreen
         fullWidth
-        backdrop
         className={{
           dialog: HeaderNavClasses.dialog
         }}

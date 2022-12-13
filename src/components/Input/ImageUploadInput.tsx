@@ -179,7 +179,7 @@ function ImageUploadInput({
 
   return (
     <>
-      <Modal show={isCroppingImage} size="md" centered backdrop>
+      <Modal show={isCroppingImage} size="md" centered>
         <ModalContent>
           <ImageCropper
             image={field.value.file}

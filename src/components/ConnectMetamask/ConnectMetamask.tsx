@@ -44,7 +44,6 @@ export default function ConnectMetamask() {
     <>
       <Modal
         show={show}
-        backdrop
         centered
         size="sm"
         onHide={handleHide}

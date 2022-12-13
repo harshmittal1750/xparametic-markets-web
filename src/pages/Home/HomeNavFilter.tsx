@@ -67,21 +67,12 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
     state,
     controls: { toggleFavorites, toggleDropdownOption }
   } = useFilters();
-
   const isMarketsLoading = useAppSelector(_state =>
     Object.values(_state.markets.isLoading).some(Boolean)
   );
-
   const [show, setShow] = useState(false);
-
-  const handleShow = useCallback(() => {
-    setShow(true);
-  }, []);
-
-  const handleHide = useCallback(() => {
-    setShow(false);
-  }, []);
-
+  const handleShow = useCallback(() => setShow(true), []);
+  const handleHide = useCallback(() => setShow(false), []);
   const handleToggleChange = useCallback(
     (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
       toggleDropdownOption({ path, selected: event.target.checked });
@@ -106,7 +97,6 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
       <Modal
         show={show}
         onHide={handleHide}
-        backdrop
         fullScreen
         disableGutters
         initial={{ x: -304 }}

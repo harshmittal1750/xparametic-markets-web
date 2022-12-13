@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
-import classNames from 'classnames';
+import cn from 'classnames';
 import {
   Adornment,
   Container,
@@ -69,12 +69,12 @@ export default function HeaderActions() {
   return (
     <HeaderActionsRootComponent>
       <HeaderActionsComponent
-        className={classNames(HeaderActionsClasses.root, {
+        className={cn(HeaderActionsClasses.root, {
           [HeaderClasses.container]: !isDesktop
         })}
       >
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
-        <div className="pm-c-wallet-info">
+        <div className={cn('pm-c-wallet-info', HeaderActionsClasses.settings)}>
           <Button
             variant="outline"
             color="default"
@@ -97,7 +97,8 @@ export default function HeaderActions() {
         disableGutters
         onHide={handleHide}
         disablePortal={!isDesktop}
-        backdrop={!isDesktop}
+        disableOverlay={isDesktop}
+        fullWidth={!isDesktop}
         show={show}
         className={{
           backdrop: HeaderActionsClasses.backdrop,
