@@ -33,9 +33,17 @@
         max-height: 32px;
       }
 
+      &__transak {
+        color: var(--color-text-primary) !important;
+
+        &:disabled {
+          color: var(--color-text-quaternary) !important;
+        }
+      }
+
       &__address {
         border: unset !important;
-        background-color: rgba(255, 255, 255, 0.03) !important;
+        background-color: rgba(92, 116, 153, 0.12);
       }
 
       &__buy {

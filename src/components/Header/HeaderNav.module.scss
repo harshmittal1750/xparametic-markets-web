@@ -22,12 +22,13 @@
   align-items: center;
   color: var(--color-text-secondary);
   font-size: 2rem;
+  letter-spacing: 0.08em;
   text-decoration: none;
   font-weight: 700;
   text-transform: uppercase;
   transition: color 0.3s ease 0s;
   @media (min-width: 1024px) {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
 }
 .active {

@@ -25,9 +25,25 @@
 }
 .switch {
   height: 44px !important;
-  width: 44px !important;
+  width: 44px;
   padding: 0px !important;
+}
+.theme {
+  composes: switch;
   background-color: unset !important;
+}
+.network {
+  composes: switch;
+
+  @media (min-width: 1024px) {
+    width: unset;
+    padding: 0px 12px !important;
+    font-weight: 700;
+    font-size: 1.3rem !important;
+    line-height: 1.5;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase;
+  }
 }
 .dialog {
   border-radius: 20px;
@@ -35,7 +51,7 @@
   position: absolute;
   @media (min-width: 1024px) {
     max-width: 240px;
-    right: 24px;
+    right: 74px;
     top: 68px;
   }
 }
@@ -65,7 +81,7 @@
 }
 .button {
   justify-content: unset !important;
-  padding: 0px 12px !important;
+  padding: 0px 16px !important;
   min-height: 56px !important;
   border-radius: 12px !important;
 }
@@ -73,5 +89,6 @@
   background-color: var(--color-text-quinary) !important;
 }
 .icon {
-  margin-right: 16px;
+  margin-right: 8px;
+  margin-left: -4px;
 }

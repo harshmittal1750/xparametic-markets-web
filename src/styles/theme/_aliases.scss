@@ -14,11 +14,15 @@
   --color-background-quaternary: rgb(
     var(--color-background--rgb) / var(--alpha-quaternary)
   );
+  --color-background-quinary: rgb(
+    var(--color-background--rgb) / var(--alpha-quinary)
+  );
   --color-surface: var(--neutral-100);
   --color-border: var(--neutral-300);
   --color-shadow: rgb(var(--neutral-500--rgb) / var(--alpha-quinary));
   --color-text-primary: var(--neutral-700);
   --color-text-secondary: var(--neutral-500);
+  --color-text-quaternary: rgb(var(--color-text-rgb) / var(--alpha-quaternary));
   --color-text-quinary: rgb(var(--color-text-rgb) / var(--alpha-quinary));
 
   &[class='theme--dark'] {

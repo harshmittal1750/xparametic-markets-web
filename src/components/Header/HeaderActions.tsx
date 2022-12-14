@@ -64,28 +64,34 @@ export default function HeaderActions() {
         className={cn(HeaderActionsClasses.root, {
           [HeaderClasses.container]: !isDesktop,
           [ContainerClasses.root]: !isDesktop,
-          [HeaderActionsClasses.high]: show
+          [HeaderActionsClasses.high]: show && !isDesktop
         })}
       >
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
         <div className={cn('pm-c-wallet-info', HeaderActionsClasses.settings)}>
           <Button
-            variant="ghost"
+            variant={isDesktop ? 'outline' : 'ghost'}
             color="default"
-            aria-label="Switch theme"
-            onClick={handleTheme}
-            className={HeaderActionsClasses.switch}
+            aria-label="Switch network"
+            onClick={handleNetworks}
+            className={HeaderActionsClasses.network}
           >
-            <Icon name={isThemeDark ? 'Sun' : 'Moon'} size="lg" />
+            <Icon name={networks.network.currency.iconName} size="lg" />
+            {isDesktop && (
+              <>
+                {networks.network.name}
+                <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
+              </>
+            )}
           </Button>
           <Button
             variant="ghost"
             color="default"
-            aria-label="Switch network"
-            onClick={handleNetworks}
-            className={HeaderActionsClasses.switch}
+            aria-label="Switch theme"
+            onClick={handleTheme}
+            className={HeaderActionsClasses.theme}
           >
-            <Icon name={networks.network.currency.iconName} size="xl" />
+            <Icon name={isThemeDark ? 'Sun' : 'Moon'} size="lg" />
           </Button>
         </div>
       </div>
@@ -109,7 +115,6 @@ export default function HeaderActions() {
         {!isDesktop && (
           <header className={HeaderActionsClasses.header}>
             <Text
-              color="light"
               scale="heading"
               fontWeight="bold"
               className={HeaderActionsClasses.title}

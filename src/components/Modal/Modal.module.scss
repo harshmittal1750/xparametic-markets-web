@@ -12,8 +12,8 @@
 
 .overlay {
   background-color: var(--color-background-secondary);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .dialog {

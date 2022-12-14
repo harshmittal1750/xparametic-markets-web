@@ -70,7 +70,7 @@ function WalletInfoClaim() {
         </ToastNotification>
       ) : null}
       <Button
-        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button"
+        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
         loading={isClaiming}
         disabled={isPolkClaimed || isClaiming}
         onClick={handleClaim}
