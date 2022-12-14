@@ -1,14 +1,16 @@
 .root {
   display: flex;
   gap: 16px;
-  border-top: 1px solid #252c3b;
+  border-top: 1px solid var(--color-border);
   position: fixed;
   width: 100%;
   bottom: 0px;
   left: 0px;
-  background-color: #191c26;
+  transition: background-color 200ms ease-in-out;
+  background-color: var(--color-surface);
   @media (min-width: 1024px) {
     background-color: unset;
+    transition: unset;
     margin-left: auto;
     border-top: unset;
     position: unset;
@@ -29,7 +31,7 @@
 }
 .dialog {
   border-radius: 20px;
-  background-color: #171b23;
+  background-color: var(--color-surface);
   position: absolute;
   @media (min-width: 1024px) {
     max-width: 240px;
@@ -43,10 +45,11 @@
   align-items: center;
   padding-right: 20px;
   padding-left: 20px;
-  border-bottom: 1px solid #252c3b;
+  border-bottom: 1px solid var(--color-border);
 }
 .title {
   margin-right: auto;
+  color: var(--color-text-primary);
 }
 .list {
   background-color: transparent;
@@ -67,7 +70,7 @@
   border-radius: 12px !important;
 }
 .selected {
-  background-color: #232a36 !important;
+  background-color: var(--color-text-quinary) !important;
 }
 .icon {
   margin-right: 16px;
