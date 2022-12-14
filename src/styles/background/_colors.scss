@@ -83,3 +83,31 @@ $bg-gradient-colors: (
     background-color: $value;
   }
 }
+
+.ellipse {
+  position: absolute;
+  opacity: 0.1;
+
+  &_1 {
+    width: 788px;
+    height: 788px;
+    left: -372px;
+    top: -350px;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      #5d55fa 0%,
+      rgba(93, 85, 250, 0) 100%
+    );
+  }
+  &_2 {
+    width: 666px;
+    height: 666px;
+    left: 50px;
+    top: -74px;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      #558dfa 0%,
+      rgba(85, 141, 250, 0) 100%
+    );
+  }
+}

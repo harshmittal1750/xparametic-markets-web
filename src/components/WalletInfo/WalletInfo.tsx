@@ -52,7 +52,7 @@ export default function WalletInfo() {
           <>
             <Link
               to={`/user/${ethAddress}`}
-              className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button"
+              className="pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__address"
             >
               {ethAddress.match(/^.{3}|.{3}$/gm)?.join('...')}
             </Link>

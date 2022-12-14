@@ -11,8 +11,17 @@
     grid-template-columns: minmax(0, 1fr) auto;
     grid-template-rows: auto 1fr auto;
 
-    background-color: themed('background-color');
     transition: background-color 0.2s ease-in-out 0s;
+
+    &__body-gradient {
+      background-image: var(--image);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: top;
+      inset: 0px;
+      position: absolute;
+      z-index: -1;
+    }
 
     &__header {
       grid-area: header;

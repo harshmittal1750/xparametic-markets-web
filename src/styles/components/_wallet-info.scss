@@ -33,6 +33,11 @@
         max-height: 32px;
       }
 
+      &__address {
+        border: unset !important;
+        background-color: rgba(255, 255, 255, 0.03) !important;
+      }
+
       &__buy {
         border: unset;
         background: linear-gradient(

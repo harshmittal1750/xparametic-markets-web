@@ -1,14 +1,7 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import cn from 'classnames';
-import {
-  Adornment,
-  ContainerClasses,
-  List,
-  ListItem,
-  Toggle,
-  useMedia
-} from 'ui';
+import { Adornment, ContainerClasses, List, ListItem, useMedia } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -77,7 +70,7 @@ export default function HeaderActions() {
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
         <div className={cn('pm-c-wallet-info', HeaderActionsClasses.settings)}>
           <Button
-            variant="outline"
+            variant="ghost"
             color="default"
             aria-label="Switch theme"
             onClick={handleTheme}
