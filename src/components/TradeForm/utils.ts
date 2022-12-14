@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import { newtonRaphson } from '@fvictorio/newton-raphson-method';
 import Big from 'big.js';
 import { roundNumber } from 'helpers/math';
