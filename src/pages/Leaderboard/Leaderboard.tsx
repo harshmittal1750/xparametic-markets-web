@@ -299,11 +299,11 @@ function Leaderboard() {
         <div className="flex-row gap-5 align-center">
           {leaderboardGroup?.imageUrl ? (
             <img
-              className="pm-c-market__body-image"
+              className="pm-p-leaderboard__avatar"
               alt={leaderboardGroup.title}
               src={leaderboardGroup.imageUrl}
-              width={66}
-              height={66}
+              width={64}
+              height={64}
             />
           ) : null}
           <div className="flex-column gap-3">
