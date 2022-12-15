@@ -205,11 +205,11 @@ function ImageUploadInput({
         <div className="pm-c-file-upload-input__actions">
           {croppedImagePreviewURL ? (
             <img
-              className="pm-c-market__body-image"
+              className="pm-c-file-upload-input__thumbnail"
               alt="Thumbnail"
               src={croppedImagePreviewURL}
-              width={66}
-              height={66}
+              width={64}
+              height={64}
             />
           ) : null}
           <ImageUploadButton name={name} loading={isUploading}>
