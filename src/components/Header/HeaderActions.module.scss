@@ -84,6 +84,9 @@
   padding: 0px 16px !important;
   min-height: 56px !important;
   border-radius: 12px !important;
+  @media (min-width: 1024px) {
+    min-height: 48px !important;
+  }
 }
 .selected {
   background-color: var(--color-text-quinary) !important;

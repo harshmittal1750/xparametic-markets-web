@@ -33,6 +33,7 @@ export default function HeaderActions() {
   const networks = useNetworks();
   const theme = useTheme();
   const isDesktop = useMedia('(min-width: 1024px)');
+  const isTv = useMedia('(min-width: 1280px)');
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
   const handleChangeNetwork = useCallback(
@@ -67,33 +68,31 @@ export default function HeaderActions() {
           [HeaderActionsClasses.high]: show && !isDesktop
         })}
       >
+        <Button
+          variant={isDesktop ? 'outline' : 'ghost'}
+          color="default"
+          aria-label="Switch network"
+          onClick={handleNetworks}
+          className={HeaderActionsClasses.network}
+        >
+          <Icon name={networks.network.currency.iconName} size="lg" />
+          {isDesktop && (
+            <>
+              {isTv && networks.network.name}
+              <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
+            </>
+          )}
+        </Button>
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
-        <div className={cn('pm-c-wallet-info', HeaderActionsClasses.settings)}>
-          <Button
-            variant={isDesktop ? 'outline' : 'ghost'}
-            color="default"
-            aria-label="Switch network"
-            onClick={handleNetworks}
-            className={HeaderActionsClasses.network}
-          >
-            <Icon name={networks.network.currency.iconName} size="lg" />
-            {isDesktop && (
-              <>
-                {networks.network.name}
-                <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
-              </>
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            color="default"
-            aria-label="Switch theme"
-            onClick={handleTheme}
-            className={HeaderActionsClasses.theme}
-          >
-            <Icon name={isThemeDark ? 'Sun' : 'Moon'} size="lg" />
-          </Button>
-        </div>
+        <Button
+          variant="ghost"
+          color="default"
+          aria-label="Switch theme"
+          onClick={handleTheme}
+          className={HeaderActionsClasses.theme}
+        >
+          <Icon name={isThemeDark ? 'Sun' : 'Moon'} size="lg" />
+        </Button>
       </div>
       <Modal
         disableGutters
@@ -147,9 +146,17 @@ export default function HeaderActions() {
                 })}
               >
                 <span className={HeaderActionsClasses.icon}>
-                  <Icon name={network.currency.iconName} size="xl" />
+                  <Icon
+                    name={network.currency.iconName}
+                    size={isDesktop ? 'lg' : 'xl'}
+                  />
                 </span>
-                <Text fontWeight="semibold">{network.name}</Text>
+                <Text
+                  scale={isDesktop ? 'caption' : 'body'}
+                  fontWeight="semibold"
+                >
+                  {network.name}
+                </Text>
               </Button>
             </ListItem>
           ))}
