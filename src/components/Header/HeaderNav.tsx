@@ -125,6 +125,8 @@ function HeaderNavMenu({
 }: {
   NavLinkProps?: Omit<ReactRouterDom.NavLinkProps, 'to'>;
 }) {
+  const isTv = useMedia('(min-width: 1440px)');
+
   return (
     <ul className={HeaderNavClasses.list}>
       {pathnames.map(_pathname => {
@@ -132,6 +134,7 @@ function HeaderNavMenu({
           _pathname === marketsPathname ? '' : _pathname.toLowerCase()
         }`;
 
+        if (_pathname === 'Clubs' && !isTv) return null;
         return (
           <li key={_pathname} className={HeaderNavClasses.item}>
             <NavLink

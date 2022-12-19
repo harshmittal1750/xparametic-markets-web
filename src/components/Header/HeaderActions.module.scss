@@ -34,9 +34,11 @@
 }
 .network {
   composes: switch;
+  margin-left: auto;
 
   @media (min-width: 1024px) {
     width: unset;
+    margin-left: unset;
     padding: 0px 12px !important;
     font-weight: 700;
     font-size: 1.3rem !important;

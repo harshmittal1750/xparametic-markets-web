@@ -47,6 +47,26 @@ export default function HeaderActions() {
     },
     [handleHide, networks]
   );
+  const NetworkSelector = useCallback(
+    () => (
+      <Button
+        variant={isDesktop ? 'outline' : 'ghost'}
+        color="default"
+        aria-label="Switch network"
+        onClick={handleNetworks}
+        className={HeaderActionsClasses.network}
+      >
+        <Icon name={networks.network.currency.iconName} size="lg" />
+        {isDesktop && (
+          <>
+            {isTv && networks.network.name}
+            <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
+          </>
+        )}
+      </Button>
+    ),
+    [isDesktop, isTv, networks, show]
+  );
   const isThemeDark = theme.theme === 'dark';
   const HeaderActionsRootComponent = isDesktop
     ? Fragment
@@ -68,22 +88,9 @@ export default function HeaderActions() {
           [HeaderActionsClasses.high]: show && !isDesktop
         })}
       >
-        <Button
-          variant={isDesktop ? 'outline' : 'ghost'}
-          color="default"
-          aria-label="Switch network"
-          onClick={handleNetworks}
-          className={HeaderActionsClasses.network}
-        >
-          <Icon name={networks.network.currency.iconName} size="lg" />
-          {isDesktop && (
-            <>
-              {isTv && networks.network.name}
-              <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
-            </>
-          )}
-        </Button>
+        {isDesktop && <NetworkSelector />}
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
+        {!isDesktop && <NetworkSelector />}
         <Button
           variant="ghost"
           color="default"
