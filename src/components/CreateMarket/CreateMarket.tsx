@@ -8,21 +8,20 @@ import type { ButtonProps } from 'components/Button';
 
 import { useAppDispatch } from 'hooks';
 
-export default function CreateMarket(props: ButtonProps) {
+export default function CreateMarket({
+  onCreateClick,
+  ...props
+}: ButtonProps & { onCreateClick?: () => void }) {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const handleNavigateToCreateMarket = useCallback(() => {
+  const handleCreateClick = useCallback(() => {
     dispatch(closeRightSidebar());
+    onCreateClick?.();
     history.push('/market/create');
-  }, [dispatch, history]);
+  }, [dispatch, history, onCreateClick]);
 
   return (
-    <Button
-      color="primary"
-      size="sm"
-      onClick={handleNavigateToCreateMarket}
-      {...props}
-    >
+    <Button color="primary" size="sm" onClick={handleCreateClick} {...props}>
       Create Market
     </Button>
   );

@@ -113,7 +113,11 @@ function HeaderNavModal({
             ))}
           </ul>
           <Feature name="regular">
-            <CreateMarket fullwidth className={HeaderNavClasses.createMarket} />
+            <CreateMarket
+              fullwidth
+              className={HeaderNavClasses.createMarket}
+              onCreateClick={handleHide}
+            />
           </Feature>
         </footer>
       </Modal>
