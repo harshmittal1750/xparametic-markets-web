@@ -1,26 +1,34 @@
 import { Container } from 'ui';
 
+import { usePrevious, useTheme } from 'hooks';
+
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
 import NavBar from '../NavBar';
 import RightSidebar from '../RightSidebar';
-import ScrollableArea from '../ScrollableArea';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
+  const { theme } = useTheme();
+  const themeCn = `theme--${theme}`;
+  const { current: themeCnPrev } = usePrevious(themeCn);
+
+  document.documentElement.dataset.theme = theme;
+  if (themeCnPrev && themeCn !== themeCnPrev)
+    document.documentElement.classList.replace(themeCnPrev, themeCn);
+  else document.documentElement.classList.add(themeCn);
+
   return (
-    <div className="pm-l-layout">
+    <>
       <BetaWarning />
       <NavBar />
-      <ScrollableArea className="pm-l-layout__scrollable-area">
-        <Container className="pm-l-layout__main">
-          {children}
-          <footer className="pm-l-layout__footer">
-            <Footer />
-          </footer>
-        </Container>
-      </ScrollableArea>
+      <Container className="pm-l-layout__main">
+        {children}
+        <footer className="pm-l-layout__footer">
+          <Footer />
+        </footer>
+      </Container>
       <RightSidebar />
       <div id="toast-notification-portal" />
-    </div>
+    </>
   );
 }

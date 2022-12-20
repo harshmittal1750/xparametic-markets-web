@@ -1,5 +1,3 @@
-import ScrollableArea from 'components/ScrollableArea';
-
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
@@ -8,11 +6,9 @@ import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
 function RightSidebarWrapper({ children }: React.PropsWithChildren<{}>) {
   return (
-    <ScrollableArea>
-      <aside className="pm-l-layout__aside">
-        <div className="pm-l-right-sidebar">{children}</div>
-      </aside>
-    </ScrollableArea>
+    <aside className="pm-l-layout__aside">
+      <div className="pm-l-right-sidebar">{children}</div>
+    </aside>
   );
 }
 function RightSidebar() {
