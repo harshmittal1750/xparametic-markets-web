@@ -1,7 +1,14 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, ContainerClasses, List, ListItem, useMedia } from 'ui';
+import {
+  Adornment,
+  ContainerClasses,
+  List,
+  ListItem,
+  useMedia,
+  useRect
+} from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -35,6 +42,8 @@ export default function HeaderActions() {
   const isDesktop = useMedia('(min-width: 1024px)');
   const isTv = useMedia('(min-width: 1280px)');
   const [show, setShow] = useState(false);
+  const [networkSelectorRef, networkSelectorRect] =
+    useRect<HTMLButtonElement>();
   const handleHide = useCallback(() => setShow(false), []);
   const handleChangeNetwork = useCallback(
     (name: string) => () => {
@@ -50,6 +59,7 @@ export default function HeaderActions() {
   const NetworkSelector = useCallback(
     () => (
       <Button
+        ref={networkSelectorRef}
         variant={isDesktop ? 'outline' : 'ghost'}
         color="default"
         aria-label="Switch network"
@@ -65,7 +75,7 @@ export default function HeaderActions() {
         )}
       </Button>
     ),
-    [isDesktop, isTv, networks, show]
+    [isDesktop, isTv, networkSelectorRef, networks, show]
   );
   const isThemeDark = theme.theme === 'dark';
   const HeaderActionsRootComponent = isDesktop
@@ -112,11 +122,17 @@ export default function HeaderActions() {
           backdrop: HeaderActionsClasses.backdrop,
           dialog: HeaderActionsClasses.dialog
         }}
-        {...(!isDesktop && {
-          initial: { bottom: '-100%' },
-          animate: { bottom: 0 },
-          exit: { bottom: '-100%' }
-        })}
+        {...(isDesktop
+          ? {
+              style: {
+                left: networkSelectorRect?.left
+              }
+            }
+          : {
+              initial: { bottom: '-100%' },
+              animate: { bottom: 0 },
+              exit: { bottom: '-100%' }
+            })}
       >
         {!isDesktop && (
           <header className={HeaderActionsClasses.header}>
