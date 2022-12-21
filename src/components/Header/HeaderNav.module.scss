@@ -4,14 +4,18 @@
   align-items: center;
 }
 .list {
-  @media (min-width: 1024px) {
+  max-width: 440px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  @media (min-width: 1440px) {
     display: inherit;
     align-items: center;
   }
 }
 .item {
   margin-bottom: 12px;
-  @media (min-width: 1024px) {
+  @media (min-width: 1440px) {
     margin-right: 24px;
     margin-bottom: unset;
   }
@@ -27,7 +31,7 @@
   font-weight: 700;
   text-transform: uppercase;
   transition: color 0.3s ease 0s;
-  @media (min-width: 1024px) {
+  @media (min-width: 1440px) {
     font-size: 1.3rem;
   }
 }
@@ -38,7 +42,11 @@
   display: inherit;
   margin-right: auto;
   @media (min-width: 1024px) {
+    margin-left: 24px;
+  }
+  @media (min-width: 1440px) {
     margin-right: 24px;
+    margin-left: unset;
   }
 }
 .dialog {

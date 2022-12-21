@@ -129,8 +129,6 @@ function HeaderNavMenu({
 }: {
   NavLinkProps?: Omit<ReactRouterDom.NavLinkProps, 'to'>;
 }) {
-  const isTv = useMedia('(min-width: 1440px)');
-
   return (
     <ul className={HeaderNavClasses.list}>
       {pathnames.map(_pathname => {
@@ -138,7 +136,6 @@ function HeaderNavMenu({
           _pathname === marketsPathname ? '' : _pathname.toLowerCase()
         }`;
 
-        if (_pathname === 'Clubs' && !isTv) return null;
         return (
           <li key={_pathname} className={HeaderNavClasses.item}>
             <NavLink
@@ -157,21 +154,33 @@ function HeaderNavMenu({
   );
 }
 export default function HeaderNav() {
+  const isTv = useMedia('(min-width: 1440px)');
   const isDesktop = useMedia('(min-width: 1024px)');
-  const HeaderNavModalComponent = isDesktop ? Fragment : HeaderNavModal;
+  const HeaderNavModalComponent = isTv ? Fragment : HeaderNavModal;
+  const HeaderNavMenuComponent = useCallback(
+    handleHide => <HeaderNavMenu NavLinkProps={{ onClick: handleHide }} />,
+    []
+  );
 
   return (
     <nav className={HeaderNavClasses.root}>
+      {isDesktop && !isTv && (
+        <HeaderNavModalComponent>
+          <HeaderNavMenuComponent />
+        </HeaderNavModalComponent>
+      )}
       <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
         <IlluminateFantasyLeagueLogo />
       </Link>
-      <HeaderNavModalComponent>
-        {isDesktop ? (
-          <HeaderNavMenu />
-        ) : (
-          handleHide => <HeaderNavMenu NavLinkProps={{ onClick: handleHide }} />
-        )}
-      </HeaderNavModalComponent>
+      {isTv ? (
+        <HeaderNavMenu />
+      ) : (
+        !isDesktop && (
+          <HeaderNavModalComponent>
+            <HeaderNavMenuComponent />
+          </HeaderNavModalComponent>
+        )
+      )}
     </nav>
   );
 }
