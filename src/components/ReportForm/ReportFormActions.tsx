@@ -18,7 +18,7 @@ import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Alert, AlertMinimal } from '../Alert';
-import { Button } from '../Button';
+import { Button, ButtonLoading } from '../Button';
 import Link from '../Link';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
@@ -198,7 +198,7 @@ function ReportFormActions({
       ) : (
         <div className="pm-c-report-form-details__actions-group--column">
           {!isPolkApproved && !marketQuestionFinalized ? (
-            <Button
+            <ButtonLoading
               color="primary"
               size="sm"
               fullwidth
@@ -215,7 +215,7 @@ function ReportFormActions({
                   style={{ width: '1.4rem', height: '1.4rem', opacity: 0.35 }}
                 />
               </Tooltip>
-            </Button>
+            </ButtonLoading>
           ) : null}
           {approvePolkTransactionSuccess &&
           approvePolkTransactionSuccessHash ? (
@@ -317,7 +317,7 @@ function ReportFormActions({
               </Button>
             ) : null}
             {marketQuestionFinalized ? (
-              <Button
+              <ButtonLoading
                 type="button"
                 color="success"
                 fullwidth
@@ -326,9 +326,9 @@ function ReportFormActions({
                 loading={isResolvingMarket}
               >
                 Resolve
-              </Button>
+              </ButtonLoading>
             ) : (
-              <Button
+              <ButtonLoading
                 type="submit"
                 color={showCurrentOutcomeBondWarning ? 'warning' : 'primary'}
                 fullwidth
@@ -342,7 +342,7 @@ function ReportFormActions({
                 loading={isBonding}
               >
                 Bond
-              </Button>
+              </ButtonLoading>
             )}
 
             {/* TODO: Create notifications by type (ex: Transaction completed) */}

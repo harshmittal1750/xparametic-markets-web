@@ -27,7 +27,7 @@ import { IFL } from 'hooks/useNetwork/currencies';
 
 import { AlertMini } from '../Alert';
 import Badge from '../Badge';
-import { Button } from '../Button';
+import { ButtonLoading } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
 
@@ -338,7 +338,7 @@ const PortfolioMarketTable = ({
                       </Pill>
                     ) : null}
                     {result.type === 'awaiting_claim' ? (
-                      <Button
+                      <ButtonLoading
                         size="sm"
                         variant="normal"
                         color="success"
@@ -347,10 +347,10 @@ const PortfolioMarketTable = ({
                         style={{ marginLeft: 'auto' }}
                       >
                         Claim Winnings
-                      </Button>
+                      </ButtonLoading>
                     ) : null}
                     {result.type === 'awaiting_claim_voided' ? (
-                      <Button
+                      <ButtonLoading
                         size="sm"
                         variant="normal"
                         color="warning"
@@ -362,7 +362,7 @@ const PortfolioMarketTable = ({
                         style={{ marginLeft: 'auto' }}
                       >
                         Claim Shares
-                      </Button>
+                      </ButtonLoading>
                     ) : null}
                     {result.type === 'awaiting_resolution' ? (
                       <Pill variant="subtle" color="warning">

@@ -4,7 +4,8 @@ import { roundNumber } from 'helpers/math';
 
 import { TwarningIcon } from 'assets/icons';
 
-import { Text, ProgressBar, Button } from 'components';
+import { Text, ProgressBar } from 'components';
+import { ButtonLoading } from 'components/Button';
 
 import { useAppSelector, useNetwork } from 'hooks';
 
@@ -61,7 +62,7 @@ function CreateMarketBuyPolk({
         percent={(polkBalance / requiredPolkBalance) * 100}
         color="warning"
       />
-      <Button
+      <ButtonLoading
         size="sm"
         color="warning"
         fullwidth
@@ -69,7 +70,7 @@ function CreateMarketBuyPolk({
         loading={isLoadingBuyPolk}
       >
         Buy $POLK
-      </Button>
+      </ButtonLoading>
     </div>
   );
 }
