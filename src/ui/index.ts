@@ -18,3 +18,5 @@ export { default as ListItemText } from './ListItemText';
 export { default as Toggle } from './Toggle';
 
 export { default as useMedia } from './useMedia';
+
+export { default as useRect } from './useRect';
