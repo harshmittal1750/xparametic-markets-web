@@ -11,6 +11,9 @@
   @media (min-width: 1440px) {
     display: inherit;
     align-items: center;
+    width: unset;
+    margin-left: unset;
+    margin-right: unset;
   }
 }
 .item {
