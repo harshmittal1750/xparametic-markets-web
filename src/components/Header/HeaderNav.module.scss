@@ -27,7 +27,7 @@
   display: flex;
   height: 48px;
   align-items: center;
-  color: var(--color-text-secondary);
+  color: var(--color-neutral-primary);
   font-size: 2rem;
   letter-spacing: 0.08em;
   text-decoration: none;
@@ -80,6 +80,7 @@
   background-color: rgba(181, 210, 254, 0.12);
   border-radius: 4px;
   display: flex;
+  color: var(--color-neutral-tertiary);
 }
 .icon {
   margin: auto;

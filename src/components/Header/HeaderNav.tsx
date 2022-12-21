@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import type ReactRouterDom from 'react-router-dom';
 
@@ -100,7 +100,6 @@ function HeaderNavModal({
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  color="gray"
                   className={HeaderNavClasses.social}
                 >
                   <Icon
@@ -153,34 +152,24 @@ function HeaderNavMenu({
     </ul>
   );
 }
+function HeaderNavMenuModal() {
+  return (
+    <HeaderNavModal>
+      {handleHide => <HeaderNavMenu NavLinkProps={{ onClick: handleHide }} />}
+    </HeaderNavModal>
+  );
+}
 export default function HeaderNav() {
   const isTv = useMedia('(min-width: 1440px)');
   const isDesktop = useMedia('(min-width: 1024px)');
-  const HeaderNavModalComponent = isTv ? Fragment : HeaderNavModal;
-  const HeaderNavMenuComponent = useCallback(
-    handleHide => <HeaderNavMenu NavLinkProps={{ onClick: handleHide }} />,
-    []
-  );
 
   return (
     <nav className={HeaderNavClasses.root}>
-      {isDesktop && !isTv && (
-        <HeaderNavModalComponent>
-          <HeaderNavMenuComponent />
-        </HeaderNavModalComponent>
-      )}
+      {isDesktop && !isTv && <HeaderNavMenuModal />}
       <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
         <IlluminateFantasyLeagueLogo />
       </Link>
-      {isTv ? (
-        <HeaderNavMenu />
-      ) : (
-        !isDesktop && (
-          <HeaderNavModalComponent>
-            <HeaderNavMenuComponent />
-          </HeaderNavModalComponent>
-        )
-      )}
+      {isTv ? <HeaderNavMenu /> : !isDesktop && <HeaderNavMenuModal />}
     </nav>
   );
 }

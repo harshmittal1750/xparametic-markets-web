@@ -1,6 +1,7 @@
 :root {
   --color-background--rgb: var(--neutral-200--rgb);
   --color-text-rgb: var(--neutral-900--rgb);
+  --color-neutral--rgb: var(--neutral-500--rgb);
 
   --color-background-primary: rgb(
     var(--color-background--rgb) / var(--alpha-primary)
@@ -24,6 +25,12 @@
   --color-text-secondary: var(--neutral-500);
   --color-text-quaternary: rgb(var(--color-text-rgb) / var(--alpha-quaternary));
   --color-text-quinary: rgb(var(--color-text-rgb) / var(--alpha-quinary));
+  --color-neutral-primary: rgb(
+    var(--color-neutral--rgb) / var(--alpha-primary)
+  );
+  --color-neutral-tertiary: rgb(
+    var(--color-neutral--rgb) / var(--alpha-tertiary)
+  );
 
   &[class='theme--dark'] {
     --color-background--rgb: var(--neutral-850--rgb);
