@@ -5,11 +5,15 @@
 }
 
 .backdrop {
-  background: linear-gradient(
-    180deg,
-    var(--color-background-secondary) 0%,
-    var(--color-background-tertiary) 100%
-  );
+  position: absolute;
+  inset: 0px;
+  z-index: -1;
+}
+
+.overlay {
+  background-color: var(--color-background-secondary);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .dialog {
@@ -41,6 +45,10 @@
 .fullScreen {
   height: 100%;
   display: inline-block;
+}
+
+.fullWidth {
+  width: 100%;
 }
 
 .gutters {

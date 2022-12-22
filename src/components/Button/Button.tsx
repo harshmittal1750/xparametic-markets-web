@@ -1,5 +1,5 @@
 /* eslint-disable react/button-has-type */
-import React, { useRef, useState } from 'react';
+import { forwardRef } from 'react';
 
 import classNames from 'classnames';
 
@@ -17,7 +17,7 @@ export type ButtonColor =
 
 type ButtonSize = 'normal' | 'sm' | 'xs';
 
-type ButtonProps = {
+export interface ButtonProps extends React.ComponentPropsWithRef<'button'> {
   /**
    * Variant to use
    * @default 'normal'
@@ -48,44 +48,26 @@ type ButtonProps = {
    * @default 'false'
    */
   truncated?: boolean;
-  /**
-   * Loading state
-   * @default 'false'
-   */
-  loading?: boolean;
-};
+}
 
 /**
  * Button to trigger an operation
  */
-function Button({
-  type = 'button',
-  variant = 'normal',
-  color = 'default',
-  size = 'normal',
-  fullwidth = false,
-  noHover = false,
-  truncated = false,
-  loading = false,
-  children,
-  onClick,
-  className,
-  ...props
-}: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) {
-  const ref = useRef<HTMLButtonElement>(null);
-
-  const [width, setWidth] = useState(0);
-  const [height, setHeight] = useState(0);
-
-  React.useEffect(() => {
-    if (ref.current && ref.current.getBoundingClientRect().width) {
-      setWidth(ref.current.getBoundingClientRect().width);
-    }
-    if (ref.current && ref.current.getBoundingClientRect().height) {
-      setHeight(ref.current.getBoundingClientRect().height);
-    }
-  }, [children]);
-
+const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
+  {
+    type = 'button',
+    variant = 'normal',
+    color = 'default',
+    size = 'normal',
+    fullwidth = false,
+    noHover = false,
+    truncated = false,
+    children,
+    className,
+    ...props
+  },
+  ref
+) {
   return (
     <button
       ref={ref}
@@ -100,20 +82,11 @@ function Button({
         },
         className
       )}
-      style={
-        loading
-          ? {
-              width: `${width}px`,
-              height: `${height}px`
-            }
-          : {}
-      }
-      onClick={onClick}
       {...props}
     >
-      {loading ? <span className="spinner" /> : children}
+      {children}
     </button>
   );
-}
+});
 
 export default Button;

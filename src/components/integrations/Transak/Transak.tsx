@@ -8,7 +8,7 @@ import { TransakConfig } from 'types/integrations/transak';
 
 import { useAppSelector, useNetwork, useWindowDimensions } from 'hooks';
 
-import { Button } from '../../Button';
+import { ButtonLoading } from '../../Button';
 
 type TransakInitialState = {
   widgetOpen: boolean;
@@ -163,16 +163,17 @@ function Transak() {
   if (!transak) return null;
 
   return (
-    <Button
+    <ButtonLoading
       size="sm"
       style={{ padding: '0.5rem 1rem' }}
       color="primary"
       onClick={openWidget}
       loading={transakState.loading}
       disabled={transakState.widgetOpen}
+      className="pm-c-wallet-info__currency__button"
     >
       {`Buy $${network.currency.ticker}`}
-    </Button>
+    </ButtonLoading>
   );
 }
 

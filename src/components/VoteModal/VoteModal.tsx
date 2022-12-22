@@ -236,7 +236,6 @@ function VoteModal({
       ) : null}
       <Modal
         show={show}
-        backdrop
         centered
         className={{ dialog: VoteModalClasses.dialog }}
         onHide={handleHide}

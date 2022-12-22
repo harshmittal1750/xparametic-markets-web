@@ -13,7 +13,7 @@ import TWarningIcon from 'assets/icons/TWarningIcon';
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-import { Button } from '../Button';
+import { Button, ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
 import Toast from '../Toast';
@@ -238,7 +238,7 @@ function TradeFormActions() {
         {isWrongNetwork ? <NetworkSwitch /> : null}
         {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
-            <Button
+            <ButtonLoading
               color="default"
               fullwidth
               onClick={handlePricesRefresh}
@@ -246,7 +246,7 @@ function TradeFormActions() {
               loading={isLoading}
             >
               Refresh Prices
-            </Button>
+            </ButtonLoading>
             <Text
               as="small"
               scale="caption"
@@ -270,7 +270,7 @@ function TradeFormActions() {
           </div>
         ) : null}
         {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
-          <Button
+          <ButtonLoading
             color="success"
             fullwidth
             onClick={handleBuy}
@@ -278,10 +278,10 @@ function TradeFormActions() {
             loading={isLoading}
           >
             Buy
-          </Button>
+          </ButtonLoading>
         ) : null}
         {type === 'sell' && !needsPricesRefresh && !isWrongNetwork ? (
-          <Button
+          <ButtonLoading
             color="danger"
             fullwidth
             onClick={handleSell}
@@ -289,7 +289,7 @@ function TradeFormActions() {
             loading={isLoading}
           >
             Sell
-          </Button>
+          </ButtonLoading>
         ) : null}
       </div>
       {transactionSuccess && transactionSuccessHash ? (

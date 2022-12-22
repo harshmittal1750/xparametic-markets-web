@@ -21,7 +21,7 @@ import {
 } from 'hooks';
 
 import { AlertMini } from '../Alert';
-import { Button } from '../Button';
+import { ButtonLoading } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
 
@@ -197,7 +197,7 @@ const PortfolioReportTable = ({
                   </Pill>
                 ) : null}
                 {result.type === 'awaiting_claim' ? (
-                  <Button
+                  <ButtonLoading
                     size="sm"
                     variant="normal"
                     color="primary"
@@ -206,7 +206,7 @@ const PortfolioReportTable = ({
                     style={{ marginLeft: 'auto' }}
                   >
                     Claim
-                  </Button>
+                  </ButtonLoading>
                 ) : null}
                 {result.type === 'awaiting_resolution' ? (
                   <Pill variant="subtle" color="warning">
