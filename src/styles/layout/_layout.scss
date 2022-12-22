@@ -25,7 +25,6 @@
       display: grid;
       grid-template-rows: 1fr auto;
 
-      height: 100%;
       width: calc(100% + 7px);
 
       padding-top: var(--grid-margin);
@@ -42,10 +41,15 @@
     &__footer {
       grid-row-start: 2;
       grid-row-end: 3;
-
+      margin-bottom: var(--header-y);
+      margin-top: var(--grid-margin);
       width: 100%;
       background-color: themed('background-color');
       transition: background-color 0.2s ease-in-out 0s;
+
+      @media (min-width: 1024px) {
+        margin-bottom: unset;
+      }
     }
   }
 }

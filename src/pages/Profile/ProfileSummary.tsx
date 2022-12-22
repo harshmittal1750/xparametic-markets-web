@@ -12,8 +12,6 @@ import { IFL } from 'hooks/useNetwork/currencies';
 
 import ProfileSummaryStat from './ProfileSummaryStat';
 
-const ticker = IFL.symbol || IFL.ticker;
-
 type ProfileSummaryProps = {
   address: string;
 };
@@ -100,7 +98,9 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
       <div className="pm-p-profile-summary__stats">
         <ProfileSummaryStat
           title="Total earnings"
-          value={`${roundNumber(portfolio.closedMarketsProfit, 3)} ${ticker}`}
+          value={`${roundNumber(portfolio.closedMarketsProfit, 3)} ${
+            IFL.symbol || IFL.ticker
+          }`}
           backgroundColor="yellow"
         />
         <ProfileSummaryStat
