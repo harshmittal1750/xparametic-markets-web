@@ -3,9 +3,8 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid themed('border-bottom-color');
-    background-color: themed('background-color');
     transition: $navbar-transitions;
-    min-height: var(--header-y);
+    height: var(--header-y);
 
     &__logos {
       display: inherit;

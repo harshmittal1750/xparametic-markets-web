@@ -20,10 +20,10 @@
 
 // 3. Base stuff
 @import 'base/reset';
+@import 'base/global';
 @import 'base/typography';
 
 // 4. Layout-related sections
-@import 'layout/layout';
 @import 'layout/navbar';
 @import 'layout/sidebar';
 @import 'layout/right-sidebar';
