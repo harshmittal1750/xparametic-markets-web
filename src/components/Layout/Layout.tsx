@@ -4,7 +4,7 @@ import { usePrevious, useTheme } from 'hooks';
 
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
-import NavBar from '../NavBar';
+import Header from '../Header';
 import RightSidebar from '../RightSidebar';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
@@ -20,7 +20,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <>
       <BetaWarning />
-      <NavBar />
+      <Header />
       <Container className="pm-l-layout__main">
         {children}
         <footer className="pm-l-layout__footer">

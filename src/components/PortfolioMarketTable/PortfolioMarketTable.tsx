@@ -27,7 +27,7 @@ import { IFL } from 'hooks/useNetwork/currencies';
 
 import { AlertMini } from '../Alert';
 import Badge from '../Badge';
-import { Button } from '../Button';
+import { ButtonLoading } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
 
@@ -164,236 +164,228 @@ const PortfolioMarketTable = ({
                 className="pm-c-table__row"
                 key={`${market.id}-${outcome.id}`}
               >
-                <td
-                  id="market"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--left': true
-                  })}
-                  onClick={() => redirectTo(market.slug)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <div
-                    style={{
-                      display: 'flex',
-                      gap: '1.6rem',
-                      alignItems: 'center'
-                    }}
+                {market && (
+                  <td
+                    id="market"
+                    className="pm-c-table__row-item pm-c-table__item--left"
+                    onClick={() => redirectTo(market.slug)}
+                    style={{ cursor: 'pointer' }}
                   >
-                    <img
-                      src={market.imageUrl}
-                      alt={market.id}
-                      height={32}
-                      width={32}
-                      style={{ borderRadius: '50%' }}
+                    <div
+                      style={{
+                        display: 'flex',
+                        gap: '1.6rem',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <img
+                        src={market.imageUrl}
+                        alt={market.id}
+                        height={32}
+                        width={32}
+                        style={{ borderRadius: '50%' }}
+                      />
+                      {market.title}
+                    </div>
+                  </td>
+                )}
+                {outcome && (
+                  <td
+                    id="outcome"
+                    className="pm-c-table__row-item pm-c-table__item--left"
+                  >
+                    <Badge
+                      color={colorByOutcomeId(outcome.id)}
+                      label={`${outcome.title}`}
+                      style={{ display: 'inline-flex' }}
                     />
-                    {market.title}
-                  </div>
-                </td>
-                <td
-                  id="outcome"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--left': true
-                  })}
-                >
-                  <Badge
-                    color={colorByOutcomeId(outcome.id)}
-                    label={`${outcome.title}`}
-                    style={{ display: 'inline-flex' }}
-                  />
-                </td>
-                <td
-                  id="price"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--right': true
-                  })}
-                >
-                  <div className="market-table__row-item__group">
+                  </td>
+                )}
+                {price && (
+                  <td
+                    id="price"
+                    className="pm-c-table__row-item pm-c-table__item--right"
+                  >
+                    <div className="market-table__row-item__group">
+                      <Text
+                        as="span"
+                        scale="caption"
+                        fontWeight="semibold"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          gap: '0.5rem'
+                        }}
+                      >
+                        {`${roundNumber(price.value, 3)} `}
+                        <Text as="strong" scale="caption" fontWeight="semibold">
+                          {` ${symbol || ticker}`}
+                        </Text>
+                      </Text>
+                      <Text
+                        className={`market-table__row-item__change--${price.change.type}`}
+                        as="span"
+                        scale="caption"
+                        fontWeight="bold"
+                      >
+                        {price.change.type === 'up' ? (
+                          <ArrowUpIcon />
+                        ) : (
+                          <ArrowDownIcon />
+                        )}
+                        {`${price.change.value}%`}
+                      </Text>
+                    </div>
+                  </td>
+                )}
+                {profit && (
+                  <td
+                    id="profit"
+                    className="pm-c-table__row-item pm-c-table__item--right"
+                  >
+                    <div className="market-table__row-item__group">
+                      <Text
+                        as="span"
+                        scale="caption"
+                        fontWeight="semibold"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          gap: '0.5rem'
+                        }}
+                      >
+                        {`${roundNumber(profit.value, 3)} `}
+                        <Text as="strong" scale="caption" fontWeight="semibold">
+                          {` ${symbol || ticker}`}
+                        </Text>
+                      </Text>
+                      <Text
+                        className={`market-table__row-item__change--${profit.change.type}`}
+                        as="span"
+                        scale="caption"
+                        fontWeight="bold"
+                      >
+                        {profit.change.type === 'up' ? (
+                          <ArrowUpIcon />
+                        ) : (
+                          <ArrowDownIcon />
+                        )}
+                        {`${profit.change.value}%`}
+                      </Text>
+                    </div>
+                  </td>
+                )}
+                {shares && (
+                  <td
+                    id="shares"
+                    className="pm-c-table__row-item pm-c-table__item--center"
+                  >
+                    {roundNumber(shares, 3)}
+                  </td>
+                )}
+                {value && (
+                  <td
+                    id="value"
+                    className="pm-c-table__row-item pm-c-table__item--right"
+                  >
                     <Text
                       as="span"
                       scale="caption"
                       fontWeight="semibold"
                       style={{
-                        display: 'flex',
+                        display: 'inline-flex',
                         justifyContent: 'center',
                         gap: '0.5rem'
                       }}
                     >
-                      {`${roundNumber(price.value, 3)} `}
+                      {`${roundNumber(value, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
                         {` ${symbol || ticker}`}
                       </Text>
                     </Text>
-                    <Text
-                      className={`market-table__row-item__change--${price.change.type}`}
-                      as="span"
-                      scale="caption"
-                      fontWeight="bold"
-                    >
-                      {price.change.type === 'up' ? (
-                        <ArrowUpIcon />
-                      ) : (
-                        <ArrowDownIcon />
-                      )}
-                      {`${price.change.value}%`}
-                    </Text>
-                  </div>
-                </td>
-                <td
-                  id="profit"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--right': true
-                  })}
-                >
-                  <div className="market-table__row-item__group">
+                  </td>
+                )}
+                {maxPayout && (
+                  <td
+                    id="maxPayout"
+                    className="pm-c-table__row-item pm-c-table__item--right"
+                  >
                     <Text
                       as="span"
                       scale="caption"
                       fontWeight="semibold"
                       style={{
-                        display: 'flex',
+                        display: 'inline-flex',
                         justifyContent: 'center',
                         gap: '0.5rem'
                       }}
                     >
-                      {`${roundNumber(profit.value, 3)} `}
+                      {`${roundNumber(maxPayout, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
                         {` ${symbol || ticker}`}
                       </Text>
                     </Text>
-                    <Text
-                      className={`market-table__row-item__change--${profit.change.type}`}
-                      as="span"
-                      scale="caption"
-                      fontWeight="bold"
-                    >
-                      {profit.change.type === 'up' ? (
-                        <ArrowUpIcon />
-                      ) : (
-                        <ArrowDownIcon />
-                      )}
-                      {`${profit.change.value}%`}
-                    </Text>
-                  </div>
-                </td>
-                <td
-                  id="shares"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--center': true
-                  })}
-                >
-                  {roundNumber(shares, 3)}
-                </td>
-                <td
-                  id="value"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--right': true
-                  })}
-                >
-                  <Text
-                    as="span"
-                    scale="caption"
-                    fontWeight="semibold"
-                    style={{
-                      display: 'inline-flex',
-                      justifyContent: 'center',
-                      gap: '0.5rem'
-                    }}
+                  </td>
+                )}
+                {result && (
+                  <td
+                    id="trade"
+                    className="pm-c-table__row-item pm-c-table__item--right"
                   >
-                    {`${roundNumber(value, 3)} `}
-                    <Text as="strong" scale="caption" fontWeight="semibold">
-                      {` ${symbol || ticker}`}
-                    </Text>
-                  </Text>
-                </td>
-                <td
-                  id="maxPayout"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--right': true
-                  })}
-                >
-                  <Text
-                    as="span"
-                    scale="caption"
-                    fontWeight="semibold"
-                    style={{
-                      display: 'inline-flex',
-                      justifyContent: 'center',
-                      gap: '0.5rem'
-                    }}
-                  >
-                    {`${roundNumber(maxPayout, 3)} `}
-                    <Text as="strong" scale="caption" fontWeight="semibold">
-                      {` ${symbol || ticker}`}
-                    </Text>
-                  </Text>
-                </td>
-                <td
-                  id="trade"
-                  className={classnames({
-                    'pm-c-table__row-item': true,
-                    'pm-c-table__item--right': true
-                  })}
-                >
-                  {result.type === 'pending' ? (
-                    <Pill variant="subtle" color="default">
-                      Ongoing
-                    </Pill>
-                  ) : null}
-                  {result.type === 'awaiting_claim' ? (
-                    <Button
-                      size="sm"
-                      variant="normal"
-                      color="success"
-                      onClick={() => handleClaimWinnings(market.id)}
-                      loading={isLoadingClaimWinnings[market.id] || false}
-                      style={{ marginLeft: 'auto' }}
-                    >
-                      Claim Winnings
-                    </Button>
-                  ) : null}
-                  {result.type === 'awaiting_claim_voided' ? (
-                    <Button
-                      size="sm"
-                      variant="normal"
-                      color="warning"
-                      onClick={() => handleClaimVoided(market.id, outcome.id)}
-                      loading={
-                        isLoadingClaimVoided[`${market.id}-${outcome.id}`] ||
-                        false
-                      }
-                      style={{ marginLeft: 'auto' }}
-                    >
-                      Claim Shares
-                    </Button>
-                  ) : null}
-                  {result.type === 'awaiting_resolution' ? (
-                    <Pill variant="subtle" color="warning">
-                      Awaiting Resolution
-                    </Pill>
-                  ) : null}
-                  {result.type === 'claimed' ? (
-                    <Pill variant="subtle" color="success">
-                      Winnings Claimed
-                    </Pill>
-                  ) : null}
-                  {result.type === 'claimed_voided' ? (
-                    <Pill variant="subtle" color="warning">
-                      Shares Claimed
-                    </Pill>
-                  ) : null}
-                  {result.type === 'lost' ? (
-                    <Pill variant="subtle" color="danger">
-                      Lost
-                    </Pill>
-                  ) : null}
-                </td>
+                    {result.type === 'pending' ? (
+                      <Pill variant="subtle" color="default">
+                        Ongoing
+                      </Pill>
+                    ) : null}
+                    {result.type === 'awaiting_claim' ? (
+                      <ButtonLoading
+                        size="sm"
+                        variant="normal"
+                        color="success"
+                        onClick={() => handleClaimWinnings(market.id)}
+                        loading={isLoadingClaimWinnings[market.id] || false}
+                        style={{ marginLeft: 'auto' }}
+                      >
+                        Claim Winnings
+                      </ButtonLoading>
+                    ) : null}
+                    {result.type === 'awaiting_claim_voided' ? (
+                      <ButtonLoading
+                        size="sm"
+                        variant="normal"
+                        color="warning"
+                        onClick={() => handleClaimVoided(market.id, outcome.id)}
+                        loading={
+                          isLoadingClaimVoided[`${market.id}-${outcome.id}`] ||
+                          false
+                        }
+                        style={{ marginLeft: 'auto' }}
+                      >
+                        Claim Shares
+                      </ButtonLoading>
+                    ) : null}
+                    {result.type === 'awaiting_resolution' ? (
+                      <Pill variant="subtle" color="warning">
+                        Awaiting Resolution
+                      </Pill>
+                    ) : null}
+                    {result.type === 'claimed' ? (
+                      <Pill variant="subtle" color="success">
+                        Winnings Claimed
+                      </Pill>
+                    ) : null}
+                    {result.type === 'claimed_voided' ? (
+                      <Pill variant="subtle" color="warning">
+                        Shares Claimed
+                      </Pill>
+                    ) : null}
+                    {result.type === 'lost' ? (
+                      <Pill variant="subtle" color="danger">
+                        Lost
+                      </Pill>
+                    ) : null}
+                  </td>
+                )}
               </tr>
             )
           )}

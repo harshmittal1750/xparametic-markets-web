@@ -32,6 +32,22 @@ function TabsFilter() {
   );
 }
 
+const defaultColsArr = ['market', 'outcome', 'profit'];
+const getDefaultCols = ({ headers, rows }) => ({
+  headers: headers.filter(({ key }) => defaultColsArr.includes(key)),
+  rows: rows.map((row: {}, index: number) =>
+    Object.keys(row)
+      .filter(key => defaultColsArr.includes(key))
+      .reduce(
+        (acc, key) => ({
+          ...acc,
+          [key]: rows[index][key]
+        }),
+        {}
+      )
+  )
+});
+
 const PortfolioTabsFilter = memo(TabsFilter);
 
 function PortfolioTabs() {
@@ -46,7 +62,6 @@ function PortfolioTabs() {
     isLoading
   } = useAppSelector(state => state.polkamarkets);
 
-  const positionsTypo = isDesktop ? ' Positions' : '';
   const { portfolio: isLoadingPortfolio, actions: isLoadingActions } =
     isLoading;
 
@@ -62,11 +77,13 @@ function PortfolioTabs() {
         skip: isLoadingActions || isEmpty(marketsIds)
       }
     );
-
   const marketPositions = useMemo(
     () => formatMarketPositions(portfolio, actions, markets),
     [actions, markets, portfolio]
   );
+  const positions = isDesktop
+    ? marketPositions
+    : getDefaultCols(marketPositions);
 
   return (
     <div className="portfolio-tabs">
@@ -76,7 +93,7 @@ function PortfolioTabs() {
           buttons={[
             {
               id: 'marketPositions',
-              name: `Market${positionsTypo}`,
+              name: 'Market Positions',
               color: 'default'
             }
           ]}
@@ -88,17 +105,8 @@ function PortfolioTabs() {
       <div className="portfolio-tabs__content">
         {currentTab === 'marketPositions' ? (
           <PortfolioMarketTable
-            rows={marketPositions.rows}
-            headers={
-              isDesktop
-                ? marketPositions.headers
-                : marketPositions.headers.filter(
-                    header =>
-                      header.key === 'market' ||
-                      header.key === 'outcome' ||
-                      header.key === 'profit'
-                  )
-            }
+            rows={positions.rows}
+            headers={positions.headers}
             isLoadingData={
               isLoadingMarkets || isLoadingPortfolio || isLoadingActions
             }

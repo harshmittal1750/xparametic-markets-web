@@ -12,9 +12,7 @@
       gap: 1rem;
 
       @media (min-width: 1024px) {
-        & {
-          @include flex-row(space-between, center);
-        }
+        @include flex-row(space-between, center);
       }
     }
 

@@ -1,47 +1,24 @@
 import { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 
-import {
-  setSearchQuery,
-  setSorter
-  // setSorterByEndingSoon
-} from 'redux/ducks/markets';
-import { closeRightSidebar } from 'redux/ducks/ui';
+import { setSearchQuery, setSorter } from 'redux/ducks/markets';
 import { useMedia } from 'ui';
 
-import { Button, Filter, SearchBar } from 'components';
-import Feature from 'components/Feature';
+import { CreateMarket, Feature, Filter, SearchBar } from 'components';
 
 import { useAppDispatch } from 'hooks';
 
 import HomeNavFilter from './HomeNavFilter';
 import { filters } from './utils';
 
-function CreateMarket() {
-  const dispatch = useAppDispatch();
-  const history = useHistory();
-  const handleNavigateToCreateMarket = useCallback(() => {
-    dispatch(closeRightSidebar());
-    history.push('/market/create');
-  }, [dispatch, history]);
-
-  return (
-    <Button color="primary" size="sm" onClick={handleNavigateToCreateMarket}>
-      Create Market
-    </Button>
-  );
-}
-
 export default function HomeNav() {
   const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
-
-  // const handleTouchedFilter = useCallback(
-  //   (touched: boolean) => {
-  //     dispatch(setSorterByEndingSoon(!touched));
-  //   },
-  //   [dispatch]
-  // );
+  const handleSearch = useCallback(
+    (text: string) => {
+      dispatch(setSearchQuery(text));
+    },
+    [dispatch]
+  );
 
   function handleSelectedFilter(filter: {
     value: string | number;
@@ -51,13 +28,6 @@ export default function HomeNav() {
       setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
     );
   }
-
-  const handleSearch = useCallback(
-    (text: string) => {
-      dispatch(setSearchQuery(text));
-    },
-    [dispatch]
-  );
 
   return (
     <div className="pm-p-home__navigation">
@@ -73,14 +43,13 @@ export default function HomeNav() {
         defaultOption="expiresAt"
         options={filters}
         onChange={handleSelectedFilter}
-        // onTouch={handleTouchedFilter}
         className="pm-p-home__navigation__actions"
       />
-      {isDesktop ? (
+      {isDesktop && (
         <Feature name="regular">
           <CreateMarket />
         </Feature>
-      ) : null}
+      )}
     </div>
   );
 }

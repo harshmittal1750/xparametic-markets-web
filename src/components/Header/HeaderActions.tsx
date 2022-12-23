@@ -1,0 +1,190 @@
+import { Fragment, useCallback, useEffect, useState } from 'react';
+
+import cn from 'classnames';
+import {
+  Adornment,
+  ContainerClasses,
+  List,
+  ListItem,
+  useMedia,
+  useRect
+} from 'ui';
+
+import { Button } from 'components/Button';
+import ConnectMetamask from 'components/ConnectMetamask';
+import Icon from 'components/Icon';
+import Modal from 'components/Modal';
+import Text from 'components/Text';
+import WalletInfo from 'components/WalletInfo';
+
+import { useNetworks } from 'contexts/networks';
+
+import { useTheme, useAppSelector, usePortal } from 'hooks';
+
+import HeaderClasses from './Header.module.scss';
+import HeaderActionsClasses from './HeaderActions.module.scss';
+
+function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
+  const Portal = usePortal({
+    root: document.getElementById('root')
+  });
+
+  useEffect(() => {
+    Portal.mount(true);
+  }, [Portal]);
+
+  return <Portal {...props} />;
+}
+export default function HeaderActions() {
+  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+  const networks = useNetworks();
+  const theme = useTheme();
+  const isDesktop = useMedia('(min-width: 1024px)');
+  const isTv = useMedia('(min-width: 1280px)');
+  const [show, setShow] = useState(false);
+  const [networkSelectorRef, networkSelectorRect] =
+    useRect<HTMLButtonElement>();
+  const handleHide = useCallback(() => setShow(false), []);
+  const handleChangeNetwork = useCallback(
+    (name: string) => () => {
+      const [network] = networks.networks.filter(
+        _network => _network.name === name
+      );
+
+      handleHide();
+      networks.changeToNetwork(network);
+    },
+    [handleHide, networks]
+  );
+  const NetworkSelector = useCallback(
+    () => (
+      <Button
+        ref={networkSelectorRef}
+        variant={isDesktop ? 'outline' : 'ghost'}
+        color="default"
+        aria-label="Switch network"
+        onClick={handleNetworks}
+        className={HeaderActionsClasses.network}
+      >
+        <Icon name={networks.network.currency.iconName} size="lg" />
+        {isDesktop && (
+          <>
+            {isTv && networks.network.name}
+            <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
+          </>
+        )}
+      </Button>
+    ),
+    [isDesktop, isTv, networkSelectorRef, networks, show]
+  );
+  const isThemeDark = theme.theme === 'dark';
+  const HeaderActionsRootComponent = isDesktop
+    ? Fragment
+    : HeaderActionsWrapper;
+
+  function handleTheme() {
+    theme.setTheme(isThemeDark ? 'light' : 'dark');
+  }
+  function handleNetworks() {
+    setShow(prevShow => !prevShow);
+  }
+
+  return (
+    <HeaderActionsRootComponent>
+      <div
+        className={cn(HeaderActionsClasses.root, {
+          [HeaderClasses.container]: !isDesktop,
+          [ContainerClasses.root]: !isDesktop,
+          [HeaderActionsClasses.high]: show && !isDesktop
+        })}
+      >
+        {isDesktop && <NetworkSelector />}
+        {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
+        {!isDesktop && <NetworkSelector />}
+        <Button
+          variant="ghost"
+          color="default"
+          aria-label="Switch theme"
+          onClick={handleTheme}
+          className={HeaderActionsClasses.theme}
+        >
+          <Icon name={isThemeDark ? 'Sun' : 'Moon'} size="lg" />
+        </Button>
+      </div>
+      <Modal
+        disableGutters
+        onHide={handleHide}
+        disablePortal={!isDesktop}
+        disableOverlay={isDesktop}
+        fullWidth={!isDesktop}
+        show={show}
+        className={{
+          backdrop: HeaderActionsClasses.backdrop,
+          dialog: HeaderActionsClasses.dialog
+        }}
+        {...(isDesktop
+          ? {
+              style: {
+                left: networkSelectorRect?.left
+              }
+            }
+          : {
+              initial: { bottom: '-100%' },
+              animate: { bottom: 0 },
+              exit: { bottom: '-100%' }
+            })}
+      >
+        {!isDesktop && (
+          <header className={HeaderActionsClasses.header}>
+            <Text
+              scale="heading"
+              fontWeight="bold"
+              className={HeaderActionsClasses.title}
+            >
+              Select Network
+            </Text>
+            <Adornment edge="end">
+              <Button
+                size="xs"
+                variant="ghost"
+                color="default"
+                aria-label="Settings"
+                onClick={handleHide}
+              >
+                <Icon name="Cross" size="lg" />
+              </Button>
+            </Adornment>
+          </header>
+        )}
+        <List className={HeaderActionsClasses.list}>
+          {networks.networks.map(network => (
+            <ListItem key={network.id} className={HeaderActionsClasses.item}>
+              <Button
+                variant="ghost"
+                fullwidth
+                onClick={handleChangeNetwork(network.name)}
+                className={cn(HeaderActionsClasses.button, {
+                  [HeaderActionsClasses.selected]:
+                    network.id === networks.network.id
+                })}
+              >
+                <span className={HeaderActionsClasses.icon}>
+                  <Icon
+                    name={network.currency.iconName}
+                    size={isDesktop ? 'lg' : 'xl'}
+                  />
+                </span>
+                <Text
+                  scale={isDesktop ? 'caption' : 'body'}
+                  fontWeight="semibold"
+                >
+                  {network.name}
+                </Text>
+              </Button>
+            </ListItem>
+          ))}
+        </List>
+      </Modal>
+    </HeaderActionsRootComponent>
+  );
+}

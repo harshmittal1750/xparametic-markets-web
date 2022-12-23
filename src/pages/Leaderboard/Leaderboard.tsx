@@ -9,7 +9,8 @@ import {
 } from 'services/Polkamarkets';
 import { useMedia } from 'ui';
 
-import { Button, CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
+import { CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
+import { ButtonLoading } from 'components/Button';
 import { Dropdown } from 'components/new';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -340,7 +341,7 @@ function Leaderboard() {
           />
         ) : null}
         {joinGroupState.visible ? (
-          <Button
+          <ButtonLoading
             size="sm"
             color="default"
             onClick={handleJoinLeaderboardGroup}
@@ -348,7 +349,7 @@ function Leaderboard() {
             disabled={joinGroupState.disabled}
           >
             {joinGroupState.joined ? 'Joined' : 'Join Club'}
-          </Button>
+          </ButtonLoading>
         ) : null}
       </div>
       <Tabs

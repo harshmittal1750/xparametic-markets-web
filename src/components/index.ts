@@ -38,7 +38,6 @@ import Menu from './Menu';
 import MiniAreaChart from './MiniAreaChart';
 import MiniTable from './MiniTable';
 import ModalNotification from './ModalNotification';
-import NavBar from './NavBar';
 import NetworkInfo from './NetworkInfo';
 import Networks from './Networks';
 import NewsCard from './NewsCard';
@@ -113,7 +112,6 @@ export {
   MiniAreaChart,
   MiniTable,
   ModalNotification,
-  NavBar,
   NetworkInfo,
   Networks,
   NewsCard,
@@ -154,12 +152,17 @@ export {
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
+
 export { default as CreateLeaderboardGroupForm } from './CreateLeaderboardGroupForm';
+
+export { default as CreateMarket } from './CreateMarket';
 
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
 export { default as Feature } from './Feature';
+
+export { default as Header } from './Header';
 
 export { default as Modal } from './Modal';
 
