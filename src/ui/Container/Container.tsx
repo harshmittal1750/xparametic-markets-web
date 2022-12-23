@@ -1,10 +1,20 @@
+import { forwardRef } from 'react';
+
 import cn from 'classnames';
 
 import ContainerClasses from './Container.module.scss';
 
-export default function Container({
-  className,
-  ...props
-}: React.ComponentPropsWithRef<'div'>) {
-  return <div className={cn(ContainerClasses.root, className)} {...props} />;
-}
+const Container = forwardRef<
+  HTMLDivElement,
+  React.ComponentPropsWithRef<'div'>
+>(function Container({ className, ...props }, ref) {
+  return (
+    <div
+      ref={ref}
+      className={cn(ContainerClasses.root, className)}
+      {...props}
+    />
+  );
+});
+
+export default Container;
