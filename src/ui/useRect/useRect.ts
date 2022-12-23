@@ -10,7 +10,7 @@ export default function useRect<E extends HTMLElement>() {
     width: 0,
     x: 0,
     y: 0,
-    toJSON: () => null
+    toJSON() {}
   }));
   const ref = useCallback((node: E | null) => {
     if (node !== null) setRect(node.getBoundingClientRect());

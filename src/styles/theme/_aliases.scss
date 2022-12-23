@@ -32,7 +32,7 @@
     var(--color-neutral--rgb) / var(--alpha-tertiary)
   );
 
-  &[class='theme--dark'] {
+  &.theme--dark {
     --color-background--rgb: var(--neutral-850--rgb);
     --color-text-rgb: var(--neutral-200--rgb);
 

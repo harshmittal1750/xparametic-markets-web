@@ -7,7 +7,7 @@
   --color-vote-arrows-border--positive: #65d6ad33;
   --color-vote-arrows-border--negative: #f86a6a33;
 
-  &[class='theme--dark'] {
+  &.theme--dark {
     --color-vote-arrows-background--neutral: #232a36;
   }
 }

@@ -14,7 +14,6 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const themeCn = `theme--${theme}`;
   const { current: themeCnPrev } = usePrevious(themeCn);
 
-  document.documentElement.dataset.theme = theme;
   if (themeCnPrev && themeCn !== themeCnPrev)
     document.documentElement.classList.replace(themeCnPrev, themeCn);
   else document.documentElement.classList.add(themeCn);
