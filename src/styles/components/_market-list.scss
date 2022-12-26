@@ -1,8 +1,6 @@
 .pm-c-market-list {
-  height: 98%;
-
   &__item {
-    margin-bottom: px-to-rem(20px);
+    margin-bottom: var(--grid-margin);
   }
 }
 

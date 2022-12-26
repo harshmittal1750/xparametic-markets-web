@@ -65,7 +65,6 @@ import ToastNotification from './ToastNotification';
 import ToggleSwitch from './ToggleSwitch';
 import Tooltip from './Tooltip';
 import TradeForm from './TradeForm';
-import VirtualizedList from './VirtualizedList';
 import VoteArrows from './VoteArrows';
 import VoteModal from './VoteModal';
 import WalletInfo from './WalletInfo';
@@ -143,7 +142,6 @@ export {
   ButtonGroup,
   ToggleSwitch,
   TradeForm,
-  VirtualizedList,
   VoteArrows,
   VoteModal,
   WalletInfo

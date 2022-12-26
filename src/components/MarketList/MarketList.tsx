@@ -1,43 +1,54 @@
-import isEmpty from 'lodash/isEmpty';
-import { Market } from 'models/market';
+import { useCallback, useEffect } from 'react';
+import { Virtuoso } from 'react-virtuoso';
+import type { ListRange } from 'react-virtuoso';
 
-import { InfoIcon } from 'assets/icons';
+import { Market } from 'models/market';
+import { useRect } from 'ui';
+
+import { useFooterVisibility } from 'hooks';
 
 import PredictionCard from '../PredictionCard';
-import Text from '../Text';
 
 type MarketListProps = {
   markets: Market[];
 };
 
-const MarketList = ({ markets }: MarketListProps) => {
-  if (isEmpty(markets)) {
-    return (
-      <div className="pm-c-market-list__empty-state">
-        <div className="pm-c-market-list__empty-state__body">
-          <InfoIcon />
-          <Text
-            as="p"
-            scale="tiny"
-            fontWeight="semibold"
-            className="pm-c-market-list__empty-state__body-description"
-          >
-            There are no available markets for this category.
-          </Text>
-        </div>
-      </div>
-    );
-  }
+export default function MarketList({ markets }: MarketListProps) {
+  const [ref, rect] = useRect();
+  const footerVisibility = useFooterVisibility();
+  const handleRangeChange = useCallback(
+    (range: ListRange) => {
+      if (markets.length - 1 === range.endIndex) footerVisibility.show();
+      else if (footerVisibility.visible) footerVisibility.hide();
+    },
+    [footerVisibility, markets.length]
+  );
+
+  useEffect(() => {
+    if (footerVisibility.visible) footerVisibility.hide();
+
+    return () => footerVisibility.show();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <ul className="market-list">
-      {markets.map(market => (
-        <li className="market-list__item" key={market.id}>
-          <PredictionCard market={market} />
-        </li>
-      ))}
-    </ul>
+    <div
+      ref={ref}
+      style={{
+        // TODO: use {rect.top} to lock body overflow
+        height: window.innerHeight
+      }}
+      className="pm-c-market-list"
+    >
+      <Virtuoso
+        data={markets}
+        itemContent={(_index, market) => (
+          <div className="pm-c-market-list__item">
+            <PredictionCard market={market} />
+          </div>
+        )}
+        rangeChanged={handleRangeChange}
+      />
+    </div>
   );
-};
-
-export default MarketList;
+}

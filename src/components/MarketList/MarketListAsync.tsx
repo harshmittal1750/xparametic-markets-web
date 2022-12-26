@@ -1,64 +1,18 @@
 import { useEffect, memo, useCallback } from 'react';
 
-import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 import { getFavoriteMarkets, getMarkets } from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
-import { Hero, useMedia } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
-import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
-import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
 
 import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
-import { useAppSelector, useFooterVisibility } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import { Button } from '../Button';
-import PredictionCard from '../PredictionCard';
 import Text from '../Text';
-import VirtualizedList from '../VirtualizedList';
-
-function MarketListHeader() {
-  return (
-    <Hero className="pm-p-home__hero" image={heroBanner}>
-      <div className="pm-p-home__hero__content">
-        <div className="pm-p-home__hero__breadcrumb">
-          <Text
-            as="span"
-            scale="tiny-uppercase"
-            fontWeight="semibold"
-            color="white-50"
-          >
-            Illuminate Fantasy League / World Cup 2022
-          </Text>
-        </div>
-        <Text
-          as="h2"
-          fontWeight="bold"
-          scale="heading-large"
-          color="light"
-          className="pm-p-home__hero__heading"
-        >
-          Place your World Cup predictions to win the IFL Title!
-        </Text>
-        <Button
-          size="sm"
-          color="primary"
-          onClick={() => window.open('/docs', '_blank')}
-        >
-          About IFL
-        </Button>
-      </div>
-      <img
-        alt="Illuminate Fantasy League"
-        width={293}
-        height={205}
-        src={heroLogo}
-      />
-    </Hero>
-  );
-}
+import MarketList from './MarketList';
 
 type MarketListAsyncProps = {
   markets: Market[];
@@ -70,20 +24,13 @@ const MarketListAsync = ({
   favoriteMarkets
 }: MarketListAsyncProps) => {
   const dispatch = useAppDispatch();
-  const isDesktop = useMedia('(min-width: 1024px)');
-
-  const { show, hide } = useFooterVisibility();
-  const { isLoading, error } = useAppSelector(state => state.markets);
-
-  const isLoadingMarkets = Object.values(isLoading).some(
-    state => state === true
-  );
-
-  const hasError = Object.values(error).some(
-    state => state !== null && state.message !== 'canceled'
-  );
-
-  const fetchMarkets = useCallback(async () => {
+  const { isLoading, error } = useAppSelector(state => ({
+    isLoading: Object.values(state.markets.isLoading).some(Boolean),
+    error: Object.values(state.markets.error).some(
+      value => value !== null && value.message !== 'canceled'
+    )
+  }));
+  const handleMarkets = useCallback(async () => {
     dispatch(getMarkets('open'));
     dispatch(getMarkets('closed'));
     dispatch(getMarkets('resolved'));
@@ -92,26 +39,10 @@ const MarketListAsync = ({
   }, [dispatch]);
 
   useEffect(() => {
-    fetchMarkets();
-  }, [fetchMarkets]);
+    handleMarkets();
+  }, [handleMarkets]);
 
-  useEffect(() => {
-    if (!isEmpty(markets)) {
-      hide();
-    }
-    return () => show();
-  }, [dispatch, markets, hide, show]);
-
-  const refreshMarkets = useCallback(() => {
-    fetchMarkets();
-  }, [fetchMarkets]);
-
-  const setFooterVisibility = useCallback(
-    (atBottom: boolean) => (atBottom ? show() : hide()),
-    [hide, show]
-  );
-
-  if (isLoadingMarkets)
+  if (isLoading)
     return (
       <div className="pm-c-market-list__empty-state">
         <div className="pm-c-market-list__empty-state__body">
@@ -120,7 +51,7 @@ const MarketListAsync = ({
       </div>
     );
 
-  if (hasError) {
+  if (error) {
     return (
       <div className="pm-c-market-list__error">
         <div className="pm-c-market-list__error__body">
@@ -135,7 +66,7 @@ const MarketListAsync = ({
           </Text>
         </div>
         <div className="pm-c-market-list__error__actions">
-          <Button color="primary" size="sm" onClick={refreshMarkets}>
+          <Button color="primary" size="sm" onClick={handleMarkets}>
             Try again
           </Button>
         </div>
@@ -143,7 +74,7 @@ const MarketListAsync = ({
     );
   }
 
-  if (isEmpty(markets)) {
+  if (!markets.length) {
     return (
       <div className="pm-c-market-list__empty-state">
         <div className="pm-c-market-list__empty-state__body">
@@ -161,21 +92,7 @@ const MarketListAsync = ({
     );
   }
 
-  return (
-    <div className="pm-c-market-list">
-      <VirtualizedList
-        components={{ Header: isDesktop ? MarketListHeader : undefined }}
-        height="100%"
-        data={markets}
-        itemContent={(_index, market) => (
-          <div className="pm-c-market-list__item">
-            <PredictionCard market={market} />
-          </div>
-        )}
-        atBottom={atBottom => setFooterVisibility(atBottom)}
-      />
-    </div>
-  );
+  return <MarketList markets={markets} />;
 };
 
 export default memo(MarketListAsync);
