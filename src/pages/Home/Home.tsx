@@ -1,30 +1,26 @@
 import { marketsSelector } from 'redux/ducks/markets';
+import { Hero } from 'ui';
 
-import { MarketListAsync } from 'components';
+import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
+import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
 
-import { VoteProvider } from 'contexts/vote';
+import { Button, MarketListAsync, Text } from 'components';
 
 import { useAppSelector, useFavoriteMarkets, useFilters } from 'hooks';
 
 import HomeNav from './HomeNav';
 
 export default function Home() {
-  const {
-    state: { favorites },
-    selected
-  } = useFilters();
-  const { dropdowns } = selected;
-
-  const { favoriteMarkets } = useFavoriteMarkets();
-
+  const filters = useFilters();
+  const favoriteMarkets = useFavoriteMarkets();
   const markets = useAppSelector(state =>
     marketsSelector({
       state: state.markets,
       filters: {
-        ...dropdowns,
+        ...filters.selected.dropdowns,
         favorites: {
-          checked: favorites.checked,
-          marketsByNetwork: favoriteMarkets
+          checked: filters.state.favorites.checked,
+          marketsByNetwork: favoriteMarkets.favoriteMarkets
         }
       }
     })
@@ -32,10 +28,47 @@ export default function Home() {
 
   return (
     <div className="pm-p-home">
+      <Hero className="pm-p-home__hero" image={heroBanner}>
+        <div className="pm-p-home__hero__content">
+          <div className="pm-p-home__hero__breadcrumb">
+            <Text
+              as="span"
+              scale="tiny-uppercase"
+              fontWeight="semibold"
+              color="white-50"
+            >
+              Illuminate Fantasy League / World Cup 2022
+            </Text>
+          </div>
+          <Text
+            as="h2"
+            fontWeight="bold"
+            scale="heading-large"
+            color="light"
+            className="pm-p-home__hero__heading"
+          >
+            Place your World Cup predictions to win the IFL Title!
+          </Text>
+          <Button
+            size="sm"
+            color="primary"
+            onClick={() => window.open('/docs', '_blank')}
+          >
+            About IFL
+          </Button>
+        </div>
+        <img
+          alt="Illuminate Fantasy League"
+          width={293}
+          height={205}
+          src={heroLogo}
+        />
+      </Hero>
       <HomeNav />
-      <VoteProvider>
-        <MarketListAsync markets={markets} favoriteMarkets={favoriteMarkets} />
-      </VoteProvider>
+      <MarketListAsync
+        markets={markets}
+        favoriteMarkets={favoriteMarkets.favoriteMarkets}
+      />
     </div>
   );
 }

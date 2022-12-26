@@ -1,6 +1,6 @@
-import { Container, useRect } from 'ui';
+import { Container } from 'ui';
 
-import { useFooterVisibility, usePrevious, useTheme } from 'hooks';
+import { usePrevious, useTheme } from 'hooks';
 
 import BetaWarning from '../BetaWarning';
 import Footer from '../Footer';
@@ -8,9 +8,7 @@ import Header from '../Header';
 import RightSidebar from '../RightSidebar';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
-  const [ref, rect] = useRect();
   const { theme } = useTheme();
-  const footerVisibility = useFooterVisibility();
   const themeCn = `theme--${theme}`;
   const { current: themeCnPrev } = usePrevious(themeCn);
 
@@ -22,16 +20,8 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     <>
       <BetaWarning />
       <Header />
-      <Container
-        ref={ref}
-        style={{
-          height: `${window.innerHeight - rect?.top}px`
-        }}
-        className="pm-l-layout__main"
-      >
-        {children}
-      </Container>
-      {footerVisibility.visible && <Footer />}
+      <Container className="pm-l-layout__main">{children}</Container>
+      <Footer />
       <RightSidebar />
       <div id="toast-notification-portal" />
     </>
