@@ -10,6 +10,7 @@ import { SEO } from 'components';
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
 import { FiltersProvider } from 'contexts/filters';
 import { NetworksProvider } from 'contexts/networks';
+import { VoteProvider } from 'contexts/vote';
 
 import { useAppDispatch, useNetwork } from 'hooks';
 
@@ -27,14 +28,16 @@ export default function App() {
     <MuiPickersUtilsProvider utils={DayjsUtils}>
       <NetworksProvider>
         <FiltersProvider>
-          <FavoriteMarketsProvider>
-            <SEO
-              title="Illuminate Fantasy League, Powered By Polkamarkets"
-              description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
-              imageUrl={IFL_DEFAULT_BANNER}
-            />
-            <Routes />
-          </FavoriteMarketsProvider>
+          <VoteProvider>
+            <FavoriteMarketsProvider>
+              <SEO
+                title="Illuminate Fantasy League, Powered By Polkamarkets"
+                description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
+                imageUrl={IFL_DEFAULT_BANNER}
+              />
+              <Routes />
+            </FavoriteMarketsProvider>
+          </VoteProvider>
         </FiltersProvider>
       </NetworksProvider>
     </MuiPickersUtilsProvider>
