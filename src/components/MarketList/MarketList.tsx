@@ -1,4 +1,10 @@
-import { useCallback, useEffect } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState
+} from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import type { ListRange } from 'react-virtuoso';
 
@@ -14,6 +20,8 @@ type MarketListProps = {
 };
 
 export default function MarketList({ markets }: MarketListProps) {
+  const [isTop, setTop] = useState(false);
+  const prevTop = useRef(0);
   const [ref, rect] = useRect();
   const footerVisibility = useFooterVisibility();
   const handleRangeChange = useCallback(
@@ -23,6 +31,18 @@ export default function MarketList({ markets }: MarketListProps) {
     },
     [footerVisibility, markets.length]
   );
+  const handleVirtuosoScroll = useCallback(
+    (event: React.UIEvent<'div', UIEvent>) => {
+      const { scrollTop } = event.target as HTMLDivElement;
+
+      if (prevTop.current > scrollTop && !scrollTop) {
+        setTop(false);
+      }
+
+      prevTop.current = scrollTop;
+    },
+    []
+  );
 
   useEffect(() => {
     if (footerVisibility.visible) footerVisibility.hide();
@@ -30,24 +50,45 @@ export default function MarketList({ markets }: MarketListProps) {
     return () => footerVisibility.show();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  useLayoutEffect(() => {
+    function handleDocumentScroll() {
+      setTop(window.scrollY >= Math.floor(rect.top));
+    }
+    document.addEventListener('scroll', handleDocumentScroll);
+
+    if (isTop) {
+      document.body.style.overflow = 'hidden';
+
+      return () => {
+        document.body.style.overflow = '';
+      };
+    }
+
+    return () => {
+      document.removeEventListener('scroll', handleDocumentScroll);
+    };
+  }, [isTop, rect.top]);
 
   return (
     <div
       ref={ref}
       style={{
-        // TODO: use {rect.top} to lock body overflow
         height: window.innerHeight
       }}
       className="pm-c-market-list"
     >
       <Virtuoso
+        onScroll={handleVirtuosoScroll}
         data={markets}
+        rangeChanged={handleRangeChange}
         itemContent={(_index, market) => (
           <div className="pm-c-market-list__item">
             <PredictionCard market={market} />
           </div>
         )}
-        rangeChanged={handleRangeChange}
+        {...(!isTop && {
+          style: { overflowY: 'hidden' }
+        })}
       />
     </div>
   );
