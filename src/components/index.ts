@@ -52,7 +52,6 @@ import ReportForm from './ReportForm';
 import Ribbon from './Ribbon';
 import RightSidebar from './RightSidebar';
 import ScrollableArea from './ScrollableArea';
-import ScrollToTop from './ScrollToTop';
 import SearchBar from './SearchBar';
 import Select from './Select';
 import SEO from './SEO';
@@ -124,7 +123,6 @@ export {
   ProbabilityInput,
   ProgressBar,
   ScrollableArea,
-  ScrollToTop,
   SearchBar,
   Select,
   SelectInput,
