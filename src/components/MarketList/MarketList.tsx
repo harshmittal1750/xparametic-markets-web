@@ -1,10 +1,4 @@
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import type { ListRange } from 'react-virtuoso';
 
@@ -35,13 +29,11 @@ export default function MarketList({ markets }: MarketListProps) {
     (event: React.UIEvent<'div', UIEvent>) => {
       const { scrollTop } = event.target as HTMLDivElement;
 
-      if (prevTop.current > scrollTop && !scrollTop) {
-        setTop(false);
-      }
+      if (prevTop.current > scrollTop && !scrollTop && isTop) setTop(false);
 
       prevTop.current = scrollTop;
     },
-    []
+    [isTop]
   );
 
   useEffect(() => {
@@ -50,24 +42,25 @@ export default function MarketList({ markets }: MarketListProps) {
     return () => footerVisibility.show();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  useLayoutEffect(() => {
+  useEffect(() => {
     function handleDocumentScroll() {
-      setTop(window.scrollY >= Math.floor(rect.top));
+      if (window.scrollY >= Math.floor(rect.top) && !isTop) setTop(true);
     }
     document.addEventListener('scroll', handleDocumentScroll);
-
-    if (isTop) {
-      document.body.style.overflow = 'hidden';
-
-      return () => {
-        document.body.style.overflow = '';
-      };
-    }
 
     return () => {
       document.removeEventListener('scroll', handleDocumentScroll);
     };
   }, [isTop, rect.top]);
+  useEffect(() => {
+    if (!isTop) return () => null;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isTop]);
 
   return (
     <div
