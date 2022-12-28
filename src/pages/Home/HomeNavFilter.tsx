@@ -18,10 +18,9 @@ type ListItemNestedProps = {
 
 function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
   const [expand, setExpand] = useState(false);
-
-  function handleExpand() {
+  const handleExpand = useCallback(() => {
     setExpand(prevExpand => !prevExpand);
-  }
+  }, []);
 
   return (
     <>
@@ -63,21 +62,21 @@ function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
 }
 
 export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
-  const {
-    state,
-    controls: { toggleFavorites, toggleDropdownOption }
-  } = useFilters();
-  const isMarketsLoading = useAppSelector(_state =>
-    Object.values(_state.markets.isLoading).some(Boolean)
+  const filters = useFilters();
+  const isLoading = useAppSelector(state =>
+    Object.values(state.markets.isLoading).some(Boolean)
   );
   const [show, setShow] = useState(false);
   const handleShow = useCallback(() => setShow(true), []);
   const handleHide = useCallback(() => setShow(false), []);
   const handleToggleChange = useCallback(
     (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      toggleDropdownOption({ path, selected: event.target.checked });
+      filters.controls.toggleDropdownOption({
+        path,
+        selected: event.target.checked
+      });
     },
-    [toggleDropdownOption]
+    [filters.controls]
   );
 
   return (
@@ -87,18 +86,17 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
         size="sm"
         className="pm-p-home__navigation__actions"
         onClick={handleShow}
-        disabled={isMarketsLoading}
-        style={{ display: 'inherit', height: 'auto' }}
+        disabled={isLoading}
         {...(!isDesktop && { 'aria-label': 'Filter' })}
       >
         <Icon name="Filter" />
         {isDesktop && 'Filter'}
       </Button>
       <Modal
-        show={show}
-        onHide={handleHide}
         fullScreen
         disableGutters
+        show={show}
+        onHide={handleHide}
         initial={{ x: -304 }}
         animate={{ x: 0 }}
         exit={{ x: -304 }}
@@ -115,16 +113,16 @@ export default function HomeNavFilter({ isDesktop }: { isDesktop: boolean }) {
             <Adornment edge="end">
               <ToggleSwitch
                 name="favorites"
-                checked={state.favorites.checked}
-                onChange={toggleFavorites}
+                checked={filters.state.favorites.checked}
+                onChange={filters.controls.toggleFavorites}
               />
             </Adornment>
           </ListItem>
-          {Object.keys(state.dropdowns).map(dropdrown => (
+          {Object.keys(filters.state.dropdowns).map(dropdrown => (
             <Fragment key={dropdrown}>
               <Divider />
               <ListItemNested
-                subitems={state.dropdowns[dropdrown]}
+                subitems={filters.state.dropdowns[dropdrown]}
                 onToggleChange={handleToggleChange}
               />
             </Fragment>

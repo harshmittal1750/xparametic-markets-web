@@ -11,7 +11,7 @@ import { useAppDispatch } from 'hooks';
 export default function CreateMarket({
   onCreateClick,
   ...props
-}: ButtonProps & { onCreateClick?: () => void }) {
+}: ButtonProps & { onCreateClick?(): void }) {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const handleCreateClick = useCallback(() => {

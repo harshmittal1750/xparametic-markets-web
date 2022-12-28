@@ -1,40 +1,49 @@
 import { useEffect, memo, useCallback } from 'react';
 
-import { Market } from 'models/market';
-import { getFavoriteMarkets, getMarkets } from 'redux/ducks/markets';
+import {
+  getFavoriteMarkets,
+  getMarkets,
+  marketsSelector
+} from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
 
 import { InfoIcon } from 'assets/icons';
 
-import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
-
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useFavoriteMarkets, useFilters } from 'hooks';
 
 import { Button } from '../Button';
 import Text from '../Text';
 import MarketList from './MarketList';
 
-type MarketListAsyncProps = {
-  markets: Market[];
-  favoriteMarkets: FavoriteMarketsByNetwork;
-};
-
-const MarketListAsync = ({
-  markets,
-  favoriteMarkets
-}: MarketListAsyncProps) => {
+function MarketListAsync() {
   const dispatch = useAppDispatch();
-  const { isLoading, error } = useAppSelector(state => ({
-    isLoading: Object.values(state.markets.isLoading).some(Boolean),
-    error: Object.values(state.markets.error).some(
+  const filters = useFilters();
+  const favoriteMarkets = useFavoriteMarkets();
+  const markets = useAppSelector(state =>
+    marketsSelector({
+      state: state.markets,
+      filters: {
+        ...filters.selected.dropdowns,
+        favorites: {
+          checked: filters.state.favorites.checked,
+          marketsByNetwork: favoriteMarkets.favoriteMarkets
+        }
+      }
+    })
+  );
+  const isLoading = useAppSelector(state =>
+    Object.values(state.markets.isLoading).some(Boolean)
+  );
+  const error = useAppSelector(state =>
+    Object.values(state.markets.error).some(
       value => value !== null && value.message !== 'canceled'
     )
-  }));
+  );
   const handleMarkets = useCallback(async () => {
     dispatch(getMarkets('open'));
     dispatch(getMarkets('closed'));
     dispatch(getMarkets('resolved'));
-    dispatch(getFavoriteMarkets(favoriteMarkets));
+    dispatch(getFavoriteMarkets(favoriteMarkets.favoriteMarkets));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
@@ -93,6 +102,6 @@ const MarketListAsync = ({
   }
 
   return <MarketList markets={markets} />;
-};
+}
 
 export default memo(MarketListAsync);
