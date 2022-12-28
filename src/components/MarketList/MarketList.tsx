@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 import type { ListRange } from 'react-virtuoso';
 
@@ -13,7 +13,7 @@ type MarketListProps = {
   markets: Market[];
 };
 
-export default function MarketList({ markets }: MarketListProps) {
+export default memo(function MarketList({ markets }: MarketListProps) {
   const [isTop, setTop] = useState(false);
   const prevTop = useRef(0);
   const [ref, rect] = useRect();
@@ -85,4 +85,4 @@ export default function MarketList({ markets }: MarketListProps) {
       />
     </div>
   );
-}
+});
