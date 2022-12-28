@@ -34,6 +34,8 @@
 
     &__actions:not(:last-child) {
       margin-right: 12px;
+      display: inherit;
+      height: auto;
     }
   }
 
