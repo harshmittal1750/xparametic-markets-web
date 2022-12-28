@@ -31,6 +31,13 @@
   --color-neutral-tertiary: rgb(
     var(--color-neutral--rgb) / var(--alpha-tertiary)
   );
+  --color-vote-arrows-background--neutral: #dde1e8;
+  --color-vote-arrows-background--positive: #66d6ad1a;
+  --color-vote-arrows-background--negative: #f769691a;
+
+  --color-vote-arrows-border--neutral: #3d4759;
+  --color-vote-arrows-border--positive: #65d6ad33;
+  --color-vote-arrows-border--negative: #f86a6a33;
 
   &.theme--dark {
     --color-background--rgb: var(--neutral-850--rgb);
@@ -41,6 +48,7 @@
     --color-shadow: var(--color-background-quaternary);
     --color-text-primary: var(--neutral-100);
     --color-text-secondary: var(--neutral-600);
+    --color-vote-arrows-background--neutral: #232a36;
   }
 
   --grid-margin: var(--size-12);

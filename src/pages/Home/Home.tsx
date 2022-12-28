@@ -59,9 +59,7 @@ export default function Home() {
         )}
         <HomeNav />
       </Container>
-      <div>
-        <MarketListAsync />
-      </div>
+      <MarketListAsync />
     </>
   );
 }
