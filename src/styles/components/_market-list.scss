@@ -1,4 +1,13 @@
 .pm-c-market-list {
+  & [data-test-id='virtuoso-scroller'] {
+    padding: var(--grid-margin) !important;
+  }
+
+  & [data-viewport-type='element'] {
+    width: calc(100% - var(--grid-margin) * 2) !important;
+    top: unset !important;
+  }
+
   &__item {
     margin-bottom: var(--grid-margin);
   }
