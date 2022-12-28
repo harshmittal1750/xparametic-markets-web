@@ -44,7 +44,7 @@ export default memo(function MarketList({ markets }: MarketListProps) {
   }, []);
   useEffect(() => {
     function handleDocumentScroll() {
-      if (window.scrollY >= Math.floor(rect.top) && !isTop) setTop(true);
+      if (window.scrollY + 1 >= Math.floor(rect.top) && !isTop) setTop(true);
     }
     document.addEventListener('scroll', handleDocumentScroll);
 
@@ -60,7 +60,8 @@ export default memo(function MarketList({ markets }: MarketListProps) {
     return () => {
       document.body.style.overflow = '';
     };
-  }, [isTop]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
