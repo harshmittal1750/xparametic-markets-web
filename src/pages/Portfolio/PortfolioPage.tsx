@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { getPortfolio } from 'redux/ducks/portfolio';
 import { closeRightSidebar } from 'redux/ducks/ui';
+import { Container } from 'ui';
 
 import { SEO } from 'components';
 
@@ -36,7 +37,7 @@ const PortfolioPage = () => {
   }, [ethAddress, dispatch, network.id]);
 
   return (
-    <div className="portfolio-page">
+    <Container className="portfolio-page">
       <SEO
         title="Portfolio - Illuminate Fantasy League, powered by Polkamarkets"
         description="Participate in the Illuminate Fantasy League and compete with your friends, coworkers or other community members. Predict Football World Cup match winners and manage your portfolio outcome shares with a seamless and user friendly page."
@@ -45,7 +46,7 @@ const PortfolioPage = () => {
       <PortfolioAnalytics />
       <PortfolioChart />
       <PortfolioTabs />
-    </div>
+    </Container>
   );
 };
 

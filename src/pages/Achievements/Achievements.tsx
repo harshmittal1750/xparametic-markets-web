@@ -5,6 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import { closeRightSidebar } from 'redux/ducks/ui';
 import { PolkamarketsService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
+import { Container } from 'ui';
 
 import { Button, SEO, Toast, ToastNotification } from 'components';
 import {
@@ -143,7 +144,7 @@ function Achievements() {
   const empty = isEmpty(achievementsByFilter);
 
   return (
-    <div className="pm-p-achievements flex-column gap-4">
+    <Container className="pm-p-achievements flex-column gap-4">
       <SEO
         title="NFT Achievements - Illuminate Fantasy League, powered by Polkamarkets"
         description="Predict Football World Cup match winners and grab your exclusive NFT Achievements. The Illuminate Fantasy League is a fantasy predictions tournament focused on the 2022 Football World Cup."
@@ -209,7 +210,7 @@ function Achievements() {
           </Toast>
         </ToastNotification>
       ) : null}
-    </div>
+    </Container>
   );
 }
 

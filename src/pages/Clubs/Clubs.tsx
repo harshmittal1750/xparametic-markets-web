@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
 import { closeRightSidebar } from 'redux/ducks/ui';
+import { Container } from 'ui';
 
 import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 
@@ -47,7 +48,7 @@ function Clubs() {
   };
 
   return (
-    <div className="pm-p-leaderboard">
+    <Container className="pm-p-leaderboard">
       <SEO
         title="Clubs - Illuminate Fantasy League, powered by Polkamarkets"
         description="Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard."
@@ -76,7 +77,7 @@ function Clubs() {
         ) : null}
       </div>
       <ClubsMyClubs loggedInUser={userEthAddress} />
-    </div>
+    </Container>
   );
 }
 

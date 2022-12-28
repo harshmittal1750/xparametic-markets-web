@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { closeRightSidebar } from 'redux/ducks/ui';
+import { Container } from 'ui';
 
 import { useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks';
 
@@ -34,14 +35,14 @@ function Profile() {
   const listHeight = Math.min(Math.ceil(height * 0.5), 700);
 
   return (
-    <div className="pm-p-profile">
+    <Container className="pm-p-profile">
       <ProfileSummary address={address} />
       <ProfileYourStats address={address} />
       <div className="pm-p-profile-lists margin-top-6">
         <ProfileAchievements address={address} listHeight={listHeight} />
         <ProfileActivities address={address} listHeight={listHeight} />
       </div>
-    </div>
+    </Container>
   );
 }
 

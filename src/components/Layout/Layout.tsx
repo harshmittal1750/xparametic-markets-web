@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Container } from 'ui';
-
 import { usePrevious, useTheme } from 'hooks';
 
 import BetaWarning from '../BetaWarning';
@@ -31,7 +29,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     <>
       <BetaWarning />
       <Header />
-      <Container className="pm-l-layout__main">{children}</Container>
+      {children}
       <Footer />
       <RightSidebar />
       <div id="toast-notification-portal" />

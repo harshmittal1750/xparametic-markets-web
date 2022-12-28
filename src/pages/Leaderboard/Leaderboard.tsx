@@ -7,7 +7,7 @@ import {
   useGetLeaderboardGroupBySlugQuery,
   useJoinLeaderboardGroupMutation
 } from 'services/Polkamarkets';
-import { useMedia } from 'ui';
+import { Container, useMedia } from 'ui';
 
 import { CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
 import { ButtonLoading } from 'components/Button';
@@ -290,7 +290,7 @@ function Leaderboard() {
   ]);
 
   return (
-    <div className="pm-p-leaderboard">
+    <Container className="pm-p-leaderboard">
       <SEO
         title="Leaderboard - Illuminate Fantasy League, powered by Polkamarkets"
         description="Rank up higher on the leaderboard and be the #1 forecaster of the Football World Cup. The best global players will earn prizes from the $1500 USD pool, distributed as gift cards."
@@ -413,7 +413,7 @@ function Leaderboard() {
           </Tabs.TabPane>
         ))}
       </Tabs>
-    </div>
+    </Container>
   );
 }
 
