@@ -1,17 +1,20 @@
 .pm-c-market-list {
   flex: 1 1 auto;
 
-  & [data-test-id='virtuoso-scroller'] {
+  & > [data-test-id='virtuoso-scroller'] {
     padding: var(--grid-margin) !important;
-  }
 
-  & [data-viewport-type='element'] {
-    width: calc(100% - var(--grid-margin) * 2) !important;
-    top: unset !important;
-  }
+    & > [data-viewport-type='element'] {
+      width: calc(100% - var(--grid-margin) * 2) !important;
+      top: unset !important;
+      display: flex;
+      flex-flow: column nowrap;
 
-  & .prediction-card {
-    margin-bottom: var(--grid-margin);
+      & > div:not([data-test-id='virtuoso-item-list']) {
+        margin-top: auto;
+        padding-top: var(--grid-margin);
+      }
+    }
   }
 }
 

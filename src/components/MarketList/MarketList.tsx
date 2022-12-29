@@ -11,9 +11,6 @@ type MarketListProps = {
   rect: DOMRect;
 };
 
-function handleItemContent(_index, market) {
-  return <PredictionCard market={market} />;
-}
 function MarketListWrapper({
   children
 }: React.PropsWithChildren<Record<string, unknown>>) {
@@ -58,12 +55,23 @@ export default function MarketList({ markets, rect }: MarketListProps) {
       <Virtuoso
         onScroll={handleVirtuosoScroll}
         data={markets}
-        itemContent={handleItemContent}
+        itemContent={(index, market) => (
+          <PredictionCard
+            market={market}
+            {...(index !== markets.length - 1 && {
+              style: {
+                marginBottom: 'var(--grid-margin)'
+              }
+            })}
+          />
+        )}
         components={{
           Footer
         }}
         {...(!isTop && {
-          style: { overflowY: 'hidden' }
+          style: {
+            overflowY: 'hidden'
+          }
         })}
       />
     </Root>

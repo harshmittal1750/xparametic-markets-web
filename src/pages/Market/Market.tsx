@@ -6,6 +6,7 @@ import isNull from 'lodash/isNull';
 import { getMarket, setChartViewType } from 'redux/ducks/market';
 import { reset } from 'redux/ducks/trade';
 import { closeRightSidebar, openTradeForm } from 'redux/ducks/ui';
+import { Container } from 'ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
@@ -116,7 +117,7 @@ const Market = () => {
   }
 
   return (
-    <div className="pm-p-market">
+    <Container className="pm-p-market">
       <SEO
         title={market.title}
         description={formatSEODescription(
@@ -210,7 +211,7 @@ const Market = () => {
           ) : null}
         </Tabs>
       </div>
-    </div>
+    </Container>
   );
 };
 

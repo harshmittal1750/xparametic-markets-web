@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { usePrevious, useTheme } from 'hooks';
@@ -18,7 +18,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     document.documentElement.classList.replace(themeCnPrev, themeCn);
   else document.documentElement.classList.add(themeCn);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'

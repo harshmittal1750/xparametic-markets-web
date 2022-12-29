@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Market as MarketInterface } from 'models/market';
@@ -9,24 +9,21 @@ import { useAppDispatch } from 'hooks';
 
 import Market from '../Market';
 
-type PredictionCardProps = {
+interface PredictionCardProps extends React.ComponentPropsWithoutRef<'div'> {
   market: MarketInterface;
-};
+}
 
-function PredictionCard({ market }: PredictionCardProps) {
+function PredictionCard({ market, ...props }: PredictionCardProps) {
   const dispatch = useAppDispatch();
-
-  const { slug } = market;
-
-  function handleNavigation() {
+  const handleNavigation = useCallback(() => {
     dispatch(clearMarket());
     dispatch(openTradeForm());
-  }
+  }, [dispatch]);
 
   return (
-    <div className="prediction-card">
+    <div className="prediction-card" {...props}>
       <div className="prediction-card__body">
-        <Link to={`/markets/${slug}`} onClick={handleNavigation}>
+        <Link to={`/markets/${market.slug}`} onClick={handleNavigation}>
           <Market market={market} />
         </Link>
         <Market.Outcomes market={market} />
