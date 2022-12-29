@@ -2,11 +2,13 @@
   flex: 1 1 auto;
 
   & > [data-test-id='virtuoso-scroller'] {
-    padding: var(--grid-margin) !important;
+    padding-left: var(--grid-margin) !important;
+    padding-right: var(--grid-margin) !important;
 
     & > [data-viewport-type='element'] {
       width: calc(100% - var(--grid-margin) * 2) !important;
-      top: unset !important;
+      height: calc(100% - var(--grid-margin) * 2) !important;
+      top: var(--grid-margin) !important;
       display: flex;
       flex-flow: column nowrap;
 
