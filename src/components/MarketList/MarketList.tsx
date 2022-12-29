@@ -1,4 +1,5 @@
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type { ListRange } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
 import type { Market } from 'models/market';
@@ -11,69 +12,73 @@ type MarketListProps = {
   rect: DOMRect;
 };
 
-function MarketListWrapper({
-  children
-}: React.PropsWithChildren<Record<string, unknown>>) {
-  useEffect(() => {
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, []);
-
-  return <>{children}</>;
-}
 export default function MarketList({ markets, rect }: MarketListProps) {
-  const [isTop, setTop] = useState(false);
+  const [overflow, setOverflow] = useState(false);
+  const [needOverflow, setNeedOverflow] = useState(true);
   const prevTop = useRef(0);
+  const handleRangeChange = useCallback(
+    (range: ListRange) => {
+      if (markets.length - 1 === range.endIndex) setNeedOverflow(false);
+      else if (!needOverflow) setNeedOverflow(true);
+    },
+    [needOverflow, markets.length]
+  );
   const handleVirtuosoScroll = useCallback(
     (event: React.UIEvent<'div', UIEvent>) => {
       const { scrollTop } = event.target as HTMLDivElement;
 
-      if (prevTop.current > scrollTop && !scrollTop && isTop) setTop(false);
+      if (prevTop.current > scrollTop && !scrollTop && overflow)
+        setOverflow(false);
 
       prevTop.current = scrollTop;
     },
-    [isTop]
+    [overflow]
   );
-  const Root = isTop ? MarketListWrapper : Fragment;
 
   useEffect(() => {
     function handleDocumentScroll() {
-      if (window.scrollY >= Math.floor(rect.top) && !isTop) setTop(true);
+      if (needOverflow && !overflow && window.scrollY >= Math.floor(rect.top))
+        setOverflow(true);
     }
     document.addEventListener('scroll', handleDocumentScroll);
 
     return () => {
       document.removeEventListener('scroll', handleDocumentScroll);
     };
-  }, [isTop, rect.top]);
+  }, [needOverflow, overflow, rect.top]);
+  useEffect(() => {
+    if (!overflow) return () => null;
+
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [overflow]);
 
   return (
-    <Root>
-      <Virtuoso
-        onScroll={handleVirtuosoScroll}
-        data={markets}
-        itemContent={(index, market) => (
-          <PredictionCard
-            market={market}
-            {...(index !== markets.length - 1 && {
-              style: {
-                marginBottom: 'var(--grid-margin)'
-              }
-            })}
-          />
-        )}
-        components={{
-          Footer
-        }}
-        {...(!isTop && {
-          style: {
-            overflowY: 'hidden'
-          }
-        })}
-      />
-    </Root>
+    <Virtuoso
+      onScroll={handleVirtuosoScroll}
+      data={markets}
+      rangeChanged={handleRangeChange}
+      itemContent={(index, market) => (
+        <PredictionCard
+          market={market}
+          {...(index !== markets.length - 1 && {
+            style: {
+              marginBottom: 'var(--grid-margin)'
+            }
+          })}
+        />
+      )}
+      components={{
+        Footer
+      }}
+      {...(!overflow && {
+        style: {
+          overflowY: 'hidden'
+        }
+      })}
+    />
   );
 }
