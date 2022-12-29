@@ -1,4 +1,6 @@
 .pm-c-market-list {
+  flex: 1 1 auto;
+
   & [data-test-id='virtuoso-scroller'] {
     padding: var(--grid-margin) !important;
   }
@@ -8,7 +10,7 @@
     top: unset !important;
   }
 
-  &__item {
+  & .prediction-card {
     margin-bottom: var(--grid-margin);
   }
 }
@@ -16,12 +18,8 @@
 .pm-c-market-list__empty-state,
 .pm-p-achievements__empty {
   @include themes($market-list-themes) {
-    width: 100%;
-    height: auto;
-
     padding: px-to-rem(50px) px-to-rem(20px);
-    margin: px-to-rem(10px) px-to-rem(0px);
-
+    margin: var(--grid-margin);
     border: 0.1rem solid themed('state-info-border-color');
     border-radius: 0.4rem;
 

@@ -41,11 +41,9 @@
 
   &__filter {
     &-list {
-      width: 304px;
-      height: 100%;
+      width: 264px;
       overflow-y: auto;
       border-right: 1px solid var(--color-border);
-      background-color: var(--color-surface);
 
       &-sublist {
         background-color: var(--color-background-primary);

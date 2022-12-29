@@ -1,18 +1,97 @@
+import { useCallback, Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { Hero, Container, useMedia } from 'ui';
+import { AnimatePresence, motion } from 'framer-motion';
+import {
+  Hero,
+  Container,
+  useMedia,
+  Adornment,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Toggle
+} from 'ui';
 
 import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
 import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
 
 import { MarketListAsync, Text } from 'components';
+import Icon from 'components/Icon';
+import ToggleSwitch from 'components/ToggleSwitch';
+
+import type { Dropdown } from 'contexts/filters/filters.type';
+
+import { useFilters } from 'hooks';
 
 import HomeClasses from './Home.module.scss';
 import HomeNav from './HomeNav';
 
+type ListItemNestedProps = {
+  onToggleChange: (
+    path?: string
+  ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+  subitems: Dropdown;
+};
+
+function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
+  const [expand, setExpand] = useState(false);
+  const handleExpand = useCallback(() => {
+    setExpand(prevExpand => !prevExpand);
+  }, []);
+
+  return (
+    <>
+      <ListItem onClick={handleExpand}>
+        <ListItemText>{subitems.title}</ListItemText>
+        <Adornment edge="end">
+          <Icon name="Chevron" size="lg" dir={expand ? 'up' : 'down'} />
+        </Adornment>
+      </ListItem>
+      <AnimatePresence>
+        {expand && (
+          <motion.div
+            style={{ overflow: 'hidden' }}
+            initial={{ height: 0 }}
+            animate={{ height: 'auto' }}
+            exit={{ height: 0 }}
+          >
+            <List className="pm-p-home__filter-list-sublist">
+              {subitems.options.map(option => (
+                <ListItem key={option.path}>
+                  <ListItemText>{option.label}</ListItemText>
+                  <Adornment edge="end">
+                    <Toggle
+                      type="checkbox"
+                      checked={option.selected}
+                      value={option.value}
+                      name={option.label}
+                      onChange={onToggleChange(option.path)}
+                    />
+                  </Adornment>
+                </ListItem>
+              ))}
+            </List>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
 export default function Home() {
   const isDesktop = useMedia('(min-width: 1024px)');
+  const filters = useFilters();
+  const handleToggleChange = useCallback(
+    (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
+      filters.controls.toggleDropdownOption({
+        path,
+        selected: event.target.checked
+      });
+    },
+    [filters.controls]
+  );
 
   return (
     <>
@@ -59,7 +138,35 @@ export default function Home() {
         )}
         <HomeNav />
       </Container>
-      <MarketListAsync />
+      <div
+        style={{
+          display: 'flex',
+          height: window.innerHeight
+        }}
+      >
+        <List className="pm-p-home__filter-list">
+          <ListItem>
+            <ListItemText>Favorites</ListItemText>
+            <Adornment edge="end">
+              <ToggleSwitch
+                name="favorites"
+                checked={filters.state.favorites.checked}
+                onChange={filters.controls.toggleFavorites}
+              />
+            </Adornment>
+          </ListItem>
+          {Object.keys(filters.state.dropdowns).map(dropdrown => (
+            <Fragment key={dropdrown}>
+              <Divider />
+              <ListItemNested
+                subitems={filters.state.dropdowns[dropdrown]}
+                onToggleChange={handleToggleChange}
+              />
+            </Fragment>
+          ))}
+        </List>
+        <MarketListAsync />
+      </div>
     </>
   );
 }
