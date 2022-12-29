@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
 import type { Market } from 'models/market';
@@ -14,6 +14,19 @@ type MarketListProps = {
 function handleItemContent(_index, market) {
   return <PredictionCard market={market} />;
 }
+function MarketListWrapper({
+  children
+}: React.PropsWithChildren<Record<string, unknown>>) {
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, []);
+
+  return <>{children}</>;
+}
 export default function MarketList({ markets, rect }: MarketListProps) {
   const [isTop, setTop] = useState(false);
   const prevTop = useRef(0);
@@ -27,6 +40,7 @@ export default function MarketList({ markets, rect }: MarketListProps) {
     },
     [isTop]
   );
+  const Root = isTop ? MarketListWrapper : Fragment;
 
   useEffect(() => {
     function handleDocumentScroll() {
@@ -38,27 +52,20 @@ export default function MarketList({ markets, rect }: MarketListProps) {
       document.removeEventListener('scroll', handleDocumentScroll);
     };
   }, [isTop, rect.top]);
-  useEffect(() => {
-    if (!isTop) return () => null;
-
-    document.body.style.overflow = 'hidden';
-
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isTop]);
 
   return (
-    <Virtuoso
-      onScroll={handleVirtuosoScroll}
-      data={markets}
-      itemContent={handleItemContent}
-      components={{
-        Footer
-      }}
-      {...(!isTop && {
-        style: { overflowY: 'hidden' }
-      })}
-    />
+    <Root>
+      <Virtuoso
+        onScroll={handleVirtuosoScroll}
+        data={markets}
+        itemContent={handleItemContent}
+        components={{
+          Footer
+        }}
+        {...(!isTop && {
+          style: { overflowY: 'hidden' }
+        })}
+      />
+    </Root>
   );
 }
