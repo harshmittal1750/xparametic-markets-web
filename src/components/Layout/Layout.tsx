@@ -30,7 +30,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       <BetaWarning />
       <Header />
       {children}
-      <Footer />
+      {pathname !== '/' && <Footer />}
       <RightSidebar />
       <div id="toast-notification-portal" />
     </>

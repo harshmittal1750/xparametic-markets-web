@@ -1,13 +1,7 @@
 import Link from 'components/Link';
 import Text from 'components/Text';
 
-import { useFooterVisibility } from 'hooks';
-
 export default function Footer() {
-  const footerVisibility = useFooterVisibility();
-
-  if (!footerVisibility.visible) return null;
-
   return (
     <footer className="pm-l-layout__footer">
       <div className="pm-l-footer">

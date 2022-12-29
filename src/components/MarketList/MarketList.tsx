@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { ListRange } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
 import type { Market } from 'models/market';
 
+import Footer from 'components/Footer';
 import PredictionCard from 'components/PredictionCard';
-
-import { useFooterVisibility } from 'hooks';
 
 type MarketListProps = {
   markets: Market[];
@@ -17,16 +15,8 @@ function handleItemContent(_index, market) {
   return <PredictionCard market={market} />;
 }
 export default function MarketList({ markets, rect }: MarketListProps) {
-  const footerVisibility = useFooterVisibility();
   const [isTop, setTop] = useState(false);
   const prevTop = useRef(0);
-  const handleRangeChange = useCallback(
-    (range: ListRange) => {
-      if (markets.length - 1 === range.endIndex) footerVisibility.show();
-      else if (footerVisibility.visible) footerVisibility.hide();
-    },
-    [markets.length, footerVisibility]
-  );
   const handleVirtuosoScroll = useCallback(
     (event: React.UIEvent<'div', UIEvent>) => {
       const { scrollTop } = event.target as HTMLDivElement;
@@ -38,12 +28,6 @@ export default function MarketList({ markets, rect }: MarketListProps) {
     [isTop]
   );
 
-  useEffect(() => {
-    if (footerVisibility.visible) footerVisibility.hide();
-
-    return () => footerVisibility.show();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   useEffect(() => {
     function handleDocumentScroll() {
       if (window.scrollY >= Math.floor(rect.top) && !isTop) setTop(true);
@@ -67,9 +51,11 @@ export default function MarketList({ markets, rect }: MarketListProps) {
   return (
     <Virtuoso
       onScroll={handleVirtuosoScroll}
-      rangeChanged={handleRangeChange}
       data={markets}
       itemContent={handleItemContent}
+      components={{
+        Footer
+      }}
       {...(!isTop && {
         style: { overflowY: 'hidden' }
       })}
