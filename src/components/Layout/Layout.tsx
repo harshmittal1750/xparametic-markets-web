@@ -1,36 +1,51 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { usePrevious, useTheme } from 'hooks';
+import { login } from 'redux/ducks/polkamarkets';
 
-import BetaWarning from '../BetaWarning';
-import Footer from '../Footer';
-import Header from '../Header';
-import RightSidebar from '../RightSidebar';
+import BetaWarning from 'components/BetaWarning';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import RestrictedCountry from 'components/RestrictedCountry';
+import RightSidebar from 'components/RightSidebar';
+import SEO from 'components/SEO';
+import WrongNetwork from 'components/WrongNetwork';
+
+import { useTheme, useAppDispatch, useNetwork } from 'hooks';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
-  const { pathname } = useLocation();
-  const { theme } = useTheme();
-  const themeCn = `theme--${theme}`;
-  const { current: themeCnPrev } = usePrevious(themeCn);
+  const location = useLocation();
+  const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const { networkConfig } = useNetwork();
 
-  if (themeCnPrev && themeCn !== themeCnPrev)
-    document.documentElement.classList.replace(themeCnPrev, themeCn);
-  else document.documentElement.classList.add(themeCn);
+  if (theme.theme === 'dark') {
+    document.documentElement.classList.add('theme--dark');
+  } else document.documentElement.classList.remove('theme--dark');
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
-  }, [pathname]);
+  }, [location.pathname]);
+  useEffect(() => {
+    dispatch(login(networkConfig));
+  }, [dispatch, networkConfig]);
 
   return (
     <>
+      <RestrictedCountry />
+      <WrongNetwork />
       <BetaWarning />
+      <SEO
+        title="Illuminate Fantasy League, Powered By Polkamarkets"
+        description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
+        imageUrl={`${process.env.PUBLIC_URL}/ifl_meta.jpg`}
+      />
       <Header />
       {children}
-      {pathname !== '/' && <Footer />}
+      {location.pathname !== '/' && <Footer />}
       <RightSidebar />
       <div id="toast-notification-portal" />
     </>

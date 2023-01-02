@@ -1,14 +1,37 @@
-/* eslint-disable react/jsx-curly-newline */
-/* eslint-disable prettier/prettier */
+import { useEffect, useState } from 'react';
+
+import { getUserCountry } from 'helpers/location';
+
 import { PolkamarketsIcon } from 'assets/icons';
 
-import { Button, ModalNotification, Text, Link } from 'components';
+import Link from 'components/Link';
+import Modal from 'components/Modal';
+import ModalContent from 'components/ModalContent';
+import ModalFooter from 'components/ModalFooter';
+import ModalHeader from 'components/ModalHeader';
+import ModalSection from 'components/ModalSection';
+import Text from 'components/Text';
 
-function RestrictedCountry() {
+const restrictedCountries =
+  process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+
+export default function RestrictedCountry() {
+  const [show, setShow] = useState(true);
+
+  useEffect(() => {
+    (async function fetchUserCountry() {
+      if (restrictedCountries?.length) {
+        const userCountry = await getUserCountry();
+
+        setShow(restrictedCountries.includes(userCountry.countryCode));
+      }
+    })();
+  }, []);
+
   return (
-    <div className="pm-restricted-country">
-      <ModalNotification visible>
-        <div className="pm-restricted-country__card">
+    <Modal show={show} centered size="sm">
+      <ModalContent>
+        <ModalHeader style={{ textAlign: 'center' }}>
           <PolkamarketsIcon />
           <Text
             as="h5"
@@ -19,6 +42,8 @@ function RestrictedCountry() {
           >
             Polkamarkets is not available in your country
           </Text>
+        </ModalHeader>
+        <ModalSection>
           <Text
             as="p"
             scale="body"
@@ -52,22 +77,19 @@ function RestrictedCountry() {
               />
             </>
           </Text>
-          <Button
-            color="primary"
-            size="sm"
-            onClick={() =>
-              window.open(
-                'https://help.polkamarkets.com/en/articles/5623718-ownership-architecture',
-                '_blank'
-              )
-            }
+        </ModalSection>
+        <ModalFooter>
+          <a
+            style={{ margin: '0 auto' }}
+            className="pm-c-button-normal--primary pm-c-button--sm"
+            href="https://help.polkamarkets.com/en/articles/5623718-ownership-architecture"
+            target="_blank"
+            rel="noreferrer"
           >
             Learn More
-          </Button>
-        </div>
-      </ModalNotification>
-    </div>
+          </a>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 }
-
-export default RestrictedCountry;
