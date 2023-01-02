@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ListRange } from 'react-virtuoso';
 import { Virtuoso } from 'react-virtuoso';
 
+import cn from 'classnames';
 import type { Market } from 'models/market';
 
 import Footer from 'components/Footer';
@@ -18,7 +19,7 @@ export default function MarketList({ markets, rect }: MarketListProps) {
   const prevTop = useRef(0);
   const handleRangeChange = useCallback(
     (range: ListRange) => {
-      if (markets.length - 1 === range.endIndex) setNeedOverflow(false);
+      if (markets.length - 1 === range.endIndex - 1) setNeedOverflow(false);
       else if (!needOverflow) setNeedOverflow(true);
     },
     [needOverflow, markets.length]
@@ -33,6 +34,17 @@ export default function MarketList({ markets, rect }: MarketListProps) {
       prevTop.current = scrollTop;
     },
     [overflow]
+  );
+  const handleItemContent = useCallback(
+    (index: number, data: Market) => (
+      <PredictionCard
+        market={data}
+        className={cn({
+          'mb-grid': index !== markets.length - 1
+        })}
+      />
+    ),
+    [markets.length]
   );
 
   useEffect(() => {
@@ -49,35 +61,22 @@ export default function MarketList({ markets, rect }: MarketListProps) {
   useEffect(() => {
     if (!overflow) return () => null;
 
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('o-hidden');
 
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => document.body.classList.remove('o-hidden');
   }, [overflow]);
 
   return (
     <Virtuoso
-      onScroll={handleVirtuosoScroll}
       data={markets}
+      onScroll={handleVirtuosoScroll}
       rangeChanged={handleRangeChange}
-      itemContent={(index, market) => (
-        <PredictionCard
-          market={market}
-          {...(index !== markets.length - 1 && {
-            style: {
-              marginBottom: 'var(--grid-margin)'
-            }
-          })}
-        />
-      )}
+      itemContent={handleItemContent}
       components={{
         Footer
       }}
-      {...(!overflow && {
-        style: {
-          overflowY: 'hidden'
-        }
+      className={cn({
+        'o-hidden!': !overflow
       })}
     />
   );

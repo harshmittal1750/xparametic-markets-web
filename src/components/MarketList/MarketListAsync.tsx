@@ -41,7 +41,6 @@ export default function MarketListAsync() {
       value => value !== null && value.message !== 'canceled'
     )
   );
-
   const handleMarkets = useCallback(async () => {
     dispatch(getMarkets('open'));
     dispatch(getMarkets('closed'));
@@ -49,7 +48,6 @@ export default function MarketListAsync() {
     dispatch(getFavoriteMarkets(favoriteMarkets.favoriteMarkets));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
-
   // prettier-ignore
   // eslint-disable-next-line no-nested-ternary
   const state = isLoading ? 'loading' : error ? 'error' : !markets.length ? 'warning' : 'success'
