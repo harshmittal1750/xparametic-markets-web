@@ -10,6 +10,8 @@ import { useRect } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
+import Footer from 'components/Footer';
+
 import { useAppSelector, useFavoriteMarkets, useFilters } from 'hooks';
 
 import { Button } from '../Button';
@@ -57,7 +59,13 @@ export default function MarketListAsync() {
   }, [handleMarkets]);
 
   return (
-    <div ref={ref} className="pm-c-market-list">
+    <div
+      ref={ref}
+      className="pm-c-market-list"
+      {...(state !== 'success' && {
+        style: { display: 'flex', flexFlow: 'column nowrap' }
+      })}
+    >
       {
         {
           loading: (
@@ -105,6 +113,7 @@ export default function MarketListAsync() {
           success: <MarketList markets={markets} rect={rect} />
         }[state]
       }
+      {state !== 'success' && <Footer style={{ marginTop: 'auto' }} />}
     </div>
   );
 }

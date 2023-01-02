@@ -1,9 +1,11 @@
 import Link from 'components/Link';
 import Text from 'components/Text';
 
-export default function Footer() {
+export default function Footer(
+  props: React.ComponentPropsWithoutRef<'footer'>
+) {
   return (
-    <footer className="pm-l-footer">
+    <footer className="pm-l-footer" {...props}>
       <div className="pm-l-footer__terms">
         <Text
           as="p"

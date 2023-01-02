@@ -19,7 +19,7 @@ export default function MarketList({ markets, rect }: MarketListProps) {
   const prevTop = useRef(0);
   const handleRangeChange = useCallback(
     (range: ListRange) => {
-      if (markets.length - 1 === range.endIndex - 1) setNeedOverflow(false);
+      if (markets.length - 2 === range.endIndex - 1) setNeedOverflow(false);
       else if (!needOverflow) setNeedOverflow(true);
     },
     [needOverflow, markets.length]
