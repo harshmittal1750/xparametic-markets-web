@@ -1,18 +1,31 @@
 import { useCallback } from 'react';
 
 import { setSearchQuery, setSorter } from 'redux/ducks/markets';
-import { useMedia } from 'ui';
 
-import { CreateMarket, Feature, Filter, SearchBar } from 'components';
+import {
+  Button,
+  CreateMarket,
+  Feature,
+  Filter,
+  Icon,
+  SearchBar
+} from 'components';
 
-import { useAppDispatch } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 
-import HomeNavFilter from './HomeNavFilter';
 import { filters } from './utils';
 
-export default function HomeNav() {
-  const isDesktop = useMedia('(min-width: 1024px)');
+export default function HomeNav({
+  onFilterClick,
+  isDesktop
+}: {
+  onFilterClick(): void;
+  isDesktop: boolean;
+}) {
   const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(state =>
+    Object.values(state.markets.isLoading).some(Boolean)
+  );
   const handleSearch = useCallback(
     (text: string) => {
       dispatch(setSearchQuery(text));
@@ -20,18 +33,28 @@ export default function HomeNav() {
     [dispatch]
   );
 
-  function handleSelectedFilter(filter: {
-    value: string | number;
-    optionalTrigger?: string;
-  }) {
-    dispatch(
-      setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
-    );
-  }
+  const handleSelectedFilter = useCallback(
+    (filter: { value: string | number; optionalTrigger?: string }) => {
+      dispatch(
+        setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
+      );
+    },
+    [dispatch]
+  );
 
   return (
     <div className="pm-p-home__navigation">
-      <HomeNavFilter isDesktop={isDesktop} />
+      <Button
+        variant="outline"
+        size="sm"
+        className="pm-p-home__navigation__actions"
+        onClick={onFilterClick}
+        disabled={isLoading}
+        {...(!isDesktop && { 'aria-label': 'Filter' })}
+      >
+        <Icon name="Filter" />
+        {isDesktop && 'Filter'}
+      </Button>
       <SearchBar
         name="Search Markets"
         placeholder="Search markets"

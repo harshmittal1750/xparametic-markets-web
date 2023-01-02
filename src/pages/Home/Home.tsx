@@ -1,4 +1,4 @@
-import { useCallback, Fragment, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
@@ -7,91 +7,60 @@ import {
   Hero,
   Container,
   useMedia,
-  Adornment,
-  Divider,
-  List,
   ListItem,
   ListItemText,
-  Toggle
+  Adornment
 } from 'ui';
 
 import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
 import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
 
-import { MarketListAsync, Text } from 'components';
-import Icon from 'components/Icon';
-import ToggleSwitch from 'components/ToggleSwitch';
-
-import type { Dropdown } from 'contexts/filters/filters.type';
-
-import { useFilters } from 'hooks';
+import { Icon, MarketListAsync, Text } from 'components';
+import Modal from 'components/Modal';
+import type { ModalProps } from 'components/Modal';
 
 import HomeClasses from './Home.module.scss';
+import HomeFilter from './HomeFilter';
 import HomeNav from './HomeNav';
 
-type ListItemNestedProps = {
-  onToggleChange: (
-    path?: string
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
-  subitems: Dropdown;
-};
-
-function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
-  const [expand, setExpand] = useState(false);
-  const handleExpand = useCallback(() => {
-    setExpand(prevExpand => !prevExpand);
-  }, []);
-
+function HomeFilterModal(
+  props: Pick<ModalProps, 'show' | 'onHide' | 'children'>
+) {
   return (
-    <>
-      <ListItem onClick={handleExpand}>
-        <ListItemText>{subitems.title}</ListItemText>
-        <Adornment edge="end">
-          <Icon name="Chevron" size="lg" dir={expand ? 'up' : 'down'} />
-        </Adornment>
-      </ListItem>
-      <AnimatePresence>
-        {expand && (
-          <motion.div
-            style={{ overflow: 'hidden' }}
-            initial={{ height: 0 }}
-            animate={{ height: 'auto' }}
-            exit={{ height: 0 }}
-          >
-            <List className="pm-p-home__filter-list-sublist">
-              {subitems.options.map(option => (
-                <ListItem key={option.path}>
-                  <ListItemText>{option.label}</ListItemText>
-                  <Adornment edge="end">
-                    <Toggle
-                      type="checkbox"
-                      checked={option.selected}
-                      value={option.value}
-                      name={option.label}
-                      onChange={onToggleChange(option.path)}
-                    />
-                  </Adornment>
-                </ListItem>
-              ))}
-            </List>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+    <Modal
+      fullScreen
+      disableGutters
+      initial={{ x: -304 }}
+      animate={{ x: 0 }}
+      exit={{ x: -304 }}
+      {...props}
+    />
+  );
+}
+function ModalFilterAnimation({
+  show,
+  ...props
+}: Pick<ModalProps, 'show' | 'children'>) {
+  return (
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          initial={{ x: -304 }}
+          animate={{ x: 0 }}
+          exit={{ x: -304 }}
+          {...props}
+        />
+      )}
+    </AnimatePresence>
   );
 }
 export default function Home() {
   const isDesktop = useMedia('(min-width: 1024px)');
-  const filters = useFilters();
-  const handleToggleChange = useCallback(
-    (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      filters.controls.toggleDropdownOption({
-        path,
-        selected: event.target.checked
-      });
-    },
-    [filters.controls]
-  );
+  const [show, setShow] = useState(false);
+  const handleShow = useCallback(() => setShow(true), []);
+  const handleHide = useCallback(() => setShow(false), []);
+  const handleToggle = useCallback(() => setShow(prevShow => !prevShow), []);
+  const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
 
   return (
     <>
@@ -136,7 +105,10 @@ export default function Home() {
             />
           </Hero>
         )}
-        <HomeNav />
+        <HomeNav
+          isDesktop={isDesktop}
+          onFilterClick={isDesktop ? handleToggle : handleShow}
+        />
       </Container>
       <div
         style={{
@@ -144,27 +116,18 @@ export default function Home() {
           height: window.innerHeight
         }}
       >
-        <List className="pm-p-home__filter-list">
-          <ListItem>
-            <ListItemText>Favorites</ListItemText>
-            <Adornment edge="end">
-              <ToggleSwitch
-                name="favorites"
-                checked={filters.state.favorites.checked}
-                onChange={filters.controls.toggleFavorites}
-              />
-            </Adornment>
-          </ListItem>
-          {Object.keys(filters.state.dropdowns).map(dropdrown => (
-            <Fragment key={dropdrown}>
-              <Divider />
-              <ListItemNested
-                subitems={filters.state.dropdowns[dropdrown]}
-                onToggleChange={handleToggleChange}
-              />
-            </Fragment>
-          ))}
-        </List>
+        <ModalFilterRoot show={show} onHide={handleHide}>
+          <HomeFilter>
+            {!isDesktop && (
+              <ListItem>
+                <ListItemText>Filter</ListItemText>
+                <Adornment edge="end">
+                  <Icon name="Cross" onClick={handleHide} />
+                </Adornment>
+              </ListItem>
+            )}
+          </HomeFilter>
+        </ModalFilterRoot>
         <MarketListAsync />
       </div>
     </>
