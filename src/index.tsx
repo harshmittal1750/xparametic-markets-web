@@ -1,12 +1,7 @@
 import { StrictMode } from 'react';
 import { render } from 'react-dom';
-import { Provider } from 'react-redux';
-import { BrowserRouter as Router } from 'react-router-dom';
 
-import store from 'redux/store';
 import type { ReportHandler } from 'web-vitals';
-
-import ThemeProvider from 'contexts/theme';
 
 import App from './App';
 
@@ -14,13 +9,7 @@ import 'styles/main.scss';
 
 render(
   <StrictMode>
-    <ThemeProvider>
-      <Provider store={store}>
-        <Router>
-          <App />
-        </Router>
-      </Provider>
-    </ThemeProvider>
+    <App />
   </StrictMode>,
   document.getElementById('root')
 );

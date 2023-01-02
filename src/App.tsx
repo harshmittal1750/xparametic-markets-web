@@ -1,45 +1,74 @@
-import { useEffect } from 'react';
+import { Suspense, lazy } from 'react';
+import { Provider } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { login } from 'redux/ducks/polkamarkets';
-import Routes from 'routes';
+import store from 'redux/store';
 
-import { SEO } from 'components';
+import { Layout } from 'components';
 
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
 import { FiltersProvider } from 'contexts/filters';
 import { NetworksProvider } from 'contexts/networks';
+import ThemeProvider from 'contexts/theme';
 import { VoteProvider } from 'contexts/vote';
 
-import { useAppDispatch, useNetwork } from 'hooks';
-
-const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.jpg`;
+const Leaderboard = lazy(() => import('pages/Leaderboard'));
+const routes = [
+  ['/', lazy(() => import('pages/Home'))],
+  ['/leaderboard', Leaderboard],
+  ['/clubs', lazy(() => import('pages/Clubs'))],
+  ['/markets', lazy(() => import('pages/Market'))],
+  ['/portfolio', lazy(() => import('pages/Portfolio'))],
+  ['/market/create', lazy(() => import('pages/CreateMarket'))],
+  ['/achievements', lazy(() => import('pages/Achievements'))],
+  ['/clubs/:slug', Leaderboard],
+  ['/user/:address', lazy(() => import('pages/Profile'))]
+] as const;
 
 export default function App() {
-  const dispatch = useAppDispatch();
-  const { networkConfig } = useNetwork();
-
-  useEffect(() => {
-    dispatch(login(networkConfig));
-  }, [dispatch, networkConfig]);
-
   return (
-    <MuiPickersUtilsProvider utils={DayjsUtils}>
-      <NetworksProvider>
-        <FiltersProvider>
-          <VoteProvider>
-            <FavoriteMarketsProvider>
-              <SEO
-                title="Illuminate Fantasy League, Powered By Polkamarkets"
-                description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
-                imageUrl={IFL_DEFAULT_BANNER}
-              />
-              <Routes />
-            </FavoriteMarketsProvider>
-          </VoteProvider>
-        </FiltersProvider>
-      </NetworksProvider>
-    </MuiPickersUtilsProvider>
+    <ThemeProvider>
+      <Provider store={store}>
+        <Router>
+          <MuiPickersUtilsProvider utils={DayjsUtils}>
+            <NetworksProvider>
+              <FiltersProvider>
+                <FavoriteMarketsProvider>
+                  <VoteProvider>
+                    <Layout>
+                      <Suspense
+                        fallback={<span className="spinner--primary" />}
+                      >
+                        <Switch>
+                          {routes.map(([path, Component], index) => (
+                            <Route
+                              key={path}
+                              exact={index <= 2}
+                              path={path}
+                              component={Component}
+                            />
+                          ))}
+                          <Redirect
+                            from="/leaderboard/:slug"
+                            to="/clubs/:slug"
+                          />
+                        </Switch>
+                      </Suspense>
+                    </Layout>
+                  </VoteProvider>
+                </FavoriteMarketsProvider>
+              </FiltersProvider>
+            </NetworksProvider>
+          </MuiPickersUtilsProvider>
+        </Router>
+      </Provider>
+    </ThemeProvider>
   );
 }
