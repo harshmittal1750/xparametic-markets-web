@@ -15,16 +15,14 @@ export default function RightSidebar() {
   if (!form) return null;
 
   return (
-    <aside className="pm-l-layout__aside">
-      <div className="pm-l-right-sidebar">
+    <div className="pm-l-right-sidebar">
+      {
         {
-          {
-            liquidityForm: <LiquidityForm />,
-            reportForm: <TradeFormClosed />,
-            tradeForm: <TradeForm />
-          }[form]
-        }
-      </div>
-    </aside>
+          liquidityForm: <LiquidityForm />,
+          reportForm: <TradeFormClosed />,
+          tradeForm: <TradeForm />
+        }[form]
+      }
+    </div>
   );
 }

@@ -1,4 +1,6 @@
 .pm-l-footer {
+  margin-top: 24px;
+
   @include themes($footer-themes) {
     @include flex-row(center, center, 1rem);
 
