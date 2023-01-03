@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { routes } from 'config';
@@ -8,7 +8,6 @@ import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import RestrictedCountry from 'components/RestrictedCountry';
-import RightSidebar from 'components/RightSidebar';
 import SEO from 'components/SEO';
 import WrongNetwork from 'components/WrongNetwork';
 
@@ -24,11 +23,8 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     document.documentElement.classList.add('theme--dark');
   } else document.documentElement.classList.remove('theme--dark');
 
-  useEffect(() => {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth'
-    });
+  useLayoutEffect(() => {
+    window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
   }, [location.pathname]);
   useEffect(() => {
     dispatch(login(networkConfig));
@@ -47,7 +43,6 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       <Header />
       {children}
       {location.pathname !== routes.home.pathname && <Footer />}
-      <RightSidebar />
       <div id="toast-notification-portal" />
     </>
   );

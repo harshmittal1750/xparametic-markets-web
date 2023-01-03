@@ -10,7 +10,15 @@ import { Container } from 'ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import { Tabs, Table, Text, Button, SEO, VoteArrows } from 'components';
+import {
+  Tabs,
+  Table,
+  Text,
+  Button,
+  SEO,
+  VoteArrows,
+  RightSidebar
+} from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -117,101 +125,104 @@ const Market = () => {
   }
 
   return (
-    <Container className="pm-p-market">
-      <SEO
-        title={market.title}
-        description={formatSEODescription(
-          market.category,
-          market.subcategory,
-          market.expiresAt
-        )}
-        imageUrl={market.bannerUrl}
-      />
-      <div className="pm-p-market__analytics">
-        <MarketAnalytics
-          liquidity={market.liquidity}
-          volume={market.volume}
-          expiration={dayjs(market.expiresAt)
-            .utc()
-            .format('YYYY-MM-DD HH:mm UTC')}
+    <div className="d-flex">
+      <Container className="pm-p-market">
+        <SEO
+          title={market.title}
+          description={formatSEODescription(
+            market.category,
+            market.subcategory,
+            market.expiresAt
+          )}
+          imageUrl={market.bannerUrl}
         />
-      </div>
-      <div className="pm-p-market__market">
-        <MarketHead
-          isVerified={market.verified}
-          section={market.category}
-          subsection={market.subcategory}
-          imageUrl={market.imageUrl}
-          description={market.title}
-        />
-        <div className="pm-p-market__actions">
-          <VoteArrows
-            key={market.slug}
-            size="md"
-            marketId={market.id}
-            marketNetworkId={market.networkId}
-            marketSlug={market.slug}
-            votes={market.votes}
+        <div className="pm-p-market__analytics">
+          <MarketAnalytics
+            liquidity={market.liquidity}
+            volume={market.volume}
+            expiration={dayjs(market.expiresAt)
+              .utc()
+              .format('YYYY-MM-DD HH:mm UTC')}
           />
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => backToMarkets()}
-            aria-label="Back to Markets"
-          >
-            <ArrowLeftIcon />
-            Back to Markets
-          </Button>
         </div>
-      </div>
-      <div className="pm-p-market__view">
-        {market.tradingViewSymbol ? <MarketChartViewSelector /> : null}
-      </div>
-      <div className="pm-p-market__charts">
-        <MarketChart />
-      </div>
-      <div className="pm-p-market__stats">
-        <MarketStats market={market} />
-      </div>
-      {market.resolutionSource ? (
-        <div className="pm-p-market__source">
-          <Text
-            as="p"
-            scale="tiny"
-            fontWeight="semibold"
-            style={{ margin: '0.8rem 0rem' }}
-            color="lighter-gray"
-          >
-            {`Resolution source: `}
-            <a
-              href={market.resolutionSource}
-              target="_blank"
-              className="tiny semibold text-primary"
-              rel="noreferrer"
-            >
-              {market.resolutionSource}
-            </a>
-          </Text>
-        </div>
-      ) : null}
-      <div className="pm-p-market__tabs">
-        <Tabs value={activeTab} onChange={tab => setActiveTab(tab)}>
-          <Tabs.TabPane tab="Positions" id="positions">
-            <Table
-              columns={tableItems.columns}
-              rows={tableItems.rows}
-              isLoadingData={isLoading}
-              emptyDataDescription={resolvedEmptyDataDescription}
+        <div className="pm-p-market__market">
+          <MarketHead
+            isVerified={market.verified}
+            section={market.category}
+            subsection={market.subcategory}
+            imageUrl={market.imageUrl}
+            description={market.title}
+          />
+          <div className="pm-p-market__actions">
+            <VoteArrows
+              key={market.slug}
+              size="md"
+              marketId={market.id}
+              marketNetworkId={market.networkId}
+              marketSlug={market.slug}
+              votes={market.votes}
             />
-          </Tabs.TabPane>
-          {market.news && market.news.length > 0 ? (
-            <Tabs.TabPane tab="News (Beta)" id="news">
-              <MarketNews news={market.news} />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => backToMarkets()}
+              aria-label="Back to Markets"
+            >
+              <ArrowLeftIcon />
+              Back to Markets
+            </Button>
+          </div>
+        </div>
+        <div className="pm-p-market__view">
+          {market.tradingViewSymbol ? <MarketChartViewSelector /> : null}
+        </div>
+        <div className="pm-p-market__charts">
+          <MarketChart />
+        </div>
+        <div className="pm-p-market__stats">
+          <MarketStats market={market} />
+        </div>
+        {market.resolutionSource ? (
+          <div className="pm-p-market__source">
+            <Text
+              as="p"
+              scale="tiny"
+              fontWeight="semibold"
+              style={{ margin: '0.8rem 0rem' }}
+              color="lighter-gray"
+            >
+              {`Resolution source: `}
+              <a
+                href={market.resolutionSource}
+                target="_blank"
+                className="tiny semibold text-primary"
+                rel="noreferrer"
+              >
+                {market.resolutionSource}
+              </a>
+            </Text>
+          </div>
+        ) : null}
+        <div className="pm-p-market__tabs">
+          <Tabs value={activeTab} onChange={tab => setActiveTab(tab)}>
+            <Tabs.TabPane tab="Positions" id="positions">
+              <Table
+                columns={tableItems.columns}
+                rows={tableItems.rows}
+                isLoadingData={isLoading}
+                emptyDataDescription={resolvedEmptyDataDescription}
+              />
             </Tabs.TabPane>
-          ) : null}
-        </Tabs>
-      </div>
-    </Container>
+            {market.news && market.news.length > 0 ? (
+              <Tabs.TabPane tab="News (Beta)" id="news">
+                <MarketNews news={market.news} />
+              </Tabs.TabPane>
+            ) : null}
+          </Tabs>
+        </div>
+      </Container>
+      <RightSidebar />
+    </div>
   );
 };
 

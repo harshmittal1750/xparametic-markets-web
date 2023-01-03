@@ -4,51 +4,27 @@ import LiquidityForm from '../LiquidityForm';
 import TradeForm from '../TradeForm';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
-function RightSidebarWrapper({ children }: React.PropsWithChildren<{}>) {
+export default function RightSidebar() {
+  const form = useAppSelector(
+    state =>
+      Object.keys(state.ui)
+        .filter(key => state.ui[key].visible)
+        .filter(key => key !== 'rightSidebar')[0]
+  );
+
+  if (!form) return null;
+
   return (
     <aside className="pm-l-layout__aside">
-      <div className="pm-l-right-sidebar">{children}</div>
+      <div className="pm-l-right-sidebar">
+        {
+          {
+            liquidityForm: <LiquidityForm />,
+            reportForm: <TradeFormClosed />,
+            tradeForm: <TradeForm />
+          }[form]
+        }
+      </div>
     </aside>
   );
 }
-function RightSidebar() {
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
-  const tradeFormIsVisible = useAppSelector(
-    state => state.ui.tradeForm.visible
-  );
-  const liquidityFormIsVisible = useAppSelector(
-    state => state.ui.liquidityForm.visible
-  );
-  const reportFormIsVisible = useAppSelector(
-    state => state.ui.reportForm.visible
-  );
-
-  if (!rightSidebarIsVisible) return null;
-
-  if (tradeFormIsVisible)
-    return (
-      <RightSidebarWrapper>
-        <TradeForm />
-      </RightSidebarWrapper>
-    );
-
-  if (liquidityFormIsVisible)
-    return (
-      <RightSidebarWrapper>
-        <LiquidityForm />
-      </RightSidebarWrapper>
-    );
-
-  if (reportFormIsVisible)
-    return (
-      <RightSidebarWrapper>
-        <TradeFormClosed />
-      </RightSidebarWrapper>
-    );
-
-  return null;
-}
-
-export default RightSidebar;
