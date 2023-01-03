@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 
-import cn from 'classnames';
 import { Hero } from 'ui';
 
 import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
@@ -8,14 +7,9 @@ import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.sv
 
 import { Text } from 'components';
 
-import HomeClasses from './Home.module.scss';
-
 export default function HomeHero() {
   return (
-    <Hero
-      className={cn('pm-p-home__hero', HomeClasses.hero)}
-      image={heroBanner}
-    >
+    <Hero className="pm-p-home__hero" image={heroBanner}>
       <div className="pm-p-home__hero__content">
         <div className="pm-p-home__hero__breadcrumb">
           <Text

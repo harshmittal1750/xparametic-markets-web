@@ -59,35 +59,38 @@ export default function Home() {
     <>
       <Container className={HomeClasses.header}>
         {isDesktop && <HomeHero />}
-        <HomeNav
-          isDesktop={isDesktop}
-          onFilterClick={isDesktop ? handleToggle : handleShow}
-        />
       </Container>
       <div
-        className="d-flex"
         style={{
           height: window.innerHeight
         }}
       >
-        <ModalFilterRoot
-          show={show}
-          {...(!isDesktop && {
-            onHide: handleHide
-          })}
-        >
-          <HomeFilter>
-            {!isDesktop && (
-              <ListItem>
-                <ListItemText>Filter</ListItemText>
-                <Adornment edge="end">
-                  <Icon name="Cross" onClick={handleHide} />
-                </Adornment>
-              </ListItem>
-            )}
-          </HomeFilter>
-        </ModalFilterRoot>
-        <MarketListAsync />
+        <Container $enableGutters className={HomeClasses.nav}>
+          <HomeNav
+            isDesktop={isDesktop}
+            onFilterClick={isDesktop ? handleToggle : handleShow}
+          />
+        </Container>
+        <div className="d-flex h-100%">
+          <ModalFilterRoot
+            show={show}
+            {...(!isDesktop && {
+              onHide: handleHide
+            })}
+          >
+            <HomeFilter>
+              {!isDesktop && (
+                <ListItem>
+                  <ListItemText>Filter</ListItemText>
+                  <Adornment edge="end">
+                    <Icon name="Cross" onClick={handleHide} />
+                  </Adornment>
+                </ListItem>
+              )}
+            </HomeFilter>
+          </ModalFilterRoot>
+          <MarketListAsync />
+        </div>
       </div>
     </>
   );

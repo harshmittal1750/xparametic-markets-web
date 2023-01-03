@@ -8,13 +8,12 @@
     & > [data-viewport-type='element'] {
       width: calc(100% - var(--grid-margin) * 2) !important;
       height: calc(100% - var(--grid-margin) * 2) !important;
-      top: var(--grid-margin) !important;
+      top: calc(44px + var(--grid-margin) * 3) !important;
       display: flex;
       flex-flow: column nowrap;
 
       & > div:not([data-test-id='virtuoso-item-list']) {
         margin-top: auto;
-        padding-top: var(--grid-margin);
       }
     }
   }
