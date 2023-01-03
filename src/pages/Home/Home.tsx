@@ -42,16 +42,20 @@ function ModalFilterAnimation({
   ...props
 }: Pick<ModalProps, 'show' | 'children'>) {
   return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          initial={{ x: -304 }}
-          animate={{ x: 0 }}
-          exit={{ x: -304 }}
-          {...props}
-        />
-      )}
-    </AnimatePresence>
+    <motion.div
+      variants={{
+        show: {
+          width: 'auto',
+          x: 0
+        },
+        hide: {
+          width: 0,
+          x: -264
+        }
+      }}
+      animate={show ? 'show' : 'hide'}
+      {...props}
+    />
   );
 }
 export default function Home() {
