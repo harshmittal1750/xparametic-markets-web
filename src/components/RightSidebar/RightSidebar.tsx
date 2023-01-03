@@ -5,14 +5,14 @@ import TradeForm from '../TradeForm';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
 export default function RightSidebar() {
-  const form = useAppSelector(
-    state =>
-      Object.keys(state.ui)
-        .filter(key => state.ui[key].visible)
-        .filter(key => key !== 'rightSidebar')[0]
-  );
+  const visibleForm = useAppSelector(state => {
+    const form = Object.keys(state.ui).filter(key => state.ui[key].visible);
+    const hasSidebar = form.filter(key => key === 'rightSidebar')[0];
 
-  if (!form) return null;
+    return hasSidebar ? form.filter(key => key !== 'rightSidebar')[0] : '';
+  });
+
+  if (!visibleForm) return null;
 
   return (
     <div className="pm-l-right-sidebar">
@@ -21,7 +21,7 @@ export default function RightSidebar() {
           liquidityForm: <LiquidityForm />,
           reportForm: <TradeFormClosed />,
           tradeForm: <TradeForm />
-        }[form]
+        }[visibleForm]
       }
     </div>
   );
