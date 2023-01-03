@@ -1,20 +1,30 @@
-import { forwardRef } from 'react';
+import { createElement } from 'react';
 
 import cn from 'classnames';
 
 import ContainerClasses from './Container.module.scss';
 
-const Container = forwardRef<
-  HTMLDivElement,
-  React.ComponentPropsWithRef<'div'>
->(function Container({ className, ...props }, ref) {
-  return (
-    <div
-      ref={ref}
-      className={cn(ContainerClasses.root, className)}
-      {...props}
-    />
-  );
-});
+export interface ContainerProps<E extends keyof JSX.IntrinsicElements>
+  extends Pick<React.ComponentPropsWithRef<'div'>, 'children' | 'className'> {
+  $enableGutters?: boolean;
+  $as?: E;
+}
 
-export default Container;
+export default function Container<E extends keyof JSX.IntrinsicElements>({
+  className,
+  $enableGutters,
+  $as,
+  ...props
+}: ContainerProps<E>) {
+  return createElement($as || 'div', {
+    className: cn(
+      ContainerClasses.root,
+      {
+        [ContainerClasses.xGutters]: !$enableGutters,
+        [ContainerClasses.gutters]: $enableGutters
+      },
+      className
+    ),
+    ...props
+  });
+}
