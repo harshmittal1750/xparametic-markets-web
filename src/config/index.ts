@@ -1,9 +1,9 @@
-import enviromentConfig from './environment';
-import features from './features';
-
+export { default as environment } from './environment';
 export type {
   EnvironmentConfigVariable,
   EnvironmentConfig
 } from './environment';
 
-export { enviromentConfig as environment, features };
+export { default as features } from './features';
+
+export { default as routes } from './routes';
