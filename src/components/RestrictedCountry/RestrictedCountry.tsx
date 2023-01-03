@@ -16,7 +16,7 @@ const restrictedCountries =
   process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
 
 export default function RestrictedCountry() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     (async function fetchUserCountry() {
