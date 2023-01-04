@@ -11,7 +11,6 @@ export default function List({ className, $rounded, ...props }: ListProps) {
     <ul
       role="listbox"
       className={cn(
-        ListClasses.root,
         {
           [ListClasses.rounded]: $rounded
         },
