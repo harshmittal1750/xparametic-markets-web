@@ -1,7 +1,6 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { routes } from 'config';
 import { login } from 'redux/ducks/polkamarkets';
 
 import BetaWarning from 'components/BetaWarning';
@@ -42,7 +41,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       />
       <Header />
       {children}
-      {location.pathname !== routes.home.pathname && <Footer />}
+      <Footer />
       <div id="toast-notification-portal" />
     </>
   );
