@@ -35,16 +35,12 @@ export default function App() {
                         fallback={<span className="spinner--primary" />}
                       >
                         <Switch>
-                          {Object.keys(routes).map(route => (
+                          {Object.values(routes).map(route => (
                             <Route
-                              key={route}
-                              exact={
-                                route === 'home' ||
-                                route === 'leaderboard' ||
-                                route === 'clubs'
-                              }
-                              path={routes[route].pathname}
-                              component={routes[route].Component}
+                              key={route.name}
+                              exact={route.exact}
+                              path={route.pathname}
+                              component={route.Component}
                             />
                           ))}
                           <Redirect

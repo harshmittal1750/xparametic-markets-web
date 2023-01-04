@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import type ReactRouterDom from 'react-router-dom';
 
+import { routes, socials } from 'config';
 import { useMedia } from 'ui';
 
 import { IlluminateFantasyLeagueLogo } from 'assets/icons';
@@ -14,41 +15,6 @@ import Modal from 'components/Modal';
 import Text from 'components/Text';
 
 import HeaderNavClasses from './HeaderNav.module.scss';
-
-const marketsPathname = 'Markets';
-const pathnames = [
-  marketsPathname,
-  'Portfolio',
-  'Achievements',
-  'Leaderboard',
-  'Clubs'
-];
-const socials = [
-  {
-    name: 'Twitter',
-    href: 'https://twitter.com/polkamarkets'
-  },
-  {
-    name: 'Medium',
-    href: 'https://blog.polkamarkets.com/'
-  },
-  {
-    name: 'Telegram',
-    href: 'https://t.me/polkamarkets_announcements'
-  },
-  {
-    name: 'Youtube',
-    href: 'https://www.youtube.com/channel/UCKAefRG1MgYMnBmgRYhisTQ'
-  },
-  {
-    name: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/polkamarkets'
-  },
-  {
-    name: 'GitHub',
-    href: 'https://github.com/Polkamarkets'
-  }
-] as const;
 
 function HeaderNavModal({
   children
@@ -130,25 +96,21 @@ function HeaderNavMenu({
 }) {
   return (
     <ul className={HeaderNavClasses.list}>
-      {pathnames.map(_pathname => {
-        const pathname = `/${
-          _pathname === marketsPathname ? '' : _pathname.toLowerCase()
-        }`;
-
-        return (
-          <li key={_pathname} className={HeaderNavClasses.item}>
+      {Object.values(routes)
+        .filter(route => route.navigation)
+        .map(route => (
+          <li key={route.name} className={HeaderNavClasses.item}>
             <NavLink
-              to={pathname}
+              to={route.pathname}
               className={HeaderNavClasses.link}
               activeClassName={HeaderNavClasses.active}
-              isActive={(_, location) => location.pathname === pathname}
+              isActive={(_, location) => location.pathname === route.pathname}
               {...NavLinkProps}
             >
-              {_pathname}
+              {route.name}
             </NavLink>
           </li>
-        );
-      })}
+        ))}
     </ul>
   );
 }
