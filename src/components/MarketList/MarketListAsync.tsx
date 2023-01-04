@@ -1,18 +1,13 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 
-import {
-  getFavoriteMarkets,
-  getMarkets,
-  marketsSelector
-} from 'redux/ducks/markets';
-import { useAppDispatch } from 'redux/store';
+import cn from 'classnames';
 import { useRect } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
 import Footer from 'components/Footer';
 
-import { useAppSelector, useFavoriteMarkets, useFilters } from 'hooks';
+import useMarkets from 'hooks/useMarkets';
 
 import { Button } from '../Button';
 import Text from '../Text';
@@ -20,50 +15,18 @@ import MarketList from './MarketList';
 
 export default function MarketListAsync() {
   const [ref, rect] = useRect();
-  const dispatch = useAppDispatch();
-  const filters = useFilters();
-  const favoriteMarkets = useFavoriteMarkets();
-  const markets = useAppSelector(state =>
-    marketsSelector({
-      state: state.markets,
-      filters: {
-        ...filters.selected.dropdowns,
-        favorites: {
-          checked: filters.state.favorites.checked,
-          marketsByNetwork: favoriteMarkets.favoriteMarkets
-        }
-      }
-    })
-  );
-  const isLoading = useAppSelector(state =>
-    Object.values(state.markets.isLoading).some(Boolean)
-  );
-  const error = useAppSelector(state =>
-    Object.values(state.markets.error).some(
-      value => value !== null && value.message !== 'canceled'
-    )
-  );
-  const handleMarkets = useCallback(async () => {
-    dispatch(getMarkets('open'));
-    dispatch(getMarkets('closed'));
-    dispatch(getMarkets('resolved'));
-    dispatch(getFavoriteMarkets(favoriteMarkets.favoriteMarkets));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch]);
-  // prettier-ignore
-  // eslint-disable-next-line no-nested-ternary
-  const state = isLoading ? 'loading' : error ? 'error' : !markets.length ? 'warning' : 'success'
+  const markets = useMarkets();
 
   useEffect(() => {
-    handleMarkets();
-  }, [handleMarkets]);
+    markets.fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
       ref={ref}
-      className="pm-c-market-list"
-      {...(state !== 'success' && {
-        style: { display: 'flex', flexFlow: 'column nowrap' }
+      className={cn('pm-c-market-list', {
+        'd-flex ff-column': markets.state !== 'success'
       })}
     >
       {
@@ -89,7 +52,7 @@ export default function MarketListAsync() {
                 </Text>
               </div>
               <div className="pm-c-market-list__error__actions">
-                <Button color="primary" size="sm" onClick={handleMarkets}>
+                <Button color="primary" size="sm" onClick={markets.fetch}>
                   Try again
                 </Button>
               </div>
@@ -111,9 +74,9 @@ export default function MarketListAsync() {
             </div>
           ),
           success: <MarketList markets={markets} rect={rect} />
-        }[state]
+        }[markets.state]
       }
-      {state !== 'success' && <Footer style={{ marginTop: 'auto' }} />}
+      {markets.state !== 'success' && <Footer className="m-auto" />}
     </div>
   );
 }

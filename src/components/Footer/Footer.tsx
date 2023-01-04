@@ -1,11 +1,14 @@
+import cn from 'classnames';
+
 import Link from 'components/Link';
 import Text from 'components/Text';
 
-export default function Footer(
-  props: React.ComponentPropsWithoutRef<'footer'>
-) {
+export default function Footer({
+  className,
+  ...props
+}: React.ComponentPropsWithoutRef<'footer'>) {
   return (
-    <footer className="pm-l-footer" {...props}>
+    <footer className={cn('pm-l-footer', className)} {...props}>
       <div className="pm-l-footer__terms">
         <Text
           as="p"
