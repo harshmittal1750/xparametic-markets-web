@@ -32,7 +32,6 @@ import LineChart from './LineChart';
 import Link from './Link';
 import LiquidityForm from './LiquidityForm';
 import Market from './Market';
-import MarketListAsync from './MarketList';
 import MarketSelect from './MarketSelect';
 import Menu from './Menu';
 import MiniAreaChart from './MiniAreaChart';
@@ -103,7 +102,6 @@ export {
   Link,
   LineChart,
   Market,
-  MarketListAsync,
   MarketSelect,
   Menu,
   MiniAreaChart,
@@ -158,6 +156,8 @@ export type { IconProps } from './Icon';
 export { default as Feature } from './Feature';
 
 export { default as Header } from './Header';
+
+export { default as MarketList } from './MarketList';
 
 export { default as Modal } from './Modal';
 
