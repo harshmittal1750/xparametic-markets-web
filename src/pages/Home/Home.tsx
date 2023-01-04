@@ -20,12 +20,14 @@ export default function Home() {
   return (
     <>
       {isDesktop && <HomeHero />}
-      <div ref={ref} className={HomeClasses.nav}>
-        <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
-      </div>
-      <div className="d-flex bb-thin">
-        <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
-        <MarketList />
+      <div>
+        <div ref={ref} className={HomeClasses.nav}>
+          <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
+        </div>
+        <div className="d-flex bb-thin">
+          <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
+          <MarketList />
+        </div>
       </div>
     </>
   );

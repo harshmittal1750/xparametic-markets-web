@@ -1,9 +1,13 @@
 .header {
-  background: linear-gradient(180deg, rgba(36, 43, 57, 0) 0%, #10121690 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(36, 43, 57, 0) 0%,
+    rgb(16, 18, 22, 0.9) 100%
+  );
 }
 
 .nav {
-  background-color: #10121690;
+  background-color: rgb(16, 18, 22, 0.9);
   backdrop-filter: blur(8px);
   top: 0px;
   z-index: 1;
