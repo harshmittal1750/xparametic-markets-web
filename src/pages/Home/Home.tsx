@@ -1,7 +1,14 @@
 import { useCallback, useState } from 'react';
 
 import { motion } from 'framer-motion';
-import { Container, useMedia, ListItem, ListItemText, Adornment } from 'ui';
+import {
+  Container,
+  useMedia,
+  ListItem,
+  ListItemText,
+  Adornment,
+  List
+} from 'ui';
 
 import { Icon, MarketListAsync } from 'components';
 import Modal from 'components/Modal';
@@ -60,23 +67,27 @@ export default function Home() {
       <Container className={HomeClasses.header}>
         {isDesktop && <HomeHero />}
       </Container>
-      <div
-        style={{
-          height: window.innerHeight
-        }}
-      >
-        <Container $enableGutters className={HomeClasses.nav}>
-          <HomeNav
-            isDesktop={isDesktop}
-            onFilterClick={isDesktop ? handleToggle : handleShow}
-          />
-        </Container>
-        <div className="d-flex h-100%">
-          <ModalFilterRoot
-            show={show}
-            {...(!isDesktop && {
-              onHide: handleHide
-            })}
+      <Container $enableGutters className={HomeClasses.nav}>
+        <HomeNav
+          isDesktop={isDesktop}
+          onFilterClick={isDesktop ? handleToggle : handleShow}
+        />
+      </Container>
+      <div className="d-flex">
+        <ModalFilterRoot
+          show={show}
+          {...(!isDesktop && {
+            onHide: handleHide
+          })}
+        >
+          <List
+            className="pm-p-home__filter-list h-100%"
+            style={{
+              // TODO: window.height - {HomeNav.height}
+              maxHeight: 875,
+              // TODO: {HomeNav.height}
+              top: 94
+            }}
           >
             <HomeFilter>
               {!isDesktop && (
@@ -88,9 +99,9 @@ export default function Home() {
                 </ListItem>
               )}
             </HomeFilter>
-          </ModalFilterRoot>
-          <MarketListAsync />
-        </div>
+          </List>
+        </ModalFilterRoot>
+        <MarketListAsync />
       </div>
     </>
   );

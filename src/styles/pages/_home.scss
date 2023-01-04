@@ -41,7 +41,7 @@
 
   &__filter {
     &-list {
-      margin-top: calc(44px + var(--grid-margin) * 2);
+      position: sticky;
       width: 264px;
       overflow-y: auto;
       border-right: 1px solid var(--color-border);

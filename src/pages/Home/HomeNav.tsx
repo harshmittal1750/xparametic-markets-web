@@ -32,7 +32,6 @@ export default function HomeNav({
     },
     [dispatch]
   );
-
   const handleSelectedFilter = useCallback(
     (filter: { value: string | number; optionalTrigger?: string }) => {
       dispatch(

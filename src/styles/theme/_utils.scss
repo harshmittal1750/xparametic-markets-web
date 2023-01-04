@@ -18,6 +18,16 @@
   margin-top: auto;
 }
 
+.mb-24 {
+  margin-bottom: var(--size-24);
+}
+
+@media (min-width: 1024px) {
+  .desktop\:mb-24 {
+    margin-bottom: var(--size-24);
+  }
+}
+
 .o-hidden {
   overflow: hidden;
 }

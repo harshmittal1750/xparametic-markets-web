@@ -9,7 +9,11 @@ export default function Header() {
   return (
     <Container
       $as="header"
-      className={cn(NavbarClasses.root, NavbarClasses.container)}
+      className={cn(
+        'desktop:mb-24',
+        NavbarClasses.root,
+        NavbarClasses.container
+      )}
     >
       <HeaderNav />
       <HeaderActions />

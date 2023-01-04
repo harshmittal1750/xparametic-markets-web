@@ -75,7 +75,7 @@ export default function HomeFilter({
   );
 
   return (
-    <List className="pm-p-home__filter-list h-100%">
+    <>
       {children}
       <ListItem>
         <ListItemText>Favorites</ListItemText>
@@ -96,6 +96,6 @@ export default function HomeFilter({
           />
         </Fragment>
       ))}
-    </List>
+    </>
   );
 }

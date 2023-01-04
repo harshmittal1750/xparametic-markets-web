@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
 import cn from 'classnames';
-import { useRect } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -14,7 +13,6 @@ import Text from '../Text';
 import MarketList from './MarketList';
 
 export default function MarketListAsync() {
-  const [ref, rect] = useRect();
   const markets = useMarkets();
 
   useEffect(() => {
@@ -24,7 +22,6 @@ export default function MarketListAsync() {
 
   return (
     <div
-      ref={ref}
       className={cn('pm-c-market-list', {
         'd-flex ff-column': markets.state !== 'success'
       })}
@@ -73,7 +70,7 @@ export default function MarketListAsync() {
               </div>
             </div>
           ),
-          success: <MarketList markets={markets} rect={rect} />
+          success: <MarketList markets={markets} />
         }[markets.state]
       }
       {markets.state !== 'success' && <Footer className="m-auto" />}

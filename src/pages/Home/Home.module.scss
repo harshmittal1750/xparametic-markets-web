@@ -1,11 +1,12 @@
 .header {
-  background: linear-gradient(180deg, rgba(36, 43, 57, 0) 0%, #10121680 100%);
+  background: linear-gradient(180deg, rgba(36, 43, 57, 0) 0%, #10121690 100%);
 }
 
 .nav {
-  position: absolute;
-  background-color: #10121680;
+  background-color: #10121690;
   backdrop-filter: blur(8px);
-  z-index: 1;
   border-bottom: 1px solid var(--color-border);
+  top: 0px;
+  z-index: 1;
+  position: sticky;
 }
