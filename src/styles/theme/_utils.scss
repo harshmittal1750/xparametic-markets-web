@@ -51,3 +51,29 @@
 .ff-column {
   flex-flow: column nowrap;
 }
+
+.bt-thin {
+  border-top: 1px solid var(--color-border);
+}
+
+.bb-thin {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.p-sticky {
+  position: sticky;
+}
+
+.bg-primary {
+  background-color: var(--color-background-primary);
+}
+
+@media (min-width: 1024px) {
+  .desktop\:bg-unset {
+    background-color: unset;
+  }
+}
+
+.g-12 {
+  gap: var(--size-12);
+}

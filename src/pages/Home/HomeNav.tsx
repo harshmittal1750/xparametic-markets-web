@@ -1,6 +1,8 @@
 import { useCallback } from 'react';
 
+import cn from 'classnames';
 import { setSearchQuery, setSorter } from 'redux/ducks/markets';
+import { Container, useMedia } from 'ui';
 
 import {
   Button,
@@ -11,21 +13,15 @@ import {
   SearchBar
 } from 'components';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch } from 'hooks';
+import useMarkets from 'hooks/useMarkets';
 
 import { filters } from './utils';
 
-export default function HomeNav({
-  onFilterClick,
-  isDesktop
-}: {
-  onFilterClick(): void;
-  isDesktop: boolean;
-}) {
+export default function HomeNav({ onFilterClick }: { onFilterClick(): void }) {
+  const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
-  const isLoading = useAppSelector(state =>
-    Object.values(state.markets.isLoading).some(Boolean)
-  );
+  const markets = useMarkets();
   const handleSearch = useCallback(
     (text: string) => {
       dispatch(setSearchQuery(text));
@@ -42,13 +38,16 @@ export default function HomeNav({
   );
 
   return (
-    <div className="pm-p-home__navigation">
+    <Container
+      $enableGutters
+      className={cn('bb-thin d-flex g-12 pm-p-home__navigation')}
+    >
       <Button
         variant="outline"
         size="sm"
         className="pm-p-home__navigation__actions"
         onClick={onFilterClick}
-        disabled={isLoading}
+        disabled={markets.state === 'loading'}
         {...(!isDesktop && { 'aria-label': 'Filter' })}
       >
         <Icon name="Filter" />
@@ -72,6 +71,6 @@ export default function HomeNav({
           <CreateMarket />
         </Feature>
       )}
-    </div>
+    </Container>
   );
 }

@@ -30,10 +30,7 @@
   }
 
   &__navigation {
-    display: flex;
-
     &__actions:not(:last-child) {
-      margin-right: 12px;
       display: inherit;
       height: auto;
     }
@@ -41,7 +38,6 @@
 
   &__filter {
     &-list {
-      position: sticky;
       width: 264px;
       overflow-y: auto;
       border-right: 1px solid var(--color-border);

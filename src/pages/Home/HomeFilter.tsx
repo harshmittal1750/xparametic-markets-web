@@ -1,9 +1,18 @@
 import { Fragment, useCallback, useState } from 'react';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { Adornment, Divider, List, ListItem, ListItemText, Toggle } from 'ui';
+import {
+  Adornment,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Toggle,
+  useMedia
+} from 'ui';
 
-import { Icon, ToggleSwitch } from 'components';
+import { Icon, Modal, ToggleSwitch } from 'components';
+import type { ModalProps } from 'components/Modal';
 
 import type { Dropdown } from 'contexts/filters/filters.type';
 
@@ -16,6 +25,49 @@ type ListItemNestedProps = {
   subitems: Dropdown;
 };
 
+function HomeFilterModal(
+  props: Pick<ModalProps, 'show' | 'onHide' | 'children'>
+) {
+  return (
+    <Modal
+      fullScreen
+      disableGutters
+      initial={{ x: -304 }}
+      animate={{ x: 0 }}
+      exit={{ x: -304 }}
+      {...props}
+    />
+  );
+}
+function ModalFilterAnimation({
+  show,
+  rect,
+  ...props
+}: Pick<ModalProps, 'show' | 'children'> & {
+  rect: DOMRect;
+}) {
+  return (
+    <motion.div
+      className="p-sticky"
+      animate={show ? 'show' : 'hide'}
+      variants={{
+        show: {
+          width: 'auto',
+          x: 0
+        },
+        hide: {
+          width: 0,
+          x: -264
+        }
+      }}
+      style={{
+        maxHeight: window.innerHeight - rect.height,
+        top: rect.height
+      }}
+      {...props}
+    />
+  );
+}
 function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
   const [expand, setExpand] = useState(false);
   const handleExpand = useCallback(() => {
@@ -61,8 +113,15 @@ function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
   );
 }
 export default function HomeFilter({
-  children
-}: React.PropsWithChildren<Record<string, unknown>>) {
+  onFilterHide,
+  rect,
+  show
+}: {
+  onFilterHide(): void;
+  rect: DOMRect;
+  show: boolean;
+}) {
+  const isDesktop = useMedia('(min-width: 1024px)');
   const filters = useFilters();
   const handleToggleChange = useCallback(
     (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,29 +132,43 @@ export default function HomeFilter({
     },
     [filters.controls]
   );
+  const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
 
   return (
-    <>
-      {children}
-      <ListItem>
-        <ListItemText>Favorites</ListItemText>
-        <Adornment edge="end">
-          <ToggleSwitch
-            name="favorites"
-            checked={filters.state.favorites.checked}
-            onChange={filters.controls.toggleFavorites}
-          />
-        </Adornment>
-      </ListItem>
-      {Object.keys(filters.state.dropdowns).map(dropdrown => (
-        <Fragment key={dropdrown}>
-          <Divider />
-          <ListItemNested
-            subitems={filters.state.dropdowns[dropdrown]}
-            onToggleChange={handleToggleChange}
-          />
-        </Fragment>
-      ))}
-    </>
+    /** @ts-expect-error */
+    <ModalFilterRoot
+      show={show}
+      {...(isDesktop ? { rect } : { onHide: onFilterHide })}
+    >
+      <List className="pm-p-home__filter-list h-100% bg-primary desktop:bg-unset">
+        {!isDesktop && (
+          <ListItem>
+            <ListItemText>Filter</ListItemText>
+            <Adornment edge="end">
+              <Icon name="Cross" onClick={onFilterHide} />
+            </Adornment>
+          </ListItem>
+        )}
+        <ListItem>
+          <ListItemText>Favorites</ListItemText>
+          <Adornment edge="end">
+            <ToggleSwitch
+              name="favorites"
+              checked={filters.state.favorites.checked}
+              onChange={filters.controls.toggleFavorites}
+            />
+          </Adornment>
+        </ListItem>
+        {Object.keys(filters.state.dropdowns).map(dropdrown => (
+          <Fragment key={dropdrown}>
+            <Divider />
+            <ListItemNested
+              subitems={filters.state.dropdowns[dropdrown]}
+              onToggleChange={handleToggleChange}
+            />
+          </Fragment>
+        ))}
+      </List>
+    </ModalFilterRoot>
   );
 }

@@ -3,7 +3,10 @@
 
   & > [data-virtuoso-scroller='true'] {
     & > [data-viewport-type='window'] {
-      padding: var(--grid-margin);
+      & > [data-test-id='virtuoso-item-list'] {
+        display: inline-grid;
+        width: inherit;
+      }
     }
   }
 }
@@ -12,7 +15,6 @@
 .pm-p-achievements__empty {
   @include themes($market-list-themes) {
     padding: px-to-rem(50px) px-to-rem(20px);
-    margin: var(--grid-margin);
     border: 0.1rem solid themed('state-info-border-color');
     border-radius: 0.4rem;
 
