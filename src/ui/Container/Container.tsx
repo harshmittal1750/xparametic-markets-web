@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, forwardRef } from 'react';
 
 import cn from 'classnames';
 
@@ -10,13 +10,14 @@ export interface ContainerProps<E extends keyof JSX.IntrinsicElements>
   $as?: E;
 }
 
-export default function Container<E extends keyof JSX.IntrinsicElements>({
-  className,
-  $enableGutters,
-  $as,
-  ...props
-}: ContainerProps<E>) {
+export default forwardRef(function Container<
+  E extends keyof JSX.IntrinsicElements
+>(
+  { className, $enableGutters, $as, ...props }: ContainerProps<E>,
+  ref: React.Ref<Element>
+) {
   return createElement($as || 'div', {
+    ref,
     className: cn(
       ContainerClasses.root,
       {
@@ -27,4 +28,4 @@ export default function Container<E extends keyof JSX.IntrinsicElements>({
     ),
     ...props
   });
-}
+});
