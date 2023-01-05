@@ -22,6 +22,10 @@
   margin-top: auto;
 }
 
+.mt-grid {
+  margin-top: var(--grid-margin);
+}
+
 .mb-24 {
   margin-bottom: var(--size-24);
 }
@@ -84,4 +88,8 @@
 
 .g-12 {
   gap: var(--size-12);
+}
+
+.ta-center {
+  text-align: center;
 }

@@ -1,5 +1,10 @@
-import { useCallback, useEffect } from 'react';
-import { Virtuoso } from 'react-virtuoso';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import type {
+  VirtuosoProps as ReactVirtuosoProps,
+  VirtuosoHandle,
+  ListRange
+} from 'react-virtuoso';
+import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
 import type { Market } from 'models/market';
@@ -13,19 +18,69 @@ import useMarkets from 'hooks/useMarkets';
 import { Button } from '../Button';
 import Text from '../Text';
 
-export default function MarketList() {
-  const markets = useMarkets();
+type VirtuosoProps = Omit<
+  ReactVirtuosoProps<Market, unknown>,
+  'useWindowScroll' | 'itemContent' | 'rangeChanged' | 'ref' | 'components'
+>;
+
+function Virtuoso(props: VirtuosoProps) {
+  const { data } = props;
+  const ref = useRef<VirtuosoHandle>(null);
+  const [renderFooter, setRenderFooter] = useState(false);
   const handleItemContent = useCallback(
-    (index: number, data: Market) => (
+    (index: number, market: Market) => (
       <PredictionCard
-        market={data}
+        market={market}
         className={cn({
-          'mb-grid': index !== markets.data.length - 1
+          'mb-grid': data && index !== data.length - 1
         })}
       />
     ),
-    [markets.data.length]
+    [data]
   );
+  const handleRangeChange = useCallback(
+    (range: ListRange) => {
+      if (data && data.length >= 7 && data.length - 2 === range.endIndex - 1)
+        setRenderFooter(true);
+    },
+    [data]
+  );
+  const Footer = useCallback(
+    () => (
+      <div className="ta-center">
+        <Button
+          variant="outline"
+          className="mt-grid"
+          onClick={() =>
+            ref.current?.scrollToIndex({
+              index: 0,
+              align: 'start',
+              behavior: 'smooth'
+            })
+          }
+        >
+          Scroll to Top
+        </Button>
+      </div>
+    ),
+    []
+  );
+
+  return (
+    <ReactVirtuoso
+      ref={ref}
+      useWindowScroll
+      itemContent={handleItemContent}
+      rangeChanged={handleRangeChange}
+      components={{
+        Footer: renderFooter ? Footer : undefined
+      }}
+      {...props}
+    />
+  );
+}
+export default function MarketList() {
+  const markets = useMarkets();
 
   useEffect(() => {
     markets.fetch();
@@ -78,13 +133,7 @@ export default function MarketList() {
               </div>
             </div>
           ),
-          success: (
-            <Virtuoso
-              useWindowScroll
-              data={markets.data}
-              itemContent={handleItemContent}
-            />
-          )
+          success: <Virtuoso data={markets.data} />
         }[markets.state]
       }
     </div>
