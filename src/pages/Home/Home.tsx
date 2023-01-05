@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
-import { useMedia, useRect } from 'ui';
+import cn from 'classnames';
+import { Container, useMedia, useRect } from 'ui';
 
 import { MarketList } from 'components';
 
@@ -20,14 +21,19 @@ export default function Home() {
   return (
     <>
       {isDesktop && <HomeHero />}
-      <div>
-        <div ref={ref} className={HomeClasses.nav}>
-          <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
-        </div>
-        <div className="d-flex bb-thin">
-          <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
-          <MarketList />
-        </div>
+      <Container
+        ref={ref}
+        $enableGutters
+        className={cn(
+          'bb-thin d-flex g-12 pm-p-home__navigation',
+          HomeClasses.nav
+        )}
+      >
+        <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
+      </Container>
+      <div className="d-flex bb-thin">
+        <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
+        <MarketList />
       </div>
     </>
   );

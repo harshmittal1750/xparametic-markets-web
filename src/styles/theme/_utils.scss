@@ -10,11 +10,15 @@
   padding-right: var(--grid-margin);
 }
 
+.pt-grid {
+  padding-top: var(--grid-margin);
+}
+
 .p-grid {
   padding: var(--grid-margin);
 }
 
-.m-auto {
+.mt-auto {
   margin-top: auto;
 }
 

@@ -6,7 +6,6 @@ import type { Market } from 'models/market';
 
 import { InfoIcon } from 'assets/icons';
 
-import Footer from 'components/Footer';
 import PredictionCard from 'components/PredictionCard';
 
 import useMarkets from 'hooks/useMarkets';
@@ -34,7 +33,7 @@ export default function MarketList() {
   }, []);
 
   return (
-    <div className="pm-c-market-list pl-grid pr-grid pt-grid">
+    <div className="pm-c-market-list p-grid">
       {
         {
           loading: (
@@ -84,9 +83,6 @@ export default function MarketList() {
               useWindowScroll
               data={markets.data}
               itemContent={handleItemContent}
-              components={{
-                Footer
-              }}
             />
           )
         }[markets.state]

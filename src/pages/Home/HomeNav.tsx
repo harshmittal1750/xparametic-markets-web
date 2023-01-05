@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
 
-import cn from 'classnames';
 import { setSearchQuery, setSorter } from 'redux/ducks/markets';
-import { Container, useMedia } from 'ui';
+import { useMedia } from 'ui';
 
 import {
   Button,
@@ -18,7 +17,11 @@ import useMarkets from 'hooks/useMarkets';
 
 import { filters } from './utils';
 
-export default function HomeNav({ onFilterClick }: { onFilterClick(): void }) {
+type HomeNavProps = {
+  onFilterClick(): void;
+};
+
+export default function HomeNav({ onFilterClick }: HomeNavProps) {
   const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
   const markets = useMarkets();
@@ -38,10 +41,7 @@ export default function HomeNav({ onFilterClick }: { onFilterClick(): void }) {
   );
 
   return (
-    <Container
-      $enableGutters
-      className={cn('bb-thin d-flex g-12 pm-p-home__navigation')}
-    >
+    <>
       <Button
         variant="outline"
         size="sm"
@@ -71,6 +71,6 @@ export default function HomeNav({ onFilterClick }: { onFilterClick(): void }) {
           <CreateMarket />
         </Feature>
       )}
-    </Container>
+    </>
   );
 }

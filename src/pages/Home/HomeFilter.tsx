@@ -41,11 +41,8 @@ function HomeFilterModal(
 }
 function ModalFilterAnimation({
   show,
-  rect,
   ...props
-}: Pick<ModalProps, 'show' | 'children'> & {
-  rect: DOMRect;
-}) {
+}: Pick<ModalProps, 'show' | 'children'>) {
   return (
     <motion.div
       className="p-sticky"
@@ -59,10 +56,6 @@ function ModalFilterAnimation({
           width: 0,
           x: -264
         }
-      }}
-      style={{
-        maxHeight: window.innerHeight - rect.height,
-        top: rect.height
       }}
       {...props}
     />
@@ -135,10 +128,16 @@ export default function HomeFilter({
   const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
 
   return (
-    /** @ts-expect-error */
     <ModalFilterRoot
       show={show}
-      {...(isDesktop ? { rect } : { onHide: onFilterHide })}
+      {...(isDesktop
+        ? {
+            style: {
+              height: window.innerHeight - rect.height,
+              top: rect.height
+            }
+          }
+        : { onHide: onFilterHide })}
     >
       <List className="pm-p-home__filter-list h-100% bg-primary desktop:bg-unset">
         {!isDesktop && (
