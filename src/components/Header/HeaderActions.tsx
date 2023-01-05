@@ -19,7 +19,7 @@ import HeaderActionsClasses from './HeaderActions.module.scss';
 
 function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
   const Portal = usePortal({
-    root: document.getElementById('root')
+    root: document.body
   });
 
   useEffect(() => {
@@ -107,7 +107,6 @@ export default function HeaderActions() {
       <Modal
         disableGutters
         onHide={handleHide}
-        disablePortal={!isDesktop}
         disableOverlay={isDesktop}
         fullWidth={!isDesktop}
         show={show}

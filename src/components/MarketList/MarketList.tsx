@@ -9,6 +9,7 @@ import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
+import { useMedia, useRect } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -26,7 +27,12 @@ type VirtuosoProps = Omit<
 
 function Virtuoso(props: VirtuosoProps) {
   const { data } = props;
-  const ref = useRef<VirtuosoHandle>(null);
+  const isDesktop = useMedia('(min-width: 1024px)');
+  const [back, backRect] = useRect();
+  const HEIGHT = isDesktop
+    ? `${backRect.height}px`
+    : `calc(${backRect.height}px + var(--header-y))`;
+  const virtuoso = useRef<VirtuosoHandle>(null);
   const [renderFooter, setRenderFooter] = useState(false);
   const handleItemContent = useCallback(
     (index: number, market: Market) => (
@@ -48,7 +54,7 @@ function Virtuoso(props: VirtuosoProps) {
   );
   const handleBackClick = useCallback(
     () =>
-      ref.current?.scrollToIndex({
+      virtuoso.current?.scrollToIndex({
         index: 0,
         align: 'start',
         behavior: 'smooth'
@@ -61,25 +67,28 @@ function Virtuoso(props: VirtuosoProps) {
       <AnimatePresence>
         {renderFooter && (
           <motion.div
+            ref={back}
             className="ta-center p-grid bg-to-primary p-sticky w-100% zi-1"
             initial={{ top: window.innerHeight }}
-            animate={{ top: window.innerHeight - 104 }}
+            animate={{
+              top: `calc(${window.innerHeight}px - ${HEIGHT})`
+            }}
             exit={{ top: window.innerHeight }}
           >
-            <Button variant="outline" onClick={handleBackClick}>
+            <Button variant="outline" size="xs" onClick={handleBackClick}>
               Back to Top
             </Button>
           </motion.div>
         )}
       </AnimatePresence>
       <ReactVirtuoso
-        ref={ref}
+        ref={virtuoso}
         useWindowScroll
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
         {...(renderFooter && {
           style: {
-            top: -104
+            top: -backRect.height
           }
         })}
         {...props}
@@ -96,7 +105,7 @@ export default function MarketList() {
   }, []);
 
   return (
-    <div className="pm-c-market-list p-grid">
+    <div className="pm-c-market-list pr-grid pl-grid pt-grid">
       {
         {
           loading: (
