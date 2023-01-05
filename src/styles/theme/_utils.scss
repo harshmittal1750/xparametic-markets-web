@@ -103,3 +103,15 @@
 .ta-center {
   text-align: center;
 }
+
+.bg-to-primary {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--color-background-primary) 100%
+  );
+}
+
+.zi-1 {
+  z-index: 1;
+}

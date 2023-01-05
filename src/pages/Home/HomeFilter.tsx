@@ -78,7 +78,7 @@ function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
       <AnimatePresence>
         {expand && (
           <motion.div
-            style={{ overflow: 'hidden' }}
+            className="o-hidden"
             initial={{ height: 0 }}
             animate={{ height: 'auto' }}
             exit={{ height: 0 }}

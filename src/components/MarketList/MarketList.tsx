@@ -7,6 +7,7 @@ import type {
 import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
+import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
 
 import { InfoIcon } from 'assets/icons';
@@ -20,7 +21,7 @@ import Text from '../Text';
 
 type VirtuosoProps = Omit<
   ReactVirtuosoProps<Market, unknown>,
-  'useWindowScroll' | 'itemContent' | 'rangeChanged' | 'ref' | 'components'
+  'useWindowScroll' | 'itemContent' | 'rangeChanged' | 'ref'
 >;
 
 function Virtuoso(props: VirtuosoProps) {
@@ -40,43 +41,50 @@ function Virtuoso(props: VirtuosoProps) {
   );
   const handleRangeChange = useCallback(
     (range: ListRange) => {
-      if (data && data.length >= 7 && data.length - 2 === range.endIndex - 1)
-        setRenderFooter(true);
+      if (range.startIndex > 0) setRenderFooter(true);
+      else if (renderFooter) setRenderFooter(false);
     },
-    [data]
+    [renderFooter]
   );
-  const Footer = useCallback(
-    () => (
-      <div className="ta-center">
-        <Button
-          variant="outline"
-          className="mt-grid"
-          onClick={() =>
-            ref.current?.scrollToIndex({
-              index: 0,
-              align: 'start',
-              behavior: 'smooth'
-            })
-          }
-        >
-          Scroll to Top
-        </Button>
-      </div>
-    ),
+  const handleBackClick = useCallback(
+    () =>
+      ref.current?.scrollToIndex({
+        index: 0,
+        align: 'start',
+        behavior: 'smooth'
+      }),
     []
   );
 
   return (
-    <ReactVirtuoso
-      ref={ref}
-      useWindowScroll
-      itemContent={handleItemContent}
-      rangeChanged={handleRangeChange}
-      components={{
-        Footer: renderFooter ? Footer : undefined
-      }}
-      {...props}
-    />
+    <>
+      <AnimatePresence>
+        {renderFooter && (
+          <motion.div
+            className="ta-center p-grid bg-to-primary p-sticky w-100% zi-1"
+            initial={{ top: window.innerHeight }}
+            animate={{ top: window.innerHeight - 104 }}
+            exit={{ top: window.innerHeight }}
+          >
+            <Button variant="outline" onClick={handleBackClick}>
+              Back to Top
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <ReactVirtuoso
+        ref={ref}
+        useWindowScroll
+        itemContent={handleItemContent}
+        rangeChanged={handleRangeChange}
+        {...(renderFooter && {
+          style: {
+            top: -104
+          }
+        })}
+        {...props}
+      />
+    </>
   );
 }
 export default function MarketList() {
