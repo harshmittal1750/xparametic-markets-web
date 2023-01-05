@@ -1,7 +1,7 @@
 import { useLocation } from 'react-router-dom';
 
 import cn from 'classnames';
-import { routes } from 'config';
+import { pages } from 'config';
 
 import Link from 'components/Link';
 import Text from 'components/Text';
@@ -13,7 +13,7 @@ export default function Footer() {
     <footer className="mt-auto">
       <div
         className={cn('ta-center p-grid bt-thin', {
-          'mt-grid': location.pathname !== routes.home.pathname
+          'mt-grid': location.pathname !== pages.home.pathname
         })}
       >
         <Text

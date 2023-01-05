@@ -1,7 +1,7 @@
 import { lazy } from 'react';
 
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
-const routes = {
+const pages = {
   home: {
     pathname: '/',
     Component: lazy(() => import('pages/Home')),
@@ -67,4 +67,4 @@ const routes = {
   }
 } as const;
 
-export default routes;
+export default pages;

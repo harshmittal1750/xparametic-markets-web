@@ -6,6 +6,6 @@ export type {
 
 export { default as features } from './features';
 
-export { default as routes } from './routes';
+export { default as pages } from './pages';
 
 export { default as socials } from './socials';

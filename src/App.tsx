@@ -9,7 +9,7 @@ import {
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { routes } from 'config';
+import { pages } from 'config';
 import store from 'redux/store';
 
 import { Layout } from 'components';
@@ -35,7 +35,7 @@ export default function App() {
                         fallback={<span className="spinner--primary" />}
                       >
                         <Switch>
-                          {Object.values(routes).map(route => (
+                          {Object.values(pages).map(route => (
                             <Route
                               key={route.name}
                               exact={route.exact}

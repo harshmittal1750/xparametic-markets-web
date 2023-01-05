@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import type ReactRouterDom from 'react-router-dom';
 
-import { routes, socials } from 'config';
+import { pages, socials } from 'config';
 import { useMedia } from 'ui';
 
 import { IlluminateFantasyLeagueLogo } from 'assets/icons';
@@ -58,7 +58,7 @@ function HeaderNavModal({
             Join our community
           </Text>
           <ul className={HeaderNavClasses.socials}>
-            {socials.map(social => (
+            {Object.values(socials).map(social => (
               <li key={social.name}>
                 <Text
                   // @ts-ignore
@@ -96,7 +96,7 @@ function HeaderNavMenu({
 }) {
   return (
     <ul className={HeaderNavClasses.list}>
-      {Object.values(routes)
+      {Object.values(pages)
         .filter(route => route.navigation)
         .map(route => (
           <li key={route.name} className={HeaderNavClasses.item}>
