@@ -32,7 +32,11 @@ export default function App() {
                   <VoteProvider>
                     <Layout>
                       <Suspense
-                        fallback={<span className="spinner--primary" />}
+                        fallback={
+                          <div className="ta-center">
+                            <span className="spinner--primary d-inline-block" />
+                          </div>
+                        }
                       >
                         <Switch>
                           {Object.values(pages).map(route => (
