@@ -6,6 +6,7 @@ import type { Market } from 'models/market';
 
 import { InfoIcon } from 'assets/icons';
 
+import Footer from 'components/Footer';
 import PredictionCard from 'components/PredictionCard';
 
 import useMarkets from 'hooks/useMarkets';
@@ -20,11 +21,11 @@ export default function MarketList() {
       <PredictionCard
         market={data}
         className={cn({
-          'mb-grid': index !== markets.length - 1
+          'mb-grid': index !== markets.data.length - 1
         })}
       />
     ),
-    [markets.length]
+    [markets.data.length]
   );
 
   useEffect(() => {
@@ -33,7 +34,7 @@ export default function MarketList() {
   }, []);
 
   return (
-    <div className="pm-c-market-list p-grid">
+    <div className="pm-c-market-list pl-grid pr-grid pt-grid">
       {
         {
           loading: (
@@ -81,8 +82,11 @@ export default function MarketList() {
           success: (
             <Virtuoso
               useWindowScroll
-              data={markets}
+              data={markets.data}
               itemContent={handleItemContent}
+              components={{
+                Footer
+              }}
             />
           )
         }[markets.state]

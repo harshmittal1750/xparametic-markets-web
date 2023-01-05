@@ -36,7 +36,8 @@ export default function useMarkets() {
     )
   );
 
-  return Object.assign(markets, {
+  return {
+    data: markets,
     fetch: useCallback(async () => {
       dispatch(getMarkets('open'));
       dispatch(getMarkets('closed'));
@@ -46,6 +47,8 @@ export default function useMarkets() {
     }, [dispatch]),
     // prettier-ignore
     // eslint-disable-next-line no-nested-ternary
-    state: isLoading ? 'loading' : error ? 'error' : !markets.length ? 'warning' : 'success'
-  });
+    state: isLoading ? 'loading' : error ? 'error' : !markets.length ? 'warning' : 'success' as const
+  };
 }
+
+export type UseMarkets = ReturnType<typeof useMarkets>;
