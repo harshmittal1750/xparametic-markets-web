@@ -1,21 +1,29 @@
+import { useLocation } from 'react-router-dom';
+
+import cn from 'classnames';
+import { routes } from 'config';
+
 import Link from 'components/Link';
 import Text from 'components/Text';
 
 export default function Footer() {
+  const location = useLocation();
+
   return (
-    <footer className="pm-l-footer p-grid mt-auto">
-      <Text
-        as="p"
-        scale="caption"
-        fontWeight="medium"
-        className="pm-l-footer__terms-text-secondary"
-        style={{
-          textAlign: 'center',
-          whiteSpace: 'pre-line'
-        }}
+    <footer className="mt-auto">
+      <div
+        className={cn('ta-center p-grid bt-thin', {
+          'mt-grid': location.pathname !== routes.home.pathname
+        })}
       >
-        <>
-          {`The Illuminate Fantasy League, powered by Polkamarkets is a fantasy game. `}
+        <Text
+          as="p"
+          scale="caption"
+          fontWeight="medium"
+          className="pm-l-footer__terms-text-secondary"
+        >
+          The Illuminate Fantasy League, powered by Polkamarkets is a fantasy
+          game.{' '}
           <Link
             title="Learn more in the documentation"
             scale="caption"
@@ -24,8 +32,8 @@ export default function Footer() {
             target="_blank"
           />
           .
-        </>
-      </Text>
+        </Text>
+      </div>
     </footer>
   );
 }

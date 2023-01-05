@@ -31,7 +31,7 @@ export default function Home() {
       >
         <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
       </Container>
-      <div className="d-flex bb-thin">
+      <div className="d-flex">
         <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
         <MarketList />
       </div>

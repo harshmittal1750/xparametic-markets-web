@@ -18,6 +18,16 @@
   padding: var(--grid-margin);
 }
 
+.pb-60 {
+  padding-bottom: var(--size-60);
+}
+
+@media (min-width: 1024px) {
+  .desktop\:pb-unset {
+    padding-bottom: unset;
+  }
+}
+
 .mt-auto {
   margin-top: auto;
 }
