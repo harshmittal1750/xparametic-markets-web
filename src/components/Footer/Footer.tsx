@@ -3,7 +3,7 @@ import Text from 'components/Text';
 
 export default function Footer() {
   return (
-    <footer className="pm-l-footer p-grid">
+    <footer className="pm-l-footer p-grid mt-auto">
       <Text
         as="p"
         scale="caption"
