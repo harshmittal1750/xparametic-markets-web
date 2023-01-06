@@ -44,21 +44,26 @@ function ModalFilterAnimation({
   ...props
 }: Pick<ModalProps, 'show' | 'children'>) {
   return (
-    <motion.div
-      className="p-sticky"
-      animate={show ? 'show' : 'hide'}
-      variants={{
-        show: {
-          width: 'auto',
-          x: 0
-        },
-        hide: {
-          width: 0,
-          x: -264
-        }
-      }}
-      {...props}
-    />
+    <AnimatePresence>
+      {show && (
+        <motion.div
+          className="p-sticky"
+          initial={{
+            width: 0,
+            x: -264
+          }}
+          animate={{
+            width: 'auto',
+            x: 0
+          }}
+          exit={{
+            width: 0,
+            x: -264
+          }}
+          {...props}
+        />
+      )}
+    </AnimatePresence>
   );
 }
 function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
