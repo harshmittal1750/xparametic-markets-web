@@ -30,16 +30,10 @@ export default function RestrictedCountry() {
 
   return (
     <Modal show={show} centered size="sm">
-      <ModalContent>
-        <ModalHeader style={{ textAlign: 'center' }}>
+      <ModalContent className="ta-center">
+        <ModalHeader>
           <PolkamarketsIcon />
-          <Text
-            as="h5"
-            scale="heading"
-            fontWeight="bold"
-            color="white"
-            style={{ textAlign: 'center' }}
-          >
+          <Text as="h5" scale="heading" fontWeight="bold" className="t-primary">
             Polkamarkets is not available in your country
           </Text>
         </ModalHeader>
@@ -48,9 +42,8 @@ export default function RestrictedCountry() {
             as="p"
             scale="body"
             fontWeight="medium"
-            color="lighter-gray"
+            className="t-secondary"
             style={{
-              textAlign: 'center',
               paddingBottom: '1rem',
               whiteSpace: 'pre-line'
             }}
