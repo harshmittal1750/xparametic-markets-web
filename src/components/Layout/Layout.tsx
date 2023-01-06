@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { pages } from 'config';
 import { login } from 'redux/ducks/polkamarkets';
 
 import BetaWarning from 'components/BetaWarning';
@@ -16,29 +17,32 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const location = useLocation();
   const theme = useTheme();
   const dispatch = useAppDispatch();
-  const { networkConfig } = useNetwork();
+  const network = useNetwork();
+  const page = Object.values(pages).filter(
+    ({ pathname }) => pathname === location.pathname
+  )[0];
 
   if (theme.theme === 'dark') {
     document.documentElement.classList.add('theme--dark');
-  } else document.documentElement.classList.remove('theme--dark');
+    document.documentElement.classList.remove('theme--light');
+  } else {
+    document.documentElement.classList.add('theme--light');
+    document.documentElement.classList.remove('theme--dark');
+  }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
   }, [location.pathname]);
   useEffect(() => {
-    dispatch(login(networkConfig));
-  }, [dispatch, networkConfig]);
+    dispatch(login(network.networkConfig));
+  }, [dispatch, network.networkConfig]);
 
   return (
     <>
       <RestrictedCountry />
       <WrongNetwork />
       <BetaWarning />
-      <SEO
-        title="Illuminate Fantasy League, Powered By Polkamarkets"
-        description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
-        imageUrl={`${process.env.PUBLIC_URL}/ifl_meta.jpg`}
-      />
+      {page?.meta && <SEO {...page.meta} />}
       <Header />
       {children}
       <Footer />

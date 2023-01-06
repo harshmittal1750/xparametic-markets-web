@@ -5,13 +5,11 @@ import { Container } from 'ui';
 
 import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 
-import { CreateLeaderboardGroup, Link, SEO } from 'components';
+import { CreateLeaderboardGroup, Link } from 'components';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
 import ClubsMyClubs from './ClubsMyClubs';
-
-const IFL_META_CLUBS = `${process.env.PUBLIC_URL}/ifl_meta_clubs.png`;
 
 function Clubs() {
   // Custom hooks
@@ -49,11 +47,6 @@ function Clubs() {
 
   return (
     <Container className="pm-p-leaderboard">
-      <SEO
-        title="Clubs - Illuminate Fantasy League, powered by Polkamarkets"
-        description="Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard."
-        imageUrl={IFL_META_CLUBS}
-      />
       <div className="pm-p-leaderboard__header">
         <div className="flex-column gap-3">
           <h1 className="heading semibold text-1">Clubs</h1>

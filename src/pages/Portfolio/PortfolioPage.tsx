@@ -4,15 +4,11 @@ import { getPortfolio } from 'redux/ducks/portfolio';
 import { closeRightSidebar } from 'redux/ducks/ui';
 import { Container } from 'ui';
 
-import { SEO } from 'components';
-
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import PortfolioAnalytics from './PortfolioAnalytics';
 import PortfolioChart from './PortfolioChart';
 import PortfolioTabs from './PortfolioTabs';
-
-const IFL_META_PORTFOLIO = `${process.env.PUBLIC_URL}/ifl_meta_portfolio.png`;
 
 const PortfolioPage = () => {
   const dispatch = useAppDispatch();
@@ -38,11 +34,6 @@ const PortfolioPage = () => {
 
   return (
     <Container className="portfolio-page">
-      <SEO
-        title="Portfolio - Illuminate Fantasy League, powered by Polkamarkets"
-        description="Participate in the Illuminate Fantasy League and compete with your friends, coworkers or other community members. Predict Football World Cup match winners and manage your portfolio outcome shares with a seamless and user friendly page."
-        imageUrl={IFL_META_PORTFOLIO}
-      />
       <PortfolioAnalytics />
       <PortfolioChart />
       <PortfolioTabs />
