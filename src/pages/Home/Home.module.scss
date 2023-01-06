@@ -1,13 +1,13 @@
 .header {
   background: linear-gradient(
     180deg,
-    rgba(36, 43, 57, 0) 0%,
-    rgb(16, 18, 22, 0.8) 100%
+    transparent 0%,
+    var(--color-surface-tertiary) 100%
   );
 }
 
 .nav {
-  background-color: rgb(16, 18, 22, 0.8);
+  background-color: var(--color-surface-tertiary);
   backdrop-filter: blur(8px);
   top: 0px;
   z-index: 1;

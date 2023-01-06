@@ -1,7 +1,8 @@
 :root {
   --color-background--rgb: var(--neutral-200--rgb);
-  --color-text-rgb: var(--neutral-900--rgb);
+  --color-text--rgb: var(--neutral-900--rgb);
   --color-neutral--rgb: var(--neutral-500--rgb);
+  --color-surface--rgb: var(--neutral-100--rgb);
 
   --color-background-primary: rgb(
     var(--color-background--rgb) / var(--alpha-primary)
@@ -18,13 +19,26 @@
   --color-background-quinary: rgb(
     var(--color-background--rgb) / var(--alpha-quinary)
   );
+
+  --color-surface-primary: rgb(
+    var(--color-surface--rgb) / var(--alpha-primary)
+  );
+  --color-surface-secondary: rgb(
+    var(--color-surface--rgb) / var(--alpha-secondary)
+  );
+  --color-surface-tertiary: rgb(
+    var(--color-surface--rgb) / var(--alpha-tertiary)
+  );
+
   --color-surface: var(--neutral-100);
   --color-border: var(--neutral-300);
   --color-shadow: rgb(var(--neutral-500--rgb) / var(--alpha-quinary));
   --color-text-primary: var(--neutral-700);
   --color-text-secondary: var(--neutral-500);
-  --color-text-quaternary: rgb(var(--color-text-rgb) / var(--alpha-quaternary));
-  --color-text-quinary: rgb(var(--color-text-rgb) / var(--alpha-quinary));
+  --color-text-quaternary: rgb(
+    var(--color-text--rgb) / var(--alpha-quaternary)
+  );
+  --color-text-quinary: rgb(var(--color-text--rgb) / var(--alpha-quinary));
   --color-neutral-primary: rgb(
     var(--color-neutral--rgb) / var(--alpha-primary)
   );
@@ -40,10 +54,10 @@
   --color-vote-arrows-border--negative: #f86a6a33;
 
   &.theme--dark {
-    --color-background--rgb: var(--neutral-850--rgb);
-    --color-text-rgb: var(--neutral-200--rgb);
+    --color-background--rgb: var(--neutral-900--rgb);
+    --color-text--rgb: var(--neutral-200--rgb);
+    --color-surface--rgb: var(--neutral-850--rgb);
 
-    --color-surface: var(--neutral-850);
     --color-border: var(--neutral-800);
     --color-shadow: var(--color-background-quaternary);
     --color-text-primary: var(--neutral-100);

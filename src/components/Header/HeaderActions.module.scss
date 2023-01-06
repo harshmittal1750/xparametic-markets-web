@@ -6,7 +6,7 @@
   bottom: 0px;
   left: 0px;
   transition: background-color 200ms ease-in-out;
-  background-color: var(--color-surface);
+  background-color: var(--color-surface-primary);
   z-index: 1;
   @media (min-width: 1024px) {
     background-color: unset;
@@ -49,7 +49,7 @@
 }
 .dialog {
   border-radius: 20px;
-  background-color: var(--color-surface);
+  background-color: var(--color-surface-primary);
   position: absolute;
   @media (min-width: 1024px) {
     max-width: 240px;
