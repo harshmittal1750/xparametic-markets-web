@@ -2,7 +2,6 @@
 import { useEffect, useState, useMemo, useCallback } from 'react';
 
 import isEmpty from 'lodash/isEmpty';
-import { closeRightSidebar } from 'redux/ducks/ui';
 import { PolkamarketsService } from 'services';
 import { useGetAchievementsQuery } from 'services/Polkamarkets';
 import { Container } from 'ui';
@@ -14,7 +13,7 @@ import {
   Item
 } from 'components/pages/achievements';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import { useNetwork } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import AchievementsEmpty from './AchievementsEmpty';
@@ -54,12 +53,6 @@ function Achievements() {
   // Custom Hooks
   const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
-  const dispatch = useAppDispatch();
-
-  // Redux store selections
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
 
   // Redux toolkit queries
   const {
@@ -103,12 +96,6 @@ function Achievements() {
     },
     [getUserAchievements, refetch, show]
   );
-
-  useEffect(() => {
-    if (rightSidebarIsVisible) {
-      dispatch(closeRightSidebar());
-    }
-  }, [dispatch, rightSidebarIsVisible]);
 
   useEffect(() => {
     getUserAchievements();

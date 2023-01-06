@@ -1,34 +1,19 @@
-import { useEffect } from 'react';
-
-import { closeRightSidebar } from 'redux/ducks/ui';
 import { Container } from 'ui';
 
 import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 
 import { CreateLeaderboardGroup, Link } from 'components';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import ClubsMyClubs from './ClubsMyClubs';
 
 function Clubs() {
-  // Custom hooks
-  const dispatch = useAppDispatch();
-
   // Redux selectors
   const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
   );
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
-
-  useEffect(() => {
-    if (rightSidebarIsVisible) {
-      dispatch(closeRightSidebar());
-    }
-  }, [rightSidebarIsVisible, dispatch]);
 
   // Derivated data
 
