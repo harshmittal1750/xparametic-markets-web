@@ -36,7 +36,7 @@ function Virtuoso(props: VirtuosoProps) {
     ? `${backRect.height}px`
     : `calc(${backRect.height}px + var(--header-y))`;
   const virtuoso = useRef<VirtuosoHandle>(null);
-  const [renderFooter, setRenderFooter] = useState(false);
+  const [renderBack, setRenderBack] = useState(false);
   const handleItemContent = useCallback(
     (index: number, market: Market) => (
       <PredictionCard
@@ -50,10 +50,10 @@ function Virtuoso(props: VirtuosoProps) {
   );
   const handleRangeChange = useCallback(
     (range: ListRange) => {
-      if (range.startIndex > 0) setRenderFooter(true);
-      else if (renderFooter) setRenderFooter(false);
+      if (range.startIndex > 0) setRenderBack(true);
+      else if (renderBack) setRenderBack(false);
     },
-    [renderFooter]
+    [renderBack]
   );
   const handleBackClick = useCallback(
     () =>
@@ -68,7 +68,7 @@ function Virtuoso(props: VirtuosoProps) {
   return (
     <>
       <AnimatePresence>
-        {renderFooter && (
+        {renderBack && (
           <motion.div
             ref={back}
             className="ta-center p-grid bg-to-primary p-sticky w-100% zi-1"
@@ -89,7 +89,7 @@ function Virtuoso(props: VirtuosoProps) {
         useWindowScroll
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
-        {...(renderFooter && {
+        {...(renderBack && {
           style: {
             top: -backRect.height
           }

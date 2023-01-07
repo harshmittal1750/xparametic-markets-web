@@ -59,7 +59,7 @@ export default function Home() {
           ))}
         </Switch>
       </div>
-      <RightSidebar />
+      {isDesktop && <RightSidebar />}
     </div>
   );
 }
