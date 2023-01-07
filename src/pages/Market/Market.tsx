@@ -10,15 +10,7 @@ import { Container } from 'ui';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import {
-  Tabs,
-  Table,
-  Text,
-  Button,
-  SEO,
-  VoteArrows,
-  RightSidebar
-} from 'components';
+import { Tabs, Table, Text, Button, SEO, VoteArrows } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -65,7 +57,7 @@ const Market = () => {
 
   useEffect(() => {
     function goToHomePage() {
-      history.push('/?m=f');
+      history.push('/markets?m=f');
       window.location.reload();
     }
 
@@ -121,7 +113,7 @@ const Market = () => {
   function backToMarkets() {
     resetTrade();
     closeTradeSidebar();
-    history.push('/');
+    history.push('/markets');
   }
 
   return (
@@ -221,7 +213,6 @@ const Market = () => {
           </Tabs>
         </div>
       </Container>
-      <RightSidebar />
     </div>
   );
 };

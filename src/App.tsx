@@ -39,18 +39,19 @@ export default function App() {
                         }
                       >
                         <Switch>
-                          {Object.values(pages).map(route => (
+                          {Object.values(pages).map(page => (
                             <Route
-                              key={route.name}
-                              exact={route.exact}
-                              path={route.pathname}
-                              component={route.Component}
+                              key={page.name}
+                              exact={page.exact}
+                              path={page.pathname}
+                              component={page.Component}
                             />
                           ))}
                           <Redirect
                             from="/leaderboard/:slug"
                             to="/clubs/:slug"
                           />
+                          <Redirect from="/" to="/markets" />
                         </Switch>
                       </Suspense>
                     </Layout>

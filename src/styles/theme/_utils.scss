@@ -62,6 +62,10 @@
   min-height: 100vh;
 }
 
+.height-viewport {
+  height: 100vh;
+}
+
 .w-100\% {
   width: 100%;
 }
@@ -86,8 +90,16 @@
   border-bottom: 1px solid var(--color-border);
 }
 
+.border-left-thin {
+  border-left: 1px solid var(--color-border);
+}
+
 .p-sticky {
   position: sticky;
+}
+
+.position-relative {
+  position: relative;
 }
 
 .bg-primary {
@@ -126,4 +138,8 @@
 
 .t-secondary {
   color: var(--color-text-secondary);
+}
+
+.f-fill {
+  flex: 1 0 auto;
 }

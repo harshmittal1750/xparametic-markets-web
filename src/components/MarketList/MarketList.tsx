@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type {
   VirtuosoProps as ReactVirtuosoProps,
   VirtuosoHandle,
@@ -15,7 +15,7 @@ import { InfoIcon } from 'assets/icons';
 
 import PredictionCard from 'components/PredictionCard';
 
-import useMarkets from 'hooks/useMarkets';
+import type { UseMarkets } from 'hooks/useMarkets';
 
 import { Button } from '../Button';
 import Text from '../Text';
@@ -24,6 +24,9 @@ type VirtuosoProps = Omit<
   ReactVirtuosoProps<Market, unknown>,
   'useWindowScroll' | 'itemContent' | 'rangeChanged' | 'ref'
 >;
+type MarketListProps = {
+  markets: UseMarkets;
+};
 
 function Virtuoso(props: VirtuosoProps) {
   const { data } = props;
@@ -96,14 +99,7 @@ function Virtuoso(props: VirtuosoProps) {
     </>
   );
 }
-export default function MarketList() {
-  const markets = useMarkets();
-
-  useEffect(() => {
-    markets.fetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+export default function MarketList({ markets }: MarketListProps) {
   return (
     <div className="pm-c-market-list pr-grid pl-grid pt-grid">
       {

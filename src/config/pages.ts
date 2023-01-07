@@ -3,9 +3,9 @@ import { lazy } from 'react';
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
 const pages = {
   home: {
-    pathname: '/',
+    pathname: '/markets',
     Component: lazy(() => import('pages/Home')),
-    exact: true,
+    exact: false,
     navigation: true,
     name: 'Markets',
     meta: {
@@ -13,6 +13,24 @@ const pages = {
       description:
         'The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!',
       image: `${process.env.PUBLIC_URL}/ifl_meta.jpg`
+    },
+    pages: {
+      market: {
+        pathname: '/:marketId',
+        Component: lazy(() => import('pages/Market/Market')),
+        exact: false,
+        navigation: false,
+        name: '',
+        meta: null
+      },
+      create: {
+        pathname: '/create',
+        Component: lazy(() => import('pages/CreateMarket')),
+        exact: false,
+        navigation: false,
+        name: '',
+        meta: null
+      }
     }
   },
   portfolio: {
@@ -67,22 +85,6 @@ const pages = {
         "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
       image: `${process.env.PUBLIC_URL}/ifl_meta_clubs.png`
     }
-  },
-  createMarket: {
-    pathname: '/market/create',
-    Component: lazy(() => import('pages/CreateMarket')),
-    exact: false,
-    navigation: false,
-    name: '',
-    meta: null
-  },
-  market: {
-    pathname: '/markets',
-    Component: lazy(() => import('pages/Market')),
-    exact: false,
-    navigation: false,
-    name: '',
-    meta: null
   },
   club: {
     pathname: '/clubs/:slug',

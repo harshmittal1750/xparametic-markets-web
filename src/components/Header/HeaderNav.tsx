@@ -104,7 +104,9 @@ function HeaderNavMenu({
               to={route.pathname}
               className={HeaderNavClasses.link}
               activeClassName={HeaderNavClasses.active}
-              isActive={(_, location) => location.pathname === route.pathname}
+              isActive={(_, location) =>
+                new RegExp(route.pathname).test(location.pathname)
+              }
               {...NavLinkProps}
             >
               {route.name}
@@ -128,7 +130,11 @@ export default function HeaderNav() {
   return (
     <nav className={HeaderNavClasses.root}>
       {isDesktop && !isTv && <HeaderNavMenuModal />}
-      <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
+      <Link
+        to="/markets"
+        aria-label="Homepage"
+        className={HeaderNavClasses.logos}
+      >
         <IlluminateFantasyLeagueLogo />
       </Link>
       {isTv ? <HeaderNavMenu /> : !isDesktop && <HeaderNavMenuModal />}

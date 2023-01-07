@@ -48,18 +48,9 @@ function ModalFilterAnimation({
       {show && (
         <motion.div
           className="p-sticky"
-          initial={{
-            width: 0,
-            x: -264
-          }}
-          animate={{
-            width: 'auto',
-            x: 0
-          }}
-          exit={{
-            width: 0,
-            x: -264
-          }}
+          initial={{ width: 0, x: -264 }}
+          animate={{ width: 'auto', x: 0 }}
+          exit={{ width: 0, x: -264 }}
           {...props}
         />
       )}
