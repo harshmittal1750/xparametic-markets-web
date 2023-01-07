@@ -78,7 +78,6 @@ export default function App() {
                             from="/leaderboard/:slug"
                             to="/clubs/:slug"
                           />
-                          <Redirect from="/" to="/markets" />
                         </Switch>
                       </Suspense>
                     </Layout>

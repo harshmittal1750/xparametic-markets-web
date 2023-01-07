@@ -17,7 +17,7 @@ export default function CreateMarket({
   const handleCreateClick = useCallback(() => {
     dispatch(closeRightSidebar());
     onCreateClick?.();
-    history.push('/market/create');
+    history.push('/markets/create');
   }, [dispatch, history, onCreateClick]);
 
   return (

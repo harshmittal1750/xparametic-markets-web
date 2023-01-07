@@ -34,9 +34,7 @@ const Market = () => {
   const { network } = useNetwork();
   const { marketId } = useParams<Params>();
   const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions, networkId } = useAppSelector(
-    state => state.polkamarkets
-  );
+  const { actions, bondActions } = useAppSelector(state => state.polkamarkets);
   const [activeTab, setActiveTab] = useState('positions');
   const [retries, setRetries] = useState(0);
   const isDiffNetwork = network.id !== market.networkId.toString();
@@ -57,7 +55,7 @@ const Market = () => {
 
   useEffect(() => {
     function goToHomePage() {
-      history.push('/markets?m=f');
+      history.push('/?m=f');
       window.location.reload();
     }
 
@@ -67,21 +65,12 @@ const Market = () => {
     } else if (!isLoading && !isNull(error)) {
       // 500 error, retrying 3 times
       if (retries < 3) {
-        setRetries(retries + 1);
+        setRetries(prevRetries => prevRetries + 1);
       } else {
         goToHomePage();
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    error,
-    history,
-    isLoading,
-    market.id,
-    market.networkId,
-    network.id,
-    networkId
-  ]);
+  }, [error, history, isLoading, retries]);
 
   if (!market || market.id === '' || isLoading)
     return (
@@ -113,7 +102,7 @@ const Market = () => {
   function backToMarkets() {
     resetTrade();
     closeTradeSidebar();
-    history.push('/markets');
+    history.push('/');
   }
 
   return (

@@ -104,7 +104,7 @@ function CreateMarketForm() {
   const { show, close } = useToastNotification();
 
   function redirectToHomePage() {
-    return history.push('/markets');
+    return history.push('/');
   }
 
   function redirectToMarketPage(marketSlug) {

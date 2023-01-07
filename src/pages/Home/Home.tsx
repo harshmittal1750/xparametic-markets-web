@@ -53,7 +53,8 @@ export default function Home() {
           {Object.values(pages.home.pages).map(page => (
             <Route
               key={page.name}
-              path={routeMatch.path + page.pathname}
+              exact={page.exact}
+              path={page.pathname}
               component={page.Component}
             />
           ))}
