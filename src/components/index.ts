@@ -175,6 +175,4 @@ export { default as ModalSection } from './ModalSection';
 
 export { default as ModalSectionText } from './ModalSectionText';
 
-export { default as RestrictedCountry } from './RestrictedCountry';
-
 export { default as WrongNetwork } from './WrongNetwork';

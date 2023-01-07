@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import {
   BrowserRouter as Router,
@@ -10,7 +10,10 @@ import {
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { pages } from 'config';
+import { getUserCountry } from 'helpers/location';
 import store from 'redux/store';
+
+import RestrictedCountry from 'pages/RestrictedCountry';
 
 import { Layout } from 'components';
 
@@ -21,6 +24,30 @@ import ThemeProvider from 'contexts/theme';
 import { VoteProvider } from 'contexts/vote';
 
 export default function App() {
+  const [isRestricted, setRestricted] = useState(false);
+  const [isChecking, setChecking] = useState(true);
+
+  useEffect(() => {
+    (async function handleRestrictedCountry() {
+      const restrictedCountries =
+        process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+
+      if (restrictedCountries?.length) {
+        const userCountry = await getUserCountry();
+
+        setRestricted(restrictedCountries.includes(userCountry.countryCode));
+        setChecking(false);
+      }
+    })();
+  }, []);
+
+  if (isChecking)
+    return (
+      <div className="ta-center p-grid">
+        <span className="spinner--primary d-inline-block" />
+      </div>
+    );
+  if (isRestricted) return <RestrictedCountry />;
   return (
     <ThemeProvider>
       <Provider store={store}>

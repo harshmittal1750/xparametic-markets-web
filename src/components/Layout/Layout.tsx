@@ -7,7 +7,6 @@ import { login } from 'redux/ducks/polkamarkets';
 import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
-import RestrictedCountry from 'components/RestrictedCountry';
 import SEO from 'components/SEO';
 import WrongNetwork from 'components/WrongNetwork';
 
@@ -39,7 +38,6 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
 
   return (
     <>
-      <RestrictedCountry />
       <WrongNetwork />
       <BetaWarning />
       {page?.meta && <SEO {...page.meta} />}
