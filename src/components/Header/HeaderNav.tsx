@@ -3,6 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import type ReactRouterDom from 'react-router-dom';
 
 import { pages, socials } from 'config';
+import { shiftSlash } from 'helpers/string';
 import { useMedia } from 'ui';
 
 import { IlluminateFantasyLeagueLogo } from 'assets/icons';
@@ -97,19 +98,27 @@ function HeaderNavMenu({
   return (
     <ul className={HeaderNavClasses.list}>
       {Object.values(pages)
-        .filter(route => route.navigation)
-        .map(route => (
-          <li key={route.name} className={HeaderNavClasses.item}>
+        .filter(page => page.navigation)
+        .reverse()
+        .map(page => (
+          <li key={page.name} className={HeaderNavClasses.item}>
             <NavLink
-              to={route.pathname}
+              to={page.pathname}
               className={HeaderNavClasses.link}
               activeClassName={HeaderNavClasses.active}
               isActive={(_, location) =>
-                new RegExp(route.pathname).test(location.pathname)
+                // prettier-ignore
+                // eslint-disable-next-line no-nested-ternary
+                location.pathname === pages.home.pathname ||
+                /^\/markets/.test(location.pathname)
+                  ? page.pathname === pages.home.pathname
+                  : /^\/clubs/.test(location.pathname)
+                    ? page.pathname === pages.clubs.pathname
+                    : new RegExp(shiftSlash(location.pathname)).test(shiftSlash(page.pathname))
               }
               {...NavLinkProps}
             >
-              {route.name}
+              {page.name}
             </NavLink>
           </li>
         ))}
@@ -130,11 +139,7 @@ export default function HeaderNav() {
   return (
     <nav className={HeaderNavClasses.root}>
       {isDesktop && !isTv && <HeaderNavMenuModal />}
-      <Link
-        to="/markets"
-        aria-label="Homepage"
-        className={HeaderNavClasses.logos}
-      >
+      <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
         <IlluminateFantasyLeagueLogo />
       </Link>
       {isTv ? <HeaderNavMenu /> : !isDesktop && <HeaderNavMenuModal />}
