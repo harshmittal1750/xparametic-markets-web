@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { Provider } from 'react-redux';
 import {
   BrowserRouter as Router,
@@ -10,10 +10,9 @@ import {
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { pages } from 'config';
-import { getUserCountry } from 'helpers/location';
 import store from 'redux/store';
 
-import RestrictedCountry from 'pages/RestrictedCountry';
+import Init from 'pages/Init';
 
 import { Layout } from 'components';
 
@@ -23,39 +22,18 @@ import { NetworksProvider } from 'contexts/networks';
 import ThemeProvider from 'contexts/theme';
 import { VoteProvider } from 'contexts/vote';
 
+import useInit, { InitActions } from 'hooks/useInit';
+
 export default function App() {
-  const [isRestricted, setRestricted] = useState(false);
-  const [isChecking, setChecking] = useState(true);
+  const init = useInit();
 
-  useEffect(() => {
-    (async function handleRestrictedCountry() {
-      try {
-        const restrictedCountries =
-          process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
-
-        if (restrictedCountries?.length) {
-          const userCountry = await getUserCountry();
-
-          setRestricted(restrictedCountries.includes(userCountry.countryCode));
-        }
-
-        setChecking(false);
-      } catch (error) {
-        setChecking(false);
-
-        // TODO: Give an UI for user to try again
-        console.error(error);
-      }
-    })();
-  }, []);
-
-  if (isChecking)
+  if (init.type === InitActions.CHECKING)
     return (
       <div className="ta-center p-grid">
         <span className="spinner--primary d-inline-block" />
       </div>
     );
-  if (isRestricted) return <RestrictedCountry />;
+  if (init.type !== InitActions.SUCCESS) return <Init {...init} />;
   return (
     <ThemeProvider>
       <Provider store={store}>
