@@ -35,6 +35,7 @@ export default function App() {
 
         if (restrictedCountries?.length) {
           const userCountry = await getUserCountry();
+
           setRestricted(restrictedCountries.includes(userCountry.countryCode));
         }
 
@@ -42,7 +43,7 @@ export default function App() {
       } catch (error) {
         setChecking(false);
 
-        // Give an UI for user to try again
+        // TODO: Give an UI for user to try again
         console.error(error);
       }
     })();
