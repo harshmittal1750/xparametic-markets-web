@@ -31,7 +31,7 @@ export default function Home() {
 
   return (
     <div className="d-flex">
-      <div className="f-fill">
+      <div className="flex-fill">
         <Switch>
           <Route exact path={routeMatch.path}>
             {isDesktop && <HomeHero />}
