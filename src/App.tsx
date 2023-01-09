@@ -33,12 +33,18 @@ export default function App() {
         process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
 
       if (restrictedCountries?.length) {
-        const userCountry = await getUserCountry();
+        try {
+          const userCountry = await getUserCountry();
 
-        setRestricted(restrictedCountries.includes(userCountry.countryCode));
+          setRestricted(restrictedCountries.includes(userCountry.countryCode));
+          setChecking(false);
+        } catch (error) {
+          setChecking(false);
+
+          // Give an UI for user to try again
+          console.error(error);
+        }
       }
-
-      setChecking(false);
     })();
   }, []);
 
