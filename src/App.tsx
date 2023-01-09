@@ -36,8 +36,9 @@ export default function App() {
         const userCountry = await getUserCountry();
 
         setRestricted(restrictedCountries.includes(userCountry.countryCode));
-        setChecking(false);
       }
+
+      setChecking(false);
     })();
   }, []);
 
