@@ -29,21 +29,21 @@ export default function App() {
 
   useEffect(() => {
     (async function handleRestrictedCountry() {
-      const restrictedCountries =
-        process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+      try {
+        const restrictedCountries =
+          process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
 
-      if (restrictedCountries?.length) {
-        try {
+        if (restrictedCountries?.length) {
           const userCountry = await getUserCountry();
-
           setRestricted(restrictedCountries.includes(userCountry.countryCode));
-          setChecking(false);
-        } catch (error) {
-          setChecking(false);
-
-          // Give an UI for user to try again
-          console.error(error);
         }
+
+        setChecking(false);
+      } catch (error) {
+        setChecking(false);
+
+        // Give an UI for user to try again
+        console.error(error);
       }
     })();
   }, []);
