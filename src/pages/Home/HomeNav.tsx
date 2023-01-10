@@ -1,20 +1,14 @@
 import { useCallback } from 'react';
 
-import { setSearchQuery, setSorter } from 'redux/ducks/markets';
+import { setSorter } from 'redux/ducks/markets';
 import { useMedia } from 'ui';
 
-import {
-  Button,
-  CreateMarket,
-  Feature,
-  Filter,
-  Icon,
-  SearchBar
-} from 'components';
+import { Button, CreateMarket, Feature, Filter, Icon } from 'components';
 
 import { useAppDispatch } from 'hooks';
 import useMarkets from 'hooks/useMarkets';
 
+import HomeNavSearch from './HomeNavSearch';
 import { filters } from './utils';
 
 type HomeNavProps = {
@@ -25,12 +19,6 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
   const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
   const markets = useMarkets();
-  const handleSearch = useCallback(
-    (text: string) => {
-      dispatch(setSearchQuery(text));
-    },
-    [dispatch]
-  );
   const handleSelectedFilter = useCallback(
     (filter: { value: string | number; optionalTrigger?: string }) => {
       dispatch(
@@ -53,12 +41,7 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
         <Icon name="Filter" />
         {isDesktop && 'Filter'}
       </Button>
-      <SearchBar
-        name="Search Markets"
-        placeholder="Search markets"
-        onSearch={handleSearch}
-        className={{ form: 'pm-p-home__navigation__actions' }}
-      />
+      <HomeNavSearch />
       <Filter
         description="Sort by"
         defaultOption="expiresAt"

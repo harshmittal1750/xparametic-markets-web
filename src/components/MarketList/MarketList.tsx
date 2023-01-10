@@ -71,14 +71,14 @@ function Virtuoso(props: VirtuosoProps) {
         {renderBack && (
           <motion.div
             ref={back}
-            className="ta-center p-grid bg-to-primary p-sticky w-100% zi-1"
+            className="ta-center pr-grid pl-grid pt-grid bg-to-primary p-sticky w-100% zi-1"
             initial={{ top: window.innerHeight }}
             animate={{
               top: `calc(${window.innerHeight}px - ${HEIGHT})`
             }}
             exit={{ top: window.innerHeight }}
           >
-            <Button variant="outline" size="xs" onClick={handleBackClick}>
+            <Button variant="ghost" size="xs" onClick={handleBackClick}>
               Back to Top
             </Button>
           </motion.div>
@@ -101,7 +101,7 @@ function Virtuoso(props: VirtuosoProps) {
 }
 export default function MarketList({ markets }: MarketListProps) {
   return (
-    <div className="pm-c-market-list pr-grid pl-grid pt-grid">
+    <div className="pm-c-market-list p-grid">
       {
         {
           loading: (
