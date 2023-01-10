@@ -34,6 +34,28 @@ _Required: PR description and not the its story self with the context of what wa
 | - | - | - |
 | _The unity name..._ | [_Replace with the Story Number_](https://app.shortcut.com/polkamarkets/story/)/🔴 | _Good and short of-why description..._ | 
 
+## 🧪 Test Suite
+- Navbar Actions
+  - [ ] Switch between light and dark mode across pages
+  - [ ] Network Switcher
+  - [ ] Wrong Network Modal
+- Homepage Markets Navigation
+  - [ ] Filters
+  - [ ] Sorting
+  - [ ] Search
+- Pages Content
+  - [ ] Homepage
+  - [ ] Create Market Page
+  - [ ] Market Page
+  - [ ] Portfolio
+  - [ ] Achievements
+- Trading (**Optional** - only if PR involves related components or `polkamarkets-js`)
+  - [ ] Slider + MAX button
+  - [ ] Buy Outcome Shares
+  - [ ] Sell Outcome Shares
+  - [ ] Add Liquidity 
+  - [ ] Remove Liquidity
+
 ### Footnotes
 <!-- Remove footnotes subsection if it has no changelog and backlog items -->
 
