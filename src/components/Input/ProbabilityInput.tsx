@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { forwardRef, InputHTMLAttributes, useMemo } from 'react';
 
 import cn from 'classnames';
 import { useField } from 'formik';
@@ -18,8 +18,12 @@ const ProbabilityInput = forwardRef<
 
   const outcomes = outcomesField.value;
 
-  const outcomeIndex = outcomes.indexOf(
-    outcomesField.value.find(outcome => outcome.id === name)
+  const outcomeIndex = useMemo(
+    () =>
+      outcomes.indexOf(
+        outcomesField.value.find(outcome => outcome.id === name)
+      ),
+    [name, outcomes, outcomesField.value]
   );
 
   const [field, meta] = useField(`outcomes[${outcomeIndex}].probability`);
