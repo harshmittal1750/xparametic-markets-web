@@ -147,12 +147,11 @@ function Transak() {
       transak.on(transak.ALL_EVENTS, data => {
         transakDispatch({ type: data.eventName });
       });
-
-      transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, _data => {
-        transak.close().then(() => {
-          document.documentElement.style.overflow = 'hidden';
-        });
-      });
+      transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, () =>
+        transak
+          .close()
+          .then(() => document.documentElement.style.removeProperty('overflow'))
+      );
     }
   }, [transak]);
 
