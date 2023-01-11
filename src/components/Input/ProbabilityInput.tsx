@@ -3,8 +3,7 @@ import {
   InputHTMLAttributes,
   forwardRef,
   useCallback,
-  useMemo,
-  useState
+  useMemo
 } from 'react';
 
 import cn from 'classnames';
