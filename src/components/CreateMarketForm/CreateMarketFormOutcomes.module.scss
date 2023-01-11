@@ -1,0 +1,30 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+}
+
+.action {
+  cursor: pointer;
+  display: inline-block;
+  border: none;
+  background-color: inherit;
+}
+
+.header {
+  display: grid;
+
+  grid-template-columns: 7fr 2fr auto;
+  gap: var(--size-16);
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.outcomes {
+  display: grid;
+
+  grid-template-columns: 7fr 3fr auto;
+  gap: var(--size-16);
+  align-items: baseline;
+  margin-bottom: var(--size-16);
+}
