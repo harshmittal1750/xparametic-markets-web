@@ -3,6 +3,7 @@ import uuid from 'react-uuid';
 
 import dayjs from 'dayjs';
 import { Formik, Form } from 'formik';
+import { almost } from 'helpers/math';
 import sum from 'lodash/sum';
 import { PolkamarketsService } from 'services';
 import * as marketService from 'services/Polkamarkets/market';
@@ -76,7 +77,7 @@ const validationSchema = Yup.object().shape({
       const { outcomes } = context.parent;
       const probabilities = outcomes.map(outcome => outcome.probability);
       const sumOfProbabilities = sum(probabilities);
-      return sumOfProbabilities === 100;
+      return almost(sumOfProbabilities, 100);
     }),
   category: Yup.string().required('Category is required.'),
   subcategory: Yup.string().required('Subcategory is required.'),
