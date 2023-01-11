@@ -1,12 +1,17 @@
-import { useCallback, useState, Fragment } from 'react';
+import { useCallback, useState, Fragment, useMemo } from 'react';
 import uuid from 'react-uuid';
 
 import cn from 'classnames';
 import { useFormikContext, getIn } from 'formik';
-import { roundNumber } from 'helpers/math';
+import { almost, roundNumber } from 'helpers/math';
+import sum from 'lodash/sum';
 
 import { Button } from 'components/Button';
-import { OutcomeInput, ProbabilityInput } from 'components/Input';
+import {
+  InputErrorMessage,
+  OutcomeInput,
+  ProbabilityInput
+} from 'components/Input';
 
 import CreateMarketFormOutcomesClasses from './CreateMarketFormOutcomes.module.scss';
 import { ProbabilityDistribution } from './CreateMarketFormOutcomes.type';
@@ -17,6 +22,12 @@ function CreateMarketFormOutcomes() {
 
   const { values, setFieldValue } = useFormikContext();
   const outcomes = getIn(values, 'outcomes');
+
+  const validProbabilities = useMemo(() => {
+    const probabilities = outcomes.map(outcome => outcome.probability);
+    const sumOfProbabilities = sum(probabilities);
+    return almost(sumOfProbabilities, 100);
+  }, [outcomes]);
 
   const toggleProbabilityDistribution = useCallback(() => {
     if (probabilityDistribution === 'uniform') {
@@ -123,6 +134,11 @@ function CreateMarketFormOutcomes() {
             </Button>
           </Fragment>
         ))}
+      </div>
+      <div className={CreateMarketFormOutcomesClasses.error}>
+        {!validProbabilities ? (
+          <InputErrorMessage message="Sum of probabilities must be 100%" />
+        ) : null}
       </div>
       <Button
         variant="outline"
