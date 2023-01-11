@@ -45,7 +45,7 @@ const ProbabilityInput = forwardRef<
         ? roundNumber(parseFloat(value), 2)
         : undefined;
 
-      setFieldValue(fieldByOutcomeIndex, newProbability || 0);
+      setFieldValue(fieldByOutcomeIndex, newProbability);
     },
     [fieldByOutcomeIndex, setFieldValue]
   );
