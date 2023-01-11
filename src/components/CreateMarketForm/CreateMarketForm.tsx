@@ -109,6 +109,12 @@ function CreateMarketForm() {
   async function handleFormSubmit(values: CreateMarketFormData) {
     const polkamarketsService = new PolkamarketsService(networkConfig);
     const closingDate = new Date(values.closingDate).getTime() / 1000; // TODO: move to dayjs
+
+    const outcomesNames = values.outcomes.map(outcome => outcome.name);
+    const outcomesProbabilities = values.outcomes.map(
+      outcome => outcome.probability
+    );
+
     const outcomes = [];
     // data format: "category;subcategory;resolutionSource"
     const data = `${values.category};${values.subcategory};${values.resolutionSource}`;
