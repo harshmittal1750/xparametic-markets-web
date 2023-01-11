@@ -1,44 +1,45 @@
-import React from 'react';
+import { forwardRef, InputHTMLAttributes } from 'react';
 
+import cn from 'classnames';
 import { useField } from 'formik';
 
-import Badge, { BadgeColor } from '../Badge';
 import InputErrorMessage from './InputErrorMessage';
 
 type OutcomeInputProps = {
   name: string;
-  label?: string;
-  badgeColor?: BadgeColor;
 };
 
-const OutcomeInput = React.forwardRef<
+const OutcomeInput = forwardRef<
   HTMLInputElement,
-  OutcomeInputProps & React.InputHTMLAttributes<HTMLInputElement>
->(({ name, label, badgeColor = 'default', ...props }, ref) => {
-  const [field, meta] = useField(name);
+  OutcomeInputProps & InputHTMLAttributes<HTMLInputElement>
+>(({ name, ...props }, ref) => {
+  const [outcomesField] = useField('outcomes');
+
+  const outcomes = outcomesField.value;
+
+  const outcomeIndex = outcomes.indexOf(
+    outcomesField.value.find(outcome => outcome.id === name)
+  );
+
+  const [field, meta] = useField(`outcomes[${outcomeIndex}].name`);
 
   const hasError = meta.touched && meta.error;
 
   return (
     <div className="pm-c-outcome-input--default__group">
-      {label ? (
-        <label
-          htmlFor={name}
-          className={`pm-c-input__label--${hasError ? 'error' : 'default'}`}
-        >
-          {label}
-        </label>
-      ) : null}
       <div
-        className={`pm-c-outcome-input--${
-          hasError ? 'error' : 'default'
-        }__wrapper`}
+        className={cn({
+          'pm-c-outcome-input--error__wrapper': hasError,
+          'pm-c-outcome-input--default__wrapper': !hasError
+        })}
       >
-        <Badge color={badgeColor} />
         <input
+          id={`outcomes[${outcomeIndex}].name`}
           ref={ref}
-          className={`pm-c-outcome-input--${hasError ? 'error' : 'default'}`}
-          id={name}
+          className={cn({
+            'pm-c-outcome-input--error': hasError,
+            'pm-c-outcome-input--default': !hasError
+          })}
           {...field}
           {...props}
         />
