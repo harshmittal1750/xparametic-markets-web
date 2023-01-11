@@ -1,32 +1,54 @@
-import { forwardRef, InputHTMLAttributes, useMemo } from 'react';
+import {
+  ChangeEvent,
+  InputHTMLAttributes,
+  forwardRef,
+  useCallback,
+  useMemo,
+  useState
+} from 'react';
 
 import cn from 'classnames';
-import { useField } from 'formik';
+import { useField, useFormikContext, getIn } from 'formik';
+import { roundNumber } from 'helpers/math';
+import omit from 'lodash/omit';
 
 import Text from '../Text';
 import InputErrorMessage from './InputErrorMessage';
 
 type ProbabilityInputProps = {
-  name: string;
+  outcomeId: string;
 };
 
 const ProbabilityInput = forwardRef<
   HTMLInputElement,
   ProbabilityInputProps & InputHTMLAttributes<HTMLInputElement>
->(({ name, ...props }, ref) => {
-  const [outcomesField] = useField('outcomes');
+>(({ outcomeId, ...props }, ref) => {
+  const { values, setFieldValue } = useFormikContext();
 
-  const outcomes = outcomesField.value;
+  const outcomes = getIn(values, 'outcomes');
 
   const outcomeIndex = useMemo(
-    () =>
-      outcomes.indexOf(
-        outcomesField.value.find(outcome => outcome.id === name)
-      ),
-    [name, outcomes, outcomesField.value]
+    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === outcomeId)),
+    [outcomes, outcomeId]
   );
 
-  const [field, meta] = useField(`outcomes[${outcomeIndex}].probability`);
+  const fieldByOutcomeIndex = `outcomes[${outcomeIndex}].probability`;
+
+  const [field, meta] = useField(fieldByOutcomeIndex);
+
+  const handleChangeProbability = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      const { value } = event.currentTarget;
+
+      const newProbability = value
+        ? roundNumber(parseFloat(value), 2)
+        : undefined;
+
+      setFieldValue(fieldByOutcomeIndex, newProbability || 0);
+    },
+    [fieldByOutcomeIndex, setFieldValue]
+  );
 
   const hasError = meta.touched && meta.error;
 
@@ -39,18 +61,19 @@ const ProbabilityInput = forwardRef<
         })}
       >
         <input
-          id={`outcomes[${outcomeIndex}].probability`}
+          id={fieldByOutcomeIndex}
           ref={ref}
           type="number"
           min={0}
           max={100}
-          step={0.1}
+          step={0.01}
           onWheel={event => event.currentTarget.blur()}
+          onChange={event => handleChangeProbability(event)}
           className={cn({
             'pm-c-probability-input--error': hasError,
             'pm-c-probability-input--default': !hasError
           })}
-          {...field}
+          {...omit(field, ['onChange'])}
           {...props}
         />
         <Text as="span" scale="caption" fontWeight="medium" color="primary">
