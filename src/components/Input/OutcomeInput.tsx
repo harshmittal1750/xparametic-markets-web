@@ -1,4 +1,4 @@
-import { forwardRef, InputHTMLAttributes } from 'react';
+import { forwardRef, InputHTMLAttributes, useMemo } from 'react';
 
 import cn from 'classnames';
 import { useField } from 'formik';
@@ -17,8 +17,9 @@ const OutcomeInput = forwardRef<
 
   const outcomes = outcomesField.value;
 
-  const outcomeIndex = outcomes.indexOf(
-    outcomesField.value.find(outcome => outcome.id === name)
+  const outcomeIndex = useMemo(
+    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === name)),
+    [name, outcomes]
   );
 
   const [field, meta] = useField(`outcomes[${outcomeIndex}].name`);
