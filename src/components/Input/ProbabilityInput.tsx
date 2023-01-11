@@ -1,86 +1,51 @@
-import React, { useEffect } from 'react';
+import { forwardRef, InputHTMLAttributes } from 'react';
 
-import { useField, useFormikContext } from 'formik';
+import cn from 'classnames';
+import { useField } from 'formik';
 
 import Text from '../Text';
 import InputErrorMessage from './InputErrorMessage';
 
-type Outcome = {
-  name: string;
-  probability: number;
-};
-
-type OutcomeContext = {
-  firstOutcome: Outcome;
-  secondOutcome: Outcome;
-};
-
 type ProbabilityInputProps = {
   name: string;
-  label?: string;
 };
 
-const ProbabilityInput = React.forwardRef<
+const ProbabilityInput = forwardRef<
   HTMLInputElement,
-  ProbabilityInputProps & React.InputHTMLAttributes<HTMLInputElement>
->(({ name, label, ...props }, ref) => {
-  const {
-    values: { firstOutcome, secondOutcome },
-    setFieldValue
-  } = useFormikContext<OutcomeContext>();
-  const [field, meta] = useField(name);
+  ProbabilityInputProps & InputHTMLAttributes<HTMLInputElement>
+>(({ name, ...props }, ref) => {
+  const [outcomesField] = useField('outcomes');
 
-  useEffect(() => {
-    if (firstOutcome.probability !== 100 - secondOutcome.probability) {
-      setFieldValue('firstOutcome', {
-        name: firstOutcome.name,
-        probability: 100 - secondOutcome.probability
-      });
-    }
-  }, [
-    firstOutcome.name,
-    firstOutcome.probability,
-    name,
-    secondOutcome,
-    setFieldValue
-  ]);
+  const outcomes = outcomesField.value;
 
-  useEffect(() => {
-    if (secondOutcome.probability !== 100 - firstOutcome.probability) {
-      setFieldValue('secondOutcome', {
-        name: secondOutcome.name,
-        probability: 100 - firstOutcome.probability
-      });
-    }
-  }, [
-    name,
-    firstOutcome,
-    setFieldValue,
-    secondOutcome.probability,
-    secondOutcome.name
-  ]);
+  const outcomeIndex = outcomes.indexOf(
+    outcomesField.value.find(outcome => outcome.id === name)
+  );
+
+  const [field, meta] = useField(`outcomes[${outcomeIndex}].probability`);
+
+  const hasError = meta.touched && meta.error;
 
   return (
     <div className="pm-c-probability-input--default__group">
-      {label ? (
-        <label
-          htmlFor={name}
-          className={`pm-c-input__label--${meta.error ? 'error' : 'default'}`}
-        >
-          {label}
-        </label>
-      ) : null}
       <div
-        className={`pm-c-probability-input--${
-          meta.error ? 'error' : 'default'
-        }__wrapper`}
+        className={cn({
+          'pm-c-probability-input--error__wrapper': hasError,
+          'pm-c-probability-input--default__wrapper': !hasError
+        })}
       >
         <input
+          id={`outcomes[${outcomeIndex}].probability`}
           ref={ref}
-          className="pm-c-probability-input--default"
-          id={name}
           type="number"
+          min={0}
+          max={100}
+          step={0.1}
           onWheel={event => event.currentTarget.blur()}
+          className={cn({
+            'pm-c-probability-input--error': hasError,
+            'pm-c-probability-input--default': !hasError
+          })}
           {...field}
           {...props}
         />
@@ -88,7 +53,9 @@ const ProbabilityInput = React.forwardRef<
           %
         </Text>
       </div>
-      {meta.error ? <InputErrorMessage message={meta.error} /> : null}
+      {hasError && meta.error ? (
+        <InputErrorMessage message={meta.error} />
+      ) : null}
     </div>
   );
 });
