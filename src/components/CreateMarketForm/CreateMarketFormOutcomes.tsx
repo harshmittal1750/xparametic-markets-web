@@ -2,7 +2,7 @@ import { useCallback, useState, Fragment } from 'react';
 import uuid from 'react-uuid';
 
 import cn from 'classnames';
-import { useField, useFormikContext } from 'formik';
+import { useField, useFormikContext, getIn } from 'formik';
 
 import { Button } from 'components/Button';
 import { OutcomeInput, ProbabilityInput } from 'components/Input';
@@ -14,70 +14,69 @@ function CreateMarketFormOutcomes() {
   const [probabilityDistribution, setProbabilityDistribution] =
     useState<ProbabilityDistribution>('uniform');
 
-  const { setFieldValue, setFieldTouched } = useFormikContext();
+  const { values, setFieldValue } = useFormikContext();
   const [field, meta] = useField('outcomes');
+  const outcomes = getIn(values, 'outcomes');
 
   const toggleProbabilityDistribution = useCallback(() => {
     if (probabilityDistribution === 'uniform') {
       setProbabilityDistribution('manual');
     } else {
       setProbabilityDistribution('uniform');
-      const values = [...field.value];
 
-      const probability = (100 / (values.length + 1)).toFixed(2);
+      const probability = 100 / (outcomes.length + 1);
 
-      values.forEach((_outcome, outcomeIndex) => {
-        values[outcomeIndex].probability = probability;
+      outcomes.forEach((_outcome, outcomeIndex) => {
+        outcomes[outcomeIndex].probability = probability;
       });
 
       setFieldValue('outcomes', values);
-      setFieldTouched('outcomes', true, true);
     }
-  }, [field.value, probabilityDistribution, setFieldTouched, setFieldValue]);
+  }, [outcomes, probabilityDistribution, setFieldValue, values]);
 
   const handleAddOutcome = useCallback(() => {
-    const values = [...field.value];
-
     if (probabilityDistribution === 'manual') {
-      setFieldValue('outcomes', [
-        ...values,
-        { id: uuid(), name: '', probability: 0 }
-      ]);
+      const newOutcomes = [
+        ...outcomes,
+        { id: uuid(), name: '', probability: 0.1 }
+      ];
+      setFieldValue('outcomes', newOutcomes);
     } else {
-      const probability = (100 / (values.length + 1)).toFixed(2);
+      const probability = 100 / (outcomes.length + 1);
 
-      values.forEach((_outcome, outcomeIndex) => {
-        values[outcomeIndex].probability = probability;
+      outcomes.forEach((_outcome, outcomeIndex) => {
+        outcomes[outcomeIndex].probability = probability;
       });
 
-      setFieldValue('outcomes', [
-        ...values,
-        { id: uuid(), name: '', probability }
-      ]);
-      setFieldTouched('outcomes', true, true);
+      const newOutcomes = [...outcomes, { id: uuid(), name: '', probability }];
+      setFieldValue('outcomes', newOutcomes);
     }
-  }, [field.value, probabilityDistribution, setFieldTouched, setFieldValue]);
+  }, [outcomes, probabilityDistribution, setFieldValue]);
 
   const handleRemoveOutcome = useCallback(
-    (index: number) => {
-      const values = [...field.value];
-      values.splice(index, 1);
+    (outcomeId: number) => {
+      const index = outcomes.indexOf(
+        outcomes.find(outcome => outcome.id === outcomeId)
+      );
+
+      outcomes.splice(index, 1);
 
       if (probabilityDistribution === 'uniform') {
-        const probability = (100 / values.length).toFixed(2);
+        const probability = 100 / outcomes.length;
 
-        values.forEach((_outcome, outcomeIndex) => {
-          values[outcomeIndex].probability = probability;
+        outcomes.forEach((_outcome, outcomeIndex) => {
+          outcomes[outcomeIndex].probability = probability;
         });
       }
 
-      setFieldValue('outcomes', values);
-      setFieldTouched('outcomes', true, true);
+      const newOutcomes = [...outcomes];
+
+      setFieldValue('outcomes', newOutcomes);
     },
-    [field.value, probabilityDistribution, setFieldTouched, setFieldValue]
+    [outcomes, probabilityDistribution, setFieldValue]
   );
 
-  const hasMoreThanTwoOutcomes = field.value.length > 2;
+  const hasMoreThanTwoOutcomes = outcomes.length > 2;
 
   return (
     <div>
@@ -100,7 +99,7 @@ function CreateMarketFormOutcomes() {
         </button>
       </div>
       <div className={CreateMarketFormOutcomesClasses.outcomes}>
-        {field.value.map((outcome, index) => (
+        {outcomes.map(outcome => (
           <Fragment key={outcome.id}>
             <OutcomeInput
               key={`${outcome.id}[0]`}
@@ -117,7 +116,7 @@ function CreateMarketFormOutcomes() {
               variant="outline"
               color="default"
               size="xs"
-              onClick={() => handleRemoveOutcome(index)}
+              onClick={() => handleRemoveOutcome(outcome.id)}
               disabled={!hasMoreThanTwoOutcomes}
             >
               -
