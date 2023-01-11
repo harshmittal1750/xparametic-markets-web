@@ -1,28 +1,30 @@
 import { forwardRef, InputHTMLAttributes, useMemo } from 'react';
 
 import cn from 'classnames';
-import { useField } from 'formik';
+import { getIn, useField, useFormikContext } from 'formik';
 
 import InputErrorMessage from './InputErrorMessage';
 
 type OutcomeInputProps = {
-  name: string;
+  outcomeId: string;
 };
 
 const OutcomeInput = forwardRef<
   HTMLInputElement,
   OutcomeInputProps & InputHTMLAttributes<HTMLInputElement>
->(({ name, ...props }, ref) => {
-  const [outcomesField] = useField('outcomes');
+>(({ outcomeId, ...props }, ref) => {
+  const { values } = useFormikContext();
 
-  const outcomes = outcomesField.value;
+  const outcomes = getIn(values, 'outcomes');
 
   const outcomeIndex = useMemo(
-    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === name)),
-    [name, outcomes]
+    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === outcomeId)),
+    [outcomes, outcomeId]
   );
 
-  const [field, meta] = useField(`outcomes[${outcomeIndex}].name`);
+  const fieldByOutcomeIndex = `outcomes[${outcomeIndex}].name`;
+
+  const [field, meta] = useField(fieldByOutcomeIndex);
 
   const hasError = meta.touched && meta.error;
 
@@ -35,7 +37,7 @@ const OutcomeInput = forwardRef<
         })}
       >
         <input
-          id={`outcomes[${outcomeIndex}].name`}
+          id={fieldByOutcomeIndex}
           ref={ref}
           className={cn({
             'pm-c-outcome-input--error': hasError,

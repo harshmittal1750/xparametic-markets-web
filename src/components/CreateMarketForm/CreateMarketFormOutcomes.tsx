@@ -103,7 +103,7 @@ function CreateMarketFormOutcomes() {
           <Fragment key={outcome.id}>
             <OutcomeInput
               key={`${outcome.id}[0]`}
-              name={outcome.id}
+              outcomeId={outcome.id}
               placeholder="Outcome"
             />
             <ProbabilityInput
