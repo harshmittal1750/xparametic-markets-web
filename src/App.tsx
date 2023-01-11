@@ -1,4 +1,4 @@
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Provider } from 'react-redux';
 import {
   BrowserRouter as Router,
@@ -10,9 +10,10 @@ import {
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { pages } from 'config';
+import { getUserCountry } from 'helpers/location';
 import store from 'redux/store';
 
-import Init from 'pages/Init';
+import RestrictedCountry from 'pages/RestrictedCountry';
 
 import { Layout } from 'components';
 
@@ -22,18 +23,28 @@ import { NetworksProvider } from 'contexts/networks';
 import ThemeProvider from 'contexts/theme';
 import { VoteProvider } from 'contexts/vote';
 
-import useInit, { InitActions } from 'hooks/useInit';
-
 export default function App() {
-  const init = useInit();
+  const [isLoading, setLoading] = useState(true);
+  const [isRestricted, setRestricted] = useState(false);
 
-  if (init.type === InitActions.CHECKING)
+  useEffect(() => {
+    (async function handleRestrictedCountry() {
+      const restrictedCountries =
+        process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+      const userCountry = await getUserCountry();
+
+      setLoading(false);
+      setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
+    })();
+  }, []);
+
+  if (isLoading)
     return (
       <div className="ta-center p-grid">
         <span className="spinner--primary d-inline-block" />
       </div>
     );
-  if (init.type !== InitActions.SUCCESS) return <Init {...init} />;
+  if (isRestricted) return <RestrictedCountry />;
   return (
     <ThemeProvider>
       <Provider store={store}>
