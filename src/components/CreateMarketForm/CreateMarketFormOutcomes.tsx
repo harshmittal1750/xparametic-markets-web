@@ -2,7 +2,8 @@ import { useCallback, useState, Fragment } from 'react';
 import uuid from 'react-uuid';
 
 import cn from 'classnames';
-import { useField, useFormikContext, getIn } from 'formik';
+import { useFormikContext, getIn } from 'formik';
+import { roundNumber } from 'helpers/math';
 
 import { Button } from 'components/Button';
 import { OutcomeInput, ProbabilityInput } from 'components/Input';
@@ -15,7 +16,6 @@ function CreateMarketFormOutcomes() {
     useState<ProbabilityDistribution>('uniform');
 
   const { values, setFieldValue } = useFormikContext();
-  const [field, meta] = useField('outcomes');
   const outcomes = getIn(values, 'outcomes');
 
   const toggleProbabilityDistribution = useCallback(() => {
@@ -24,15 +24,15 @@ function CreateMarketFormOutcomes() {
     } else {
       setProbabilityDistribution('uniform');
 
-      const probability = 100 / (outcomes.length + 1);
+      const probability = roundNumber(100 / outcomes.length, 2);
 
       outcomes.forEach((_outcome, outcomeIndex) => {
         outcomes[outcomeIndex].probability = probability;
       });
 
-      setFieldValue('outcomes', values);
+      setFieldValue('outcomes', outcomes);
     }
-  }, [outcomes, probabilityDistribution, setFieldValue, values]);
+  }, [outcomes, probabilityDistribution, setFieldValue]);
 
   const handleAddOutcome = useCallback(() => {
     if (probabilityDistribution === 'manual') {
@@ -42,7 +42,7 @@ function CreateMarketFormOutcomes() {
       ];
       setFieldValue('outcomes', newOutcomes);
     } else {
-      const probability = 100 / (outcomes.length + 1);
+      const probability = roundNumber(100 / (outcomes.length + 1), 2);
 
       outcomes.forEach((_outcome, outcomeIndex) => {
         outcomes[outcomeIndex].probability = probability;
@@ -62,7 +62,7 @@ function CreateMarketFormOutcomes() {
       outcomes.splice(index, 1);
 
       if (probabilityDistribution === 'uniform') {
-        const probability = 100 / outcomes.length;
+        const probability = roundNumber(100 / outcomes.length, 2);
 
         outcomes.forEach((_outcome, outcomeIndex) => {
           outcomes[outcomeIndex].probability = probability;
@@ -108,7 +108,7 @@ function CreateMarketFormOutcomes() {
             />
             <ProbabilityInput
               key={`${outcome.id}[1]`}
-              name={outcome.id}
+              outcomeId={outcome.id}
               disabled={probabilityDistribution === 'uniform'}
             />
             <Button
