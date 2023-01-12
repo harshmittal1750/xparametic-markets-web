@@ -12,7 +12,7 @@ type VirtualizedListProps<T> = {
 function VirtualizedList<T>({
   height,
   data = [],
-  components,
+  components = {},
   itemContent,
   atBottom
 }: VirtualizedListProps<T>) {
