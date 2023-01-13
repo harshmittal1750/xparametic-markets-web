@@ -1,5 +1,5 @@
 import { useField } from 'formik';
-import { Outcome as MarketOutcome } from 'models/market';
+import { colorByOutcomeId } from 'helpers/color';
 import { selectOutcome } from 'redux/ducks/trade';
 import { PolkamarketsService } from 'services';
 
@@ -7,7 +7,6 @@ import VirtualizedList from 'components/VirtualizedList';
 
 import { useAppSelector } from 'hooks';
 
-import { BadgeColor } from '../Badge';
 import Outcome from '../Outcome';
 import { ReportFormOutcomeSelectType } from './ReportFormOutcomeSelect.type';
 
@@ -36,9 +35,6 @@ function ReportFormOutcomeSelect({ type }: ReportFormOutcomeSelectProps) {
   // converting bytes32 to int
   const resolvedOutcomeId = PolkamarketsService.bytes32ToInt(bestAnswer);
   const isStarted = bond > 0;
-
-  const getOutcomeColor = (outcome: MarketOutcome): BadgeColor =>
-    outcomes.indexOf(outcome) === 0 ? 'blue' : 'pink';
 
   function handleOutcomeSelect(id: string) {
     selectOutcome(marketId, marketNetworkId, id);
@@ -81,7 +77,7 @@ function ReportFormOutcomeSelect({ type }: ReportFormOutcomeSelectProps) {
               title={outcome.title}
               shares={portfolio[marketId]?.outcomes[outcome.id]?.shares || 0}
               bond={getOutcomeBond(outcome.id)}
-              color={getOutcomeColor(outcome)}
+              color={colorByOutcomeId(outcome.id)}
               state={checkOutcomeState(outcome)}
               resolvedOutcomeId={resolvedOutcomeId}
               marketQuestionFinalized={isMarketQuestionFinalized}
