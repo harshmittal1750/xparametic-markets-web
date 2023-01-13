@@ -1,0 +1,15 @@
+.header {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    var(--color-surface-tertiary) 100%
+  );
+}
+
+.nav {
+  background-color: var(--color-surface-tertiary);
+  backdrop-filter: blur(8px);
+  top: 0px;
+  z-index: 1;
+  position: sticky;
+}

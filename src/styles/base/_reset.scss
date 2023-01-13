@@ -1,7 +1,7 @@
 *,
 *:before,
 *:after {
-  box-sizing: border-box;
+  box-sizing: inherit;
 }
 
 html,
@@ -65,17 +65,13 @@ video {
 }
 
 html {
-  height: 100%;
+  color-scheme: light dark;
   font-size: 62.5%;
-  scroll-behavior: smooth;
+  box-sizing: border-box;
 }
 
 body {
-  min-height: 100%;
-  font-size: 1.6rem;
-  line-height: 1;
-  overflow: hidden;
-  background-color: var(--color-background-primary);
+  scroll-behavior: smooth;
 }
 
 footer,
@@ -84,6 +80,20 @@ nav,
 section,
 main {
   display: block;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  font-weight: inherit;
+  line-height: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
 }
 
 a {

@@ -11,13 +11,13 @@ import { useAppDispatch } from 'hooks';
 export default function CreateMarket({
   onCreateClick,
   ...props
-}: ButtonProps & { onCreateClick?: () => void }) {
+}: ButtonProps & { onCreateClick?(): void }) {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const handleCreateClick = useCallback(() => {
     dispatch(closeRightSidebar());
     onCreateClick?.();
-    history.push('/market/create');
+    history.push('/markets/create');
   }, [dispatch, history, onCreateClick]);
 
   return (

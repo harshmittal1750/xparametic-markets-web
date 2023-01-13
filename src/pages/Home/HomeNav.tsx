@@ -1,43 +1,47 @@
 import { useCallback } from 'react';
 
-import { setSearchQuery, setSorter } from 'redux/ducks/markets';
+import { setSorter } from 'redux/ducks/markets';
 import { useMedia } from 'ui';
 
-import { CreateMarket, Feature, Filter, SearchBar } from 'components';
+import { Button, CreateMarket, Feature, Filter, Icon } from 'components';
 
 import { useAppDispatch } from 'hooks';
+import useMarkets from 'hooks/useMarkets';
 
-import HomeNavFilter from './HomeNavFilter';
+import HomeNavSearch from './HomeNavSearch';
 import { filters } from './utils';
 
-export default function HomeNav() {
+type HomeNavProps = {
+  onFilterClick(): void;
+};
+
+export default function HomeNav({ onFilterClick }: HomeNavProps) {
   const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
-  const handleSearch = useCallback(
-    (text: string) => {
-      dispatch(setSearchQuery(text));
+  const markets = useMarkets();
+  const handleSelectedFilter = useCallback(
+    (filter: { value: string | number; optionalTrigger?: string }) => {
+      dispatch(
+        setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
+      );
     },
     [dispatch]
   );
 
-  function handleSelectedFilter(filter: {
-    value: string | number;
-    optionalTrigger?: string;
-  }) {
-    dispatch(
-      setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
-    );
-  }
-
   return (
-    <div className="pm-p-home__navigation">
-      <HomeNavFilter isDesktop={isDesktop} />
-      <SearchBar
-        name="Search Markets"
-        placeholder="Search markets"
-        onSearch={handleSearch}
-        className={{ form: 'pm-p-home__navigation__actions' }}
-      />
+    <>
+      <Button
+        variant="outline"
+        size="sm"
+        className="pm-p-home__navigation__actions"
+        onClick={onFilterClick}
+        disabled={markets.state === 'loading'}
+        {...(!isDesktop && { 'aria-label': 'Filter' })}
+      >
+        <Icon name="Filter" />
+        {isDesktop && 'Filter'}
+      </Button>
+      <HomeNavSearch />
       <Filter
         description="Sort by"
         defaultOption="expiresAt"
@@ -50,6 +54,6 @@ export default function HomeNav() {
           <CreateMarket />
         </Feature>
       )}
-    </div>
+    </>
   );
 }

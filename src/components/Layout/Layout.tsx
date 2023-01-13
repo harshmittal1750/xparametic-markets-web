@@ -1,24 +1,50 @@
-import { Container } from 'ui';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import BetaWarning from '../BetaWarning';
-import Footer from '../Footer';
-import Header from '../Header';
-import RightSidebar from '../RightSidebar';
-import ScrollableArea from '../ScrollableArea';
+import { pages } from 'config';
+import { login } from 'redux/ducks/polkamarkets';
+
+import BetaWarning from 'components/BetaWarning';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import SEO from 'components/SEO';
+import WrongNetwork from 'components/WrongNetwork';
+
+import { useTheme, useAppDispatch, useNetwork } from 'hooks';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
+  const location = useLocation();
+  const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const network = useNetwork();
+  const page = Object.values(pages).filter(
+    ({ pathname }) => pathname === location.pathname
+  )[0];
+
+  if (theme.theme === 'dark') {
+    document.documentElement.classList.add('theme--dark');
+    document.documentElement.classList.remove('theme--light');
+  } else {
+    document.documentElement.classList.add('theme--light');
+    document.documentElement.classList.remove('theme--dark');
+  }
+
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
+  useEffect(() => {
+    dispatch(login(network.networkConfig));
+  }, [dispatch, network.networkConfig]);
+
   return (
-    <div className="pm-l-layout">
+    <>
+      <WrongNetwork />
       <BetaWarning />
+      {page?.meta && <SEO {...page.meta} />}
       <Header />
-      <ScrollableArea className="pm-l-layout__scrollable-area">
-        <Container className="pm-l-layout__main">{children}</Container>
-        <footer className="pm-l-layout__footer">
-          <Footer />
-        </footer>
-      </ScrollableArea>
-      <RightSidebar />
+      {children}
+      <Footer />
       <div id="toast-notification-portal" />
-    </div>
+    </>
   );
 }

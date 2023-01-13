@@ -1,54 +1,90 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
+import { Provider } from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from 'react-router-dom';
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { login } from 'redux/ducks/polkamarkets';
-import Routes from 'routes';
+import { pages } from 'config';
+import { getUserCountry } from 'helpers/location';
+import store from 'redux/store';
 
-import { SEO } from 'components';
+import RestrictedCountry from 'pages/RestrictedCountry';
+
+import { Layout } from 'components';
 
 import FavoriteMarketsProvider from 'contexts/favoriteMarkets';
 import { FiltersProvider } from 'contexts/filters';
 import { NetworksProvider } from 'contexts/networks';
+import ThemeProvider from 'contexts/theme';
+import { VoteProvider } from 'contexts/vote';
 
-import { useAppDispatch, useNetwork, usePrevious, useTheme } from 'hooks';
-
-const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.jpg`;
-
-const App = () => {
-  const { theme } = useTheme();
-  const dispatch = useAppDispatch();
-  const { networkConfig } = useNetwork();
-  const themeCn = `theme--${theme}`;
-  const { current: themeCnPrev } = usePrevious(themeCn);
-
-  document.documentElement.dataset.theme = theme;
-  if (themeCnPrev && themeCn !== themeCnPrev) {
-    document.documentElement.classList.replace(themeCnPrev, themeCn);
-  } else {
-    document.documentElement.classList.add(themeCn);
-  }
+export default function App() {
+  const [isLoading, setLoading] = useState(true);
+  const [isRestricted, setRestricted] = useState(false);
 
   useEffect(() => {
-    dispatch(login(networkConfig));
-  }, [dispatch, networkConfig]);
+    (async function handleRestrictedCountry() {
+      const restrictedCountries =
+        process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+      const userCountry = await getUserCountry();
 
+      setLoading(false);
+      setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
+    })();
+  }, []);
+
+  if (isLoading)
+    return (
+      <div className="ta-center p-grid">
+        <span className="spinner--primary d-inline-block" />
+      </div>
+    );
+  if (isRestricted) return <RestrictedCountry />;
   return (
-    <MuiPickersUtilsProvider utils={DayjsUtils}>
-      <NetworksProvider>
-        <FiltersProvider>
-          <FavoriteMarketsProvider>
-            <SEO
-              title="Illuminate Fantasy League, Powered By Polkamarkets"
-              description="The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!"
-              imageUrl={IFL_DEFAULT_BANNER}
-            />
-            <Routes />
-          </FavoriteMarketsProvider>
-        </FiltersProvider>
-      </NetworksProvider>
-    </MuiPickersUtilsProvider>
+    <ThemeProvider>
+      <Provider store={store}>
+        <Router>
+          <MuiPickersUtilsProvider utils={DayjsUtils}>
+            <NetworksProvider>
+              <FiltersProvider>
+                <FavoriteMarketsProvider>
+                  <VoteProvider>
+                    <Layout>
+                      <Suspense
+                        fallback={
+                          <div className="ta-center">
+                            <span className="spinner--primary d-inline-block" />
+                          </div>
+                        }
+                      >
+                        <Switch>
+                          {Object.values(pages).map(page => (
+                            <Route
+                              key={page.name}
+                              exact={page.exact}
+                              path={page.pathname}
+                              component={page.Component}
+                            />
+                          ))}
+                          <Redirect
+                            from="/leaderboard/:slug"
+                            to="/clubs/:slug"
+                          />
+                        </Switch>
+                      </Suspense>
+                    </Layout>
+                  </VoteProvider>
+                </FavoriteMarketsProvider>
+              </FiltersProvider>
+            </NetworksProvider>
+          </MuiPickersUtilsProvider>
+        </Router>
+      </Provider>
+    </ThemeProvider>
   );
-};
-
-export default App;
+}

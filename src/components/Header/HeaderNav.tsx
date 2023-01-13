@@ -2,6 +2,8 @@ import { useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import type ReactRouterDom from 'react-router-dom';
 
+import { pages, socials } from 'config';
+import { shiftSlash } from 'helpers/string';
 import { useMedia } from 'ui';
 
 import { IlluminateFantasyLeagueLogo } from 'assets/icons';
@@ -14,41 +16,6 @@ import Modal from 'components/Modal';
 import Text from 'components/Text';
 
 import HeaderNavClasses from './HeaderNav.module.scss';
-
-const marketsPathname = 'Markets';
-const pathnames = [
-  marketsPathname,
-  'Portfolio',
-  'Achievements',
-  'Leaderboard',
-  'Clubs'
-];
-const socials = [
-  {
-    name: 'Twitter',
-    href: 'https://twitter.com/polkamarkets'
-  },
-  {
-    name: 'Medium',
-    href: 'https://blog.polkamarkets.com/'
-  },
-  {
-    name: 'Telegram',
-    href: 'https://t.me/polkamarkets_announcements'
-  },
-  {
-    name: 'Youtube',
-    href: 'https://www.youtube.com/channel/UCKAefRG1MgYMnBmgRYhisTQ'
-  },
-  {
-    name: 'LinkedIn',
-    href: 'https://www.linkedin.com/company/polkamarkets'
-  },
-  {
-    name: 'GitHub',
-    href: 'https://github.com/Polkamarkets'
-  }
-] as const;
 
 function HeaderNavModal({
   children
@@ -92,7 +59,7 @@ function HeaderNavModal({
             Join our community
           </Text>
           <ul className={HeaderNavClasses.socials}>
-            {socials.map(social => (
+            {Object.values(socials).map(social => (
               <li key={social.name}>
                 <Text
                   // @ts-ignore
@@ -130,25 +97,31 @@ function HeaderNavMenu({
 }) {
   return (
     <ul className={HeaderNavClasses.list}>
-      {pathnames.map(_pathname => {
-        const pathname = `/${
-          _pathname === marketsPathname ? '' : _pathname.toLowerCase()
-        }`;
-
-        return (
-          <li key={_pathname} className={HeaderNavClasses.item}>
+      {Object.values(pages)
+        .filter(page => page.navigation)
+        .reverse()
+        .map(page => (
+          <li key={page.name} className={HeaderNavClasses.item}>
             <NavLink
-              to={pathname}
+              to={page.pathname}
               className={HeaderNavClasses.link}
               activeClassName={HeaderNavClasses.active}
-              isActive={(_, location) => location.pathname === pathname}
+              isActive={(_, location) =>
+                // prettier-ignore
+                // eslint-disable-next-line no-nested-ternary
+                location.pathname === pages.home.pathname ||
+                /^\/markets/.test(location.pathname)
+                  ? page.pathname === pages.home.pathname
+                  : /^\/clubs/.test(location.pathname)
+                    ? page.pathname === pages.clubs.pathname
+                    : new RegExp(shiftSlash(location.pathname)).test(shiftSlash(page.pathname))
+              }
               {...NavLinkProps}
             >
-              {_pathname}
+              {page.name}
             </NavLink>
           </li>
-        );
-      })}
+        ))}
     </ul>
   );
 }

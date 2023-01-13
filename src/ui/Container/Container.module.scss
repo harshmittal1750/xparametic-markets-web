@@ -1,5 +1,12 @@
 .root {
   width: 100%;
+}
+
+.xGutters {
   padding-left: var(--grid-margin);
   padding-right: var(--grid-margin);
+}
+
+.gutters {
+  padding: var(--grid-margin);
 }

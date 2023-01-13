@@ -1,41 +1,66 @@
-import { marketsSelector } from 'redux/ducks/markets';
+import { useCallback, useEffect, useState } from 'react';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
-import { MarketListAsync } from 'components';
+import cn from 'classnames';
+import { pages } from 'config';
+import { Container, useMedia, useRect } from 'ui';
 
-import { VoteProvider } from 'contexts/vote';
+import { MarketList, RightSidebar } from 'components';
 
-import { useAppSelector, useFavoriteMarkets, useFilters } from 'hooks';
+import useMarkets from 'hooks/useMarkets';
 
+import HomeClasses from './Home.module.scss';
+import HomeFilter from './HomeFilter';
+import HomeHero from './HomeHero';
 import HomeNav from './HomeNav';
 
 export default function Home() {
-  const {
-    state: { favorites },
-    selected
-  } = useFilters();
-  const { dropdowns } = selected;
+  const markets = useMarkets();
+  const routeMatch = useRouteMatch();
+  const isDesktop = useMedia('(min-width: 1024px)');
+  const [ref, rect] = useRect();
+  const [show, setShow] = useState(false);
+  const handleShow = useCallback(() => setShow(true), []);
+  const handleHide = useCallback(() => setShow(false), []);
+  const handleToggle = useCallback(() => setShow(prevShow => !prevShow), []);
 
-  const { favoriteMarkets } = useFavoriteMarkets();
-
-  const markets = useAppSelector(state =>
-    marketsSelector({
-      state: state.markets,
-      filters: {
-        ...dropdowns,
-        favorites: {
-          checked: favorites.checked,
-          marketsByNetwork: favoriteMarkets
-        }
-      }
-    })
-  );
+  useEffect(() => {
+    markets.fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="pm-p-home">
-      <HomeNav />
-      <VoteProvider>
-        <MarketListAsync markets={markets} favoriteMarkets={favoriteMarkets} />
-      </VoteProvider>
+    <div className="d-flex">
+      <div className="flex-fill">
+        <Switch>
+          <Route exact path={routeMatch.path}>
+            {isDesktop && <HomeHero />}
+            <Container
+              ref={ref}
+              $enableGutters
+              className={cn(
+                'bb-thin d-flex g-12 pm-p-home__navigation',
+                HomeClasses.nav
+              )}
+            >
+              <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
+            </Container>
+            <div className="d-flex">
+              <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
+              <MarketList markets={markets} />
+            </div>
+          </Route>
+          {Object.values(pages.home.pages).map(page => (
+            <Route
+              key={page.name}
+              exact={page.exact}
+              path={page.pathname}
+              component={page.Component}
+            />
+          ))}
+        </Switch>
+      </div>
+      {isDesktop && <RightSidebar />}
     </div>
   );
 }

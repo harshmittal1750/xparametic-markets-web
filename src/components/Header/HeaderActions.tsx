@@ -1,14 +1,7 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import cn from 'classnames';
-import {
-  Adornment,
-  ContainerClasses,
-  List,
-  ListItem,
-  useMedia,
-  useRect
-} from 'ui';
+import { Adornment, Container, List, ListItem, useMedia, useRect } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -26,7 +19,7 @@ import HeaderActionsClasses from './HeaderActions.module.scss';
 
 function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
   const Portal = usePortal({
-    root: document.getElementById('root')
+    root: document.body
   });
 
   useEffect(() => {
@@ -78,9 +71,10 @@ export default function HeaderActions() {
     [isDesktop, isTv, networkSelectorRef, networks, show]
   );
   const isThemeDark = theme.theme === 'dark';
-  const HeaderActionsRootComponent = isDesktop
-    ? Fragment
-    : HeaderActionsWrapper;
+  const headerActionsComponent = {
+    Root: isDesktop ? Fragment : HeaderActionsWrapper,
+    Wrapper: isDesktop ? 'div' : Container
+  };
 
   function handleTheme() {
     theme.setTheme(isThemeDark ? 'light' : 'dark');
@@ -90,11 +84,10 @@ export default function HeaderActions() {
   }
 
   return (
-    <HeaderActionsRootComponent>
-      <div
+    <headerActionsComponent.Root>
+      <headerActionsComponent.Wrapper
         className={cn(HeaderActionsClasses.root, {
           [HeaderClasses.container]: !isDesktop,
-          [ContainerClasses.root]: !isDesktop,
           [HeaderActionsClasses.high]: show && !isDesktop
         })}
       >
@@ -110,11 +103,10 @@ export default function HeaderActions() {
         >
           <Icon name={isThemeDark ? 'Sun' : 'Moon'} size="lg" />
         </Button>
-      </div>
+      </headerActionsComponent.Wrapper>
       <Modal
         disableGutters
         onHide={handleHide}
-        disablePortal={!isDesktop}
         disableOverlay={isDesktop}
         fullWidth={!isDesktop}
         show={show}
@@ -185,6 +177,6 @@ export default function HeaderActions() {
           ))}
         </List>
       </Modal>
-    </HeaderActionsRootComponent>
+    </headerActionsComponent.Root>
   );
 }

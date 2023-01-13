@@ -1,5 +1,4 @@
-:root,
-[data-theme='light'] {
+:root {
   --color-bg-1: #f8faff;
   --color-bg-2: #fbfcfe;
   --color-bg-3: #f5f6fa;
@@ -30,10 +29,8 @@
     #bd5252 0%,
     #e59c73 99.91%
   );
-}
 
-@supports (--css: variables) {
-  [data-theme='dark'] {
+  &.theme--dark {
     --color-bg-1: #0e1016;
     --color-bg-2: #12141c;
     --color-bg-3: #171b23;
