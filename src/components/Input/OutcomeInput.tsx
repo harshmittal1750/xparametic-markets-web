@@ -2,7 +2,9 @@ import { forwardRef, InputHTMLAttributes, useMemo } from 'react';
 
 import cn from 'classnames';
 import { getIn, useField, useFormikContext } from 'formik';
+import { colorByOutcomeId } from 'helpers/color';
 
+import Badge from '../Badge';
 import InputErrorMessage from './InputErrorMessage';
 
 type OutcomeInputProps = {
@@ -36,6 +38,7 @@ const OutcomeInput = forwardRef<
           'pm-c-outcome-input--default__wrapper': !hasError
         })}
       >
+        <Badge color={colorByOutcomeId(outcomeIndex)} />
         <input
           id={fieldByOutcomeIndex}
           ref={ref}
