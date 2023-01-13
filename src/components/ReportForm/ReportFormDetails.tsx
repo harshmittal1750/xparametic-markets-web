@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 
 import { useField } from 'formik';
+import { colorByOutcomeId } from 'helpers/color';
 import { roundNumber } from 'helpers/math';
 import { PolkamarketsService } from 'services';
 
@@ -91,13 +92,23 @@ function ReportFormDetails() {
     },
     {
       key: `${outcomes[0].id}`,
-      title: <Badge color="blue" label={outcomes[0].title} />,
+      title: (
+        <Badge
+          color={colorByOutcomeId(outcome[0].id)}
+          label={outcomes[0].title}
+        />
+      ),
       value: bonds[0] || 0,
       fontWeight: 'normal'
     },
     {
       key: `${outcomes[1].id}`,
-      title: <Badge color="pink" label={outcomes[1].title} />,
+      title: (
+        <Badge
+          color={colorByOutcomeId(outcome[1].id)}
+          label={outcomes[1].title}
+        />
+      ),
       value: bonds[1] || 0,
       fontWeight: 'normal'
     },
