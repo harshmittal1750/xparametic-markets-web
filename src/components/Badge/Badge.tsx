@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { CategoricalColor } from 'helpers/color';
+
 import Text from '../Text';
 
 export type BadgeVariant = 'normal' | 'filled';
@@ -24,7 +26,7 @@ type BadgeProps = {
    * Color of the circle
    * @default 'default'
    */
-  color?: BadgeColor;
+  color?: BadgeColor | CategoricalColor;
   /**
    * Label to show
    */
