@@ -21,6 +21,21 @@
   --color-text-secondary: var(--neutral-500);
   --color-text-quinary: rgb(var(--color-text-rgb) / var(--alpha-quinary));
 
+  // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
+
+  --color-categorical-0: #0fb5ae;
+  --color-categorical-1: #4046ca;
+  --color-categorical-2: #f68510;
+  --color-categorical-3: #de3d82;
+  --color-categorical-4: #7e84fa;
+  --color-categorical-5: #72e06a;
+  --color-categorical-6: #127af3;
+  --color-categorical-7: #7226d3;
+  --color-categorical-8: #e8c603;
+  --color-categorical-9: #cb5d00;
+  --color-categorical-10: #008f5d;
+  --color-categorical-11: #bce931;
+
   &[class='theme--dark'] {
     --color-background--rgb: var(--neutral-900--rgb);
     --color-text-rgb: var(--neutral-200--rgb);
