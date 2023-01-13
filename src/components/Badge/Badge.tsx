@@ -14,7 +14,8 @@ export type BadgeColor =
   | 'danger'
   | 'pink'
   | 'blue'
-  | 'purple';
+  | 'purple'
+  | CategoricalColor;
 
 type BadgeProps = {
   /**
@@ -26,7 +27,7 @@ type BadgeProps = {
    * Color of the circle
    * @default 'default'
    */
-  color?: BadgeColor | CategoricalColor;
+  color?: BadgeColor;
   /**
    * Label to show
    */
