@@ -1,16 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
-import isNull from 'lodash/isNull';
-import { getMarket, setChartViewType } from 'redux/ducks/market';
-import { reset } from 'redux/ducks/trade';
-import { closeRightSidebar, openTradeForm } from 'redux/ducks/ui';
+import type { Action } from 'redux/ducks/polkamarkets';
 import { Container } from 'ui';
+import Spinner from 'ui/Spinner';
 
 import { ArrowLeftIcon } from 'assets/icons';
 
-import { Tabs, Table, Text, Button, SEO, VoteArrows } from 'components';
+import {
+  Tabs,
+  Table,
+  Text,
+  Button,
+  SEO,
+  VoteArrows,
+  AlertMini
+} from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -22,101 +28,75 @@ import MarketNews from './MarketNews';
 import MarketStats from './MarketStats';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
-type Params = {
-  marketId: string;
-};
-
-const Market = () => {
-  const dispatch = useAppDispatch();
+export default function Market() {
   const history = useHistory();
-  const currency = useAppSelector(state => state.market.market.currency);
-  const { symbol, ticker } = currency;
-  const { network } = useNetwork();
-  const { marketId } = useParams<Params>();
-  const { market, isLoading, error } = useAppSelector(state => state.market);
-  const { actions, bondActions } = useAppSelector(state => state.polkamarkets);
-  const [activeTab, setActiveTab] = useState('positions');
+  const network = useNetwork();
+  const params = useParams<Record<'marketId', string>>();
+  const dispatch = useAppDispatch();
+  const { market, ...marketProps } = useAppSelector(state => state.market);
+  const actions = useAppSelector(state => state.polkamarkets.actions);
+  const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
+  const [tab, setTab] = useState('positions');
   const [retries, setRetries] = useState(0);
-  const isDiffNetwork = network.id !== market.networkId.toString();
-  const resolvedEmptyDataDescription = isDiffNetwork
-    ? `Switch network to ${market.network.name} to see your market positions.`
-    : 'You have no positions.';
+  const handleBack = useCallback(async () => {
+    const { pages } = await import('config');
+    const { reset } = await import('redux/ducks/trade');
+    const { closeRightSidebar } = await import('redux/ducks/ui');
 
-  useEffect(() => {
-    async function fetchMarket() {
-      dispatch(reset());
-      await dispatch(getMarket(marketId));
-      dispatch(setChartViewType('marketOverview'));
-      dispatch(openTradeForm());
-    }
-
-    fetchMarket();
-  }, [dispatch, marketId, retries]);
-
-  useEffect(() => {
-    function goToHomePage() {
-      history.push('/?m=f');
-      window.location.reload();
-    }
-
-    if (!isLoading && !isNull(error) && error.response.status === 404) {
-      // Market not found
-      goToHomePage();
-    } else if (!isLoading && !isNull(error)) {
-      // 500 error, retrying 3 times
-      if (retries < 3) {
-        setRetries(prevRetries => prevRetries + 1);
-      } else {
-        goToHomePage();
-      }
-    }
-  }, [error, history, isLoading, retries]);
-
-  if (!market || market.id === '' || isLoading)
-    return (
-      <div className="pm-market__loading">
-        <span className="spinner--primary" />
-      </div>
-    );
-
-  const tableItems = formatMarketPositions(
-    ((isDiffNetwork ? [] : actions) as any).filter(
-      action => action.marketId === market?.id
-    ),
-    (bondActions as any).filter(
-      action => action.questionId === market?.questionId
-    ),
+    dispatch(closeRightSidebar());
+    history.push(pages.home.pathname);
+    dispatch(reset());
+  }, [dispatch, history]);
+  const tableItems = formatMarketPositions<Action>(
+    actions.filter(action => action.marketId === -market?.id),
+    bondActions.filter(action => action.questionId === market?.questionId),
     market,
-    symbol || ticker,
+    market.currency.symbol || market.currency.ticker,
     network
   );
 
-  function resetTrade() {
-    dispatch(reset());
-  }
+  useEffect(() => {
+    (async function handleMarket() {
+      const { reset } = await import('redux/ducks/trade');
+      const { openTradeForm } = await import('redux/ducks/ui');
+      const { getMarket, setChartViewType } = await import(
+        'redux/ducks/market'
+      );
 
-  function closeTradeSidebar() {
-    dispatch(closeRightSidebar());
-  }
+      dispatch(openTradeForm());
+      dispatch(reset());
+      dispatch(getMarket(params.marketId));
+      dispatch(setChartViewType('marketOverview'));
+    })();
+  }, [dispatch, params.marketId, retries]);
+  useEffect(() => {
+    async function handleHome() {
+      const { pages } = await import('config');
 
-  function backToMarkets() {
-    resetTrade();
-    closeTradeSidebar();
-    history.push('/');
-  }
+      history.push(`${pages.home.pathname}?m=f`);
+      window.location.reload();
+    }
 
+    if (!marketProps.isLoading && marketProps.error) {
+      if (marketProps.error.response.status === 404) handleHome();
+      else if (retries < 3) setRetries(prevRetries => prevRetries + 1);
+      else handleHome();
+    }
+  }, [history, marketProps.error, marketProps.isLoading, retries]);
+
+  if (!market || market.id === '' || marketProps.isLoading) return <Spinner />;
   return (
-    <div className="d-flex">
+    <>
+      <SEO
+        title={market.title}
+        description={formatSEODescription(
+          market.category,
+          market.subcategory,
+          market.expiresAt
+        )}
+        image={market.bannerUrl}
+      />
       <Container className="pm-p-market">
-        <SEO
-          title={market.title}
-          description={formatSEODescription(
-            market.category,
-            market.subcategory,
-            market.expiresAt
-          )}
-          image={market.bannerUrl}
-        />
         <div className="pm-p-market__analytics">
           <MarketAnalytics
             liquidity={market.liquidity}
@@ -143,27 +123,24 @@ const Market = () => {
               marketSlug={market.slug}
               votes={market.votes}
             />
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => backToMarkets()}
-              aria-label="Back to Markets"
-            >
+            <Button variant="outline" size="sm" onClick={handleBack}>
               <ArrowLeftIcon />
               Back to Markets
             </Button>
           </div>
         </div>
-        <div className="pm-p-market__view">
-          {market.tradingViewSymbol ? <MarketChartViewSelector /> : null}
-        </div>
+        {market.tradingViewSymbol && (
+          <div className="pm-p-market__view">
+            <MarketChartViewSelector />
+          </div>
+        )}
         <div className="pm-p-market__charts">
           <MarketChart />
         </div>
         <div className="pm-p-market__stats">
           <MarketStats market={market} />
         </div>
-        {market.resolutionSource ? (
+        {market.resolutionSource && (
           <div className="pm-p-market__source">
             <Text
               as="p"
@@ -172,7 +149,7 @@ const Market = () => {
               style={{ margin: '0.8rem 0rem' }}
               color="lighter-gray"
             >
-              {`Resolution source: `}
+              Resolution source:{' '}
               <a
                 href={market.resolutionSource}
                 target="_blank"
@@ -183,29 +160,39 @@ const Market = () => {
               </a>
             </Text>
           </div>
-        ) : null}
+        )}
         <div className="pm-p-market__tabs">
-          <Tabs value={activeTab} onChange={tab => setActiveTab(tab)}>
+          <Tabs value={tab} onChange={setTab}>
             <Tabs.TabPane tab="Positions" id="positions">
-              <Table
-                columns={tableItems.columns}
-                rows={tableItems.rows}
-                isLoadingData={isLoading}
-                emptyDataDescription={resolvedEmptyDataDescription}
-              />
+              {network.network.id !== market.networkId.toString() ? (
+                <AlertMini
+                  styles="outline"
+                  variant="information"
+                  description={`Switch network to ${market.network.name} and see your market positions.`}
+                />
+              ) : (
+                <Table
+                  columns={tableItems.columns}
+                  rows={tableItems.rows}
+                  isLoadingData={marketProps.isLoading}
+                  emptyDataDescription="You have no positions."
+                />
+              )}
             </Tabs.TabPane>
-            {market.news && market.news.length > 0 ? (
-              <Tabs.TabPane tab="News (Beta)" id="news">
+            <Tabs.TabPane tab="News (Beta)" id="news">
+              {market.news?.length ? (
                 <MarketNews news={market.news} />
-              </Tabs.TabPane>
-            ) : null}
+              ) : (
+                <AlertMini
+                  styles="outline"
+                  variant="information"
+                  description="There's no news to be shown."
+                />
+              )}
+            </Tabs.TabPane>
           </Tabs>
         </div>
       </Container>
-    </div>
+    </>
   );
-};
-
-Market.displayName = 'Market';
-
-export default Market;
+}

@@ -57,9 +57,9 @@ type Row = {
   transactionHash: { value: React.ReactNode; align: ItemAlign };
 };
 
-function formatMarketPositions(
-  actions: [],
-  bondActions: [],
+function formatMarketPositions<A>(
+  actions: A[],
+  bondActions: A[],
   market: Market,
   ticker: string,
   network
