@@ -8,7 +8,6 @@ import { roundNumber } from 'helpers/math';
 import { capitalize } from 'helpers/string';
 import reverse from 'lodash/reverse';
 import times from 'lodash/times';
-import { Market } from 'models/market';
 import { PolkamarketsService } from 'services';
 
 import { ShareIcon } from 'assets/icons';
@@ -57,10 +56,10 @@ type Row = {
   transactionHash: { value: React.ReactNode; align: ItemAlign };
 };
 
-function formatMarketPositions<A>(
+function formatMarketPositions<A, O>(
   actions: A[],
   bondActions: A[],
-  market: Market,
+  outcomes: O,
   ticker: string,
   network
 ) {
@@ -103,14 +102,13 @@ function formatMarketPositions<A>(
         action.action === 'Buy' ||
         action.action === 'Sell' ||
         action.action === 'Claim Winnings'
-          ? market.outcomes[outcomeId]?.title
+          ? outcomes[outcomeId]?.title
           : null;
 
       if (action.answerId) {
         // mapping realitio answer to outcome
         outcomeId = PolkamarketsService.bytes32ToInt(action.answerId);
-        outcome =
-          outcomeId === -1 ? 'Invalid' : market.outcomes[outcomeId]?.title;
+        outcome = outcomeId === -1 ? 'Invalid' : outcomes[outcomeId]?.title;
       }
       const date = fromTimestampToDate(action.timestamp * 1000).format(
         'YYYY/MM/DD'

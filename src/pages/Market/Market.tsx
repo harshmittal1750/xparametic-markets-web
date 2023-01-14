@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
+import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Container } from 'ui';
 import Spinner from 'ui/Spinner';
@@ -28,16 +29,14 @@ import MarketNews from './MarketNews';
 import MarketStats from './MarketStats';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
-export default function Market() {
+function MarketUI() {
   const history = useHistory();
   const network = useNetwork();
-  const params = useParams<Record<'marketId', string>>();
   const dispatch = useAppDispatch();
-  const { market, ...marketProps } = useAppSelector(state => state.market);
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
+  const market = useAppSelector(state => state.market.market);
   const [tab, setTab] = useState('positions');
-  const [retries, setRetries] = useState(0);
   const handleBack = useCallback(async () => {
     const { pages } = await import('config');
     const { reset } = await import('redux/ducks/trade');
@@ -47,44 +46,14 @@ export default function Market() {
     history.push(pages.home.pathname);
     dispatch(reset());
   }, [dispatch, history]);
-  const tableItems = formatMarketPositions<Action>(
-    actions.filter(action => action.marketId === -market?.id),
-    bondActions.filter(action => action.questionId === market?.questionId),
-    market,
+  const tableItems = formatMarketPositions<Action, MarketInterface['outcomes']>(
+    actions.filter(action => action.marketId === -market.id),
+    bondActions.filter(action => action.questionId === market.questionId),
+    market.outcomes,
     market.currency.symbol || market.currency.ticker,
     network
   );
 
-  useEffect(() => {
-    (async function handleMarket() {
-      const { reset } = await import('redux/ducks/trade');
-      const { openTradeForm } = await import('redux/ducks/ui');
-      const { getMarket, setChartViewType } = await import(
-        'redux/ducks/market'
-      );
-
-      dispatch(openTradeForm());
-      dispatch(reset());
-      dispatch(getMarket(params.marketId));
-      dispatch(setChartViewType('marketOverview'));
-    })();
-  }, [dispatch, params.marketId, retries]);
-  useEffect(() => {
-    async function handleHome() {
-      const { pages } = await import('config');
-
-      history.push(`${pages.home.pathname}?m=f`);
-      window.location.reload();
-    }
-
-    if (!marketProps.isLoading && marketProps.error) {
-      if (marketProps.error.response.status === 404) handleHome();
-      else if (retries < 3) setRetries(prevRetries => prevRetries + 1);
-      else handleHome();
-    }
-  }, [history, marketProps.error, marketProps.isLoading, retries]);
-
-  if (!market || market.id === '' || marketProps.isLoading) return <Spinner />;
   return (
     <>
       <SEO
@@ -138,7 +107,12 @@ export default function Market() {
           <MarketChart />
         </div>
         <div className="pm-p-market__stats">
-          <MarketStats market={market} />
+          <MarketStats
+            currency={market.currency}
+            outcomes={market.outcomes}
+            state={market.state}
+            title={market.title}
+          />
         </div>
         {market.resolutionSource && (
           <div className="pm-p-market__source">
@@ -174,7 +148,6 @@ export default function Market() {
                 <Table
                   columns={tableItems.columns}
                   rows={tableItems.rows}
-                  isLoadingData={marketProps.isLoading}
                   emptyDataDescription="You have no positions."
                 />
               )}
@@ -195,4 +168,44 @@ export default function Market() {
       </Container>
     </>
   );
+}
+export default function Market() {
+  const history = useHistory();
+  const params = useParams<Record<'marketId', string>>();
+  const dispatch = useAppDispatch();
+  const isLoading = useAppSelector(state => state.market.isLoading);
+  const error = useAppSelector(state => state.market.error);
+  const [retries, setRetries] = useState(0);
+
+  useEffect(() => {
+    (async function handleMarket() {
+      const { reset } = await import('redux/ducks/trade');
+      const { openTradeForm } = await import('redux/ducks/ui');
+      const { getMarket, setChartViewType } = await import(
+        'redux/ducks/market'
+      );
+
+      dispatch(openTradeForm());
+      dispatch(reset());
+      dispatch(getMarket(params.marketId));
+      dispatch(setChartViewType('marketOverview'));
+    })();
+  }, [dispatch, params.marketId, retries]);
+  useEffect(() => {
+    async function handleHome() {
+      const { pages } = await import('config');
+
+      history.push(`${pages.home.pathname}?m=f`);
+      window.location.reload();
+    }
+
+    if (!isLoading && error) {
+      if (error?.response?.status === 404) handleHome();
+      else if (retries < 3) setRetries(prevRetries => prevRetries + 1);
+      else handleHome();
+    }
+  }, [history, error, isLoading, retries]);
+
+  if (isLoading) return <Spinner />;
+  return <MarketUI />;
 }
