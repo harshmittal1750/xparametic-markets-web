@@ -4,10 +4,6 @@
   top: 0;
   width: 368px;
 
-  @media (min-width: 1024px) {
-    margin-top: -24px;
-  }
-
   > div {
     height: calc(100% - var(--header-y));
   }

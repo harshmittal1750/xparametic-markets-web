@@ -11,7 +11,7 @@ import HomeClasses from './Home.module.scss';
 
 export default function HomeHero() {
   return (
-    <Container className={HomeClasses.header}>
+    <Container className={`${HomeClasses.header} margin-top:24`}>
       <Hero className="pm-p-home__hero" image={heroBanner}>
         <div className="pm-p-home__hero__content">
           <div className="pm-p-home__hero__breadcrumb">

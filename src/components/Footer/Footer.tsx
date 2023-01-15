@@ -1,21 +1,15 @@
-import { useLocation } from 'react-router-dom';
-
-import cn from 'classnames';
-import { pages } from 'config';
-
 import Link from 'components/Link';
 import Text from 'components/Text';
 
-export default function Footer() {
-  const location = useLocation();
+export type FooterProps = Pick<
+  React.ComponentPropsWithoutRef<'footer'>,
+  'className'
+>;
 
+export default function Footer({ className }: FooterProps) {
   return (
-    <footer className="mt-auto">
-      <div
-        className={cn('ta-center p-grid bt-thin', {
-          'mt-grid': location.pathname !== pages.home.pathname
-        })}
-      >
+    <footer className={`mt-auto ${className}`}>
+      <div className="ta-center p-grid bt-thin">
         <Text
           as="p"
           scale="caption"

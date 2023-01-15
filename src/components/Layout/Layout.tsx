@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { matchPath, useLocation } from 'react-router-dom';
 
+import cn from 'classnames';
 import { pages } from 'config';
 import { login } from 'redux/ducks/polkamarkets';
 
@@ -20,6 +21,11 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const page = Object.values(pages).filter(
     ({ pathname }) => pathname === location.pathname
   )[0];
+  const isHomePathname =
+    location.pathname === pages.home.pathname ||
+    matchPath(location.pathname, {
+      path: pages.home.pages.market.pathname
+    });
 
   if (theme.theme === 'dark') {
     document.documentElement.classList.add('theme--dark');
@@ -41,9 +47,17 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       <WrongNetwork />
       <BetaWarning />
       {page?.meta && <SEO {...page.meta} />}
-      <Header />
+      <Header
+        className={cn({
+          'margin-bottom:24@desktop': !isHomePathname
+        })}
+      />
       {children}
-      <Footer />
+      <Footer
+        className={cn({
+          'padding-top:12 padding-top:24@desktop': !isHomePathname
+        })}
+      />
       <div id="toast-notification-portal" />
     </>
   );

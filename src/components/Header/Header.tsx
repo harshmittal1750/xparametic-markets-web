@@ -1,19 +1,18 @@
 import cn from 'classnames';
 import { Container } from 'ui';
+import type { ContainerProps } from 'ui/Container/Container';
 
 import NavbarClasses from './Header.module.scss';
 import HeaderActions from './HeaderActions';
 import HeaderNav from './HeaderNav';
 
-export default function Header() {
+export type HeaderProps = Pick<ContainerProps<'header'>, 'className'>;
+
+export default function Header({ className }: HeaderProps) {
   return (
     <Container
       $as="header"
-      className={cn(
-        'desktop:mb-24',
-        NavbarClasses.root,
-        NavbarClasses.container
-      )}
+      className={cn(NavbarClasses.root, NavbarClasses.container, className)}
     >
       <HeaderNav />
       <HeaderActions />

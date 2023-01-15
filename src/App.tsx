@@ -23,6 +23,8 @@ import { NetworksProvider } from 'contexts/networks';
 import ThemeProvider from 'contexts/theme';
 import { VoteProvider } from 'contexts/vote';
 
+import 'ui/index.scss';
+
 export default function App() {
   const [isLoading, setLoading] = useState(true);
   const [isRestricted, setRestricted] = useState(false);
