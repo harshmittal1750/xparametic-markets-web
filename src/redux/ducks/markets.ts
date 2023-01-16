@@ -244,8 +244,6 @@ type MarketsSelectorArgs = {
       marketsByNetwork: FavoriteMarketsByNetwork;
     };
     networks: string[];
-    countries: string[];
-    stages: string[];
     states: string[];
   };
 };
@@ -266,20 +264,6 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
 
   const filterByState = marketState =>
     !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
-
-  const filterByCountryInTitle = title =>
-    !isEmpty(filters.countries)
-      ? filters.countries.some(country =>
-          title.toLowerCase().includes(country.toLowerCase())
-        )
-      : true;
-
-  const filterMarketsByStageInTitle = title =>
-    !isEmpty(filters.stages)
-      ? filters.stages.some(stage =>
-          title.toLowerCase().includes(stage.toLowerCase())
-        )
-      : true;
 
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
@@ -310,9 +294,7 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
           market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
-        filterByState(market.state) &&
-        filterByCountryInTitle(market.title) &&
-        filterMarketsByStageInTitle(market.title)
+        filterByState(market.state)
     )
   );
 };
