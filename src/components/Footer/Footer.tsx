@@ -1,15 +1,26 @@
+import cn from 'classnames';
+import { Container } from 'ui';
+
 import Link from 'components/Link';
 import Text from 'components/Text';
 
-export type FooterProps = Pick<
-  React.ComponentPropsWithoutRef<'footer'>,
-  'className'
->;
+import footerClasses from './Footer.module.scss';
 
-export default function Footer({ className }: FooterProps) {
+export interface FooterProps
+  extends Pick<React.ComponentPropsWithoutRef<'footer'>, 'className'> {
+  $gutterTop?: boolean;
+}
+
+export default function Footer({ className, $gutterTop }: FooterProps) {
   return (
-    <footer className={`mt-auto ${className}`}>
-      <div className="ta-center p-grid bt-thin">
+    <footer
+      className={cn(
+        footerClasses.root,
+        { [footerClasses.gutterTop]: $gutterTop },
+        className
+      )}
+    >
+      <Container className={footerClasses.container}>
         <Text
           as="p"
           scale="caption"
@@ -27,7 +38,7 @@ export default function Footer({ className }: FooterProps) {
           />
           .
         </Text>
-      </div>
+      </Container>
     </footer>
   );
 }

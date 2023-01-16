@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 
-import cn from 'classnames';
 import { pages } from 'config';
 import { login } from 'redux/ducks/polkamarkets';
 
@@ -47,17 +46,9 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       <WrongNetwork />
       <BetaWarning />
       {page?.meta && <SEO {...page.meta} />}
-      <Header
-        className={cn({
-          'margin-bottom:24@desktop': !isHomePathname
-        })}
-      />
+      <Header $gutterBottom={!isHomePathname} />
       {children}
-      <Footer
-        className={cn({
-          'padding-top:12 padding-top:24@desktop': !isHomePathname
-        })}
-      />
+      <Footer $gutterTop={!isHomePathname} />
       <div id="toast-notification-portal" />
     </>
   );
