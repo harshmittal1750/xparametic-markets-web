@@ -1,0 +1,33 @@
+.root {
+}
+
+.radius {
+  &Sm {
+    border-radius: var(--pmlabs-size-x2s);
+  }
+
+  &Md {
+    border-radius: var(--pmlabs-size-sm);
+  }
+
+  &Lg {
+    border-radius: 50%;
+  }
+}
+
+.size {
+  &Sm {
+    width: var(--pmlabs-size-xl);
+    height: var(--pmlabs-size-xl);
+  }
+
+  &Md {
+    width: var(--pmlabs-size-x2l);
+    height: var(--pmlabs-size-x2l);
+  }
+
+  &Lg {
+    width: var(--pmlabs-size-x3l);
+    height: var(--pmlabs-size-x3l);
+  }
+}
