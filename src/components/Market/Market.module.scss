@@ -1,0 +1,10 @@
+.footer {
+  height: inherit;
+
+  &Stats {
+    &Icon {
+      display: unset;
+      margin-right: var(--size-8);
+    }
+  }
+}

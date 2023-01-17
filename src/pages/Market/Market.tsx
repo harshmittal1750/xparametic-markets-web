@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
-import dayjs from 'dayjs';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
-import { Container } from 'ui';
+import { Container, Hero } from 'ui';
+import Avatar from 'ui/Avatar';
 import Spinner from 'ui/Spinner';
 
 import { ArrowLeftIcon } from 'assets/icons';
@@ -16,36 +16,35 @@ import {
   Button,
   SEO,
   VoteArrows,
-  AlertMini
+  AlertMini,
+  Breadcrumb,
+  ButtonGroup
 } from 'components';
+import MarketFooter from 'components/Market/MarketFooter';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
-import MarketAnalytics from './MarketAnalytics';
+import marketClasses from './Market.module.scss';
 import MarketChart from './MarketChart';
-import MarketChartViewSelector from './MarketChartViewSelector';
-import MarketHead from './MarketHead';
 import MarketNews from './MarketNews';
 import MarketStats from './MarketStats';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
 function MarketUI() {
-  const history = useHistory();
   const network = useNetwork();
   const dispatch = useAppDispatch();
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
-  const market = useAppSelector(state => state.market.market);
+  const { chartViews, market } = useAppSelector(state => state.market);
   const [tab, setTab] = useState('positions');
-  const handleBack = useCallback(async () => {
-    const { pages } = await import('config');
-    const { reset } = await import('redux/ducks/trade');
-    const { closeRightSidebar } = await import('redux/ducks/ui');
+  const handleChartChange = useCallback(
+    async (type: string) => {
+      const { setChartViewType } = await import('redux/ducks/market');
 
-    dispatch(closeRightSidebar());
-    history.push(pages.home.pathname);
-    dispatch(reset());
-  }, [dispatch, history]);
+      dispatch(setChartViewType(type));
+    },
+    [dispatch]
+  );
   const tableItems = formatMarketPositions<Action, MarketInterface['outcomes']>(
     actions.filter(action => action.marketId === -market.id),
     bondActions.filter(action => action.questionId === market.questionId),
@@ -65,42 +64,41 @@ function MarketUI() {
         )}
         image={market.bannerUrl}
       />
-      <Container className="pm-p-market">
-        <div className="pm-p-market__analytics">
-          <MarketAnalytics
-            liquidity={market.liquidity}
-            volume={market.volume}
-            expiration={dayjs(market.expiresAt)
-              .utc()
-              .format('YYYY-MM-DD HH:mm UTC')}
-          />
-        </div>
-        <div className="pm-p-market__market">
-          <MarketHead
-            isVerified={market.verified}
-            section={market.category}
-            subsection={market.subcategory}
-            imageUrl={market.imageUrl}
-            description={market.title}
-          />
-          <div className="pm-p-market__actions">
-            <VoteArrows
-              key={market.slug}
-              size="md"
-              marketId={market.id}
-              marketNetworkId={market.networkId}
-              marketSlug={market.slug}
-              votes={market.votes}
-            />
-            <Button variant="outline" size="sm" onClick={handleBack}>
+      <Hero className={marketClasses.hero} $image={market.imageUrl}>
+        <Container className={marketClasses.heroInfo}>
+          <Avatar $size="lg" alt="Market" src={market.imageUrl} />
+          <div>
+            <Breadcrumb>
+              <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
+              <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
+            </Breadcrumb>
+            <Text as="h2" fontWeight="bold" scale="heading-large" color="light">
+              {market.title}
+            </Text>
+          </div>
+          <div className={marketClasses.heroInfoActions}>
+            <Button variant="subtle" size="sm">
               <ArrowLeftIcon />
-              Back to Markets
+            </Button>
+            <Button variant="subtle" size="sm">
+              <ArrowLeftIcon />
             </Button>
           </div>
-        </div>
+        </Container>
+        <Container className={marketClasses.heroStats}>
+          <MarketFooter market={market} />
+        </Container>
+      </Hero>
+      <Container>
         {market.tradingViewSymbol && (
           <div className="pm-p-market__view">
-            <MarketChartViewSelector />
+            <div className="market-chart__view-selector">
+              <ButtonGroup
+                buttons={chartViews}
+                defaultActiveId="marketOverview"
+                onChange={handleChartChange}
+              />
+            </div>
           </div>
         )}
         <div className="pm-p-market__charts">
@@ -135,7 +133,7 @@ function MarketUI() {
             </Text>
           </div>
         )}
-        <div className="pm-p-market__tabs">
+        <div className={`pm-p-market__tabs ${marketClasses.tabs}`}>
           <Tabs value={tab} onChange={setTab}>
             <Tabs.TabPane tab="Positions" id="positions">
               {network.network.id !== market.networkId.toString() ? (
@@ -200,7 +198,7 @@ export default function Market() {
     }
 
     if (!isLoading && error) {
-      if (error?.response?.status === 404) handleHome();
+      if (error.response?.status === 404) handleHome();
       else if (retries < 3) setRetries(prevRetries => prevRetries + 1);
       else handleHome();
     }

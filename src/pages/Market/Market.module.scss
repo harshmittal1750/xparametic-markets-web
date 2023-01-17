@@ -1,5 +1,5 @@
 .hero {
-  height: 256px;
+  height: 224px;
   display: flex;
   flex-direction: column;
 
@@ -18,10 +18,10 @@
     }
   }
 
-  &Data {
+  &Stats {
     height: var(--size-48);
     background-color: var(--color-background-tertiary);
-    border-top: var(--border-text);
+    border-top: 1px solid var(--color-border);
   }
 }
 

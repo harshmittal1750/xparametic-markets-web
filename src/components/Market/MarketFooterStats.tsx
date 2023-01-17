@@ -2,69 +2,68 @@ import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import { Market } from 'models/market';
 
+import Icon from 'components/Icon';
+
 import Text from '../Text';
 import Tooltip from '../Tooltip';
+import marketClasses from './Market.module.scss';
 
 type MarketFooterStatsProps = {
   market: Market;
 };
 
-function MarketFooterStats({ market }: MarketFooterStatsProps) {
+export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
   const { volume, expiresAt, liquidity, network } = market;
   const { currency } = network;
 
   return (
     <div className="pm-c-market-footer__stats">
-      {network ? (
+      <Tooltip text={`$${network.currency?.ticker} Token`}>
+        {network.currency?.icon}
+      </Tooltip>
+      {!!volume && (
         <>
-          <Tooltip text={`$${network.currency.ticker} Token`}>
-            {network.currency.icon}
-          </Tooltip>
           <span className="pm-c-divider--circle" />
-        </>
-      ) : null}
-      {volume ? (
-        <>
           <Text
             as="span"
             scale="tiny-uppercase"
             fontWeight="semibold"
             color="gray"
           >
-            {`Volume: `}
+            <Icon name="Stats" className={marketClasses.footerStatsIcon} />
             <Text
               as="strong"
               scale="tiny-uppercase"
               fontWeight="semibold"
               color="lighter-gray"
             >
-              {`${roundNumber(volume, 3)} ${currency.ticker}`}
+              {`${roundNumber(volume, 3)} ${currency?.ticker}`}
             </Text>
           </Text>
-          <span className="pm-c-divider--circle" />
         </>
-      ) : null}
-      {expiresAt ? (
+      )}
+      {!!liquidity && (
         <>
+          <span className="pm-c-divider--circle" />
           <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-            {`Expiration: `}
+            <Icon name="Liquidity" className={marketClasses.footerStatsIcon} />
+            <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
+              {`${roundNumber(liquidity, 3)} ${currency?.ticker}`}
+            </Text>
+          </Text>
+        </>
+      )}
+      {expiresAt && (
+        <>
+          <span className="pm-c-divider--circle" />
+          <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+            <Icon name="Calendar" className={marketClasses.footerStatsIcon} />
             <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
               {dayjs(expiresAt).utc().format('YYYY-MM-DD HH:mm UTC')}
             </Text>
           </Text>
-          <span className="pm-c-divider--circle" />
         </>
-      ) : null}
-      {liquidity ? (
-        <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-          {`Liquidity: `}
-          <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-            {`${roundNumber(liquidity, 3)} ${currency.ticker}`}
-          </Text>
-        </Text>
-      ) : null}
+      )}
     </div>
   );
 }
-
-export default MarketFooterStats;
