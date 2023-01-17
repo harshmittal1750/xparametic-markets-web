@@ -4,19 +4,40 @@ import cn from 'classnames';
 
 import HeroClasses from './Hero.module.scss';
 
-interface HeroProps extends React.ComponentPropsWithoutRef<'section'> {
-  image?: React.CSSProperties['backgroundImage'];
+interface HeroProps
+  extends Pick<
+    React.ComponentPropsWithoutRef<'div'>,
+    'className' | 'style' | 'children'
+  > {
+  $image?: React.CSSProperties['backgroundImage'];
+  $rounded?: boolean;
+  $backdrop?: 'main' | 'default';
 }
 
-export default function Hero({ image, className, ...props }: HeroProps) {
-  const style = {
-    '--background-image': `url(${image})`
-  } as React.CSSProperties;
-
+export default function Hero({
+  $image,
+  $rounded,
+  $backdrop,
+  className,
+  style,
+  ...props
+}: HeroProps) {
   return (
-    <section
-      className={cn(HeroClasses.root, className)}
-      style={style}
+    <div
+      className={cn(
+        HeroClasses.root,
+        {
+          [HeroClasses.rounded]: $rounded,
+          [HeroClasses.backdropMain]: $backdrop === 'main',
+          [HeroClasses.backdropDefault]: !$backdrop || $backdrop === 'default'
+        },
+        className
+      )}
+      style={{
+        // @ts-expect-error No need to assert React.CSSProperties here
+        '--image': `url(${$image})`,
+        ...style
+      }}
       {...props}
     />
   );
