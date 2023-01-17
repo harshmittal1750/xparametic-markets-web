@@ -1,3 +1,11 @@
+.root {
+  display: flex;
+}
+
+.content {
+  flex: 1 1 auto;
+}
+
 .header {
   background: linear-gradient(
     180deg,
@@ -9,6 +17,17 @@
   &Hero {
     padding: 40px 90px 40px 40px;
   }
+}
+
+.nav {
+  background-color: var(--color-surface-tertiary);
+  backdrop-filter: blur(8px);
+  top: 0px;
+  z-index: 1;
+  position: sticky;
+  display: flex;
+  gap: var(--size-12);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .filter {
@@ -33,12 +52,4 @@
       background-color: var(--color-background-primary);
     }
   }
-}
-
-.nav {
-  background-color: var(--color-surface-tertiary);
-  backdrop-filter: blur(8px);
-  top: 0px;
-  z-index: 1;
-  position: sticky;
 }
