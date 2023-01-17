@@ -3,6 +3,11 @@
   position: sticky;
   top: 0;
   width: 368px;
+  border-left: 1px solid var(--color-border);
+  padding: var(--grid-margin);
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
 
   > div {
     height: calc(100% - var(--header-y));

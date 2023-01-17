@@ -31,7 +31,7 @@ export default function RightSidebar() {
   if (!rightSidebarIsVisible) return null;
 
   return (
-    <div className="pm-l-right-sidebar border-left-thin p-grid height-viewport o-hidden flex-shrink-0 overflow-y-auto">
+    <div className="pm-l-right-sidebar">
       <Sidebar />
     </div>
   );
