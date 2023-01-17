@@ -1,0 +1,30 @@
+.hero {
+  height: 256px;
+  display: flex;
+  flex-direction: column;
+
+  &Info {
+    display: inherit;
+    flex: 1 0 auto;
+    gap: var(--size-24);
+    align-items: center;
+
+    &Actions {
+      display: flex;
+      gap: var(--size-16);
+      margin-left: auto;
+      margin-top: var(--size-24);
+      align-self: flex-start;
+    }
+  }
+
+  &Data {
+    height: var(--size-48);
+    background-color: var(--color-background-tertiary);
+    border-top: var(--border-text);
+  }
+}
+
+.tabs {
+  margin-bottom: var(--grid-margin);
+}

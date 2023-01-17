@@ -37,27 +37,9 @@
   --size-32pxInRem: 2rem;
   --size-40: 40px;
   --size-40pxInRem: 2.5rem;
+  --size-48: 48px;
   --size-60: 60px;
   --size-64: 64px;
   --size-76: 76px;
-
-  /* 
-    For source control. It'll limit us with specific values, 
-    keeping cohersion between spacing or sizing elements.
-  */
-  --pmlabs-size-x6s: 0px;
-  --pmlabs-size-x5s: 1px;
-  --pmlabs-size-x4s: 2px;
-  --pmlabs-size-x3s: 4px;
-  --pmlabs-size-x2s: 8px;
-  --pmlabs-size-xs: 12px;
-  --pmlabs-size-sm: 16px;
-  --pmlabs-size-md: 24px;
-  --pmlabs-size-lg: 32px;
-  --pmlabs-size-xl: 48px;
-  --pmlabs-size-x2l: 64px;
-  --pmlabs-size-x3l: 96px;
-  --pmlabs-size-x4l: 128px;
-  --pmlabs-size-x5l: 192px;
-  --pmlabs-size-x6l: 256px;
+  --size-96: 96px;
 }

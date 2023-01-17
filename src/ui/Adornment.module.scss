@@ -1,13 +1,10 @@
-.root {
-}
-
 .edge {
   &Start {
-    margin-right: var(--spacing-xs);
-    margin-left: calc(var(--spacing-xs) * -1);
+    margin-right: var(--size-12);
+    margin-left: calc(var(--size-12) * -1);
   }
   &End {
-    margin-right: calc(var(--spacing-xs) * -1);
-    margin-left: var(--spacing-xs);
+    margin-right: calc(var(--size-12) * -1);
+    margin-left: var(--size-12);
   }
 }

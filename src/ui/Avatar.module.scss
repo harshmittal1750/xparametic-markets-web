@@ -1,13 +1,10 @@
-.root {
-}
-
 .radius {
   &Sm {
-    border-radius: var(--spacing-x2s);
+    border-radius: var(--size-8);
   }
 
   &Md {
-    border-radius: var(--spacing-sm);
+    border-radius: var(--size-16);
   }
 
   &Lg {
@@ -17,17 +14,17 @@
 
 .size {
   &Sm {
-    width: var(--spacing-xl);
-    height: var(--spacing-xl);
+    width: var(--size-48);
+    height: var(--size-48);
   }
 
   &Md {
-    width: var(--spacing-x2l);
-    height: var(--spacing-x2l);
+    width: var(--size-64);
+    height: var(--size-64);
   }
 
   &Lg {
-    width: var(--spacing-x3l);
-    height: var(--spacing-x3l);
+    width: var(--size-96);
+    height: var(--size-96);
   }
 }
