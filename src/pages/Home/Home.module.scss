@@ -4,6 +4,35 @@
     transparent 0%,
     var(--color-surface-tertiary) 100%
   );
+  margin-top: var(--size-24);
+
+  &Hero {
+    padding: 40px 90px 40px 40px;
+  }
+}
+
+.filter {
+  position: sticky;
+
+  &List {
+    height: 100%;
+    background-color: var(--color-background-primary);
+    width: var(--spacing-x6l);
+    overflow-y: auto;
+    border-right: 1px solid var(--color-border);
+
+    @media (min-width: 1024px) {
+      background-color: unset;
+    }
+  }
+
+  &Sub {
+    overflow: hidden;
+
+    &List {
+      background-color: var(--color-background-primary);
+    }
+  }
 }
 
 .nav {

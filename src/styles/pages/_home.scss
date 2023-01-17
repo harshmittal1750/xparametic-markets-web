@@ -36,31 +36,6 @@
     }
   }
 
-  &__filter {
-    &-list {
-      width: 264px;
-      overflow-y: auto;
-      border-right: 1px solid var(--color-border);
-
-      &-sublist {
-        background-color: var(--color-background-primary);
-
-        &-inputs {
-          display: flex;
-          gap: 12px;
-          align-items: center;
-          margin-bottom: 12px;
-          margin-right: -12px;
-          margin-left: -12px;
-
-          &-input {
-            width: 100%;
-          }
-        }
-      }
-    }
-  }
-
   &__mobile-info {
     @include flex-column(center, center);
     margin-top: px-to-rem(16px);

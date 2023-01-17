@@ -1,33 +1,41 @@
 import { render, screen } from '@testing-library/react';
 
-import Avatar, { avatarProps } from './Avatar';
+import Avatar from './Avatar';
+import type { AvatarProps } from './Avatar';
 import avatarClasses from './Avatar.module.scss';
 
-it('render [$size] classes', () => {
-  avatarProps.$size.forEach($size => {
-    const name = `size ${$size}`;
+function renderAvatar(props: AvatarProps) {
+  render(<Avatar src="" aria-label="avatar" {...props} />);
 
-    render(<Avatar src="" aria-label={name} $size={$size} />);
-    expect(screen.getByRole('img', { name })).toHaveClass(
-      {
-        sm: avatarClasses.sizeSm,
-        md: avatarClasses.sizeMd,
-        lg: avatarClasses.sizeLg
-      }[$size]
-    );
-  });
+  return screen.getByRole('img', { name: /avatar/i });
+}
+it(`render [$size=sm] classes`, () => {
+  const avatar = renderAvatar({ $size: 'sm' });
+
+  expect(avatar).toHaveClass(avatarClasses.sizeSm);
 });
-it('render [$radius] classes', () => {
-  avatarProps.$radius.forEach($rad => {
-    const name = `radius ${$rad}`;
+it(`render [$size=md] classes`, () => {
+  const avatar = renderAvatar({ $size: 'md' });
 
-    render(<Avatar src="" aria-label={name} $radius={$rad} />);
-    expect(screen.getByRole('img', { name })).toHaveClass(
-      {
-        sm: avatarClasses.radiusSm,
-        md: avatarClasses.radiusMd,
-        lg: avatarClasses.radiusLg
-      }[$rad]
-    );
-  });
+  expect(avatar).toHaveClass(avatarClasses.sizeMd);
+});
+it(`render [$size=lg] classes`, () => {
+  const avatar = renderAvatar({ $size: 'lg' });
+
+  expect(avatar).toHaveClass(avatarClasses.sizeLg);
+});
+it(`render [$radius=sm] classes`, () => {
+  const avatar = renderAvatar({ $radius: 'sm' });
+
+  expect(avatar).toHaveClass(avatarClasses.radiusSm);
+});
+it(`render [$radius=md] classes`, () => {
+  const avatar = renderAvatar({ $radius: 'md' });
+
+  expect(avatar).toHaveClass(avatarClasses.radiusMd);
+});
+it(`render [$radius=lg] classes`, () => {
+  const avatar = renderAvatar({ $radius: 'lg' });
+
+  expect(avatar).toHaveClass(avatarClasses.radiusLg);
 });

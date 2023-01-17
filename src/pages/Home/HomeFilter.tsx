@@ -18,6 +18,8 @@ import type { Dropdown } from 'contexts/filters/filters.type';
 
 import { useFilters } from 'hooks';
 
+import homeClasses from './Home.module.scss';
+
 type ListItemNestedProps = {
   onToggleChange: (
     path?: string
@@ -47,7 +49,7 @@ function ModalFilterAnimation({
     <AnimatePresence>
       {show && (
         <motion.div
-          className="p-sticky"
+          className={homeClasses.filter}
           initial={{ width: 0, x: -264 }}
           animate={{ width: 'auto', x: 0 }}
           exit={{ width: 0, x: -264 }}
@@ -67,23 +69,23 @@ function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
     <>
       <ListItem onClick={handleExpand}>
         <ListItemText>{subitems.title}</ListItemText>
-        <Adornment edge="end">
+        <Adornment $edge="end">
           <Icon name="Chevron" size="lg" dir={expand ? 'up' : 'down'} />
         </Adornment>
       </ListItem>
       <AnimatePresence>
         {expand && (
           <motion.div
-            className="o-hidden"
+            className={homeClasses.filterSub}
             initial={{ height: 0 }}
             animate={{ height: 'auto' }}
             exit={{ height: 0 }}
           >
-            <List className="pm-p-home__filter-list-sublist">
+            <List className={homeClasses.filterSubList}>
               {subitems.options.map(option => (
                 <ListItem key={option.path}>
                   <ListItemText>{option.label}</ListItemText>
-                  <Adornment edge="end">
+                  <Adornment $edge="end">
                     <Toggle
                       type="checkbox"
                       checked={option.selected}
@@ -135,18 +137,18 @@ export default function HomeFilter({
           }
         : { onHide: onFilterHide })}
     >
-      <List className="pm-p-home__filter-list h-100% bg-primary desktop:bg-unset">
+      <List className={homeClasses.filterList}>
         {!isDesktop && (
           <ListItem>
             <ListItemText>Filter</ListItemText>
-            <Adornment edge="end">
+            <Adornment $edge="end">
               <Icon name="Cross" onClick={onFilterHide} />
             </Adornment>
           </ListItem>
         )}
         <ListItem>
           <ListItemText>Favorites</ListItemText>
-          <Adornment edge="end">
+          <Adornment $edge="end">
             <ToggleSwitch
               name="favorites"
               checked={filters.state.favorites.checked}
