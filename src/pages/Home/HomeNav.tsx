@@ -35,7 +35,7 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
         size="sm"
         className="pm-p-home__navigation__actions"
         onClick={onFilterClick}
-        disabled={markets.state === 'loading'}
+        disabled={markets.state !== 'success'}
         {...(!isDesktop && { 'aria-label': 'Filter' })}
       >
         <Icon name="Filter" />
