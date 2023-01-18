@@ -12,6 +12,7 @@ import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { pages } from 'config';
 import { getUserCountry } from 'helpers/location';
 import store from 'redux/store';
+import Spinner from 'ui/Spinner';
 
 import RestrictedCountry from 'pages/RestrictedCountry';
 
@@ -38,12 +39,7 @@ export default function App() {
     })();
   }, []);
 
-  if (isLoading)
-    return (
-      <div className="ta-center p-grid">
-        <span className="spinner--primary d-inline-block" />
-      </div>
-    );
+  if (isLoading) return <Spinner />;
   if (isRestricted) return <RestrictedCountry />;
   return (
     <ThemeProvider>
@@ -55,13 +51,7 @@ export default function App() {
                 <FavoriteMarketsProvider>
                   <VoteProvider>
                     <Layout>
-                      <Suspense
-                        fallback={
-                          <div className="ta-center">
-                            <span className="spinner--primary d-inline-block" />
-                          </div>
-                        }
-                      >
+                      <Suspense fallback={<Spinner />}>
                         <Switch>
                           {Object.values(pages).map(page => (
                             <Route

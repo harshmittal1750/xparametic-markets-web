@@ -1,7 +1,9 @@
+import spinnerClasses from './Spinner.module.scss';
+
 export default function Spinner() {
   return (
-    <div className="ta-center p-grid">
-      <span className="spinner--primary d-inline-block" />
+    <div className={spinnerClasses.root}>
+      <span className={`spinner--primary ${spinnerClasses.element}`} />
     </div>
   );
 }
