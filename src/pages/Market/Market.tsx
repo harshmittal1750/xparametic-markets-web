@@ -15,7 +15,6 @@ import {
   Text,
   Button,
   SEO,
-  VoteArrows,
   AlertMini,
   Breadcrumb,
   ButtonGroup
@@ -27,7 +26,6 @@ import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 import marketClasses from './Market.module.scss';
 import MarketChart from './MarketChart';
 import MarketNews from './MarketNews';
-import MarketStats from './MarketStats';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
 function MarketUI() {
@@ -66,7 +64,7 @@ function MarketUI() {
       />
       <Hero className={marketClasses.hero} $image={market.imageUrl}>
         <Container className={marketClasses.heroInfo}>
-          <Avatar $size="lg" alt="Market" src={market.imageUrl} />
+          <Avatar $size="lg" $radius="lg" alt="Market" src={market.imageUrl} />
           <div>
             <Breadcrumb>
               <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
@@ -89,7 +87,7 @@ function MarketUI() {
           <MarketFooter market={market} />
         </Container>
       </Hero>
-      <Container>
+      <Container className={marketClasses.body}>
         {market.tradingViewSymbol && (
           <div className="pm-p-market__view">
             <div className="market-chart__view-selector">
@@ -101,17 +99,7 @@ function MarketUI() {
             </div>
           </div>
         )}
-        <div className="pm-p-market__charts">
-          <MarketChart />
-        </div>
-        <div className="pm-p-market__stats">
-          <MarketStats
-            currency={market.currency}
-            outcomes={market.outcomes}
-            state={market.state}
-            title={market.title}
-          />
-        </div>
+        <MarketChart />
         {market.resolutionSource && (
           <div className="pm-p-market__source">
             <Text
@@ -133,7 +121,7 @@ function MarketUI() {
             </Text>
           </div>
         )}
-        <div className={`pm-p-market__tabs ${marketClasses.tabs}`}>
+        <div className={`pm-p-market__tabs ${marketClasses.bodyTabs}`}>
           <Tabs value={tab} onChange={setTab}>
             <Tabs.TabPane tab="Positions" id="positions">
               {network.network.id !== market.networkId.toString() ? (

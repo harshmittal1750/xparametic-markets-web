@@ -11,7 +11,7 @@
 
     &Actions {
       display: flex;
-      gap: var(--size-16);
+      gap: var(--size-12);
       margin-left: auto;
       margin-top: var(--size-24);
       align-self: flex-start;
@@ -20,11 +20,15 @@
 
   &Stats {
     height: var(--size-48);
-    background-color: var(--color-background-tertiary);
+    background-color: var(--color-background-quinary);
     border-top: 1px solid var(--color-border);
   }
 }
 
-.tabs {
-  margin-bottom: var(--grid-margin);
+.body {
+  margin-top: var(--grid-margin);
+
+  &Tabs {
+    margin-bottom: var(--grid-margin);
+  }
 }
