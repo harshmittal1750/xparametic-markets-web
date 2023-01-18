@@ -12,7 +12,7 @@ const ui = {
     }
   },
   reportForm: {
-    enabled: features.regular.enabled
+    enabled: features.regular.enabled || features.fantasy.reportForm.enabled
   }
 } as const;
 
