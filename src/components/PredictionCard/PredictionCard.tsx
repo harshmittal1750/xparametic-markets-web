@@ -6,6 +6,8 @@ import { Market as MarketInterface } from 'models/market';
 import { clearMarket } from 'redux/ducks/market';
 import { openTradeForm } from 'redux/ducks/ui';
 
+import MarketFooterActions from 'components/Market/MarketFooterActions';
+
 import { useAppDispatch } from 'hooks';
 
 import Market from '../Market';
@@ -30,7 +32,10 @@ function PredictionCard({ market, className, ...props }: PredictionCardProps) {
         <Market.Outcomes market={market} />
       </div>
       <div className="prediction-card__footer">
-        <Market.Footer market={market} />
+        <Market.Footer market={market}>
+          <MarketFooterActions market={market} />
+          <div className="pm-c-market-footer__divider--circle" />
+        </Market.Footer>
       </div>
     </div>
   );

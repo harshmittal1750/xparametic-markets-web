@@ -35,7 +35,6 @@ type MarketFooterTagsProps = {
 
 function MarketFooterTags({ market }: MarketFooterTagsProps) {
   const { createdAt, expiresAt, state, voided, verified } = market;
-
   const isAwaitingResolution = state === 'closed';
   const isEndingSoon = inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
   const isNew = inRange(dayjs(createdAt).diff(dayjs(), 'hours'), -24, 1);
@@ -44,68 +43,58 @@ function MarketFooterTags({ market }: MarketFooterTagsProps) {
   const isVerified = verified;
 
   return (
-    <>
-      {[isAwaitingResolution, isEndingSoon, isNew, isResolved].some(
-        item => item === true
-      ) ? (
-        <div className="pm-c-market-footer__divider--circle" />
+    <div className="pm-c-market-footer__tags">
+      {isAwaitingResolution ? (
+        <Pill
+          color={marketStates.awaitingResolution.color}
+          variant={marketStates.awaitingResolution.colorVariant}
+          badge
+        >
+          {marketStates.awaitingResolution.copy}
+        </Pill>
       ) : null}
-      <div className="pm-c-market-footer__tags">
-        {isAwaitingResolution ? (
-          <Pill
-            color={marketStates.awaitingResolution.color}
-            variant={marketStates.awaitingResolution.colorVariant}
-            badge
-          >
-            {marketStates.awaitingResolution.copy}
-          </Pill>
-        ) : null}
-        {isEndingSoon ? (
-          <Pill
-            color={marketStates.endingSoon.color}
-            variant={marketStates.endingSoon.colorVariant}
-            badge
-          >
-            {marketStates.endingSoon.copy}
-          </Pill>
-        ) : null}
-        {isNew ? (
-          <Pill
-            color={marketStates.new.color}
-            variant={marketStates.new.colorVariant}
-            badge
-          >
-            {marketStates.new.copy}
-          </Pill>
-        ) : null}
-        {isResolved ? (
-          <Pill
-            color={marketStates.resolved.color}
-            variant={marketStates.resolved.colorVariant}
-            badge
-          >
-            {marketStates.resolved.copy}
-          </Pill>
-        ) : null}
-        {isVoided ? (
-          <Pill
-            color={marketStates.voided.color}
-            variant={marketStates.voided.colorVariant}
-            badge
-          >
-            {marketStates.voided.copy}
-          </Pill>
-        ) : null}
-        {isVerified ? (
-          <>
-            <div className="pm-c-market-footer__divider--circle" />
-            <Tooltip text="Verified Market" position="top">
-              <VerifiedIcon size="sm" style={{ cursor: 'pointer' }} />
-            </Tooltip>
-          </>
-        ) : null}
-      </div>
-    </>
+      {isEndingSoon ? (
+        <Pill
+          color={marketStates.endingSoon.color}
+          variant={marketStates.endingSoon.colorVariant}
+          badge
+        >
+          {marketStates.endingSoon.copy}
+        </Pill>
+      ) : null}
+      {isNew ? (
+        <Pill
+          color={marketStates.new.color}
+          variant={marketStates.new.colorVariant}
+          badge
+        >
+          {marketStates.new.copy}
+        </Pill>
+      ) : null}
+      {isResolved ? (
+        <Pill
+          color={marketStates.resolved.color}
+          variant={marketStates.resolved.colorVariant}
+          badge
+        >
+          {marketStates.resolved.copy}
+        </Pill>
+      ) : null}
+      {isVoided ? (
+        <Pill
+          color={marketStates.voided.color}
+          variant={marketStates.voided.colorVariant}
+          badge
+        >
+          {marketStates.voided.copy}
+        </Pill>
+      ) : null}
+      {isVerified ? (
+        <Tooltip text="Verified Market" position="top">
+          <VerifiedIcon size="sm" style={{ cursor: 'pointer' }} />
+        </Tooltip>
+      ) : null}
+    </div>
   );
 }
 
