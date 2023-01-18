@@ -20,12 +20,12 @@
     --color: var(--color-background-secondary);
     --backdrop: linear-gradient(
       0deg,
-      var(--color-background-secondary) 0%,
+      var(--color-background-primary) 0%,
       var(--color-background-tertiary) 100%
     );
   }
 }
 
 .rounded {
-  border-radius: var(--sizing-sm);
+  border-radius: var(--size-16);
 }

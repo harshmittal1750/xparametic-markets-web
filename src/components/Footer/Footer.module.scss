@@ -5,8 +5,7 @@
 .container {
   text-align: center;
   border-top: 1px solid var(--color-border);
-  height: var(--size-48);
-  padding-top: var(--size-12);
+  padding: var(--size-12) 0;
 }
 
 .gutter {
