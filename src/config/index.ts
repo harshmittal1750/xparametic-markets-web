@@ -4,6 +4,8 @@ export type {
   EnvironmentConfig
 } from './environment';
 
+export { default as ui } from './ui';
+
 export { default as features } from './features';
 
 export { default as pages } from './pages';
