@@ -1,4 +1,5 @@
 import environment from './environment';
+import features from './features';
 
 const ui = {
   hero: {
@@ -9,6 +10,9 @@ const ui = {
       title: environment.UI_HERO_ACTION_TITLE,
       url: environment.UI_HERO_ACTION_URL
     }
+  },
+  reportForm: {
+    enabled: features.regular.enabled
   }
 } as const;
 
