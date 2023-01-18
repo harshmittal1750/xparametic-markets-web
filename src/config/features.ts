@@ -9,7 +9,10 @@ const features = {
     enabled: !toBoolean(environment.FEATURE_FANTASY)
   },
   fantasy: {
-    enabled: toBoolean(environment.FEATURE_FANTASY)
+    enabled: toBoolean(environment.FEATURE_FANTASY),
+    reportForm: {
+      enabled: toBoolean(environment.FEATURE_FANTASY_REPORT_FORM)
+    }
   }
 } as const;
 
