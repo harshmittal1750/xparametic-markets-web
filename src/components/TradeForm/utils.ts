@@ -110,14 +110,16 @@ function calculateEthAmountSold(
   outcome: Outcome,
   shares: number
 ): TradeDetails {
-  const sharesBig = new Big(shares.toString());
+  const sharesBig = new Big(shares.toString()).mul(100);
 
-  const outcomeSharesBig = new Big(outcome.shares.toString());
+  const outcomeSharesBig = new Big(outcome.shares.toString()).mul(100);
   const otherOutcomeSharesBig = [] as any;
 
   market.outcomes.forEach(marketOutcome => {
     if (marketOutcome.id !== outcome.id) {
-      otherOutcomeSharesBig.push(new Big(marketOutcome.shares.toString()));
+      otherOutcomeSharesBig.push(
+        new Big(marketOutcome.shares.toString()).mul(100)
+      );
     }
   });
 
@@ -131,15 +133,19 @@ function calculateEthAmountSold(
     //   `x`, `y`, `z` are the market maker holdings for each outcome
     //   `a` is the amount of outcomes that are being sold
     //   `r` (the unknown) is the amount of collateral that will be returned in exchange of `a` tokens
+    // multiplying all terms by 100 to avoid floating point errors
+
+    const F = f.mul(100);
     const firstTerm = otherOutcomeSharesBig
-      .map(h => h.minus(f))
+      .map(h => h.minus(F))
       .reduce((a, b) => a.mul(b));
-    const secondTerm = outcomeSharesBig.plus(sharesBig).minus(f);
+    const secondTerm = outcomeSharesBig.plus(sharesBig).minus(F);
     const thirdTerm = otherOutcomeSharesBig.reduce(
       (a, b) => a.mul(b),
       outcomeSharesBig
     );
-    return firstTerm.mul(secondTerm).minus(thirdTerm);
+
+    return firstTerm.mul(secondTerm).minus(thirdTerm).div(100);
   };
 
   const totalStakeBig = newtonRaphson(totalStakeFunction, 0, {
