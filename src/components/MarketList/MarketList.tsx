@@ -19,6 +19,7 @@ import type { UseMarkets } from 'hooks/useMarkets';
 
 import { Button } from '../Button';
 import Text from '../Text';
+import marketListClasses from './MarketList.module.scss';
 
 type VirtuosoProps = Omit<
   ReactVirtuosoProps<Market, unknown>,
@@ -71,7 +72,7 @@ function Virtuoso(props: VirtuosoProps) {
         {renderBack && (
           <motion.div
             ref={back}
-            className="ta-center pr-grid pl-grid pt-grid bg-to-primary p-sticky w-100% zi-1"
+            className={marketListClasses.backRoot}
             initial={{ top: window.innerHeight }}
             animate={{
               top: `calc(${window.innerHeight}px - ${HEIGHT})`
@@ -101,7 +102,7 @@ function Virtuoso(props: VirtuosoProps) {
 }
 export default function MarketList({ markets }: MarketListProps) {
   return (
-    <div className="pm-c-market-list p-grid">
+    <div className="pm-c-market-list">
       {
         {
           loading: (
