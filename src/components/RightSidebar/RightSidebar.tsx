@@ -1,6 +1,9 @@
+import { ui } from 'config';
+
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
+import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
@@ -19,7 +22,9 @@ function Sidebar() {
 
   if (liquidityFormIsVisible) return <LiquidityForm />;
 
-  if (reportFormIsVisible) return <TradeFormClosed />;
+  if (ui.reportForm.enabled && reportFormIsVisible) return <ReportForm />;
+
+  if (!ui.reportForm.enabled && reportFormIsVisible) return <TradeFormClosed />;
 
   return null;
 }
