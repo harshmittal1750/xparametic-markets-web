@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { ui } from 'config';
 import { selectOutcome } from 'redux/ducks/trade';
 import { openReportForm } from 'redux/ducks/ui';
 
@@ -10,6 +11,7 @@ import TradeFormCharts from './TradeFormCharts';
 import TradeFormClosed from './TradeFormClosed';
 import TradeFormDetails from './TradeFormDetails';
 import TradeFormInput from './TradeFormInput';
+import TradeFormLiquidity from './TradeFormLiquidity';
 import TradeFormPredictions from './TradeFormPredictions';
 import TradeFormTypeSelector from './TradeFormTypeSelector';
 
@@ -48,6 +50,7 @@ function TradeForm() {
       <div className="pm-c-trade-form__group" style={{ gap: '1.6rem' }}>
         <TradeFormCharts />
         <TradeFormPredictions />
+        {ui.tradeForm.liquidity ? <TradeFormLiquidity /> : null}
       </div>
       <div className="pm-c-trade-form__group" style={{ gap: '2.4rem' }}>
         <TradeFormTypeSelector />
