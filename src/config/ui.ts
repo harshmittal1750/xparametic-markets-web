@@ -11,6 +11,11 @@ const ui = {
       url: environment.UI_HERO_ACTION_URL
     }
   },
+  tradeForm: {
+    liquidity: {
+      enabled: features.regular.enabled
+    }
+  },
   reportForm: {
     enabled: features.regular.enabled || features.fantasy.reportForm.enabled
   }
