@@ -135,7 +135,7 @@ const columns: LeaderboardTableColumn[] = [
     render: rankColumnRender
   }
 ].filter(column =>
-  ui.leaderboard.columns.includes(column.key)
+  ['wallet', 'rank', ...ui.leaderboard.columns].includes(column.key)
 ) as LeaderboardTableColumn[];
 
 type LeaderboardURLParams = {
