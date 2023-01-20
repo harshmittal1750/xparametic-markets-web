@@ -1,3 +1,10 @@
+import intersection from 'lodash/intersection';
+
+import {
+  leaderboardColumns,
+  defaultLeaderboardColumns
+} from 'pages/Leaderboard/Leaderboard.util';
+
 import environment from './environment';
 import features from './features';
 
@@ -18,6 +25,15 @@ const ui = {
   },
   reportForm: {
     enabled: features.regular.enabled
+  },
+  leaderboard: {
+    columns: features.fantasy.enabled
+      ? intersection(
+          environment.UI_LEADERBOARD_COLUMNS?.split(',') ||
+            defaultLeaderboardColumns,
+          leaderboardColumns
+        )
+      : defaultLeaderboardColumns
   }
 } as const;
 
