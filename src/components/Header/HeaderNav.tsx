@@ -6,7 +6,7 @@ import { pages, socials } from 'config';
 import { shiftSlash } from 'helpers/string';
 import { useMedia } from 'ui';
 
-import { IlluminateFantasyLeagueLogo } from 'assets/icons';
+import { PolkamarketsLogo } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';
@@ -140,7 +140,7 @@ export default function HeaderNav() {
     <nav className={HeaderNavClasses.root}>
       {isDesktop && !isTv && <HeaderNavMenuModal />}
       <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
-        <IlluminateFantasyLeagueLogo />
+        <PolkamarketsLogo />
       </Link>
       {isTv ? <HeaderNavMenu /> : !isDesktop && <HeaderNavMenuModal />}
     </nav>

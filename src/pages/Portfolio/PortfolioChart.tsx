@@ -5,21 +5,22 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import { AreaChart, Label, Text } from 'components';
 
-import { useAppSelector } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import { balance } from './mock';
 
 const PortfolioChart = () => {
+  const {
+    network: { currency }
+  } = useNetwork();
+  const { ticker } = currency;
+
   const holdingsChart = useAppSelector(
     state => state.portfolio.portfolio.holdingsChart
   );
   const { holdingsValue, holdingsPerformance } = useAppSelector(
     state => state.portfolio.portfolio
   );
-
-  const currency = IFL;
-  const { ticker } = currency;
 
   const holdingsChartData = fromPriceChartToLineChartSeries(holdingsChart);
   const holdingsPerformanceColor =

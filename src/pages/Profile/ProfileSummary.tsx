@@ -8,7 +8,6 @@ import { Tooltip } from 'components';
 import { Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import ProfileSummaryStat from './ProfileSummaryStat';
 
@@ -18,6 +17,8 @@ type ProfileSummaryProps = {
 
 function ProfileSummary({ address }: ProfileSummaryProps) {
   const { network } = useNetwork();
+  const { currency } = network;
+
   const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id
@@ -99,7 +100,7 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
         <ProfileSummaryStat
           title="Total earnings"
           value={`${roundNumber(portfolio.closedMarketsProfit, 3)} ${
-            IFL.symbol || IFL.ticker
+            currency.symbol || currency.ticker
           }`}
           backgroundColor="yellow"
         />

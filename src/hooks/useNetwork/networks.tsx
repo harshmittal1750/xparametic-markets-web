@@ -1,12 +1,7 @@
 import { environment } from 'config';
 import { Currency } from 'types/currency';
 
-import {
-  EthereumIcon,
-  IFLIcon,
-  MoonbeamIcon,
-  MoonriverIcon
-} from 'assets/icons';
+import { EthereumIcon, MoonbeamIcon, MoonriverIcon } from 'assets/icons';
 
 const DEV: Currency = {
   name: 'Dev',
@@ -41,13 +36,6 @@ const GLMR: Currency = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const IFL: Currency = {
-  name: 'IFL',
-  ticker: 'IFL',
-  symbol: 'IFL',
-  icon: <IFLIcon />,
-  iconName: 'IFL'
-};
 
 export type Network = {
   id: string;

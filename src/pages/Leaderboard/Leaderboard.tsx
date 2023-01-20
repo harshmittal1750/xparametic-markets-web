@@ -14,7 +14,6 @@ import { ButtonLoading } from 'components/Button';
 import { Dropdown } from 'components/new';
 
 import { useAppSelector, useNetwork } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import {
   buildLeaderboardData,
@@ -151,7 +150,8 @@ function Leaderboard() {
   const isDesktop = useMedia('(min-width: 1024px)');
 
   const { network } = useNetwork();
-  const currency = IFL;
+
+  const { currency } = network;
 
   // Redux selectors
   const walletConnected = useAppSelector(
