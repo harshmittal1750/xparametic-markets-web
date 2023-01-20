@@ -16,22 +16,22 @@ export type LeaderboardTableRow = {
     address: string;
     place: number;
   };
-  volume: {
+  volume?: {
     volume: number;
     ticker: string;
   };
-  // marketsCreated: number;
-  wonPredictions: number;
-  // netVolume: {
-  //   volume: number;
-  //   ticker: string;
-  // };
-  // netLiquidity: {
-  //   liquidity: number;
-  //   ticker: string;
-  // };
-  // transactions: number;
-  balance: {
+  marketsCreated?: number;
+  wonPredictions?: number;
+  netVolume?: {
+    volume: number;
+    ticker: string;
+  };
+  netLiquidity?: {
+    liquidity: number;
+    ticker: string;
+  };
+  transactions?: number;
+  balance?: {
     balance: number;
     ticker: string;
   };

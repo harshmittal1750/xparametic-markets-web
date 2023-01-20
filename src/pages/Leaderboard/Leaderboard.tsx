@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { ui } from 'config';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery,
@@ -25,7 +26,7 @@ import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
 import {
   balanceColumnRender,
-  // liquidityColumnRender,
+  liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
   walletColumnRender
@@ -41,37 +42,37 @@ const tabs = [
     title: 'Volume',
     sortBy: 'volume'
   },
-  // {
-  //   id: 'marketsCreated',
-  //   title: 'Markets Created',
-  //   sortBy: 'marketsCreated'
-  // },
+  {
+    id: 'marketsCreated',
+    title: 'Markets Created',
+    sortBy: 'marketsCreated'
+  },
   {
     id: 'wonPredictions',
     title: 'Won Predictions',
     sortBy: 'claimWinningsCount'
   },
-  // {
-  //   id: 'transactions',
-  //   title: 'Transactions',
-  //   sortBy: 'transactions'
-  // },
+  {
+    id: 'transactions',
+    title: 'Transactions',
+    sortBy: 'transactions'
+  },
   {
     id: 'balance',
     title: 'Balance',
     sortBy: 'erc20Balance'
+  },
+  {
+    id: 'netVolume',
+    title: 'Net Volume',
+    sortBy: 'tvlVolume'
+  },
+  {
+    id: 'netLiquidity',
+    title: 'Net Liquidity',
+    sortBy: 'tvlLiquidity'
   }
-  // {
-  //   id: 'netVolume',
-  //   title: 'Net Volume',
-  //   sortBy: 'tvlVolume'
-  // }
-  // {
-  //   id: 'netLiquidity',
-  //   title: 'Net Liquidity',
-  //   sortBy: 'tvlLiquidity'
-  // }
-];
+].filter(tab => ui.leaderboard.columns.includes(tab.id));
 
 const columns: LeaderboardTableColumn[] = [
   {
@@ -88,24 +89,24 @@ const columns: LeaderboardTableColumn[] = [
     width: 140,
     render: volumeColumnRender
   },
-  // {
-  //   title: 'Markets Created',
-  //   key: 'marketsCreated',
-  //   align: 'right',
-  //   width: 140
-  // },
+  {
+    title: 'Markets Created',
+    key: 'marketsCreated',
+    align: 'right',
+    width: 140
+  },
   {
     title: 'Won Predictions',
     key: 'wonPredictions',
     align: 'right',
     width: 140
   },
-  // {
-  //   title: 'Transactions',
-  //   key: 'transactions',
-  //   align: 'right',
-  //   width: 140
-  // },
+  {
+    title: 'Transactions',
+    key: 'transactions',
+    align: 'right',
+    width: 140
+  },
   {
     title: 'Balance',
     key: 'balance',
@@ -113,20 +114,20 @@ const columns: LeaderboardTableColumn[] = [
     width: 140,
     render: balanceColumnRender
   },
-  // {
-  //   title: 'Net Volume',
-  //   key: 'netVolume',
-  //   align: 'right',
-  //   width: 140,
-  //   render: volumeColumnRender
-  // },
-  // {
-  //   title: 'Net Liquidity',
-  //   key: 'netLiquidity',
-  //   align: 'right',
-  //   width: 140,
-  //   render: liquidityColumnRender
-  // },
+  {
+    title: 'Net Volume',
+    key: 'netVolume',
+    align: 'right',
+    width: 140,
+    render: volumeColumnRender
+  },
+  {
+    title: 'Net Liquidity',
+    key: 'netLiquidity',
+    align: 'right',
+    width: 140,
+    render: liquidityColumnRender
+  },
   {
     title: 'Rank',
     key: 'rank',
@@ -134,7 +135,9 @@ const columns: LeaderboardTableColumn[] = [
     width: 100,
     render: rankColumnRender
   }
-];
+].filter(column =>
+  ui.leaderboard.columns.includes(column.key)
+) as LeaderboardTableColumn[];
 
 type LeaderboardURLParams = {
   slug?: string;
