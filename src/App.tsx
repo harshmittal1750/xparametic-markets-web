@@ -10,7 +10,6 @@ import {
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { pages } from 'config';
-import { getUserCountry } from 'helpers/location';
 import store from 'redux/store';
 import Spinner from 'ui/Spinner';
 
@@ -32,10 +31,11 @@ export default function App() {
     (async function handleRestrictedCountry() {
       const restrictedCountries =
         process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
-      const userCountry = await getUserCountry();
+      const { getUserCountry } = await import('helpers/location');
+      const { countryCode } = await getUserCountry();
 
       setLoading(false);
-      setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
+      setRestricted(!!restrictedCountries?.includes(countryCode));
     })();
   }, []);
 
