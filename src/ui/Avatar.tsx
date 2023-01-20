@@ -26,13 +26,12 @@ export default function Avatar({
     // eslint-disable-next-line jsx-a11y/alt-text
     <img
       className={cn(
-        avatarClasses.root,
         {
           [avatarClasses.radiusSm]: $radius === 'sm',
-          [avatarClasses.radiusMd]: $radius === 'md' || !$radius,
+          [avatarClasses.radiusMd]: $radius === 'md',
           [avatarClasses.radiusLg]: $radius === 'lg',
           [avatarClasses.sizeSm]: $size === 'sm',
-          [avatarClasses.sizeMd]: $size === 'md' || !$size,
+          [avatarClasses.sizeMd]: $size === 'md',
           [avatarClasses.sizeLg]: $size === 'lg'
         },
         className
