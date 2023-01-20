@@ -87,7 +87,16 @@ function calculateSharesBought(
     return acc * (cur.shares + amount);
   }, 1);
 
-  const newOutcomeShares = market.liquidity ** market.outcomes.length / product;
+  // calculating liquidity from n-root of product of all outcome shares
+  // eslint-disable-next-line no-restricted-properties
+  const liquidity = Math.pow(
+    market.outcomes.reduce((acc, cur) => {
+      return acc * cur.shares;
+    }, 1),
+    1 / market.outcomes.length
+  );
+
+  const newOutcomeShares = liquidity ** market.outcomes.length / product;
 
   const shares = outcome.shares - newOutcomeShares + amount || 0;
   const price = amount / shares || 0;
@@ -151,7 +160,8 @@ function calculateEthAmountSold(
   const totalStakeBig = newtonRaphson(totalStakeFunction, 0, {
     maxIterations: 100
   });
-  const totalStake = Number(totalStakeBig);
+  // flooring totalStake to  avoid floating point errors
+  const totalStake = Number(totalStakeBig) * 0.999999999;
 
   const price = shares > 0 ? totalStake / shares : outcome.price;
 
