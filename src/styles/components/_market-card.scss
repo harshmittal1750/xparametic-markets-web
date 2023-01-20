@@ -212,7 +212,6 @@
 
     &__actions {
       @include flex-row(flex-end, flex-start, 1.2rem);
-      padding-top: 0.3rem;
     }
   }
 }

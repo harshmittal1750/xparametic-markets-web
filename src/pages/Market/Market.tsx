@@ -7,19 +7,17 @@ import { Container, Hero } from 'ui';
 import Avatar from 'ui/Avatar';
 import Spinner from 'ui/Spinner';
 
-import { ArrowLeftIcon } from 'assets/icons';
-
 import {
   Tabs,
   Table,
   Text,
-  Button,
   SEO,
   AlertMini,
   Breadcrumb,
   ButtonGroup
 } from 'components';
 import MarketFooter from 'components/Market/MarketFooter';
+import MarketFooterActions from 'components/Market/MarketFooterActions';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -75,12 +73,7 @@ function MarketUI() {
             </Text>
           </div>
           <div className={marketClasses.heroInfoActions}>
-            <Button variant="subtle" size="sm">
-              <ArrowLeftIcon />
-            </Button>
-            <Button variant="subtle" size="sm">
-              <ArrowLeftIcon />
-            </Button>
+            <MarketFooterActions $variant="filled" market={market} />
           </div>
         </Container>
         <Container className={marketClasses.heroStats}>
