@@ -43,8 +43,8 @@ export type CreateMarketFormData = {
 const initialData: CreateMarketFormData = {
   question: '',
   outcomes: [
-    { id: uuid(), name: 'Yes', probability: 50 },
-    { id: uuid(), name: 'No', probability: 50 }
+    { id: uuid(), name: '', probability: 50 },
+    { id: uuid(), name: '', probability: 50 }
   ],
   image: {
     file: undefined,
@@ -110,12 +110,9 @@ function CreateMarketForm() {
     const polkamarketsService = new PolkamarketsService(networkConfig);
     const closingDate = new Date(values.closingDate).getTime() / 1000; // TODO: move to dayjs
 
-    const outcomesNames = values.outcomes.map(outcome => outcome.name);
-    const outcomesProbabilities = values.outcomes.map(
-      outcome => outcome.probability
-    );
+    const outcomes = values.outcomes.map(outcome => outcome.name);
+    const odds = values.outcomes.map(outcome => outcome.probability);
 
-    const outcomes = [];
     // data format: "category;subcategory;resolutionSource"
     const data = `${values.category};${values.subcategory};${values.resolutionSource}`;
 
@@ -125,7 +122,8 @@ function CreateMarketForm() {
       closingDate,
       outcomes,
       data,
-      values.liquidity
+      values.liquidity,
+      odds
     );
 
     show('createMarket');
