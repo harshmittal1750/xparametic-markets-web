@@ -2,6 +2,7 @@ import { useState } from 'react';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
+import type { PriceChart } from 'models/market';
 
 import { ChartHeader, LineChart, Text } from 'components';
 
@@ -14,39 +15,102 @@ const intervals = [
   { id: 'all', name: 'ALL', value: 1440 }
 ];
 
-function MarketOverview() {
-  const [currentInterval, setCurrentInterval] = useState(1440);
-  const market = useAppSelector(state => state.market.market);
-  const timeframe = intervals.find(
-    interval => interval.value === currentInterval
-  );
-  const series = market.outcomes.map(outcome => {
-    const chart = outcome.priceCharts?.find(
-      priceChart => priceChart.timeframe === timeframe?.id
-    );
+function getPricesDiff(priceChart?: PriceChart) {
+  const pricesArr = priceChart?.prices;
 
+  if (!pricesArr)
     return {
-      name: outcome.title,
-      data: fromPriceChartToLineChartSeries(chart?.prices || [])
+      sign: 'neutral',
+      value: '0',
+      pct: '0%'
     };
-  });
+
+  const [initial, ...prices] = pricesArr;
+  const diffValue = prices[prices.length - 1].value - initial.value;
+  const diffSign = Math.sign(diffValue);
+
+  return {
+    // eslint-disable-next-line no-nested-ternary
+    sign: diffSign > 0 ? 'positive' : diffSign < 0 ? 'negative' : 'neutral',
+    value: `${diffValue}`.match(/^.{4}/)?.[0] || 0,
+    pct: `${priceChart.changePercent * 100}%`
+  } as const;
+}
+
+function MarketOverview() {
+  const [currentInterval, setCurrentInterval] = useState(
+    intervals[intervals.length - 1]
+  );
+  const market = useAppSelector(state => state.market.market);
+  const series = market.outcomes.map(outcome => ({
+    name: outcome.title,
+    data: fromPriceChartToLineChartSeries(
+      outcome.priceCharts?.find(getCurrentInterval)?.prices || []
+    )
+  }));
+  const [outcome] = [...market.outcomes].sort(
+    (ocX, ocY) => ocY.price - ocX.price
+  );
+  const priceChart = outcome.priceCharts?.find(getCurrentInterval);
+  const pricesDiff = getPricesDiff(priceChart);
+  const chartSign = {
+    neutral: '',
+    positive: '+',
+    negative: '-'
+  }[pricesDiff.sign];
+
+  console.log(pricesDiff);
+
+  function getCurrentInterval(chart: PriceChart) {
+    return chart.timeframe === currentInterval.id;
+  }
 
   return (
     <>
       <div className="market-chart__header">
-        <Text
-          as="h2"
-          scale="body"
-          fontWeight="semibold"
-          className="market-chart__view-title"
-        >
-          Market Overview
-        </Text>
+        <div>
+          <Text scale="tiny-uppercase" color="gray" fontWeight="semibold">
+            {outcome.title}
+          </Text>
+          <Text
+            as="h3"
+            scale="heading-large"
+            fontWeight="semibold"
+            className="market-chart__view-title"
+          >
+            {outcome.price} {market.currency.symbol}
+          </Text>
+          {priceChart && (
+            <>
+              <Text
+                as="span"
+                scale="tiny-uppercase"
+                color={
+                  (
+                    {
+                      neutral: 'gray',
+                      positive: 'success',
+                      negative: 'danger'
+                    } as const
+                  )[pricesDiff.sign]
+                }
+                fontWeight="semibold"
+              >
+                {chartSign}
+                {pricesDiff.value} {market.currency.symbol} ({chartSign}
+                {pricesDiff.pct})
+              </Text>{' '}
+              <Text as="span" scale="tiny" color="gray" fontWeight="semibold">
+                Since Market Creation
+              </Text>
+            </>
+          )}
+        </div>
         <div className="market-chart__header-actions">
           <ChartHeader
             intervals={intervals}
-            defaultIntervalId="all"
-            onChangeInterval={(_interval, value) => setCurrentInterval(value)}
+            currentInterval={currentInterval}
+            onChangeInterval={setCurrentInterval}
           />
         </div>
       </div>
