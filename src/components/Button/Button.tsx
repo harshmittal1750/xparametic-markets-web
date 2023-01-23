@@ -1,31 +1,38 @@
+/* eslint-disable react/button-has-type */
 import { forwardRef } from 'react';
 
-import cn from 'classnames';
+import classNames from 'classnames';
+
+export type ButtonVariant = 'normal' | 'outline' | 'subtle' | 'ghost';
+
+export type ButtonColor =
+  | 'base'
+  | 'default'
+  | 'primary'
+  | 'secondary'
+  | 'success'
+  | 'warning'
+  | 'danger'
+  | 'noborder';
+
+type ButtonSize = 'normal' | 'sm' | 'xs';
 
 export interface ButtonProps extends React.ComponentPropsWithRef<'button'> {
   /**
    * Variant to use
    * @default 'normal'
    */
-  variant?: 'normal' | 'outline' | 'subtle' | 'ghost';
+  variant?: ButtonVariant;
   /**
    * Color of the component
    * @default 'default'
    */
-  color?:
-    | 'base'
-    | 'default'
-    | 'primary'
-    | 'secondary'
-    | 'success'
-    | 'warning'
-    | 'danger'
-    | 'noborder';
+  color?: ButtonColor;
   /**
    * Size of the component
    * @default 'normal'
    */
-  size?: 'normal' | 'sm' | 'xs';
+  size?: ButtonSize;
   /**
    * Fill available width
    * @default 'false'
@@ -48,6 +55,7 @@ export interface ButtonProps extends React.ComponentPropsWithRef<'button'> {
  */
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   {
+    type = 'button',
     variant = 'normal',
     color = 'default',
     size = 'normal',
@@ -63,8 +71,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button(
   return (
     <button
       ref={ref}
-      type="button"
-      className={cn(
+      type={type}
+      className={classNames(
         {
           [`pm-c-button-${variant}--${color}`]: variant && color,
           [`pm-c-button--${size}`]: size,
