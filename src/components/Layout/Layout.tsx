@@ -8,7 +8,6 @@ import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import SEO from 'components/SEO';
-import WrongNetwork from 'components/WrongNetwork';
 
 import { useTheme, useAppDispatch, useNetwork } from 'hooks';
 
@@ -38,7 +37,6 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
 
   return (
     <>
-      <WrongNetwork />
       <BetaWarning />
       {page?.meta && <SEO {...page.meta} />}
       <Header />
