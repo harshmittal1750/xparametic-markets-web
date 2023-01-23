@@ -6,17 +6,16 @@ import { Achievement as AchievementProps } from 'types/achievement';
 import { CheckIcon, MedalIcon } from 'assets/icons';
 
 import { Divider } from 'components';
-import { ButtonColor, ButtonLoading, ButtonVariant } from 'components/Button';
+import { ButtonLoading } from 'components/Button';
+import type { ButtonProps } from 'components/Button';
 
 import { useNetwork } from 'hooks';
 
-type ButtonStatus = {
+interface ButtonStatus extends Pick<ButtonProps, 'variant' | 'color'> {
   title: string;
-  color: ButtonColor;
-  variant: ButtonVariant;
   icon: ReactNode;
   disabled: boolean;
-};
+}
 
 const buttonsByStatus: { [key: string]: ButtonStatus } = {
   unlocked: {
