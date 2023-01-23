@@ -1,5 +1,4 @@
-import Button from './Button';
-import ButtonText from './ButtonText';
-
-export { Button, ButtonText };
-export type { ButtonVariant, ButtonColor } from './Button';
+export { default as Button } from './Button';
+export { default as ButtonLoading } from './ButtonLoading';
+export { default as ButtonText } from './ButtonText';
+export type { ButtonProps, ButtonVariant, ButtonColor } from './Button';

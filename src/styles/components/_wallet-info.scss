@@ -1,11 +1,21 @@
 .pm-c-wallet-info {
   @include themes($navbar-themes) {
     @include flex-row;
-    gap: 0.8rem;
+    gap: 8px;
     align-items: center;
 
+    &__profile {
+      background-color: rgba(93, 85, 250, 0.1);
+      border: 1px solid rgba(93, 85, 250, 0.5) !important;
+    }
+
     &__currency {
-      padding: 4px 4px 4px 12px;
+      display: inherit;
+      align-items: center;
+      height: 44px;
+      gap: 4px;
+      padding-left: 12px;
+      padding-right: 4px;
       border: 1px solid themed('border-bottom-color');
       border-radius: 4px;
       font-weight: 600;
@@ -16,11 +26,33 @@
 
       &__ticker {
         color: #b5d2fe;
+        margin-right: 8px;
       }
 
       &__button {
-        margin-left: 12px;
         max-height: 32px;
+      }
+
+      &__transak {
+        color: var(--color-text-primary) !important;
+
+        &:disabled {
+          color: var(--color-text-quaternary) !important;
+        }
+      }
+
+      &__address {
+        border: unset !important;
+        background-color: rgba(92, 116, 153, 0.12);
+      }
+
+      &__buy {
+        border: unset;
+        background: linear-gradient(
+          90deg,
+          rgba(93, 85, 250, 0.5) 0%,
+          rgba(177, 85, 250, 0.5) 100%
+        );
       }
     }
   }

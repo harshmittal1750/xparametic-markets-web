@@ -113,13 +113,7 @@ function NetworkProvider({ children }: NetworkProviderProps) {
     if (walletIsConnected && isAnAvailableNetwork) {
       fetchUserData();
     }
-  }, [
-    dispatch,
-    isAnAvailableNetwork,
-    networkConfig,
-    polkamarketService,
-    walletIsConnected
-  ]);
+  }, [dispatch, isAnAvailableNetwork, polkamarketService, walletIsConnected]);
 
   useEffect(() => {
     window.ethereum?.on('chainChanged', reloadWindow);

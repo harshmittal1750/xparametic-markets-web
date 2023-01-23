@@ -4,7 +4,7 @@ import { useNetworks } from 'contexts/networks';
 
 import { useAppSelector } from 'hooks';
 
-import { Button } from '../Button';
+import { ButtonLoading } from '../Button';
 import NetworkSwitchClasses from './NetworkSwitch.module.scss';
 
 function toHex(value: string) {
@@ -37,7 +37,7 @@ function NetworkSwitch({ targetNetworkId }: NetworkSwitchProps) {
   if (!marketNetwork) return null;
 
   return (
-    <Button
+    <ButtonLoading
       className={NetworkSwitchClasses.button}
       variant="subtle"
       color="default"
@@ -48,7 +48,7 @@ function NetworkSwitch({ targetNetworkId }: NetworkSwitchProps) {
     >
       Switch Network
       {marketNetwork.currency.icon}
-    </Button>
+    </ButtonLoading>
   );
 }
 

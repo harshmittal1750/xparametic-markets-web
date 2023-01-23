@@ -1,17 +1,3 @@
-:root {
-  --color-vote-arrows-background--neutral: #dde1e8;
-  --color-vote-arrows-background--positive: #66d6ad1a;
-  --color-vote-arrows-background--negative: #f769691a;
-
-  --color-vote-arrows-border--neutral: #3d4759;
-  --color-vote-arrows-border--positive: #65d6ad33;
-  --color-vote-arrows-border--negative: #f86a6a33;
-
-  &[class='theme--dark'] {
-    --color-vote-arrows-background--neutral: #232a36;
-  }
-}
-
 .root {
   display: flex;
   justify-content: space-between;

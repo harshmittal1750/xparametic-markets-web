@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { PolkamarketsService } from 'services';
+import { Container } from 'ui';
 
 import { Text, CreateMarketForm } from 'components';
 
@@ -25,7 +26,7 @@ function CreateMarket() {
   }, [polkBalance, networkConfig]);
 
   return (
-    <div className="pm-p-create-market">
+    <Container className="pm-p-create-market">
       <div className="pm-p-create-market__header">
         <Text
           as="h4"
@@ -44,7 +45,7 @@ function CreateMarket() {
         ) : null}
         <CreateMarketForm />
       </div>
-    </div>
+    </Container>
   );
 }
 

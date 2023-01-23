@@ -8,11 +8,9 @@
       gap: 2.4rem;
 
       @media (min-width: 1024px) {
-        & {
-          align-items: flex-start;
-          flex-direction: initial;
-          text-align: initial;
-        }
+        align-items: flex-start;
+        flex-direction: initial;
+        text-align: initial;
       }
 
       &-avatar {

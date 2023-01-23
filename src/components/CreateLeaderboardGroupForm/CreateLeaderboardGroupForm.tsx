@@ -9,7 +9,7 @@ import {
 
 import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 
-import { Button } from 'components/Button';
+import { ButtonLoading } from 'components/Button';
 import { ImageUploadInput, Input, TextArea } from 'components/Input';
 import ModalFooter from 'components/ModalFooter';
 
@@ -146,7 +146,7 @@ function CreateLeaderboardGroupForm({
             className={CreateLeaderboardGroupFormClasses.textarea}
           />
           <ModalFooter>
-            <Button
+            <ButtonLoading
               type="submit"
               size="sm"
               variant="normal"
@@ -156,7 +156,7 @@ function CreateLeaderboardGroupForm({
               loading={isSubmitting}
             >
               {formProps[mode].submitTitle}
-            </Button>
+            </ButtonLoading>
           </ModalFooter>
         </Form>
       )}

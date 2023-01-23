@@ -1,12 +1,9 @@
-:root,
-[data-theme='light'] {
+:root {
   --color-border-1: #e3e7f0;
   --color-border-2: #c2cad6;
   --color-border-3: #ffffff;
-}
 
-@supports (--css: variables) {
-  [data-theme='dark'] {
+  &.theme--dark {
     --color-border-1: #252c3b;
     --color-border-2: #637084;
     --color-border-3: #171b23;

@@ -1,17 +1,14 @@
 .pm-l-right-sidebar {
-  display: none;
+  @include flex-column;
+  position: sticky;
+  top: 0;
+  width: 368px;
 
-  @include breakpoint-to('md') {
-    @include flex-column;
+  @media (min-width: 1024px) {
+    margin-top: -24px;
   }
 
-  position: sticky;
-  top: $navbar-height;
-
-  flex-shrink: 0;
-
-  width: fit-content;
-  height: calc(100vh - var(--header-y));
-
-  padding: 2.4rem;
+  > div {
+    height: calc(100% - var(--header-y));
+  }
 }

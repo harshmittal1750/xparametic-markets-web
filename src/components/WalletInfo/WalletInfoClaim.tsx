@@ -9,7 +9,7 @@ import ToastNotification from 'components/ToastNotification';
 import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-import { Button } from '../Button';
+import { Button, ButtonLoading } from '../Button';
 
 function WalletInfoClaim() {
   const dispatch = useAppDispatch();
@@ -66,14 +66,14 @@ function WalletInfoClaim() {
           </Toast>
         </ToastNotification>
       ) : null}
-      <Button
-        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button"
+      <ButtonLoading
+        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
         loading={isClaiming}
         disabled={isPolkClaimed || isClaiming}
         onClick={handleClaim}
       >
         {isPolkClaimed ? '$IFL Claimed' : 'Claim $IFL'}
-      </Button>
+      </ButtonLoading>
     </>
   );
 }

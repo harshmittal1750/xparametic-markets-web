@@ -1,24 +1,10 @@
-import ScrollableArea from 'components/ScrollableArea';
-
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
 import TradeForm from '../TradeForm';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
-function RightSidebarWrapper({ children }: React.PropsWithChildren<{}>) {
-  return (
-    <ScrollableArea>
-      <aside className="pm-l-layout__aside">
-        <div className="pm-l-right-sidebar">{children}</div>
-      </aside>
-    </ScrollableArea>
-  );
-}
-function RightSidebar() {
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
+function Sidebar() {
   const tradeFormIsVisible = useAppSelector(
     state => state.ui.tradeForm.visible
   );
@@ -29,30 +15,24 @@ function RightSidebar() {
     state => state.ui.reportForm.visible
   );
 
-  if (!rightSidebarIsVisible) return null;
+  if (tradeFormIsVisible) return <TradeForm />;
 
-  if (tradeFormIsVisible)
-    return (
-      <RightSidebarWrapper>
-        <TradeForm />
-      </RightSidebarWrapper>
-    );
+  if (liquidityFormIsVisible) return <LiquidityForm />;
 
-  if (liquidityFormIsVisible)
-    return (
-      <RightSidebarWrapper>
-        <LiquidityForm />
-      </RightSidebarWrapper>
-    );
-
-  if (reportFormIsVisible)
-    return (
-      <RightSidebarWrapper>
-        <TradeFormClosed />
-      </RightSidebarWrapper>
-    );
+  if (reportFormIsVisible) return <TradeFormClosed />;
 
   return null;
 }
+export default function RightSidebar() {
+  const rightSidebarIsVisible = useAppSelector(
+    state => state.ui.rightSidebar.visible
+  );
 
-export default RightSidebar;
+  if (!rightSidebarIsVisible) return null;
+
+  return (
+    <div className="pm-l-right-sidebar border-left-thin p-grid height-viewport o-hidden flex-shrink-0 overflow-y-auto">
+      <Sidebar />
+    </div>
+  );
+}

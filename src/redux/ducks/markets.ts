@@ -302,11 +302,11 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   }
 
   return sorted(
-    state.markets.filter(
+    state.markets?.filter(
       market =>
-        (market.category.match(regExpFromSearchQuery) ||
-          market.subcategory.match(regExpFromSearchQuery) ||
-          market.title.match(regExpFromSearchQuery)) &&
+        (market.category?.match(regExpFromSearchQuery) ||
+          market.subcategory?.match(regExpFromSearchQuery) ||
+          market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
         filterByState(market.state) &&
