@@ -15,6 +15,11 @@ const intervals = [
   { id: '30d', name: '30D', value: 720 },
   { id: 'all', name: 'ALL', value: 1440 }
 ];
+const signColors = {
+  neutral: 'gray',
+  positive: 'success',
+  negative: 'danger'
+} as const;
 
 function getPricesDiff(priceChart?: PriceChart) {
   const pricesArr = priceChart?.prices;
@@ -43,16 +48,16 @@ function MarketOverview() {
     intervals[intervals.length - 1]
   );
   const market = useAppSelector(state => state.market.market);
-  const series = market.outcomes.map(outcome => ({
-    name: outcome.title,
-    data: fromPriceChartToLineChartSeries(
-      outcome.priceCharts?.find(getCurrentInterval)?.prices || []
-    )
-  }));
-  const [outcome] = [...market.outcomes].sort(
-    (ocX, ocY) => ocY.price - ocX.price
-  );
-  const priceChart = outcome.priceCharts?.find(getCurrentInterval);
+  const [highOutcome, ...outcomes] = [...market.outcomes]
+    .sort((compareA, compareB) => compareB.price - compareA.price)
+    .map(outcome => ({
+      ...outcome,
+      name: outcome.title,
+      data: fromPriceChartToLineChartSeries(
+        outcome.priceCharts?.find(getCurrentInterval)?.prices || []
+      )
+    }));
+  const priceChart = highOutcome.priceCharts?.find(getCurrentInterval);
   const pricesDiff = getPricesDiff(priceChart);
   const chartSign = pricesDiff.sign === 'positive' ? '+' : '';
 
@@ -65,7 +70,7 @@ function MarketOverview() {
       <div className="market-chart__header">
         <div>
           <Text scale="tiny-uppercase" color="gray" fontWeight="semibold">
-            {outcome.title}
+            {highOutcome.title}
           </Text>
           <Text
             as="h3"
@@ -73,22 +78,14 @@ function MarketOverview() {
             fontWeight="semibold"
             className="market-chart__view-title"
           >
-            {outcome.price} {market.currency.symbol}
+            {highOutcome.price} {market.currency.symbol}
           </Text>
           {priceChart && (
             <>
               <Text
                 as="span"
                 scale="tiny-uppercase"
-                color={
-                  (
-                    {
-                      neutral: 'gray',
-                      positive: 'success',
-                      negative: 'danger'
-                    } as const
-                  )[pricesDiff.sign]
-                }
+                color={signColors[pricesDiff.sign]}
                 fontWeight="semibold"
               >
                 {chartSign}
@@ -110,7 +107,7 @@ function MarketOverview() {
         </div>
       </div>
       <LineChart
-        series={series}
+        series={[highOutcome, ...outcomes]}
         ticker={market.currency?.ticker}
         height={332}
       />
