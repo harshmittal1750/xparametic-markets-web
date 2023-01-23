@@ -2,6 +2,7 @@ import { useState } from 'react';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
+import { roundNumber } from 'helpers/math';
 import type { PriceChart } from 'models/market';
 
 import { ChartHeader, LineChart, Text } from 'components';
@@ -32,8 +33,8 @@ function getPricesDiff(priceChart?: PriceChart) {
   return {
     // eslint-disable-next-line no-nested-ternary
     sign: diffSign > 0 ? 'positive' : diffSign < 0 ? 'negative' : 'neutral',
-    value: `${diffValue}`.match(/^.{4}/)?.[0] || 0,
-    pct: `${priceChart.changePercent * 100}%`
+    value: roundNumber(diffValue, 3),
+    pct: `${roundNumber(Math.abs(priceChart.changePercent || 0) * 100, 2)}%`
   } as const;
 }
 
@@ -53,13 +54,7 @@ function MarketOverview() {
   );
   const priceChart = outcome.priceCharts?.find(getCurrentInterval);
   const pricesDiff = getPricesDiff(priceChart);
-  const chartSign = {
-    neutral: '',
-    positive: '+',
-    negative: '-'
-  }[pricesDiff.sign];
-
-  console.log(pricesDiff);
+  const chartSign = pricesDiff.sign === 'positive' ? '+' : '';
 
   function getCurrentInterval(chart: PriceChart) {
     return chart.timeframe === currentInterval.id;
