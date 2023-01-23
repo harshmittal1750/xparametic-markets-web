@@ -90,9 +90,12 @@ function MarketFooterTags({ market }: MarketFooterTagsProps) {
         </Pill>
       ) : null}
       {isVerified ? (
-        <Tooltip text="Verified Market" position="top">
-          <VerifiedIcon size="sm" style={{ cursor: 'pointer' }} />
-        </Tooltip>
+        <>
+          <div className="pm-c-market-footer__divider--circle" />
+          <Tooltip text="Verified Market" position="top">
+            <VerifiedIcon size="sm" style={{ cursor: 'pointer' }} />
+          </Tooltip>
+        </>
       ) : null}
     </div>
   );

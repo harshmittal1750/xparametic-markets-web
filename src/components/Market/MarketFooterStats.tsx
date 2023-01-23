@@ -30,7 +30,11 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             fontWeight="semibold"
             color="gray"
           >
-            <Icon name="Stats" className={marketClasses.footerStatsIcon} />
+            <Icon
+              name="Stats"
+              title="Volume"
+              className={marketClasses.footerStatsIcon}
+            />
             <Text
               as="strong"
               scale="tiny-uppercase"
@@ -46,7 +50,11 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
         <>
           <span className="pm-c-divider--circle" />
           <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-            <Icon name="Liquidity" className={marketClasses.footerStatsIcon} />
+            <Icon
+              name="Liquidity"
+              title="Liquidity"
+              className={marketClasses.footerStatsIcon}
+            />
             <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
               {`${roundNumber(liquidity, 3)} ${currency?.ticker}`}
             </Text>
@@ -57,7 +65,11 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
         <>
           <span className="pm-c-divider--circle" />
           <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-            <Icon name="Calendar" className={marketClasses.footerStatsIcon} />
+            <Icon
+              name="Calendar"
+              title="Expires at"
+              className={marketClasses.footerStatsIcon}
+            />
             <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
               {dayjs(expiresAt).utc().format('YYYY-MM-DD HH:mm UTC')}
             </Text>

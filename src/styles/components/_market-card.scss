@@ -230,18 +230,18 @@
 
 .pm-c-market-footer__actions-share--default {
   @include themes($market-footer-themes) {
-    fill: map-get(map-get(themed('background-colors'), 'share'), 'default');
+    color: map-get(map-get(themed('background-colors'), 'share'), 'default');
   }
 }
 
 .pm-c-market-footer__actions-favorite--default {
   @include themes($market-footer-themes) {
-    fill: map-get(map-get(themed('background-colors'), 'favorite'), 'default');
+    color: map-get(map-get(themed('background-colors'), 'favorite'), 'default');
   }
 }
 
 .pm-c-market-footer__actions-favorite--active {
   @include themes($market-footer-themes) {
-    fill: map-get(map-get(themed('background-colors'), 'favorite'), 'active');
+    color: map-get(map-get(themed('background-colors'), 'favorite'), 'active');
   }
 }
