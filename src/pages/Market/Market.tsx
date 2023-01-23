@@ -3,26 +3,16 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
-import { Container, Hero } from 'ui';
-import Avatar from 'ui/Avatar';
+import { Container } from 'ui';
 import Spinner from 'ui/Spinner';
 
-import {
-  Tabs,
-  Table,
-  Text,
-  SEO,
-  AlertMini,
-  Breadcrumb,
-  ButtonGroup
-} from 'components';
-import MarketFooter from 'components/Market/MarketFooter';
-import MarketFooterActions from 'components/Market/MarketFooterActions';
+import { Tabs, Table, Text, SEO, AlertMini, ButtonGroup } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import marketClasses from './Market.module.scss';
 import MarketChart from './MarketChart';
+import MarketHero from './MarketHero';
 import MarketNews from './MarketNews';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
@@ -42,7 +32,7 @@ function MarketUI() {
     [dispatch]
   );
   const tableItems = formatMarketPositions<Action, MarketInterface['outcomes']>(
-    actions.filter(action => action.marketId === -market.id),
+    actions.filter(action => action.marketId === +market.id),
     bondActions.filter(action => action.questionId === market.questionId),
     market.outcomes,
     market.currency.symbol || market.currency.ticker,
@@ -60,26 +50,7 @@ function MarketUI() {
         )}
         image={market.bannerUrl}
       />
-      <Hero className={marketClasses.hero} $image={market.imageUrl}>
-        <Container className={marketClasses.heroInfo}>
-          <Avatar $size="lg" $radius="lg" alt="Market" src={market.imageUrl} />
-          <div>
-            <Breadcrumb>
-              <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
-              <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
-            </Breadcrumb>
-            <Text as="h2" fontWeight="bold" scale="heading-large" color="light">
-              {market.title}
-            </Text>
-          </div>
-          <div className={marketClasses.heroInfoActions}>
-            <MarketFooterActions $variant="filled" market={market} />
-          </div>
-        </Container>
-        <Container className={marketClasses.heroStats}>
-          <MarketFooter market={market} />
-        </Container>
-      </Hero>
+      <MarketHero />
       <Container className={marketClasses.body}>
         {market.tradingViewSymbol && (
           <div className="pm-p-market__view">
