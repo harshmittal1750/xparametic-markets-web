@@ -34,6 +34,9 @@ const ui = {
           leaderboardColumns
         )
       : defaultLeaderboardColumns
+  },
+  clubs: {
+    enabled: features.fantasy.enabled
   }
 } as const;
 
