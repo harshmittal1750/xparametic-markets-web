@@ -65,24 +65,28 @@ function calculateLiquidityAdded(
   ethAmount: number
 ): LiquidityDetails {
   // TODO: move formulas to polkamarketsjs
-  const minOutcome = market.outcomes.reduce((prev, curr) => {
-    return prev.shares < curr.shares ? prev : curr;
+  const poolWeight = Math.max(
+    ...market.outcomes.map(outcome => outcome.shares)
+  );
+
+  const outcomeDetails = [] as any;
+
+  market.outcomes.forEach(outcome => {
+    const sendBackAmount = ethAmount - (outcome.shares / poolWeight) * ethAmount;
+    if (sendBackAmount > 0) {
+      outcomeDetails.push({
+        outcome,
+        stake: sendBackAmount * outcome.price,
+        shares: sendBackAmount
+      });
+    }
   });
 
-  const liquidityRatio = (minOutcome.shares * ethAmount) / market.liquidity;
+  const liquidityRatio = (poolWeight * ethAmount) / market.liquidity;
 
   const liquidityShares = liquidityRatio;
   const liquidityStake = liquidityRatio * market.liquidityPrice;
   const totalStake = ethAmount;
-
-  const outcomeStake = ethAmount - liquidityStake;
-  const outcomeDetails = [
-    {
-      outcome: minOutcome,
-      stake: outcomeStake,
-      shares: outcomeStake / minOutcome.price
-    }
-  ];
 
   return {
     liquidityShares,
