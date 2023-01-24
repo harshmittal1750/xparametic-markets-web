@@ -15,17 +15,22 @@ export default function ButtonGroup({
 }) {
   return (
     <div className={cn(ButtonGroupClasses.root, className)} {...props}>
-      {Children.map(children, (child, index) => {
-        const btn1st = index === 0;
-        const btnLast = index === Children.count(children) - 1;
+      {Children.map(children, (_child, index) => {
+        const child = _child as React.ReactElement;
+        const initial = index === 0;
+        const last = index === Children.count(children) - 1;
 
-        return cloneElement(child as React.ReactElement, {
-          className: cn(ButtonGroupClasses.buttons, {
-            [ButtonGroupClasses.actived]: index === actived,
-            [ButtonGroupClasses.start]: btn1st,
-            [ButtonGroupClasses.mid]: !(btn1st || btnLast),
-            [ButtonGroupClasses.end]: btnLast
-          })
+        return cloneElement(child, {
+          className: cn(
+            ButtonGroupClasses.buttons,
+            {
+              [ButtonGroupClasses.actived]: index === actived,
+              [ButtonGroupClasses.start]: initial,
+              [ButtonGroupClasses.mid]: !(initial || last),
+              [ButtonGroupClasses.end]: last
+            },
+            child.props.className
+          )
         });
       })}
     </div>
