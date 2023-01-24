@@ -1,6 +1,6 @@
 import cn from 'classnames';
 import { Container } from 'ui';
-import type { ContainerProps } from 'ui/Container/Container';
+import type { ContainerProps } from 'ui';
 
 import headerClasses from './Header.module.scss';
 import HeaderActions from './HeaderActions';
