@@ -98,7 +98,7 @@ function HeaderNavMenu({
   return (
     <ul className={HeaderNavClasses.list}>
       {Object.values(pages)
-        .filter(page => page.navigation)
+        .filter(page => page.enabled && page.navigation)
         .reverse()
         .map(page => (
           <li key={page.name} className={HeaderNavClasses.item}>
@@ -112,8 +112,8 @@ function HeaderNavMenu({
                 location.pathname === pages.home.pathname ||
                 /^\/markets/.test(location.pathname)
                   ? page.pathname === pages.home.pathname
-                  : /^\/clubs/.test(location.pathname)
-                    ? page.pathname === pages.clubs.pathname
+                  : pages.clubs.enabled && /^\/clubs/.test(location.pathname)
+                    ?  page.pathname === pages.clubs.pathname
                     : new RegExp(shiftSlash(location.pathname)).test(shiftSlash(page.pathname))
               }
               {...NavLinkProps}
