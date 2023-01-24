@@ -7,6 +7,8 @@ const app = express();
 app.use(helmet.frameguard({ action: 'deny' }));
 
 const port = process.env.PORT || 5000;
+const isFantasy = process.env.FEATURE_FANTASY?.toLocaleLowerCase() === 'true';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -117,7 +119,12 @@ app.get('/achievements', (request, response) => {
   });
 });
 
-app.get('/clubs', (request, response) => {
+app.get('/clubs', (request, response, next) => {
+  if (!isFantasy) {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
@@ -126,7 +133,12 @@ app.get('/clubs', (request, response) => {
   });
 });
 
-app.get('/clubs/:slug', async (request, response) => {
+app.get('/clubs/:slug', async (request, response, next) => {
+  if (!isFantasy) {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
@@ -172,7 +184,12 @@ app.get('/leaderboard', (request, response) => {
   });
 });
 
-app.get('/leaderboard/:slug', async (request, response) => {
+app.get('/leaderboard/:slug', async (request, response, next) => {
+  if (!isFantasy) {
+    next();
+    return;
+  }
+
   response.redirect(`/clubs/${request.params.slug}`);
 });
 
