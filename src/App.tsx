@@ -9,7 +9,7 @@ import {
 
 import DayjsUtils from '@date-io/dayjs';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { pages } from 'config';
+import { pages, ui } from 'config';
 import { getUserCountry } from 'helpers/location';
 import store from 'redux/store';
 
@@ -71,10 +71,12 @@ export default function App() {
                               component={page.Component}
                             />
                           ))}
-                          <Redirect
-                            from="/leaderboard/:slug"
-                            to="/clubs/:slug"
-                          />
+                          {ui.clubs.enabled && (
+                            <Redirect
+                              from="/leaderboard/:slug"
+                              to="/clubs/:slug"
+                            />
+                          )}
                         </Switch>
                       </Suspense>
                     </Layout>
