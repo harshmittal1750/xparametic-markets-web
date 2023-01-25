@@ -44,6 +44,16 @@ const ui = {
         enabled: features.regular.enabled
       }
     }
+  },
+  portfolio: {
+    analytics: {
+      liquidityProvided: {
+        enabled: features.regular.enabled
+      },
+      liquidityFeesEarned: {
+        enabled: features.regular.enabled
+      }
+    }
   }
 } as const;
 
