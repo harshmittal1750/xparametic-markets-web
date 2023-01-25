@@ -21,8 +21,9 @@ function PortfolioAnalytics() {
 
   return (
     <ul className="portfolio-page__analytics">
-      {analytics?.map(
-        ({ title, value, change, chartData, backgroundColor }) => (
+      {analytics
+        ?.filter(analytic => analytic.enabled)
+        .map(({ title, value, change, chartData, backgroundColor }) => (
           <li key={title}>
             <CategoryAnalytics
               title={title}
@@ -32,8 +33,7 @@ function PortfolioAnalytics() {
               backgroundColor={backgroundColor}
             />
           </li>
-        )
-      )}
+        ))}
     </ul>
   );
 }
