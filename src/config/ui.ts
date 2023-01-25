@@ -37,6 +37,13 @@ const ui = {
   },
   clubs: {
     enabled: features.fantasy.enabled
+  },
+  profile: {
+    summary: {
+      liquidityProvided: {
+        enabled: features.regular.enabled
+      }
+    }
   }
 } as const;
 
