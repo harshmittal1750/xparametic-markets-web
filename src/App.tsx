@@ -63,14 +63,16 @@ export default function App() {
                         }
                       >
                         <Switch>
-                          {Object.values(pages).map(page => (
-                            <Route
-                              key={page.name}
-                              exact={page.exact}
-                              path={page.pathname}
-                              component={page.Component}
-                            />
-                          ))}
+                          {Object.values(pages)
+                            .filter(page => page.enabled)
+                            .map(page => (
+                              <Route
+                                key={page.name}
+                                exact={page.exact}
+                                path={page.pathname}
+                                component={page.Component}
+                              />
+                            ))}
                           {ui.clubs.enabled && (
                             <Redirect
                               from="/leaderboard/:slug"
