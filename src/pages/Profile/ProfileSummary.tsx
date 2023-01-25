@@ -1,3 +1,4 @@
+import { ui } from 'config';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
 import { roundNumber } from 'helpers/math';
 import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
@@ -109,6 +110,15 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
           value={portfolio.wonPositions.toString()}
           backgroundColor="orange"
         />
+        {ui.profile.summary.liquidityProvided.enabled ? (
+          <ProfileSummaryStat
+            title="Liquidity provided"
+            value={`${roundNumber(portfolio.liquidityProvided, 3)} ${
+              currency.symbol || currency.ticker
+            }`}
+            backgroundColor="pink"
+          />
+        ) : null}
       </div>
     </div>
   );
