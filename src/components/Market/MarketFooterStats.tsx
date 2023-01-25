@@ -17,9 +17,7 @@ function MarketFooterStats({ market }: MarketFooterStatsProps) {
     <div className="pm-c-market-footer__stats">
       {network ? (
         <>
-          <Tooltip text={`$${network.currency.ticker} Token`}>
-            {network.currency.icon}
-          </Tooltip>
+          <Tooltip text={network.name}>{network.currency.icon}</Tooltip>
           <span className="pm-c-divider--circle" />
         </>
       ) : null}
