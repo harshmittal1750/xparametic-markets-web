@@ -7,7 +7,8 @@ const app = express();
 app.use(helmet.frameguard({ action: 'deny' }));
 
 const port = process.env.PORT || 5000;
-const isFantasy = process.env.FEATURE_FANTASY?.toLocaleLowerCase() === 'true';
+const isFantasy =
+  process.env.REACT_APP_FEATURE_FANTASY?.toLocaleLowerCase() === 'true';
 
 const fs = require('fs');
 const path = require('path');
