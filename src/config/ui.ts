@@ -53,6 +53,14 @@ const ui = {
       liquidityFeesEarned: {
         enabled: features.regular.enabled
       }
+    },
+    tabs: {
+      liquidityPositions: {
+        enabled: features.regular.enabled
+      },
+      reportPositions: {
+        enabled: features.regular.enabled
+      }
     }
   }
 } as const;
