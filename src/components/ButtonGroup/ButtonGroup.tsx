@@ -21,6 +21,7 @@ type Button = {
    * @default 'default'
    */
   color: ButtonColor;
+  enabled?: boolean;
 };
 
 type ButtonGroupSize = 'normal' | 'sm' | 'lg';
@@ -82,21 +83,23 @@ function ButtonGroup({
       })}
       style={style}
     >
-      {buttons?.map(button => (
-        <button
-          type="button"
-          key={button.id}
-          id={button.id}
-          name={button.id}
-          className={classNames({
-            'pm-c-button-group__item': true,
-            active: button.id === activeButton.id
-          })}
-          onClick={() => handleChangeActiveButton(button)}
-        >
-          {button.name}
-        </button>
-      ))}
+      {buttons
+        ?.filter(button => button.enabled || true)
+        .map(button => (
+          <button
+            type="button"
+            key={button.id}
+            id={button.id}
+            name={button.id}
+            className={classNames({
+              'pm-c-button-group__item': true,
+              active: button.id === activeButton.id
+            })}
+            onClick={() => handleChangeActiveButton(button)}
+          >
+            {button.name}
+          </button>
+        ))}
     </div>
   );
 }
