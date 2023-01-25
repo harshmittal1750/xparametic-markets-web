@@ -181,17 +181,17 @@ function login(polkamarketsService: PolkamarketsService) {
       const address = await polkamarketsService.getAddress();
       dispatch(changeEthAddress(address));
 
-      const balance = await polkamarketsService.getBalance();
-      dispatch(changeEthBalance(balance));
-
-      const polkBalance = await polkamarketsService.getERC20Balance();
-      dispatch(changePolkBalance(polkBalance));
-
-      const polkClaimed = await polkamarketsService.isPolkClaimed();
-      dispatch(changePolkClaimed(polkClaimed));
-
-      const polkApproved = await polkamarketsService.isRealitioERC20Approved();
-      dispatch(changePolkApproved(polkApproved));
+      Promise.all([
+        polkamarketsService.getBalance(),
+        polkamarketsService.getERC20Balance(),
+        polkamarketsService.isPolkClaimed(),
+        polkamarketsService.isRealitioERC20Approved()
+      ]).then(([balance, polkBalance, polkClaimed, polkApproved]) => {
+        dispatch(changeEthBalance(balance));
+        dispatch(changePolkBalance(polkBalance));
+        dispatch(changePolkClaimed(polkClaimed));
+        dispatch(changePolkApproved(polkApproved));
+      });
     }
   };
 }
