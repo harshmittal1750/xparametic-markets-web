@@ -204,6 +204,14 @@
       @extend .pm-c-input__label--default;
     }
 
+    &__thumbnail {
+      object-fit: cover;
+      border-radius: 50%;
+
+      height: var(--size-64);
+      height: var(--size-64);
+    }
+
     &__actions {
       display: inline-flex;
       justify-content: flex-start;

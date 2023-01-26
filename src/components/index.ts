@@ -32,13 +32,11 @@ import LineChart from './LineChart';
 import Link from './Link';
 import LiquidityForm from './LiquidityForm';
 import Market from './Market';
-import { MarketList, MarketListAsync } from './MarketList';
 import MarketSelect from './MarketSelect';
 import Menu from './Menu';
 import MiniAreaChart from './MiniAreaChart';
 import MiniTable from './MiniTable';
 import ModalNotification from './ModalNotification';
-import NavBar from './NavBar';
 import NetworkInfo from './NetworkInfo';
 import Networks from './Networks';
 import NewsCard from './NewsCard';
@@ -53,7 +51,6 @@ import ReportForm from './ReportForm';
 import Ribbon from './Ribbon';
 import RightSidebar from './RightSidebar';
 import ScrollableArea from './ScrollableArea';
-import ScrollToTop from './ScrollToTop';
 import SearchBar from './SearchBar';
 import Select from './Select';
 import SEO from './SEO';
@@ -66,7 +63,6 @@ import ToastNotification from './ToastNotification';
 import ToggleSwitch from './ToggleSwitch';
 import Tooltip from './Tooltip';
 import TradeForm from './TradeForm';
-import VirtualizedList from './VirtualizedList';
 import VoteArrows from './VoteArrows';
 import VoteModal from './VoteModal';
 import WalletInfo from './WalletInfo';
@@ -106,14 +102,11 @@ export {
   Link,
   LineChart,
   Market,
-  MarketList,
-  MarketListAsync,
   MarketSelect,
   Menu,
   MiniAreaChart,
   MiniTable,
   ModalNotification,
-  NavBar,
   NetworkInfo,
   Networks,
   NewsCard,
@@ -127,7 +120,6 @@ export {
   ProbabilityInput,
   ProgressBar,
   ScrollableArea,
-  ScrollToTop,
   SearchBar,
   Select,
   SelectInput,
@@ -145,7 +137,6 @@ export {
   ButtonGroup,
   ToggleSwitch,
   TradeForm,
-  VirtualizedList,
   VoteArrows,
   VoteModal,
   WalletInfo
@@ -154,12 +145,19 @@ export {
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
+
 export { default as CreateLeaderboardGroupForm } from './CreateLeaderboardGroupForm';
+
+export { default as CreateMarket } from './CreateMarket';
 
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
 export { default as Feature } from './Feature';
+
+export { default as Header } from './Header';
+
+export { default as MarketList } from './MarketList';
 
 export { default as Modal } from './Modal';
 
@@ -176,3 +174,5 @@ export { default as ModalHeaderTitle } from './ModalHeaderTitle';
 export { default as ModalSection } from './ModalSection';
 
 export { default as ModalSectionText } from './ModalSectionText';
+
+export { default as VirtualizedList } from './VirtualizedList';

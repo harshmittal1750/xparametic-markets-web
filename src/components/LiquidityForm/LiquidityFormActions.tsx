@@ -3,19 +3,25 @@ import { useState } from 'react';
 import { reset } from 'redux/ducks/liquidity';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
 import { closeLiquidityForm } from 'redux/ducks/ui';
-import { PolkamarketsService, PolkamarketsApiService } from 'services';
+import { PolkamarketsApiService } from 'services';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-import { Button } from '../Button';
+import { Button, ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 
 function LiquidityFormActions() {
   const dispatch = useAppDispatch();
-  const { network, networkConfig } = useNetwork();
+  const { network } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
   const transactionType = useAppSelector(
     state => state.liquidity.transactionType
   );
@@ -46,15 +52,13 @@ function LiquidityFormActions() {
   }
 
   async function updateWallet() {
-    await dispatch(login(networkConfig));
-    await dispatch(fetchAditionalData(networkConfig));
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleAddliquidity() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
 
@@ -86,8 +90,6 @@ function LiquidityFormActions() {
   async function handleRemoveLiquidity() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
 
@@ -128,7 +130,7 @@ function LiquidityFormActions() {
       </Button>
       {isWrongNetwork ? <NetworkSwitch /> : null}
       {transactionType === 'add' && !isWrongNetwork ? (
-        <Button
+        <ButtonLoading
           color="primary"
           fullwidth
           onClick={handleAddliquidity}
@@ -136,10 +138,10 @@ function LiquidityFormActions() {
           loading={isLoading}
         >
           Add Liquidity
-        </Button>
+        </ButtonLoading>
       ) : null}
       {transactionType === 'remove' && !isWrongNetwork ? (
-        <Button
+        <ButtonLoading
           color="primary"
           fullwidth
           onClick={handleRemoveLiquidity}
@@ -147,7 +149,7 @@ function LiquidityFormActions() {
           loading={isLoading}
         >
           Remove Liquidity
-        </Button>
+        </ButtonLoading>
       ) : null}
       {transactionSuccess && transactionSuccessHash ? (
         <ToastNotification id={transactionType} duration={10000}>

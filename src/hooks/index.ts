@@ -3,6 +3,7 @@ import useAppSelector from './useAppSelector';
 import useFavoriteMarkets from './useFavoriteMarkets';
 import useLocalStorage from './useLocalStorage';
 import useNetwork from './useNetwork';
+import usePolkamarketsService from './usePolkamarketsService';
 import useSortableData from './useSortableData';
 import useTheme from './useTheme';
 import useWindowDimensions from './useWindowDimensions';
@@ -13,6 +14,7 @@ export {
   useTheme,
   useLocalStorage,
   useNetwork,
+  usePolkamarketsService,
   useSortableData,
   useFavoriteMarkets,
   useWindowDimensions
@@ -30,7 +32,5 @@ export { default as usePortal } from './usePortal';
 export { default as usePrevious } from './usePrevious';
 
 export { default as useTimeoutEffect } from './useTimeoutEffect';
-
-export { default as useFooterVisibility } from './useFooterVisibility';
 
 export { default as useFilters } from './useFilters';

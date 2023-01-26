@@ -1,9 +1,15 @@
-import enviromentConfig from './environment';
-import features from './features';
-
+export { default as environment } from './environment';
 export type {
   EnvironmentConfigVariable,
   EnvironmentConfig
 } from './environment';
 
-export { enviromentConfig as environment, features };
+export { default as currencies } from './currencies';
+
+export { default as networks } from './networks';
+
+export { default as features } from './features';
+
+export { default as pages } from './pages';
+
+export { default as socials } from './socials';

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import { selectOutcome } from 'redux/ducks/trade';
 
-import VirtualizedList from 'components/VirtualizedList';
+import { VirtualizedList } from 'components';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 

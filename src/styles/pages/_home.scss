@@ -1,7 +1,8 @@
 .pm-p-home {
+  margin-top: var(--grid-margin);
+  gap: var(--grid-margin);
   display: flex;
   flex-direction: column;
-  gap: var(--size-24);
 
   height: 100%;
 
@@ -10,9 +11,7 @@
     justify-content: space-between;
     align-items: center;
     gap: 24px;
-
     width: 100%;
-    margin-bottom: var(--grid-margin);
 
     &__content {
       display: block;
@@ -31,20 +30,17 @@
   }
 
   &__navigation {
-    display: flex;
-
     &__actions:not(:last-child) {
-      margin-right: 12px;
+      display: inherit;
+      height: auto;
     }
   }
 
   &__filter {
     &-list {
-      width: 304px;
-      height: 100%;
+      width: 264px;
       overflow-y: auto;
       border-right: 1px solid var(--color-border);
-      background-color: var(--color-surface);
 
       &-sublist {
         background-color: var(--color-background-primary);

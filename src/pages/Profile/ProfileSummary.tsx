@@ -1,3 +1,4 @@
+import { currencies } from 'config';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
 import { roundNumber } from 'helpers/math';
 import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
@@ -8,9 +9,10 @@ import { Tooltip } from 'components';
 import { Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import ProfileSummaryStat from './ProfileSummaryStat';
+
+const { IFL } = currencies;
 
 type ProfileSummaryProps = {
   address: string;
@@ -18,57 +20,26 @@ type ProfileSummaryProps = {
 
 function ProfileSummary({ address }: ProfileSummaryProps) {
   const { network } = useNetwork();
-  const currency = IFL;
 
   const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id
   });
 
-  const ticker = currency.symbol || currency.ticker;
-
   if (isLoading || !portfolio) return null;
-
-  const addressStart = address.substring(0, address.length - 6);
-  const addressEnd = address.substring(address.length - 6, address.length);
-
-  const firstPredictionAt = portfolio.firstPositionAt
-    ? fromTimestampToCustomFormatDate(
-        portfolio.firstPositionAt * 1000,
-        'MMMM DD, YYYY'
-      )
-    : null;
-
-  const totalPredictions = portfolio.totalPositions;
-
-  const totalEarnings = `${roundNumber(
-    portfolio.closedMarketsProfit,
-    3
-  )} ${ticker}`;
-
-  const wonPredictions = `${portfolio.wonPositions}`;
 
   return (
     <div className="pm-p-profile-summary">
       <div className="pm-p-profile-summary__details">
         <div className="pm-p-profile-summary__address-group">
           <Text
-            className="pm-p-profile-summary__address--start"
+            className="pm-p-profile-summary__address"
             as="span"
             fontSize="heading-2"
             fontWeight="bold"
             color="1"
           >
-            {addressStart}
-          </Text>
-          <Text
-            className="pm-p-profile-summary__address--end"
-            as="span"
-            fontSize="heading-2"
-            fontWeight="bold"
-            color="1"
-          >
-            {addressEnd}
+            {address}
           </Text>
           <Tooltip position="bottom-start" text="View on Explorer">
             <a
@@ -81,7 +52,7 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
           </Tooltip>
         </div>
         <div className="pm-p-profile-summary__history">
-          {firstPredictionAt ? (
+          {!!portfolio.firstPositionAt && (
             <>
               <Text
                 as="span"
@@ -98,12 +69,15 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
                   color="2"
                   transform="uppercase"
                 >
-                  {firstPredictionAt}
+                  {fromTimestampToCustomFormatDate(
+                    portfolio.firstPositionAt * 1000,
+                    'MMMM DD, YYYY'
+                  )}
                 </Text>
               </Text>
               <span className="pm-c-divider--circle" />
             </>
-          ) : null}
+          )}
           <Text
             as="span"
             fontSize="body-4"
@@ -119,7 +93,7 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
               color="2"
               transform="uppercase"
             >
-              {totalPredictions}
+              {portfolio.totalPositions}
             </Text>
           </Text>
         </div>
@@ -127,12 +101,14 @@ function ProfileSummary({ address }: ProfileSummaryProps) {
       <div className="pm-p-profile-summary__stats">
         <ProfileSummaryStat
           title="Total earnings"
-          value={totalEarnings}
+          value={`${roundNumber(portfolio.closedMarketsProfit, 3)} ${
+            IFL.symbol || IFL.ticker
+          }`}
           backgroundColor="yellow"
         />
         <ProfileSummaryStat
           title="Won predictions"
-          value={wonPredictions}
+          value={portfolio.wonPositions.toString()}
           backgroundColor="orange"
         />
       </div>

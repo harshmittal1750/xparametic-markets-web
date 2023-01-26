@@ -1,5 +1,4 @@
-:root,
-[data-theme='light'] {
+:root {
   --color-text-1: #313a4c;
   --color-text-2: #637084;
   --color-text-3: #8293ae;
@@ -7,10 +6,8 @@
   --color-text-warning: #f0b429;
   --color-text-violets-are-blue: #8976ff;
   --color-text-maximum-blue-green: #28c1b8;
-}
 
-@supports (--css: variables) {
-  [data-theme='dark'] {
+  &.theme--dark {
     --color-text-1: #f9fafb;
     --color-text-2: #c5cad3;
     --color-text-3: #637084;

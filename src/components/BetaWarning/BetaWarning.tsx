@@ -42,7 +42,7 @@ export default function BetaWarning() {
   }
 
   return (
-    <Modal show={show} backdrop centered size="sm" {...betaWarningProps}>
+    <Modal show={show} centered size="sm" {...betaWarningProps}>
       <ModalContent>
         <ModalHeader>
           <ModalHeaderTitle

@@ -1,26 +1,32 @@
-import { Container } from 'ui';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import BetaWarning from '../BetaWarning';
-import Footer from '../Footer';
-import NavBar from '../NavBar';
-import RightSidebar from '../RightSidebar';
-import ScrollableArea from '../ScrollableArea';
+import { pages } from 'config';
+
+import BetaWarning from 'components/BetaWarning';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import SEO from 'components/SEO';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
+  const location = useLocation();
+
+  const page = Object.values(pages).filter(
+    ({ pathname }) => pathname === location.pathname
+  )[0];
+
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
+
   return (
-    <div className="pm-l-layout">
+    <>
       <BetaWarning />
-      <NavBar />
-      <ScrollableArea className="pm-l-layout__scrollable-area">
-        <Container className="pm-l-layout__main">
-          {children}
-          <footer className="pm-l-layout__footer">
-            <Footer />
-          </footer>
-        </Container>
-      </ScrollableArea>
-      <RightSidebar />
+      {page?.meta && <SEO {...page.meta} />}
+      <Header />
+      {children}
+      <Footer />
       <div id="toast-notification-portal" />
-    </div>
+    </>
   );
 }

@@ -1,20 +1,19 @@
 import { useCallback, useState } from 'react';
 
 import { login } from 'redux/ducks/polkamarkets';
-import { PolkamarketsService } from 'services';
 import { Transaction } from 'types/transaction';
 
 import Toast from 'components/Toast';
 import ToastNotification from 'components/ToastNotification';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-import { Button } from '../Button';
+import { Button, ButtonLoading } from '../Button';
 
 function WalletInfoClaim() {
   const dispatch = useAppDispatch();
-  const { networkConfig } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
   const { show: showToastNotification, close: closeToastNotification } =
     useToastNotification();
 
@@ -27,8 +26,6 @@ function WalletInfoClaim() {
   const [isClaiming, setIsClaiming] = useState(false);
 
   const handleClaim = useCallback(async () => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     try {
       setTransaction({ state: 'request' });
       setIsClaiming(true);
@@ -41,12 +38,12 @@ function WalletInfoClaim() {
       showToastNotification('claim-success');
 
       // updating wallet
-      await dispatch(login(networkConfig));
+      await dispatch(login(polkamarketsService));
     } catch (error) {
       setIsClaiming(false);
       setTransaction({ state: 'failure' });
     }
-  }, [dispatch, networkConfig, showToastNotification]);
+  }, [dispatch, polkamarketsService, showToastNotification]);
 
   return (
     <>
@@ -69,14 +66,14 @@ function WalletInfoClaim() {
           </Toast>
         </ToastNotification>
       ) : null}
-      <Button
-        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button"
+      <ButtonLoading
+        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
         loading={isClaiming}
         disabled={isPolkClaimed || isClaiming}
         onClick={handleClaim}
       >
         {isPolkClaimed ? '$IFL Claimed' : 'Claim $IFL'}
-      </Button>
+      </ButtonLoading>
     </>
   );
 }

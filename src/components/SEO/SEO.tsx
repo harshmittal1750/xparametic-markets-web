@@ -3,14 +3,10 @@ import { Helmet } from 'react-helmet';
 type SEOProps = {
   title: string;
   description: string;
-  imageUrl?: string;
+  image?: string;
 };
 
-const IFL_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/ifl_meta.jpg`;
-
-function SEO({ title, description, imageUrl }: SEOProps) {
-  const image = imageUrl || IFL_DEFAULT_BANNER;
-
+export default function SEO({ title, description, image }: SEOProps) {
   return (
     <Helmet
       title={title}
@@ -64,5 +60,3 @@ function SEO({ title, description, imageUrl }: SEOProps) {
     />
   );
 }
-
-export default SEO;

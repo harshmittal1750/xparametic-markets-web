@@ -10,10 +10,15 @@ import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-import { Button } from '../Button';
+import { Button, ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
 import Toast from '../Toast';
@@ -24,6 +29,7 @@ function TradeFormActions() {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
 
   // Market selectors
@@ -89,15 +95,13 @@ function TradeFormActions() {
   }
 
   async function updateWallet() {
-    await dispatch(login(networkConfig));
-    await dispatch(fetchAditionalData(networkConfig));
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleBuy() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -158,8 +162,6 @@ function TradeFormActions() {
   async function handleSell() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -238,7 +240,7 @@ function TradeFormActions() {
         {isWrongNetwork ? <NetworkSwitch /> : null}
         {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
-            <Button
+            <ButtonLoading
               color="default"
               fullwidth
               onClick={handlePricesRefresh}
@@ -246,7 +248,7 @@ function TradeFormActions() {
               loading={isLoading}
             >
               Refresh Prices
-            </Button>
+            </ButtonLoading>
             <Text
               as="small"
               scale="caption"
@@ -270,7 +272,7 @@ function TradeFormActions() {
           </div>
         ) : null}
         {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
-          <Button
+          <ButtonLoading
             color="success"
             fullwidth
             onClick={handleBuy}
@@ -278,10 +280,10 @@ function TradeFormActions() {
             loading={isLoading}
           >
             Buy
-          </Button>
+          </ButtonLoading>
         ) : null}
         {type === 'sell' && !needsPricesRefresh && !isWrongNetwork ? (
-          <Button
+          <ButtonLoading
             color="danger"
             fullwidth
             onClick={handleSell}
@@ -289,7 +291,7 @@ function TradeFormActions() {
             loading={isLoading}
           >
             Sell
-          </Button>
+          </ButtonLoading>
         ) : null}
       </div>
       {transactionSuccess && transactionSuccessHash ? (

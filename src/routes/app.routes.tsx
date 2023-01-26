@@ -1,93 +1,92 @@
-import { useEffect, useState, Suspense, lazy } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { environment } from 'config';
+import { environment, pages } from 'config';
 import { getUserCountry } from 'helpers/location';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
-import { fetchAditionalData } from 'redux/ducks/polkamarkets';
+
+import RestrictedCountry from 'pages/RestrictedCountry';
+import WrongNetwork from 'pages/WrongNetwork';
 
 import { Layout } from 'components';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useNetwork, useTheme } from 'hooks';
 
-const Home = lazy(() => import('pages/Home'));
-const Market = lazy(() => import('pages/Market'));
-const Portfolio = lazy(() => import('pages/Portfolio'));
-const WrongNetwork = lazy(() => import('pages/WrongNetwork'));
-const CreateMarket = lazy(() => import('pages/CreateMarket'));
-const RestrictedCountry = lazy(() => import('pages/RestrictedCountry'));
-const Achievements = lazy(() => import('pages/Achievements'));
-const Leaderboard = lazy(() => import('pages/Leaderboard'));
-const Clubs = lazy(() => import('pages/Clubs'));
-const Profile = lazy(() => import('pages/Profile'));
+const restrictedCountries =
+  process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
 
-const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
+function AppRoutes() {
+  const theme = useTheme();
+  const { network } = useNetwork();
 
-const AppRoutes = () => {
-  const dispatch = useAppDispatch();
   const walletConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
   );
-  const { network, networkConfig } = useNetwork();
+
+  const [isLoading, setLoading] = useState(false);
+  const [isAllowedCountry, setIsAllowedCountry] = useState(true);
 
   const isAllowedNetwork =
     !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
 
-  const restrictedCountries = REACT_APP_RESTRICTED_COUNTRIES?.split(',');
-  const [isAllowedCountry, setIsAllowedCountry] = useState(true);
-
-  useEffect(() => {
-    if (isAllowedNetwork && walletConnected) {
-      dispatch(fetchAditionalData(networkConfig));
-    }
-  }, [dispatch, isAllowedNetwork, networkConfig, walletConnected]);
+  if (theme.theme === 'dark') {
+    document.documentElement.classList.add('theme--dark');
+    document.documentElement.classList.remove('theme--light');
+  } else {
+    document.documentElement.classList.add('theme--light');
+    document.documentElement.classList.remove('theme--dark');
+  }
 
   useEffect(() => {
     async function fetchUserCountry() {
       if (!isUndefined(restrictedCountries) && !isEmpty(restrictedCountries)) {
+        setLoading(true);
         const userCountry = await getUserCountry();
 
+        setLoading(false);
         setIsAllowedCountry(
           !restrictedCountries.includes(userCountry.countryCode)
         );
       }
     }
     fetchUserCountry();
-  }, [restrictedCountries]);
+  }, []);
 
-  if (!isAllowedCountry)
+  if (isLoading)
     return (
-      <Suspense fallback={null}>
-        <RestrictedCountry />
-      </Suspense>
+      <div className="ta-center p-grid">
+        <span className="spinner--primary d-inline-block" />
+      </div>
     );
 
-  if (!isAllowedNetwork)
-    return (
-      <Suspense fallback={null}>
-        <WrongNetwork />
-      </Suspense>
-    );
+  if (!isAllowedCountry) return <RestrictedCountry />;
+
+  if (!isAllowedNetwork) return <WrongNetwork />;
 
   return (
     <Layout>
-      <Suspense fallback={null}>
+      <Suspense
+        fallback={
+          <div className="ta-center">
+            <span className="spinner--primary d-inline-block" />
+          </div>
+        }
+      >
         <Switch>
-          <Route component={Home} exact path="/" />
-          <Route component={Market} path="/markets" />
-          <Route component={Portfolio} path="/portfolio" />
-          <Route component={CreateMarket} path="/market/create" />
-          <Route component={Achievements} path="/achievements" />
-          <Route component={Leaderboard} exact path="/leaderboard" />
-          <Route component={Clubs} exact path="/clubs" />
-          <Route component={Leaderboard} path="/clubs/:slug" />
+          {Object.values(pages).map(page => (
+            <Route
+              key={page.name}
+              exact={page.exact}
+              path={page.pathname}
+              component={page.Component}
+            />
+          ))}
           <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
-          <Route component={Profile} path="/user/:address" />
         </Switch>
       </Suspense>
     </Layout>
   );
-};
+}
 
 export default AppRoutes;

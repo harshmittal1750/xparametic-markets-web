@@ -1,6 +1,5 @@
 import set from 'lodash/set';
-
-import { Network } from 'hooks/useNetwork/networks';
+import type { Network } from 'types/network';
 
 import { FiltersState } from './filters.type';
 
@@ -213,12 +212,12 @@ const filtersInitialState: FiltersState = {
         {
           label: 'Open',
           value: 'open',
-          selected: true
+          selected: false
         },
         {
           label: 'Closed',
           value: 'closed',
-          selected: true
+          selected: false
         },
         {
           label: 'Resolved',

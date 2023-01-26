@@ -1,19 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { closeRightSidebar } from 'redux/ducks/ui';
+import { currencies } from 'config';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery,
   useJoinLeaderboardGroupMutation
 } from 'services/Polkamarkets';
-import { useMedia } from 'ui';
+import { Container, useMedia } from 'ui';
 
-import { Button, CreateLeaderboardGroup, Link, SEO, Tabs } from 'components';
+import { CreateLeaderboardGroup, Link, Tabs } from 'components';
+import { ButtonLoading } from 'components/Button';
 import { Dropdown } from 'components/new';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import {
   buildLeaderboardData,
@@ -35,7 +35,7 @@ import type {
   CreateLeaderboardGroupState
 } from './types';
 
-const IFL_META_LEADERBOARD = `${process.env.PUBLIC_URL}/ifl_meta_leaderboard.png`;
+const { IFL } = currencies;
 
 const tabs = [
   {
@@ -149,7 +149,6 @@ function Leaderboard() {
   const { slug } = useParams<LeaderboardURLParams>();
   const isDesktop = useMedia('(min-width: 1024px)');
 
-  const dispatch = useAppDispatch();
   const { network } = useNetwork();
   const currency = IFL;
 
@@ -158,19 +157,10 @@ function Leaderboard() {
     state => state.polkamarkets.isLoggedIn
   );
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
 
   // Local state
   const [activeTab, setActiveTab] = useState('wonPredictions');
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
-
-  useEffect(() => {
-    if (rightSidebarIsVisible) {
-      dispatch(closeRightSidebar());
-    }
-  }, [rightSidebarIsVisible, dispatch]);
 
   // Queries
   const {
@@ -289,21 +279,16 @@ function Leaderboard() {
   ]);
 
   return (
-    <div className="pm-p-leaderboard">
-      <SEO
-        title="Leaderboard - Illuminate Fantasy League, powered by Polkamarkets"
-        description="Rank up higher on the leaderboard and be the #1 forecaster of the Football World Cup. The best global players will earn prizes from the $1500 USD pool, distributed as gift cards."
-        imageUrl={IFL_META_LEADERBOARD}
-      />
+    <Container className="pm-p-leaderboard">
       <div className="pm-p-leaderboard__header">
         <div className="flex-row gap-5 align-center">
           {leaderboardGroup?.imageUrl ? (
             <img
-              className="pm-c-market__body-image"
+              className="pm-p-leaderboard__avatar"
               alt={leaderboardGroup.title}
               src={leaderboardGroup.imageUrl}
-              width={66}
-              height={66}
+              width={64}
+              height={64}
             />
           ) : null}
           <div className="flex-column gap-3">
@@ -340,7 +325,7 @@ function Leaderboard() {
           />
         ) : null}
         {joinGroupState.visible ? (
-          <Button
+          <ButtonLoading
             size="sm"
             color="default"
             onClick={handleJoinLeaderboardGroup}
@@ -348,7 +333,7 @@ function Leaderboard() {
             disabled={joinGroupState.disabled}
           >
             {joinGroupState.joined ? 'Joined' : 'Join Club'}
-          </Button>
+          </ButtonLoading>
         ) : null}
       </div>
       <Tabs
@@ -412,7 +397,7 @@ function Leaderboard() {
           </Tabs.TabPane>
         ))}
       </Tabs>
-    </div>
+    </Container>
   );
 }
 

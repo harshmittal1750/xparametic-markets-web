@@ -3,7 +3,7 @@ import { colorByOutcomeId } from 'helpers/color';
 import { selectOutcome } from 'redux/ducks/trade';
 import { PolkamarketsService } from 'services';
 
-import VirtualizedList from 'components/VirtualizedList';
+import { VirtualizedList } from 'components';
 
 import { useAppSelector } from 'hooks';
 

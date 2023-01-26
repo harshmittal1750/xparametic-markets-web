@@ -4,48 +4,4 @@
 
   background-image: url('../../assets/images/private-beta-background.png');
   background-size: cover;
-
-  &__card {
-    @include flex-column(center, center);
-    gap: 1.7rem;
-
-    width: min(100%, 45.5rem);
-
-    margin: 0 auto;
-    padding: 5.6rem;
-
-    background-color: $gray-700;
-    border-radius: 0.8rem;
-  }
-
-  &__form {
-    @include flex-row;
-    gap: 1rem;
-
-    width: 100%;
-
-    &-input {
-      flex-grow: 1;
-
-      height: 5.4rem;
-
-      margin: 0rem;
-      padding: 1.3rem 1.6rem;
-
-      @extend .body, .semibold;
-      text-align: left;
-      color: $gray-100;
-
-      background-color: $gray-600;
-
-      outline: none;
-      border: none;
-      border-radius: 0.4rem;
-      transition: border 0.2s linear 0s, box-shadow 0.2s linear 0s;
-
-      &::placeholder {
-        color: $gray-500;
-      }
-    }
-  }
 }

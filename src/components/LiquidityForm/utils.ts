@@ -72,7 +72,8 @@ function calculateLiquidityAdded(
   const outcomeDetails = [] as any;
 
   market.outcomes.forEach(outcome => {
-    const sendBackAmount = ethAmount - (outcome.shares / poolWeight) * ethAmount;
+    const sendBackAmount =
+      ethAmount - (outcome.shares / poolWeight) * ethAmount;
     if (sendBackAmount > 0) {
       outcomeDetails.push({
         outcome,

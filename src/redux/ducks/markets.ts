@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment } from 'config';
+import { environment, networks, currencies } from 'config';
 // import dayjs from 'dayjs';
 // import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
@@ -10,10 +10,9 @@ import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
 
-import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
+import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
-import { IFL } from 'hooks/useNetwork/currencies';
-import networks from 'hooks/useNetwork/networks';
+const { IFL } = currencies;
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
@@ -65,7 +64,7 @@ const initialState: MarketsIntialState = {
   filterByVerified: true,
   sorterByEndingSoon: true,
   sorter: {
-    value: 'featured',
+    value: 'volumeEur',
     sortBy: undefined
   }
 };
@@ -303,11 +302,11 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   }
 
   return sorted(
-    state.markets.filter(
+    state.markets?.filter(
       market =>
-        (market.category.match(regExpFromSearchQuery) ||
-          market.subcategory.match(regExpFromSearchQuery) ||
-          market.title.match(regExpFromSearchQuery)) &&
+        (market.category?.match(regExpFromSearchQuery) ||
+          market.subcategory?.match(regExpFromSearchQuery) ||
+          market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
         filterByState(market.state) &&

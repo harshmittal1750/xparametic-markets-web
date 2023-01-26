@@ -43,7 +43,6 @@ function CreateLeaderboardGroup({
     <>
       <Modal
         show={show}
-        backdrop
         centered
         className={{ dialog: CreateLeaderboardGroupClasses.modalDialog }}
       >

@@ -50,7 +50,7 @@ function renderModal() {
     </Modal>
   );
   const elements = {
-    root: screen.getByRole('presentation'),
+    backdrop: screen.getByRole('presentation'),
     dialog: screen.getByRole('dialog', {
       name: defaultProps['aria-labelledby']
     }),
@@ -82,7 +82,7 @@ describe('Modal', () => {
     expect(document.body).toHaveStyle({
       overflow: 'hidden'
     });
-    expect(elements.root).toHaveStyle({
+    expect(elements.backdrop).toHaveStyle({
       opacity: 0
     });
     expect(elements.dialog).toHaveStyle({
@@ -130,7 +130,7 @@ describe('Modal', () => {
   it('calls [onHide] through Escape keydown', () => {
     const { elements } = renderModal();
 
-    fireEvent.keyDown(elements.root, { key: 'Escape' });
+    fireEvent.keyDown(elements.backdrop, { key: 'Escape' });
     expect(defaultProps.onHide).toHaveBeenCalled();
   });
   it('accepts extra [className]', () => {
