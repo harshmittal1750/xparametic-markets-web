@@ -1,3 +1,4 @@
+import { currencies } from 'config';
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 import { roundNumber } from 'helpers/math';
 
@@ -6,9 +7,10 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 import { AreaChart, Label, Text } from 'components';
 
 import { useAppSelector } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import { balance } from './mock';
+
+const { IFL } = currencies;
 
 const PortfolioChart = () => {
   const holdingsChart = useAppSelector(

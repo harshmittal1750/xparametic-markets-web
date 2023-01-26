@@ -87,7 +87,16 @@ function calculateSharesBought(
     return acc * (cur.shares + amount);
   }, 1);
 
-  const newOutcomeShares = market.liquidity ** market.outcomes.length / product;
+  // calculating liquidity from n-root of product of all outcome shares
+  // eslint-disable-next-line no-restricted-properties
+  const liquidity = Math.pow(
+    market.outcomes.reduce((acc, cur) => {
+      return acc * cur.shares;
+    }, 1),
+    1 / market.outcomes.length
+  );
+
+  const newOutcomeShares = liquidity ** market.outcomes.length / product;
 
   const shares = outcome.shares - newOutcomeShares + amount || 0;
   const price = amount / shares || 0;
@@ -110,14 +119,16 @@ function calculateEthAmountSold(
   outcome: Outcome,
   shares: number
 ): TradeDetails {
-  const sharesBig = new Big(shares.toString());
+  const sharesBig = new Big(shares.toString()).mul(100);
 
-  const outcomeSharesBig = new Big(outcome.shares.toString());
+  const outcomeSharesBig = new Big(outcome.shares.toString()).mul(100);
   const otherOutcomeSharesBig = [] as any;
 
   market.outcomes.forEach(marketOutcome => {
     if (marketOutcome.id !== outcome.id) {
-      otherOutcomeSharesBig.push(new Big(marketOutcome.shares.toString()));
+      otherOutcomeSharesBig.push(
+        new Big(marketOutcome.shares.toString()).mul(100)
+      );
     }
   });
 
@@ -131,21 +142,26 @@ function calculateEthAmountSold(
     //   `x`, `y`, `z` are the market maker holdings for each outcome
     //   `a` is the amount of outcomes that are being sold
     //   `r` (the unknown) is the amount of collateral that will be returned in exchange of `a` tokens
+    // multiplying all terms by 100 to avoid floating point errors
+
+    const F = f.mul(100);
     const firstTerm = otherOutcomeSharesBig
-      .map(h => h.minus(f))
+      .map(h => h.minus(F))
       .reduce((a, b) => a.mul(b));
-    const secondTerm = outcomeSharesBig.plus(sharesBig).minus(f);
+    const secondTerm = outcomeSharesBig.plus(sharesBig).minus(F);
     const thirdTerm = otherOutcomeSharesBig.reduce(
       (a, b) => a.mul(b),
       outcomeSharesBig
     );
-    return firstTerm.mul(secondTerm).minus(thirdTerm);
+
+    return firstTerm.mul(secondTerm).minus(thirdTerm).div(100);
   };
 
   const totalStakeBig = newtonRaphson(totalStakeFunction, 0, {
     maxIterations: 100
   });
-  const totalStake = Number(totalStakeBig);
+  // flooring totalStake to  avoid floating point errors
+  const totalStake = Number(totalStakeBig) * 0.999999999;
 
   const price = shares > 0 ? totalStake / shares : outcome.price;
 

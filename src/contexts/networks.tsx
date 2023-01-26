@@ -6,12 +6,12 @@ import {
   useState
 } from 'react';
 
-import { environment } from 'config';
+import { environment, networks } from 'config';
 import findKey from 'lodash/findKey';
 import isEmpty from 'lodash/isEmpty';
+import type { Network } from 'types/network';
 
 import { useAppSelector, useNetwork } from 'hooks';
-import networks, { Network } from 'hooks/useNetwork/networks';
 
 export type NetworksContextState = {
   network: Network;

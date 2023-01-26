@@ -1,7 +1,8 @@
+import { networks } from 'config';
+
 import { useNetworks } from 'contexts/networks';
 
 import { useAppSelector } from 'hooks';
-import networks from 'hooks/useNetwork/networks';
 
 import { ButtonLoading } from '../Button';
 import NetworkSwitchClasses from './NetworkSwitch.module.scss';

@@ -1,2 +1,5 @@
-// eslint-disable-next-line import/no-cycle
-export { default } from './useNetwork';
+import useNetwork from './useNetwork';
+import NetworkProvider from './useNetwork.context';
+
+export default useNetwork;
+export { NetworkProvider };

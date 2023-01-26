@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NetworkConfig } from 'config/environment';
 import { PolkamarketsService } from 'services';
 
 export type Action = {
@@ -16,7 +15,6 @@ export type Votes = { [key: string]: { upvoted: boolean; downvoted: boolean } };
 
 export type PolkamarketsInitialState = {
   isLoggedIn: boolean;
-  networkId: string;
   ethAddress: string;
   ethBalance: number;
   polkBalance: number;
@@ -39,7 +37,6 @@ export type PolkamarketsInitialState = {
 
 const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
-  networkId: '',
   ethAddress: '',
   ethBalance: 0,
   polkBalance: 0,
@@ -67,10 +64,6 @@ const polkamarketsSlice = createSlice({
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoggedIn: action.payload
-    }),
-    changeNetworkId: (state, action: PayloadAction<string>) => ({
-      ...state,
-      networkId: action.payload
     }),
     changeEthAddress: (state, action: PayloadAction<string>) => ({
       ...state,
@@ -160,7 +153,6 @@ export default polkamarketsSlice.reducer;
 
 const {
   changeIsLoggedIn,
-  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
@@ -178,10 +170,8 @@ const {
 } = polkamarketsSlice.actions;
 
 // fetching initial wallet details
-function login(networkConfig: NetworkConfig) {
+function login(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     const isLoggedIn = await polkamarketsService.isLoggedIn();
     dispatch(changeIsLoggedIn(isLoggedIn));
 
@@ -191,24 +181,23 @@ function login(networkConfig: NetworkConfig) {
       const address = await polkamarketsService.getAddress();
       dispatch(changeEthAddress(address));
 
-      const balance = await polkamarketsService.getBalance();
-      dispatch(changeEthBalance(balance));
-
-      const polkBalance = await polkamarketsService.getERC20Balance();
-      dispatch(changePolkBalance(polkBalance));
-
-      const polkClaimed = await polkamarketsService.isPolkClaimed();
-      dispatch(changePolkClaimed(polkClaimed));
-
-      const polkApproved = await polkamarketsService.isRealitioERC20Approved();
-      dispatch(changePolkApproved(polkApproved));
+      Promise.all([
+        polkamarketsService.getBalance(),
+        polkamarketsService.getERC20Balance(),
+        polkamarketsService.isPolkClaimed(),
+        polkamarketsService.isRealitioERC20Approved()
+      ]).then(([balance, polkBalance, polkClaimed, polkApproved]) => {
+        dispatch(changeEthBalance(balance));
+        dispatch(changePolkBalance(polkBalance));
+        dispatch(changePolkClaimed(polkClaimed));
+        dispatch(changePolkApproved(polkApproved));
+      });
     }
   };
 }
 
-function fetchAditionalData(networkConfig: NetworkConfig) {
+function fetchAditionalData(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
     const isLoggedIn = await polkamarketsService.isLoggedIn();
 
     if (isLoggedIn) {
@@ -242,17 +231,17 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
-      const portfolio = await polkamarketsService.getPortfolio();
-      dispatch(changePortfolio(portfolio));
-
-      const votes = (await polkamarketsService.getUserVotes()) as Votes;
-      dispatch(changeVotes(votes));
-
-      const bonds = await polkamarketsService.getBonds();
-      dispatch(changeBonds(bonds));
-
-      const bondMarketIds = await polkamarketsService.getBondMarketIds();
-      dispatch(changeMarketsWithBonds(bondMarketIds));
+      Promise.all([
+        polkamarketsService.getPortfolio(),
+        polkamarketsService.getUserVotes(),
+        polkamarketsService.getBonds(),
+        polkamarketsService.getBondMarketIds()
+      ]).then(([portfolio, votes, bonds, bondMarketIds]) => {
+        dispatch(changePortfolio(portfolio));
+        dispatch(changeVotes(votes as Votes));
+        dispatch(changeBonds(bonds));
+        dispatch(changeMarketsWithBonds(bondMarketIds));
+      });
 
       dispatch(
         changeLoading({
@@ -294,7 +283,6 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
 
 export {
   changeIsLoggedIn,
-  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,

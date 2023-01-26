@@ -10,6 +10,10 @@ function roundDown(value: number) {
   return Math.floor(value * 1e5) / 1e5;
 }
 
+function almost(a, b, delta = 0.1) {
+  return Math.abs(a - b) < delta;
+}
+
 function formatNumberToString(number: number | string) {
   return `${parseFloat(`${number}`).toFixed(0)}`.replace(
     /(\d)(?=(\d\d\d)+(?!\d))/g,
@@ -17,4 +21,4 @@ function formatNumberToString(number: number | string) {
   );
 }
 
-export { roundNumber, floorNumber, roundDown, formatNumberToString };
+export { roundNumber, floorNumber, roundDown, almost, formatNumberToString };

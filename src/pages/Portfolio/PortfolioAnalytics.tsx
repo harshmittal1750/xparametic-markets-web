@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
 
+import { currencies } from 'config';
+
 import { CategoryAnalytics } from 'components';
 
 import { useAppSelector } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import { formatPortfolioAnalytics } from './utils';
+
+const { IFL } = currencies;
 
 function PortfolioAnalytics() {
   const currency = IFL;

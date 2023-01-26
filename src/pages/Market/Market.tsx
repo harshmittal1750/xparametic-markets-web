@@ -21,7 +21,8 @@ function MarketUI() {
   const dispatch = useAppDispatch();
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
-  const { chartViews, market } = useAppSelector(state => state.market);
+  const market = useAppSelector(state => state.market.market);
+  const chartViews = useAppSelector(state => state.market.chartViews);
   const [tab, setTab] = useState('positions');
   const handleChartChange = useCallback(
     async (type: string) => {
@@ -120,11 +121,13 @@ function MarketUI() {
   );
 }
 export default function Market() {
+  const network = useNetwork();
   const history = useHistory();
   const params = useParams<Record<'marketId', string>>();
   const dispatch = useAppDispatch();
   const isLoading = useAppSelector(state => state.market.isLoading);
   const error = useAppSelector(state => state.market.error);
+  const market = useAppSelector(state => state.market.market);
   const [retries, setRetries] = useState(0);
 
   useEffect(() => {
@@ -154,7 +157,15 @@ export default function Market() {
       else if (retries < 3) setRetries(prevRetries => prevRetries + 1);
       else handleHome();
     }
-  }, [history, error, isLoading, retries]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    error,
+    history,
+    isLoading,
+    market.id,
+    market.networkId,
+    network.network.id
+  ]);
 
   if (isLoading) return <Spinner />;
   return <MarketUI />;

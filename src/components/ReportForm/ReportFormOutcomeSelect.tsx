@@ -1,14 +1,20 @@
 import { useField } from 'formik';
-import { Outcome as MarketOutcome } from 'models/market';
+import { colorByOutcomeId } from 'helpers/color';
 import { selectOutcome } from 'redux/ducks/trade';
 import { PolkamarketsService } from 'services';
 
+import { VirtualizedList } from 'components';
+
 import { useAppSelector } from 'hooks';
 
-import { BadgeColor } from '../Badge';
 import Outcome from '../Outcome';
+import { ReportFormOutcomeSelectType } from './ReportFormOutcomeSelect.type';
 
-function ReportFormOutcomeSelect() {
+type ReportFormOutcomeSelectProps = {
+  type: ReportFormOutcomeSelectType;
+};
+
+function ReportFormOutcomeSelect({ type }: ReportFormOutcomeSelectProps) {
   // Selectors
   const { outcomes, questionId } = useAppSelector(state => state.market.market);
   const marketId = useAppSelector(state => state.market.market.id);
@@ -29,9 +35,6 @@ function ReportFormOutcomeSelect() {
   // converting bytes32 to int
   const resolvedOutcomeId = PolkamarketsService.bytes32ToInt(bestAnswer);
   const isStarted = bond > 0;
-
-  const getOutcomeColor = (outcome: MarketOutcome): BadgeColor =>
-    outcomes.indexOf(outcome) === 0 ? 'blue' : 'pink';
 
   function handleOutcomeSelect(id: string) {
     selectOutcome(marketId, marketNetworkId, id);
@@ -63,22 +66,27 @@ function ReportFormOutcomeSelect() {
   };
 
   return (
-    <div className="pm-c-report-form-outcome-select">
-      {outcomes.map(outcome => (
-        <Outcome
-          key={outcome.id}
-          id={`${outcome.id}`}
-          title={outcome.title}
-          shares={portfolio[marketId]?.outcomes[outcome.id]?.shares || 0}
-          bond={getOutcomeBond(outcome.id)}
-          color={getOutcomeColor(outcome)}
-          state={checkOutcomeState(outcome)}
-          resolvedOutcomeId={resolvedOutcomeId}
-          marketQuestionFinalized={isMarketQuestionFinalized}
-          onSelect={handleOutcomeSelect}
-          isStarted={isStarted}
-        />
-      ))}
+    <div className={`pm-c-report-form-outcome-select--${type}`}>
+      <VirtualizedList
+        height="100%"
+        data={outcomes}
+        itemContent={(_index, outcome) => (
+          <div className="pm-c-report-form-outcome-select__item">
+            <Outcome
+              id={`${outcome.id}`}
+              title={outcome.title}
+              shares={portfolio[marketId]?.outcomes[outcome.id]?.shares || 0}
+              bond={getOutcomeBond(outcome.id)}
+              color={colorByOutcomeId(outcome.id)}
+              state={checkOutcomeState(outcome)}
+              resolvedOutcomeId={resolvedOutcomeId}
+              marketQuestionFinalized={isMarketQuestionFinalized}
+              onSelect={handleOutcomeSelect}
+              isStarted={isStarted}
+            />
+          </div>
+        )}
+      />
       <Outcome
         id="-1"
         title="Invalid"

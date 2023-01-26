@@ -1,148 +1,164 @@
-import { useEffect } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
-import kebabCase from 'lodash/kebabCase';
 import { Market, Outcome } from 'models/market';
-import { marketSelected } from 'redux/ducks/market';
-import { selectOutcome } from 'redux/ducks/trade';
-import { closeTradeForm, openReportForm, openTradeForm } from 'redux/ducks/ui';
 
-import {
-  CheckIcon,
-  RemoveIcon,
-  RepeatCycleIcon,
-  WarningIcon
-} from 'assets/icons';
+import { useAppSelector } from 'hooks';
 
-import OutcomeItem from 'components/OutcomeItem';
-import { Area } from 'components/plots';
-
-import { useAppDispatch, useAppSelector } from 'hooks';
-
-const outcomeStates = {
-  success: { icon: <CheckIcon /> },
-  warning: { icon: <WarningIcon /> },
-  danger: { icon: <RemoveIcon /> },
-  voided: { icon: <RepeatCycleIcon /> }
-};
-
-type MarketOutcomesItemProps = {
-  market: Market;
-  outcome: Outcome;
-};
-
-function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
-  const dispatch = useAppDispatch();
-  const selectedOutcomeId = useAppSelector(
-    state => state.trade.selectedOutcomeId
-  );
-  const selectedMarketId = useAppSelector(
-    state => state.trade.selectedMarketId
-  );
-  const selectedMarketNetworkId = useAppSelector(
-    state => state.trade.selectedMarketNetworkId
-  );
-
-  const { id, marketId, title, price } = outcome;
-
-  const isCurrentSelectedMarketNetwork =
-    market.networkId === selectedMarketNetworkId;
-
-  const isCurrentSelectedMarket =
-    marketId === selectedMarketId && isCurrentSelectedMarketNetwork;
-
-  const isCurrentSelectedPrediction =
-    marketId === selectedMarketId &&
-    id === selectedOutcomeId &&
-    isCurrentSelectedMarketNetwork;
-
-  const isMarketResolved = market.state === 'resolved';
-  const isVoided = market.voided;
-  const isWinningOutcome = isMarketResolved && market.resolvedOutcomeId === id;
-
-  useEffect(() => {
-    if (isCurrentSelectedPrediction) {
-      dispatch(openTradeForm());
-    }
-  }, [dispatch, isCurrentSelectedPrediction]);
-
-  // using 7d timeframe
-  const marketPriceChart = outcome.priceCharts?.find(
-    priceChart => priceChart.timeframe === '7d'
-  );
-  const marketPriceUp =
-    !marketPriceChart?.changePercent || marketPriceChart?.changePercent > 0;
-  const chartData = fromPriceChartToLineChartSeries(
-    marketPriceChart?.prices || []
-  );
-
-  function handleItemSelection() {
-    if (market.state === 'closed') {
-      dispatch(openReportForm());
-    } else {
-      dispatch(openTradeForm());
-    }
-
-    if (!isCurrentSelectedMarket) {
-      dispatch(marketSelected(market));
-    }
-
-    if (!isCurrentSelectedPrediction) {
-      dispatch(selectOutcome(market.id, market.networkId, outcome.id));
-    } else {
-      dispatch(selectOutcome(market.id, market.networkId, ''));
-      dispatch(closeTradeForm());
-    }
-  }
-
-  return (
-    <OutcomeItem
-      chart={
-        isMarketResolved ? (
-          <div className="pm-c-market-outcomes__item-result">
-            {isWinningOutcome && !isVoided ? outcomeStates.success.icon : null}
-            {!isWinningOutcome && !isVoided ? outcomeStates.danger.icon : null}
-            {isVoided ? outcomeStates.voided.icon : null}
-          </div>
-        ) : (
-          <div className="pm-c-market-outcomes__item-chart">
-            <Area
-              id={`${marketId}-${id}-${kebabCase(title)}`}
-              data={chartData}
-              color={marketPriceUp ? 'green' : 'red'}
-              width={48}
-              height={32}
-            />
-          </div>
-        )
-      }
-      isActive={isCurrentSelectedPrediction}
-      isPositive={marketPriceUp}
-      isResolved={isMarketResolved}
-      isWinning={isWinningOutcome}
-      price={price.toFixed(3)}
-      currency={market.network.currency.symbol}
-      title={title}
-      disabled={isMarketResolved}
-      onClick={handleItemSelection}
-    />
-  );
-}
+import MarketOutcome from './MarketOutcome';
+import MarketOutcomeMultiple from './MarketOutcomeMultiple';
 
 type MarketOutcomesProps = {
   market: Market;
 };
 
 function MarketOutcomes({ market }: MarketOutcomesProps) {
-  const { outcomes } = market;
+  const { outcomes, resolvedOutcomeId } = market;
+
+  const { selectedMarketId, selectedOutcomeId, selectedMarketNetworkId } =
+    useAppSelector(state => state.trade);
+
+  const isCurrentSelectedMarketNetwork =
+    market.networkId === selectedMarketNetworkId;
+  const isMarketResolved = market.state === 'resolved';
+  const isMarketVoided = market.voided;
+
+  const buildOutcomeObject = useCallback(
+    (outcome: Outcome) => {
+      const { id, marketId, title, price } = outcome;
+
+      // States
+      const isSelectedOutcome =
+        marketId === selectedMarketId &&
+        id === selectedOutcomeId &&
+        isCurrentSelectedMarketNetwork;
+
+      const isWinningOutcome = isMarketResolved && resolvedOutcomeId === id;
+
+      // Prices
+      const lastWeekPrices = outcome.priceCharts?.find(
+        priceChart => priceChart.timeframe === '7d'
+      );
+      const lastWeekPricesChartSeries = fromPriceChartToLineChartSeries(
+        lastWeekPrices?.prices || []
+      );
+      const isPriceUp =
+        !lastWeekPrices?.changePercent || lastWeekPrices?.changePercent > 0;
+
+      return {
+        id,
+        title,
+        state: {
+          isDefault: !isMarketResolved,
+          isSuccess: isWinningOutcome,
+          isDanger: !isWinningOutcome,
+          isActive: isSelectedOutcome
+        },
+        price: {
+          isPriceUp,
+          value: price.toFixed(3),
+          lastWeekPricesChartSeries
+        },
+        result: {
+          isResolved: isMarketResolved,
+          state: {
+            isWon: isWinningOutcome && !isMarketVoided,
+            isLoss: !isWinningOutcome && !isMarketVoided,
+            isVoided: isMarketVoided
+          }
+        }
+      };
+    },
+    [
+      isCurrentSelectedMarketNetwork,
+      isMarketResolved,
+      isMarketVoided,
+      resolvedOutcomeId,
+      selectedMarketId,
+      selectedOutcomeId
+    ]
+  );
+
+  const buildOutcomeMultipleObject = useCallback(
+    (outcomesSlice: Outcome[]) => {
+      const ids = outcomesSlice.map(outcome => outcome.id);
+      const titles = outcomesSlice.map(outcome => outcome.title);
+
+      const title = `${titles.length}+ ${'Outcome'}${
+        titles.length !== 1 ? 's' : ''
+      }`;
+
+      const subtitle = titles.join(', ');
+
+      // States
+      const isSelectedOutcome =
+        market.id === selectedMarketId &&
+        ids.includes(selectedOutcomeId) &&
+        isCurrentSelectedMarketNetwork;
+      const isWinningOutcome =
+        isMarketResolved && ids.includes(resolvedOutcomeId);
+
+      return {
+        ids,
+        title,
+        subtitle,
+        state: {
+          isDefault: !isMarketResolved,
+          isSuccess: isWinningOutcome,
+          isDanger: !isWinningOutcome,
+          isActive: isSelectedOutcome
+        },
+        result: {
+          isResolved: isMarketResolved,
+          state: {
+            isWon: isWinningOutcome && !isMarketVoided,
+            isLoss: !isWinningOutcome && !isMarketVoided,
+            isVoided: isMarketVoided
+          }
+        }
+      };
+    },
+    [
+      isCurrentSelectedMarketNetwork,
+      isMarketResolved,
+      isMarketVoided,
+      market.id,
+      resolvedOutcomeId,
+      selectedMarketId,
+      selectedOutcomeId
+    ]
+  );
+
+  const hasMultipleOutcomes = outcomes.length > 3;
+
+  const outcomesObjects = useMemo(() => {
+    if (hasMultipleOutcomes) {
+      return outcomes.slice(0, 3).map(outcome => buildOutcomeObject(outcome));
+    }
+
+    return outcomes.slice(0, 3).map(outcome => buildOutcomeObject(outcome));
+  }, [buildOutcomeObject, hasMultipleOutcomes, outcomes]);
+
+  const multipleOutcomesObject = useMemo(() => {
+    if (!hasMultipleOutcomes) return undefined;
+    return buildOutcomeMultipleObject(outcomes.slice(3));
+  }, [buildOutcomeMultipleObject, hasMultipleOutcomes, outcomes]);
 
   return (
     <ul className="pm-c-market-outcomes">
-      {outcomes.map(outcome => (
+      {outcomesObjects.map(outcome => (
         <li key={outcome.id}>
-          <MarketOutcomesItem market={market} outcome={outcome} />
+          <MarketOutcome market={market} outcome={outcome} />
         </li>
       ))}
+      {multipleOutcomesObject ? (
+        <li>
+          <MarketOutcomeMultiple
+            market={market}
+            outcome={multipleOutcomesObject}
+          />
+        </li>
+      ) : null}
     </ul>
   );
 }

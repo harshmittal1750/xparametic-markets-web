@@ -161,7 +161,8 @@ export default class PolkamarketsService {
     duration: number,
     outcomes: Array<string>,
     category: string,
-    value: number
+    value: number,
+    odds: Array<number>
   ) {
     // ensuring user has wallet connected
     await this.login();
@@ -174,7 +175,8 @@ export default class PolkamarketsService {
       category,
       value,
       oracleAddress: this.address,
-      token: this.erc20ContractAddress
+      token: this.erc20ContractAddress,
+      odds
     });
 
     return response;
@@ -359,10 +361,15 @@ export default class PolkamarketsService {
     // eslint-disable-next-line no-underscore-dangle
     await this.contracts.erc20.__init__();
 
-    // returns user balance in ETH
-    const claimed = await this.contracts.erc20.hasUserClaimedTokens({
-      address: this.address
-    });
+    let claimed;
+    try {
+      // TODO: only call function when fantasy mode is enabled
+      claimed = await this.contracts.erc20.hasUserClaimedTokens({
+        address: this.address
+      });
+    } catch (error) {
+      return false;
+    }
 
     return claimed;
   }

@@ -1,15 +1,17 @@
 import { useState } from 'react';
 
+import { currencies } from 'config';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 
 import { Dropdown, Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import ProfileLeaderboardRanks from './ProfileLeaderboardRanks';
 import ProfilePredictionStatistics from './ProfilePredictionStatistics';
 import { LeaderboardRanks, PredictionStatistics } from './types';
+
+const { IFL } = currencies;
 
 type Timeframe = '1w' | '1m' | 'at';
 
