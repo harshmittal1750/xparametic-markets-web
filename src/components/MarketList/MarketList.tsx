@@ -6,7 +6,6 @@ import type {
 } from 'react-virtuoso';
 import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
-import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
 import { useMedia, useRect } from 'ui';
@@ -42,9 +41,7 @@ function Virtuoso(props: VirtuosoProps) {
     (index: number, market: Market) => (
       <PredictionCard
         market={market}
-        className={cn({
-          'mb-grid': data && index !== data.length - 1
-        })}
+        $gutter={data && index !== data.length - 1}
       />
     ),
     [data]

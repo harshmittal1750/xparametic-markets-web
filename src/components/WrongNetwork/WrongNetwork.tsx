@@ -27,8 +27,13 @@ export default function WrongNetwork() {
 
   return (
     <Modal show={!isAllowedNetwork} centered size="sm">
-      <ModalContent className="pm-wrong-network__card ta-center">
-        <Text as="h5" scale="heading" fontWeight="bold" className="t-primary">
+      <ModalContent className="pm-wrong-network__card">
+        <Text
+          as="h5"
+          scale="heading"
+          fontWeight="bold"
+          className="pm-wrong-network__card-title"
+        >
           Wrong Network
         </Text>
         <span className="spinner--primary" />
@@ -36,8 +41,7 @@ export default function WrongNetwork() {
           as="p"
           scale="body"
           fontWeight="medium"
-          className="t-secondary"
-          style={{ paddingBottom: '1rem' }}
+          className="pm-wrong-network__card-text"
         >
           Change your MetaMask to one of these available networks
         </Text>

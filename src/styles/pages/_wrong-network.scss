@@ -5,13 +5,22 @@
   &__card {
     @include flex-column(center, center);
     gap: 1.7rem;
-
+    text-align: center;
     width: min(100%, 45.5rem);
 
     margin: 0 auto;
     padding: 5.6rem;
 
     border-radius: 0.8rem;
+
+    &-title {
+      color: var(--color-text-primary);
+    }
+
+    &-text {
+      color: var(--color-text-secondary);
+      padding-bottom: 1rem;
+    }
   }
 
   &__form {
