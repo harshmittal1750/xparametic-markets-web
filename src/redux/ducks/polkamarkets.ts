@@ -231,17 +231,17 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         })
       );
 
-      const portfolio = await polkamarketsService.getPortfolio();
-      dispatch(changePortfolio(portfolio));
-
-      const votes = (await polkamarketsService.getUserVotes()) as Votes;
-      dispatch(changeVotes(votes));
-
-      const bonds = await polkamarketsService.getBonds();
-      dispatch(changeBonds(bonds));
-
-      const bondMarketIds = await polkamarketsService.getBondMarketIds();
-      dispatch(changeMarketsWithBonds(bondMarketIds));
+      Promise.all([
+        polkamarketsService.getPortfolio(),
+        polkamarketsService.getUserVotes(),
+        polkamarketsService.getBonds(),
+        polkamarketsService.getBondMarketIds()
+      ]).then(([portfolio, votes, bonds, bondMarketIds]) => {
+        dispatch(changePortfolio(portfolio));
+        dispatch(changeVotes(votes as Votes));
+        dispatch(changeBonds(bonds));
+        dispatch(changeMarketsWithBonds(bondMarketIds));
+      });
 
       dispatch(
         changeLoading({
