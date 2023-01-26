@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import classNames from 'classnames';
 import kebabCase from 'lodash/kebabCase';
 import { Market } from 'models/market';
 import { marketSelected } from 'redux/ducks/market';
@@ -8,19 +7,16 @@ import { selectOutcome } from 'redux/ducks/trade';
 import { closeTradeForm, openReportForm, openTradeForm } from 'redux/ducks/ui';
 
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
   CheckIcon,
   RemoveIcon,
   RepeatCycleIcon,
   WarningIcon
 } from 'assets/icons';
 
+import OutcomeItem from 'components/OutcomeItem';
 import { Area } from 'components/plots';
 
-import { useAppDispatch } from 'hooks';
-
-import Text from '../Text';
+import { useAppDispatch, useAppSelector } from 'hooks';
 
 const outcomeStates = {
   success: { icon: <CheckIcon /> },
@@ -58,6 +54,7 @@ type MarketOutcomeProps = {
 
 function MarketOutcome({ market, outcome }: MarketOutcomeProps) {
   const dispatch = useAppDispatch();
+  const symbol = useAppSelector(state => state.market.market.currency.symbol);
   const { id: marketId } = market;
   const { id, title, state, price, result } = outcome;
   const { isPriceUp, lastWeekPricesChartSeries } = price;
@@ -86,66 +83,36 @@ function MarketOutcome({ market, outcome }: MarketOutcomeProps) {
   }
 
   return (
-    <button
-      type="button"
-      className={classNames({
-        'pm-c-market-outcomes__item--default': state.isDefault,
-        'pm-c-market-outcomes__item--success': state.isSuccess,
-        'pm-c-market-outcomes__item--danger': state.isDanger,
-        active: state.isActive
-      })}
+    <OutcomeItem
+      title={title}
+      price={price.value}
+      currency={symbol}
+      isActive={state.isActive}
+      isPositive={price.isPriceUp}
+      isResolved={result.isResolved}
+      isWinning={state.isSuccess || !state.isDanger}
       disabled={result.isResolved}
       onClick={handleItemSelection}
-    >
-      <div className="pm-c-market-outcomes__item-group--column">
-        <Text
-          as="p"
-          scale="caption"
-          fontWeight="semibold"
-          className="pm-c-market-outcomes__item-title"
-        >
-          {title}
-        </Text>
-        <div className="pm-c-market-outcomes__item-group--row">
-          <Text
-            as="p"
-            scale="tiny-uppercase"
-            fontWeight="medium"
-            className="pm-c-market-outcomes__item-odd"
-          >
-            PRICE
-          </Text>
-          <Text
-            as="span"
-            scale="tiny"
-            fontWeight="medium"
-            className="pm-c-market-outcomes__item-value"
-          >
-            {price.value}
-          </Text>
-          {!result.isResolved ? (
-            <>{price.isPriceUp ? <ArrowUpIcon /> : <ArrowDownIcon />}</>
-          ) : null}
-        </div>
-      </div>
-      {result.isResolved ? (
-        <div className="pm-c-market-outcomes__item-result">
-          {result.state.isWon ? outcomeStates.success.icon : null}
-          {result.state.isLoss ? outcomeStates.danger.icon : null}
-          {result.state.isVoided ? outcomeStates.voided.icon : null}
-        </div>
-      ) : (
-        <div className="pm-c-market-outcomes__item-chart">
-          <Area
-            id={`${marketId}-${id}-${kebabCase(title)}`}
-            data={lastWeekPricesChartSeries}
-            color={isPriceUp ? 'green' : 'red'}
-            width={48}
-            height={30}
-          />
-        </div>
-      )}
-    </button>
+      chart={
+        result.isResolved ? (
+          <div className="pm-c-market-outcomes__item-result">
+            {result.state.isWon ? outcomeStates.success.icon : null}
+            {result.state.isLoss ? outcomeStates.danger.icon : null}
+            {result.state.isVoided ? outcomeStates.voided.icon : null}
+          </div>
+        ) : (
+          <div className="pm-c-market-outcomes__item-chart">
+            <Area
+              id={`${marketId}-${id}-${kebabCase(title)}`}
+              data={lastWeekPricesChartSeries}
+              color={isPriceUp ? 'green' : 'red'}
+              width={48}
+              height={30}
+            />
+          </div>
+        )
+      }
+    />
   );
 }
 

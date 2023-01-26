@@ -13,6 +13,7 @@ export type OutcomeProps = Pick<
     Record<'isActive' | 'isPositive' | 'isResolved' | 'isWinning', boolean>
   > & {
     chart: React.ReactNode;
+    dense?: boolean;
   };
 
 export default function OutcomeItem({
@@ -25,6 +26,7 @@ export default function OutcomeItem({
   isWinning,
   chart,
   children,
+  dense,
   ...props
 }: OutcomeProps) {
   return (
@@ -48,7 +50,7 @@ export default function OutcomeItem({
     >
       <div
         style={{
-          padding: '16px 16px 8px 16px',
+          padding: dense ? '8px 16px' : 16,
           display: 'flex',
           alignItems: 'center'
         }}

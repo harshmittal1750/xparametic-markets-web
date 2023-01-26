@@ -52,6 +52,7 @@ function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
         itemContent={(_, outcome) => (
           <div className="pm-c-trade-form-predictions__list-item">
             <OutcomeItem
+              dense
               title={outcome.title}
               price={outcome.price.toFixed(3)}
               currency={symbol}
