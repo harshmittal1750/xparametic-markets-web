@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
-import sortOutcomes from 'helpers/sortOutcomes';
 import kebabCase from 'lodash/kebabCase';
 import { Market, Outcome } from 'models/market';
 import { marketSelected } from 'redux/ducks/market';
@@ -135,10 +134,7 @@ type MarketOutcomesProps = {
 };
 
 function MarketOutcomes({ market }: MarketOutcomesProps) {
-  const outcomes = sortOutcomes({
-    outcomes: market.outcomes,
-    timeframe: '7d'
-  });
+  const { outcomes } = market;
 
   return (
     <ul className="pm-c-market-outcomes">

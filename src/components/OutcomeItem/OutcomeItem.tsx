@@ -46,7 +46,7 @@ export default function OutcomeItem({
       })}
       {...props}
     >
-      <div style={{ padding: 16, display: 'flex' }}>
+      <div style={{ padding: 16, display: 'flex', alignItems: 'center' }}>
         <div className="pm-c-market-outcomes__item-group--column">
           <Text
             as="p"

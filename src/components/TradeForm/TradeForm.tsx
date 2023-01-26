@@ -52,7 +52,7 @@ function TradeForm() {
         <TradeFormCharts />
         {marketPath && (
           <>
-            <Text scale="tiny-uppercase" color="gray" fontWeight="semibold">
+            <Text scale="tiny-uppercase" color="white-50" fontWeight="semibold">
               Select outcome
             </Text>
             <TradeFormPredictions />
