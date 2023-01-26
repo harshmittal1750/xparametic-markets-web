@@ -46,7 +46,13 @@ export default function OutcomeItem({
       })}
       {...props}
     >
-      <div style={{ padding: 16, display: 'flex', alignItems: 'center' }}>
+      <div
+        style={{
+          padding: '16px 16px 8px 16px',
+          display: 'flex',
+          alignItems: 'center'
+        }}
+      >
         <div className="pm-c-market-outcomes__item-group--column">
           <Text
             as="p"
@@ -77,9 +83,9 @@ export default function OutcomeItem({
       {!isResolved && (
         <Line
           percent={+price * 100}
-          strokeWidth={2}
+          strokeWidth={1}
           strokeColor={isPositive ? '#65D6AD' : '#F86A6A'}
-          trailWidth={2}
+          trailWidth={1}
           trailColor="var(--color-vote-arrows-background--neutral)"
           strokeLinecap="butt"
         />

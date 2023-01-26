@@ -67,7 +67,7 @@ function TradeFormPredictions() {
               style={{
                 paddingLeft: 16,
                 paddingRight: 16,
-                paddingBottom: 16
+                paddingBottom: 8
               }}
               rows={[
                 {

@@ -25,8 +25,9 @@
     }
 
     &__footer {
-      padding: 1rem 1.6rem;
-
+      padding-right: 16px;
+      padding-left: 16px;
+      height: 44px;
       background-color: themed('footer-background-color');
       border-radius: 0rem 0rem 0.4rem 0.4rem;
       transition: all 0.2s ease-in-out 0s;
