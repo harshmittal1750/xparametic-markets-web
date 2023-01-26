@@ -241,11 +241,20 @@
   border-radius: 4px;
   color: var(--color-text-secondary);
   cursor: pointer;
+  transition: color, background-color 300ms ease;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
 
   &-filled {
     width: 44px;
     height: 44px;
     background-color: var(--color-background-quaternary);
+
+    &:hover {
+      background-color: var(--color-background-tertiary);
+    }
   }
 }
 

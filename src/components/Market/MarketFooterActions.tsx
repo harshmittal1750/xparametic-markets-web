@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import cn from 'classnames';
 import { Market } from 'models/market';
 
-import { Button } from 'components/Button';
 import Icon from 'components/Icon';
 
 import { useFavoriteMarkets } from 'hooks';
@@ -52,7 +51,6 @@ export default function MarketFooterActions({
         onClick={handleFavClick}
         className={cn('pm-c-market-footer__actions-button', {
           'pm-c-market-footer__actions-button-filled': $variant === 'filled',
-          'pm-c-market-footer__actions-favorite--default': !isFavoriteMarket,
           'pm-c-market-footer__actions-favorite--active': isFavoriteMarket
         })}
         {...props}
