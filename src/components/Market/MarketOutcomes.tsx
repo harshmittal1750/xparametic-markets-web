@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import classNames from 'classnames';
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
+import sortOutcomes from 'helpers/sortOutcomes';
 import kebabCase from 'lodash/kebabCase';
 import { Market, Outcome } from 'models/market';
 import { marketSelected } from 'redux/ducks/market';
@@ -9,19 +9,16 @@ import { selectOutcome } from 'redux/ducks/trade';
 import { closeTradeForm, openReportForm, openTradeForm } from 'redux/ducks/ui';
 
 import {
-  ArrowDownIcon,
-  ArrowUpIcon,
   CheckIcon,
   RemoveIcon,
   RepeatCycleIcon,
   WarningIcon
 } from 'assets/icons';
 
+import OutcomeItem from 'components/OutcomeItem';
 import { Area } from 'components/plots';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
-
-import Text from '../Text';
 
 const outcomeStates = {
   success: { icon: <CheckIcon /> },
@@ -100,66 +97,36 @@ function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
   }
 
   return (
-    <button
-      type="button"
-      className={classNames({
-        'pm-c-market-outcomes__item--default': !isMarketResolved,
-        'pm-c-market-outcomes__item--success': isWinningOutcome,
-        'pm-c-market-outcomes__item--danger': !isWinningOutcome,
-        active: isCurrentSelectedPrediction
-      })}
+    <OutcomeItem
+      chart={
+        isMarketResolved ? (
+          <div className="pm-c-market-outcomes__item-result">
+            {isWinningOutcome && !isVoided ? outcomeStates.success.icon : null}
+            {!isWinningOutcome && !isVoided ? outcomeStates.danger.icon : null}
+            {isVoided ? outcomeStates.voided.icon : null}
+          </div>
+        ) : (
+          <div className="pm-c-market-outcomes__item-chart">
+            <Area
+              id={`${marketId}-${id}-${kebabCase(title)}`}
+              data={chartData}
+              color={marketPriceUp ? 'green' : 'red'}
+              width={48}
+              height={32}
+            />
+          </div>
+        )
+      }
+      isActive={isCurrentSelectedPrediction}
+      isPositive={marketPriceUp}
+      isResolved={isMarketResolved}
+      isWinning={isWinningOutcome}
+      price={price.toFixed(3)}
+      currency={market.network.currency.symbol}
+      title={title}
       disabled={isMarketResolved}
       onClick={handleItemSelection}
-    >
-      <div className="pm-c-market-outcomes__item-group--column">
-        <Text
-          as="p"
-          scale="caption"
-          fontWeight="semibold"
-          className="pm-c-market-outcomes__item-title"
-        >
-          {title}
-        </Text>
-        <div className="pm-c-market-outcomes__item-group--row">
-          <Text
-            as="p"
-            scale="tiny-uppercase"
-            fontWeight="medium"
-            className="pm-c-market-outcomes__item-odd"
-          >
-            PRICE
-          </Text>
-          <Text
-            as="span"
-            scale="tiny"
-            fontWeight="medium"
-            className="pm-c-market-outcomes__item-value"
-          >
-            {price.toFixed(3)}
-          </Text>
-          {!isMarketResolved ? (
-            <>{marketPriceUp ? <ArrowUpIcon /> : <ArrowDownIcon />}</>
-          ) : null}
-        </div>
-      </div>
-      {isMarketResolved ? (
-        <div className="pm-c-market-outcomes__item-result">
-          {isWinningOutcome && !isVoided ? outcomeStates.success.icon : null}
-          {!isWinningOutcome && !isVoided ? outcomeStates.danger.icon : null}
-          {isVoided ? outcomeStates.voided.icon : null}
-        </div>
-      ) : (
-        <div className="pm-c-market-outcomes__item-chart">
-          <Area
-            id={`${marketId}-${id}-${kebabCase(title)}`}
-            data={chartData}
-            color={marketPriceUp ? 'green' : 'red'}
-            width={48}
-            height={30}
-          />
-        </div>
-      )}
-    </button>
+    />
   );
 }
 
@@ -168,7 +135,11 @@ type MarketOutcomesProps = {
 };
 
 function MarketOutcomes({ market }: MarketOutcomesProps) {
-  const { outcomes } = market;
+  const outcomes = sortOutcomes({
+    outcomes: market.outcomes,
+    timeframe: '7d'
+  });
+
   return (
     <ul className="pm-c-market-outcomes">
       {outcomes.map(outcome => (

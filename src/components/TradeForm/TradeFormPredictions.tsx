@@ -1,18 +1,18 @@
-import { useLocation } from 'react-router-dom';
+import { useCallback } from 'react';
 
-import classNames from 'classnames';
 import { roundNumber } from 'helpers/math';
+import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
+
+import OutcomeItem from 'components/OutcomeItem';
+import { Area } from 'components/plots';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
 import MiniTable from '../MiniTable';
-import Text from '../Text';
 
 function TradeFormPredictions() {
-  const location = useLocation();
   const dispatch = useAppDispatch();
-
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
   );
@@ -22,68 +22,69 @@ function TradeFormPredictions() {
   const selectedOutcomeId = useAppSelector(
     state => state.trade.selectedOutcomeId
   );
-
-  const symbol = useAppSelector(state => state.market.market.currency.symbol);
   const outcomes = useAppSelector(state => state.market.market.outcomes);
-  const marketSlug = useAppSelector(state => state.market.market.slug);
+  const symbol = useAppSelector(state => state.market.market.currency.symbol);
+  const sortedOutcomes = sortOutcomes({ outcomes, timeframe: 'all' });
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
-
-  const isMarketPage = location.pathname === `/markets/${marketSlug}`;
-
-  if (!isMarketPage) return null;
-
-  function handleChangeSelectedPrediction(id: string | number) {
-    dispatch(selectOutcome(selectedMarketId, selectedMarketNetworkId, id));
-  }
+  const handlePredictionClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) =>
+      dispatch(
+        selectOutcome(
+          selectedMarketId,
+          selectedMarketNetworkId,
+          +event.currentTarget.value
+        )
+      ),
+    [dispatch, selectedMarketId, selectedMarketNetworkId]
+  );
 
   return (
-    <div className="pm-c-trade-form-predictions">
-      {outcomes.map((prediction, index) => (
-        <div
-          key={prediction.id}
-          className={classNames({
-            'pm-c-trade-form-predictions__item': true,
-            active:
-              prediction.id === selectedOutcomeId &&
-              prediction.marketId === selectedMarketId
-          })}
-          role="button"
-          tabIndex={index}
-          onClick={() => handleChangeSelectedPrediction(prediction.id)}
-          onKeyPress={() => handleChangeSelectedPrediction(prediction.id)}
-        >
-          <div className="pm-c-trade-form-predictions__item-prediction">
-            <Text as="p" fontWeight="bold">
-              {prediction.title}
-            </Text>
-            <Text as="span" fontWeight="semibold">
-              {`PRICE `}
-              <Text as="strong" fontWeight="bold">
-                {prediction.price.toFixed(3)}
-              </Text>
-              <Text as="strong" fontWeight="medium">
-                {` ${symbol}`}
-              </Text>
-            </Text>
-          </div>
-          <MiniTable
-            rows={[
-              {
-                key: 'yourShares',
-                title: 'Your Shares',
-                // eslint-disable-next-line prettier/prettier
-                value:
-                  roundNumber(
-                    portfolio[selectedMarketId]?.outcomes[prediction.id]
-                      ?.shares,
-                    3
-                  ) || 0
-              }
-            ]}
-          />
-        </div>
+    <ol className="pm-c-trade-form-predictions">
+      {sortedOutcomes.map(outcome => (
+        <li key={outcome.id}>
+          <OutcomeItem
+            title={outcome.title}
+            price={outcome.price.toFixed(3)}
+            currency={symbol}
+            isActive={
+              outcome.id === selectedOutcomeId &&
+              outcome.marketId === selectedMarketId
+            }
+            isPositive={outcome.pricesDiff.sign === 'positive'}
+            value={outcome.id}
+            onClick={handlePredictionClick}
+            chart={
+              <Area
+                id={`${selectedMarketId}-${outcome.id}-${outcome.title}`}
+                data={outcome.data}
+                color={outcome.pricesDiff.sign === 'positive' ? 'green' : 'red'}
+                width={48}
+                height={32}
+              />
+            }
+          >
+            <MiniTable
+              style={{
+                paddingLeft: 16,
+                paddingRight: 16,
+                paddingBottom: 16
+              }}
+              rows={[
+                {
+                  key: 'invested',
+                  title: 'invested',
+                  value:
+                    roundNumber(
+                      portfolio[selectedMarketId]?.outcomes[outcome.id]?.shares,
+                      3
+                    ) || 0
+                }
+              ]}
+            />
+          </OutcomeItem>
+        </li>
       ))}
-    </div>
+    </ol>
   );
 }
 

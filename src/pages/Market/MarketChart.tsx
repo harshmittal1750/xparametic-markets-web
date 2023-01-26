@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
-import { fromPriceChartToLineChartSeries } from 'helpers/chart';
-import { roundNumber } from 'helpers/math';
-import type { PriceChart } from 'models/market';
+import sortOutcomes from 'helpers/sortOutcomes';
 
 import { ChartHeader, LineChart, Text } from 'components';
 
@@ -21,49 +19,18 @@ const signColors = {
   negative: 'danger'
 } as const;
 
-function getPricesDiff(priceChart?: PriceChart) {
-  const pricesArr = priceChart?.prices;
-
-  if (!pricesArr)
-    return {
-      sign: 'neutral',
-      value: '0',
-      pct: '0%'
-    };
-
-  const [initial, ...prices] = pricesArr;
-  const diffValue = prices[prices.length - 1].value - initial.value;
-  const diffSign = Math.sign(diffValue);
-
-  return {
-    // eslint-disable-next-line no-nested-ternary
-    sign: diffSign > 0 ? 'positive' : diffSign < 0 ? 'negative' : 'neutral',
-    value: roundNumber(diffValue, 3),
-    pct: `${roundNumber(Math.abs(priceChart.changePercent || 0) * 100, 2)}%`
-  } as const;
-}
-
 function MarketOverview() {
+  const outcomes = useAppSelector(state => state.market.market.outcomes);
+  const symbol = useAppSelector(state => state.market.market.currency.symbol);
+  const ticker = useAppSelector(state => state.market.market.currency.ticker);
   const [currentInterval, setCurrentInterval] = useState(
     intervals[intervals.length - 1]
   );
-  const market = useAppSelector(state => state.market.market);
-  const [highOutcome, ...outcomes] = [...market.outcomes]
-    .sort((compareA, compareB) => compareB.price - compareA.price)
-    .map(outcome => ({
-      ...outcome,
-      name: outcome.title,
-      data: fromPriceChartToLineChartSeries(
-        outcome.priceCharts?.find(getCurrentInterval)?.prices || []
-      )
-    }));
-  const priceChart = highOutcome.priceCharts?.find(getCurrentInterval);
-  const pricesDiff = getPricesDiff(priceChart);
-  const chartSign = pricesDiff.sign === 'positive' ? '+' : '';
-
-  function getCurrentInterval(chart: PriceChart) {
-    return chart.timeframe === currentInterval.id;
-  }
+  const [highOutcome, ...restOutcomes] = sortOutcomes({
+    outcomes,
+    timeframe: currentInterval.id
+  });
+  const chartSign = highOutcome.pricesDiff.sign === 'positive' ? '+' : '';
 
   return (
     <>
@@ -78,25 +45,21 @@ function MarketOverview() {
             fontWeight="semibold"
             className="market-chart__view-title"
           >
-            {highOutcome.price} {market.currency.symbol}
+            {highOutcome.price} {symbol}
           </Text>
-          {priceChart && (
-            <>
-              <Text
-                as="span"
-                scale="tiny-uppercase"
-                color={signColors[pricesDiff.sign]}
-                fontWeight="semibold"
-              >
-                {chartSign}
-                {pricesDiff.value} {market.currency.symbol} ({chartSign}
-                {pricesDiff.pct})
-              </Text>{' '}
-              <Text as="span" scale="tiny" color="gray" fontWeight="semibold">
-                Since Market Creation
-              </Text>
-            </>
-          )}
+          <Text
+            as="span"
+            scale="tiny-uppercase"
+            color={signColors[highOutcome.pricesDiff.sign]}
+            fontWeight="semibold"
+          >
+            {chartSign}
+            {highOutcome.pricesDiff.value} {symbol} ({chartSign}
+            {highOutcome.pricesDiff.pct})
+          </Text>{' '}
+          <Text as="span" scale="tiny" color="gray" fontWeight="semibold">
+            Since Market Creation
+          </Text>
         </div>
         <div className="market-chart__header-actions">
           <ChartHeader
@@ -107,8 +70,8 @@ function MarketOverview() {
         </div>
       </div>
       <LineChart
-        series={[highOutcome, ...outcomes]}
-        ticker={market.currency?.ticker}
+        series={[highOutcome, ...restOutcomes]}
+        ticker={ticker}
         height={332}
       />
     </>
