@@ -3,7 +3,9 @@ import { useEffect } from 'react';
 import { selectOutcome } from 'redux/ducks/trade';
 import { openReportForm } from 'redux/ducks/ui';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import Text from 'components/Text';
+
+import { useAppDispatch, useAppSelector, useMarketPath } from 'hooks';
 
 import TradeFormActions from './TradeFormActions';
 import TradeFormCharts from './TradeFormCharts';
@@ -14,6 +16,7 @@ import TradeFormPredictions from './TradeFormPredictions';
 import TradeFormTypeSelector from './TradeFormTypeSelector';
 
 function TradeForm() {
+  const marketPath = useMarketPath();
   const dispatch = useAppDispatch();
 
   const { id, networkId, outcomes } = useAppSelector(
@@ -47,7 +50,14 @@ function TradeForm() {
     <div className="pm-c-trade-form">
       <div className="pm-c-trade-form__group" style={{ gap: '1.6rem' }}>
         <TradeFormCharts />
-        <TradeFormPredictions />
+        {marketPath && (
+          <>
+            <Text scale="tiny-uppercase" color="gray" fontWeight="semibold">
+              Select outcome
+            </Text>
+            <TradeFormPredictions />
+          </>
+        )}
       </div>
       <div className="pm-c-trade-form__group" style={{ gap: '2.4rem' }}>
         <TradeFormTypeSelector />

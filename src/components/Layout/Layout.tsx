@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { matchPath, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { pages } from 'config';
 import { login } from 'redux/ducks/polkamarkets';
@@ -10,10 +10,11 @@ import Header from 'components/Header';
 import SEO from 'components/SEO';
 import WrongNetwork from 'components/WrongNetwork';
 
-import { useTheme, useAppDispatch, useNetwork } from 'hooks';
+import { useTheme, useAppDispatch, useNetwork, useMarketPath } from 'hooks';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const location = useLocation();
+  const marketPath = useMarketPath();
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const network = useNetwork();
@@ -21,10 +22,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     ({ pathname }) => pathname === location.pathname
   )[0];
   const isHomePathname =
-    location.pathname === pages.home.pathname ||
-    matchPath(location.pathname, {
-      path: pages.home.pages.market.pathname
-    });
+    location.pathname === pages.home.pathname || marketPath;
 
   if (theme.theme === 'dark') {
     document.documentElement.classList.add('theme--dark');
