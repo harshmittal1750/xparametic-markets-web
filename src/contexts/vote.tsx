@@ -4,9 +4,9 @@ import { NetworkConfig } from 'config/environment';
 import isEmpty from 'lodash/isEmpty';
 import { Votes } from 'redux/ducks/polkamarkets';
 import { PolkamarketsService } from 'services';
+import { Network } from 'types/network';
 
 import { useAppSelector, useNetwork } from 'hooks';
-import { Network } from 'hooks/useNetwork/networks';
 
 export type VoteContextState = {
   userVotes: Votes;

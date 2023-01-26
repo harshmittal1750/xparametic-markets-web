@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { currencies } from 'config';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery,
@@ -13,7 +14,6 @@ import { ButtonLoading } from 'components/Button';
 import { Dropdown } from 'components/new';
 
 import { useAppSelector, useNetwork } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import {
   buildLeaderboardData,
@@ -34,6 +34,8 @@ import type {
   LeaderboardTableColumn,
   CreateLeaderboardGroupState
 } from './types';
+
+const { IFL } = currencies;
 
 const tabs = [
   {

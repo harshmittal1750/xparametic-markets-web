@@ -1,3 +1,4 @@
+import { currencies } from 'config';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
 import { roundNumber } from 'helpers/math';
 import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
@@ -8,9 +9,10 @@ import { Tooltip } from 'components';
 import { Text } from 'components/new';
 
 import { useNetwork } from 'hooks';
-import { IFL } from 'hooks/useNetwork/currencies';
 
 import ProfileSummaryStat from './ProfileSummaryStat';
+
+const { IFL } = currencies;
 
 type ProfileSummaryProps = {
   address: string;
@@ -18,6 +20,7 @@ type ProfileSummaryProps = {
 
 function ProfileSummary({ address }: ProfileSummaryProps) {
   const { network } = useNetwork();
+
   const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id

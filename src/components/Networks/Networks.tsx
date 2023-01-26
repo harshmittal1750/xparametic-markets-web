@@ -1,12 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
 
 import classNames from 'classnames';
+import type { Network } from 'types/network';
 
 import { CaretDownFilledIcon } from 'assets/icons';
 
 import { useNetworks } from 'contexts/networks';
-
-import { Network } from 'hooks/useNetwork/networks';
 
 import Text from '../Text';
 
