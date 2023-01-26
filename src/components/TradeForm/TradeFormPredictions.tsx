@@ -4,12 +4,13 @@ import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
 
-import { VirtualizedList } from 'components';
+import MiniTable from 'components/MiniTable';
+import OutcomeItem from 'components/OutcomeItem';
+import { Area } from 'components/plots';
+import VirtualizedList from 'components/VirtualizedList';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
-import MiniTable from '../MiniTable';
-import Text from '../Text';
 import { TradeFormPredictionType } from './TradeFormPredictions.type';
 
 type TradeFormPredictionsProps = {
@@ -17,7 +18,6 @@ type TradeFormPredictionsProps = {
 };
 
 function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
-  const location = useLocation();
   const dispatch = useAppDispatch();
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
@@ -48,52 +48,52 @@ function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
     <div className={`pm-c-trade-form-predictions--${type}`}>
       <VirtualizedList
         height="100%"
-        data={outcomes}
-        itemContent={(index, prediction) => (
+        data={sortedOutcomes}
+        itemContent={(_, outcome) => (
           <div className="pm-c-trade-form-predictions__list-item">
-            <div
-              key={prediction.id}
-              className={classNames({
-                'pm-c-trade-form-predictions__item': true,
-                active:
-                  prediction.id === selectedOutcomeId &&
-                  prediction.marketId === selectedMarketId
-              })}
-              role="button"
-              tabIndex={index}
-              onClick={() => handleChangeSelectedPrediction(prediction.id)}
-              onKeyPress={() => handleChangeSelectedPrediction(prediction.id)}
+            <OutcomeItem
+              title={outcome.title}
+              price={outcome.price.toFixed(3)}
+              currency={symbol}
+              isActive={
+                outcome.id === selectedOutcomeId &&
+                outcome.marketId === selectedMarketId
+              }
+              isPositive={outcome.pricesDiff.sign === 'positive'}
+              value={outcome.id}
+              onClick={handlePredictionClick}
+              chart={
+                <Area
+                  id={`${selectedMarketId}-${outcome.id}-${outcome.title}`}
+                  data={outcome.data}
+                  color={
+                    outcome.pricesDiff.sign === 'positive' ? 'green' : 'red'
+                  }
+                  width={48}
+                  height={32}
+                />
+              }
             >
-              <div className="pm-c-trade-form-predictions__item-prediction">
-                <Text as="p" fontWeight="bold">
-                  {prediction.title}
-                </Text>
-                <Text as="span" fontWeight="semibold">
-                  {`PRICE `}
-                  <Text as="strong" fontWeight="bold">
-                    {prediction.price.toFixed(3)}
-                  </Text>
-                  <Text as="strong" fontWeight="medium">
-                    {` ${symbol}`}
-                  </Text>
-                </Text>
-              </div>
               <MiniTable
+                style={{
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                  paddingBottom: 8
+                }}
                 rows={[
                   {
-                    key: 'yourShares',
-                    title: 'Your Shares',
-                    // eslint-disable-next-line prettier/prettier
+                    key: 'invested',
+                    title: 'invested',
                     value:
                       roundNumber(
-                        portfolio[selectedMarketId]?.outcomes[prediction.id]
+                        portfolio[selectedMarketId]?.outcomes[outcome.id]
                           ?.shares,
                         3
                       ) || 0
                   }
                 ]}
               />
-            </div>
+            </OutcomeItem>
           </div>
         )}
       />

@@ -8,19 +8,16 @@ import Footer from 'components/Footer';
 import Header from 'components/Header';
 import SEO from 'components/SEO';
 
+import { useMarketPath } from 'hooks';
+
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const location = useLocation();
   const page = Object.values(pages).filter(
     ({ pathname }) => pathname === location.pathname
   )[0];
-
-  if (theme.theme === 'dark') {
-    document.documentElement.classList.add('theme--dark');
-    document.documentElement.classList.remove('theme--light');
-  } else {
-    document.documentElement.classList.add('theme--light');
-    document.documentElement.classList.remove('theme--dark');
-  }
+  const marketPath = useMarketPath();
+  const isHomePathname =
+    location.pathname === pages.home.pathname || marketPath;
 
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
