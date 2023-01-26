@@ -91,7 +91,9 @@ function MarketFooterTags({ market }: MarketFooterTagsProps) {
       ) : null}
       {isVerified ? (
         <>
-          <div className="pm-c-market-footer__divider--circle" />
+          {[isAwaitingResolution, isEndingSoon, isNew, isResolved].some(
+            Boolean
+          ) && <div className="pm-c-market-footer__divider--circle" />}
           <Tooltip text="Verified Market" position="top">
             <VerifiedIcon size="sm" style={{ cursor: 'pointer' }} />
           </Tooltip>
