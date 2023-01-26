@@ -71,7 +71,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               className={marketClasses.footerStatsIcon}
             />
             <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-              {dayjs(expiresAt).utc().format('YYYY-MM-DD HH:mm UTC')}
+              {dayjs(expiresAt).utc().format('MMMM D, YYYY')}
             </Text>
           </Text>
         </>
