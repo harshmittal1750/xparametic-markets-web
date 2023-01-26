@@ -12,23 +12,20 @@ function getPricesDiff(priceChart?: PriceChart) {
 
   if (!pricesArr)
     return {
-      sign: 'neutral',
       value: '0',
       pct: '0%'
     };
 
   const [initial, ...prices] = pricesArr;
   const diffValue = prices[prices.length - 1].value - initial.value;
-  const diffSign = Math.sign(diffValue);
+  const diffSign = Math.sign(diffValue) < 0 ? '-' : '+';
 
   return {
-    sign: (() => {
-      if (diffSign > 0) return 'positive';
-      if (diffSign < 0) return 'negative';
-      return 'neutral';
-    })(),
-    value: roundNumber(diffValue, 3),
-    pct: `${roundNumber(Math.abs(priceChart.changePercent || 0) * 100, 2)}%`
+    value: `${diffSign}${roundNumber(diffValue, 3)}`,
+    pct: `${diffSign}${roundNumber(
+      Math.abs(priceChart.changePercent || 0) * 100,
+      2
+    )}%`
   } as const;
 }
 

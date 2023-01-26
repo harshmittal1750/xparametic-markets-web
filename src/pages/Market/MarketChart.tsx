@@ -13,11 +13,6 @@ const intervals = [
   { id: '30d', name: '30D', value: 720 },
   { id: 'all', name: 'ALL', value: 1440 }
 ];
-const signColors = {
-  neutral: 'gray',
-  positive: 'success',
-  negative: 'danger'
-} as const;
 
 function MarketOverview() {
   const outcomes = useAppSelector(state => state.market.market.outcomes);
@@ -30,7 +25,6 @@ function MarketOverview() {
     outcomes,
     timeframe: currentInterval.id
   });
-  const chartSign = highOutcome.pricesDiff.sign === 'positive' ? '+' : '';
 
   return (
     <>
@@ -50,11 +44,12 @@ function MarketOverview() {
           <Text
             as="span"
             scale="tiny-uppercase"
-            color={signColors[highOutcome.pricesDiff.sign]}
+            color={
+              /^-/.test(highOutcome.pricesDiff.value) ? 'danger' : 'success'
+            }
             fontWeight="semibold"
           >
-            {chartSign}
-            {highOutcome.pricesDiff.value} {symbol} ({chartSign}
+            {highOutcome.pricesDiff.value} {symbol} (
             {highOutcome.pricesDiff.pct})
           </Text>{' '}
           <Text as="span" scale="tiny" color="gray" fontWeight="semibold">
@@ -85,22 +80,20 @@ export default function MarketChart() {
   );
 
   return (
-    <div className="market-chart">
-      <div className="market-chart__view">
+    <div className="market-chart__view">
+      {
         {
-          {
-            marketOverview: <MarketOverview />,
-            tradingView: (
-              <TradingViewWidget
-                theme={Themes[theme.theme === 'dark' ? 'DARK' : 'LIGHT']}
-                width="100%"
-                height={454}
-                symbol={tradingViewSymbol}
-              />
-            )
-          }[chartViewType]
-        }
-      </div>
+          marketOverview: <MarketOverview />,
+          tradingView: (
+            <TradingViewWidget
+              theme={Themes[theme.theme === 'dark' ? 'DARK' : 'LIGHT']}
+              width="100%"
+              height={454}
+              symbol={tradingViewSymbol}
+            />
+          )
+        }[chartViewType]
+      }
     </div>
   );
 }

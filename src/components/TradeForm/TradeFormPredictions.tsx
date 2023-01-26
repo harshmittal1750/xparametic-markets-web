@@ -60,16 +60,14 @@ function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
                 outcome.id === selectedOutcomeId &&
                 outcome.marketId === selectedMarketId
               }
-              isPositive={outcome.pricesDiff.sign === 'positive'}
+              isPositive={/^\+/.test(outcome.pricesDiff.value)}
               value={outcome.id}
               onClick={handlePredictionClick}
               chart={
                 <Area
                   id={`${selectedMarketId}-${outcome.id}-${outcome.title}`}
                   data={outcome.data}
-                  color={
-                    outcome.pricesDiff.sign === 'positive' ? 'green' : 'red'
-                  }
+                  color={/^\+/.test(outcome.pricesDiff.value) ? 'green' : 'red'}
                   width={48}
                   height={32}
                 />
