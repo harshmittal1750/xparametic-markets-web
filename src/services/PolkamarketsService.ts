@@ -161,7 +161,8 @@ export default class PolkamarketsService {
     duration: number,
     outcomes: Array<string>,
     category: string,
-    value: number
+    value: number,
+    odds: Array<number>
   ) {
     // ensuring user has wallet connected
     await this.login();
@@ -174,7 +175,8 @@ export default class PolkamarketsService {
       category,
       value,
       oracleAddress: this.address,
-      token: this.erc20ContractAddress
+      token: this.erc20ContractAddress,
+      odds
     });
 
     return response;

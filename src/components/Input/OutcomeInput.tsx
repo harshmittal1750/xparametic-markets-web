@@ -1,44 +1,51 @@
-import React from 'react';
+import { forwardRef, InputHTMLAttributes, useMemo } from 'react';
 
-import { useField } from 'formik';
+import cn from 'classnames';
+import { getIn, useField, useFormikContext } from 'formik';
+import { colorByOutcomeId } from 'helpers/color';
 
-import Badge, { BadgeColor } from '../Badge';
+import Badge from '../Badge';
 import InputErrorMessage from './InputErrorMessage';
 
 type OutcomeInputProps = {
-  name: string;
-  label?: string;
-  badgeColor?: BadgeColor;
+  outcomeId: string;
 };
 
-const OutcomeInput = React.forwardRef<
+const OutcomeInput = forwardRef<
   HTMLInputElement,
-  OutcomeInputProps & React.InputHTMLAttributes<HTMLInputElement>
->(({ name, label, badgeColor = 'default', ...props }, ref) => {
-  const [field, meta] = useField(name);
+  OutcomeInputProps & InputHTMLAttributes<HTMLInputElement>
+>(({ outcomeId, ...props }, ref) => {
+  const { values } = useFormikContext();
+
+  const outcomes = getIn(values, 'outcomes');
+
+  const outcomeIndex = useMemo(
+    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === outcomeId)),
+    [outcomes, outcomeId]
+  );
+
+  const fieldByOutcomeIndex = `outcomes[${outcomeIndex}].name`;
+
+  const [field, meta] = useField(fieldByOutcomeIndex);
 
   const hasError = meta.touched && meta.error;
 
   return (
     <div className="pm-c-outcome-input--default__group">
-      {label ? (
-        <label
-          htmlFor={name}
-          className={`pm-c-input__label--${hasError ? 'error' : 'default'}`}
-        >
-          {label}
-        </label>
-      ) : null}
       <div
-        className={`pm-c-outcome-input--${
-          hasError ? 'error' : 'default'
-        }__wrapper`}
+        className={cn({
+          'pm-c-outcome-input--error__wrapper': hasError,
+          'pm-c-outcome-input--default__wrapper': !hasError
+        })}
       >
-        <Badge color={badgeColor} />
+        <Badge color={colorByOutcomeId(outcomeIndex)} />
         <input
+          id={fieldByOutcomeIndex}
           ref={ref}
-          className={`pm-c-outcome-input--${hasError ? 'error' : 'default'}`}
-          id={name}
+          className={cn({
+            'pm-c-outcome-input--error': hasError,
+            'pm-c-outcome-input--default': !hasError
+          })}
           {...field}
           {...props}
         />

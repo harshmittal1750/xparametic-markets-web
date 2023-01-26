@@ -26,6 +26,7 @@ function TradeForm() {
   const isLoadingMarket = useAppSelector(state => state.market.isLoading);
 
   const isCurrentSelectedMarket = id === selectedMarketId;
+  const predictionType = outcomes.length > 2 ? 'multiple' : 'binary';
 
   useEffect(() => {
     if (marketState === 'closed') {
@@ -45,11 +46,11 @@ function TradeForm() {
 
   return (
     <div className="pm-c-trade-form">
-      <div className="pm-c-trade-form__group" style={{ gap: '1.6rem' }}>
+      <div className="pm-c-trade-form__view">
         <TradeFormCharts />
-        <TradeFormPredictions />
+        <TradeFormPredictions type={predictionType} />
       </div>
-      <div className="pm-c-trade-form__group" style={{ gap: '2.4rem' }}>
+      <div className="pm-c-trade-form__actions">
         <TradeFormTypeSelector />
         <TradeFormInput />
         <TradeFormDetails />

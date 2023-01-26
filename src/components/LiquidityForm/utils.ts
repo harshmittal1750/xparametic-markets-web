@@ -65,24 +65,29 @@ function calculateLiquidityAdded(
   ethAmount: number
 ): LiquidityDetails {
   // TODO: move formulas to polkamarketsjs
-  const minOutcome = market.outcomes.reduce((prev, curr) => {
-    return prev.shares < curr.shares ? prev : curr;
+  const poolWeight = Math.max(
+    ...market.outcomes.map(outcome => outcome.shares)
+  );
+
+  const outcomeDetails = [] as any;
+
+  market.outcomes.forEach(outcome => {
+    const sendBackAmount =
+      ethAmount - (outcome.shares / poolWeight) * ethAmount;
+    if (sendBackAmount > 0) {
+      outcomeDetails.push({
+        outcome,
+        stake: sendBackAmount * outcome.price,
+        shares: sendBackAmount
+      });
+    }
   });
 
-  const liquidityRatio = (minOutcome.shares * ethAmount) / market.liquidity;
+  const liquidityRatio = (poolWeight * ethAmount) / market.liquidity;
 
   const liquidityShares = liquidityRatio;
   const liquidityStake = liquidityRatio * market.liquidityPrice;
   const totalStake = ethAmount;
-
-  const outcomeStake = ethAmount - liquidityStake;
-  const outcomeDetails = [
-    {
-      outcome: minOutcome,
-      stake: outcomeStake,
-      shares: outcomeStake / minOutcome.price
-    }
-  ];
 
   return {
     liquidityShares,
@@ -97,23 +102,28 @@ function calculateLiquidityRemoved(
   sharesAmount: number
 ): LiquidityDetails {
   // TODO: move formulas to polkamarketsjs
-  const maxOutcome = market.outcomes.reduce((prev, curr) => {
-    return prev.shares > curr.shares ? prev : curr;
-  });
+  const poolWeight = Math.min(
+    ...market.outcomes.map(outcome => outcome.shares)
+  );
 
   const liquidityShares = sharesAmount;
-  const liquidityStake = (market.liquidity / maxOutcome.shares) * sharesAmount;
+  const liquidityStake = (poolWeight * sharesAmount) / market.liquidity;
 
   const totalStake = sharesAmount * market.liquidityPrice;
 
-  const outcomeStake = totalStake - liquidityStake;
-  const outcomeDetails = [
-    {
-      outcome: maxOutcome,
-      stake: outcomeStake,
-      shares: outcomeStake / maxOutcome.price
+  const outcomeDetails = [] as any;
+  market.outcomes.forEach(outcome => {
+    const sendBackAmount =
+      (outcome.shares * sharesAmount) / market.liquidity - liquidityStake;
+
+    if (sendBackAmount > 0) {
+      outcomeDetails.push({
+        outcome,
+        stake: sendBackAmount * outcome.price,
+        shares: sendBackAmount
+      });
     }
-  ];
+  });
 
   return {
     liquidityShares,
