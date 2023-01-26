@@ -4,7 +4,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { pages } from 'config';
 import { Container, useMedia, useRect } from 'ui';
 
-import { MarketList, RightSidebar } from 'components';
+import { MarketList } from 'components';
 
 import useMarkets from 'hooks/useMarkets';
 
@@ -29,30 +29,25 @@ export default function Home() {
   }, []);
 
   return (
-    <div className={homeClasses.root}>
-      <div className={homeClasses.content}>
-        <Switch>
-          <Route exact path={routeMatch.path}>
-            {isDesktop && <HomeHero />}
-            <Container ref={ref} $enableGutters className={homeClasses.nav}>
-              <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
-            </Container>
-            <div className={homeClasses.root}>
-              <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
-              <MarketList markets={markets} />
-            </div>
-          </Route>
-          {Object.values(pages.home.pages).map(page => (
-            <Route
-              key={page.name}
-              exact={page.exact}
-              path={page.pathname}
-              component={page.Component}
-            />
-          ))}
-        </Switch>
-      </div>
-      {isDesktop && <RightSidebar />}
-    </div>
+    <Switch>
+      <Route exact path={routeMatch.path}>
+        {isDesktop && <HomeHero />}
+        <Container ref={ref} $enableGutters className={homeClasses.nav}>
+          <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
+        </Container>
+        <div className={homeClasses.root}>
+          <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
+          <MarketList markets={markets} />
+        </div>
+      </Route>
+      {Object.values(pages.home.pages).map(page => (
+        <Route
+          key={page.name}
+          exact={page.exact}
+          path={page.pathname}
+          component={page.Component}
+        />
+      ))}
+    </Switch>
   );
 }

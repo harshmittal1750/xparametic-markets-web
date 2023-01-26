@@ -20,15 +20,16 @@
 
   &Stats {
     height: var(--size-48);
-    background-color: var(--color-background-quinary);
+    background-color: var(--color-background-quaternary);
     border-top: 1px solid var(--color-border);
   }
 }
 
 .body {
-  margin-top: var(--grid-margin);
+  display: flex;
+  flex: 1 0 auto;
 
-  &Tabs {
-    margin-bottom: var(--grid-margin);
+  &Content {
+    background-color: var(--color-surface-primary);
   }
 }

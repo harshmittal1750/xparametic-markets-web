@@ -6,7 +6,15 @@ import type { Action } from 'redux/ducks/polkamarkets';
 import { Container } from 'ui';
 import Spinner from 'ui/Spinner';
 
-import { Tabs, Table, Text, SEO, AlertMini, ButtonGroup } from 'components';
+import {
+  Tabs,
+  Table,
+  Text,
+  SEO,
+  AlertMini,
+  ButtonGroup,
+  RightSidebar
+} from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -52,71 +60,74 @@ function MarketUI() {
         image={market.bannerUrl}
       />
       <MarketHero />
-      <Container className={marketClasses.body}>
-        {market.tradingViewSymbol && (
-          <div className="pm-p-market__view">
-            <div className="market-chart__view-selector">
-              <ButtonGroup
-                buttons={chartViews}
-                defaultActiveId="marketOverview"
-                onChange={handleChartChange}
-              />
+      <div className={marketClasses.body}>
+        <Container $enableGutters className={marketClasses.bodyContent}>
+          {market.tradingViewSymbol && (
+            <div className="pm-p-market__view">
+              <div className="market-chart__view-selector">
+                <ButtonGroup
+                  buttons={chartViews}
+                  defaultActiveId="marketOverview"
+                  onChange={handleChartChange}
+                />
+              </div>
             </div>
-          </div>
-        )}
-        <MarketChart />
-        {market.resolutionSource && (
-          <div className="pm-p-market__source">
-            <Text
-              as="p"
-              scale="tiny"
-              fontWeight="semibold"
-              style={{ margin: '0.8rem 0rem' }}
-              color="lighter-gray"
-            >
-              Resolution source:{' '}
-              <a
-                href={market.resolutionSource}
-                target="_blank"
-                className="tiny semibold text-primary"
-                rel="noreferrer"
+          )}
+          <MarketChart />
+          {market.resolutionSource && (
+            <div className="pm-p-market__source">
+              <Text
+                as="p"
+                scale="tiny"
+                fontWeight="semibold"
+                style={{ margin: '0.8rem 0rem' }}
+                color="lighter-gray"
               >
-                {market.resolutionSource}
-              </a>
-            </Text>
+                Resolution source:{' '}
+                <a
+                  href={market.resolutionSource}
+                  target="_blank"
+                  className="tiny semibold text-primary"
+                  rel="noreferrer"
+                >
+                  {market.resolutionSource}
+                </a>
+              </Text>
+            </div>
+          )}
+          <div className="pm-p-market__tabs">
+            <Tabs value={tab} onChange={setTab}>
+              <Tabs.TabPane tab="Positions" id="positions">
+                {network.network.id !== market.networkId.toString() ? (
+                  <AlertMini
+                    styles="outline"
+                    variant="information"
+                    description={`Switch network to ${market.network.name} and see your market positions.`}
+                  />
+                ) : (
+                  <Table
+                    columns={tableItems.columns}
+                    rows={tableItems.rows}
+                    emptyDataDescription="You have no positions."
+                  />
+                )}
+              </Tabs.TabPane>
+              <Tabs.TabPane tab="News (Beta)" id="news">
+                {market.news?.length ? (
+                  <MarketNews news={market.news} />
+                ) : (
+                  <AlertMini
+                    styles="outline"
+                    variant="information"
+                    description="There's no news to be shown."
+                  />
+                )}
+              </Tabs.TabPane>
+            </Tabs>
           </div>
-        )}
-        <div className={`pm-p-market__tabs ${marketClasses.bodyTabs}`}>
-          <Tabs value={tab} onChange={setTab}>
-            <Tabs.TabPane tab="Positions" id="positions">
-              {network.network.id !== market.networkId.toString() ? (
-                <AlertMini
-                  styles="outline"
-                  variant="information"
-                  description={`Switch network to ${market.network.name} and see your market positions.`}
-                />
-              ) : (
-                <Table
-                  columns={tableItems.columns}
-                  rows={tableItems.rows}
-                  emptyDataDescription="You have no positions."
-                />
-              )}
-            </Tabs.TabPane>
-            <Tabs.TabPane tab="News (Beta)" id="news">
-              {market.news?.length ? (
-                <MarketNews news={market.news} />
-              ) : (
-                <AlertMini
-                  styles="outline"
-                  variant="information"
-                  description="There's no news to be shown."
-                />
-              )}
-            </Tabs.TabPane>
-          </Tabs>
-        </div>
-      </Container>
+        </Container>
+        <RightSidebar />
+      </div>
     </>
   );
 }

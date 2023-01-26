@@ -1,3 +1,5 @@
+import { Container } from 'ui';
+
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
@@ -31,8 +33,8 @@ export default function RightSidebar() {
   if (!rightSidebarIsVisible) return null;
 
   return (
-    <div className="pm-l-right-sidebar">
+    <Container $enableGutters className="pm-l-right-sidebar">
       <Sidebar />
-    </div>
+    </Container>
   );
 }
