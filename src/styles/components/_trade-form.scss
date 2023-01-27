@@ -1,25 +1,22 @@
 .pm-c-trade-form {
-  @include flex-column(space-between, center);
-  gap: 2.4rem;
-
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-margin);
   height: 100%;
 
   &__view,
   &__actions {
-    @include flex-column;
-
-    width: 100%;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   &__view {
-    justify-content: flex-start;
-    gap: 16px;
-  }
+    flex: 1 0 auto;
 
-  &__actions {
-    justify-content: flex-end;
-    gap: 24px;
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
   }
 
   @media only screen and (max-height: 870px) {
@@ -51,7 +48,15 @@
     }
 
     &--multiple {
-      height: min(346px, 100%);
+      height: 100%;
+
+      & > [data-test-id='virtuoso-scroller'] {
+        width: calc(100% + 12px);
+
+        & > [data-viewport-type='element'] {
+          padding-right: 12px;
+        }
+      }
     }
 
     &__list-item {
