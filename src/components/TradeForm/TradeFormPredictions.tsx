@@ -4,12 +4,12 @@ import classNames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import { selectOutcome } from 'redux/ducks/trade';
 
-import { VirtualizedList } from 'components';
+import MiniTable from 'components/MiniTable';
+import Text from 'components/Text';
+import VirtualizedList from 'components/VirtualizedList';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
-import MiniTable from '../MiniTable';
-import Text from '../Text';
 import { TradeFormPredictionType } from './TradeFormPredictions.type';
 
 type TradeFormPredictionsProps = {
