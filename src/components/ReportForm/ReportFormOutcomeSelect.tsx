@@ -3,11 +3,11 @@ import { colorByOutcomeId } from 'helpers/color';
 import { selectOutcome } from 'redux/ducks/trade';
 import { PolkamarketsService } from 'services';
 
-import { VirtualizedList } from 'components';
+import Outcome from 'components/Outcome';
+import VirtualizedList from 'components/VirtualizedList';
 
 import { useAppSelector } from 'hooks';
 
-import Outcome from '../Outcome';
 import { ReportFormOutcomeSelectType } from './ReportFormOutcomeSelect.type';
 
 type ReportFormOutcomeSelectProps = {
