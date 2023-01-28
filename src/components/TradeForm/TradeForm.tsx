@@ -29,7 +29,6 @@ function TradeForm() {
   const isLoadingMarket = useAppSelector(state => state.market.isLoading);
 
   const isCurrentSelectedMarket = id === selectedMarketId;
-  const predictionType = outcomes.length > 2 ? 'multiple' : 'binary';
 
   useEffect(() => {
     if (marketState === 'closed') {
@@ -56,7 +55,7 @@ function TradeForm() {
             <Text scale="tiny-uppercase" color="white-50" fontWeight="semibold">
               Select outcome
             </Text>
-            <TradeFormPredictions type={predictionType} />
+            <TradeFormPredictions />
           </>
         )}
       </div>

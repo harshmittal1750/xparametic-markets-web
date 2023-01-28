@@ -1,23 +1,17 @@
 import { useCallback } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
 import { roundNumber } from 'helpers/math';
-import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
 
+import Icon from 'components/Icon';
 import MiniTable from 'components/MiniTable';
 import OutcomeItem from 'components/OutcomeItem';
-import { Area } from 'components/plots';
-import VirtualizedList from 'components/VirtualizedList';
+import Text from 'components/Text';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, useOutcomes } from 'hooks';
 
-import { TradeFormPredictionType } from './TradeFormPredictions.type';
-
-type TradeFormPredictionsProps = {
-  type: TradeFormPredictionType;
-};
-
-function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
+export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
@@ -28,10 +22,9 @@ function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
   const selectedOutcomeId = useAppSelector(
     state => state.trade.selectedOutcomeId
   );
-  const outcomes = useAppSelector(state => state.market.market.outcomes);
-  const symbol = useAppSelector(state => state.market.market.currency.symbol);
-  const sortedOutcomes = sortOutcomes({ outcomes, timeframe: 'all' });
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+  const symbol = useAppSelector(state => state.market.market.currency.symbol);
+  const outcomes = useOutcomes();
   const handlePredictionClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
       dispatch(
@@ -43,35 +36,67 @@ function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
       ),
     [dispatch, selectedMarketId, selectedMarketNetworkId]
   );
+  const Footer = useCallback(() => {
+    return (
+      <OutcomeItem
+        dense
+        onClick={outcomes.expand}
+        endAdornment={
+          <Icon name="Cross" style={{ transform: 'rotate(45deg)' }} />
+        }
+        {...outcomes.offseted}
+      />
+    );
+  }, [outcomes.expand, outcomes.offseted]);
 
   return (
-    <div className={`pm-c-trade-form-predictions--${type}`}>
-      <VirtualizedList
+    <div className="pm-c-trade-form-predictions">
+      <Virtuoso
         height="100%"
-        data={sortedOutcomes}
-        itemContent={(_, outcome) => (
-          <div className="pm-c-trade-form-predictions__list-item">
+        data={outcomes.onseted}
+        components={{
+          Footer: outcomes.isExpanded ? undefined : Footer
+        }}
+        itemContent={(index, outcome) => {
+          const price = outcome.price.toFixed(3);
+          const isPositive = /^\+/.test(outcome.pricesDiff.value);
+
+          return (
             <OutcomeItem
+              $gutterBottom={
+                !outcomes.isExpanded || index !== outcomes.onseted.length - 1
+              }
+              percent={+price * 100}
               dense
-              title={outcome.title}
-              price={outcome.price.toFixed(3)}
-              currency={symbol}
+              primary={outcome.title}
+              secondary={
+                <>
+                  <Text
+                    as="span"
+                    scale="tiny"
+                    fontWeight="bold"
+                    className="pm-c-market-outcomes__item-value"
+                  >
+                    {price}
+                  </Text>{' '}
+                  {symbol}
+                  <Text as="span" color={isPositive ? 'success' : 'danger'}>
+                    <Icon
+                      name="Arrow"
+                      size="sm"
+                      dir={isPositive ? 'up' : 'down'}
+                    />
+                  </Text>
+                </>
+              }
               isActive={
                 outcome.id === selectedOutcomeId &&
                 outcome.marketId === selectedMarketId
               }
-              isPositive={/^\+/.test(outcome.pricesDiff.value)}
+              isPositive={isPositive}
               value={outcome.id}
               onClick={handlePredictionClick}
-              chart={
-                <Area
-                  id={`${selectedMarketId}-${outcome.id}-${outcome.title}`}
-                  data={outcome.data}
-                  color={/^\+/.test(outcome.pricesDiff.value) ? 'green' : 'red'}
-                  width={48}
-                  height={32}
-                />
-              }
+              data={outcome.data}
             >
               <MiniTable
                 style={{
@@ -93,13 +118,9 @@ function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
                 ]}
               />
             </OutcomeItem>
-          </div>
-        )}
+          );
+        }}
       />
     </div>
   );
 }
-
-TradeFormPredictions.displayName = 'TradeFormPredictions';
-
-export default TradeFormPredictions;

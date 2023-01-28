@@ -29,6 +29,8 @@ export { default as useMarketPath } from './useMarketPath';
 
 export { default as useMount } from './useMount';
 
+export { default as useOutcomes } from './useOutcomes';
+
 export { default as usePortal } from './usePortal';
 
 export { default as usePrevious } from './usePrevious';

@@ -1,32 +1,47 @@
 import cn from 'classnames';
+import { uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
 
-import Icon from 'components/Icon';
+import { Area } from 'components/plots';
+import type { AreaDataPoint } from 'components/plots/Area/Area.type';
 import Text from 'components/Text';
+
+import OutcomeItemClasses from './OutcomeItem.module.scss';
 
 export type OutcomeProps = Pick<
   React.ComponentPropsWithoutRef<'button'>,
   'disabled' | 'onClick' | 'children' | 'value'
 > &
-  Record<'title' | 'price' | 'currency', string> &
+  Partial<Record<'primary', string>> &
   Partial<
-    Record<'isActive' | 'isPositive' | 'isResolved' | 'isWinning', boolean>
-  > & {
-    chart: React.ReactNode;
-    dense?: boolean;
+    Record<
+      | 'isActive'
+      | 'isPositive'
+      | 'isResolved'
+      | 'isWinning'
+      | 'dense'
+      | '$gutterBottom',
+      boolean
+    >
+  > &
+  Partial<Record<'endAdornment' | 'secondary', React.ReactNode>> & {
+    percent?: number;
+    data?: AreaDataPoint[];
   };
 
 export default function OutcomeItem({
-  title,
-  price,
-  currency,
+  primary,
+  secondary,
+  percent,
   isActive,
   isPositive,
   isResolved,
   isWinning,
-  chart,
+  endAdornment,
   children,
   dense,
+  $gutterBottom,
+  data,
   ...props
 }: OutcomeProps) {
   return (
@@ -44,6 +59,7 @@ export default function OutcomeItem({
         'pm-c-market-outcomes__item--default': !isResolved,
         'pm-c-market-outcomes__item--success': isWinning,
         'pm-c-market-outcomes__item--danger': !isWinning,
+        [OutcomeItemClasses.gutterBottom]: $gutterBottom,
         active: isActive
       })}
       {...props}
@@ -62,31 +78,40 @@ export default function OutcomeItem({
             fontWeight="semibold"
             className="pm-c-market-outcomes__item-title"
           >
-            {title}
+            {primary}
           </Text>
           <Text
-            as="span"
+            as="p"
             scale="tiny"
-            fontWeight="bold"
-            className="pm-c-market-outcomes__item-value"
+            fontWeight="semibold"
+            className="pm-c-market-outcomes__item-odd"
           >
-            {price}
-            <span className="pm-c-market-outcomes__item-odd"> {currency} </span>
-            {!isResolved && (
-              <Text as="span" color={isPositive ? 'success' : 'danger'}>
-                <Icon name="Arrow" size="sm" dir={isPositive ? 'up' : 'down'} />
-              </Text>
-            )}
+            {secondary}
           </Text>
         </div>
-        <div className="pm-c-market-outcomes__item-chart">{chart}</div>
+        <div className="pm-c-market-outcomes__item-endAdornment">
+          {endAdornment ||
+            (data && (
+              <Area
+                id={`${primary}-${uniqueId('outcome-item')}`}
+                data={data}
+                color={isPositive ? 'green' : 'red'}
+                width={48}
+                height={32}
+              />
+            ))}
+        </div>
       </div>
       {children}
-      {!isResolved && (
+      {!isResolved && percent && (
         <Line
-          percent={+price * 100}
+          percent={percent}
           strokeWidth={1}
-          strokeColor={isPositive ? '#65D6AD' : '#F86A6A'}
+          strokeColor={(() => {
+            if (isPositive) return '#65D6AD';
+            if (!data) return '#fff';
+            return '#F86A6A';
+          })()}
           trailWidth={1}
           trailColor="var(--color-vote-arrows-background--neutral)"
           strokeLinecap="butt"

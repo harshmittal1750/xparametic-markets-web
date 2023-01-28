@@ -40,22 +40,14 @@
   @include flex-column;
   @include themes($market-themes) {
     gap: 1.6rem;
-
     width: 100%;
+    height: 100%;
 
-    &--binary {
-      height: min(226px, 100%);
-    }
+    & > [data-test-id='virtuoso-scroller'] {
+      width: calc(100% + 12px);
 
-    &--multiple {
-      height: 100%;
-
-      & > [data-test-id='virtuoso-scroller'] {
-        width: calc(100% + 12px);
-
-        & > [data-viewport-type='element'] {
-          padding-right: 12px;
-        }
+      & > [data-viewport-type='element'] {
+        padding-right: 12px;
       }
     }
 
