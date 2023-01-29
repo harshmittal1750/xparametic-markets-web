@@ -10,7 +10,7 @@ import OutcomeItemClasses from './OutcomeItem.module.scss';
 
 export type OutcomeProps = Pick<
   React.ComponentPropsWithoutRef<'button'>,
-  'disabled' | 'onClick' | 'children' | 'value'
+  'onClick' | 'children' | 'value'
 > &
   Partial<Record<'primary', string>> &
   Partial<
@@ -62,6 +62,7 @@ export default function OutcomeItem({
         [OutcomeItemClasses.gutterBottom]: $gutterBottom,
         active: isActive
       })}
+      disabled={isResolved}
       {...props}
     >
       <div
