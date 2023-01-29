@@ -175,4 +175,8 @@ export { default as ModalSection } from './ModalSection';
 
 export { default as ModalSectionText } from './ModalSectionText';
 
+export { default as OutcomeItem } from './OutcomeItem';
+
+export { default as OutcomeItemText } from './OutcomeItemText';
+
 export { default as VirtualizedList } from './VirtualizedList';
