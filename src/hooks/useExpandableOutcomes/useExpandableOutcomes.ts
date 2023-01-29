@@ -4,10 +4,9 @@ import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 import { roundNumber } from 'helpers/math';
 import type { Outcome, PriceChart } from 'models/market';
 
-import useAppSelector from 'hooks/useAppSelector';
-
-type UseOutcomes = {
+type UseExpandableOutcomes = {
   max?: number;
+  rawOutcomes: Outcome[];
 };
 
 type SortOutcomes = {
@@ -53,12 +52,14 @@ function sortOutcomes(args: SortOutcomes) {
     });
 }
 
-export default function useOutcomes({ max = 2 }: UseOutcomes = {}) {
-  const outcomes = useAppSelector(state => state.market.market.outcomes);
-  const [isExpanded, setExpanded] = useState(outcomes.length < 3);
+export default function useExpandableOutcomes({
+  max = 2,
+  rawOutcomes
+}: UseExpandableOutcomes) {
+  const [isExpanded, setExpanded] = useState(rawOutcomes.length < 3);
   const expand = useCallback(() => setExpanded(true), []);
   const sorted = sortOutcomes({
-    outcomes,
+    outcomes: rawOutcomes,
     timeframe: '7d'
   });
   const onseted = sorted.slice(0, isExpanded ? undefined : max);

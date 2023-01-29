@@ -23,13 +23,13 @@ export { default as useClickaway } from './useClickaway';
 
 export { default as useCookie } from './useCookie';
 
+export { default as useExpandableOutcomes } from './useExpandableOutcomes';
+
 export { default as useFocustrap } from './useFocustrap';
 
 export { default as useMarketPath } from './useMarketPath';
 
 export { default as useMount } from './useMount';
-
-export { default as useOutcomes } from './useOutcomes';
 
 export { default as usePortal } from './usePortal';
 
