@@ -13,15 +13,7 @@ import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
 export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
-  const selectedMarketId = useAppSelector(
-    state => state.trade.selectedMarketId
-  );
-  const selectedMarketNetworkId = useAppSelector(
-    state => state.trade.selectedMarketNetworkId
-  );
-  const selectedOutcomeId = useAppSelector(
-    state => state.trade.selectedOutcomeId
-  );
+  const trade = useAppSelector(state => state.trade);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const symbol = useAppSelector(state => state.market.market.currency.symbol);
   const outcomes = useAppSelector(state => state.market.market.outcomes);
@@ -33,12 +25,12 @@ export default function TradeFormPredictions() {
     (event: React.MouseEvent<HTMLButtonElement>) =>
       dispatch(
         selectOutcome(
-          selectedMarketId,
-          selectedMarketNetworkId,
+          trade.selectedMarketId,
+          trade.selectedMarketNetworkId,
           +event.currentTarget.value
         )
       ),
-    [dispatch, selectedMarketId, selectedMarketNetworkId]
+    [dispatch, trade.selectedMarketId, trade.selectedMarketNetworkId]
   );
   const Footer = useCallback(
     () => (
@@ -83,8 +75,8 @@ export default function TradeFormPredictions() {
                 />
               }
               isActive={
-                outcome.id === selectedOutcomeId &&
-                outcome.marketId === selectedMarketId
+                outcome.id === trade.selectedOutcomeId &&
+                outcome.marketId === trade.selectedMarketId
               }
               isPositive={isPositive}
               value={outcome.id}
@@ -103,7 +95,7 @@ export default function TradeFormPredictions() {
                     title: 'invested',
                     value:
                       roundNumber(
-                        portfolio[selectedMarketId]?.outcomes[outcome.id]
+                        portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
                           ?.shares,
                         3
                       ) || 0

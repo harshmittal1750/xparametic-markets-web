@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import type { Market } from 'models/market';
 
@@ -14,28 +15,32 @@ type MarketOutcomesProps = {
 };
 
 function MarketOutcomes({ market }: MarketOutcomesProps) {
-  const selectedMarketId = useAppSelector(
-    state => state.trade.selectedMarketId
-  );
-  const selectedMarketNetworkId = useAppSelector(
-    state => state.trade.selectedMarketNetworkId
-  );
-  const selectedOutcomeId = useAppSelector(
-    state => state.trade.selectedOutcomeId
-  );
-  const isCurrentSelectedMarketNetwork =
-    market.networkId === selectedMarketNetworkId;
+  const history = useHistory();
+  const trade = useAppSelector(state => state.trade);
   const isMarketResolved = market.state === 'resolved';
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: market.outcomes,
     max: 2
   });
+  const getActive = useCallback(
+    (id: string | number) =>
+      market.id === trade.selectedMarketId &&
+      id === trade.selectedOutcomeId &&
+      market.networkId === trade.selectedMarketNetworkId,
+    [
+      market.id,
+      market.networkId,
+      trade.selectedMarketId,
+      trade.selectedMarketNetworkId,
+      trade.selectedOutcomeId
+    ]
+  );
   const handleOutcomeClick = useCallback(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      // TODO: USE ID TO OPEN MARKET SLUG + OUTCOME
-    },
-    []
+    (event: React.MouseEvent<HTMLButtonElement>) =>
+      history.push(
+        `/markets/${market.slug}?outcome=${+event.currentTarget.value}`
+      ),
+    [history, market.slug]
   );
 
   return (
@@ -45,6 +50,7 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
         const isPositive = /^\+/.test(outcome.pricesDiff.value);
         const isWinningOutcome =
           isMarketResolved && market.resolvedOutcomeId === outcome.id;
+        const isActive = getActive(outcome.id);
 
         return (
           <li key={outcome.id}>
@@ -58,11 +64,7 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
                 />
               }
               percent={+price * 100}
-              isActive={
-                market.id === selectedMarketId &&
-                outcome.id === selectedOutcomeId &&
-                isCurrentSelectedMarketNetwork
-              }
+              isActive={isActive}
               isPositive={isPositive}
               isResolved={isMarketResolved}
               isWinning={isWinningOutcome}
