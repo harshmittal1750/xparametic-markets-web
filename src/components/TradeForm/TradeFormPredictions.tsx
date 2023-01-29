@@ -7,9 +7,9 @@ import { selectOutcome } from 'redux/ducks/trade';
 import Icon from 'components/Icon';
 import MiniTable from 'components/MiniTable';
 import OutcomeItem from 'components/OutcomeItem';
-import Text from 'components/Text';
+import OutcomeItemText from 'components/OutcomeItemText';
 
-import { useAppDispatch, useAppSelector, useOutcomes } from 'hooks';
+import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
 export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
@@ -24,8 +24,12 @@ export default function TradeFormPredictions() {
   );
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const symbol = useAppSelector(state => state.market.market.currency.symbol);
-  const outcomes = useOutcomes();
-  const handlePredictionClick = useCallback(
+  const outcomes = useAppSelector(state => state.market.market.outcomes);
+  const expandableOutcomes = useExpandableOutcomes({
+    outcomes,
+    max: 2
+  });
+  const handleOutcomeClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
       dispatch(
         selectOutcome(
@@ -36,26 +40,27 @@ export default function TradeFormPredictions() {
       ),
     [dispatch, selectedMarketId, selectedMarketNetworkId]
   );
-  const Footer = useCallback(() => {
-    return (
+  const Footer = useCallback(
+    () => (
       <OutcomeItem
         dense
-        onClick={outcomes.expand}
+        onClick={expandableOutcomes.expand}
         endAdornment={
           <Icon name="Cross" style={{ transform: 'rotate(45deg)' }} />
         }
-        {...outcomes.offseted}
+        {...expandableOutcomes.offseted}
       />
-    );
-  }, [outcomes.expand, outcomes.offseted]);
+    ),
+    [expandableOutcomes.expand, expandableOutcomes.offseted]
+  );
 
   return (
     <div className="pm-c-trade-form-predictions">
       <Virtuoso
         height="100%"
-        data={outcomes.onseted}
+        data={expandableOutcomes.onseted}
         components={{
-          Footer: outcomes.isExpanded ? undefined : Footer
+          Footer: expandableOutcomes.isExpanded ? undefined : Footer
         }}
         itemContent={(index, outcome) => {
           const price = outcome.price.toFixed(3);
@@ -64,30 +69,18 @@ export default function TradeFormPredictions() {
           return (
             <OutcomeItem
               $gutterBottom={
-                !outcomes.isExpanded || index !== outcomes.onseted.length - 1
+                !expandableOutcomes.isExpanded ||
+                index !== expandableOutcomes.onseted.length - 1
               }
               percent={+price * 100}
               dense
               primary={outcome.title}
               secondary={
-                <>
-                  <Text
-                    as="span"
-                    scale="tiny"
-                    fontWeight="bold"
-                    className="pm-c-market-outcomes__item-value"
-                  >
-                    {price}
-                  </Text>{' '}
-                  {symbol}
-                  <Text as="span" color={isPositive ? 'success' : 'danger'}>
-                    <Icon
-                      name="Arrow"
-                      size="sm"
-                      dir={isPositive ? 'up' : 'down'}
-                    />
-                  </Text>
-                </>
+                <OutcomeItemText
+                  price={price}
+                  symbol={symbol}
+                  isPositive={isPositive}
+                />
               }
               isActive={
                 outcome.id === selectedOutcomeId &&
@@ -95,7 +88,7 @@ export default function TradeFormPredictions() {
               }
               isPositive={isPositive}
               value={outcome.id}
-              onClick={handlePredictionClick}
+              onClick={handleOutcomeClick}
               data={outcome.data}
             >
               <MiniTable
