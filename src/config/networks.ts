@@ -1,57 +1,15 @@
-import { environment } from 'config';
-import { Currency } from 'types/currency';
+import { Network } from 'types/network';
 
-import { EthereumIcon, MoonbeamIcon, MoonriverIcon } from 'assets/icons';
+import currencies from './currencies';
+import environment from './environment';
 
-const DEV: Currency = {
-  name: 'Dev',
-  ticker: 'DEV',
-  symbol: 'Ξ',
-  icon: <EthereumIcon />,
-  iconName: 'Ethereum'
-};
+const { ERC20_CONTRACT_ADDRESS } = environment;
 
-const ETH: Currency = {
-  name: 'Ethereum',
-  ticker: 'ETH',
-  symbol: 'Ξ',
-  icon: <EthereumIcon />,
-  iconName: 'Ethereum'
-};
+const { DEV, ETH, MOVR, GLMR } = currencies;
 
-const MOVR: Currency = {
-  name: 'MOVR',
-  ticker: 'MOVR',
-  symbol: 'MOVR',
-  icon: <MoonriverIcon />,
-  iconName: 'Moonriver'
-};
-
-const GLMR: Currency = {
-  name: 'Moonbeam',
-  ticker: 'GLMR',
-  symbol: 'GLMR',
-  icon: <MoonbeamIcon />,
-  iconName: 'Moonbeam'
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-
-export type Network = {
-  id: string;
-  name: string;
-  key: string;
-  colorAccent: 'blue' | 'orange' | 'green';
-  currency: Currency;
-  decimals: number;
-  explorerURL: string;
-  rpcUrls: Array<string>;
-  buyEc20Url?: string;
-};
-
-const NETWORKS: {
+const networks: {
   [key: string]: Network;
-} = {
+} = Object.freeze({
   '0x1': {
     id: '1',
     name: 'Ethereum Mainnet',
@@ -101,7 +59,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://kovan.etherscan.io',
     rpcUrls: [],
-    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
   '0x501': {
     id: '1281',
@@ -122,7 +80,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://moonbeam.moonscan.io',
     rpcUrls: ['https://rpc.api.moonbeam.network'],
-    buyEc20Url: `//app.solarflare.io/exchange/swap?outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}`
+    buyEc20Url: `//app.solarflare.io/exchange/swap?outputCurrency=${ERC20_CONTRACT_ADDRESS}`
   },
   '0x505': {
     id: '1285',
@@ -133,7 +91,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://moonriver.moonscan.io',
     rpcUrls: ['https://rpc.moonriver.moonbeam.network'],
-    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}`
+    buyEc20Url: `//app.sushi.com/swap?inputCurrency=&outputCurrency=${ERC20_CONTRACT_ADDRESS}`
   },
   '0x507': {
     id: '1287',
@@ -154,7 +112,7 @@ const NETWORKS: {
     decimals: 18,
     explorerURL: 'https://etherscan.io',
     rpcUrls: ['http://localhost:8545'],
-    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${environment.ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
+    buyEc20Url: `//app.uniswap.org/#/swap?outputCurrency=${ERC20_CONTRACT_ADDRESS}&inputCurrency=ETH`
   },
   '0x270f': {
     id: '9999',
@@ -166,6 +124,6 @@ const NETWORKS: {
     explorerURL: 'https://etherscan.io',
     rpcUrls: []
   }
-};
+});
 
-export default NETWORKS;
+export default networks;

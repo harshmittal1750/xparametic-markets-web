@@ -70,7 +70,8 @@ const Market = () => {
         goToHomePage();
       }
     }
-  }, [error, history, isLoading, retries]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [error, history, isLoading, market.id, market.networkId, network.id]);
 
   if (!market || market.id === '' || isLoading)
     return (

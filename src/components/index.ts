@@ -175,4 +175,4 @@ export { default as ModalSection } from './ModalSection';
 
 export { default as ModalSectionText } from './ModalSectionText';
 
-export { default as WrongNetwork } from './WrongNetwork';
+export { default as VirtualizedList } from './VirtualizedList';

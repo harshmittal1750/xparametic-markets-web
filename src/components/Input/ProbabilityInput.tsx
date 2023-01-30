@@ -1,94 +1,87 @@
-import React, { useEffect } from 'react';
+import {
+  ChangeEvent,
+  InputHTMLAttributes,
+  forwardRef,
+  useCallback,
+  useMemo
+} from 'react';
 
-import { useField, useFormikContext } from 'formik';
+import cn from 'classnames';
+import { useField, useFormikContext, getIn } from 'formik';
+import { roundNumber } from 'helpers/math';
+import omit from 'lodash/omit';
 
 import Text from '../Text';
 import InputErrorMessage from './InputErrorMessage';
 
-type Outcome = {
-  name: string;
-  probability: number;
-};
-
-type OutcomeContext = {
-  firstOutcome: Outcome;
-  secondOutcome: Outcome;
-};
-
 type ProbabilityInputProps = {
-  name: string;
-  label?: string;
+  outcomeId: string;
 };
 
-const ProbabilityInput = React.forwardRef<
+const ProbabilityInput = forwardRef<
   HTMLInputElement,
-  ProbabilityInputProps & React.InputHTMLAttributes<HTMLInputElement>
->(({ name, label, ...props }, ref) => {
-  const {
-    values: { firstOutcome, secondOutcome },
-    setFieldValue
-  } = useFormikContext<OutcomeContext>();
-  const [field, meta] = useField(name);
+  ProbabilityInputProps & InputHTMLAttributes<HTMLInputElement>
+>(({ outcomeId, ...props }, ref) => {
+  const { values, setFieldValue } = useFormikContext();
 
-  useEffect(() => {
-    if (firstOutcome.probability !== 100 - secondOutcome.probability) {
-      setFieldValue('firstOutcome', {
-        name: firstOutcome.name,
-        probability: 100 - secondOutcome.probability
-      });
-    }
-  }, [
-    firstOutcome.name,
-    firstOutcome.probability,
-    name,
-    secondOutcome,
-    setFieldValue
-  ]);
+  const outcomes = getIn(values, 'outcomes');
 
-  useEffect(() => {
-    if (secondOutcome.probability !== 100 - firstOutcome.probability) {
-      setFieldValue('secondOutcome', {
-        name: secondOutcome.name,
-        probability: 100 - firstOutcome.probability
-      });
-    }
-  }, [
-    name,
-    firstOutcome,
-    setFieldValue,
-    secondOutcome.probability,
-    secondOutcome.name
-  ]);
+  const outcomeIndex = useMemo(
+    () => outcomes.indexOf(outcomes.find(outcome => outcome.id === outcomeId)),
+    [outcomes, outcomeId]
+  );
+
+  const fieldByOutcomeIndex = `outcomes[${outcomeIndex}].probability`;
+
+  const [field, meta] = useField(fieldByOutcomeIndex);
+
+  const handleChangeProbability = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      event.preventDefault();
+      const { value } = event.currentTarget;
+
+      const newProbability = value
+        ? roundNumber(parseFloat(value), 2)
+        : undefined;
+
+      setFieldValue(fieldByOutcomeIndex, newProbability);
+    },
+    [fieldByOutcomeIndex, setFieldValue]
+  );
+
+  const hasError = meta.touched && meta.error;
 
   return (
     <div className="pm-c-probability-input--default__group">
-      {label ? (
-        <label
-          htmlFor={name}
-          className={`pm-c-input__label--${meta.error ? 'error' : 'default'}`}
-        >
-          {label}
-        </label>
-      ) : null}
       <div
-        className={`pm-c-probability-input--${
-          meta.error ? 'error' : 'default'
-        }__wrapper`}
+        className={cn({
+          'pm-c-probability-input--error__wrapper': hasError,
+          'pm-c-probability-input--default__wrapper': !hasError
+        })}
       >
         <input
+          id={fieldByOutcomeIndex}
           ref={ref}
-          className="pm-c-probability-input--default"
-          id={name}
           type="number"
+          min={0}
+          max={100}
+          step={0.01}
           onWheel={event => event.currentTarget.blur()}
-          {...field}
+          onChange={event => handleChangeProbability(event)}
+          className={cn({
+            'pm-c-probability-input--error': hasError,
+            'pm-c-probability-input--default': !hasError
+          })}
+          {...omit(field, ['onChange'])}
           {...props}
         />
         <Text as="span" scale="caption" fontWeight="medium" color="primary">
           %
         </Text>
       </div>
-      {meta.error ? <InputErrorMessage message={meta.error} /> : null}
+      {hasError && meta.error ? (
+        <InputErrorMessage message={meta.error} />
+      ) : null}
     </div>
   );
 });

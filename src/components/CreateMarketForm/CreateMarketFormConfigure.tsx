@@ -1,12 +1,6 @@
-import {
-  Input,
-  OutcomeInput,
-  // ProbabilityInput,
-  ImageUploadInput,
-  SelectInput,
-  DateInput
-} from '../Input';
+import { Input, ImageUploadInput, SelectInput, DateInput } from '../Input';
 import Text from '../Text';
+import CreateMarketFormOutcomes from './CreateMarketFormOutcomes';
 
 function CreateMarketFormConfigure() {
   return (
@@ -24,29 +18,7 @@ function CreateMarketFormConfigure() {
         label="Question"
         placeholder="What would you like to see the world predict?"
       />
-      <div
-        className="pm-c-create-market-form__card-outcome-group--row"
-        style={{ gridTemplateColumns: '1fr' }}
-      >
-        <OutcomeInput
-          badgeColor="pink"
-          name="firstOutcome.name"
-          label="Outcomes"
-          placeholder="Outcome A"
-        />
-        {/* <ProbabilityInput name="firstOutcome.probability" label="Probability" /> */}
-      </div>
-      <div
-        className="pm-c-create-market-form__card-outcome-group--row"
-        style={{ gridTemplateColumns: '1fr' }}
-      >
-        <OutcomeInput
-          badgeColor="purple"
-          name="secondOutcome.name"
-          placeholder="Outcome B"
-        />
-        {/* <ProbabilityInput name="secondOutcome.probability" /> */}
-      </div>
+      <CreateMarketFormOutcomes />
       <ImageUploadInput
         label="Market Thumbnail"
         name="image"

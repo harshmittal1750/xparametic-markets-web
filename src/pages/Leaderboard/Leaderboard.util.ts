@@ -60,7 +60,7 @@ function buildLeaderboardData(
   if (leaderboardByTimeframe && leaderboardGroup) {
     return leaderboardGroup.users.map(user => {
       const userInLeaderboardByTimeframe = leaderboardByTimeframe.find(
-        row => row.user === user
+        row => row.user.toLowerCase() === user.toLowerCase()
       );
 
       return (

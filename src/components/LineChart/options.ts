@@ -1,3 +1,4 @@
+import { categoricalColorsInHex } from 'helpers/color';
 import { relativeTimeFromNow } from 'helpers/date';
 
 function generateCustomOptions(theme: string, ticker: string) {
@@ -50,7 +51,7 @@ function generateCustomOptions(theme: string, ticker: string) {
     markers: {
       size: 0,
       colors: undefined,
-      strokeColors: ['#9F7EFF', '#FF83B0', '#6BB8FF'],
+      strokeColors: categoricalColorsInHex,
       strokeWidth: 2,
       strokeOpacity: 1,
       strokeDashArray: 0,
@@ -130,7 +131,7 @@ function generateCustomOptions(theme: string, ticker: string) {
         left: 0
       }
     },
-    colors: ['#9F7EFF', '#FF83B0', '#6BB8FF']
+    colors: categoricalColorsInHex
   };
 }
 

@@ -1,7 +1,6 @@
 import { useCallback, useState } from 'react';
 
 import { login } from 'redux/ducks/polkamarkets';
-import { PolkamarketsService } from 'services';
 
 import { MetaMaskIcon, WarningOutlinedIcon } from 'assets/icons';
 
@@ -16,14 +15,13 @@ import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 import Pill from 'components/Pill';
 
-import { useAppDispatch, useNetwork } from 'hooks';
+import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
 import { connectMetamaskProps } from './ConnectMetamask.util';
 
 export default function ConnectMetamask() {
   const dispatch = useAppDispatch();
-  const { networkConfig } = useNetwork();
-  const polkamarketsService = new PolkamarketsService(networkConfig);
+  const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => {
     setShow(false);
@@ -35,10 +33,10 @@ export default function ConnectMetamask() {
   function handleMetamaskModal() {
     setShow(true);
   }
-  async function handleMetamaskLogin() {
+  const handleMetamaskLogin = useCallback(async () => {
     await polkamarketsService.login();
-    dispatch(login(networkConfig));
-  }
+    dispatch(login(polkamarketsService));
+  }, [dispatch, polkamarketsService]);
 
   return (
     <>
