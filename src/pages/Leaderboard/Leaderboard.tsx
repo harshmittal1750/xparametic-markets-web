@@ -160,7 +160,7 @@ function Leaderboard() {
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   // Local state
-  const [activeTab, setActiveTab] = useState('wonPredictions');
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   // Queries
