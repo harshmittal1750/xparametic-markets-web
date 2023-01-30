@@ -19,7 +19,7 @@ export type OutcomeProps = Pick<
       | 'isPositive'
       | 'isResolved'
       | 'isWinning'
-      | 'dense'
+      | '$dense'
       | '$gutterBottom',
       boolean
     >
@@ -27,6 +27,7 @@ export type OutcomeProps = Pick<
   Partial<Record<'endAdornment' | 'secondary', React.ReactNode>> & {
     percent?: number;
     data?: AreaDataPoint[];
+    $variant?: 'dashed';
   };
 
 export default function OutcomeItem({
@@ -39,9 +40,10 @@ export default function OutcomeItem({
   isWinning,
   endAdornment,
   children,
-  dense,
+  $dense,
   $gutterBottom,
   data,
+  $variant,
   ...props
 }: OutcomeProps) {
   return (
@@ -52,7 +54,10 @@ export default function OutcomeItem({
         gap: 0,
         alignItems: 'stretch',
         overflowX: 'hidden',
-        width: '100%'
+        width: '100%',
+        ...($variant === 'dashed' && {
+          borderStyle: 'dashed'
+        })
       }}
       type="button"
       className={cn('pm-c-market-outcomes__item', {
@@ -60,6 +65,7 @@ export default function OutcomeItem({
         'pm-c-market-outcomes__item--success': isWinning,
         'pm-c-market-outcomes__item--danger': !isWinning,
         [OutcomeItemClasses.gutterBottom]: $gutterBottom,
+        [OutcomeItemClasses.variantDashed]: $variant === 'dashed',
         active: isActive
       })}
       disabled={isResolved}
@@ -67,7 +73,7 @@ export default function OutcomeItem({
     >
       <div
         style={{
-          padding: dense ? '8px 16px' : 16,
+          padding: $dense ? '8px 16px' : 16,
           display: 'flex',
           alignItems: 'center'
         }}

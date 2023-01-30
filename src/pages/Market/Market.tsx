@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useParams, useHistory, useLocation } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
-import { selectOutcome } from 'redux/ducks/trade';
 import { Container } from 'ui';
 import Spinner from 'ui/Spinner';
 
@@ -26,8 +25,6 @@ import MarketNews from './MarketNews';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
 function MarketUI() {
-  const location = useLocation();
-  const outcomeId = new URLSearchParams(location.search).get('outcome');
   const network = useNetwork();
   const dispatch = useAppDispatch();
   const actions = useAppSelector(state => state.polkamarkets.actions);
@@ -50,13 +47,6 @@ function MarketUI() {
     market.currency.symbol || market.currency.ticker,
     network
   );
-
-  useEffect(() => {
-    if (outcomeId)
-      dispatch(selectOutcome(market.id, market.networkId, +outcomeId));
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [outcomeId]);
 
   return (
     <>
@@ -153,17 +143,23 @@ export default function Market() {
 
   useEffect(() => {
     (async function handleMarket() {
-      const { reset } = await import('redux/ducks/trade');
       const { openTradeForm } = await import('redux/ducks/ui');
       const { getMarket, setChartViewType } = await import(
         'redux/ducks/market'
       );
 
       dispatch(openTradeForm());
-      dispatch(reset());
       dispatch(getMarket(params.marketId));
       dispatch(setChartViewType('marketOverview'));
     })();
+
+    return () => {
+      (async function handleResetMarket() {
+        const { reset } = await import('redux/ducks/trade');
+
+        dispatch(reset());
+      })();
+    };
   }, [dispatch, params.marketId, retries]);
   useEffect(() => {
     async function handleHome() {

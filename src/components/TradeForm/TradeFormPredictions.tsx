@@ -22,20 +22,22 @@ export default function TradeFormPredictions() {
     max: 2
   });
   const handleOutcomeClick = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) =>
+    (event: React.MouseEvent<HTMLButtonElement>) => {
       dispatch(
         selectOutcome(
           trade.selectedMarketId,
           trade.selectedMarketNetworkId,
           +event.currentTarget.value
         )
-      ),
+      );
+    },
     [dispatch, trade.selectedMarketId, trade.selectedMarketNetworkId]
   );
   const Footer = useCallback(
     () => (
       <OutcomeItem
-        dense
+        $dense
+        $variant="dashed"
         onClick={expandableOutcomes.expand}
         endAdornment={
           <Icon name="Cross" style={{ transform: 'rotate(45deg)' }} />
@@ -65,7 +67,7 @@ export default function TradeFormPredictions() {
                 index !== expandableOutcomes.onseted.length - 1
               }
               percent={+price * 100}
-              dense
+              $dense
               primary={outcome.title}
               secondary={
                 <OutcomeItemText
@@ -75,8 +77,8 @@ export default function TradeFormPredictions() {
                 />
               }
               isActive={
-                outcome.id === trade.selectedOutcomeId &&
-                outcome.marketId === trade.selectedMarketId
+                outcome.id === +trade.selectedOutcomeId &&
+                outcome.marketId === +trade.selectedMarketId
               }
               isPositive={isPositive}
               value={outcome.id}

@@ -28,8 +28,6 @@ function TradeForm() {
   );
   const isLoadingMarket = useAppSelector(state => state.market.isLoading);
 
-  const isCurrentSelectedMarket = id === selectedMarketId;
-
   useEffect(() => {
     if (marketState === 'closed') {
       dispatch(openReportForm());
@@ -37,10 +35,10 @@ function TradeForm() {
   }, [dispatch, marketState]);
 
   useEffect(() => {
-    if (!isCurrentSelectedMarket) {
+    if (id && selectedMarketId && id !== selectedMarketId) {
       dispatch(selectOutcome(id, networkId, outcomes[0].id));
     }
-  }, [isCurrentSelectedMarket, dispatch, id, outcomes, networkId]);
+  }, [dispatch, id, networkId, outcomes, selectedMarketId]);
 
   if (isLoadingMarket) return null;
 

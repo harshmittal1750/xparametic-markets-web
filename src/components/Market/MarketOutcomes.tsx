@@ -8,7 +8,7 @@ import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
 import OutcomeItem from 'components/OutcomeItem';
 import OutcomeItemText from 'components/OutcomeItemText';
 
-import { useAppSelector, useExpandableOutcomes } from 'hooks';
+import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
 type MarketOutcomesProps = {
   market: Market;
@@ -16,16 +16,17 @@ type MarketOutcomesProps = {
 
 function MarketOutcomes({ market }: MarketOutcomesProps) {
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const isMarketResolved = market.state === 'resolved';
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: market.outcomes,
     max: 2
   });
-  const getActive = useCallback(
+  const getOutcomeActive = useCallback(
     (id: string | number) =>
       market.id === trade.selectedMarketId &&
-      id === trade.selectedOutcomeId &&
+      id === +trade.selectedOutcomeId &&
       market.networkId === trade.selectedMarketNetworkId,
     [
       market.id,
@@ -36,11 +37,34 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
     ]
   );
   const handleOutcomeClick = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) =>
-      history.push(
-        `/markets/${market.slug}?outcome=${+event.currentTarget.value}`
-      ),
-    [history, market.slug]
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      const { value } = event.currentTarget;
+      const isOutcomeActive = getOutcomeActive(value);
+      const { marketSelected } = await import('redux/ducks/market');
+      const { selectOutcome } = await import('redux/ducks/trade');
+
+      dispatch(marketSelected(market));
+      dispatch(
+        selectOutcome(market.id, market.networkId, isOutcomeActive ? '' : value)
+      );
+
+      if (market.state === 'closed') {
+        const { openReportForm } = await import('redux/ducks/ui');
+
+        dispatch(openReportForm());
+      } else {
+        const { openTradeForm } = await import('redux/ducks/ui');
+
+        dispatch(openTradeForm());
+      }
+      if (isOutcomeActive) {
+        const { closeTradeForm } = await import('redux/ducks/ui');
+
+        dispatch(closeTradeForm());
+      }
+      history.push(`/markets/${market.slug}`);
+    },
+    [dispatch, getOutcomeActive, history, market]
   );
 
   return (
@@ -50,7 +74,7 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
         const isPositive = /^\+/.test(outcome.pricesDiff.value);
         const isWinningOutcome =
           isMarketResolved && market.resolvedOutcomeId === outcome.id;
-        const isActive = getActive(outcome.id);
+        const isOutcomeActive = getOutcomeActive(outcome.id);
 
         return (
           <li key={outcome.id}>
@@ -64,7 +88,7 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
                 />
               }
               percent={+price * 100}
-              isActive={isActive}
+              isActive={isOutcomeActive}
               isPositive={isPositive}
               isResolved={isMarketResolved}
               isWinning={isWinningOutcome}
