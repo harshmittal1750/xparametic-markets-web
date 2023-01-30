@@ -10,6 +10,13 @@ import features from './features';
 
 const ui = {
   hero: {
+    enabled: [
+      environment.UI_HERO_IMAGE,
+      environment.UI_HERO_HEADER,
+      environment.UI_HERO_TITLE,
+      environment.UI_HERO_ACTION_TITLE,
+      environment.UI_HERO_ACTION_URL
+    ].every(Boolean),
     image: environment.UI_HERO_IMAGE,
     header: environment.UI_HERO_HEADER,
     title: environment.UI_HERO_TITLE,
