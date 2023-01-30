@@ -27,13 +27,11 @@ const ui = {
     enabled: features.regular.enabled
   },
   leaderboard: {
-    columns: features.fantasy.enabled
-      ? intersection(
-          environment.UI_LEADERBOARD_COLUMNS?.split(',') ||
-            defaultLeaderboardColumns,
-          leaderboardColumns
-        )
-      : defaultLeaderboardColumns
+    columns: intersection(
+      environment.UI_LEADERBOARD_COLUMNS?.split(',') ||
+        defaultLeaderboardColumns,
+      leaderboardColumns
+    )
   },
   clubs: {
     enabled: features.fantasy.enabled
