@@ -9,7 +9,7 @@ import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderbo
 
 export const leaderboardColumns = [
   'volume',
-  'markedCreated',
+  'marketsCreated',
   'transactions',
   'balance',
   'wonPredictions',
