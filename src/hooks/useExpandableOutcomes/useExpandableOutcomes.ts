@@ -9,7 +9,7 @@ type UseExpandableOutcomes = {
 };
 
 export default function useExpandableOutcomes({
-  max = 2,
+  max,
   outcomes
 }: UseExpandableOutcomes) {
   const [isExpanded, setExpanded] = useState(outcomes.length < 3);
@@ -32,9 +32,9 @@ export default function useExpandableOutcomes({
   const isSingle = seted.off.length === 1;
 
   return {
-    isExpanded,
+    isExpanded: isSingle || isExpanded,
     expand,
-    onseted: seted.on,
+    onseted: isSingle ? [...seted.on, ...seted.off] : seted.on,
     offseted: {
       percent:
         +(
