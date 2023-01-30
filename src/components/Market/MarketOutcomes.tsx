@@ -91,7 +91,12 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
       })}
       {!expandableOutcomes.isExpanded && (
         <li>
-          <OutcomeItem {...expandableOutcomes.offseted} />
+          <OutcomeItem
+            $variant="dashed"
+            value={expandableOutcomes.onseted[0].id}
+            onClick={handleOutcomeClick}
+            {...expandableOutcomes.offseted}
+          />
         </li>
       )}
     </ul>
