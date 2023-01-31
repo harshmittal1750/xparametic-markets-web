@@ -2,14 +2,11 @@
   @include themes($market-themes) {
     &__body {
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+      align-items: flex-start;
       gap: 2.4rem;
 
       @media (min-width: 1024px) {
-        flex-direction: initial;
-        text-align: initial;
+        align-items: center;
       }
 
       &-avatar {
@@ -27,15 +24,8 @@
       }
 
       &-details {
-        @include flex-column(center, center);
-
-        @include breakpoint-to('md') {
-          @include flex-column(center, flex-start);
-        }
-
-        gap: 0.8rem;
-
         p {
+          margin-top: 8px;
           text-overflow: ellipsis;
           overflow: hidden;
           display: -webkit-box;
@@ -60,21 +50,19 @@
   }
 
   li {
-    flex-grow: 1;
-
-    @include breakpoint-to('sm') {
-      flex-grow: 0;
-    }
+    flex-basis: 50%;
+    flex-grow: 0;
+    max-width: 50%;
   }
 
   &__item {
-    min-width: 168px;
     pointer-events: none;
     cursor: pointer;
     touch-action: manipulation;
     width: 100%;
 
     @include breakpoint-to('md') {
+      min-width: 168px;
       pointer-events: all;
       width: auto;
     }

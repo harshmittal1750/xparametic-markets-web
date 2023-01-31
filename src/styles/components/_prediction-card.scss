@@ -15,18 +15,16 @@
       @include flex-column(center, center);
       gap: 2.4rem;
 
-      padding: 1.6rem;
-      padding-top: 3.2rem;
+      padding: 16px var(--grid-margin);
 
       @include breakpoint-to('lg') {
         @include flex-row(space-between, center);
-        padding: 1.6rem;
       }
     }
 
     &__footer {
-      padding-right: 16px;
-      padding-left: 16px;
+      padding-right: var(--grid-margin);
+      padding-left: var(--grid-margin);
       height: 44px;
       background-color: themed('footer-background-color');
       border-radius: 0rem 0rem 0.4rem 0.4rem;

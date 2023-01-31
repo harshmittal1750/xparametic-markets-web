@@ -1,4 +1,9 @@
+import { useCallback } from 'react';
+import { Link } from 'react-router-dom';
+
 import { Market as MarketInterface } from 'models/market';
+
+import { useAppDispatch } from 'hooks';
 
 import Breadcrumb from '../Breadcrumb';
 import Text from '../Text';
@@ -10,27 +15,40 @@ type MarketCardProps = {
 };
 
 function Market({ market }: MarketCardProps) {
+  const dispatch = useAppDispatch();
+  const handleNavigation = useCallback(async () => {
+    const { clearMarket } = await import('redux/ducks/market');
+    const { openTradeForm } = await import('redux/ducks/ui');
+    const { selectOutcome } = await import('redux/ducks/trade');
+
+    dispatch(selectOutcome(market.id, market.networkId, market.outcomes[0].id));
+    dispatch(clearMarket());
+    dispatch(openTradeForm());
+  }, [dispatch, market.id, market.networkId, market.outcomes]);
+
   return (
-    <div className="pm-c-market">
-      <div className="pm-c-market__body">
-        <figure className="pm-c-market__body-avatar">
-          <img
-            className="pm-c-market__body-image"
-            src={market.imageUrl}
-            alt="Market Avatar"
-          />
-        </figure>
-        <div className="pm-c-market__body-details">
-          <Breadcrumb>
-            <Breadcrumb.Item>{`${market.category.toLowerCase()}`}</Breadcrumb.Item>
-            <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
-          </Breadcrumb>
-          <Text as="p" scale="body" fontWeight="medium">
-            {market.title}
-          </Text>
-        </div>
+    <Link
+      className="pm-c-market__body"
+      to={`/markets/${market.slug}`}
+      onClick={handleNavigation}
+    >
+      <figure className="pm-c-market__body-avatar">
+        <img
+          className="pm-c-market__body-image"
+          src={market.imageUrl}
+          alt="Market Avatar"
+        />
+      </figure>
+      <div className="pm-c-market__body-details">
+        <Breadcrumb>
+          <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
+          <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
+        </Breadcrumb>
+        <Text as="p" scale="body" fontWeight="medium">
+          {market.title}
+        </Text>
       </div>
-    </div>
+    </Link>
   );
 }
 
