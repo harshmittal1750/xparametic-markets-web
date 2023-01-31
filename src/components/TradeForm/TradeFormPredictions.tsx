@@ -18,8 +18,7 @@ export default function TradeFormPredictions() {
   const symbol = useAppSelector(state => state.market.market.currency.symbol);
   const outcomes = useAppSelector(state => state.market.market.outcomes);
   const expandableOutcomes = useExpandableOutcomes({
-    outcomes,
-    max: 2
+    outcomes
   });
   const handleOutcomeClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -56,57 +55,52 @@ export default function TradeFormPredictions() {
         components={{
           Footer: expandableOutcomes.isExpanded ? undefined : Footer
         }}
-        itemContent={(index, outcome) => {
-          const price = outcome.price.toFixed(3);
-          const isPositive = /^\+/.test(outcome.pricesDiff.value);
-
-          return (
-            <OutcomeItem
-              $gutterBottom={
-                !expandableOutcomes.isExpanded ||
-                index !== expandableOutcomes.onseted.length - 1
-              }
-              percent={+price * 100}
-              $dense
-              primary={outcome.title}
-              secondary={
-                <OutcomeItemText
-                  price={price}
-                  symbol={symbol}
-                  isPositive={isPositive}
-                />
-              }
-              isActive={
-                outcome.id === +trade.selectedOutcomeId &&
-                outcome.marketId === +trade.selectedMarketId
-              }
-              isPositive={isPositive}
-              value={outcome.id}
-              onClick={handleOutcomeClick}
-              data={outcome.data}
-            >
-              <MiniTable
-                style={{
-                  paddingLeft: 16,
-                  paddingRight: 16,
-                  paddingBottom: 8
-                }}
-                rows={[
-                  {
-                    key: 'invested',
-                    title: 'invested',
-                    value:
-                      roundNumber(
-                        portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
-                          ?.shares,
-                        3
-                      ) || 0
-                  }
-                ]}
+        itemContent={(index, outcome) => (
+          <OutcomeItem
+            $gutterBottom={
+              !expandableOutcomes.isExpanded ||
+              index !== expandableOutcomes.onseted.length - 1
+            }
+            percent={+outcome.price * 100}
+            $dense
+            primary={outcome.title}
+            secondary={
+              <OutcomeItemText
+                price={outcome.price}
+                symbol={symbol}
+                isPositive={outcome.isPriceUp}
               />
-            </OutcomeItem>
-          );
-        }}
+            }
+            isActive={
+              outcome.id === +trade.selectedOutcomeId &&
+              outcome.marketId === +trade.selectedMarketId
+            }
+            isPositive={outcome.isPriceUp}
+            value={outcome.id}
+            onClick={handleOutcomeClick}
+            data={outcome.data}
+          >
+            <MiniTable
+              style={{
+                paddingLeft: 16,
+                paddingRight: 16,
+                paddingBottom: 8
+              }}
+              rows={[
+                {
+                  key: 'invested',
+                  title: 'invested',
+                  value:
+                    roundNumber(
+                      portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
+                        ?.shares,
+                      3
+                    ) || 0
+                }
+              ]}
+            />
+          </OutcomeItem>
+        )}
       />
     </div>
   );

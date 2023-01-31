@@ -1,6 +1,7 @@
 import cn from 'classnames';
 import { uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
+import { useMedia } from 'ui';
 
 import { Area } from 'components/plots';
 import type { AreaDataPoint } from 'components/plots/Area/Area.type';
@@ -46,6 +47,8 @@ export default function OutcomeItem({
   $variant,
   ...props
 }: OutcomeProps) {
+  const isTablet = useMedia('(min-width: 512px)');
+
   return (
     <button
       style={{
@@ -98,7 +101,7 @@ export default function OutcomeItem({
         </div>
         <div className="pm-c-market-outcomes__item-endAdornment">
           {endAdornment ||
-            (data && (
+            (data && isTablet && (
               <Area
                 id={`${primary}-${uniqueId('outcome-item')}`}
                 data={data}

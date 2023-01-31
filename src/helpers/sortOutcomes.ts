@@ -39,7 +39,9 @@ export default function sortOutcomes(args: SortOutcomes) {
 
       return {
         ...outcome,
+        price: +outcome.price.toFixed(3) * Math.sign(outcome.price),
         pricesDiff: getPricesDiff(priceChart),
+        isPriceUp: !priceChart?.changePercent || priceChart?.changePercent > 0,
         name: outcome.title,
         data: fromPriceChartToLineChartSeries(priceChart?.prices || [])
       };

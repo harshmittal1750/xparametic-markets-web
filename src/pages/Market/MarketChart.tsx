@@ -44,9 +44,7 @@ function MarketOverview() {
           <Text
             as="span"
             scale="tiny-uppercase"
-            color={
-              /^-/.test(highOutcome.pricesDiff.value) ? 'danger' : 'success'
-            }
+            color={highOutcome.isPriceUp ? 'success' : 'danger'}
             fontWeight="semibold"
           >
             {highOutcome.pricesDiff.value} {symbol} (

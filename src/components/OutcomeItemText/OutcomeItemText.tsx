@@ -3,8 +3,11 @@ import Text from 'components/Text';
 
 import OutcomeItemTextClasses from './OutcomeItemText.module.scss';
 
-export type OutcomeItemTextProps = Partial<Record<'price' | 'symbol', string>> &
-  Partial<Record<'isPositive', boolean>>;
+export type OutcomeItemTextProps = {
+  price: number;
+  symbol: string;
+  isPositive: boolean;
+};
 
 export default function OutcomeItem({
   price,

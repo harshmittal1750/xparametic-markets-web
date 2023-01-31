@@ -5,11 +5,13 @@ import type { Outcome } from 'models/market';
 
 type UseExpandableOutcomes = {
   max?: number;
+  truncateMax?: number;
   outcomes: Outcome[];
 };
 
 export default function useExpandableOutcomes({
-  max,
+  max = 2,
+  truncateMax = 2,
   outcomes
 }: UseExpandableOutcomes) {
   const [isExpanded, setExpanded] = useState(outcomes.length < 3);
@@ -44,7 +46,7 @@ export default function useExpandableOutcomes({
         ).toFixed(3) * 100,
       primary: `+${seted.off.length} Outcome${isSingle ? '' : 's'}`,
       secondary: `${seted.off
-        .slice(0, 2)
+        .slice(0, truncateMax)
         .map(outcome => outcome.name)
         .join(', ')}${isSingle ? '' : '...'}`
     }

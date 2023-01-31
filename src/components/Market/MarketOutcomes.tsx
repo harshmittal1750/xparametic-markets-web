@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import type { Market } from 'models/market';
+import { useMedia } from 'ui';
 
 import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
 
@@ -17,11 +18,14 @@ type MarketOutcomesProps = {
 function MarketOutcomes({ market }: MarketOutcomesProps) {
   const history = useHistory();
   const dispatch = useAppDispatch();
+  const isDesktop = useMedia('(min-width: 1024px)');
+  const maxExpandableOutcomes = isDesktop ? 2 : 1;
   const trade = useAppSelector(state => state.trade);
   const isMarketResolved = market.state === 'resolved';
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: market.outcomes,
-    max: 2
+    max: maxExpandableOutcomes,
+    truncateMax: maxExpandableOutcomes
   });
   const getOutcomeActive = useCallback(
     (id: string | number) =>
@@ -70,8 +74,6 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
   return (
     <ul className="pm-c-market-outcomes">
       {expandableOutcomes.onseted.map(outcome => {
-        const price = outcome.price.toFixed(3);
-        const isPositive = /^\+/.test(outcome.pricesDiff.value);
         const isWinningOutcome =
           isMarketResolved && market.resolvedOutcomeId === outcome.id;
         const isOutcomeActive = getOutcomeActive(outcome.id);
@@ -82,14 +84,14 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
               primary={outcome.title}
               secondary={
                 <OutcomeItemText
-                  price={price}
+                  price={outcome.price}
                   symbol={market.network.currency.symbol}
-                  isPositive={isPositive}
+                  isPositive={outcome.isPriceUp}
                 />
               }
-              percent={+price * 100}
+              percent={+outcome.price * 100}
               isActive={isOutcomeActive}
-              isPositive={isPositive}
+              isPositive={outcome.isPriceUp}
               isResolved={isMarketResolved}
               isWinning={isWinningOutcome}
               value={outcome.id}
