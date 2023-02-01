@@ -1,9 +1,7 @@
-import { Link } from 'react-router-dom';
-
 import { ui } from 'config';
 import { Container, Hero } from 'ui';
 
-import { Text } from 'components';
+import { Button, Text } from 'components';
 
 import HomeClasses from './Home.module.scss';
 
@@ -38,12 +36,12 @@ export default function HomeHero() {
             </Text>
           ) : null}
           {hero.action.title && hero.action.url ? (
-            <Link
+            <Button
               className="pm-c-button-normal--primary pm-c-button--sm"
-              to={hero.action.url}
+              onClick={() => window.open(hero.action.url, '_blank')}
             >
               {hero.action.title}
-            </Link>
+            </Button>
           ) : null}
         </div>
       </Hero>
