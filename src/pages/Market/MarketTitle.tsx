@@ -9,6 +9,7 @@ export default function MarketTitle({
 
   return (
     <Text
+      as="h3"
       scale="tiny-uppercase"
       fontWeight="bold"
       color="gray"

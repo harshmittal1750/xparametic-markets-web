@@ -20,7 +20,7 @@ export default function MarketAnalytics() {
   };
 
   return (
-    <>
+    <section className={marketClasses.section}>
       <MarketTitle>Stats</MarketTitle>
       <ul className={marketClasses.stats}>
         {Object.keys(analytics).map((analytic, index) => (
@@ -44,6 +44,6 @@ export default function MarketAnalytics() {
           </li>
         ))}
       </ul>
-    </>
+    </section>
   );
 }

@@ -37,14 +37,8 @@ function SidebarWrapper(
   const [show, setShow] = useState(false);
 
   return (
-    <Container $enableGutters>
-      <Button
-        color="primary"
-        size="sm"
-        fullwidth
-        onClick={() => setShow(true)}
-        {...props}
-      >
+    <Container $enableGutters className={marketClasses.sectionTrade}>
+      <Button color="primary" size="sm" fullwidth onClick={() => setShow(true)}>
         Trade
       </Button>
       <Modal
@@ -143,7 +137,7 @@ function MarketUI() {
           {!isDesktop && <MarketAnalytics />}
           <MarketAbout />
           {!isDesktop && (
-            <>
+            <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
               <VoteArrows
                 size="md"
@@ -152,9 +146,9 @@ function MarketUI() {
                 marketNetworkId={market.network.id}
                 votes={market.votes}
               />
-            </>
+            </section>
           )}
-          <div className="pm-p-market__tabs">
+          <section className={`pm-p-market__tabs ${marketClasses.section}`}>
             <Tabs value={tab} onChange={setTab}>
               <Tabs.TabPane tab="Positions" id="positions">
                 {network.network.id !== market.networkId.toString() ? (
@@ -183,7 +177,7 @@ function MarketUI() {
                 )}
               </Tabs.TabPane>
             </Tabs>
-          </div>
+          </section>
         </Container>
         <SidebarWrapperComponent>
           <RightSidebar />

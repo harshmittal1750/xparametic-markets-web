@@ -35,8 +35,19 @@
   }
 }
 
+.section {
+  margin-top: 24px;
+
+  @media (min-width: 1024px) {
+    margin-top: 48px;
+  }
+
+  &Trade {
+    border-top: 1px solid var(--color-border);
+  }
+}
+
 .title {
-  margin-top: var(--grid-margin);
   margin-bottom: var(--grid-margin);
   display: flex;
   align-items: center;
