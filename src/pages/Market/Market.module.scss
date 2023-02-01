@@ -34,3 +34,37 @@
     background-color: var(--color-surface-primary);
   }
 }
+
+.title {
+  margin-top: var(--grid-margin);
+  margin-bottom: var(--grid-margin);
+  display: flex;
+  align-items: center;
+
+  &Content {
+    padding-right: 12px;
+  }
+
+  &:after {
+    content: '';
+    border: 0px solid var(--color-border);
+    border-bottom-width: thin;
+    width: 100%;
+    position: relative;
+  }
+}
+
+.stats {
+  display: flex;
+  flex-flow: row wrap;
+
+  &Item {
+    flex-grow: 0;
+    flex-basis: 50%;
+    max-width: 50%;
+
+    &Gutter {
+      padding-bottom: var(--grid-margin);
+    }
+  }
+}

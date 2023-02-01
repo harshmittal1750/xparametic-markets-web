@@ -56,6 +56,7 @@
   }
 
   &__item {
+    cursor: pointer;
     width: 100%;
 
     @include breakpoint-to('md') {

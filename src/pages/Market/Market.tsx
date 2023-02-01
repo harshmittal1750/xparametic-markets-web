@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
+import cn from 'classnames';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
-import { Container } from 'ui';
+import { Container, useMedia } from 'ui';
 import Spinner from 'ui/Spinner';
 
 import {
@@ -13,20 +14,59 @@ import {
   SEO,
   AlertMini,
   ButtonGroup,
-  RightSidebar
+  RightSidebar,
+  Modal,
+  Button,
+  VoteArrows
 } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import marketClasses from './Market.module.scss';
+import MarketAbout from './MarketAbout';
+import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
-import MarketHero from './MarketHero';
+import MarketHead from './MarketHead';
 import MarketNews from './MarketNews';
+import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
+function SidebarWrapper(
+  props: React.PropsWithChildren<Record<string, unknown>>
+) {
+  const [show, setShow] = useState(false);
+
+  return (
+    <Container $enableGutters>
+      <Button
+        color="primary"
+        size="sm"
+        fullwidth
+        onClick={() => setShow(true)}
+        {...props}
+      >
+        Trade
+      </Button>
+      <Modal
+        disableGutters
+        show={show}
+        onHide={() => setShow(false)}
+        fullWidth
+        initial={{ bottom: '-100%' }}
+        animate={{ bottom: 0 }}
+        exit={{ bottom: '-100%' }}
+        {...props}
+      />
+    </Container>
+  );
+}
+function MarketBody(props: React.PropsWithChildren<Record<string, unknown>>) {
+  return <div className={marketClasses.body} {...props} />;
+}
 function MarketUI() {
   const network = useNetwork();
   const dispatch = useAppDispatch();
+  const isDesktop = useMedia('(min-width: 1024px)');
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
@@ -47,6 +87,8 @@ function MarketUI() {
     market.currency.symbol || market.currency.ticker,
     network
   );
+  const SidebarWrapperComponent = isDesktop ? Fragment : SidebarWrapper;
+  const MarketBodyComponent = isDesktop ? MarketBody : Fragment;
 
   return (
     <>
@@ -59,9 +101,12 @@ function MarketUI() {
         )}
         image={market.bannerUrl}
       />
-      <MarketHero />
-      <div className={marketClasses.body}>
-        <Container $enableGutters className={marketClasses.bodyContent}>
+      <MarketHead />
+      <MarketBodyComponent>
+        <Container
+          $enableGutters
+          className={cn({ [marketClasses.bodyContent]: isDesktop })}
+        >
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">
@@ -95,6 +140,20 @@ function MarketUI() {
               </Text>
             </div>
           )}
+          {!isDesktop && <MarketAnalytics />}
+          <MarketAbout />
+          {!isDesktop && (
+            <>
+              <MarketTitle>Vote to verify</MarketTitle>
+              <VoteArrows
+                size="md"
+                marketId={market.id}
+                marketSlug={market.slug}
+                marketNetworkId={market.network.id}
+                votes={market.votes}
+              />
+            </>
+          )}
           <div className="pm-p-market__tabs">
             <Tabs value={tab} onChange={setTab}>
               <Tabs.TabPane tab="Positions" id="positions">
@@ -126,8 +185,10 @@ function MarketUI() {
             </Tabs>
           </div>
         </Container>
-        <RightSidebar />
-      </div>
+        <SidebarWrapperComponent>
+          <RightSidebar />
+        </SidebarWrapperComponent>
+      </MarketBodyComponent>
     </>
   );
 }

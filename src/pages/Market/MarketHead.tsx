@@ -11,7 +11,7 @@ import { useAppSelector } from 'hooks';
 
 import marketClasses from './Market.module.scss';
 
-function MarketHeroWrapper(
+function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
   const market = useAppSelector(state => state.market.market);
@@ -20,13 +20,13 @@ function MarketHeroWrapper(
     <Hero className={marketClasses.hero} $image={market.imageUrl} {...props} />
   );
 }
-export default function MarketHero() {
+export default function MarketHead() {
   const market = useAppSelector(state => state.market.market);
   const isDesktop = useMedia('(min-width: 1024px)');
-  const MarketHeroWrapperComponent = isDesktop ? MarketHeroWrapper : Fragment;
+  const MarketHeadWrapperComponent = isDesktop ? MarketHeadWrapper : Fragment;
 
   return (
-    <MarketHeroWrapperComponent>
+    <MarketHeadWrapperComponent>
       <Container $enableGutters={!isDesktop} className={marketClasses.heroInfo}>
         <Avatar
           $size={isDesktop ? 'lg' : 'md'}
@@ -59,6 +59,6 @@ export default function MarketHero() {
           <MarketFooter market={market} />
         </Container>
       )}
-    </MarketHeroWrapperComponent>
+    </MarketHeadWrapperComponent>
   );
 }
