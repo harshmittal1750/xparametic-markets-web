@@ -1,6 +1,6 @@
 import { useState, useMemo, memo } from 'react';
 
-import { ui } from 'config';
+import { ui, features } from 'config';
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
@@ -124,31 +124,30 @@ function PortfolioTabs() {
   return (
     <div className="portfolio-tabs">
       <div className="portfolio-tabs__header">
-        <ButtonGroup
-          defaultActiveId="marketPositions"
-          buttons={[
-            {
-              id: 'marketPositions',
-              name: 'Market Positions',
-              color: 'default',
-              enabled: true
-            },
-            {
-              id: 'liquidityPositions',
-              name: 'Liquidity Positions',
-              color: 'default',
-              enabled: ui.portfolio.tabs.liquidityPositions.enabled
-            },
-            {
-              id: 'reportPositions',
-              name: 'Reports',
-              color: 'default',
-              enabled: ui.portfolio.tabs.reportPositions.enabled
-            }
-          ]}
-          onChange={setCurrentTab}
-          style={{ width: 'fit-content' }}
-        />
+        {features.regular.enabled ? (
+          <ButtonGroup
+            defaultActiveId="marketPositions"
+            buttons={[
+              {
+                id: 'marketPositions',
+                name: 'Market Positions',
+                color: 'default'
+              },
+              {
+                id: 'liquidityPositions',
+                name: 'Liquidity Positions',
+                color: 'default'
+              },
+              {
+                id: 'reportPositions',
+                name: 'Reports',
+                color: 'default'
+              }
+            ]}
+            onChange={setCurrentTab}
+            style={{ width: 'fit-content' }}
+          />
+        ) : null}
         <PortfolioTabsFilter />
       </div>
       <div className="portfolio-tabs__content">
