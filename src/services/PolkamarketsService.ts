@@ -341,15 +341,23 @@ export default class PolkamarketsService {
 
   // ERC20 contract functions
 
-  public async getERC20Balance(): Promise<number> {
+  public async getPolkBalance(): Promise<number> {
+    return this.getERC20Balance(this.erc20ContractAddress);
+  }
+
+  public async getERC20Balance(erc20ContractAddress: string): Promise<number> {
     if (!this.address) return 0;
+
+    const contract = this.polkamarkets.getFantasyERC20Contract({
+      contractAddress: erc20ContractAddress
+    });
 
     // TODO improve this: ensuring erc20 contract is initialized
     // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
+    await contract.__init__();
 
     // returns user balance in ETH
-    const balance = await this.contracts.erc20.getTokenAmount(this.address);
+    const balance = await contract.getTokenAmount(this.address);
 
     return parseFloat(balance) || 0;
   }
@@ -387,17 +395,48 @@ export default class PolkamarketsService {
     return true;
   }
 
-  public async approveERC20(address: string, amount: number): Promise<any[]> {
+  public async isERC20Approved(
+    erc20ContractAddress: string,
+    spenderAddress: string
+  ): Promise<boolean> {
+    if (!this.address) return false;
+
+    const contract = this.polkamarkets.getFantasyERC20Contract({
+      contractAddress: erc20ContractAddress
+    });
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await contract.__init__();
+
+    const isApproved = await contract.isApproved({
+      address: this.address,
+      amount: 1,
+      spenderAddress
+    });
+
+    return isApproved;
+  }
+
+  public async approveERC20(
+    erc20ContractAddress: string,
+    spenderAddress: string,
+    amount?: number
+  ): Promise<any[]> {
     // ensuring user has wallet connected
     await this.login();
 
-    // ensuring erc20 contract is initialized
-    // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
+    const contract = this.polkamarkets.getFantasyERC20Contract({
+      contractAddress: erc20ContractAddress
+    });
 
-    const response = await this.contracts.erc20.approve({
-      address,
-      amount
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await contract.__init__();
+
+    const response = await contract.approve({
+      address: spenderAddress,
+      amount: amount || 2 ** 128 - 1
     });
 
     return response;
@@ -434,35 +473,16 @@ export default class PolkamarketsService {
   // Realitio contract functions
 
   public async isRealitioERC20Approved(): Promise<boolean> {
-    if (!this.address) return false;
-
-    // TODO improve this: ensuring erc20 contract is initialized
-    // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
-
-    // returns user balance in ETH
-    const isApproved = await this.contracts.erc20.isApproved({
-      address: this.address,
-      amount: 1,
-      spenderAddress: this.contracts.realitio.getAddress()
-    });
-
-    return isApproved;
+    return this.isERC20Approved(
+      this.erc20ContractAddress,
+      this.contracts.realitio.getAddress()
+    );
   }
 
   public async approveRealitioERC20(): Promise<any> {
-    // ensuring user has wallet connected
-    await this.login();
-
-    if (!this.address) return false;
-
-    // TODO improve this: ensuring erc20 contract is initialized
-    // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
-
     return this.approveERC20(
-      this.contracts.realitio.getAddress(),
-      2 ** 128 - 1
+      this.erc20ContractAddress,
+      this.contracts.realitio.getAddress()
     );
   }
 
