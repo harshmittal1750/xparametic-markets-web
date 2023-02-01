@@ -56,14 +56,10 @@
   }
 
   &__item {
-    pointer-events: none;
-    cursor: pointer;
-    touch-action: manipulation;
     width: 100%;
 
     @include breakpoint-to('md') {
       min-width: 168px;
-      pointer-events: all;
       width: auto;
     }
 
@@ -86,6 +82,12 @@
     &-odd,
     &-value {
       transition: $market-outcome-text-transitions;
+    }
+
+    &-odd {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &-title {
