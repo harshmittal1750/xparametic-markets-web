@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { environment, pages } from 'config';
+import { environment, pages, ui } from 'config';
 import { getUserCountry } from 'helpers/location';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
@@ -74,15 +74,19 @@ function AppRoutes() {
         }
       >
         <Switch>
-          {Object.values(pages).map(page => (
-            <Route
-              key={page.name}
-              exact={page.exact}
-              path={page.pathname}
-              component={page.Component}
-            />
-          ))}
-          <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
+          {Object.values(pages)
+            .filter(page => page.enabled)
+            .map(page => (
+              <Route
+                key={page.name}
+                exact={page.exact}
+                path={page.pathname}
+                component={page.Component}
+              />
+            ))}
+          {ui.clubs.enabled && (
+            <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
+          )}
         </Switch>
       </Suspense>
     </Layout>

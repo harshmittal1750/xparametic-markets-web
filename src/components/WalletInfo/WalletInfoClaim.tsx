@@ -72,7 +72,7 @@ function WalletInfoClaim() {
         disabled={isPolkClaimed || isClaiming}
         onClick={handleClaim}
       >
-        {isPolkClaimed ? '$IFL Claimed' : 'Claim $IFL'}
+        {isPolkClaimed ? '$POLK Claimed' : 'Claim $POLK'}
       </ButtonLoading>
     </>
   );

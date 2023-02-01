@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
-import { pages } from 'config';
+import { pages, ui } from 'config';
 import { Container, useMedia, useRect } from 'ui';
 
 import { MarketList } from 'components';
@@ -31,7 +31,7 @@ export default function Home() {
   return (
     <Switch>
       <Route exact path={routeMatch.path}>
-        {isDesktop && <HomeHero />}
+        {ui.hero.enabled && isDesktop && <HomeHero />}
         <Container ref={ref} $enableGutters className={homeClasses.nav}>
           <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
         </Container>

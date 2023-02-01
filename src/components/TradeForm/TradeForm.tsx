@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { ui } from 'config';
 import { selectOutcome } from 'redux/ducks/trade';
 import { openReportForm } from 'redux/ducks/ui';
 
@@ -48,7 +49,7 @@ function TradeForm() {
     <div className="pm-c-trade-form">
       <div className="pm-c-trade-form__view">
         <TradeFormCharts />
-        {marketPath && (
+        {ui.tradeForm.liquidity && marketPath && (
           <>
             <Text scale="tiny-uppercase" color="white-50" fontWeight="semibold">
               Select outcome

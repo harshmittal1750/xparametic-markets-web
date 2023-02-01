@@ -1,8 +1,10 @@
+import * as config from 'config';
 import { Container, useRect } from 'ui';
 
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
+import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
@@ -25,7 +27,11 @@ export default function RightSidebar() {
       {
         {
           liquidityForm: <LiquidityForm />,
-          reportForm: <TradeFormClosed />,
+          reportForm: config.ui.reportForm.enabled ? (
+            <ReportForm />
+          ) : (
+            <TradeFormClosed />
+          ),
           tradeForm: <TradeForm />
         }[form]
       }

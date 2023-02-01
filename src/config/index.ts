@@ -4,6 +4,8 @@ export type {
   EnvironmentConfig
 } from './environment';
 
+export { default as ui } from './ui';
+
 export { default as currencies } from './currencies';
 
 export { default as networks } from './networks';

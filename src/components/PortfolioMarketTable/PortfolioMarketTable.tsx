@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import classnames from 'classnames';
-import { currencies } from 'config';
 import { colorByOutcomeId } from 'helpers/color';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
@@ -20,6 +19,7 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
+  useNetwork,
   usePolkamarketsService,
   useSortableData
 } from 'hooks';
@@ -29,8 +29,6 @@ import Badge from '../Badge';
 import { ButtonLoading } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
-
-const { IFL } = currencies;
 
 type MarketTableProps = {
   rows: any[];
@@ -45,8 +43,9 @@ const PortfolioMarketTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-
-  const currency = IFL;
+  const {
+    network: { currency }
+  } = useNetwork();
 
   const { ticker, symbol } = currency;
   const polkamarketsService = usePolkamarketsService();
