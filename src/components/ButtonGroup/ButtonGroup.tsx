@@ -84,7 +84,7 @@ function ButtonGroup({
       style={style}
     >
       {buttons
-        ?.filter(button => button.enabled || true)
+        ?.filter(button => button.enabled ?? true)
         .map(button => (
           <button
             type="button"
