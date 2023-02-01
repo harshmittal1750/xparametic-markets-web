@@ -37,7 +37,7 @@ export default function WalletInfo() {
     <div className="pm-c-wallet-info">
       <div className="pm-c-wallet-info__currency pm-c-wallet-info__profile">
         {formatNumberToString(polkBalance)}
-        <span className="pm-c-wallet-info__currency__ticker"> IFL</span>
+        <span className="pm-c-wallet-info__currency__ticker">POLK</span>
         {isDesktop && (
           <>
             <Feature name="fantasy">

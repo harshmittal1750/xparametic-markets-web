@@ -6,7 +6,7 @@ import { pages, socials } from 'config';
 import { shiftSlash } from 'helpers/string';
 import { useMedia } from 'ui';
 
-import { IlluminateFantasyLeagueLogo } from 'assets/icons';
+import { PolkamarketsLogo } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';
@@ -98,7 +98,7 @@ function HeaderNavMenu({
   return (
     <ul className={HeaderNavClasses.list}>
       {Object.values(pages)
-        .filter(page => page.navigation)
+        .filter(page => page.enabled && page.navigation)
         .reverse()
         .map(page => (
           <li key={page.name} className={HeaderNavClasses.item}>
@@ -112,8 +112,8 @@ function HeaderNavMenu({
                 location.pathname === pages.home.pathname ||
                 /^\/markets/.test(location.pathname)
                   ? page.pathname === pages.home.pathname
-                  : /^\/clubs/.test(location.pathname)
-                    ? page.pathname === pages.clubs.pathname
+                  : pages.clubs.enabled && /^\/clubs/.test(location.pathname)
+                    ?  page.pathname === pages.clubs.pathname
                     : new RegExp(shiftSlash(location.pathname)).test(shiftSlash(page.pathname))
               }
               {...NavLinkProps}
@@ -140,7 +140,7 @@ export default function HeaderNav() {
     <nav className={HeaderNavClasses.root}>
       {isDesktop && !isTv && <HeaderNavMenuModal />}
       <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
-        <IlluminateFantasyLeagueLogo />
+        <PolkamarketsLogo />
       </Link>
       {isTv ? <HeaderNavMenu /> : !isDesktop && <HeaderNavMenuModal />}
     </nav>

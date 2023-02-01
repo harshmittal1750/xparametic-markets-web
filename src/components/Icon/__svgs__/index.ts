@@ -15,7 +15,6 @@ export { ReactComponent as Filter } from './Filter.svg';
 export { ReactComponent as Gear } from './Gear.svg';
 export { ReactComponent as GitHub } from './GitHub.svg';
 export { ReactComponent as Grid } from './Grid.svg';
-export { ReactComponent as IFL } from './IFL.svg';
 export { ReactComponent as LinkedIn } from './LinkedIn.svg';
 export { ReactComponent as List } from './List.svg';
 export { ReactComponent as Magnifier } from './Magnifier.svg';

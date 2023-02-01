@@ -61,8 +61,6 @@ function FiltersProvider({ children }) {
       favorites: state.favorites.checked,
       dropdowns: {
         networks: pickSelectedOptions(dropdowns.network.options),
-        countries: pickSelectedOptions(dropdowns.country.options),
-        stages: pickSelectedOptions(dropdowns.stage.options),
         states: pickSelectedOptions(dropdowns.state.options)
       }
     };

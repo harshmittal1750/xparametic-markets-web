@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import cn from 'classnames';
-import { pages } from 'config';
+import { pages, ui } from 'config';
 import { Container, useMedia, useRect } from 'ui';
 
 import { MarketList, RightSidebar } from 'components';
@@ -34,7 +34,7 @@ export default function Home() {
       <div className="flex-fill">
         <Switch>
           <Route exact path={routeMatch.path}>
-            {isDesktop && <HomeHero />}
+            {ui.hero.enabled && isDesktop ? <HomeHero /> : null}
             <Container
               ref={ref}
               $enableGutters

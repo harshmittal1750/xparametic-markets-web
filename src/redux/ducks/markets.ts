@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment, networks, currencies } from 'config';
+import { environment, networks } from 'config';
 // import dayjs from 'dayjs';
 // import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
@@ -11,8 +11,6 @@ import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
 
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
-
-const { IFL } = currencies;
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
@@ -113,10 +111,7 @@ const marketsSlice = createSlice({
 
               return {
                 ...market,
-                network: {
-                  ...network,
-                  currency: IFL
-                }
+                network
               } as Market;
             })
           },
@@ -243,8 +238,6 @@ type MarketsSelectorArgs = {
       marketsByNetwork: FavoriteMarketsByNetwork;
     };
     networks: string[];
-    countries: string[];
-    stages: string[];
     states: string[];
   };
 };
@@ -265,20 +258,6 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
 
   const filterByState = marketState =>
     !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
-
-  const filterByCountryInTitle = title =>
-    !isEmpty(filters.countries)
-      ? filters.countries.some(country =>
-          title.toLowerCase().includes(country.toLowerCase())
-        )
-      : true;
-
-  const filterMarketsByStageInTitle = title =>
-    !isEmpty(filters.stages)
-      ? filters.stages.some(stage =>
-          title.toLowerCase().includes(stage.toLowerCase())
-        )
-      : true;
 
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
@@ -309,9 +288,7 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
           market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
-        filterByState(market.state) &&
-        filterByCountryInTitle(market.title) &&
-        filterMarketsByStageInTitle(market.title)
+        filterByState(market.state)
     )
   );
 };

@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { currencies } from 'config';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 
 import { Dropdown, Text } from 'components/new';
@@ -11,8 +10,6 @@ import ProfileLeaderboardRanks from './ProfileLeaderboardRanks';
 import ProfilePredictionStatistics from './ProfilePredictionStatistics';
 import { LeaderboardRanks, PredictionStatistics } from './types';
 
-const { IFL } = currencies;
-
 type Timeframe = '1w' | '1m' | 'at';
 
 type ProfileYourStatsProps = {
@@ -22,7 +19,7 @@ type ProfileYourStatsProps = {
 function ProfileYourStats({ address }: ProfileYourStatsProps) {
   // Custom hooks
   const { network } = useNetwork();
-  const currency = IFL;
+  const { currency } = network;
 
   // Local state
   const [timeframe, setTimeframe] = useState<Timeframe>('at');

@@ -7,6 +7,24 @@ import type { LeaderboardGroup } from 'types/leaderboard';
 
 import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderboardGroupForm';
 
+export const leaderboardColumns = [
+  'volume',
+  'marketsCreated',
+  'transactions',
+  'balance',
+  'wonPredictions',
+  'netVolume',
+  'netLiquidity'
+];
+
+export const defaultLeaderboardColumns = [
+  'volume',
+  'marketsCreated',
+  'wonPredictions',
+  'netVolume',
+  'netLiquidity'
+];
+
 const emptyLeaderboardRowWithoutUser: Omit<GetLeaderboardBaseData, 'user'> = {
   marketsCreated: 0,
   volume: 0,

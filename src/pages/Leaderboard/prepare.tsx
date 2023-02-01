@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 
+import { ui } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import orderBy from 'lodash/orderBy';
+import pick from 'lodash/pick';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
 
 import {
@@ -210,40 +212,50 @@ function prepareLeaderboardTableRows({
   return sortedRows.map((row, index) => {
     const isLoggedInUser = loggedInUser === row.user;
 
-    return {
-      key: row.user,
-      highlight: isLoggedInUser,
-      wallet: {
-        isLoggedInUser,
-        address: row.user,
-        place: index + 1,
-        achievements: row.achievements
+    return pick(
+      {
+        key: row.user,
+        highlight: isLoggedInUser,
+        wallet: {
+          isLoggedInUser,
+          address: row.user,
+          place: index + 1,
+          achievements: row.achievements
+        },
+        volume: {
+          volume: row.volume,
+          ticker
+        },
+        marketsCreated: row.marketsCreated,
+        wonPredictions: row.claimWinningsCount,
+        netVolume: {
+          volume: row.tvlVolume,
+          ticker
+        },
+        netLiquidity: {
+          liquidity: row.tvlLiquidity,
+          ticker
+        },
+        transactions: row.transactions,
+        balance: {
+          balance: row.erc20Balance,
+          ticker
+        },
+        achievements: row.achievements,
+        rank: {
+          place: index + 1,
+          change: 'stable'
+        }
       },
-      volume: {
-        volume: row.volume,
-        ticker
-      },
-      // marketsCreated: row.marketsCreated,
-      wonPredictions: row.claimWinningsCount,
-      // netVolume: {
-      //   volume: row.tvlVolume,
-      //   ticker
-      // },
-      // netLiquidity: {
-      //   liquidity: row.tvlLiquidity,
-      //   ticker
-      // },
-      // transactions: row.transactions,
-      balance: {
-        balance: row.erc20Balance,
-        ticker
-      },
-      achievements: row.achievements,
-      rank: {
-        place: index + 1,
-        change: 'stable'
-      }
-    };
+      [
+        'key',
+        'highlight',
+        'wallet',
+        'achievements',
+        'rank',
+        ...ui.leaderboard.columns
+      ]
+    ) as LeaderboardTableRow;
   });
 }
 
@@ -254,66 +266,73 @@ export { prepareLeaderboardTableRows };
 function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
   const yourStats = rows.find(row => row.wallet.isLoggedInUser);
 
-  return {
-    rank: {
-      value: yourStats
-        ? {
-            place: yourStats.rank.place,
-            change: yourStats.rank.change
-          }
-        : null,
-      render: rankColumnRender
+  return pick(
+    {
+      rank: {
+        value: yourStats
+          ? {
+              place: yourStats.rank.place,
+              change: yourStats.rank.change
+            }
+          : null,
+        render: rankColumnRender
+      },
+      volume: {
+        value:
+          yourStats && yourStats.volume
+            ? {
+                volume: yourStats.volume.volume,
+                ticker: yourStats.volume.ticker
+              }
+            : null,
+        render: volumeColumnRender
+      },
+      marketsCreated: {
+        value: yourStats ? yourStats.marketsCreated : null
+      },
+      wonPredictions: {
+        value: yourStats ? yourStats.wonPredictions : null
+      },
+      netVolume: {
+        value:
+          yourStats && yourStats.netVolume
+            ? {
+                volume: yourStats.netVolume.volume,
+                ticker: yourStats.netVolume.ticker
+              }
+            : null,
+        render: volumeColumnRender
+      },
+      netLiquidity: {
+        value:
+          yourStats && yourStats.netLiquidity
+            ? {
+                liquidity: yourStats.netLiquidity.liquidity,
+                ticker: yourStats.netLiquidity.ticker
+              }
+            : null,
+        render: liquidityColumnRender
+      },
+      transactions: {
+        value: yourStats ? yourStats.transactions : null
+      },
+      balance: {
+        value:
+          yourStats && yourStats.balance
+            ? {
+                balance: yourStats.balance.balance,
+                ticker: yourStats.balance.ticker
+              }
+            : null,
+        render: balanceColumnRender
+      },
+      achievements: {
+        value: yourStats ? yourStats.achievements : null,
+        render: achievements => achievementsColumnRender(achievements, 'small')
+      }
     },
-    volume: {
-      value: yourStats
-        ? {
-            volume: yourStats.volume.volume,
-            ticker: yourStats.volume.ticker
-          }
-        : null,
-      render: volumeColumnRender
-    },
-    // marketsCreated: {
-    //   value: yourStats ? yourStats.marketsCreated : null
-    // },
-    wonPredictions: {
-      value: yourStats ? yourStats.wonPredictions : null
-    },
-    // netVolume: {
-    //   value: yourStats
-    //     ? {
-    //         volume: yourStats.netVolume.volume,
-    //         ticker: yourStats.netVolume.ticker
-    //       }
-    //     : null,
-    //   render: volumeColumnRender
-    // },
-    // netLiquidity: {
-    //   value: yourStats
-    //     ? {
-    //         liquidity: yourStats.netLiquidity.liquidity,
-    //         ticker: yourStats.netLiquidity.ticker
-    //       }
-    //     : null,
-    //   render: liquidityColumnRender
-    // },
-    // transactions: {
-    //   value: yourStats ? yourStats.transactions : null
-    // },
-    balance: {
-      value: yourStats
-        ? {
-            balance: yourStats.balance.balance,
-            ticker: yourStats.balance.ticker
-          }
-        : null,
-      render: balanceColumnRender
-    },
-    achievements: {
-      value: yourStats ? yourStats.achievements : null,
-      render: achievements => achievementsColumnRender(achievements, 'small')
-    }
-  };
+    ['rank', 'achievements', ...ui.leaderboard.columns]
+  );
 }
 
 export { prepareLeaderboardYourStatsRow };
