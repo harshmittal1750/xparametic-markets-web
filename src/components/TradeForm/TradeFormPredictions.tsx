@@ -15,7 +15,7 @@ export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
-  const symbol = useAppSelector(state => state.market.market.currency.symbol);
+  const symbol = useAppSelector(state => state.market.market.token.symbol);
   const outcomes = useAppSelector(state => state.market.market.outcomes);
   const expandableOutcomes = useExpandableOutcomes({
     outcomes
