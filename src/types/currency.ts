@@ -13,6 +13,7 @@ export type Currency = {
 export type Token = {
   name: string;
   symbol: string;
+  ticker: string;
   address: string;
   decimals: number;
   icon: ReactNode;
