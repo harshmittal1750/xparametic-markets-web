@@ -44,11 +44,11 @@ export default function useExpandableOutcomes({
             .map(outcome => outcome.price)
             .reduce((prices, price) => price + prices, 0) / seted.off.length
         ).toFixed(3) * 100,
-      primary: `+${seted.off.length} Outcome${isSingle ? '' : 's'}`,
+      primary: `${seted.off.length}+ Outcomes`,
       secondary: `${seted.off
         .slice(0, truncateMax)
         .map(outcome => outcome.name)
-        .join(', ')}${isSingle ? '' : '...'}`
+        .join(', ')}...`
     }
   } as const;
 }
