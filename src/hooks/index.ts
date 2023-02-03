@@ -38,3 +38,5 @@ export { default as usePrevious } from './usePrevious';
 export { default as useTimeoutEffect } from './useTimeoutEffect';
 
 export { default as useFilters } from './useFilters';
+
+export { default as useERC20Balance } from './useERC20Balance';
