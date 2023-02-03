@@ -125,7 +125,6 @@
   @include themes($market-outcome-themes) {
     @each $color, $color-map in themed('background-colors') {
       &__item--#{$color} {
-        @extend .pm-c-market-outcomes__item;
         @include market-outcomes-item(
           $color,
           map-get(themed('background-colors'), $color),

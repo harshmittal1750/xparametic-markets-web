@@ -3,6 +3,7 @@ import { Virtuoso } from 'react-virtuoso';
 
 import { roundNumber } from 'helpers/math';
 import { selectOutcome } from 'redux/ducks/trade';
+import { useMedia } from 'ui';
 
 import Icon from 'components/Icon';
 import MiniTable from 'components/MiniTable';
@@ -35,74 +36,147 @@ export default function TradeFormPredictions() {
   const Footer = useCallback(
     () => (
       <OutcomeItem
-        $dense
         $variant="dashed"
         onClick={expandableOutcomes.expand}
-        endAdornment={
-          <Icon name="Cross" style={{ transform: 'rotate(45deg)' }} />
-        }
+        endAdornment={<Icon name="Plus" />}
         primary={expandableOutcomes.offseted.primary}
         secondary={expandableOutcomes.offseted.secondary}
       />
     ),
     [expandableOutcomes.expand, expandableOutcomes.offseted]
   );
+  const isDesktop = useMedia('(min-width: 1024px)');
 
   return (
     <div className="pm-c-trade-form-predictions">
-      <Virtuoso
-        height="100%"
-        data={expandableOutcomes.onseted}
-        components={{
-          Footer: expandableOutcomes.isExpanded ? undefined : Footer
-        }}
-        itemContent={(index, outcome) => (
-          <OutcomeItem
-            $gutterBottom={
-              !expandableOutcomes.isExpanded ||
-              index !== expandableOutcomes.onseted.length - 1
-            }
-            percent={+outcome.price * 100}
-            $dense
-            primary={outcome.title}
-            secondary={
-              <OutcomeItemText
-                price={outcome.price}
-                symbol={symbol}
-                isPositive={outcome.isPriceUp}
+      {isDesktop ? (
+        <Virtuoso
+          height="100%"
+          data={expandableOutcomes.onseted}
+          components={{
+            Footer: expandableOutcomes.isExpanded ? undefined : Footer
+          }}
+          itemContent={(index, outcome) => (
+            <OutcomeItem
+              $gutterBottom={
+                !expandableOutcomes.isExpanded ||
+                index !== expandableOutcomes.onseted.length - 1
+              }
+              percent={+outcome.price * 100}
+              primary={outcome.title}
+              secondary={
+                <OutcomeItemText
+                  price={outcome.price}
+                  symbol={symbol}
+                  isPositive={outcome.isPriceUp}
+                />
+              }
+              isActive={
+                outcome.id === +trade.selectedOutcomeId &&
+                outcome.marketId === +trade.selectedMarketId
+              }
+              isPositive={outcome.isPriceUp}
+              value={outcome.id}
+              onClick={handleOutcomeClick}
+              data={outcome.data}
+            >
+              <MiniTable
+                style={{
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                  paddingBottom: 8
+                }}
+                rows={[
+                  {
+                    key: 'invested',
+                    title: 'invested',
+                    value:
+                      roundNumber(
+                        portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
+                          ?.shares,
+                        3
+                      ) || 0
+                  }
+                ]}
               />
-            }
-            isActive={
-              outcome.id === +trade.selectedOutcomeId &&
-              outcome.marketId === +trade.selectedMarketId
-            }
-            isPositive={outcome.isPriceUp}
-            value={outcome.id}
-            onClick={handleOutcomeClick}
-            data={outcome.data}
-          >
-            <MiniTable
+            </OutcomeItem>
+          )}
+        />
+      ) : (
+        <ul
+          style={{
+            display: 'flex',
+            gap: 12,
+            overflowY: 'hidden',
+            overflowX: 'auto'
+          }}
+        >
+          {expandableOutcomes.onseted.map((outcome, index) => (
+            <li
+              key={outcome.title}
               style={{
-                paddingLeft: 16,
-                paddingRight: 16,
-                paddingBottom: 8
+                minWidth: 'calc(50vw - var(--grid-margin) - 8px)'
               }}
-              rows={[
-                {
-                  key: 'invested',
-                  title: 'invested',
-                  value:
-                    roundNumber(
-                      portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
-                        ?.shares,
-                      3
-                    ) || 0
+            >
+              <OutcomeItem
+                $gutterBottom={
+                  !expandableOutcomes.isExpanded ||
+                  index !== expandableOutcomes.onseted.length - 1
                 }
-              ]}
+                percent={+outcome.price * 100}
+                primary={outcome.title}
+                secondary={
+                  <OutcomeItemText
+                    price={outcome.price}
+                    symbol={symbol}
+                    isPositive={outcome.isPriceUp}
+                  />
+                }
+                isActive={
+                  outcome.id === +trade.selectedOutcomeId &&
+                  outcome.marketId === +trade.selectedMarketId
+                }
+                isPositive={outcome.isPriceUp}
+                value={outcome.id}
+                onClick={handleOutcomeClick}
+                data={outcome.data}
+              >
+                <MiniTable
+                  style={{
+                    paddingLeft: 16,
+                    paddingRight: 16,
+                    paddingBottom: 8
+                  }}
+                  rows={[
+                    {
+                      key: 'invested',
+                      title: 'invested',
+                      value:
+                        roundNumber(
+                          portfolio[trade.selectedMarketId]?.outcomes[
+                            outcome.id
+                          ]?.shares,
+                          3
+                        ) || 0
+                    }
+                  ]}
+                />
+              </OutcomeItem>
+            </li>
+          ))}
+          <li>
+            <OutcomeItem
+              $variant="dashed"
+              onClick={expandableOutcomes.expand}
+              endAdornment={
+                <Icon name="Cross" style={{ transform: 'rotate(45deg)' }} />
+              }
+              primary={expandableOutcomes.offseted.primary}
+              secondary={expandableOutcomes.offseted.secondary}
             />
-          </OutcomeItem>
-        )}
-      />
+          </li>
+        </ul>
+      )}
     </div>
   );
 }
