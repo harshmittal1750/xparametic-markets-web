@@ -37,7 +37,7 @@ export default function MarketAnalytics() {
               {analytics[analytic]}{' '}
               {analytic !== 'Expires' && (
                 <Text as="span" color="gray">
-                  {market.network.currency?.ticker}
+                  {market.token.ticker}
                 </Text>
               )}
             </Text>
