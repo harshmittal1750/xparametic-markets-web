@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { networks, currencies } from 'config';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
-import { Currency, Token } from 'types/currency';
+import { Currency } from 'types/currency';
 import { Network } from 'types/network';
 
 const chartViewsEnum = [
@@ -60,7 +60,15 @@ const initialState: MarketInitialState = {
     networkId: '',
     network: {} as Network,
     currency: {} as Currency,
-    token: {} as Token,
+    token: {
+      name: 'Token',
+      address: '',
+      symbol: 'TOKEN',
+      ticker: 'TOKEN',
+      decimals: 18,
+      icon: '',
+      iconName: 'Token'
+    },
     votes: { up: 0, down: 0 },
     resolvedOutcomeId: -1,
     outcomes: [
