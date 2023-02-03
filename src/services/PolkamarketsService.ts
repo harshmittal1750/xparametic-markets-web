@@ -346,6 +346,9 @@ export default class PolkamarketsService {
   }
 
   public async getERC20Balance(erc20ContractAddress: string): Promise<number> {
+    // ensuring user has wallet connected
+    await this.login();
+
     if (!this.address) return 0;
 
     const contract = this.polkamarkets.getFantasyERC20Contract({
