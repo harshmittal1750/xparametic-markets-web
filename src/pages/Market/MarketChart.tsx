@@ -16,8 +16,8 @@ const intervals = [
 
 function MarketOverview() {
   const outcomes = useAppSelector(state => state.market.market.outcomes);
-  const symbol = useAppSelector(state => state.market.market.currency.symbol);
-  const ticker = useAppSelector(state => state.market.market.currency.ticker);
+  const symbol = useAppSelector(state => state.market.market.token.symbol);
+  const ticker = useAppSelector(state => state.market.market.token.ticker);
   const [currentInterval, setCurrentInterval] = useState(
     intervals[intervals.length - 1]
   );
