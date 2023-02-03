@@ -13,7 +13,6 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 import {
   useAppDispatch,
   useAppSelector,
-  useNetwork,
   usePolkamarketsService,
   useSortableData
 } from 'hooks';
@@ -36,11 +35,7 @@ const PortfolioLiquidityTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency }
-  } = useNetwork();
 
-  const { ticker, symbol } = currency;
   const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);
 
@@ -166,7 +161,7 @@ const PortfolioLiquidityTable = ({
                     >
                       {`${roundNumber(value.value, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${symbol || ticker}`}
+                        {` ${market.token.symbol}`}
                       </Text>
                     </Text>
                     {/* <Text
@@ -213,7 +208,7 @@ const PortfolioLiquidityTable = ({
                     >
                       {`${roundNumber(feesEarned, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${symbol || ticker}`}
+                        {` ${market.token.symbol}`}
                       </Text>
                     </Text>
                   </div>
