@@ -54,6 +54,13 @@ const initialState: MarketInitialState = {
     networkId: '',
     network: {} as Network,
     currency: {} as Currency,
+    token: {
+      address: '',
+      decimals: 18,
+      imageUrl: '',
+      name: '',
+      symbol: ''
+    },
     votes: { up: 0, down: 0 },
     resolvedOutcomeId: -1,
     outcomes: [
