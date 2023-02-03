@@ -20,9 +20,11 @@ export default function RightSidebar() {
       ref={ref}
       $enableGutters
       className="pm-l-right-sidebar"
-      style={{
-        minHeight: `calc(100vh - ${rect.top}px - 48px)`
-      }}
+      style={
+        {
+          '--min-height': `calc(100vh - ${rect.top}px - 48px)`
+        } as React.CSSProperties
+      }
     >
       {
         {

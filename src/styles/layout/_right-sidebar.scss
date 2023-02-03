@@ -1,6 +1,10 @@
 .pm-l-right-sidebar {
-  width: 368px;
   border-left: 1px solid var(--color-border);
   overflow-y: auto;
   flex-shrink: 0;
+
+  @media (min-width: 1024px) {
+    width: 368px;
+    min-height: var(--min-height);
+  }
 }

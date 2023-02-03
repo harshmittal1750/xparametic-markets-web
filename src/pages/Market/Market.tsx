@@ -49,6 +49,9 @@ function SidebarWrapper(
         initial={{ bottom: '-100%' }}
         animate={{ bottom: 0 }}
         exit={{ bottom: '-100%' }}
+        className={{
+          dialog: marketClasses.sidebarDialog
+        }}
         {...props}
       />
     </Container>
