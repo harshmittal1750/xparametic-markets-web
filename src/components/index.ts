@@ -142,6 +142,8 @@ export {
   WalletInfo
 };
 
+export { default as ApproveToken } from './ApproveToken';
+
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
