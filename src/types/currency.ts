@@ -9,3 +9,12 @@ export type Currency = {
   icon: ReactNode;
   iconName: IconProps['name'];
 };
+
+export type Token = {
+  name: string;
+  symbol: string;
+  address: string;
+  decimals: number;
+  icon: ReactNode;
+  iconName: IconProps['name'];
+};
