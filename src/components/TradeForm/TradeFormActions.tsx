@@ -18,6 +18,7 @@ import {
 } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
+import ApproveToken from '../ApproveToken';
 import { Button, ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
@@ -45,6 +46,7 @@ function TradeFormActions() {
   );
   const maxAmount = useAppSelector(state => state.trade.maxAmount);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const token = useAppSelector(state => state.market.market.token);
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
@@ -272,15 +274,17 @@ function TradeFormActions() {
           </div>
         ) : null}
         {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
-          <ButtonLoading
-            color="success"
-            fullwidth
-            onClick={handleBuy}
-            disabled={!isValidAmount || !hasAcceptedTerms || isLoading}
-            loading={isLoading}
-          >
-            Buy
-          </ButtonLoading>
+          <ApproveToken token={token}>
+            <ButtonLoading
+              color="success"
+              fullwidth
+              onClick={handleBuy}
+              disabled={!isValidAmount || !hasAcceptedTerms || isLoading}
+              loading={isLoading}
+            >
+              Buy
+            </ButtonLoading>
+          </ApproveToken>
         ) : null}
         {type === 'sell' && !needsPricesRefresh && !isWrongNetwork ? (
           <ButtonLoading
