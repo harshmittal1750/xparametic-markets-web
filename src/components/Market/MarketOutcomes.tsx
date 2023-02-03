@@ -85,7 +85,7 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
               secondary={
                 <OutcomeItemText
                   price={outcome.price}
-                  symbol={market.network.currency.symbol}
+                  symbol={market.token.symbol}
                   isPositive={outcome.isPriceUp}
                 />
               }
