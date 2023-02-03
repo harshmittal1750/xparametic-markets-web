@@ -73,4 +73,11 @@ export interface Market {
   news: News[];
   currency: Currency;
   votes: Votes;
+  token: {
+    address: string;
+    decimals: number;
+    imageUrl: string;
+    name: string;
+    symbol: string;
+  };
 }
