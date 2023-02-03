@@ -1,157 +1,197 @@
-import { ReactNode, useState, memo } from 'react';
+/* eslint-disable react/jsx-indent */
+import { useEffect, useState, useMemo, useCallback } from 'react';
 
+import isEmpty from 'lodash/isEmpty';
 import { PolkamarketsService } from 'services';
-import { Achievement as AchievementProps } from 'types/achievement';
+import { useGetAchievementsQuery } from 'services/Polkamarkets';
+import { Container } from 'ui';
 
-import { CheckIcon, MedalIcon } from 'assets/icons';
-
-import { Divider } from 'components';
-import { ButtonColor, ButtonLoading, ButtonVariant } from 'components/Button';
+import { Button, Toast, ToastNotification } from 'components';
+import {
+  Achievement,
+  AchievementFilter,
+  Item
+} from 'components/pages/achievements';
 
 import { useNetwork } from 'hooks';
+import useToastNotification from 'hooks/useToastNotification';
 
-type ButtonStatus = {
-  title: string;
-  color: ButtonColor;
-  variant: ButtonVariant;
-  icon: ReactNode;
-  disabled: boolean;
-};
+import AchievementsEmpty from './AchievementsEmpty';
+import AchievementsLoading from './AchievementsLoading';
 
-const buttonsByStatus: { [key: string]: ButtonStatus } = {
-  unlocked: {
-    title: 'Claim NFT',
-    color: 'primary',
-    variant: 'normal',
-    icon: null,
-    disabled: false
+const achievementFilters: Item[] = [
+  {
+    id: 'all',
+    name: 'ALL',
+    value: 'all'
   },
-  locked: {
-    title: 'Claim NFT',
-    color: 'default',
-    variant: 'subtle',
-    icon: null,
-    disabled: true
+  {
+    id: 'claimed',
+    name: 'CLAIMED',
+    value: 'claimed'
   },
-  claimed: {
-    title: 'Claimed',
-    color: 'success',
-    variant: 'subtle',
-    icon: <CheckIcon />,
-    disabled: true
+  {
+    id: 'unlocked',
+    name: 'UNLOCKED',
+    value: 'unlocked'
+  },
+  {
+    id: 'locked',
+    name: 'LOCKED',
+    value: 'locked'
   }
+];
+
+const filters = {
+  all: item => item,
+  claimed: item => item.status === 'claimed',
+  unlocked: item => item.status === 'unlocked',
+  locked: item => item.status === 'locked'
 };
 
-type AditionalAchievementProps = {
-  onClaimCompleted: (
-    _id: number,
-    _status: boolean,
-    _transactionHash: string
-  ) => void;
-};
+function Achievements() {
+  // Custom Hooks
+  const { network, networkConfig } = useNetwork();
+  const { show, close } = useToastNotification();
 
-function Achievement({
-  id,
-  title,
-  description,
-  imageUrl,
-  actionTitle,
-  rarity,
-  status,
-  tokenCount,
-  onClaimCompleted,
-  meta
-}: AchievementProps & AditionalAchievementProps) {
-  const { networkConfig } = useNetwork();
-  const [isClaimingNFT, setIsClaimingNFT] = useState(false);
+  // Redux toolkit queries
+  const {
+    data: achievements,
+    isFetching,
+    isLoading,
+    refetch
+  } = useGetAchievementsQuery({
+    networkId: network.id
+  });
 
-  async function claimNFT() {
-    setIsClaimingNFT(true);
+  // Local state
+  const [filter, setFilter] = useState(achievementFilters[0].value);
+  const [userAchievements, setUserAchievements] = useState({});
+  const [claimedAchievement, setClaimedAchievement] = useState<{
+    id: number | undefined;
+    status: boolean;
+    transactionHash: string | undefined;
+  }>({ id: undefined, status: false, transactionHash: undefined });
 
+  // Memoized callbacks
+  const getUserAchievements = useCallback(async () => {
     const polkamarketsService = new PolkamarketsService(networkConfig);
+    await polkamarketsService.login();
 
-    try {
-      await polkamarketsService.login();
-      const response = await polkamarketsService.claimAchievement(id);
+    const response = await polkamarketsService.getAchievements();
+    setUserAchievements(response);
+  }, [networkConfig]);
 
-      if (response.status && response.transactionHash) {
-        await onClaimCompleted(id, response.status, response.transactionHash);
-      }
+  const handleClaimCompleted = useCallback(
+    async (id: number, status: boolean, transactionHash: string) => {
+      setClaimedAchievement({
+        id,
+        status,
+        transactionHash
+      });
 
-      setIsClaimingNFT(false);
-    } catch (error) {
-      setIsClaimingNFT(false);
-    }
-  }
+      await getUserAchievements();
+      show(`claimNFT-${id}`);
+      await refetch();
+    },
+    [getUserAchievements, refetch, show]
+  );
+
+  useEffect(() => {
+    getUserAchievements();
+  }, [getUserAchievements, network]);
+
+  // Derivated state
+  const achievementsWithStatus = useMemo(() => {
+    return (
+      achievements?.map(achievement => {
+        // fetching status
+        let status = 'locked';
+        if (userAchievements[achievement.id]?.claimed) {
+          status = 'claimed';
+        } else if (userAchievements[achievement.id]?.canClaim) {
+          status = 'unlocked';
+        }
+
+        // fetching image, if claimed
+        let { imageUrl } = achievement;
+        if (userAchievements[achievement.id]?.token?.data?.image) {
+          imageUrl = userAchievements[achievement.id]?.token?.data?.image;
+        }
+
+        return { ...achievement, status, imageUrl };
+      }) || []
+    );
+  }, [achievements, userAchievements]);
+
+  const achievementsByFilter = achievementsWithStatus.filter(filters[filter]);
+  const loading = isFetching || isLoading;
+  const empty = isEmpty(achievementsByFilter);
 
   return (
-    <div className="pm-c-achievement flex-column height-full border-radius-top-corners-small">
-      <div className="pm-c-achievement__wrapper flex-column height-full border-solid border-radius-top-corners-small">
-        <div className="pm-c-achievement__image-vignette relative border-radius-top-corners-small">
-          <img
-            src={imageUrl}
-            alt={title}
-            className={`pm-c-achievement__image--${status} border-radius-top-corners-small`}
-          />
-          <div
-            className="absolute"
-            style={{ top: '0.8rem', right: '0.767rem' }}
-          >
-            <div
-              className={`pm-c-achievement__status--${status} border-radius-small`}
-            >
-              <span className="pm-c-achievement__status-title tiny-uppercase semibold">
-                {status}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="pm-c-achievement__content flex-column gap-5 padding-6 height-full">
-          <div className="flex-column grow gap-3">
-            <div className="flex-row justify-start align-center gap-3">
-              <MedalIcon
-                className={`pm-c-achievement__medal-icon--${status}`}
-              />
-              <h1
-                className={`pm-c-achievement__title--${status} tiny-uppercase semibold`}
-              >
-                {actionTitle}
-                {meta && ' (Knockout Stage)'}
-              </h1>
-            </div>
-            <h4 className="pm-c-achievement__award-title heading-large bold">
-              {title}
-            </h4>
-            <p className="pm-c-achievement__award-description caption medium">
-              {description}
-            </p>
-          </div>
-          <ButtonLoading
-            size="normal"
-            color={buttonsByStatus[status].color}
-            variant={buttonsByStatus[status].variant}
-            loading={isClaimingNFT}
-            disabled={buttonsByStatus[status].disabled}
-            onClick={() => claimNFT()}
-          >
-            {buttonsByStatus[status].icon}
-            {buttonsByStatus[status].title}
-          </ButtonLoading>
-        </div>
+    <Container className="pm-p-achievements flex-column gap-4">
+      <div className="flex-row wrap justify-space-between align-center gap-6 padding-bottom-3">
+        <h1 className="pm-p-achievements__title heading semibold">
+          Achievements
+        </h1>
+        <AchievementFilter
+          items={achievementFilters}
+          defaultItemId={achievementFilters[0].id}
+          onChangeItem={(_item, value) => setFilter(value)}
+        />
       </div>
-      <div className="pm-c-achievement__footer flex-row gap-3 justify-center align-center padding-4 border-solid border-radius-bottom-corners-small">
-        <span className="pm-c-achievement__claim-count tiny-uppercase semibold">
-          {`${tokenCount} claimed`}
-        </span>
-        <Divider variant="circle" />
-        <span
-          className={`pm-c-achievement__rarity--${rarity} tiny-uppercase semibold`}
+
+      {loading ? <AchievementsLoading /> : null}
+      {!loading && empty ? <AchievementsEmpty /> : null}
+      {!loading && !empty ? (
+        <ul className="pm-p-achievements__list">
+          {achievementsByFilter.map(achievement => {
+            return (
+              <li key={achievement.id} className="pm-p-achievements__list-item">
+                <Achievement
+                  {...achievement}
+                  onClaimCompleted={handleClaimCompleted}
+                />
+              </li>
+            );
+          })}
+        </ul>
+      ) : null}
+      {claimedAchievement.id &&
+      claimedAchievement.status &&
+      claimedAchievement.transactionHash ? (
+        <ToastNotification
+          id={`claimNFT-${claimedAchievement.id}`}
+          duration={10000}
         >
-          {rarity}
-        </span>
-      </div>
-    </div>
+          <Toast
+            variant="success"
+            title="Success"
+            description="Your transaction is completed!"
+          >
+            <Toast.Actions>
+              <a
+                target="_blank"
+                href={`${network.explorerURL}/tx/${claimedAchievement.transactionHash}`}
+                rel="noreferrer"
+              >
+                <Button size="sm" color="success">
+                  View on Explorer
+                </Button>
+              </a>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={() => close(`claimNFT-${claimedAchievement.id}`)}
+              >
+                Dismiss
+              </Button>
+            </Toast.Actions>
+          </Toast>
+        </ToastNotification>
+      ) : null}
+    </Container>
   );
 }
 
-export default memo(Achievement);
+export default Achievements;

@@ -1,17 +1,15 @@
 import { useMemo } from 'react';
 
-import { currencies } from 'config';
-
 import { CategoryAnalytics } from 'components';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import { formatPortfolioAnalytics } from './utils';
 
-const { IFL } = currencies;
-
 function PortfolioAnalytics() {
-  const currency = IFL;
+  const {
+    network: { currency }
+  } = useNetwork();
   const { ticker } = currency;
 
   const apiPortfolio = useAppSelector(state => state.portfolio.portfolio);
@@ -23,8 +21,9 @@ function PortfolioAnalytics() {
 
   return (
     <ul className="portfolio-page__analytics">
-      {analytics?.map(
-        ({ title, value, change, chartData, backgroundColor }) => (
+      {analytics
+        ?.filter(analytic => analytic.enabled)
+        .map(({ title, value, change, chartData, backgroundColor }) => (
           <li key={title}>
             <CategoryAnalytics
               title={title}
@@ -34,8 +33,7 @@ function PortfolioAnalytics() {
               backgroundColor={backgroundColor}
             />
           </li>
-        )
-      )}
+        ))}
     </ul>
   );
 }

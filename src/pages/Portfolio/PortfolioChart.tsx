@@ -1,4 +1,3 @@
-import { currencies } from 'config';
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 import { roundNumber } from 'helpers/math';
 
@@ -6,22 +5,22 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import { AreaChart, Label, Text } from 'components';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 import { balance } from './mock';
 
-const { IFL } = currencies;
-
 const PortfolioChart = () => {
+  const {
+    network: { currency }
+  } = useNetwork();
+  const { ticker } = currency;
+
   const holdingsChart = useAppSelector(
     state => state.portfolio.portfolio.holdingsChart
   );
   const { holdingsValue, holdingsPerformance } = useAppSelector(
     state => state.portfolio.portfolio
   );
-
-  const currency = IFL;
-  const { ticker } = currency;
 
   const holdingsChartData = fromPriceChartToLineChartSeries(holdingsChart);
   const holdingsPerformanceColor =

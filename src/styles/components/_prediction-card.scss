@@ -12,9 +12,6 @@
     }
 
     &__body {
-      @include flex-column(center, center);
-      gap: 2.4rem;
-
       padding: 16px var(--grid-margin);
 
       @include breakpoint-to('lg') {

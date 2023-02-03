@@ -1,11 +1,7 @@
-import { Link } from 'react-router-dom';
-
+import { ui } from 'config';
 import { Container, Hero } from 'ui';
 
-import heroBanner from 'assets/images/pages/home/illuminate_fantasy_league_banner.png';
-import heroLogo from 'assets/images/pages/home/illuminate_fantasy_league_logo.svg';
-
-import { Text } from 'components';
+import { Button, Text } from 'components';
 
 import HomeClasses from './Home.module.scss';
 
@@ -15,42 +11,42 @@ export default function HomeHero() {
       <Hero
         $backdrop="main"
         $rounded
-        $image={heroBanner}
+        $image={ui.hero.image}
         className={`pm-p-home__hero ${HomeClasses.headerHero}`}
       >
         <div className="pm-p-home__hero__content">
           <div className="pm-p-home__hero__breadcrumb">
-            <Text
-              as="span"
-              scale="tiny-uppercase"
-              fontWeight="semibold"
-              color="white-50"
-            >
-              Illuminate Fantasy League / World Cup 2022
-            </Text>
+            {ui.hero.header ? (
+              <Text
+                as="span"
+                scale="tiny-uppercase"
+                fontWeight="semibold"
+                color="white-50"
+              >
+                {ui.hero.header}
+              </Text>
+            ) : null}
           </div>
-          <Text
-            as="h2"
-            fontWeight="bold"
-            scale="heading-large"
-            color="light"
-            className="pm-p-home__hero__heading"
-          >
-            Place your World Cup predictions to win the IFL Title!
-          </Text>
-          <Link
-            className="pm-c-button-normal--primary pm-c-button--sm"
-            to="/docs"
-          >
-            About IFL
-          </Link>
+          {ui.hero.title ? (
+            <Text
+              as="h2"
+              fontWeight="bold"
+              scale="heading-large"
+              color="light"
+              className="pm-p-home__hero__heading"
+            >
+              {ui.hero.title}
+            </Text>
+          ) : null}
+          {ui.hero.action.title && ui.hero.action.url ? (
+            <Button
+              className="pm-c-button-normal--primary pm-c-button--sm"
+              onClick={() => window.open(ui.hero.action.url, '_blank')}
+            >
+              {ui.hero.action.title}
+            </Button>
+          ) : null}
         </div>
-        <img
-          alt="Illuminate Fantasy League"
-          width={293}
-          height={205}
-          src={heroLogo}
-        />
       </Hero>
     </Container>
   );

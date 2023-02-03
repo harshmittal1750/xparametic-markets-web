@@ -1,40 +1,42 @@
-import { Container } from 'ui';
+import * as config from 'config';
+import { Container, useRect } from 'ui';
 
 import { useAppSelector } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
+import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
 
-function Sidebar() {
-  const tradeFormIsVisible = useAppSelector(
-    state => state.ui.tradeForm.visible
-  );
-  const liquidityFormIsVisible = useAppSelector(
-    state => state.ui.liquidityForm.visible
-  );
-  const reportFormIsVisible = useAppSelector(
-    state => state.ui.reportForm.visible
-  );
-
-  if (tradeFormIsVisible) return <TradeForm />;
-
-  if (liquidityFormIsVisible) return <LiquidityForm />;
-
-  if (reportFormIsVisible) return <TradeFormClosed />;
-
-  return null;
-}
 export default function RightSidebar() {
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
+  const ui = useAppSelector(state => state.ui);
+  const [ref, rect] = useRect();
+  const [form] = Object.keys(ui).filter(
+    key => /Form/.test(key) && ui[key].visible
   );
-
-  if (!rightSidebarIsVisible) return null;
 
   return (
-    <Container $enableGutters className="pm-l-right-sidebar">
-      <Sidebar />
+    <Container
+      ref={ref}
+      $enableGutters
+      className="pm-l-right-sidebar"
+      style={
+        {
+          '--min-height': `calc(100vh - ${rect.top}px - 48px)`
+        } as React.CSSProperties
+      }
+    >
+      {
+        {
+          liquidityForm: <LiquidityForm />,
+          reportForm: config.ui.reportForm.enabled ? (
+            <ReportForm />
+          ) : (
+            <TradeFormClosed />
+          ),
+          tradeForm: <TradeForm />
+        }[form]
+      }
     </Container>
   );
 }

@@ -41,7 +41,8 @@ export default function TradeFormPredictions() {
         endAdornment={
           <Icon name="Cross" style={{ transform: 'rotate(45deg)' }} />
         }
-        {...expandableOutcomes.offseted}
+        primary={expandableOutcomes.offseted.primary}
+        secondary={expandableOutcomes.offseted.secondary}
       />
     ),
     [expandableOutcomes.expand, expandableOutcomes.offseted]

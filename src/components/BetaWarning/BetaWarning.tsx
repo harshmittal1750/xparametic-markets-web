@@ -60,25 +60,24 @@ export default function BetaWarning() {
         </ModalHeader>
         <ModalSection>
           <ModalSectionText>
-            The Illuminate Fantasy League, powered by Polkamarkets (the “IFL” or
-            “Fantasy League” or “League”), is a fantasy game and does not
-            constitute any form or type of gambling or betting activity.
+            Polkamarkets Protocol is a 100% decentralized protocol for
+            informational and educational purposes only. POLKAMARKET OÜ does not
+            take any custody, profits or host over any markets.
           </ModalSectionText>
           <ModalSectionText>
-            Players will not make or be requested to make any payment or
-            contribution with financial value to enter and make predictions on
-            the Fantasy League.
+            POLKAMARKET OÜ displays existing markets live on EVMs or sidechains
+            and is a graphical user interface for visualizing data and
+            interacting with the Polkamarkets Protocol Smart Contracts via your
+            Web 3 injected wallet.
           </ModalSectionText>
           <ModalSectionText id={betaWarningProps['aria-describedby']}>
-            The terms “buy”, “sell”, “price”, “reward”, “profit” or similar
-            terms, may be used in this website and refer exclusively to inherent
-            mechanics and features of prediction markets and shall not be
-            associated with transactions of financial value in the context of
-            the Fantasy League.
+            By entering the website I confirm I am not a citizen or resident in
+            the United States or its territories, nor a US person.
           </ModalSectionText>
           <Checkbox label="text" onChange={handleAgreed}>
             <Text as="span" scale="caption" fontWeight="medium">
-              I have read and accept the Documentation and Terms & Conditions.
+              I Agree to the Terms & Service & I am aware of the Risks &
+              Disclosure.
             </Text>
           </Checkbox>
         </ModalSection>
@@ -94,18 +93,19 @@ export default function BetaWarning() {
           </Button>
           <Text as="p" color="gray">
             <Link
-              title="Documentation"
+              title="Terms & Service"
               scale="caption"
               fontWeight="medium"
-              href="/docs"
+              href="https://www.polkamarkets.com/legal/terms-conditions"
               target="_blank"
             />
             {' • '}
             <Link
-              title="Terms & Conditions"
+              title="Risks &
+              Disclosure"
               scale="caption"
               fontWeight="medium"
-              href="https://www.polkamarkets.com/legal/terms-conditions"
+              href="https://docs.google.com/document/d/1TR8HYTBOhZeZOb0E5uAo8lbK4v0Oxv3JnQD_AdYENBY/edit"
               target="_blank"
             />
           </Text>

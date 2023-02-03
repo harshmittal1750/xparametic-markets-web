@@ -1,3 +1,4 @@
+import { ui } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import { Market, Outcome } from 'models/market';
@@ -256,7 +257,8 @@ function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
         amount: 2.58
       },
       backgroundColor: 'yellow',
-      chartData: generateChartRandomData()
+      chartData: generateChartRandomData(),
+      enabled: true
     },
     {
       title: 'Open positions',
@@ -266,7 +268,30 @@ function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
         amount: 2.58
       },
       backgroundColor: 'blue',
-      chartData: generateChartRandomData()
+      chartData: generateChartRandomData(),
+      enabled: true
+    },
+    {
+      title: 'Liquidity provided',
+      value: `${roundNumber(portfolio.liquidityProvided, 3)} ${ticker}`,
+      change: {
+        type: 'up',
+        amount: 2.58
+      },
+      backgroundColor: 'pink',
+      chartData: generateChartRandomData(),
+      enabled: ui.portfolio.analytics.liquidityProvided.enabled
+    },
+    {
+      title: 'Liquidity earnings',
+      value: `${roundNumber(portfolio.liquidityFeesEarned, 3)} ${ticker}`,
+      change: {
+        type: 'up',
+        amount: 2.58
+      },
+      backgroundColor: 'orange',
+      chartData: generateChartRandomData(),
+      enabled: ui.portfolio.analytics.liquidityFeesEarned.enabled
     }
   ];
 }

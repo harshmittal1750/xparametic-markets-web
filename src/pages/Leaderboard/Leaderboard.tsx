@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { currencies } from 'config';
+import { ui } from 'config';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery,
@@ -25,7 +25,7 @@ import LeaderboardTopWallets from './LeaderboardTopWallets';
 import LeaderboardYourStats from './LeaderboardYourStats';
 import {
   balanceColumnRender,
-  // liquidityColumnRender,
+  liquidityColumnRender,
   rankColumnRender,
   volumeColumnRender,
   walletColumnRender
@@ -35,45 +35,43 @@ import type {
   CreateLeaderboardGroupState
 } from './types';
 
-const { IFL } = currencies;
-
 const tabs = [
   {
     id: 'volume',
     title: 'Volume',
     sortBy: 'volume'
   },
-  // {
-  //   id: 'marketsCreated',
-  //   title: 'Markets Created',
-  //   sortBy: 'marketsCreated'
-  // },
+  {
+    id: 'marketsCreated',
+    title: 'Markets Created',
+    sortBy: 'marketsCreated'
+  },
   {
     id: 'wonPredictions',
     title: 'Won Predictions',
     sortBy: 'claimWinningsCount'
   },
-  // {
-  //   id: 'transactions',
-  //   title: 'Transactions',
-  //   sortBy: 'transactions'
-  // },
+  {
+    id: 'transactions',
+    title: 'Transactions',
+    sortBy: 'transactions'
+  },
   {
     id: 'balance',
     title: 'Balance',
     sortBy: 'erc20Balance'
+  },
+  {
+    id: 'netVolume',
+    title: 'Net Volume',
+    sortBy: 'tvlVolume'
+  },
+  {
+    id: 'netLiquidity',
+    title: 'Net Liquidity',
+    sortBy: 'tvlLiquidity'
   }
-  // {
-  //   id: 'netVolume',
-  //   title: 'Net Volume',
-  //   sortBy: 'tvlVolume'
-  // }
-  // {
-  //   id: 'netLiquidity',
-  //   title: 'Net Liquidity',
-  //   sortBy: 'tvlLiquidity'
-  // }
-];
+].filter(tab => ui.leaderboard.columns.includes(tab.id));
 
 const columns: LeaderboardTableColumn[] = [
   {
@@ -90,24 +88,24 @@ const columns: LeaderboardTableColumn[] = [
     width: 140,
     render: volumeColumnRender
   },
-  // {
-  //   title: 'Markets Created',
-  //   key: 'marketsCreated',
-  //   align: 'right',
-  //   width: 140
-  // },
+  {
+    title: 'Markets Created',
+    key: 'marketsCreated',
+    align: 'right',
+    width: 140
+  },
   {
     title: 'Won Predictions',
     key: 'wonPredictions',
     align: 'right',
     width: 140
   },
-  // {
-  //   title: 'Transactions',
-  //   key: 'transactions',
-  //   align: 'right',
-  //   width: 140
-  // },
+  {
+    title: 'Transactions',
+    key: 'transactions',
+    align: 'right',
+    width: 140
+  },
   {
     title: 'Balance',
     key: 'balance',
@@ -115,20 +113,20 @@ const columns: LeaderboardTableColumn[] = [
     width: 140,
     render: balanceColumnRender
   },
-  // {
-  //   title: 'Net Volume',
-  //   key: 'netVolume',
-  //   align: 'right',
-  //   width: 140,
-  //   render: volumeColumnRender
-  // },
-  // {
-  //   title: 'Net Liquidity',
-  //   key: 'netLiquidity',
-  //   align: 'right',
-  //   width: 140,
-  //   render: liquidityColumnRender
-  // },
+  {
+    title: 'Net Volume',
+    key: 'netVolume',
+    align: 'right',
+    width: 140,
+    render: volumeColumnRender
+  },
+  {
+    title: 'Net Liquidity',
+    key: 'netLiquidity',
+    align: 'right',
+    width: 140,
+    render: liquidityColumnRender
+  },
   {
     title: 'Rank',
     key: 'rank',
@@ -136,7 +134,9 @@ const columns: LeaderboardTableColumn[] = [
     width: 100,
     render: rankColumnRender
   }
-];
+].filter(column =>
+  ['wallet', 'rank', ...ui.leaderboard.columns].includes(column.key)
+) as LeaderboardTableColumn[];
 
 type LeaderboardURLParams = {
   slug?: string;
@@ -150,7 +150,8 @@ function Leaderboard() {
   const isDesktop = useMedia('(min-width: 1024px)');
 
   const { network } = useNetwork();
-  const currency = IFL;
+
+  const { currency } = network;
 
   // Redux selectors
   const walletConnected = useAppSelector(
@@ -159,7 +160,7 @@ function Leaderboard() {
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   // Local state
-  const [activeTab, setActiveTab] = useState('wonPredictions');
+  const [activeTab, setActiveTab] = useState(tabs[0].id);
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   // Queries
@@ -304,16 +305,18 @@ function Leaderboard() {
                 />
               ) : null}
             </div>
-            <p className="tiny medium text-2">
-              {`Play the IFL with your friends, coworkers and community. `}
-              <Link
-                title="Learn more"
-                scale="tiny"
-                fontWeight="medium"
-                href="https://ifl.polkamarkets.com/docs/clubs"
-                target="_blank"
-              />
-            </p>
+            {ui.clubs.enabled ? (
+              <p className="tiny medium text-2">
+                {`Play the IFL with your friends, coworkers and community. `}
+                <Link
+                  title="Learn more"
+                  scale="tiny"
+                  fontWeight="medium"
+                  href="https://ifl.polkamarkets.com/docs/clubs"
+                  target="_blank"
+                />
+              </p>
+            ) : null}
           </div>
         </div>
         {createGroupState.visible && !joinGroupState.visible ? (

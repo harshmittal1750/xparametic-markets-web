@@ -9,6 +9,7 @@ function renderAdornment(props: AdornmentProps) {
 
   return screen.getByTestId(/adornment/i);
 }
+
 it('render [$edge=start] classes', () => {
   const adornment = renderAdornment({ $edge: 'start' });
 
