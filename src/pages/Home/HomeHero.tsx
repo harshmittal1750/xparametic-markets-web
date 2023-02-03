@@ -16,18 +16,18 @@ export default function HomeHero() {
       >
         <div className="pm-p-home__hero__content">
           <div className="pm-p-home__hero__breadcrumb">
-            {hero.header ? (
+            {ui.hero.header ? (
               <Text
                 as="span"
                 scale="tiny-uppercase"
                 fontWeight="semibold"
                 color="white-50"
               >
-                {hero.header}
+                {ui.hero.header}
               </Text>
             ) : null}
           </div>
-          {hero.title ? (
+          {ui.hero.title ? (
             <Text
               as="h2"
               fontWeight="bold"
@@ -35,15 +35,15 @@ export default function HomeHero() {
               color="light"
               className="pm-p-home__hero__heading"
             >
-              {hero.title}
+              {ui.hero.title}
             </Text>
           ) : null}
-          {hero.action.title && hero.action.url ? (
+          {ui.hero.action.title && ui.hero.action.url ? (
             <Button
               className="pm-c-button-normal--primary pm-c-button--sm"
-              onClick={() => window.open(hero.action.url, '_blank')}
+              onClick={() => window.open(ui.hero.action.url, '_blank')}
             >
-              {hero.action.title}
+              {ui.hero.action.title}
             </Button>
           ) : null}
         </div>

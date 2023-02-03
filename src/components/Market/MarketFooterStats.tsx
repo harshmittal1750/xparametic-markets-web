@@ -20,7 +20,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
     <div className="pm-c-market-footer__stats">
       {network && (
         <>
-          <Tooltip text={network.name}>{network.currency.icon}</Tooltip>
+          <Tooltip text={network.name}>{network.currency?.icon}</Tooltip>
           <span className="pm-c-divider--circle" />
         </>
       )}
@@ -65,19 +65,16 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
         </>
       )}
       {expiresAt && (
-        <>
-          <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-            <Icon
-              name="Calendar"
-              title="Expires at"
-              className={marketClasses.footerStatsIcon}
-            />
-            <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-              {dayjs(expiresAt).utc().format('MMMM D, YYYY')}
-            </Text>
+        <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+          <Icon
+            name="Calendar"
+            title="Expires at"
+            className={marketClasses.footerStatsIcon}
+          />
+          <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
+            {dayjs(expiresAt).utc().format('MMMM D, YYYY')}
           </Text>
-          <span className="pm-c-divider--circle" />
-        </>
+        </Text>
       )}
     </div>
   );
