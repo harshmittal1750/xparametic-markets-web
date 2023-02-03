@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { networks } from 'config';
+import { networks, currencies } from 'config';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { Currency, Token } from 'types/currency';
@@ -14,8 +14,16 @@ function toHex(value: string) {
   return `0x${Number(value).toString(16)}`;
 }
 
-function getNetworkById(id: string) {
+export function getNetworkById(id: string) {
   return networks[toHex(id)];
+}
+
+export function getCurrencyByTicker(ticker: string) {
+  const currencyByTicker = Object.values(currencies).find(
+    currency => currency.ticker === ticker
+  );
+
+  return currencyByTicker || currencies.TOKEN;
 }
 
 export interface MarketInitialState {
@@ -120,11 +128,17 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
+        const currencyByTokenSymbol = getCurrencyByTicker(market.token.symbol);
         return {
           payload: {
             ...market,
             network,
             currency: network.currency,
+            token: {
+              ...market.token,
+              icon: currencyByTokenSymbol.icon,
+              iconName: currencyByTokenSymbol.iconName
+            },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
@@ -146,10 +160,17 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
+        const currencyByTokenSymbol = getCurrencyByTicker(market.token.symbol);
         return {
           payload: {
             ...market,
+            network,
             currency: network.currency,
+            token: {
+              ...market.token,
+              icon: currencyByTokenSymbol.icon,
+              iconName: currencyByTokenSymbol.iconName
+            },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
