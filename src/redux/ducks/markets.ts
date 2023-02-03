@@ -114,6 +114,7 @@ const marketsSlice = createSlice({
                 currency: network.currency,
                 token: {
                   ...market.token,
+                  ticker: market.token.symbol,
                   icon: currencyByTokenSymbol.icon,
                   iconName: currencyByTokenSymbol.iconName
                 }
