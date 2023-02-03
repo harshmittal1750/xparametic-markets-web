@@ -21,7 +21,7 @@ const intervals = [
 function TradeFormCharts() {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const ticker = useAppSelector(state => state.market.market.currency.ticker);
+  const ticker = useAppSelector(state => state.market.market.token.ticker);
   const predictions = useAppSelector(state => state.market.market.outcomes);
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const isLoadingMarket = useAppSelector(state => state.market.isLoading);
