@@ -422,7 +422,7 @@ export default class PolkamarketsService {
     erc20ContractAddress: string,
     spenderAddress: string,
     amount?: number
-  ): Promise<any[]> {
+  ) {
     // ensuring user has wallet connected
     await this.login();
 
