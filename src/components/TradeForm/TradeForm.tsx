@@ -51,7 +51,11 @@ function TradeForm() {
         <TradeFormCharts />
         {ui.tradeForm.liquidity && marketPath && (
           <>
-            <Text scale="tiny-uppercase" color="white-50" fontWeight="semibold">
+            <Text
+              scale="tiny-uppercase"
+              style={{ color: 'var(--color-text-primary)' }}
+              fontWeight="semibold"
+            >
               Select outcome
             </Text>
             <TradeFormPredictions />
