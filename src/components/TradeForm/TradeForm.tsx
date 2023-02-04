@@ -19,10 +19,10 @@ import TradeFormTypeSelector from './TradeFormTypeSelector';
 function TradeForm() {
   const marketPath = useMarketPath();
   const dispatch = useAppDispatch();
-
   const { id, networkId, outcomes } = useAppSelector(
     state => state.market.market
   );
+
   const marketState = useAppSelector(state => state.market.market.state);
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
@@ -36,10 +36,11 @@ function TradeForm() {
   }, [dispatch, marketState]);
 
   useEffect(() => {
-    if (id && selectedMarketId && id !== selectedMarketId) {
+    if (id !== selectedMarketId) {
       dispatch(selectOutcome(id, networkId, outcomes[0].id));
     }
-  }, [dispatch, id, networkId, outcomes, selectedMarketId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isLoadingMarket) return null;
 
