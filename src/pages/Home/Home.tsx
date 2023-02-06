@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import { pages, ui } from 'config';
@@ -6,15 +6,12 @@ import { Container, useMedia, useRect } from 'ui';
 
 import { MarketList } from 'components';
 
-import useMarkets from 'hooks/useMarkets';
-
 import homeClasses from './Home.module.scss';
 import HomeFilter from './HomeFilter';
 import HomeHero from './HomeHero';
 import HomeNav from './HomeNav';
 
 export default function Home() {
-  const markets = useMarkets();
   const routeMatch = useRouteMatch();
   const isDesktop = useMedia('(min-width: 1024px)');
   const [ref, rect] = useRect();
@@ -22,11 +19,6 @@ export default function Home() {
   const handleShow = useCallback(() => setShow(true), []);
   const handleHide = useCallback(() => setShow(false), []);
   const handleToggle = useCallback(() => setShow(prevShow => !prevShow), []);
-
-  useEffect(() => {
-    markets.fetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Switch>
@@ -37,7 +29,7 @@ export default function Home() {
         </Container>
         <div className={homeClasses.root}>
           <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
-          <MarketList markets={markets} />
+          <MarketList />
         </div>
       </Route>
       {Object.values(pages.home.pages).map(page => (
