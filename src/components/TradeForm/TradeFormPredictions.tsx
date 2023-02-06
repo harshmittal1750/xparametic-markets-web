@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
 import { roundNumber } from 'helpers/math';
+import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
 import { useMedia } from 'ui';
 
@@ -17,10 +18,20 @@ export default function TradeFormPredictions() {
   const trade = useAppSelector(state => state.trade);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const symbol = useAppSelector(state => state.market.market.currency.symbol);
-  const outcomes = useAppSelector(state => state.market.market.outcomes);
-  const expandableOutcomes = useExpandableOutcomes({
-    outcomes
+  const rawOutcomes = useAppSelector(state => state.market.market.outcomes);
+  const sortedOutcomes = sortOutcomes({
+    outcomes: rawOutcomes,
+    timeframe: '7d'
   });
+  const expandableOutcomes = useExpandableOutcomes({
+    outcomes: sortedOutcomes
+  });
+  const needExpandOutcomes = sortedOutcomes.length > 3;
+  const outcomes = needExpandOutcomes
+    ? expandableOutcomes.onseted
+    : sortedOutcomes;
+  const renderExpandOutcomes =
+    needExpandOutcomes && !expandableOutcomes.isExpanded;
   const handleOutcomeClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       dispatch(
@@ -52,9 +63,9 @@ export default function TradeFormPredictions() {
       {isDesktop ? (
         <Virtuoso
           height="100%"
-          data={expandableOutcomes.onseted}
+          data={outcomes}
           components={{
-            Footer: expandableOutcomes.isExpanded ? undefined : Footer
+            Footer: renderExpandOutcomes ? Footer : undefined
           }}
           itemContent={(index, outcome) => (
             <OutcomeItem
@@ -111,7 +122,7 @@ export default function TradeFormPredictions() {
             overflowX: 'auto'
           }}
         >
-          {expandableOutcomes.onseted.map((outcome, index) => (
+          {outcomes.map((outcome, index) => (
             <li
               key={outcome.title}
               style={{
@@ -164,17 +175,11 @@ export default function TradeFormPredictions() {
               </OutcomeItem>
             </li>
           ))}
-          <li>
-            <OutcomeItem
-              $variant="dashed"
-              onClick={expandableOutcomes.expand}
-              endAdornment={
-                <Icon name="Cross" style={{ transform: 'rotate(45deg)' }} />
-              }
-              primary={expandableOutcomes.offseted.primary}
-              secondary={expandableOutcomes.offseted.secondary}
-            />
-          </li>
+          {renderExpandOutcomes && (
+            <li>
+              <Footer />
+            </li>
+          )}
         </ul>
       )}
     </div>

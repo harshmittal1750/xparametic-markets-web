@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import sortOutcomes from 'helpers/sortOutcomes';
 import type { Market } from 'models/market';
 import { useMedia } from 'ui';
 
@@ -15,18 +16,23 @@ type MarketOutcomesProps = {
   market: Market;
 };
 
-function MarketOutcomes({ market }: MarketOutcomesProps) {
+export default function MarketOutcomes({ market }: MarketOutcomesProps) {
   const history = useHistory();
   const dispatch = useAppDispatch();
-  const isDesktop = useMedia('(min-width: 1024px)');
-  const maxExpandableOutcomes = isDesktop ? 2 : 1;
   const trade = useAppSelector(state => state.trade);
+  const isDesktop = useMedia('(min-width: 1024px)');
+  const MAX_OUTCOMES_EXPANDABLE = isDesktop ? 2 : 1;
   const isMarketResolved = market.state === 'resolved';
-  const expandableOutcomes = useExpandableOutcomes({
+  const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
-    max: maxExpandableOutcomes,
-    truncateMax: maxExpandableOutcomes
+    timeframe: '7d'
   });
+  const expandableOutcomes = useExpandableOutcomes({
+    outcomes: sortedOutcomes,
+    max: MAX_OUTCOMES_EXPANDABLE,
+    truncateMax: MAX_OUTCOMES_EXPANDABLE
+  });
+  const needExpandOutcomes = sortedOutcomes.length > (isDesktop ? 3 : 2);
   const getOutcomeActive = useCallback(
     (id: string | number) =>
       market.id === trade.selectedMarketId &&
@@ -73,49 +79,51 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
 
   return (
     <ul className="pm-c-market-outcomes">
-      {expandableOutcomes.onseted.map(outcome => {
-        const isWinningOutcome =
-          isMarketResolved && market.resolvedOutcomeId === outcome.id;
-        const isOutcomeActive = getOutcomeActive(outcome.id);
+      {(needExpandOutcomes ? expandableOutcomes.onseted : sortedOutcomes).map(
+        outcome => {
+          const isWinningOutcome =
+            isMarketResolved && market.resolvedOutcomeId === outcome.id;
+          const isOutcomeActive = getOutcomeActive(outcome.id);
 
-        return (
-          <li key={outcome.id}>
-            <OutcomeItem
-              primary={outcome.title}
-              secondary={
-                <OutcomeItemText
-                  price={outcome.price}
-                  symbol={market.network.currency.symbol}
-                  isPositive={outcome.isPriceUp}
-                />
-              }
-              percent={+outcome.price * 100}
-              isActive={isOutcomeActive}
-              isPositive={outcome.isPriceUp}
-              isResolved={isMarketResolved}
-              isWinning={isWinningOutcome}
-              value={outcome.id}
-              onClick={handleOutcomeClick}
-              data={outcome.data}
-              endAdornment={
-                isMarketResolved && (
-                  <div className="pm-c-market-outcomes__item-result">
-                    {(() => {
-                      if (isWinningOutcome && !market.voided)
-                        return <CheckIcon />;
-                      if (!isWinningOutcome && !market.voided)
-                        return <RemoveIcon />;
-                      if (market.voided) return <RepeatCycleIcon />;
-                      return null;
-                    })()}
-                  </div>
-                )
-              }
-            />
-          </li>
-        );
-      })}
-      {!expandableOutcomes.isExpanded && (
+          return (
+            <li key={outcome.id}>
+              <OutcomeItem
+                primary={outcome.title}
+                secondary={
+                  <OutcomeItemText
+                    price={outcome.price}
+                    symbol={market.network.currency.symbol}
+                    isPositive={outcome.isPriceUp}
+                  />
+                }
+                percent={+outcome.price * 100}
+                isActive={isOutcomeActive}
+                isPositive={outcome.isPriceUp}
+                isResolved={isMarketResolved}
+                isWinning={isWinningOutcome}
+                value={outcome.id}
+                onClick={handleOutcomeClick}
+                data={outcome.data}
+                endAdornment={
+                  isMarketResolved && (
+                    <div className="pm-c-market-outcomes__item-result">
+                      {(() => {
+                        if (isWinningOutcome && !market.voided)
+                          return <CheckIcon />;
+                        if (!isWinningOutcome && !market.voided)
+                          return <RemoveIcon />;
+                        if (market.voided) return <RepeatCycleIcon />;
+                        return null;
+                      })()}
+                    </div>
+                  )
+                }
+              />
+            </li>
+          );
+        }
+      )}
+      {needExpandOutcomes && !expandableOutcomes.isExpanded && (
         <li>
           <OutcomeItem
             $variant="dashed"
@@ -128,5 +136,3 @@ function MarketOutcomes({ market }: MarketOutcomesProps) {
     </ul>
   );
 }
-
-export default MarketOutcomes;
