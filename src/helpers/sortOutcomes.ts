@@ -2,7 +2,7 @@ import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 import { roundNumber } from 'helpers/math';
 import type { Outcome, PriceChart } from 'models/market';
 
-type SortOutcomes = {
+export type SortOutcomes = {
   timeframe: string;
   outcomes: Outcome[];
 };
@@ -47,3 +47,5 @@ export default function sortOutcomes(args: SortOutcomes) {
       };
     });
 }
+
+export type SortedOutcomes = ReturnType<typeof sortOutcomes>;
