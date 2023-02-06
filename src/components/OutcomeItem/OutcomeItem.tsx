@@ -96,7 +96,7 @@ export default function OutcomeItem({
           strokeWidth={1}
           strokeColor={(() => {
             if (isPositive) return '#65D6AD';
-            if (!data) return '#fff';
+            if (!data) return 'var(--color-text-secondary)';
             return '#F86A6A';
           })()}
           trailWidth={1}
