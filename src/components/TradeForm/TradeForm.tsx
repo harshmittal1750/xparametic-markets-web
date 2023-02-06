@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { ui } from 'config';
 import { selectOutcome } from 'redux/ducks/trade';
 import { openReportForm } from 'redux/ducks/ui';
+import { useMedia } from 'ui';
 
 import Text from 'components/Text';
 
@@ -19,7 +20,7 @@ import TradeFormTypeSelector from './TradeFormTypeSelector';
 function TradeForm() {
   const marketPath = useMarketPath();
   const dispatch = useAppDispatch();
-
+  const isDesktop = useMedia('(min-width: 1024px)');
   const { id, networkId, outcomes } = useAppSelector(
     state => state.market.market
   );
@@ -51,13 +52,15 @@ function TradeForm() {
         <TradeFormCharts />
         {ui.tradeForm.liquidity && marketPath && (
           <>
-            <Text
-              scale="tiny-uppercase"
-              style={{ color: 'var(--color-text-primary)' }}
-              fontWeight="semibold"
-            >
-              Select outcome
-            </Text>
+            {isDesktop && (
+              <Text
+                scale="tiny-uppercase"
+                style={{ color: 'var(--color-text-primary)' }}
+                fontWeight="semibold"
+              >
+                Select outcome
+              </Text>
+            )}
             <TradeFormPredictions />
           </>
         )}

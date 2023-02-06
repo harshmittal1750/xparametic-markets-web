@@ -55,8 +55,12 @@ function SidebarWrapper({
           dialog: marketClasses.sidebarDialog
         }}
       >
-        <header>
-          <Text scale="heading" fontWeight="bold">
+        <Container $as="header" className={marketClasses.sidebarDialogHeader}>
+          <Text
+            scale="heading"
+            fontWeight="bold"
+            className={marketClasses.sidebarDialogHeaderTitle}
+          >
             Select Network
           </Text>
           <Adornment $edge="end">
@@ -70,7 +74,7 @@ function SidebarWrapper({
               <Icon name="Cross" size="lg" />
             </Button>
           </Adornment>
-        </header>
+        </Container>
         {children}
       </Modal>
     </Container>

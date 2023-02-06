@@ -49,7 +49,11 @@ export default function TradeFormPredictions() {
       <OutcomeItem
         $variant="dashed"
         onClick={expandableOutcomes.expand}
-        endAdornment={<Icon name="Plus" />}
+        endAdornment={
+          <span style={{ color: 'var(--color-text-secondary)' }}>
+            <Icon size="lg" name="Plus" />
+          </span>
+        }
         primary={expandableOutcomes.offseted.primary}
         secondary={expandableOutcomes.offseted.secondary}
       />
