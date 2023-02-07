@@ -13,6 +13,7 @@ import {
 } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
+import ApproveToken from '../ApproveToken';
 import { Button, ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Toast from '../Toast';
@@ -30,6 +31,7 @@ function LiquidityFormActions() {
     state => state.market.market.networkId
   );
   const marketSlug = useAppSelector(state => state.market.market.slug);
+  const token = useAppSelector(state => state.market.market.token);
   const amount = useAppSelector(state => state.liquidity.amount);
   const maxAmount = useAppSelector(state => state.liquidity.maxAmount);
 
@@ -130,15 +132,17 @@ function LiquidityFormActions() {
       </Button>
       {isWrongNetwork ? <NetworkSwitch /> : null}
       {transactionType === 'add' && !isWrongNetwork ? (
-        <ButtonLoading
-          color="primary"
-          fullwidth
-          onClick={handleAddliquidity}
-          disabled={!isValidAmount || !acceptedTerms || isLoading}
-          loading={isLoading}
-        >
-          Add Liquidity
-        </ButtonLoading>
+        <ApproveToken token={token}>
+          <ButtonLoading
+            color="primary"
+            fullwidth
+            onClick={handleAddliquidity}
+            disabled={!isValidAmount || !acceptedTerms || isLoading}
+            loading={isLoading}
+          >
+            Add Liquidity
+          </ButtonLoading>
+        </ApproveToken>
       ) : null}
       {transactionType === 'remove' && !isWrongNetwork ? (
         <ButtonLoading

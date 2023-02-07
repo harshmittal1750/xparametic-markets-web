@@ -8,7 +8,12 @@ import {
 
 import { WalletIcon } from 'assets/icons';
 
-import { useAppSelector, useAppDispatch, useNetwork } from 'hooks';
+import {
+  useAppSelector,
+  useAppDispatch,
+  useNetwork,
+  useERC20Balance
+} from 'hooks';
 
 import { Button } from '../Button';
 import StepSlider from '../StepSlider';
@@ -16,13 +21,16 @@ import Text from '../Text';
 import { calculateTradeDetails } from './utils';
 
 function TradeFormInput() {
+  const dispatch = useAppDispatch();
   const { network } = useNetwork();
-  const currency = useAppSelector(state => state.market.market.currency);
+
+  const token = useAppSelector(state => state.market.market.token);
+  const { name, ticker, icon, address } = token;
+
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
   );
-  const { name, ticker, icon } = currency;
-  const dispatch = useAppDispatch();
+
   const type = useAppSelector(state => state.trade.type);
   const label = `${type} shares`;
 
@@ -37,7 +45,11 @@ function TradeFormInput() {
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
-  const balance = useAppSelector(state => state.polkamarkets.polkBalance);
+  const { balance, isLoadingBalance } = useERC20Balance(address);
+
+  const [amount, setAmount] = useState<number | undefined>(0);
+  const [stepAmount, setStepAmount] = useState<number>(0);
+
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const outcome = market.outcomes[selectedOutcomeId];
@@ -61,9 +73,6 @@ function TradeFormInput() {
     // rounding (down) to 5 decimals
     return roundDown(maxAmount);
   }, [type, balance, portfolio, selectedMarketId, selectedOutcomeId]);
-
-  const [amount, setAmount] = useState<number | undefined>(0);
-  const [stepAmount, setStepAmount] = useState<number>(0);
 
   useEffect(() => {
     dispatch(setMaxAmount(max()));
@@ -125,7 +134,7 @@ function TradeFormInput() {
               color="noborder"
               style={{ gap: '0.2rem' }}
               onClick={handleSetMaxAmount}
-              disabled={isWrongNetwork}
+              disabled={isWrongNetwork || isLoadingBalance}
             >
               <Text as="strong" scale="tiny" fontWeight="semibold">
                 {max()}
@@ -149,13 +158,13 @@ function TradeFormInput() {
           max={max()}
           onChange={event => handleChangeAmount(event)}
           onWheel={event => event.currentTarget.blur()}
-          disabled={isWrongNetwork}
+          disabled={isWrongNetwork || isLoadingBalance}
         />
         <div className="pm-c-amount-input__actions">
           <button
             type="button"
             onClick={handleSetMaxAmount}
-            disabled={isWrongNetwork}
+            disabled={isWrongNetwork || isLoadingBalance}
           >
             <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
               Max
@@ -181,7 +190,7 @@ function TradeFormInput() {
       <StepSlider
         currentValue={stepAmount}
         onChange={value => handleChangeSlider(value)}
-        disabled={isWrongNetwork}
+        disabled={isWrongNetwork || isLoadingBalance}
       />
     </form>
   );

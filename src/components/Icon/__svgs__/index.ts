@@ -38,5 +38,6 @@ export { ReactComponent as Stats } from './Stats.svg';
 export { ReactComponent as Sun } from './Sun.svg';
 export { ReactComponent as Telegram } from './Telegram.svg';
 export { ReactComponent as Todo } from './Todo.svg';
+export { ReactComponent as Token } from './Token.svg';
 export { ReactComponent as Twitter } from './Twitter.svg';
 export { ReactComponent as Youtube } from './Youtube.svg';

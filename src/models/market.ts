@@ -1,4 +1,4 @@
-import { Currency } from 'types/currency';
+import { Currency, Token } from 'types/currency';
 import { News } from 'types/market';
 import { Network } from 'types/network';
 
@@ -73,4 +73,5 @@ export interface Market {
   news: News[];
   currency: Currency;
   votes: Votes;
+  token: Token;
 }

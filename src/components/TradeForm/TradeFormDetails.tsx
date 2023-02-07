@@ -7,7 +7,7 @@ import { formatMiniTableItems } from './utils';
 
 function TradeFormDetails() {
   const { market } = useAppSelector(state => state.market);
-  const { ticker } = market.currency;
+  const { ticker } = market.token;
   const selectedOutcomeId = useAppSelector(
     state => state.trade.selectedOutcomeId
   );

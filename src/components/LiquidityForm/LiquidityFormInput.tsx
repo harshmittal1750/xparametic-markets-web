@@ -6,7 +6,12 @@ import {
   setLiquidityDetails
 } from 'redux/ducks/liquidity';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useERC20Balance,
+  useNetwork
+} from 'hooks';
 
 import AmountInput from '../AmountInput';
 import { calculateLiquidityDetails } from './utils';
@@ -24,11 +29,11 @@ function LiquidityFormInput() {
   );
 
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const { token } = market;
 
   // buy and sell have different maxes
-  const balance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const { balance, isLoadingBalance } = useERC20Balance(token.address);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
-  const currency = useAppSelector(state => state.market.market.currency);
 
   const amount = useAppSelector(state => state.liquidity.amount);
 
@@ -68,7 +73,7 @@ function LiquidityFormInput() {
   // TODO: improve this
   function currentCurrency() {
     return transactionType === 'add'
-      ? currency
+      ? token
       : { name: 'Shares', ticker: 'Shares' };
   }
 
@@ -83,7 +88,7 @@ function LiquidityFormInput() {
         max={max()}
         onChange={liquidityAmount => handleChangeAmount(liquidityAmount)}
         currency={currentCurrency()}
-        disabled={isWrongNetwork}
+        disabled={isWrongNetwork || isLoadingBalance}
       />
     </div>
   );

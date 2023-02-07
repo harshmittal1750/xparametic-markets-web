@@ -19,7 +19,6 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
-  useNetwork,
   usePolkamarketsService,
   useSortableData
 } from 'hooks';
@@ -43,11 +42,7 @@ const PortfolioMarketTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency }
-  } = useNetwork();
 
-  const { ticker, symbol } = currency;
   const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);
 
@@ -216,7 +211,7 @@ const PortfolioMarketTable = ({
                       >
                         {`${roundNumber(price.value, 3)} `}
                         <Text as="strong" scale="caption" fontWeight="semibold">
-                          {` ${symbol || ticker}`}
+                          {` ${market.token.symbol}`}
                         </Text>
                       </Text>
                       <Text
@@ -253,7 +248,7 @@ const PortfolioMarketTable = ({
                       >
                         {`${roundNumber(profit.value, 3)} `}
                         <Text as="strong" scale="caption" fontWeight="semibold">
-                          {` ${symbol || ticker}`}
+                          {` ${market.token.symbol}`}
                         </Text>
                       </Text>
                       <Text
@@ -297,7 +292,7 @@ const PortfolioMarketTable = ({
                     >
                       {`${roundNumber(value, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${symbol || ticker}`}
+                        {` ${market.token.symbol}`}
                       </Text>
                     </Text>
                   </td>
@@ -319,7 +314,7 @@ const PortfolioMarketTable = ({
                     >
                       {`${roundNumber(maxPayout, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${symbol || ticker}`}
+                        {` ${market.token.symbol}`}
                       </Text>
                     </Text>
                   </td>

@@ -13,17 +13,16 @@ type MarketFooterStatsProps = {
 };
 
 export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
-  const { volume, expiresAt, liquidity, network } = market;
-  const { currency } = network;
+  const { volume, expiresAt, liquidity, token } = market;
 
   return (
     <div className="pm-c-market-footer__stats">
-      {network && (
-        <>
-          <Tooltip text={network.name}>{network.currency?.icon}</Tooltip>
-          <span className="pm-c-divider--circle" />
-        </>
-      )}
+      <>
+        <Tooltip text={token.name}>
+          <Icon name={token.iconName} />
+        </Tooltip>
+        <span className="pm-c-divider--circle" />
+      </>
       {!!volume && (
         <>
           <Text
@@ -43,7 +42,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               fontWeight="semibold"
               color="lighter-gray"
             >
-              {`${roundNumber(volume, 3)} ${currency?.ticker}`}
+              {`${roundNumber(volume, 3)} ${token.ticker}`}
             </Text>
           </Text>
           <span className="pm-c-divider--circle" />
@@ -58,7 +57,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               className={marketClasses.footerStatsIcon}
             />
             <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-              {`${roundNumber(liquidity, 3)} ${currency?.ticker}`}
+              {`${roundNumber(liquidity, 3)} ${token.ticker}`}
             </Text>
           </Text>
           <span className="pm-c-divider--circle" />

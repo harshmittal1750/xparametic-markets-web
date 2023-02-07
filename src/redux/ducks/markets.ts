@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment, networks } from 'config';
+import { environment } from 'config';
 // import dayjs from 'dayjs';
 // import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
@@ -12,11 +12,9 @@ import { MarketState } from 'types/market';
 
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
-const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
+import { getCurrencyByTicker, getNetworkById } from './market';
 
-const AVAILABLE_NETWORKS = Object.values(networks).filter(network =>
-  AVAILABLE_NETWORKS_IDS.includes(network.id)
-);
+const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
 const isMarketFromAvailableNetwork = (market: Market) =>
   AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
@@ -105,13 +103,21 @@ const marketsSlice = createSlice({
           payload: {
             type,
             data: data.map(market => {
-              const network = AVAILABLE_NETWORKS.find(
-                ({ id }) => id === `${market.networkId}`
+              const network = getNetworkById(market.networkId);
+              const currencyByTokenSymbol = getCurrencyByTicker(
+                market.token.symbol
               );
 
               return {
                 ...market,
-                network
+                network,
+                currency: network.currency,
+                token: {
+                  ...market.token,
+                  ticker: market.token.symbol,
+                  icon: currencyByTokenSymbol.icon,
+                  iconName: currencyByTokenSymbol.iconName
+                }
               } as Market;
             })
           },
