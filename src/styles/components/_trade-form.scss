@@ -18,12 +18,6 @@
       width: 4px;
     }
   }
-
-  @media only screen and (max-height: 870px) {
-    & > :last-child {
-      padding-bottom: 2.4rem;
-    }
-  }
 }
 
 .pm-c-trade-form-charts {
@@ -39,12 +33,11 @@
 .pm-c-trade-form-predictions {
   @include flex-column;
   @include themes($market-themes) {
-    gap: 1.6rem;
     width: 100%;
-    height: 92px;
 
     @media (min-width: 1024px) {
       height: 100%;
+      gap: 1.6rem;
     }
 
     & > [data-test-id='virtuoso-scroller'] {

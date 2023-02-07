@@ -13,12 +13,15 @@ import OutcomeItemText from 'components/OutcomeItemText';
 
 import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
+import tradeFormClasses from './TradeForm.module.scss';
+
 export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const symbol = useAppSelector(state => state.market.market.currency.symbol);
   const rawOutcomes = useAppSelector(state => state.market.market.outcomes);
+  const isDesktop = useMedia('(min-width: 1024px)');
   const sortedOutcomes = sortOutcomes({
     outcomes: rawOutcomes,
     timeframe: '7d'
@@ -27,11 +30,10 @@ export default function TradeFormPredictions() {
     outcomes: sortedOutcomes
   });
   const needExpandOutcomes = sortedOutcomes.length > 3;
-  const outcomes = needExpandOutcomes
-    ? expandableOutcomes.onseted
-    : sortedOutcomes;
-  const renderExpandOutcomes =
-    needExpandOutcomes && !expandableOutcomes.isExpanded;
+  const outcomes =
+    isDesktop && needExpandOutcomes
+      ? expandableOutcomes.onseted
+      : sortedOutcomes;
   const handleOutcomeClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       dispatch(
@@ -60,7 +62,6 @@ export default function TradeFormPredictions() {
     ),
     [expandableOutcomes.expand, expandableOutcomes.offseted]
   );
-  const isDesktop = useMedia('(min-width: 1024px)');
 
   return (
     <div className="pm-c-trade-form-predictions">
@@ -69,7 +70,10 @@ export default function TradeFormPredictions() {
           height="100%"
           data={outcomes}
           components={{
-            Footer: renderExpandOutcomes ? Footer : undefined
+            Footer:
+              needExpandOutcomes && !expandableOutcomes.isExpanded
+                ? Footer
+                : undefined
           }}
           itemContent={(index, outcome) => (
             <OutcomeItem
@@ -118,26 +122,10 @@ export default function TradeFormPredictions() {
           )}
         />
       ) : (
-        <ul
-          style={{
-            display: 'flex',
-            gap: 12,
-            overflowY: 'hidden',
-            overflowX: 'auto'
-          }}
-        >
-          {outcomes.map((outcome, index) => (
-            <li
-              key={outcome.title}
-              style={{
-                minWidth: 'calc(50vw - var(--grid-margin) - 8px)'
-              }}
-            >
+        <ul className={tradeFormClasses.horizontal}>
+          {outcomes.map(outcome => (
+            <li key={outcome.title} className={tradeFormClasses.horizontalItem}>
               <OutcomeItem
-                $gutterBottom={
-                  !expandableOutcomes.isExpanded ||
-                  index !== expandableOutcomes.onseted.length - 1
-                }
                 percent={+outcome.price * 100}
                 primary={outcome.title}
                 secondary={
@@ -154,36 +142,9 @@ export default function TradeFormPredictions() {
                 isPositive={outcome.isPriceUp}
                 value={outcome.id}
                 onClick={handleOutcomeClick}
-                data={outcome.data}
-              >
-                <MiniTable
-                  style={{
-                    paddingLeft: 16,
-                    paddingRight: 16,
-                    paddingBottom: 8
-                  }}
-                  rows={[
-                    {
-                      key: 'invested',
-                      title: 'invested',
-                      value:
-                        roundNumber(
-                          portfolio[trade.selectedMarketId]?.outcomes[
-                            outcome.id
-                          ]?.shares,
-                          3
-                        ) || 0
-                    }
-                  ]}
-                />
-              </OutcomeItem>
+              />
             </li>
           ))}
-          {renderExpandOutcomes && (
-            <li>
-              <Footer />
-            </li>
-          )}
         </ul>
       )}
     </div>
