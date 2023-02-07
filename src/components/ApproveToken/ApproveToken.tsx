@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { login } from 'redux/ducks/polkamarkets';
 import { Token } from 'types/currency';
 
 import { QuestionIcon } from 'assets/icons';
 
-import { useAppDispatch, useNetwork, usePolkamarketsService } from 'hooks';
+import { useNetwork, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
@@ -22,7 +21,6 @@ function ApproveToken({
   token,
   children
 }: ApproveTokenProps): JSX.Element | null {
-  const dispatch = useAppDispatch();
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
@@ -41,18 +39,19 @@ function ApproveToken({
 
   const { address } = token;
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  async function checkTokenApproval(tokenAddress, spenderAddress) {
+    const isApproved = await polkamarketsService.isERC20Approved(
+      tokenAddress,
+      spenderAddress
+    );
+
+    setIsTokenApproved(isApproved);
+  }
+
   useEffect(() => {
-    async function checkTokenApproval() {
-      const isApproved = await polkamarketsService.isERC20Approved(
-        address,
-        polkamarketsService.contracts.pm.getAddress()
-      );
-
-      setIsTokenApproved(isApproved);
-    }
-
-    checkTokenApproval();
-  }, [address, polkamarketsService, predictionMarketContractAddress]);
+    checkTokenApproval(address, predictionMarketContractAddress);
+  }, [address, checkTokenApproval, predictionMarketContractAddress]);
 
   const handleApproveToken = useCallback(async () => {
     setIsApprovingToken(true);
@@ -71,18 +70,19 @@ function ApproveToken({
         show(`approve-${token.ticker}`);
       }
 
-      await dispatch(login(polkamarketsService));
       setIsApprovingToken(false);
+
+      checkTokenApproval(token.address, predictionMarketContractAddress);
     } catch (error) {
       setIsApprovingToken(false);
     }
   }, [
-    dispatch,
     polkamarketsService,
-    show,
     token.address,
     token.ticker,
-    predictionMarketContractAddress
+    predictionMarketContractAddress,
+    checkTokenApproval,
+    show
   ]);
 
   if (!isTokenApproved) {
