@@ -180,7 +180,7 @@ function MarketUI() {
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
             <Tabs value={tab} onChange={setTab}>
               <Tabs.TabPane tab="Positions" id="positions">
-                {network.network.id !== market.networkId.toString() ? (
+                {network.network.id !== market.networkId ? (
                   <AlertMini
                     styles="outline"
                     variant="information"

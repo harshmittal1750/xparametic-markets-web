@@ -77,6 +77,10 @@
     &Gutter {
       padding-bottom: var(--grid-margin);
     }
+
+    &Primary {
+      color: var(--color-text-primary);
+    }
   }
 }
 
