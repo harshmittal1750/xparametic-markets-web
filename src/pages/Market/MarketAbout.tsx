@@ -7,7 +7,7 @@ export default function MarketAbout() {
   return (
     <section className={marketClasses.section}>
       <MarketTitle>About</MarketTitle>
-      <p>
+      <p style={{ color: 'var(--color-text-primary)' }}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
         veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea

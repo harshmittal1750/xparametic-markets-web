@@ -33,7 +33,10 @@ export default function MarketAnalytics() {
             <Text as="p" scale="tiny" color="gray" fontWeight="semibold">
               {analytic}
             </Text>
-            <Text fontWeight="semibold">
+            <Text
+              fontWeight="semibold"
+              className={marketClasses.statsItemPrimary}
+            >
               {analytics[analytic]}{' '}
               {analytic !== 'Expires' && (
                 <Text as="span" color="gray">

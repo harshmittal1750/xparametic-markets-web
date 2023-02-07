@@ -1,12 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 
-import sortOutcomes from 'helpers/sortOutcomes';
-import type { Outcome } from 'models/market';
+import type { SortedOutcomes } from 'helpers/sortOutcomes';
 
 type UseExpandableOutcomes = {
   max?: number;
   truncateMax?: number;
-  outcomes: Outcome[];
+  outcomes: SortedOutcomes;
 };
 
 export default function useExpandableOutcomes({
@@ -14,40 +13,25 @@ export default function useExpandableOutcomes({
   truncateMax = 2,
   outcomes
 }: UseExpandableOutcomes) {
-  const [isExpanded, setExpanded] = useState(outcomes.length < 3);
-  const expand = useCallback(() => setExpanded(true), []);
-  const sorted = useMemo(
-    () =>
-      sortOutcomes({
-        outcomes,
-        timeframe: '7d'
-      }),
-    [outcomes]
-  );
-  const seted = useMemo(
-    () => ({
-      on: sorted.slice(0, isExpanded ? undefined : max),
-      off: sorted.slice(isExpanded ? undefined : max)
-    }),
-    [isExpanded, max, sorted]
-  );
-  const isSingle = seted.off.length === 1;
+  const [isExpanded, setExpanded] = useState(false);
+  const on = isExpanded ? outcomes : outcomes.slice(0, max);
+  const off = isExpanded ? [] : outcomes.slice(max);
 
   return {
-    isExpanded: isSingle || isExpanded,
-    expand,
-    onseted: isSingle ? [...seted.on, ...seted.off] : seted.on,
+    isExpanded,
+    expand: useCallback(() => setExpanded(true), []),
+    onseted: on,
     offseted: {
       percent:
         +(
-          seted.off
+          off
             .map(outcome => outcome.price)
-            .reduce((prices, price) => price + prices, 0) / seted.off.length
+            .reduce((prices, price) => price + prices, 0) / off.length
         ).toFixed(3) * 100,
-      primary: `${seted.off.length}+ Outcomes`,
-      secondary: `${seted.off
+      primary: `${off.length}+ Outcomes`,
+      secondary: `${off
         .slice(0, truncateMax)
-        .map(outcome => outcome.name)
+        .map(outcome => outcome.title)
         .join(', ')}...`
     }
   } as const;

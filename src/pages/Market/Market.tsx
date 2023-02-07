@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import cn from 'classnames';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
-import { Container, useMedia } from 'ui';
+import { Adornment, Container, useMedia } from 'ui';
 import Spinner from 'ui/Spinner';
 
 import {
@@ -17,7 +17,8 @@ import {
   RightSidebar,
   Modal,
   Button,
-  VoteArrows
+  VoteArrows,
+  Icon
 } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -31,10 +32,11 @@ import MarketNews from './MarketNews';
 import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
-function SidebarWrapper(
-  props: React.PropsWithChildren<Record<string, unknown>>
-) {
+function SidebarWrapper({
+  children
+}: React.PropsWithChildren<Record<string, unknown>>) {
   const [show, setShow] = useState(false);
+  const handleHide = useCallback(() => setShow(false), []);
 
   return (
     <Container $enableGutters className={marketClasses.sectionTrade}>
@@ -44,7 +46,7 @@ function SidebarWrapper(
       <Modal
         disableGutters
         show={show}
-        onHide={() => setShow(false)}
+        onHide={handleHide}
         fullWidth
         initial={{ bottom: '-100%' }}
         animate={{ bottom: 0 }}
@@ -52,8 +54,29 @@ function SidebarWrapper(
         className={{
           dialog: marketClasses.sidebarDialog
         }}
-        {...props}
-      />
+      >
+        <Container $as="header" className={marketClasses.sidebarDialogHeader}>
+          <Text
+            scale="heading"
+            fontWeight="bold"
+            className={marketClasses.sidebarDialogHeaderTitle}
+          >
+            Select Network
+          </Text>
+          <Adornment $edge="end">
+            <Button
+              size="xs"
+              variant="ghost"
+              color="default"
+              aria-label="Settings"
+              onClick={handleHide}
+            >
+              <Icon name="Cross" size="lg" />
+            </Button>
+          </Adornment>
+        </Container>
+        {children}
+      </Modal>
     </Container>
   );
 }
@@ -157,7 +180,7 @@ function MarketUI() {
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
             <Tabs value={tab} onChange={setTab}>
               <Tabs.TabPane tab="Positions" id="positions">
-                {network.network.id !== market.networkId.toString() ? (
+                {network.network.id !== market.networkId ? (
                   <AlertMini
                     styles="outline"
                     variant="information"

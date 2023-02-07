@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { uniqueId } from 'lodash';
+import { kebabCase, uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
 import { useMedia } from 'ui';
 
@@ -16,12 +16,7 @@ export type OutcomeProps = Pick<
   Partial<Record<'primary', string>> &
   Partial<
     Record<
-      | 'isActive'
-      | 'isPositive'
-      | 'isResolved'
-      | 'isWinning'
-      | '$dense'
-      | '$gutterBottom',
+      'isActive' | 'isPositive' | 'isResolved' | 'isWinning' | '$gutterBottom',
       boolean
     >
   > &
@@ -41,7 +36,6 @@ export default function OutcomeItem({
   isWinning,
   endAdornment,
   children,
-  $dense,
   $gutterBottom,
   data,
   $variant,
@@ -51,19 +45,8 @@ export default function OutcomeItem({
 
   return (
     <button
-      style={{
-        flexFlow: 'column nowrap',
-        padding: 0,
-        gap: 0,
-        alignItems: 'stretch',
-        overflowX: 'hidden',
-        width: '100%',
-        ...($variant === 'dashed' && {
-          borderStyle: 'dashed'
-        })
-      }}
       type="button"
-      className={cn('pm-c-market-outcomes__item', {
+      className={cn(OutcomeItemClasses.root, {
         'pm-c-market-outcomes__item--default': !isResolved,
         'pm-c-market-outcomes__item--success': isWinning,
         'pm-c-market-outcomes__item--danger': !isWinning,
@@ -74,13 +57,7 @@ export default function OutcomeItem({
       disabled={isResolved}
       {...props}
     >
-      <div
-        style={{
-          padding: $dense ? '8px 16px' : 16,
-          display: 'flex',
-          alignItems: 'center'
-        }}
-      >
+      <div className={OutcomeItemClasses.content}>
         <div className="pm-c-market-outcomes__item-group--column">
           <Text
             as="p"
@@ -103,7 +80,7 @@ export default function OutcomeItem({
           {endAdornment ||
             (data && isTablet && (
               <Area
-                id={`${primary}-${uniqueId('outcome-item')}`}
+                id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
                 data={data}
                 color={isPositive ? 'green' : 'red'}
                 width={48}
@@ -112,19 +89,20 @@ export default function OutcomeItem({
             ))}
         </div>
       </div>
-      {children}
+      {isTablet && children}
       {!isResolved && percent && (
         <Line
           percent={percent}
           strokeWidth={1}
           strokeColor={(() => {
             if (isPositive) return '#65D6AD';
-            if (!data) return '#fff';
+            if (!data) return 'var(--color-text-secondary)';
             return '#F86A6A';
           })()}
           trailWidth={1}
           trailColor="var(--color-vote-arrows-background--neutral)"
           strokeLinecap="butt"
+          className={OutcomeItemClasses.line}
         />
       )}
     </button>

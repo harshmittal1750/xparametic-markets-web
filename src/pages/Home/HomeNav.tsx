@@ -4,6 +4,7 @@ import { setSorter } from 'redux/ducks/markets';
 import { useMedia } from 'ui';
 
 import { Button, CreateMarket, Feature, Filter, Icon } from 'components';
+import { FilterProps } from 'components/Filter/Filter';
 
 import { useAppDispatch } from 'hooks';
 import useMarkets from 'hooks/useMarkets';
@@ -19,8 +20,8 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
   const isDesktop = useMedia('(min-width: 1024px)');
   const dispatch = useAppDispatch();
   const markets = useMarkets();
-  const handleSelectedFilter = useCallback(
-    (filter: { value: string | number; optionalTrigger?: string }) => {
+  const handleSelectedFilter: FilterProps['onChange'] = useCallback(
+    filter => {
       dispatch(
         setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
       );
@@ -36,9 +37,13 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
         className="pm-p-home__navigation__actions"
         onClick={onFilterClick}
         disabled={markets.state !== 'success'}
-        {...(!isDesktop && { 'aria-label': 'Filter' })}
       >
-        <Icon name="Filter" />
+        <Icon
+          name="Filter"
+          {...(!isDesktop && {
+            title: 'Filter'
+          })}
+        />
         {isDesktop && 'Filter'}
       </Button>
       <HomeNavSearch />
