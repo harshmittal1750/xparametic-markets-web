@@ -405,7 +405,7 @@ export default class PolkamarketsService {
     // ensuring user has wallet connected
     await this.login();
 
-    if (!this.address) return false;
+    if (!this.address || !erc20ContractAddress || !spenderAddress) return false;
 
     const contract = this.polkamarkets.getFantasyERC20Contract({
       contractAddress: erc20ContractAddress

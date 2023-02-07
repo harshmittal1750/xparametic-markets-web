@@ -5,12 +5,7 @@ import { Token } from 'types/currency';
 
 import { QuestionIcon } from 'assets/icons';
 
-import {
-  useAppDispatch,
-  useAppSelector,
-  useNetwork,
-  usePolkamarketsService
-} from 'hooks';
+import { useAppDispatch, useNetwork, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
@@ -32,7 +27,8 @@ function ApproveToken({
   const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
 
-  const userEthAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const predictionMarketContractAddress =
+    polkamarketsService.contracts.pm.getAddress();
 
   const [isTokenApproved, setIsTokenApproved] = useState(false);
   const [isApprovingToken, setIsApprovingToken] = useState(false);
@@ -49,14 +45,14 @@ function ApproveToken({
     async function checkTokenApproval() {
       const isApproved = await polkamarketsService.isERC20Approved(
         address,
-        userEthAddress
+        polkamarketsService.contracts.pm.getAddress()
       );
 
       setIsTokenApproved(isApproved);
     }
 
     checkTokenApproval();
-  }, [address, polkamarketsService, userEthAddress]);
+  }, [address, polkamarketsService, predictionMarketContractAddress]);
 
   const handleApproveToken = useCallback(async () => {
     setIsApprovingToken(true);
@@ -64,7 +60,7 @@ function ApproveToken({
     try {
       const response = await polkamarketsService.approveERC20(
         token.address,
-        userEthAddress
+        predictionMarketContractAddress
       );
 
       const { status, transactionHash } = response;
@@ -86,7 +82,7 @@ function ApproveToken({
     show,
     token.address,
     token.ticker,
-    userEthAddress
+    predictionMarketContractAddress
   ]);
 
   if (!isTokenApproved) {
