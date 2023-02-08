@@ -14,10 +14,18 @@ import marketClasses from './Market.module.scss';
 function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
-  const market = useAppSelector(state => state.market.market);
+  const imageUrl = useAppSelector(state => state.market.market.imageUrl);
 
   return (
-    <Hero className={marketClasses.hero} $image={market.imageUrl} {...props} />
+    <Hero
+      className={marketClasses.hero}
+      $image={imageUrl}
+      style={{
+        // @ts-expect-error No need to assert React.CSSProperties here
+        '--linear-gradient': '93 85 250'
+      }}
+      {...props}
+    />
   );
 }
 export default function MarketHead() {
