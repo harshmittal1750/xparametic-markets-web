@@ -196,7 +196,7 @@ function formatMarketPositions<A, O>(
           value: (
             <a
               target="_blank"
-              href={`${network.explorerURL}/tx/${transactionHash}`}
+              href={`${network.network.explorerURL}/tx/${transactionHash}`}
               rel="noreferrer"
             >
               <ShareIcon />
