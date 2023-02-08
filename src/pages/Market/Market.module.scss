@@ -30,8 +30,10 @@
   display: flex;
   flex: 1 0 auto;
 
-  &Content {
-    background-color: var(--color-surface-primary);
+  @media (min-width: 1024px) {
+    &Content {
+      background-color: var(--color-surface-primary);
+    }
   }
 }
 
