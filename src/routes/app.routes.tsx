@@ -5,6 +5,7 @@ import { environment, pages, ui } from 'config';
 import { getUserCountry } from 'helpers/location';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
+import { Spinner } from 'ui';
 
 import RestrictedCountry from 'pages/RestrictedCountry';
 import WrongNetwork from 'pages/WrongNetwork';
@@ -53,12 +54,7 @@ function AppRoutes() {
     fetchUserCountry();
   }, []);
 
-  if (isLoading)
-    return (
-      <div className="ta-center p-grid">
-        <span className="spinner--primary d-inline-block" />
-      </div>
-    );
+  if (isLoading) return <Spinner />;
 
   if (!isAllowedCountry) return <RestrictedCountry />;
 
@@ -66,13 +62,7 @@ function AppRoutes() {
 
   return (
     <Layout>
-      <Suspense
-        fallback={
-          <div className="ta-center">
-            <span className="spinner--primary d-inline-block" />
-          </div>
-        }
-      >
+      <Suspense fallback={<Spinner />}>
         <Switch>
           {Object.values(pages)
             .filter(page => page.enabled)
