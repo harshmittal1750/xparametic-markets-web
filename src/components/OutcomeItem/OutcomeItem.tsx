@@ -90,7 +90,7 @@ export default function OutcomeItem({
         </div>
       </div>
       {isTablet && children}
-      {!isResolved && percent && (
+      {!isResolved && typeof percent !== 'undefined' && (
         <Line
           percent={percent}
           strokeWidth={1}
