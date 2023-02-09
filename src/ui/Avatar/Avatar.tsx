@@ -1,3 +1,5 @@
+import { forwardRef } from 'react';
+
 import cn from 'classnames';
 
 import avatarClasses from './Avatar.module.scss';
@@ -16,15 +18,14 @@ export interface AvatarProps
   $radius?: typeof avatarProps.$radius[number];
 }
 
-export default function Avatar({
-  $size,
-  $radius,
-  className,
-  ...props
-}: AvatarProps) {
+const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
+  { $size, $radius, className, ...props },
+  ref
+) {
   return (
     // eslint-disable-next-line jsx-a11y/alt-text
     <img
+      ref={ref}
       className={cn(
         {
           [avatarClasses.radiusSm]: $radius === 'sm',
@@ -39,4 +40,6 @@ export default function Avatar({
       {...props}
     />
   );
-}
+});
+
+export default Avatar;

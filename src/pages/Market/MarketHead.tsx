@@ -1,6 +1,6 @@
-import { Fragment } from 'react';
+import { Fragment, useRef } from 'react';
 
-import { Container, Hero, useMedia } from 'ui';
+import { Container, Hero, useAverageColor, useMedia } from 'ui';
 import Avatar from 'ui/Avatar';
 
 import { Breadcrumb, Text } from 'components';
@@ -16,27 +16,26 @@ function MarketHeadWrapper(
 ) {
   const imageUrl = useAppSelector(state => state.market.market.imageUrl);
 
-  return (
-    <Hero
-      className={marketClasses.hero}
-      $image={imageUrl}
-      style={{
-        // @ts-expect-error No need to assert React.CSSProperties here
-        '--linear-gradient': '93 85 250'
-      }}
-      {...props}
-    />
-  );
+  return <Hero className={marketClasses.hero} $image={imageUrl} {...props} />;
 }
 export default function MarketHead() {
   const market = useAppSelector(state => state.market.market);
   const isDesktop = useMedia('(min-width: 1024px)');
   const MarketHeadWrapperComponent = isDesktop ? MarketHeadWrapper : Fragment;
+  const ref = useRef<HTMLImageElement>(null);
+  const RGB = useAverageColor(ref);
 
   return (
-    <MarketHeadWrapperComponent>
+    <MarketHeadWrapperComponent
+      {...(isDesktop && {
+        style: {
+          '--linear-gradient': `${RGB.red} ${RGB.green} ${RGB.blue}`
+        }
+      })}
+    >
       <Container $enableGutters={!isDesktop} className={marketClasses.heroInfo}>
         <Avatar
+          ref={ref}
           $size={isDesktop ? 'lg' : 'md'}
           $radius="lg"
           alt="Market"
