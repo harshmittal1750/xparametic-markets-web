@@ -3,7 +3,8 @@
   background-clip: border-box;
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: center;
+  background-position: center center;
+  transition: background-color 300ms ease-in;
 }
 
 .backdrop {
