@@ -1,7 +1,8 @@
-import { useCallback } from 'react';
+import { useCallback, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Market as MarketInterface } from 'models/market';
+import { useAverageColor } from 'ui';
 
 import { useAppDispatch } from 'hooks';
 
@@ -16,15 +17,19 @@ type MarketCardProps = {
 
 function Market({ market }: MarketCardProps) {
   const dispatch = useAppDispatch();
+  const ref = useRef<HTMLImageElement>(null);
+  const RGB = useAverageColor(ref);
   const handleNavigation = useCallback(async () => {
     const { clearMarket } = await import('redux/ducks/market');
     const { openTradeForm } = await import('redux/ducks/ui');
     const { selectOutcome } = await import('redux/ducks/trade');
+    const { setMarketAvatarColor } = await import('redux/ducks/ui');
 
+    dispatch(setMarketAvatarColor(`${RGB.red} ${RGB.green} ${RGB.blue}`));
     dispatch(selectOutcome(market.id, market.networkId, market.outcomes[0].id));
     dispatch(clearMarket());
     dispatch(openTradeForm());
-  }, [dispatch, market.id, market.networkId, market.outcomes]);
+  }, [RGB, dispatch, market.id, market.networkId, market.outcomes]);
 
   return (
     <Link
@@ -34,6 +39,7 @@ function Market({ market }: MarketCardProps) {
     >
       <figure className="pm-c-market__body-avatar">
         <img
+          ref={ref}
           className="pm-c-market__body-image"
           src={market.imageUrl}
           alt="Market Avatar"
