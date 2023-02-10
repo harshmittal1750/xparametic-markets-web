@@ -368,12 +368,13 @@ export default class PolkamarketsService {
   public async isPolkClaimed(): Promise<boolean> {
     if (!this.address) return false;
 
-    // TODO improve this: ensuring erc20 contract is initialized
-    // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
-
     let claimed;
+
     try {
+      // TODO improve this: ensuring erc20 contract is initialized
+      // eslint-disable-next-line no-underscore-dangle
+      await this.contracts.erc20.__init__();
+
       // TODO: only call function when fantasy mode is enabled
       claimed = await this.contracts.erc20.hasUserClaimedTokens({
         address: this.address
@@ -396,6 +397,29 @@ export default class PolkamarketsService {
     await this.contracts.erc20.claimAndApproveTokens();
 
     return true;
+  }
+
+  public async getERC20TokenInfo(erc20ContractAddress: string): Promise<any> {
+    if (!erc20ContractAddress) return false;
+
+    let token;
+
+    try {
+      const contract = this.polkamarkets.getFantasyERC20Contract({
+        contractAddress: erc20ContractAddress
+      });
+
+      // TODO improve this: ensuring erc20 contract is initialized
+      // eslint-disable-next-line no-underscore-dangle
+      await contract.__init__();
+
+      token = await contract.getTokenInfo();
+    } catch (error) {
+      // invalid answer, returning false
+      return false;
+    }
+
+    return token;
   }
 
   public async isERC20Approved(
