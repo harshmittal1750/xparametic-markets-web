@@ -38,4 +38,4 @@ const POLK: Token = {
   }
 };
 
-export default { USDT, USDC, POLK };
+export default [USDT, USDC, POLK];
