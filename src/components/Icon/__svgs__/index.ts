@@ -29,6 +29,7 @@ export { ReactComponent as Moonbeam } from './Moonbeam.svg';
 export { ReactComponent as Moonriver } from './Moonriver.svg';
 export { ReactComponent as Plus } from './Plus.svg';
 export { ReactComponent as Polk } from './Polk.svg';
+export { ReactComponent as Polygon } from './Polygon.svg';
 export { ReactComponent as Radio } from './Radio.svg';
 export { ReactComponent as RadioFilled } from './RadioFilled.svg';
 export { ReactComponent as Share } from './Share.svg';
