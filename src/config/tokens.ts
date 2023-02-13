@@ -1,5 +1,18 @@
 import type { Token } from 'types/token';
 
+const USDT: Token = {
+  name: 'Tether',
+  ticker: 'USDT',
+  symbol: 'USDT',
+  iconName: 'Tether',
+  addresses: {
+    Moonriver: '0xb44a9b6905af7c801311e8f4e76932ee959c663c',
+    Moonbeam: '0xefaeee334f0fd1712f9a8cc375f427d9cdd40d73',
+    Goerli: '0xe802376580c10fe23f027e1e19ed9d54d4c9311e',
+    Polygon: '0xc2132d05d31c914a87c6611c10748aeb04b58e8f'
+  }
+};
+
 const USDC: Token = {
   name: 'USD Coin',
   ticker: 'USDC',
@@ -13,4 +26,4 @@ const USDC: Token = {
   }
 };
 
-export default { USDC };
+export default { USDT, USDC };
