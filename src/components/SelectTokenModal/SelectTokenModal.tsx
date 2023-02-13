@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
-import { tokens } from 'config';
+import { networks, tokens } from 'config';
 import { Adornment, Container } from 'ui';
 
 import { Button } from '../Button';
@@ -11,11 +11,37 @@ import Text from '../Text';
 import VirtualizedList from '../VirtualizedList';
 import selectTokenModalClasses from './SelectTokenModal.module.scss';
 
+const network = 'goerli';
+
 function SelectTokenModal() {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(true);
   const handleHide = useCallback(() => setShow(false), []);
 
+  const [searchString, setSearchString] = useState<string>('');
+
+  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
+    setSearchString(event.target.value);
+  }, []);
+
+  const handleSelect = useCallback(() => {
+    handleHide();
+  }, [handleHide]);
+
   const isAnAddress = (text: string) => /0[x, X][a-fA-F0-9]{40}/.test(text);
+
+  const currencyByNetwork = networks['0x2a'].currency;
+
+  const tokensByNetwork = useMemo(
+    () =>
+      tokens.filter(token => Object.keys(token.addresses).includes(network)),
+    []
+  );
+
+  const availableTokens = [currencyByNetwork, ...tokensByNetwork];
+  const filteredTokens = availableTokens.filter(
+    token =>
+      token.name.includes(searchString) || token.ticker.includes(searchString)
+  );
 
   return (
     <Modal
@@ -52,14 +78,17 @@ function SelectTokenModal() {
         <SearchBar
           placeholder="Search name or paste address"
           onSearch={text => console.log(text)}
+          onChange={handleChange}
+          value={searchString}
         />
         <ul className={selectTokenModalClasses.buttonList}>
-          {tokens.map((token, index) => (
+          {filteredTokens.map((token, index) => (
             <li key={token.name} tabIndex={index + 1}>
               <Button
                 variant="outline"
                 color="default"
                 className={selectTokenModalClasses.buttonListItem}
+                onClick={handleSelect}
               >
                 <Icon
                   name={token.iconName}
@@ -76,9 +105,15 @@ function SelectTokenModal() {
       <Container className={selectTokenModalClasses.dialogList}>
         <VirtualizedList
           height="100%"
-          data={tokens}
+          data={filteredTokens}
           itemContent={(_index, token) => (
-            <div role="button" className={selectTokenModalClasses.listItem}>
+            <div
+              role="button"
+              tabIndex={0}
+              className={selectTokenModalClasses.listItem}
+              onClick={handleSelect}
+              onKeyPress={handleSelect}
+            >
               <Icon
                 name={token.iconName}
                 className={selectTokenModalClasses.listItemIcon}
