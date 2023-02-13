@@ -9,6 +9,30 @@
     gap: var(--size-24);
     align-items: center;
 
+    &Breadcrumb {
+      display: flex;
+      align-items: center;
+    }
+
+    &Verified {
+      height: var(--size-24);
+      line-height: normal;
+      display: flex;
+      align-items: center;
+      margin-left: var(--size-12);
+      gap: var(--size-4);
+      padding-left: 2px;
+      padding-right: var(--size-4);
+      border-radius: var(--size-12);
+      background: rgba(112, 105, 250, 0.12);
+      color: #8888fc;
+    }
+
+    &Title {
+      color: var(--color-text-primary);
+      margin-top: 12px;
+    }
+
     &Actions {
       display: flex;
       gap: var(--size-12);

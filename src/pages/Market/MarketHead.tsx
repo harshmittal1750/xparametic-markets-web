@@ -3,6 +3,8 @@ import { Fragment } from 'react';
 import { Container, Hero, useMedia } from 'ui';
 import Avatar from 'ui/Avatar';
 
+import { VerifiedIcon } from 'assets/icons';
+
 import { Breadcrumb, Text } from 'components';
 import MarketFooter from 'components/Market/MarketFooter';
 import MarketFooterActions from 'components/Market/MarketFooterActions';
@@ -45,15 +47,25 @@ export default function MarketHead() {
           src={market.imageUrl}
         />
         <div>
-          <Breadcrumb>
-            <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
-            <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
-          </Breadcrumb>
+          <div className={marketClasses.heroInfoBreadcrumb}>
+            <Breadcrumb>
+              <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
+              <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
+            </Breadcrumb>
+            {market.verified && (
+              <div className={marketClasses.heroInfoVerified}>
+                <VerifiedIcon size="sm" />
+                <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
+                  Verified
+                </Text>
+              </div>
+            )}
+          </div>
           <Text
             as="h2"
             fontWeight={isDesktop ? 'bold' : 'medium'}
             scale={isDesktop ? 'heading-large' : 'body'}
-            style={{ color: 'var(--color-text-primary)' }}
+            className={marketClasses.heroInfoTitle}
           >
             {market.title}
           </Text>
