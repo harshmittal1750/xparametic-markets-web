@@ -23,7 +23,8 @@ function MarketHeadWrapper(
       $image={imageUrl}
       style={{
         // @ts-expect-error No need to assert React.CSSProperties here
-        '--linear-gradient': avatarColor
+        '--linear-gradient':
+          avatarColor || localStorage.getItem('MARKET_AVATAR_COLOR')
       }}
       {...props}
     />

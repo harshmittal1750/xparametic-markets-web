@@ -86,9 +86,7 @@ function MarketUI() {
   const network = useNetwork();
   const dispatch = useAppDispatch();
   const isDesktop = useMedia('(min-width: 1024px)');
-  const isSidebarVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
+  const hasSidebar = useAppSelector(state => state.ui.rightSidebar.visible);
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
@@ -205,7 +203,7 @@ function MarketUI() {
             </Tabs>
           </section>
         </Container>
-        {isSidebarVisible && (
+        {hasSidebar && (
           <SidebarWrapperComponent>
             <RightSidebar />
           </SidebarWrapperComponent>

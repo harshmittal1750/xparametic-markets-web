@@ -97,14 +97,20 @@ const uiSlice = createSlice({
         visible: false
       }
     }),
-    setMarketAvatarColor: (state, action: PayloadAction<string>) => ({
-      ...state,
-      market: {
-        avatar: {
-          color: action.payload
+    setMarketAvatarColor: (state, action: PayloadAction<string>) => {
+      const color = action.payload;
+
+      localStorage.setItem('MARKET_AVATAR_COLOR', color);
+
+      return {
+        ...state,
+        market: {
+          avatar: {
+            color
+          }
         }
-      }
-    })
+      };
+    }
   }
 });
 
