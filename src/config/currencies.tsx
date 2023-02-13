@@ -4,6 +4,7 @@ import {
   EthereumIcon,
   MoonbeamIcon,
   MoonriverIcon,
+  PolygonIcon,
   TokenIcon
 } from 'assets/icons';
 
@@ -35,6 +36,13 @@ const currencies: { [key: string]: Currency } = Object.freeze({
     symbol: 'GLMR',
     icon: <MoonbeamIcon />,
     iconName: 'Moonbeam'
+  },
+  MATIK: {
+    name: 'Polygon',
+    ticker: 'MATIK',
+    symbol: 'MATIK',
+    icon: <PolygonIcon />,
+    iconName: 'Polygon'
   },
   TOKEN: {
     name: 'Token',
