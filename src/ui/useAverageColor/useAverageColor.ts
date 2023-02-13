@@ -31,8 +31,7 @@ export default function useAverageColor(
             });
           }
         } catch (error) {
-          // eslint-disable-next-line no-console
-          if (error instanceof Error) console.error(new Error(error.message));
+          setRGB({ red: 48, green: 51, blue: 190 });
         }
       }
     }
