@@ -1,7 +1,9 @@
-<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <path d="M12,22c5.523,0,10-4.477,10-10S17.523,2,12,2,2,6.477,2,12s4.477,10,10,10Z" style="fill: #627eea;"/>
-  <polygon points="17 12 12 10 12 15 17 12" style="fill: #8198ee;"/>
-  <polygon points="7 12 12 10 12 15 7 12" style="fill: #c0cbf7;"/>
-  <path d="M12,10V4s5,8,5,8m0,1l-5,3v4s5-7,5-7Z" style="fill: #c5cad3;"/>
-  <path d="M6.999,12l5.001-8v6m0,10v-4s-5.001-3-5.001-3l5.001,7Z" style="fill: #fff;"/>
+<svg viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M12 24.1c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12S0 5.472 0 12.1c0 6.627 5.373 12 12 12Z" fill="#627EEA"/>
+  <path d="M12.373 3.1v6.652l5.623 2.513L12.374 3.1Z" fill="#fff" fill-opacity=".602"/>
+  <path d="M12.373 3.1 6.75 12.265l5.623-2.513V3.1Z" fill="#fff"/>
+  <path d="M12.373 16.576v4.52L18 13.312l-5.627 3.264Z" fill="#fff" fill-opacity=".602"/>
+  <path d="M12.373 21.096v-4.52L6.75 13.311l5.623 7.784Z" fill="#fff"/>
+  <path d="m12.373 15.53 5.623-3.265-5.622-2.511v5.776Z" fill="#fff" fill-opacity=".2"/>
+  <path d="m6.75 12.265 5.623 3.265V9.754l-5.623 2.51Z" fill="#fff" fill-opacity=".602"/>
 </svg>
