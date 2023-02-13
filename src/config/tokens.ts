@@ -26,4 +26,16 @@ const USDC: Token = {
   }
 };
 
-export default { USDT, USDC };
+const POLK: Token = {
+  name: 'Polkamarkets',
+  ticker: 'POLK',
+  symbol: 'POLK',
+  iconName: 'Polk',
+  addresses: {
+    Moonriver: '0x8b29344f368b5fa35595325903fe0eaab70c8e1f',
+    Moonbeam: '0x8b29344f368b5fa35595325903fe0eaab70c8e1f',
+    Goerli: '0xd9983addca0e51400c50cba7658847ac3a42f026'
+  }
+};
+
+export default { USDT, USDC, POLK };
