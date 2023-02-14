@@ -131,7 +131,7 @@ function formatMarketPositions<A, O>(
       return {
         key,
         outcome: {
-          value: (
+          value: outcome && (
             <Badge
               variant="filled"
               style={{
