@@ -1,6 +1,7 @@
 export { default as Adornment } from './Adornment';
 
 export { default as Avatar } from './Avatar';
+export type { AvatarProps } from './Avatar';
 
 export { default as ButtonGroup } from './ButtonGroup';
 
