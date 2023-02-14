@@ -19,7 +19,7 @@ export interface AvatarProps
 }
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
-  { $size = 'md', $radius, className, ...props },
+  { $size, $radius, className, ...props },
   ref
 ) {
   return (

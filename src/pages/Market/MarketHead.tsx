@@ -1,11 +1,8 @@
 import { Fragment } from 'react';
 
 import { Container, Hero, useMedia } from 'ui';
-import Avatar from 'ui/Avatar';
 
-import { VerifiedIcon } from 'assets/icons';
-
-import { Breadcrumb, Text } from 'components';
+import { MarketAvatar, MarketCategory, Text } from 'components';
 import MarketFooter from 'components/Market/MarketFooter';
 import MarketFooterActions from 'components/Market/MarketFooterActions';
 
@@ -40,27 +37,17 @@ export default function MarketHead() {
   return (
     <MarketHeadWrapperComponent>
       <Container $enableGutters={!isDesktop} className={marketClasses.heroInfo}>
-        <Avatar
+        <MarketAvatar
           $size={isDesktop ? 'lg' : 'md'}
-          $radius="lg"
-          alt="Market"
-          src={market.imageUrl}
+          imageUrl={market.imageUrl}
+          verified={!isDesktop && market.verified}
         />
         <div>
-          <div className={marketClasses.heroInfoBreadcrumb}>
-            <Breadcrumb>
-              <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
-              <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
-            </Breadcrumb>
-            {market.verified && (
-              <div className={marketClasses.heroInfoVerified}>
-                <VerifiedIcon size="sm" />
-                <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-                  Verified
-                </Text>
-              </div>
-            )}
-          </div>
+          <MarketCategory
+            category={market.category}
+            subcategory={market.subcategory}
+            verified={isDesktop && market.verified}
+          />
           <Text
             as="h2"
             fontWeight={isDesktop ? 'bold' : 'medium'}

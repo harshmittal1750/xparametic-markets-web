@@ -49,6 +49,9 @@
   --color-vote-arrows-background--positive: #66d6ad1a;
   --color-vote-arrows-background--negative: #f769691a;
 
+  --color-main-primary: rgb(var(--purple-500--rgb));
+  --color-main-quinary: rgb(var(--purple-500--rgb) / var(--alpha-quinary));
+
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
   --color-categorical-0: #0fb5ae;
