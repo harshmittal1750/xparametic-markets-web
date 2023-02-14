@@ -14,6 +14,7 @@ import TradeFormCharts from './TradeFormCharts';
 import TradeFormClosed from './TradeFormClosed';
 import TradeFormDetails from './TradeFormDetails';
 import TradeFormInput from './TradeFormInput';
+import TradeFormLiquidity from './TradeFormLiquidity';
 import TradeFormPredictions from './TradeFormPredictions';
 import TradeFormTypeSelector from './TradeFormTypeSelector';
 
@@ -57,7 +58,7 @@ function TradeForm() {
             {isDesktop && (
               <Text
                 scale="tiny-uppercase"
-                style={{ color: 'var(--color-text-primary)' }}
+                style={{ color: 'var(--color-text-quaternary)' }}
                 fontWeight="semibold"
               >
                 Select outcome
@@ -68,6 +69,7 @@ function TradeForm() {
         )}
       </div>
       <div className="pm-c-trade-form__actions">
+        <TradeFormLiquidity />
         <TradeFormTypeSelector />
         <TradeFormInput />
         <TradeFormDetails />
