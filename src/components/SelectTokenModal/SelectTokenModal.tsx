@@ -23,9 +23,13 @@ function SelectTokenModal() {
     setSearchString(event.target.value);
   }, []);
 
-  const handleSelect = useCallback(() => {
-    handleHide();
-  }, [handleHide]);
+  const handleSelect = useCallback(
+    (token: string) => {
+      handleHide();
+      console.log(token);
+    },
+    [handleHide]
+  );
 
   const isAnAddress = (text: string) => /0[x, X][a-fA-F0-9]{40}/.test(text);
 
@@ -88,7 +92,7 @@ function SelectTokenModal() {
                 variant="outline"
                 color="default"
                 className={selectTokenModalClasses.buttonListItem}
-                onClick={handleSelect}
+                onClick={() => handleSelect(token.name)}
               >
                 <Icon
                   name={token.iconName}
@@ -111,8 +115,8 @@ function SelectTokenModal() {
               role="button"
               tabIndex={0}
               className={selectTokenModalClasses.listItem}
-              onClick={handleSelect}
-              onKeyPress={handleSelect}
+              onClick={() => handleSelect(token.name)}
+              onKeyPress={() => handleSelect(token.name)}
             >
               <Icon
                 name={token.iconName}
