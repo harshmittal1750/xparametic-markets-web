@@ -162,12 +162,15 @@ export default class PolkamarketsService {
     outcomes: Array<string>,
     category: string,
     value: number,
-    odds: Array<number>
+    odds: Array<number>,
+    token: string = '',
+    wrapped: boolean = false
   ) {
     // ensuring user has wallet connected
     await this.login();
 
-    const response = await this.contracts.pm.createMarket({
+    let response;
+    const args = {
       name,
       image,
       duration,
@@ -175,9 +178,18 @@ export default class PolkamarketsService {
       category,
       value,
       oracleAddress: this.address,
-      token: this.erc20ContractAddress,
       odds
-    });
+    };
+
+    // TODO: remove !token condition
+    if (wrapped || !token) {
+      response = await this.contracts.pm.createMarket(args);
+    } else {
+      response = await this.contracts.pm.createMarket({
+        ...args,
+        token
+      });
+    }
 
     return response;
   }
@@ -317,6 +329,12 @@ export default class PolkamarketsService {
     );
 
     return marketData;
+  }
+
+  public async getWETHAddress() {
+    const wethAddress = await this.contracts.pm.getWETHAddress();
+
+    return wethAddress;
   }
 
   public async isMarketERC20TokenWrapped(marketId: string | number) {
