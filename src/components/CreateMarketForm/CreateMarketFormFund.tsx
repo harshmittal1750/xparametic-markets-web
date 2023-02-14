@@ -11,6 +11,7 @@ import { useAppSelector, useNetwork } from 'hooks';
 import { AlertMini } from '../Alert';
 import AmountInput from '../AmountInput';
 import Link from '../Link';
+import SelectTokenModal from '../SelectTokenModal';
 import Text from '../Text';
 import Tooltip from '../Tooltip';
 
@@ -67,6 +68,7 @@ function CreateMarketFormFund() {
           </>
         }
       />
+      <SelectTokenModal />
       <AmountInput
         label="Add Liquidity"
         max={roundDown(balance)}
