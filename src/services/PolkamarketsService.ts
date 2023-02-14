@@ -301,6 +301,14 @@ export default class PolkamarketsService {
     return marketData;
   }
 
+  public async isMarketERC20TokenWrapped(marketId: string | number) {
+    const isWrapped = await this.contracts.pm.isMarketTokenWrapped({
+      marketId
+    });
+
+    return isWrapped;
+  }
+
   public async getMarketPrices(marketId: string | number) {
     // ensuring user has wallet connected
     await this.login();
