@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  align-items: center;
+}
+
+.verified {
+  height: var(--size-24);
+  line-height: normal;
+  display: flex;
+  align-items: center;
+  margin-left: var(--size-12);
+  gap: var(--size-4);
+  padding-left: 2px;
+  padding-right: var(--size-8);
+  border-radius: var(--size-12);
+  background: var(--color-main-quinary);
+  color: var(--color-main-primary);
+}

@@ -1,105 +1,152 @@
-import { useLocation } from 'react-router-dom';
+import { useCallback } from 'react';
+import { Virtuoso } from 'react-virtuoso';
 
-import classNames from 'classnames';
 import { roundNumber } from 'helpers/math';
+import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
+import { useMedia } from 'ui';
 
+import Icon from 'components/Icon';
 import MiniTable from 'components/MiniTable';
-import Text from 'components/Text';
-import VirtualizedList from 'components/VirtualizedList';
+import OutcomeItem from 'components/OutcomeItem';
+import OutcomeItemText from 'components/OutcomeItemText';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
-import { TradeFormPredictionType } from './TradeFormPredictions.type';
+import tradeFormClasses from './TradeForm.module.scss';
 
-type TradeFormPredictionsProps = {
-  type: TradeFormPredictionType;
-};
-
-function TradeFormPredictions({ type }: TradeFormPredictionsProps) {
-  const location = useLocation();
+export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
-
-  const selectedMarketId = useAppSelector(
-    state => state.trade.selectedMarketId
-  );
-  const selectedMarketNetworkId = useAppSelector(
-    state => state.trade.selectedMarketNetworkId
-  );
-  const selectedOutcomeId = useAppSelector(
-    state => state.trade.selectedOutcomeId
-  );
-
-  const symbol = useAppSelector(state => state.market.market.currency.symbol);
-  const outcomes = useAppSelector(state => state.market.market.outcomes);
-  const marketSlug = useAppSelector(state => state.market.market.slug);
+  const trade = useAppSelector(state => state.trade);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
-
-  const isMarketPage = location.pathname === `/markets/${marketSlug}`;
-
-  if (!isMarketPage) return null;
-
-  function handleChangeSelectedPrediction(id: string | number) {
-    dispatch(selectOutcome(selectedMarketId, selectedMarketNetworkId, id));
-  }
+  const symbol = useAppSelector(state => state.market.market.token.symbol);
+  const rawOutcomes = useAppSelector(state => state.market.market.outcomes);
+  const isDesktop = useMedia('(min-width: 1024px)');
+  const sortedOutcomes = sortOutcomes({
+    outcomes: rawOutcomes,
+    timeframe: '7d'
+  });
+  const expandableOutcomes = useExpandableOutcomes({
+    outcomes: sortedOutcomes
+  });
+  const needExpandOutcomes = sortedOutcomes.length > 3;
+  const outcomes =
+    isDesktop && needExpandOutcomes
+      ? expandableOutcomes.onseted
+      : sortedOutcomes;
+  const handleOutcomeClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      dispatch(
+        selectOutcome(
+          trade.selectedMarketId,
+          trade.selectedMarketNetworkId,
+          +event.currentTarget.value
+        )
+      );
+    },
+    [dispatch, trade.selectedMarketId, trade.selectedMarketNetworkId]
+  );
+  const Footer = useCallback(
+    () => (
+      <OutcomeItem
+        $variant="dashed"
+        onClick={expandableOutcomes.expand}
+        endAdornment={
+          <span style={{ color: 'var(--color-text-secondary)' }}>
+            <Icon size="lg" name="Plus" />
+          </span>
+        }
+        primary={expandableOutcomes.offseted.primary}
+        secondary={expandableOutcomes.offseted.secondary}
+      />
+    ),
+    [expandableOutcomes.expand, expandableOutcomes.offseted]
+  );
 
   return (
-    <div className={`pm-c-trade-form-predictions--${type}`}>
-      <VirtualizedList
-        height="100%"
-        data={outcomes}
-        itemContent={(index, prediction) => (
-          <div className="pm-c-trade-form-predictions__list-item">
-            <div
-              key={prediction.id}
-              className={classNames({
-                'pm-c-trade-form-predictions__item': true,
-                active:
-                  prediction.id === selectedOutcomeId &&
-                  prediction.marketId === selectedMarketId
-              })}
-              role="button"
-              tabIndex={index}
-              onClick={() => handleChangeSelectedPrediction(prediction.id)}
-              onKeyPress={() => handleChangeSelectedPrediction(prediction.id)}
+    <div className="pm-c-trade-form-predictions">
+      {isDesktop ? (
+        <Virtuoso
+          height="100%"
+          data={outcomes}
+          components={{
+            Footer:
+              needExpandOutcomes && !expandableOutcomes.isExpanded
+                ? Footer
+                : undefined
+          }}
+          itemContent={(index, outcome) => (
+            <OutcomeItem
+              $gutterBottom={
+                !expandableOutcomes.isExpanded ||
+                index !== expandableOutcomes.onseted.length - 1
+              }
+              percent={+outcome.price * 100}
+              primary={outcome.title}
+              secondary={
+                <OutcomeItemText
+                  price={outcome.price}
+                  symbol={symbol}
+                  isPositive={outcome.isPriceUp}
+                />
+              }
+              isActive={
+                outcome.id === +trade.selectedOutcomeId &&
+                outcome.marketId === +trade.selectedMarketId
+              }
+              isPositive={outcome.isPriceUp}
+              value={outcome.id}
+              onClick={handleOutcomeClick}
+              data={outcome.data}
             >
-              <div className="pm-c-trade-form-predictions__item-prediction">
-                <Text as="p" fontWeight="bold">
-                  {prediction.title}
-                </Text>
-                <Text as="span" fontWeight="semibold">
-                  {`PRICE `}
-                  <Text as="strong" fontWeight="bold">
-                    {prediction.price.toFixed(3)}
-                  </Text>
-                  <Text as="strong" fontWeight="medium">
-                    {` ${symbol}`}
-                  </Text>
-                </Text>
-              </div>
               <MiniTable
+                style={{
+                  paddingLeft: 16,
+                  paddingRight: 16,
+                  paddingBottom: 8
+                }}
                 rows={[
                   {
-                    key: 'yourShares',
-                    title: 'Your Shares',
-                    // eslint-disable-next-line prettier/prettier
+                    key: 'invested',
+                    title: 'invested',
                     value:
                       roundNumber(
-                        portfolio[selectedMarketId]?.outcomes[prediction.id]
+                        portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
                           ?.shares,
                         3
                       ) || 0
                   }
                 ]}
               />
-            </div>
-          </div>
-        )}
-      />
+            </OutcomeItem>
+          )}
+        />
+      ) : (
+        <ul className={tradeFormClasses.horizontal}>
+          {outcomes.map(outcome => (
+            <li key={outcome.title} className={tradeFormClasses.horizontalItem}>
+              <OutcomeItem
+                percent={+outcome.price * 100}
+                primary={outcome.title}
+                secondary={
+                  <OutcomeItemText
+                    price={outcome.price}
+                    symbol={symbol}
+                    isPositive={outcome.isPriceUp}
+                  />
+                }
+                isActive={
+                  outcome.id === +trade.selectedOutcomeId &&
+                  outcome.marketId === +trade.selectedMarketId
+                }
+                isPositive={outcome.isPriceUp}
+                value={outcome.id}
+                onClick={handleOutcomeClick}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
-
-TradeFormPredictions.displayName = 'TradeFormPredictions';
-
-export default TradeFormPredictions;

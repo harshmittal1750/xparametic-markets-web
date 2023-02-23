@@ -21,11 +21,11 @@ type Option = {
   defaultTrigger?: number | undefined;
 };
 
-type FilterProps = {
+export type FilterProps = {
   description: string;
   defaultOption: string;
   options: Option[];
-  onChange: any;
+  onChange(change: { value: string | number; optionalTrigger?: string }): void;
   onTouch?: (_touched: boolean) => void;
   className?: string;
 };

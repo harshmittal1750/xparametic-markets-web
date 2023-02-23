@@ -1,5 +1,6 @@
 .pm-c-market-list {
   flex: 1 1 auto;
+  padding: var(--grid-margin);
 
   & > [data-virtuoso-scroller='true'] {
     & > [data-viewport-type='window'] {

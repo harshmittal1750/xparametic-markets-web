@@ -15,14 +15,14 @@ export default function RestrictedCountry() {
   return (
     <div className="pm-restricted-country">
       <Modal show centered size="sm">
-        <ModalContent className="ta-center">
+        <ModalContent className="pm-restricted-country__content">
           <ModalHeader>
             <PolkamarketsIcon />
             <Text
               as="h5"
               scale="heading"
               fontWeight="bold"
-              className="t-primary"
+              className="pm-restricted-country__content-title"
             >
               Polkamarkets is not available in your country
             </Text>

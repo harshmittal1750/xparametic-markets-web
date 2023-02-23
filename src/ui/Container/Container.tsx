@@ -5,7 +5,10 @@ import cn from 'classnames';
 import ContainerClasses from './Container.module.scss';
 
 export interface ContainerProps<E extends keyof JSX.IntrinsicElements>
-  extends Pick<React.ComponentPropsWithRef<'div'>, 'children' | 'className'> {
+  extends Pick<
+    React.ComponentPropsWithRef<'div'>,
+    'children' | 'className' | 'style'
+  > {
   $enableGutters?: boolean;
   $as?: E;
 }

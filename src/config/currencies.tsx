@@ -1,6 +1,11 @@
 import { Currency } from 'types/currency';
 
-import { EthereumIcon, MoonbeamIcon, MoonriverIcon } from 'assets/icons';
+import {
+  EthereumIcon,
+  MoonbeamIcon,
+  MoonriverIcon,
+  TokenIcon
+} from 'assets/icons';
 
 const currencies: { [key: string]: Currency } = Object.freeze({
   DEV: {
@@ -30,6 +35,13 @@ const currencies: { [key: string]: Currency } = Object.freeze({
     symbol: 'GLMR',
     icon: <MoonbeamIcon />,
     iconName: 'Moonbeam'
+  },
+  TOKEN: {
+    name: 'Token',
+    ticker: 'TOKEN',
+    symbol: 'TOKEN',
+    icon: <TokenIcon />,
+    iconName: 'Token'
   }
 });
 

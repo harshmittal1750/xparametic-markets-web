@@ -1,14 +1,10 @@
 .pm-l-right-sidebar {
-  @include flex-column;
-  position: sticky;
-  top: 0;
-  width: 368px;
+  border-left: 1px solid var(--color-border);
+  overflow-y: auto;
+  flex-shrink: 0;
 
   @media (min-width: 1024px) {
-    margin-top: -24px;
-  }
-
-  > div {
-    height: calc(100% - var(--header-y));
+    width: 384px;
+    min-height: var(--min-height);
   }
 }

@@ -1,0 +1,30 @@
+.radius {
+  &Sm {
+    border-radius: var(--size-8);
+  }
+
+  &Md {
+    border-radius: var(--size-16);
+  }
+
+  &Lg {
+    border-radius: 50%;
+  }
+}
+
+.size {
+  &Sm {
+    width: var(--size-48);
+    height: var(--size-48);
+  }
+
+  &Md {
+    width: var(--size-64);
+    height: var(--size-64);
+  }
+
+  &Lg {
+    width: var(--size-96);
+    height: var(--size-96);
+  }
+}

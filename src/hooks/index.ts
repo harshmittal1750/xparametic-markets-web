@@ -23,7 +23,11 @@ export { default as useClickaway } from './useClickaway';
 
 export { default as useCookie } from './useCookie';
 
+export { default as useExpandableOutcomes } from './useExpandableOutcomes';
+
 export { default as useFocustrap } from './useFocustrap';
+
+export { default as useMarketPath } from './useMarketPath';
 
 export { default as useMount } from './useMount';
 
@@ -34,3 +38,5 @@ export { default as usePrevious } from './usePrevious';
 export { default as useTimeoutEffect } from './useTimeoutEffect';
 
 export { default as useFilters } from './useFilters';
+
+export { default as useERC20Balance } from './useERC20Balance';

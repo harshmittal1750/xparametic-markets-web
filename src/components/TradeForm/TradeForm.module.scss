@@ -1,0 +1,20 @@
+.horizontal {
+  display: flex;
+  gap: 6px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  margin-left: calc(-1 * var(--grid-margin));
+  width: calc(100% + var(--grid-margin) * 2);
+  padding-left: var(--grid-margin);
+  padding-right: var(--grid-margin);
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  &Item {
+    min-width: calc(50vw - var(--grid-margin) - 4px);
+  }
+}

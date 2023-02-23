@@ -1,52 +1,73 @@
-import { VerifiedIcon } from 'assets/icons';
+import { Fragment } from 'react';
 
-import { Breadcrumb, Text, Tooltip } from 'components';
+import { Container, Hero, useMedia } from 'ui';
 
-type MarketHeadProps = {
-  isVerified: boolean;
-  section: string;
-  subsection: string;
-  imageUrl: string;
-  description: string;
-};
+import { MarketAvatar, MarketCategory, Text } from 'components';
+import MarketFooter from 'components/Market/MarketFooter';
+import MarketFooterActions from 'components/Market/MarketFooterActions';
 
-const MarketHead = ({
-  isVerified,
-  section,
-  subsection,
-  imageUrl,
-  description
-}: MarketHeadProps) => {
+import { useAppSelector } from 'hooks';
+
+import marketClasses from './Market.module.scss';
+
+function MarketHeadWrapper(
+  props: React.PropsWithChildren<Record<string, unknown>>
+) {
+  const imageUrl = useAppSelector(state => state.market.market.imageUrl);
+  const avatarColor = useAppSelector(state => state.ui.market.avatar.color);
+
   return (
-    <div className="market-head">
-      <div className="relative height-min-content">
-        <img className="market-head__image" alt="market head" src={imageUrl} />
-        {isVerified ? (
-          <div
-            className="absolute"
-            style={{ bottom: '-0.5rem', right: '1.5rem' }}
-          >
-            <Tooltip
-              className="width-max-content"
-              text="Verified Market"
-              position="bottom"
-            >
-              <VerifiedIcon style={{ cursor: 'pointer' }} />
-            </Tooltip>
-          </div>
-        ) : null}
-      </div>
-      <div className="market-head__details">
-        <Breadcrumb>
-          <Breadcrumb.Item>{section}</Breadcrumb.Item>
-          <Breadcrumb.Item>{subsection}</Breadcrumb.Item>
-        </Breadcrumb>
-        <Text as="p" scale="body" fontWeight="medium">
-          {description}
-        </Text>
-      </div>
-    </div>
+    <Hero
+      className={marketClasses.hero}
+      $image={imageUrl}
+      style={{
+        // @ts-expect-error No need to assert React.CSSProperties here
+        '--linear-gradient':
+          avatarColor || localStorage.getItem('MARKET_AVATAR_COLOR')
+      }}
+      {...props}
+    />
   );
-};
+}
+export default function MarketHead() {
+  const market = useAppSelector(state => state.market.market);
+  const isDesktop = useMedia('(min-width: 1024px)');
+  const MarketHeadWrapperComponent = isDesktop ? MarketHeadWrapper : Fragment;
 
-export default MarketHead;
+  return (
+    <MarketHeadWrapperComponent>
+      <Container $enableGutters={!isDesktop} className={marketClasses.heroInfo}>
+        <MarketAvatar
+          $size={isDesktop ? 'lg' : 'md'}
+          imageUrl={market.imageUrl}
+          verified={!isDesktop && market.verified}
+        />
+        <div>
+          <MarketCategory
+            category={market.category}
+            subcategory={market.subcategory}
+            verified={isDesktop && market.verified}
+          />
+          <Text
+            as="h2"
+            fontWeight={isDesktop ? 'bold' : 'medium'}
+            scale={isDesktop ? 'heading-large' : 'body'}
+            className={marketClasses.heroInfoTitle}
+          >
+            {market.title}
+          </Text>
+        </div>
+        {isDesktop && (
+          <div className={marketClasses.heroInfoActions}>
+            <MarketFooterActions $variant="filled" market={market} />
+          </div>
+        )}
+      </Container>
+      {isDesktop && (
+        <Container className={marketClasses.heroStats}>
+          <MarketFooter market={market} />
+        </Container>
+      )}
+    </MarketHeadWrapperComponent>
+  );
+}

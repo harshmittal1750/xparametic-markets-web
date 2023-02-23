@@ -8,12 +8,16 @@ import Footer from 'components/Footer';
 import Header from 'components/Header';
 import SEO from 'components/SEO';
 
+import { useMarketPath } from 'hooks';
+
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const location = useLocation();
-
   const page = Object.values(pages).filter(
     ({ pathname }) => pathname === location.pathname
   )[0];
+  const marketPath = useMarketPath();
+  const isHomePathname =
+    location.pathname === pages.home.pathname || marketPath;
 
   useEffect(() => {
     window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
@@ -23,9 +27,9 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     <>
       <BetaWarning />
       {page?.meta && <SEO {...page.meta} />}
-      <Header />
+      <Header $gutterBottom={!isHomePathname} />
       {children}
-      <Footer />
+      <Footer $gutterTop={!isHomePathname} />
       <div id="toast-notification-portal" />
     </>
   );

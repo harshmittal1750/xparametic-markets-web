@@ -1,0 +1,11 @@
+#root {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  min-height: 100vh;
+  padding-bottom: var(--size-64);
+
+  @media (min-width: 1024px) {
+    padding-bottom: unset;
+  }
+}

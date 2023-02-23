@@ -183,7 +183,7 @@ function login(polkamarketsService: PolkamarketsService) {
 
       Promise.all([
         polkamarketsService.getBalance(),
-        polkamarketsService.getERC20Balance(),
+        polkamarketsService.getPolkBalance(),
         polkamarketsService.isPolkClaimed(),
         polkamarketsService.isRealitioERC20Approved()
       ]).then(([balance, polkBalance, polkClaimed, polkApproved]) => {

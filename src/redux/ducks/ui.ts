@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
 const initialState = {
   rightSidebar: {
@@ -12,6 +13,11 @@ const initialState = {
   },
   reportForm: {
     visible: false
+  },
+  market: {
+    avatar: {
+      color: ''
+    }
   }
 };
 
@@ -90,7 +96,21 @@ const uiSlice = createSlice({
       reportForm: {
         visible: false
       }
-    })
+    }),
+    setMarketAvatarColor: (state, action: PayloadAction<string>) => {
+      const color = action.payload;
+
+      localStorage.setItem('MARKET_AVATAR_COLOR', color);
+
+      return {
+        ...state,
+        market: {
+          avatar: {
+            color
+          }
+        }
+      };
+    }
   }
 });
 
@@ -103,5 +123,6 @@ export const {
   openLiquidityForm,
   closeLiquidityForm,
   openReportForm,
-  closeReportForm
+  closeReportForm,
+  setMarketAvatarColor
 } = uiSlice.actions;

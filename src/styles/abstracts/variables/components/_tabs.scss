@@ -1,14 +1,20 @@
 $tabs-themes: (
   light: (
-    tabs-item-color: #a7b0bd,
-    tabs-item-color-hover: #171b23,
-    tabs-item-active-color: #171b23
+    tabs-item-background: transparent,
+    tabs-item-background-hover: rgba(#3525e6, 0.16),
+    tabs-item-background-active: #3525e6,
+    tabs-item-color: #a2a5fc,
+    tabs-item-color-hover: #a2a5fc,
+    tabs-item-color-active: #e6e6ff
   ),
   dark: (
-    tabs-item-color: $gray-500,
-    tabs-item-color-hover: $gray-50,
-    tabs-item-active-color: $gray-50
+    tabs-item-background: transparent,
+    tabs-item-background-hover: rgba(#e6e6ff, 0.2),
+    tabs-item-background-active: #e6e6ff,
+    tabs-item-color: #a2a5fc,
+    tabs-item-color-hover: #a2a5fc,
+    tabs-item-color-active: #3525e6
   )
 ) !default;
 
-$tabs-item-transitions: color 0.3s ease 0s !default;
+$tabs-item-transitions: background-color, color 0.3s ease 0s !default;

@@ -4,4 +4,12 @@
 
   background-image: url('../../assets/images/private-beta-background.png');
   background-size: cover;
+
+  &__content {
+    text-align: center;
+
+    &-title {
+      color: var(--color-text-primary);
+    }
+  }
 }

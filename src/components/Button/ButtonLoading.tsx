@@ -16,8 +16,10 @@ export default function ButtonLoading({
     <Button
       ref={ref}
       {...(loading && {
-        width: `${rect?.width}px`,
-        height: `${rect?.height}px`
+        style: {
+          width: `${rect?.width}px`,
+          height: `${rect?.height}px`
+        }
       })}
       {...props}
     >

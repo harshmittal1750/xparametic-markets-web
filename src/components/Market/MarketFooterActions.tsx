@@ -1,24 +1,38 @@
-import classNames from 'classnames';
+import { useCallback } from 'react';
+
+import cn from 'classnames';
 import { Market } from 'models/market';
 
-import { FavoriteIcon, NetworkCommunicationIcon } from 'assets/icons';
+import Icon from 'components/Icon';
 
 import { useFavoriteMarkets } from 'hooks';
 
-import { Button } from '../Button';
-
 type MarketFooterActionsProps = {
   market: Market;
+  $variant: 'filled' | 'text';
 };
 
-function MarketFooterActions({ market }: MarketFooterActionsProps) {
-  const { id, networkId } = market;
-  const { favoriteMarkets, addFavoriteMarket, removeFavoriteMarket } =
-    useFavoriteMarkets();
+const buttonProps = {
+  filled: { variant: 'subtle', color: 'default', size: 'sm' },
+  text: { variant: undefined, color: 'noborder', size: undefined }
+} as const;
 
-  const isFavoriteMarket =
-    favoriteMarkets[`${networkId}`] &&
-    favoriteMarkets[`${networkId}`].includes(id);
+export default function MarketFooterActions({
+  market,
+  $variant = 'text'
+}: MarketFooterActionsProps) {
+  const favoriteMarkets = useFavoriteMarkets();
+  const isFavoriteMarket = favoriteMarkets.favoriteMarkets[
+    `${market.networkId}`
+  ]?.includes(market.id);
+  const handleFavClick = useCallback(
+    () =>
+      favoriteMarkets[
+        isFavoriteMarket ? 'removeFavoriteMarket' : 'addFavoriteMarket'
+      ](market.networkId, market.id),
+    [favoriteMarkets, isFavoriteMarket, market.id, market.networkId]
+  );
+  const props = buttonProps[$variant];
 
   return (
     <div className="pm-c-market-footer__actions">
@@ -26,26 +40,23 @@ function MarketFooterActions({ market }: MarketFooterActionsProps) {
         href={`https://twitter.com/intent/tweet?text=I%20just%20made%20a%20prediction%20on%20@polkamarkets!%20🔥💯%0D%0DCheck%20it%20out%20at%20app.polkamarkets.com/markets/${market.slug}%20%23polkamarkets`}
         target="_blank"
         rel="noreferrer"
+        className={cn('pm-c-market-footer__actions-button', {
+          'pm-c-market-footer__actions-button-filled': $variant === 'filled'
+        })}
       >
-        <NetworkCommunicationIcon className="pm-c-market-footer__actions-share--default" />
+        <Icon name="Share" title="Share" />
       </a>
-      <Button
-        color="noborder"
-        onClick={
-          isFavoriteMarket
-            ? () => removeFavoriteMarket(networkId, id)
-            : () => addFavoriteMarket(networkId, id)
-        }
+      <button
+        type="button"
+        onClick={handleFavClick}
+        className={cn('pm-c-market-footer__actions-button', {
+          'pm-c-market-footer__actions-button-filled': $variant === 'filled',
+          'pm-c-market-footer__actions-favorite--active': isFavoriteMarket
+        })}
+        {...props}
       >
-        <FavoriteIcon
-          className={classNames({
-            'pm-c-market-footer__actions-favorite--default': !isFavoriteMarket,
-            'pm-c-market-footer__actions-favorite--active': isFavoriteMarket
-          })}
-        />
-      </Button>
+        <Icon name="Star" title="Bookmark market" />
+      </button>
     </div>
   );
 }
-
-export default MarketFooterActions;

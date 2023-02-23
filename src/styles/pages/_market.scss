@@ -71,6 +71,7 @@
 
     &__view {
       grid-area: view;
+      margin-bottom: var(--grid-margin);
     }
 
     &__charts {

@@ -1,21 +1,26 @@
-import { useLocation } from 'react-router-dom';
-
 import cn from 'classnames';
-import { pages } from 'config';
+import { Container } from 'ui';
 
 import Link from 'components/Link';
 import Text from 'components/Text';
 
-export default function Footer() {
-  const location = useLocation();
+import footerClasses from './Footer.module.scss';
 
+export interface FooterProps
+  extends Pick<React.ComponentPropsWithoutRef<'footer'>, 'className'> {
+  $gutterTop?: boolean;
+}
+
+export default function Footer({ className, $gutterTop }: FooterProps) {
   return (
-    <footer className="mt-auto">
-      <div
-        className={cn('ta-center p-grid bt-thin', {
-          'mt-grid': location.pathname !== pages.home.pathname
-        })}
-      >
+    <footer
+      className={cn(
+        footerClasses.root,
+        { [footerClasses.gutterTop]: $gutterTop },
+        className
+      )}
+    >
+      <Container className={footerClasses.container}>
         <Text
           as="p"
           scale="caption"
@@ -43,7 +48,7 @@ export default function Footer() {
             target="_blank"
           />
         </Text>
-      </div>
+      </Container>
     </footer>
   );
 }

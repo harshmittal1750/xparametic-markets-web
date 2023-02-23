@@ -55,6 +55,7 @@ import SunFogIcon from './SunFogIcon';
 import SunIcon from './SunIcon';
 import TelegramIcon from './TelegramIcon';
 import ToDoIcon from './ToDoIcon';
+import TokenIcon from './TokenIcon';
 import TrophyIcon from './TrophyIcon';
 import TwarningIcon from './TWarningIcon';
 import TwitterIcon from './TwitterIcon';
@@ -122,6 +123,7 @@ export {
   SunIcon,
   TelegramIcon,
   ToDoIcon,
+  TokenIcon,
   TwarningIcon,
   TwitterIcon,
   TrophyIcon,

@@ -44,8 +44,8 @@ export default function HeaderActions() {
         _network => _network.name === name
       );
 
-      handleHide();
       networks.changeToNetwork(network);
+      handleHide();
     },
     [handleHide, networks]
   );
@@ -135,7 +135,7 @@ export default function HeaderActions() {
             >
               Select Network
             </Text>
-            <Adornment edge="end">
+            <Adornment $edge="end">
               <Button
                 size="xs"
                 variant="ghost"

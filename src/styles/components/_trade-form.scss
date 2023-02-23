@@ -1,30 +1,21 @@
 .pm-c-trade-form {
-  @include flex-column(space-between, center);
-  gap: 2.4rem;
-
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-margin);
   height: 100%;
 
   &__view,
   &__actions {
-    @include flex-column;
-
-    width: 100%;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
 
   &__view {
-    justify-content: flex-start;
-    gap: 16px;
-  }
+    flex: 1 0 auto;
 
-  &__actions {
-    justify-content: flex-end;
-    gap: 24px;
-  }
-
-  @media only screen and (max-height: 870px) {
-    & > :last-child {
-      padding-bottom: 2.4rem;
+    ::-webkit-scrollbar {
+      width: 4px;
     }
   }
 }
@@ -42,16 +33,19 @@
 .pm-c-trade-form-predictions {
   @include flex-column;
   @include themes($market-themes) {
-    gap: 1.6rem;
-
     width: 100%;
 
-    &--binary {
-      height: min(226px, 100%);
+    @media (min-width: 1024px) {
+      height: 100%;
+      gap: 1.6rem;
     }
 
-    &--multiple {
-      height: min(346px, 100%);
+    & > [data-test-id='virtuoso-scroller'] {
+      width: calc(100% + 12px);
+
+      & > [data-viewport-type='element'] {
+        padding-right: 12px;
+      }
     }
 
     &__list-item {
@@ -59,8 +53,9 @@
     }
 
     &__item {
+      background-color: transparent;
       cursor: pointer;
-
+      width: 100%;
       @include flex-column;
       gap: 1.6rem;
 

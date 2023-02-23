@@ -142,6 +142,8 @@ export {
   WalletInfo
 };
 
+export { default as ApproveToken } from './ApproveToken';
+
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
@@ -156,6 +158,10 @@ export type { IconProps } from './Icon';
 export { default as Feature } from './Feature';
 
 export { default as Header } from './Header';
+
+export { default as MarketAvatar } from './MarketAvatar';
+
+export { default as MarketCategory } from './MarketCategory';
 
 export { default as MarketList } from './MarketList';
 
@@ -174,5 +180,9 @@ export { default as ModalHeaderTitle } from './ModalHeaderTitle';
 export { default as ModalSection } from './ModalSection';
 
 export { default as ModalSectionText } from './ModalSectionText';
+
+export { default as OutcomeItem } from './OutcomeItem';
+
+export { default as OutcomeItemText } from './OutcomeItemText';
 
 export { default as VirtualizedList } from './VirtualizedList';

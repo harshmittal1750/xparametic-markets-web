@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
-import { fromPriceChartToLineChartSeries } from 'helpers/chart';
+import sortOutcomes from 'helpers/sortOutcomes';
 
 import { ChartHeader, LineChart, Text } from 'components';
 
@@ -14,71 +14,84 @@ const intervals = [
   { id: 'all', name: 'ALL', value: 1440 }
 ];
 
-const MarketChart = () => {
-  const { theme } = useTheme();
-  const currency = useAppSelector(state => state.market.market.currency);
-  const { ticker } = currency;
-  const predictions = useAppSelector(state => state.market.market.outcomes);
-  const { chartViewType } = useAppSelector(state => state.market);
-  const { tradingViewSymbol } = useAppSelector(state => state.market.market);
-
-  const [currentInterval, setCurrentInterval] = useState(1440);
-
-  const timeframe = intervals.find(
-    interval => interval.value === currentInterval
+function MarketOverview() {
+  const outcomes = useAppSelector(state => state.market.market.outcomes);
+  const symbol = useAppSelector(state => state.market.market.token.symbol);
+  const ticker = useAppSelector(state => state.market.market.token.ticker);
+  const [currentInterval, setCurrentInterval] = useState(
+    intervals[intervals.length - 1]
   );
-
-  const series = predictions.map(prediction => {
-    const chart = prediction.priceCharts?.find(
-      priceChart => priceChart.timeframe === timeframe?.id
-    );
-
-    const data = fromPriceChartToLineChartSeries(chart?.prices || []);
-    return {
-      name: prediction.title,
-      data
-    };
+  const [highOutcome, ...restOutcomes] = sortOutcomes({
+    outcomes,
+    timeframe: currentInterval.id
   });
 
   return (
-    <div className="market-chart">
-      <div className="market-chart__view">
-        {chartViewType === 'marketOverview' ? (
-          <div style={{ padding: '2.4rem' }}>
-            <div className="market-chart__header">
-              <Text
-                as="h2"
-                scale="body"
-                fontWeight="semibold"
-                className="market-chart__view-title"
-              >
-                Market Overview
-              </Text>
-              <div className="market-chart__header-actions">
-                <ChartHeader
-                  intervals={intervals}
-                  defaultIntervalId="all"
-                  onChangeInterval={
-                    (_interval, value) => setCurrentInterval(value)
-                    // eslint-disable-next-line react/jsx-curly-newline
-                  }
-                />
-              </div>
-            </div>
-            <LineChart series={series} ticker={ticker} height={332} />
-          </div>
-        ) : null}
-        {chartViewType === 'tradingView' ? (
-          <TradingViewWidget
-            theme={theme === 'dark' ? Themes.DARK : Themes.LIGHT}
-            width="100%"
-            height={454}
-            symbol={tradingViewSymbol}
+    <>
+      <div className="market-chart__header">
+        <div>
+          <Text scale="tiny-uppercase" color="gray" fontWeight="semibold">
+            {highOutcome.title}
+          </Text>
+          <Text
+            as="h3"
+            scale="heading-large"
+            fontWeight="semibold"
+            className="market-chart__view-title"
+          >
+            {highOutcome.price} {symbol}
+          </Text>
+          <Text
+            as="span"
+            scale="tiny-uppercase"
+            color={highOutcome.isPriceUp ? 'success' : 'danger'}
+            fontWeight="semibold"
+          >
+            {highOutcome.pricesDiff.value} {symbol} (
+            {highOutcome.pricesDiff.pct})
+          </Text>{' '}
+          <Text as="span" scale="tiny" color="gray" fontWeight="semibold">
+            Since Market Creation
+          </Text>
+        </div>
+        <div className="market-chart__header-actions">
+          <ChartHeader
+            intervals={intervals}
+            currentInterval={currentInterval}
+            onChangeInterval={setCurrentInterval}
           />
-        ) : null}
+        </div>
       </div>
+      <LineChart
+        series={[highOutcome, ...restOutcomes]}
+        ticker={ticker}
+        height={332}
+      />
+    </>
+  );
+}
+export default function MarketChart() {
+  const theme = useTheme();
+  const chartViewType = useAppSelector(state => state.market.chartViewType);
+  const tradingViewSymbol = useAppSelector(
+    state => state.market.market.tradingViewSymbol
+  );
+
+  return (
+    <div className="market-chart__view">
+      {
+        {
+          marketOverview: <MarketOverview />,
+          tradingView: (
+            <TradingViewWidget
+              theme={Themes[theme.theme === 'dark' ? 'DARK' : 'LIGHT']}
+              width="100%"
+              height={454}
+              symbol={tradingViewSymbol}
+            />
+          )
+        }[chartViewType]
+      }
     </div>
   );
-};
-
-export default MarketChart;
+}

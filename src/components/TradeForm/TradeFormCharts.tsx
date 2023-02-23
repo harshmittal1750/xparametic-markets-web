@@ -21,7 +21,7 @@ const intervals = [
 function TradeFormCharts() {
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const ticker = useAppSelector(state => state.market.market.currency.ticker);
+  const ticker = useAppSelector(state => state.market.market.token.ticker);
   const predictions = useAppSelector(state => state.market.market.outcomes);
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const isLoadingMarket = useAppSelector(state => state.market.isLoading);
@@ -29,7 +29,9 @@ function TradeFormCharts() {
     state => state.market.isLoadingPriceCharts
   );
 
-  const [currentInterval, setCurrentInterval] = useState(1440);
+  const [currentInterval, setCurrentInterval] = useState(
+    intervals[intervals.length - 1]
+  );
 
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
 
@@ -45,13 +47,9 @@ function TradeFormCharts() {
 
   if (isMarketPage) return null;
 
-  const timeframe = intervals.find(
-    interval => interval.value === currentInterval
-  );
-
   const series = predictions.map(prediction => {
     const chart = prediction.priceCharts?.find(
-      priceChart => priceChart.timeframe === timeframe?.id
+      priceChart => priceChart.timeframe === currentInterval?.id
     );
 
     const data = fromPriceChartToLineChartSeries(chart?.prices || []);
@@ -65,8 +63,8 @@ function TradeFormCharts() {
     <div className="pm-c-trade-form-charts">
       <ChartHeader
         intervals={intervals}
-        defaultIntervalId="all"
-        onChangeInterval={(_interval, value) => setCurrentInterval(value)}
+        currentInterval={currentInterval}
+        onChangeInterval={setCurrentInterval}
       />
       {isLoadingPriceCharts ? (
         <div className="pm-c-trade-form-charts__loading">

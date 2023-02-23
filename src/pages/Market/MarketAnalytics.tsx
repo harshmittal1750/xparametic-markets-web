@@ -1,117 +1,52 @@
+import cn from 'classnames';
+import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 
-import { Card, Grid, Text } from 'components';
+import { Text } from 'components';
 
 import { useAppSelector } from 'hooks';
 
-type MarketAnalyticsProps = {
-  liquidity: number;
-  volume: number;
-  expiration: string;
-};
+import marketClasses from './Market.module.scss';
+import MarketTitle from './MarketTitle';
 
-function MarketAnalytics({
-  liquidity,
-  volume,
-  expiration
-}: MarketAnalyticsProps) {
-  const currency = useAppSelector(state => state.market.market.currency);
-  const { ticker } = currency;
+export default function MarketAnalytics() {
+  const market = useAppSelector(state => state.market.market);
+  const analytics = {
+    Volume: roundNumber(market.volume, 3),
+    Expires: dayjs(market.expiresAt).utc().format('MMMM D, YYYY'),
+    Liquidity: roundNumber(market.liquidity, 3),
+    // TODO: get the actual 24h volume
+    '24H volume': roundNumber(market.volume, 3)
+  };
 
   return (
-    <div className="market-analytics">
-      <Grid fluid>
-        <Grid.Row className="market-analytics__group">
-          {liquidity ? (
-            <Grid.Col className="market-analytics__item">
-              <Card
-                backgroundColor="gradient-yellow"
-                title={
-                  <Text
-                    className="market-analytics__item-title"
-                    as="h2"
-                    scale="tiny-uppercase"
-                    fontWeight="bold"
-                    color="white-50"
-                  >
-                    Liquidity
-                  </Text>
-                }
-              >
-                <Text
-                  className="market-analytics__item-value"
-                  as="p"
-                  scale="body"
-                  fontWeight="semibold"
-                  color="white"
-                >
-                  {`${roundNumber(liquidity, 3)} ${ticker}`}
+    <section className={marketClasses.section}>
+      <MarketTitle>Stats</MarketTitle>
+      <ul className={marketClasses.stats}>
+        {Object.keys(analytics).map((analytic, index) => (
+          <li
+            key={analytic}
+            className={cn(marketClasses.statsItem, {
+              [marketClasses.statsItemGutter]: !index || index === 1
+            })}
+          >
+            <Text as="p" scale="tiny" color="gray" fontWeight="semibold">
+              {analytic}
+            </Text>
+            <Text
+              fontWeight="semibold"
+              className={marketClasses.statsItemPrimary}
+            >
+              {analytics[analytic]}{' '}
+              {analytic !== 'Expires' && (
+                <Text as="span" color="gray">
+                  {market.token.ticker}
                 </Text>
-              </Card>
-            </Grid.Col>
-          ) : null}
-          {volume ? (
-            <Grid.Col className="market-analytics__item">
-              <Card
-                backgroundColor="gradient-blue"
-                title={
-                  <Text
-                    className="market-analytics__item-title"
-                    as="h2"
-                    scale="tiny-uppercase"
-                    fontWeight="bold"
-                    color="white-50"
-                  >
-                    Volume
-                  </Text>
-                }
-              >
-                <Text
-                  className="market-analytics__item-value"
-                  as="p"
-                  scale="body"
-                  fontWeight="semibold"
-                  color="white"
-                >
-                  {`${roundNumber(volume, 3)} ${ticker}`}
-                </Text>
-              </Card>
-            </Grid.Col>
-          ) : null}
-          {expiration ? (
-            <Grid.Col className="market-analytics__item">
-              <Card
-                backgroundColor="gradient-orange"
-                title={
-                  <Text
-                    className="market-analytics__item-title"
-                    as="h2"
-                    scale="tiny-uppercase"
-                    fontWeight="bold"
-                    color="white-50"
-                  >
-                    Expiration
-                  </Text>
-                }
-              >
-                <Text
-                  className="market-analytics__item-value"
-                  as="p"
-                  scale="body"
-                  fontWeight="semibold"
-                  color="white"
-                >
-                  {expiration}
-                </Text>
-              </Card>
-            </Grid.Col>
-          ) : null}
-        </Grid.Row>
-      </Grid>
-    </div>
+              )}
+            </Text>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
-
-MarketAnalytics.displayName = 'MarketAnalytics';
-
-export default MarketAnalytics;

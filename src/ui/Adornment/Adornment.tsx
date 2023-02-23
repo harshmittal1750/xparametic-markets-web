@@ -1,25 +1,32 @@
-import type React from 'react';
-
 import cn from 'classnames';
 
-import AdornmentClasses from './Adornment.module.scss';
+import adornmentClasses from './Adornment.module.scss';
+
+export const adornmentProps = {
+  $edge: ['start', 'end']
+} as const;
+
+export interface AdornmentProps
+  extends Pick<
+    React.ComponentPropsWithoutRef<'span'>,
+    'children' | 'className'
+  > {
+  $edge: typeof adornmentProps.$edge[number];
+}
 
 export default function Adornment({
-  edge,
-  children
-}: React.PropsWithChildren<
-  Partial<{
-    edge: 'start' | 'end';
-  }>
->) {
+  $edge,
+  className,
+  ...props
+}: AdornmentProps) {
   return (
     <span
       className={cn({
-        [AdornmentClasses.start]: edge === 'start',
-        [AdornmentClasses.end]: edge === 'end'
+        [adornmentClasses.edgeStart]: $edge === 'start',
+        [adornmentClasses.edgeEnd]: $edge === 'end',
+        className
       })}
-    >
-      {children}
-    </span>
+      {...props}
+    />
   );
 }

@@ -1,18 +1,27 @@
 import cn from 'classnames';
 import { Container } from 'ui';
+import type { ContainerProps } from 'ui';
 
-import NavbarClasses from './Header.module.scss';
+import headerClasses from './Header.module.scss';
 import HeaderActions from './HeaderActions';
 import HeaderNav from './HeaderNav';
 
-export default function Header() {
+export interface HeaderProps
+  extends Pick<ContainerProps<'header'>, 'className'> {
+  $gutterBottom?: boolean;
+}
+
+export default function Header({ className, $gutterBottom }: HeaderProps) {
   return (
     <Container
       $as="header"
       className={cn(
-        'desktop:mb-24',
-        NavbarClasses.root,
-        NavbarClasses.container
+        headerClasses.root,
+        headerClasses.container,
+        {
+          [headerClasses.gutterBottom]: $gutterBottom
+        },
+        className
       )}
     >
       <HeaderNav />
@@ -20,5 +29,3 @@ export default function Header() {
     </Container>
   );
 }
-
-Header.displayName = 'Header';

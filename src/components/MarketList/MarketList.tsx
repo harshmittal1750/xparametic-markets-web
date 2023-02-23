@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type {
   VirtuosoProps as ReactVirtuosoProps,
   VirtuosoHandle,
@@ -6,7 +6,6 @@ import type {
 } from 'react-virtuoso';
 import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
-import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
 import { useMedia, useRect } from 'ui';
@@ -15,21 +14,18 @@ import { InfoIcon } from 'assets/icons';
 
 import PredictionCard from 'components/PredictionCard';
 
-import type { UseMarkets } from 'hooks/useMarkets';
+import useMarkets from 'hooks/useMarkets';
 
 import { Button } from '../Button';
 import Text from '../Text';
+import marketListClasses from './MarketList.module.scss';
 
 type VirtuosoProps = Omit<
   ReactVirtuosoProps<Market, unknown>,
   'useWindowScroll' | 'itemContent' | 'rangeChanged' | 'ref'
 >;
-type MarketListProps = {
-  markets: UseMarkets;
-};
 
-function Virtuoso(props: VirtuosoProps) {
-  const { data } = props;
+function Virtuoso({ data }: VirtuosoProps) {
   const isDesktop = useMedia('(min-width: 1024px)');
   const [back, backRect] = useRect();
   const HEIGHT = isDesktop
@@ -41,9 +37,7 @@ function Virtuoso(props: VirtuosoProps) {
     (index: number, market: Market) => (
       <PredictionCard
         market={market}
-        className={cn({
-          'mb-grid': data && index !== data.length - 1
-        })}
+        $gutter={data && index !== data.length - 1}
       />
     ),
     [data]
@@ -71,7 +65,7 @@ function Virtuoso(props: VirtuosoProps) {
         {renderBack && (
           <motion.div
             ref={back}
-            className="ta-center pr-grid pl-grid pt-grid bg-to-primary p-sticky w-100% zi-1"
+            className={marketListClasses.backRoot}
             initial={{ top: window.innerHeight }}
             animate={{
               top: `calc(${window.innerHeight}px - ${HEIGHT})`
@@ -89,19 +83,22 @@ function Virtuoso(props: VirtuosoProps) {
         useWindowScroll
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
-        {...(renderBack && {
-          style: {
-            top: -backRect.height
-          }
-        })}
-        {...props}
+        data={data}
+        style={{ top: renderBack ? -backRect.height : '' }}
       />
     </>
   );
 }
-export default function MarketList({ markets }: MarketListProps) {
+export default function MarketList() {
+  const markets = useMarkets();
+
+  useEffect(() => {
+    markets.fetch();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <div className="pm-c-market-list p-grid">
+    <div className="pm-c-market-list">
       {
         {
           loading: (

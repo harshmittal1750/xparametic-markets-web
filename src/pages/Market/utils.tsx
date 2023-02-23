@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 
 import dayjs from 'dayjs';
@@ -8,7 +7,6 @@ import { roundNumber } from 'helpers/math';
 import { capitalize } from 'helpers/string';
 import reverse from 'lodash/reverse';
 import times from 'lodash/times';
-import { Market } from 'models/market';
 import { PolkamarketsService } from 'services';
 
 import { ShareIcon } from 'assets/icons';
@@ -57,10 +55,10 @@ type Row = {
   transactionHash: { value: React.ReactNode; align: ItemAlign };
 };
 
-function formatMarketPositions(
-  actions: [],
-  bondActions: [],
-  market: Market,
+function formatMarketPositions<A, O>(
+  actions: A[],
+  bondActions: A[],
+  outcomes: O,
   ticker: string,
   network
 ) {
@@ -103,14 +101,13 @@ function formatMarketPositions(
         action.action === 'Buy' ||
         action.action === 'Sell' ||
         action.action === 'Claim Winnings'
-          ? market.outcomes[outcomeId]?.title
+          ? outcomes[outcomeId]?.title
           : null;
 
       if (action.answerId) {
         // mapping realitio answer to outcome
         outcomeId = PolkamarketsService.bytes32ToInt(action.answerId);
-        outcome =
-          outcomeId === -1 ? 'Invalid' : market.outcomes[outcomeId]?.title;
+        outcome = outcomeId === -1 ? 'Invalid' : outcomes[outcomeId]?.title;
       }
       const date = fromTimestampToDate(action.timestamp * 1000).format(
         'YYYY/MM/DD'
@@ -134,13 +131,18 @@ function formatMarketPositions(
       return {
         key,
         outcome: {
-          value: outcome ? (
+          value: outcome && (
             <Badge
-              color={outcomeId === -1 ? 'warning' : colorByOutcomeId(outcomeId)}
-              label={`${outcome}`}
+              variant="filled"
+              style={{
+                backgroundColor: `rgb(var(--color-${colorByOutcomeId(
+                  outcomeId
+                )}--rgb) / 0.6)`
+              }}
+              label={outcome}
             />
-          ) : null,
-          align: 'center'
+          ),
+          align: 'left'
         },
         date: {
           value: (
@@ -151,9 +153,7 @@ function formatMarketPositions(
               style={{ display: 'flex', flexDirection: 'column' }}
             >
               {date}
-              <Text as="strong" scale="caption" fontWeight="semibold">
-                {utcTime}
-              </Text>
+              <strong>{utcTime}</strong>
             </Text>
           ),
           align: 'right'
@@ -162,11 +162,7 @@ function formatMarketPositions(
           value: (
             <Text as="span" scale="caption" fontWeight="semibold">
               {price}
-              {price ? (
-                <Text as="strong" scale="caption" fontWeight="semibold">
-                  {` ${ticker}`}
-                </Text>
-              ) : null}
+              {price ? <strong>{` ${ticker}`}</strong> : null}
             </Text>
           ),
           align: 'right'
@@ -178,10 +174,8 @@ function formatMarketPositions(
         value: {
           value: (
             <Text as="span" scale="caption" fontWeight="semibold">
-              {value}
-              <Text as="strong" scale="caption" fontWeight="semibold">
-                {` ${action.action === 'Bond' ? 'POLK' : ticker}`}
-              </Text>
+              {value}{' '}
+              <strong>{action.action === 'Bond' ? 'POLK' : ticker}</strong>
             </Text>
           ),
           align: 'right'
