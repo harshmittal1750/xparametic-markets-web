@@ -106,16 +106,22 @@ function HeaderNavMenu({
               to={page.pathname}
               className={HeaderNavClasses.link}
               activeClassName={HeaderNavClasses.active}
-              isActive={(_, location) =>
-                // prettier-ignore
-                // eslint-disable-next-line no-nested-ternary
-                location.pathname === pages.home.pathname ||
-                /^\/markets/.test(location.pathname)
-                  ? page.pathname === pages.home.pathname
-                  : pages.clubs.enabled && /^\/clubs/.test(location.pathname)
-                    ?  page.pathname === pages.clubs.pathname
-                    : new RegExp(shiftSlash(location.pathname)).test(shiftSlash(page.pathname))
-              }
+              isActive={(_, location) => {
+                if (
+                  location.pathname === pages.home.pathname ||
+                  /^\/markets/.test(location.pathname)
+                ) {
+                  return page.pathname === pages.home.pathname;
+                }
+
+                if (pages.clubs.enabled && /^\/clubs/.test(location.pathname)) {
+                  return page.pathname === pages.clubs.pathname;
+                }
+
+                return new RegExp(shiftSlash(location.pathname)).test(
+                  shiftSlash(page.pathname)
+                );
+              }}
               {...NavLinkProps}
             >
               {page.name}

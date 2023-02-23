@@ -1,4 +1,3 @@
-/* eslint-disable react/display-name */
 import React from 'react';
 
 import dayjs from 'dayjs';
@@ -132,13 +131,18 @@ function formatMarketPositions<A, O>(
       return {
         key,
         outcome: {
-          value: outcome ? (
+          value: outcome && (
             <Badge
-              color={outcomeId === -1 ? 'warning' : colorByOutcomeId(outcomeId)}
-              label={`${outcome}`}
+              variant="filled"
+              style={{
+                backgroundColor: `rgb(var(--color-${colorByOutcomeId(
+                  outcomeId
+                )}--rgb) / 0.6)`
+              }}
+              label={outcome}
             />
-          ) : null,
-          align: 'center'
+          ),
+          align: 'left'
         },
         date: {
           value: (
@@ -149,9 +153,7 @@ function formatMarketPositions<A, O>(
               style={{ display: 'flex', flexDirection: 'column' }}
             >
               {date}
-              <Text as="strong" scale="caption" fontWeight="semibold">
-                {utcTime}
-              </Text>
+              <strong>{utcTime}</strong>
             </Text>
           ),
           align: 'right'
@@ -160,11 +162,7 @@ function formatMarketPositions<A, O>(
           value: (
             <Text as="span" scale="caption" fontWeight="semibold">
               {price}
-              {price ? (
-                <Text as="strong" scale="caption" fontWeight="semibold">
-                  {` ${ticker}`}
-                </Text>
-              ) : null}
+              {price ? <strong>{` ${ticker}`}</strong> : null}
             </Text>
           ),
           align: 'right'
@@ -176,10 +174,8 @@ function formatMarketPositions<A, O>(
         value: {
           value: (
             <Text as="span" scale="caption" fontWeight="semibold">
-              {value}
-              <Text as="strong" scale="caption" fontWeight="semibold">
-                {` ${action.action === 'Bond' ? 'POLK' : ticker}`}
-              </Text>
+              {value}{' '}
+              <strong>{action.action === 'Bond' ? 'POLK' : ticker}</strong>
             </Text>
           ),
           align: 'right'

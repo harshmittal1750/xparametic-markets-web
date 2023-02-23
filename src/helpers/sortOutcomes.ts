@@ -18,7 +18,7 @@ function getPricesDiff(priceChart?: PriceChart) {
 
   const [initial, ...prices] = pricesArr;
   const diffValue = prices[prices.length - 1].value - initial.value;
-  const diffSign = Math.sign(diffValue) < 0 ? '-' : '+';
+  const diffSign = Math.sign(diffValue) < 0 ? '' : '+';
 
   return {
     value: `${diffSign}${roundNumber(diffValue, 3)}`,

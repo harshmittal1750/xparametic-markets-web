@@ -356,6 +356,7 @@ export default class PolkamarketsService {
 
   public async getPortfolio(): Promise<Object> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return {};
 
     const response = await this.contracts.pm.getMyPortfolio();
@@ -614,6 +615,7 @@ export default class PolkamarketsService {
 
   public async getBonds(): Promise<Object> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return {};
 
     const bonds = await this.contracts.realitio.getMyBonds();
@@ -623,6 +625,7 @@ export default class PolkamarketsService {
 
   public async getBondActions(): Promise<Object> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return [];
 
     const response = await this.contracts.realitio.getMyActions();
@@ -692,6 +695,7 @@ export default class PolkamarketsService {
     if (!this.contracts.voting.getContract()._address) return {};
 
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return {};
 
     const response = await this.contracts.voting.getUserVotes({

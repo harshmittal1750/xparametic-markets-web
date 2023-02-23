@@ -1,7 +1,6 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
-import cn from 'classnames';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useMedia } from 'ui';
@@ -87,9 +86,7 @@ function MarketUI() {
   const network = useNetwork();
   const dispatch = useAppDispatch();
   const isDesktop = useMedia('(min-width: 1024px)');
-  const isSidebarVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
+  const hasSidebar = useAppSelector(state => state.ui.rightSidebar.visible);
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
@@ -108,7 +105,7 @@ function MarketUI() {
     bondActions.filter(action => action.questionId === market.questionId),
     market.outcomes,
     market.token.symbol,
-    network
+    network.network
   );
   const SidebarWrapperComponent = isDesktop ? Fragment : SidebarWrapper;
   const MarketBodyComponent = isDesktop ? MarketBody : Fragment;
@@ -126,10 +123,7 @@ function MarketUI() {
       />
       <MarketHead />
       <MarketBodyComponent>
-        <Container
-          $enableGutters
-          className={cn({ [marketClasses.bodyContent]: isDesktop })}
-        >
+        <Container $enableGutters className={marketClasses.bodyContent}>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">
@@ -209,7 +203,7 @@ function MarketUI() {
             </Tabs>
           </section>
         </Container>
-        {isSidebarVisible && (
+        {hasSidebar && (
           <SidebarWrapperComponent>
             <RightSidebar />
           </SidebarWrapperComponent>
