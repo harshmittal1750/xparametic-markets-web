@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
 import { networks, tokens } from 'config';
 import type { Network } from 'types/network';
 import { Adornment, Container, Tag } from 'ui';
 
+import { ModalContent } from 'components';
 import Modal from 'components/Modal';
 
 import { Button } from '../Button';
@@ -75,87 +77,89 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
           dialog: selectTokenModalClasses.dialog
         }}
       >
-        <Container
-          $as="header"
-          className={selectTokenModalClasses.dialogHeader}
-        >
-          <Text
-            scale="heading"
-            fontWeight="bold"
-            className={selectTokenModalClasses.dialogHeaderTitle}
+        <ModalContent className={selectTokenModalClasses.dialogWrapper}>
+          <Container
+            $as="header"
+            className={selectTokenModalClasses.dialogHeader}
           >
-            Select a token
-          </Text>
-          <Adornment $edge="end">
-            <Button
-              size="xs"
-              variant="ghost"
-              color="default"
-              aria-label="Close"
-              onClick={handleHide}
+            <Text
+              scale="heading"
+              fontWeight="bold"
+              className={selectTokenModalClasses.dialogHeaderTitle}
             >
-              <Icon name="Cross" size="lg" />
-            </Button>
-          </Adornment>
-        </Container>
-        <Container className={selectTokenModalClasses.dialogContent}>
-          <SearchBar
-            placeholder="Search name or paste address"
-            onSearch={text => console.log(text)}
-            onChange={handleChange}
-            value={searchString}
-          />
-          <ul className={selectTokenModalClasses.buttonList}>
-            {filteredTokens.map((token, index) => (
-              <li key={token.name} tabIndex={index + 1}>
-                <Button
-                  variant="outline"
-                  color="default"
-                  className={selectTokenModalClasses.buttonListItem}
+              Select a token
+            </Text>
+            <Adornment $edge="end">
+              <Button
+                size="xs"
+                variant="ghost"
+                color="default"
+                aria-label="Close"
+                onClick={handleHide}
+              >
+                <Icon name="Cross" size="lg" />
+              </Button>
+            </Adornment>
+          </Container>
+          <Container className={selectTokenModalClasses.dialogContent}>
+            <SearchBar
+              placeholder="Search name or paste address"
+              onSearch={text => console.log(text)}
+              onChange={handleChange}
+              value={searchString}
+            />
+            <ul className={selectTokenModalClasses.buttonList}>
+              {filteredTokens.map((token, index) => (
+                <li key={token.name} tabIndex={index + 1}>
+                  <Button
+                    variant="outline"
+                    color="default"
+                    className={selectTokenModalClasses.buttonListItem}
+                    onClick={() => handleSelect(token.name)}
+                  >
+                    <Icon
+                      name={token.iconName}
+                      className={selectTokenModalClasses.buttonListItemIcon}
+                    />
+                    <span
+                      className={selectTokenModalClasses.buttonListItemTicker}
+                    >
+                      {token.ticker}
+                    </span>
+                  </Button>
+                </li>
+              ))}
+            </ul>
+          </Container>
+          <Container className={selectTokenModalClasses.dialogList}>
+            <VirtualizedList
+              height="100%"
+              data={filteredTokens}
+              itemContent={(_index, token) => (
+                <div
+                  role="button"
+                  tabIndex={0}
+                  className={selectTokenModalClasses.listItem}
                   onClick={() => handleSelect(token.name)}
+                  onKeyPress={() => handleSelect(token.name)}
                 >
                   <Icon
                     name={token.iconName}
-                    className={selectTokenModalClasses.buttonListItemIcon}
+                    className={selectTokenModalClasses.listItemIcon}
                   />
-                  <span
-                    className={selectTokenModalClasses.buttonListItemTicker}
-                  >
-                    {token.ticker}
-                  </span>
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </Container>
-        <Container className={selectTokenModalClasses.dialogList}>
-          <VirtualizedList
-            height="100%"
-            data={filteredTokens}
-            itemContent={(_index, token) => (
-              <div
-                role="button"
-                tabIndex={0}
-                className={selectTokenModalClasses.listItem}
-                onClick={() => handleSelect(token.name)}
-                onKeyPress={() => handleSelect(token.name)}
-              >
-                <Icon
-                  name={token.iconName}
-                  className={selectTokenModalClasses.listItemIcon}
-                />
-                <div className={selectTokenModalClasses.listItemNameGroup}>
-                  <span className={selectTokenModalClasses.listItemName}>
-                    {token.name}
-                  </span>
-                  <span className={selectTokenModalClasses.listItemTicker}>
-                    {token.ticker}
-                  </span>
+                  <div className={selectTokenModalClasses.listItemNameGroup}>
+                    <span className={selectTokenModalClasses.listItemName}>
+                      {token.name}
+                    </span>
+                    <span className={selectTokenModalClasses.listItemTicker}>
+                      {token.ticker}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            )}
-          />
-        </Container>
+              )}
+            />
+          </Container>
+        </ModalContent>
       </Modal>
     </>
   );
