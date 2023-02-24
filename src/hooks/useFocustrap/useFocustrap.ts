@@ -35,18 +35,20 @@ export default function useFocustrap<V extends HTMLElement>(
   useEffect(() => {
     const { current: node } = ref;
 
-    if (node != null) {
-      node.insertBefore(focusTrap.start, node.firstChild);
-      node.appendChild(focusTrap.end);
+    if (!node) return () => null;
 
-      if (node.contains(focusTrap.start)) focusTrap.start.focus();
-    }
+    node.insertBefore(focusTrap.start, node.firstChild);
+    node.appendChild(focusTrap.end);
+    focusTrap.start.focus();
 
     return () => (focusPrev as HTMLElement)?.focus();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusPrev, ref]);
   useEffect(() => {
     const { current: node } = ref;
+
+    if (!node) return () => null;
+
     const els = node?.querySelectorAll(focusableElements?.join(', '));
     const focusEdge = {
       start: els?.[0] as HTMLElement,
