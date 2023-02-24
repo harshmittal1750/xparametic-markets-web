@@ -20,6 +20,8 @@ export { default as ListItemText } from './ListItemText';
 
 export { default as Spinner } from './Spinner';
 
+export { default as Tag } from './Tag';
+
 export { default as Toggle } from './Toggle';
 
 export { default as useAverageColor } from './useAverageColor';
