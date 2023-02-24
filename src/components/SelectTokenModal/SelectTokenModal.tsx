@@ -17,8 +17,6 @@ type SelectTokenModalProps = {
   network: Network;
 };
 
-const currencyByNetwork = networks['0x2a'].currency;
-
 export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
@@ -37,9 +35,12 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
 
   const isAddress = (text: string) => /0[x, X][a-fA-F0-9]{40}/.test(text);
 
+  const currencyByNetwork = network.currency;
   const tokensByNetwork = useMemo(
     () =>
-      tokens.filter(token => Object.keys(token.addresses).includes('goerli')),
+      tokens.filter(token =>
+        Object.keys(token.addresses).includes(network.key)
+      ),
     []
   );
 
