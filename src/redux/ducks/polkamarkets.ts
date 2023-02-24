@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PolkamarketsService } from 'services';
+import { Currency } from 'types/currency';
+import { Token } from 'types/token';
 
 export type Action = {
   action: string;
@@ -33,6 +35,7 @@ export type PolkamarketsInitialState = {
     actions: boolean;
     votes: boolean;
   };
+  createMarketToken: Token | Currency | null;
 };
 
 const initialState: PolkamarketsInitialState = {
@@ -54,7 +57,8 @@ const initialState: PolkamarketsInitialState = {
     bonds: false,
     actions: false,
     votes: false
-  }
+  },
+  createMarketToken: null
 };
 
 const polkamarketsSlice = createSlice({
@@ -136,6 +140,13 @@ const polkamarketsSlice = createSlice({
         }
       };
     },
+    changeCreateMarketToken: (
+      state,
+      action: PayloadAction<Token | Currency>
+    ) => ({
+      ...state,
+      createMarketToken: action.payload
+    }),
     changeLoading: (
       state,
       action: PayloadAction<{ key: string; value: boolean }>
@@ -166,6 +177,7 @@ const {
   changeBondActions,
   changeVotes,
   changeVoteByMarketId,
+  changeCreateMarketToken,
   changeLoading
 } = polkamarketsSlice.actions;
 
@@ -293,6 +305,7 @@ export {
   changeBonds,
   changeBondActions,
   changeVoteByMarketId,
+  changeCreateMarketToken,
   login,
   fetchAditionalData
 };
