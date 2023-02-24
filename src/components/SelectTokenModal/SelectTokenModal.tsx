@@ -47,7 +47,8 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   const availableTokens = [currencyByNetwork, ...tokensByNetwork];
   const filteredTokens = availableTokens.filter(
     token =>
-      token.name.includes(searchString) || token.ticker.includes(searchString)
+      token.name.toLowerCase().includes(searchString.toLowerCase()) ||
+      token.ticker.toLowerCase().includes(searchString.toLowerCase())
   );
 
   return (
