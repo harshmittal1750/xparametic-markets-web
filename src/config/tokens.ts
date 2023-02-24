@@ -34,7 +34,9 @@ const POLK: Token = {
   addresses: {
     moonriver: '0x8b29344f368b5fa35595325903fe0eaab70c8e1f',
     moonbeam: '0x8b29344f368b5fa35595325903fe0eaab70c8e1f',
-    goerli: '0xd9983addca0e51400c50cba7658847ac3a42f026'
+    goerli: '0xd9983addca0e51400c50cba7658847ac3a42f026',
+    local: '0xd3e19f031b4c60ef162edaf0efc9c9d8b3f8877d',
+    polygon: '0x996F19d4b1cE6D5AD72CEaaa53152CEB1B187fD0'
   }
 };
 
