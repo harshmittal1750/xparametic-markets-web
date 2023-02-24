@@ -1,10 +1,15 @@
 import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
-import { networks, tokens } from 'config';
+import { tokens } from 'config';
+import { changeCreateMarketToken } from 'redux/ducks/polkamarkets';
+import { Currency } from 'types/currency';
 import type { Network } from 'types/network';
+import { Token } from 'types/token';
 import { Adornment, Container, Tag } from 'ui';
 
 import Modal from 'components/Modal';
+
+import { useAppDispatch } from 'hooks';
 
 import { Button } from '../Button';
 import Icon from '../Icon';
@@ -18,6 +23,7 @@ type SelectTokenModalProps = {
 };
 
 export default function SelectTokenModal({ network }: SelectTokenModalProps) {
+  const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
   const [searchString, setSearchString] = useState<string>('');
@@ -27,7 +33,8 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   }, []);
 
   const handleSelect = useCallback(
-    (token: string) => {
+    (token: Currency | Token) => {
+      dispatch(changeCreateMarketToken(token));
       handleHide();
     },
     [handleHide]
@@ -114,7 +121,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                   variant="outline"
                   color="default"
                   className={selectTokenModalClasses.buttonListItem}
-                  onClick={() => handleSelect(token.name)}
+                  onClick={() => handleSelect(token)}
                 >
                   <Icon
                     name={token.iconName}
@@ -139,8 +146,8 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                 role="button"
                 tabIndex={0}
                 className={selectTokenModalClasses.listItem}
-                onClick={() => handleSelect(token.name)}
-                onKeyPress={() => handleSelect(token.name)}
+                onClick={() => handleSelect(token)}
+                onKeyPress={() => handleSelect(token)}
               >
                 <Icon
                   name={token.iconName}
