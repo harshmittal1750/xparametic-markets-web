@@ -182,8 +182,8 @@ export default class PolkamarketsService {
     };
 
     // TODO: remove !token condition
-    if (wrapped || !token) {
-      response = await this.contracts.pm.createMarket(args);
+    if (wrapped) {
+      response = await this.contracts.pm.createMarketWithETH(args);
     } else {
       response = await this.contracts.pm.createMarket({
         ...args,
