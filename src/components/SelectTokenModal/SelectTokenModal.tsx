@@ -9,7 +9,7 @@ import { Adornment, Container, Tag } from 'ui';
 
 import Modal from 'components/Modal';
 
-import { useAppDispatch } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 
 import { Button } from '../Button';
 import Icon from '../Icon';
@@ -27,6 +27,9 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
   const [searchString, setSearchString] = useState<string>('');
+  const { createMarketToken } = useAppSelector(state => state.polkamarkets);
+
+  const currency = createMarketToken || network.currency;
 
   const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setSearchString(event.target.value);
@@ -67,9 +70,9 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
         $variant="subtle"
       >
         <Adornment $size="sm" $edge="start">
-          {network.currency.icon}
+          <Icon name={currency.iconName} />
         </Adornment>
-        {network.currency.ticker}
+        {currency.ticker}
         <Adornment $size="sm" $edge="end">
           <Icon name="Chevron" dir="down" />
         </Adornment>

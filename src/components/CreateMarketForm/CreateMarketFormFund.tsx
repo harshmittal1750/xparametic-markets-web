@@ -3,10 +3,11 @@ import { useState, useEffect } from 'react';
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
 import { PolkamarketsService } from 'services';
+import { Token } from 'types/token';
 
 import { InfoIcon } from 'assets/icons';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useNetwork, useERC20Balance } from 'hooks';
 
 import { AlertMini } from '../Alert';
 import AmountInput from '../AmountInput';
@@ -17,7 +18,20 @@ import Tooltip from '../Tooltip';
 
 function CreateMarketFormFund() {
   const network = useNetwork();
-  const balance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const { ethBalance, createMarketToken } = useAppSelector(
+    state => state.polkamarkets
+  );
+  let erc20Address = '';
+
+  if (createMarketToken && (createMarketToken as Token).addresses) {
+    erc20Address = (createMarketToken as Token).addresses[network.network.key];
+  }
+
+  const { balance: erc20Balance } = useERC20Balance(erc20Address);
+
+  const balance = erc20Address ? erc20Balance : ethBalance;
+  const currency = createMarketToken || network.network.currency;
+
   const [field, _meta, helpers] = useField('liquidity');
   const [fee, setFee] = useState(0);
 
@@ -69,7 +83,7 @@ function CreateMarketFormFund() {
         <AmountInput
           label="Add Liquidity"
           max={roundDown(balance)}
-          currency={network.network.currency}
+          currency={currency}
           onChange={handleChangeAmount}
           endAdornment={<SelectTokenModal network={network.network} />}
         />
@@ -93,9 +107,7 @@ function CreateMarketFormFund() {
                 fontWeight="semibold"
                 className="pm-c-create-market-form__card-liquidity-details__liquidity-value__amount"
               >
-                {`${roundNumber(field.value, 3)} ${
-                  network.network.currency.symbol
-                }`}
+                {`${roundNumber(field.value, 3)} ${currency.symbol}`}
               </Text>
             </div>
             <div className="pm-c-create-market-form__card-liquidity-details__shares-added">
