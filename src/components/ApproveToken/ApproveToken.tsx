@@ -13,12 +13,14 @@ import ToastNotification from '../ToastNotification';
 import Tooltip from '../Tooltip';
 
 type ApproveTokenProps = {
-  token: Token;
+  address: string;
+  ticker: string;
   children: JSX.Element;
 };
 
 function ApproveToken({
-  token,
+  address,
+  ticker,
   children
 }: ApproveTokenProps): JSX.Element | null {
   const { network } = useNetwork();
@@ -37,14 +39,11 @@ function ApproveToken({
     setApproveTokenTransactionSuccessHash
   ] = useState(undefined);
 
-  const { address } = token;
-
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function checkTokenApproval(tokenAddress, spenderAddress) {
-    const isApproved = await polkamarketsService.isERC20Approved(
-      tokenAddress,
-      spenderAddress
-    );
+    const isApproved =
+      !tokenAddress ||
+      (await polkamarketsService.isERC20Approved(tokenAddress, spenderAddress));
 
     setIsTokenApproved(isApproved);
   }
@@ -58,7 +57,7 @@ function ApproveToken({
 
     try {
       const response = await polkamarketsService.approveERC20(
-        token.address,
+        address,
         predictionMarketContractAddress
       );
 
@@ -67,19 +66,19 @@ function ApproveToken({
       if (status && transactionHash) {
         setApproveTokenTransactionSuccess(status);
         setApproveTokenTransactionSuccessHash(transactionHash);
-        show(`approve-${token.ticker}`);
+        show(`approve-${ticker}`);
       }
 
       setIsApprovingToken(false);
 
-      checkTokenApproval(token.address, predictionMarketContractAddress);
+      checkTokenApproval(address, predictionMarketContractAddress);
     } catch (error) {
       setIsApprovingToken(false);
     }
   }, [
     polkamarketsService,
-    token.address,
-    token.ticker,
+    address,
+    ticker,
     predictionMarketContractAddress,
     checkTokenApproval,
     show
@@ -99,7 +98,7 @@ function ApproveToken({
           loading={isApprovingToken}
           disabled={isApprovingToken}
         >
-          {`Allow Polkamarkets to use your ${token.ticker}`}
+          {`Allow Polkamarkets to use your ${ticker}`}
           <Tooltip text="You only have to do this once.">
             <QuestionIcon
               style={{ width: '1.4rem', height: '1.4rem', opacity: 0.35 }}
@@ -108,7 +107,7 @@ function ApproveToken({
         </ButtonLoading>
         {approveTokenTransactionSuccess &&
         approveTokenTransactionSuccessHash ? (
-          <ToastNotification id={`approve-${token.ticker}`} duration={10000}>
+          <ToastNotification id={`approve-${ticker}`} duration={10000}>
             <Toast
               variant="success"
               title="Success"
@@ -127,7 +126,7 @@ function ApproveToken({
                 <Button
                   size="sm"
                   variant="ghost"
-                  onClick={() => close(`approve-${token.ticker}`)}
+                  onClick={() => close(`approve-${ticker}`)}
                 >
                   Dismiss
                 </Button>
