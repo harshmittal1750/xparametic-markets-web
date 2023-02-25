@@ -181,6 +181,8 @@ export { default as ModalSection } from './ModalSection';
 
 export { default as ModalSectionText } from './ModalSectionText';
 
+export { default as NetworkSelector } from './NetworkSelector';
+
 export { default as OutcomeItem } from './OutcomeItem';
 
 export { default as OutcomeItemText } from './OutcomeItemText';

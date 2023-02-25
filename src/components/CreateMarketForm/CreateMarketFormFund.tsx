@@ -2,25 +2,21 @@ import { useState, useEffect } from 'react';
 
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
-import { kebabCase } from 'lodash';
 import { PolkamarketsService } from 'services';
 
 import { InfoIcon } from 'assets/icons';
 
 import { AlertMini } from 'components/Alert';
 import AmountInput from 'components/AmountInput';
-import { SelectInput } from 'components/Input';
 import Link from 'components/Link';
+import NetworkSelector from 'components/NetworkSelector';
 import SelectTokenModal from 'components/SelectTokenModal';
 import Text from 'components/Text';
 import Tooltip from 'components/Tooltip';
 
-import { useNetworks } from 'contexts/networks';
-
 import { useAppSelector, useNetwork } from 'hooks';
 
 function CreateMarketFormFund() {
-  const networks = useNetworks();
   const network = useNetwork();
   const balance = useAppSelector(state => state.polkamarkets.ethBalance);
   const [field, _meta, helpers] = useField('liquidity');
@@ -71,15 +67,7 @@ function CreateMarketFormFund() {
             </>
           }
         />
-        <SelectInput
-          label="Network"
-          name="network"
-          placeholder="Select Network (Chain)"
-          options={networks.networks.map(({ name }) => ({
-            name,
-            value: kebabCase(name)
-          }))}
-        />
+        <NetworkSelector />
         <AmountInput
           label="Add Liquidity"
           max={roundDown(balance)}
