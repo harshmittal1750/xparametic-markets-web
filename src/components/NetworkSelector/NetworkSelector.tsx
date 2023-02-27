@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, List, ListItem, useMedia, useRect } from 'ui';
+import { Adornment, List, ListItem, useMedia } from 'ui';
 
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
@@ -16,14 +16,17 @@ type NetworkSelectorProps = Partial<Record<'responsive', boolean>>;
 
 export default function NetworkSelector({ responsive }: NetworkSelectorProps) {
   const networks = useNetworks();
-  const [show, setShow] = useState(false);
-  const [ref, rect] = useRect<HTMLButtonElement>();
+  const [rect, setRect] = useState<DOMRect | null>(null);
   const isDesktop = useMedia('(min-width: 1024px)');
   const isTv = useMedia('(min-width: 1280px)');
   const itsDesktop = !responsive || isDesktop;
   const itsTv = !responsive || isTv;
-  const handleShow = useCallback(() => setShow(true), []);
-  const handleHide = useCallback(() => setShow(false), []);
+  const handleShow = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) =>
+      setRect(event.currentTarget.getBoundingClientRect()),
+    []
+  );
+  const handleHide = useCallback(() => setRect(null), []);
   const handleNetworkClick = useCallback(
     (name: string) => () => {
       const [network] = networks.networks.filter(
@@ -39,7 +42,6 @@ export default function NetworkSelector({ responsive }: NetworkSelectorProps) {
   return (
     <>
       <Button
-        ref={ref}
         variant={itsDesktop ? 'outline' : 'ghost'}
         color="default"
         aria-label="Switch network"
@@ -51,7 +53,7 @@ export default function NetworkSelector({ responsive }: NetworkSelectorProps) {
           <>
             {itsTv && networks.network.name}
             <span className={networSelector.networkIcon}>
-              <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
+              <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
             </span>
           </>
         )}
@@ -61,7 +63,7 @@ export default function NetworkSelector({ responsive }: NetworkSelectorProps) {
         onHide={handleHide}
         disableOverlay={itsDesktop}
         fullWidth={!itsDesktop}
-        show={show}
+        show={!!rect}
         className={{
           backdrop: networSelector.backdrop,
           dialog: networSelector.dialog
@@ -70,7 +72,7 @@ export default function NetworkSelector({ responsive }: NetworkSelectorProps) {
           ? {
               style: {
                 left: rect?.left,
-                top: rect?.top + rect?.height + 16,
+                top: `calc(${rect?.top}px + ${rect?.height}px + var(--grid-margin)`,
                 width: rect?.width
               }
             }

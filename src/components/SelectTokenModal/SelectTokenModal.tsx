@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
 import { networks, tokens } from 'config';
