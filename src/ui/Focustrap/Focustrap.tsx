@@ -23,28 +23,36 @@ const focusables = [
   'select'
 ].join(', ');
 
+function getFocusables(node: HTMLElement) {
+  const [trapStart, edgeStart, ...elements] = Array.from(
+    node.querySelectorAll(focusables)
+  ) as Array<HTMLElement>;
+  const { length } = elements;
+
+  return [
+    {
+      start: trapStart,
+      end: elements[length - 1]
+    },
+    {
+      start: edgeStart,
+      end: elements[length - 2]
+    }
+  ];
+}
 export default function Focustrap({ children, trappersId }: FocustrapProps) {
   const { current: focusPrev } = usePrevious(document.activeElement);
-  const trapperStart = useRef<HTMLButtonElement>(null);
-  const trapperEnd = useRef<HTMLButtonElement>(null);
+  const trapEnd = useRef<HTMLButtonElement>(null);
 
   useEffect(() => () => (focusPrev as HTMLElement)?.focus(), [focusPrev]);
-  useEffect(() => trapperStart.current?.focus(), []);
+  useEffect(() => trapEnd.current?.focus(), []);
 
   return Children.only(
     cloneElement(
       children,
       {
         onFocus: useCallback((event: React.FocusEvent<HTMLElement>) => {
-          const els = event.currentTarget.querySelectorAll(focusables);
-          const trap = {
-            start: els?.[0] as HTMLElement,
-            end: els?.[els.length - 1] as HTMLElement
-          };
-          const edge = {
-            start: els?.[1] as HTMLElement,
-            end: els?.[els.length - 2] as HTMLElement
-          };
+          const [trap, edge] = getFocusables(event.currentTarget);
 
           if (event.target === trap.start) {
             window.requestAnimationFrame(() => {
@@ -52,24 +60,23 @@ export default function Focustrap({ children, trappersId }: FocustrapProps) {
             });
           }
           if (event.target === trap.end) {
-            window.requestAnimationFrame(() =>
-              window.setTimeout(() => edge.start?.focus())
-            );
+            window.requestAnimationFrame(() => {
+              window.setTimeout(() => edge.start?.focus());
+            });
           }
         }, [])
       },
       <>
         <button
-          ref={trapperStart}
-          className={focustrapClasses.trap}
           type="button"
+          className={focustrapClasses.trap}
           data-testid={trappersId.start}
         />
         {children.props.children}
         <button
-          ref={trapperEnd}
-          className={focustrapClasses.trap}
           type="button"
+          ref={trapEnd}
+          className={focustrapClasses.trap}
           data-testid={trappersId.end}
         />
       </>
