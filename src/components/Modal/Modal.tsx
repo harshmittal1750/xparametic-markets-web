@@ -96,7 +96,7 @@ export default function Modal({
               )}
               onClick={handleBackdropClick}
             />
-            <Focustrap trappersId={modalTrappersId}>
+            <Focustrap<HTMLDivElement> trappersId={modalTrappersId}>
               <motion.div
                 initial={{ y: 8 }}
                 animate={{ y: 0 }}

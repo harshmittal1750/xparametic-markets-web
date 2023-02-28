@@ -40,18 +40,19 @@ function getFocusables(node: HTMLElement) {
     }
   ];
 }
-export default function Focustrap({ children, trappersId }: FocustrapProps) {
+export default function Focustrap<E extends HTMLElement>({
+  children,
+  trappersId
+}: FocustrapProps) {
   const { current: focusPrev } = usePrevious(document.activeElement);
-  const trapEnd = useRef<HTMLButtonElement>(null);
 
   useEffect(() => () => (focusPrev as HTMLElement)?.focus(), [focusPrev]);
-  useEffect(() => trapEnd.current?.focus(), []);
 
   return Children.only(
     cloneElement(
       children,
       {
-        onFocus: useCallback((event: React.FocusEvent<HTMLElement>) => {
+        onFocus: useCallback((event: React.FocusEvent<E>) => {
           const [trap, edge] = getFocusables(event.currentTarget);
 
           if (event.target === trap.start) {
@@ -75,7 +76,10 @@ export default function Focustrap({ children, trappersId }: FocustrapProps) {
         {children.props.children}
         <button
           type="button"
-          ref={trapEnd}
+          ref={useCallback(
+            (node: HTMLButtonElement | null) => node?.focus(),
+            []
+          )}
           className={focustrapClasses.trap}
           data-testid={trappersId.end}
         />
