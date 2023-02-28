@@ -1,10 +1,4 @@
-import React, {
-  Children,
-  cloneElement,
-  useCallback,
-  useEffect,
-  useRef
-} from 'react';
+import React, { Children, cloneElement, useCallback, useEffect } from 'react';
 
 import { usePrevious } from 'hooks';
 
