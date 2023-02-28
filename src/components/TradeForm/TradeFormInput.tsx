@@ -12,7 +12,8 @@ import {
   useAppSelector,
   useAppDispatch,
   useNetwork,
-  useERC20Balance
+  useERC20Balance,
+  usePolkamarketsService
 } from 'hooks';
 
 import { Button } from '../Button';
@@ -23,6 +24,7 @@ import { calculateTradeDetails } from './utils';
 function TradeFormInput() {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
 
   const token = useAppSelector(state => state.market.market.token);
   const { name, ticker, icon, address } = token;
@@ -45,14 +47,20 @@ function TradeFormInput() {
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
-  const { balance, isLoadingBalance } = useERC20Balance(address);
 
   const [amount, setAmount] = useState<number | undefined>(0);
   const [stepAmount, setStepAmount] = useState<number>(0);
+  const [isERC20TokenWrapped, setIsERC20TokenWrapped] =
+    useState<boolean>(false);
 
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const outcome = market.outcomes[selectedOutcomeId];
+
+  const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(address);
+  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
+
+  const balance = isERC20TokenWrapped ? ethBalance : erc20Balance;
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;
 
@@ -91,6 +99,21 @@ function TradeFormInput() {
       dispatch(setTradeDetails(tradeDetails));
     }
   }, [dispatch, type, market, outcome, amount]);
+
+  useEffect(() => {
+    async function checkIfERC20TokenWrapped() {
+      try {
+        const isMarketERC20TokenWrapped =
+          await polkamarketsService.isMarketERC20TokenWrapped(market.id);
+
+        setIsERC20TokenWrapped(isMarketERC20TokenWrapped);
+      } catch (error) {
+        setIsERC20TokenWrapped(false);
+      }
+    }
+
+    checkIfERC20TokenWrapped();
+  }, [market.id, polkamarketsService]);
 
   function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
     const { value } = event.currentTarget;
