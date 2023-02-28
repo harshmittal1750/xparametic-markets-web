@@ -10,6 +10,8 @@ export type { ContainerProps } from './Container';
 
 export { default as Divider } from './Divider';
 
+export { default as Focustrap } from './Focustrap';
+
 export { default as Hero } from './Hero';
 
 export { default as List } from './List';
