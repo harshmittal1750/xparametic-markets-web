@@ -15,11 +15,13 @@ import Tooltip from '../Tooltip';
 type ApproveTokenProps = {
   token: Token;
   children: JSX.Element;
+  onApprove?(isApproved: boolean): void;
 };
 
 function ApproveToken({
   token,
-  children
+  children,
+  onApprove
 }: ApproveTokenProps): JSX.Element | null {
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
@@ -47,6 +49,7 @@ function ApproveToken({
     );
 
     setIsTokenApproved(isApproved);
+    onApprove?.(isApproved);
   }
 
   useEffect(() => {
