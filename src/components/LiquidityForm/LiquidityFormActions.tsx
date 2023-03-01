@@ -127,9 +127,6 @@ function LiquidityFormActions() {
 
   return (
     <div className="pm-c-liquidity-form__actions">
-      <Button variant="subtle" color="default" onClick={handleCancel}>
-        Cancel
-      </Button>
       {isWrongNetwork ? <NetworkSwitch /> : null}
       {transactionType === 'add' && !isWrongNetwork ? (
         <ApproveToken token={token}>
@@ -155,6 +152,9 @@ function LiquidityFormActions() {
           Remove Liquidity
         </ButtonLoading>
       ) : null}
+      <Button variant="subtle" color="default" onClick={handleCancel}>
+        Cancel
+      </Button>
       {transactionSuccess && transactionSuccessHash ? (
         <ToastNotification id={transactionType} duration={10000}>
           <Toast
