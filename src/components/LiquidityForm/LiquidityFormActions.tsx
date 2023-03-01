@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import cn from 'classnames';
 import { reset } from 'redux/ducks/liquidity';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
 import { closeLiquidityForm } from 'redux/ducks/ui';
@@ -34,7 +35,7 @@ function LiquidityFormActions() {
   const token = useAppSelector(state => state.market.market.token);
   const amount = useAppSelector(state => state.liquidity.amount);
   const maxAmount = useAppSelector(state => state.liquidity.maxAmount);
-
+  const [isApproved, setApproved] = useState(false);
   const [transactionSuccess, setTransactionSuccess] = useState(false);
   const [transactionSuccessHash, setTransactionSuccessHash] =
     useState(undefined);
@@ -126,10 +127,14 @@ function LiquidityFormActions() {
   const isValidAmount = amount > 0 && amount <= maxAmount;
 
   return (
-    <div className="pm-c-liquidity-form__actions">
+    <div
+      className={cn('pm-c-liquidity-form__actions', {
+        'pm-c-liquidity-form__actions--column': !isApproved
+      })}
+    >
       {isWrongNetwork ? <NetworkSwitch /> : null}
       {transactionType === 'add' && !isWrongNetwork ? (
-        <ApproveToken token={token}>
+        <ApproveToken token={token} onApprove={setApproved}>
           <ButtonLoading
             color="primary"
             fullwidth
