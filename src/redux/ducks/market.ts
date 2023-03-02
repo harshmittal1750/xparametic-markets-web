@@ -137,7 +137,10 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
-        const currencyByTokenSymbol = getCurrencyByTicker(market.token.symbol);
+        const ticker = market.token.wrapped
+          ? network.currency.ticker
+          : market.token.symbol;
+        const currencyByTokenSymbol = getCurrencyByTicker(ticker);
         return {
           payload: {
             ...market,
@@ -145,7 +148,7 @@ const marketSlice = createSlice({
             currency: network.currency,
             token: {
               ...market.token,
-              ticker: market.token.symbol,
+              ticker,
               icon: currencyByTokenSymbol.icon,
               iconName: currencyByTokenSymbol.iconName
             },
@@ -170,7 +173,10 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
-        const currencyByTokenSymbol = getCurrencyByTicker(market.token.symbol);
+        const ticker = market.token.wrapped
+          ? network.currency.ticker
+          : market.token.symbol;
+        const currencyByTokenSymbol = getCurrencyByTicker(ticker);
         return {
           payload: {
             ...market,
@@ -178,7 +184,7 @@ const marketSlice = createSlice({
             currency: network.currency,
             token: {
               ...market.token,
-              ticker: market.token.symbol,
+              ticker,
               icon: currencyByTokenSymbol.icon,
               iconName: currencyByTokenSymbol.iconName
             },

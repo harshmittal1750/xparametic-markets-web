@@ -104,7 +104,7 @@ function MarketUI() {
     actions.filter(action => action.marketId === +market.id),
     bondActions.filter(action => action.questionId === market.questionId),
     market.outcomes,
-    market.token.symbol,
+    market.token.ticker,
     network.network
   );
   const SidebarWrapperComponent = isDesktop ? Fragment : SidebarWrapper;
