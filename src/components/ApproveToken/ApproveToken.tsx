@@ -15,12 +15,14 @@ import Tooltip from '../Tooltip';
 type ApproveTokenProps = {
   address: string;
   ticker: string;
+  wrapped?: boolean;
   children: JSX.Element;
 };
 
 function ApproveToken({
   address,
   ticker,
+  wrapped = false,
   children
 }: ApproveTokenProps): JSX.Element | null {
   const { network } = useNetwork();
@@ -42,6 +44,7 @@ function ApproveToken({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   async function checkTokenApproval(tokenAddress, spenderAddress) {
     const isApproved =
+      wrapped ||
       !tokenAddress ||
       (await polkamarketsService.isERC20Approved(tokenAddress, spenderAddress));
 
