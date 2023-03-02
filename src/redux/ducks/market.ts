@@ -67,7 +67,8 @@ const initialState: MarketInitialState = {
       ticker: 'TOKEN',
       decimals: 18,
       icon: '',
-      iconName: 'Token'
+      iconName: 'Token',
+      wrapped: false
     },
     votes: { up: 0, down: 0 },
     resolvedOutcomeId: -1,
