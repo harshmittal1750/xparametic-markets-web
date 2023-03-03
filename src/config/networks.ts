@@ -133,6 +133,16 @@ const networks: {
     decimals: 18,
     explorerURL: 'https://etherscan.io',
     rpcUrls: []
+  },
+  '0x13881': {
+    id: '80001',
+    name: 'Mumbai Testnet',
+    key: 'mumbai',
+    colorAccent: 'blue',
+    currency: MATIC,
+    decimals: 18,
+    explorerURL: 'https://mumbai.polygonscan.com',
+    rpcUrls: ['https://rpc-mumbai.maticvigil.com']
   }
 });
 
