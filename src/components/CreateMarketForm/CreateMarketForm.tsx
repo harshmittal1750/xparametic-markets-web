@@ -7,10 +7,12 @@ import { almost } from 'helpers/math';
 import sum from 'lodash/sum';
 import { PolkamarketsService } from 'services';
 import * as marketService from 'services/Polkamarkets/market';
+import { Token } from 'types/token';
 import * as Yup from 'yup';
 
-import { useNetwork } from 'hooks';
+import { useNetwork, useAppSelector } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
+
 
 import { Button } from '../Button';
 import Toast from '../Toast';
@@ -95,8 +97,9 @@ const validationSchema = Yup.object().shape({
 
 function CreateMarketForm() {
   const history = useHistory();
-  const { networkConfig } = useNetwork();
+  const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
+  const { createMarketToken } = useAppSelector(state => state.polkamarkets);
 
   function redirectToHomePage() {
     return history.push('/');
@@ -109,6 +112,15 @@ function CreateMarketForm() {
   async function handleFormSubmit(values: CreateMarketFormData) {
     const polkamarketsService = new PolkamarketsService(networkConfig);
     const closingDate = new Date(values.closingDate).getTime() / 1000; // TODO: move to dayjs
+    let wrapped = false;
+    let token = '';
+
+    // fetching token address
+    if (createMarketToken && (createMarketToken as Token).addresses) {
+      token = (createMarketToken as Token).addresses[network.key];
+    } else {
+      wrapped = true;
+    }
 
     const outcomes = values.outcomes.map(outcome => outcome.name);
     const odds = values.outcomes.map(outcome => outcome.probability);
@@ -123,7 +135,9 @@ function CreateMarketForm() {
       outcomes,
       data,
       values.liquidity,
-      odds
+      odds,
+      token,
+      wrapped
     );
 
     show('createMarket');

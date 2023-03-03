@@ -37,10 +37,10 @@ const currencies: { [key: string]: Currency } = Object.freeze({
     icon: <MoonbeamIcon />,
     iconName: 'Moonbeam'
   },
-  MATIK: {
+  MATIC: {
     name: 'Polygon',
-    ticker: 'MATIK',
-    symbol: 'MATIK',
+    ticker: 'MATIC',
+    symbol: 'MATIC',
     icon: <PolygonIcon />,
     iconName: 'Polygon'
   },

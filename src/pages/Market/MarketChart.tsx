@@ -16,7 +16,6 @@ const intervals = [
 
 function MarketOverview() {
   const outcomes = useAppSelector(state => state.market.market.outcomes);
-  const symbol = useAppSelector(state => state.market.market.token.symbol);
   const ticker = useAppSelector(state => state.market.market.token.ticker);
   const [currentInterval, setCurrentInterval] = useState(
     intervals[intervals.length - 1]
@@ -39,7 +38,7 @@ function MarketOverview() {
             fontWeight="semibold"
             className="market-chart__view-title"
           >
-            {highOutcome.price} {symbol}
+            {highOutcome.price} {ticker}
           </Text>
           <Text
             as="span"
@@ -47,7 +46,7 @@ function MarketOverview() {
             color={highOutcome.isPriceUp ? 'success' : 'danger'}
             fontWeight="semibold"
           >
-            {highOutcome.pricesDiff.value} {symbol} (
+            {highOutcome.pricesDiff.value} {ticker} (
             {highOutcome.pricesDiff.pct})
           </Text>{' '}
           <Text as="span" scale="tiny" color="gray" fontWeight="semibold">

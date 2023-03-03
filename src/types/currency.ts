@@ -16,6 +16,7 @@ export type Token = {
   ticker: string;
   address: string;
   decimals: number;
+  wrapped: boolean;
   icon: ReactNode;
   iconName: IconProps['name'];
 };

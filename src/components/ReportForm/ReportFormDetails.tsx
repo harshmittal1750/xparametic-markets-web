@@ -90,35 +90,19 @@ function ReportFormDetails() {
       fontWeight: 'bold',
       helpText: 'Total POLK reported by all users'
     },
-    {
-      key: `${outcomes[0].id}`,
-      title: (
-        <Badge
-          color={colorByOutcomeId(outcome[0].id)}
-          label={outcomes[0].title}
-        />
-      ),
-      value: bonds[0] || 0,
+    ...outcomes.map(o => ({
+      key: `${o.id}`,
+      title: <Badge color={colorByOutcomeId(o.id)} label={o.title} />,
+      value: bonds[o.id] || 0,
       fontWeight: 'normal'
-    },
-    {
-      key: `${outcomes[1].id}`,
-      title: (
-        <Badge
-          color={colorByOutcomeId(outcome[1].id)}
-          label={outcomes[1].title}
-        />
-      ),
-      value: bonds[1] || 0,
-      fontWeight: 'normal'
-    },
+    })),
     {
       key: 'invalid',
       title: <Badge color="warning" label="Invalid" />,
       value: bonds[-1] || 0,
       fontWeight: 'normal'
     }
-  ];
+  ].flat() as TotalBondItem[];
 
   return (
     <div className="pm-c-report-form-details">

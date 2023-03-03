@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   changeAmount,
@@ -31,10 +31,13 @@ function LiquidityFormInput() {
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
   const { token } = market;
 
-  // buy and sell have different maxes
-  const { balance, isLoadingBalance } = useERC20Balance(token.address);
-  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+  const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(
+    token.address
+  );
+  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
+  const balance = token.wrapped ? ethBalance : erc20Balance;
 
+  const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const amount = useAppSelector(state => state.liquidity.amount);
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;

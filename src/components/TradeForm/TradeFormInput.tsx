@@ -25,7 +25,7 @@ function TradeFormInput() {
   const { network } = useNetwork();
 
   const token = useAppSelector(state => state.market.market.token);
-  const { name, ticker, icon, address } = token;
+  const { name, ticker, icon, address, wrapped } = token;
 
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
@@ -45,7 +45,6 @@ function TradeFormInput() {
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
-  const { balance, isLoadingBalance } = useERC20Balance(address);
 
   const [amount, setAmount] = useState<number | undefined>(0);
   const [stepAmount, setStepAmount] = useState<number>(0);
@@ -53,6 +52,11 @@ function TradeFormInput() {
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const outcome = market.outcomes[selectedOutcomeId];
+
+  const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(address);
+  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
+
+  const balance = wrapped ? ethBalance : erc20Balance;
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;
 

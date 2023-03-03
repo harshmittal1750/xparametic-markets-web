@@ -1,11 +1,17 @@
 import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
-import { networks, tokens } from 'config';
+import { tokens } from 'config';
+import { changeCreateMarketToken } from 'redux/ducks/polkamarkets';
+import { PolkamarketsService } from 'services';
+import { Currency } from 'types/currency';
 import type { Network } from 'types/network';
+import { Token } from 'types/token';
 import { Adornment, Container, Tag } from 'ui';
 
 import { ModalContent } from 'components';
 import Modal from 'components/Modal';
+
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import { Button } from '../Button';
 import Icon from '../Icon';
@@ -18,37 +24,81 @@ type SelectTokenModalProps = {
   network: Network;
 };
 
-const currencyByNetwork = networks['0x2a'].currency;
-
 export default function SelectTokenModal({ network }: SelectTokenModalProps) {
+  const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
   const [searchString, setSearchString] = useState<string>('');
+  const [searchToken, setSearchToken] = useState<any>(null);
+  const { createMarketToken } = useAppSelector(state => state.polkamarkets);
+  const { networkConfig } = useNetwork();
 
-  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearchString(event.target.value);
-  }, []);
+  const currency = createMarketToken || network.currency;
 
-  const handleSelect = useCallback(
-    (token: string) => {
-      handleHide();
+  const handleChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const text = event.target.value;
+
+      setSearchString(text);
+
+      const isAddress = /0[x, X][a-fA-F0-9]{40}/.test(text);
+
+      if (isAddress) {
+        const polkamarketsService = new PolkamarketsService(networkConfig);
+        // fetching token info from blockchain
+        const tokenInfo = await polkamarketsService.getERC20TokenInfo(text);
+
+        if (tokenInfo) {
+          setSearchToken(tokenInfo);
+        }
+      } else {
+        setSearchToken(null);
+      }
     },
-    [handleHide]
+    [networkConfig]
   );
 
-  const isAddress = (text: string) => /0[x, X][a-fA-F0-9]{40}/.test(text);
+  const handleSelect = useCallback(
+    (token: Currency | Token) => {
+      dispatch(changeCreateMarketToken(token));
+      handleHide();
+    },
+    [handleHide, dispatch]
+  );
 
+  const currencyByNetwork = network.currency;
   const tokensByNetwork = useMemo(
     () =>
-      tokens.filter(token => Object.keys(token.addresses).includes('goerli')),
-    []
+      tokens.filter(token =>
+        Object.keys(token.addresses).includes(network.key)
+      ),
+    [network.key]
   );
 
   const availableTokens = [currencyByNetwork, ...tokensByNetwork];
   const filteredTokens = availableTokens.filter(
     token =>
-      token.name.includes(searchString) || token.ticker.includes(searchString)
+      token.name.toLowerCase().includes(searchString.toLowerCase()) ||
+      token.ticker.toLowerCase().includes(searchString.toLowerCase())
   );
+
+  if (searchToken) {
+    const tokenByTicker = (Object.values(tokens).find(
+      token => token.ticker === searchToken.ticker
+    ) || Object.values(tokens).find(token => token.ticker === 'TOKEN')) as any;
+
+    const res = {
+      ...tokenByTicker,
+      name: searchToken.name,
+      ticker: searchToken.ticker,
+      symbol: searchToken.ticker,
+      addresses: {
+        [network.key]: searchToken.address
+      }
+    };
+
+    filteredTokens.push(res);
+  }
 
   return (
     <>
@@ -59,9 +109,9 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
         $variant="subtle"
       >
         <Adornment $size="sm" $edge="start">
-          {network.currency.icon}
+          <Icon name={currency.iconName} />
         </Adornment>
-        {network.currency.ticker}
+        {currency.ticker}
         <Adornment $size="sm" $edge="end">
           <Icon name="Chevron" dir="down" />
         </Adornment>
@@ -103,7 +153,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
           <Container className={selectTokenModalClasses.dialogContent}>
             <SearchBar
               placeholder="Search name or paste address"
-              onSearch={text => console.log(text)}
+              onSearch={() => {}}
               onChange={handleChange}
               value={searchString}
             />
@@ -114,7 +164,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                     variant="outline"
                     color="default"
                     className={selectTokenModalClasses.buttonListItem}
-                    onClick={() => handleSelect(token.name)}
+                    onClick={() => handleSelect(token)}
                   >
                     <Icon
                       name={token.iconName}
@@ -139,8 +189,8 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                   role="button"
                   tabIndex={0}
                   className={selectTokenModalClasses.listItem}
-                  onClick={() => handleSelect(token.name)}
-                  onKeyPress={() => handleSelect(token.name)}
+                  onClick={() => handleSelect(token)}
+                  onKeyPress={() => handleSelect(token)}
                 >
                   <Icon
                     name={token.iconName}

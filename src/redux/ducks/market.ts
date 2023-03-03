@@ -67,7 +67,8 @@ const initialState: MarketInitialState = {
       ticker: 'TOKEN',
       decimals: 18,
       icon: '',
-      iconName: 'Token'
+      iconName: 'Token',
+      wrapped: false
     },
     votes: { up: 0, down: 0 },
     resolvedOutcomeId: -1,
@@ -136,7 +137,10 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
-        const currencyByTokenSymbol = getCurrencyByTicker(market.token.symbol);
+        const ticker = market.token.wrapped
+          ? network.currency.ticker
+          : market.token.symbol;
+        const currencyByTokenSymbol = getCurrencyByTicker(ticker);
         return {
           payload: {
             ...market,
@@ -144,7 +148,7 @@ const marketSlice = createSlice({
             currency: network.currency,
             token: {
               ...market.token,
-              ticker: market.token.symbol,
+              ticker,
               icon: currencyByTokenSymbol.icon,
               iconName: currencyByTokenSymbol.iconName
             },
@@ -169,7 +173,10 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
-        const currencyByTokenSymbol = getCurrencyByTicker(market.token.symbol);
+        const ticker = market.token.wrapped
+          ? network.currency.ticker
+          : market.token.symbol;
+        const currencyByTokenSymbol = getCurrencyByTicker(ticker);
         return {
           payload: {
             ...market,
@@ -177,7 +184,7 @@ const marketSlice = createSlice({
             currency: network.currency,
             token: {
               ...market.token,
-              ticker: market.token.symbol,
+              ticker,
               icon: currencyByTokenSymbol.icon,
               iconName: currencyByTokenSymbol.iconName
             },
