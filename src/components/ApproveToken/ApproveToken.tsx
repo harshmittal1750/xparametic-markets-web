@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { Token } from 'types/currency';
-
 import { QuestionIcon } from 'assets/icons';
 
 import { useNetwork, usePolkamarketsService } from 'hooks';
@@ -17,13 +15,15 @@ type ApproveTokenProps = {
   ticker: string;
   wrapped?: boolean;
   children: JSX.Element;
+  onApprove?(isApproved: boolean): void;
 };
 
 function ApproveToken({
   address,
   ticker,
   wrapped = false,
-  children
+  children,
+  onApprove
 }: ApproveTokenProps): JSX.Element | null {
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
@@ -49,6 +49,7 @@ function ApproveToken({
       (await polkamarketsService.isERC20Approved(tokenAddress, spenderAddress));
 
     setIsTokenApproved(isApproved);
+    onApprove?.(isApproved);
   }
 
   useEffect(() => {
