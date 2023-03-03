@@ -92,7 +92,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
                 secondary={
                   <OutcomeItemText
                     price={outcome.price}
-                    symbol={market.token.symbol}
+                    symbol={market.token.ticker}
                     isPositive={outcome.isPriceUp}
                   />
                 }

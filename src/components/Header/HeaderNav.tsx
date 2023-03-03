@@ -13,6 +13,7 @@ import CreateMarket from 'components/CreateMarket';
 import Feature from 'components/Feature';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
+import NetworkSelector from 'components/NetworkSelector';
 import Text from 'components/Text';
 
 import HeaderNavClasses from './HeaderNav.module.scss';
@@ -148,7 +149,16 @@ export default function HeaderNav() {
       <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
         <PolkamarketsLogo />
       </Link>
-      {isTv ? <HeaderNavMenu /> : !isDesktop && <HeaderNavMenuModal />}
+      {isTv ? (
+        <HeaderNavMenu />
+      ) : (
+        !isDesktop && (
+          <>
+            <NetworkSelector responsive />
+            <HeaderNavMenuModal />
+          </>
+        )
+      )}
     </nav>
   );
 }

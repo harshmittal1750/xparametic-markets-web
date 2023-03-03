@@ -10,6 +10,8 @@ export type { ContainerProps } from './Container';
 
 export { default as Divider } from './Divider';
 
+export { default as Focustrap } from './Focustrap';
+
 export { default as Hero } from './Hero';
 
 export { default as List } from './List';
@@ -19,6 +21,8 @@ export { default as ListItem } from './ListItem';
 export { default as ListItemText } from './ListItemText';
 
 export { default as Spinner } from './Spinner';
+
+export { default as Tag } from './Tag';
 
 export { default as Toggle } from './Toggle';
 

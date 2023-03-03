@@ -5,7 +5,7 @@ import environment from './environment';
 
 const { ERC20_CONTRACT_ADDRESS } = environment;
 
-const { DEV, ETH, MOVR, GLMR } = currencies;
+const { DEV, ETH, MOVR, GLMR, MATIC } = currencies;
 
 const networks: {
   [key: string]: Network;
@@ -102,6 +102,16 @@ const networks: {
     decimals: 18,
     explorerURL: 'https://moonbase-blockscout.testnet.moonbeam.network',
     rpcUrls: ['https://rpc.testnet.moonbeam.network']
+  },
+  '0x89': {
+    id: '137',
+    name: 'Polygon Mainnet',
+    key: 'polygon',
+    colorAccent: 'purple',
+    currency: MATIC,
+    decimals: 18,
+    explorerURL: 'https://polygonscan.com/',
+    rpcUrls: ['https://polygon-rpc.com']
   },
   '0x539': {
     id: '1337',

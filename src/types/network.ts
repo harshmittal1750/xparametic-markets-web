@@ -4,7 +4,7 @@ export type Network = {
   id: string;
   name: string;
   key: string;
-  colorAccent: 'blue' | 'orange' | 'green';
+  colorAccent: 'blue' | 'orange' | 'green' | 'purple';
   currency: Currency;
   decimals: number;
   explorerURL: string;

@@ -14,13 +14,6 @@ function SearchBar({ className, onSearch, ...props }: SearchBarProps) {
       className={cn('pm-c-searchbar', className?.form)}
       onSubmit={onSearch}
     >
-      <input
-        type="text"
-        role="searchbox"
-        autoComplete="off"
-        className={cn('pm-c-searchbar__input', className?.input)}
-        {...props}
-      />
       <button
         type="submit"
         aria-label="Search"
@@ -28,6 +21,13 @@ function SearchBar({ className, onSearch, ...props }: SearchBarProps) {
       >
         <SearchIcon />
       </button>
+      <input
+        type="text"
+        role="searchbox"
+        autoComplete="off"
+        className={cn('pm-c-searchbar__input', className?.input)}
+        {...props}
+      />
     </form>
   );
 }

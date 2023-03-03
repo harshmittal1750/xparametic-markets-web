@@ -42,6 +42,7 @@ import PolkamarketsIcon from './PolkamarketsIcon';
 import PolkamarketsIconCircle from './PolkamarketsIconCircle';
 import PolkamarketsIconSmall from './PolkamarketsIconSmall';
 import PolkamarketsLogo from './PolkamarketsLogo';
+import PolygonIcon from './PolygonIcon';
 import PopcornIcon from './PopcornIcon';
 import PortfolioIcon from './PortifolioIcon';
 import QuestionIcon from './QuestionIcon';
@@ -110,6 +111,7 @@ export {
   PolkamarketsIconCircle,
   PolkamarketsIconSmall,
   PolkamarketsLogo,
+  PolygonIcon,
   PopcornIcon,
   PortfolioIcon,
   QuestionIcon,
