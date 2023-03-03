@@ -2,6 +2,7 @@ import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
 import { tokens } from 'config';
 import { changeCreateMarketToken } from 'redux/ducks/polkamarkets';
+import { PolkamarketsService } from 'services';
 import { Currency } from 'types/currency';
 import type { Network } from 'types/network';
 import { Token } from 'types/token';
@@ -9,7 +10,7 @@ import { Adornment, Container, Tag } from 'ui';
 
 import Modal from 'components/Modal';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import { Button } from '../Button';
 import Icon from '../Icon';
@@ -27,23 +28,42 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
   const [searchString, setSearchString] = useState<string>('');
+  const [searchToken, setSearchToken] = useState<any>(null);
   const { createMarketToken } = useAppSelector(state => state.polkamarkets);
+  const { networkConfig } = useNetwork();
 
   const currency = createMarketToken || network.currency;
 
-  const handleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
-    setSearchString(event.target.value);
-  }, []);
+  const handleChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const text = event.target.value;
+
+      setSearchString(text);
+
+      const isAddress = /0[x, X][a-fA-F0-9]{40}/.test(text);
+
+      if (isAddress) {
+        const polkamarketsService = new PolkamarketsService(networkConfig);
+        // fetching token info from blockchain
+        const tokenInfo = await polkamarketsService.getERC20TokenInfo(text);
+
+        if (tokenInfo) {
+          setSearchToken(tokenInfo);
+        }
+      } else {
+        setSearchToken(null);
+      }
+    },
+    [networkConfig]
+  );
 
   const handleSelect = useCallback(
     (token: Currency | Token) => {
       dispatch(changeCreateMarketToken(token));
       handleHide();
     },
-    [handleHide]
+    [handleHide, dispatch]
   );
-
-  const isAddress = (text: string) => /0[x, X][a-fA-F0-9]{40}/.test(text);
 
   const currencyByNetwork = network.currency;
   const tokensByNetwork = useMemo(
@@ -51,7 +71,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
       tokens.filter(token =>
         Object.keys(token.addresses).includes(network.key)
       ),
-    []
+    [network.key]
   );
 
   const availableTokens = [currencyByNetwork, ...tokensByNetwork];
@@ -60,6 +80,23 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
       token.name.toLowerCase().includes(searchString.toLowerCase()) ||
       token.ticker.toLowerCase().includes(searchString.toLowerCase())
   );
+
+  if (searchToken) {
+    const tokenByTicker = (Object.values(tokens).find(
+      token => token.ticker === searchToken.ticker
+    ) || Object.values(tokens).find(token => token.ticker === 'TOKEN')) as any;
+
+    const res = { ...tokenByTicker };
+
+    res.name = searchToken.name;
+    res.ticker = searchToken.ticker;
+    res.symbol = searchToken.symbol;
+    res.addresses = {
+      [network.key]: searchToken.address
+    };
+
+    filteredTokens.push(res);
+  }
 
   return (
     <>
@@ -113,8 +150,8 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
         <Container className={selectTokenModalClasses.dialogContent}>
           <SearchBar
             placeholder="Search name or paste address"
-            onSearch={text => console.log(text)}
             onChange={handleChange}
+            onSearch={() => {}}
             value={searchString}
           />
           <ul className={selectTokenModalClasses.buttonList}>
