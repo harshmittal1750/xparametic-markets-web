@@ -86,13 +86,14 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
       token => token.ticker === searchToken.ticker
     ) || Object.values(tokens).find(token => token.ticker === 'TOKEN')) as any;
 
-    const res = { ...tokenByTicker };
-
-    res.name = searchToken.name;
-    res.ticker = searchToken.ticker;
-    res.symbol = searchToken.symbol;
-    res.addresses = {
-      [network.key]: searchToken.address
+    const res = {
+      ...tokenByTicker,
+      name: searchToken.name,
+      ticker: searchToken.ticker,
+      symbol: searchToken.ticker,
+      addresses: {
+        [network.key]: searchToken.address
+      }
     };
 
     filteredTokens.push(res);
