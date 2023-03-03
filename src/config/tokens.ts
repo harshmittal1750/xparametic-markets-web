@@ -40,4 +40,12 @@ const POLK: Token = {
   }
 };
 
-export default [USDT, USDC, POLK];
+const TOKEN: Token = {
+  name: 'Token',
+  ticker: 'TOKEN',
+  symbol: 'TOKEN',
+  iconName: 'Token',
+  addresses: {}
+};
+
+export default [USDT, USDC, POLK, TOKEN];

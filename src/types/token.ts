@@ -4,7 +4,7 @@ export type Token = {
   name: string;
   ticker: string;
   symbol: string;
-  iconName: Extract<IconProps['name'], 'USDCoin' | 'Tether' | 'Polk'>;
+  iconName: Extract<IconProps['name'], 'USDCoin' | 'Tether' | 'Polk' | 'Token'>;
   addresses: {
     [key: string]: `0x${string}`;
   };
