@@ -12,18 +12,22 @@ export interface AdornmentProps
     'children' | 'className'
   > {
   $edge: typeof adornmentProps.$edge[number];
+  $size?: 'sm' | 'md';
 }
 
 export default function Adornment({
   $edge,
+  $size = 'md',
   className,
   ...props
 }: AdornmentProps) {
   return (
     <span
-      className={cn({
+      className={cn(adornmentClasses.root, {
         [adornmentClasses.edgeStart]: $edge === 'start',
         [adornmentClasses.edgeEnd]: $edge === 'end',
+        [adornmentClasses.sizeSm]: $size === 'sm',
+        [adornmentClasses.sizeMd]: $size === 'md',
         className
       })}
       {...props}

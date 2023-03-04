@@ -14967,7 +14967,7 @@ polished@^4.2.2:
 
 "polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feature/v2":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#ee12e3ff2a96a09c43c4b11f3264f3a3da371ac1"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#5e9dd3397509e665dc42b41317a24063e71f23ca"
   dependencies:
     "@openzeppelin/contracts" "^3.2.0"
     "@openzeppelin/contracts-upgradeable" "^3.2.0"

@@ -39,6 +39,14 @@ $networks-themes: (
           selected: mix(#000000, #53cbc8, 20%)
         ),
         assets-color: mix(#2b2a2a, #53cbc8, 20%)
+      ),
+      purple: (
+        background-color: rgba(#8247e5, 0.2),
+        border-color: mix(#000000, #8247e5, 20%),
+        text-colors: (
+          selected: mix(#000000, #8247e5, 20%)
+        ),
+        assets-color: mix(#2b2a2a, #8247e5, 20%)
       )
     ),
     dropdown: (
@@ -68,6 +76,14 @@ $networks-themes: (
       green: (
         background-color: rgba(#53cbc8, 0.2),
         border-color: mix(#000000, #53cbc8, 20%),
+        text-colors: (
+          selected: #f3f4f6
+        ),
+        assets-color: rgba(#ffffff, 0.5)
+      ),
+      purple: (
+        background-color: rgba(#8247e5, 0.2),
+        border-color: mix(#000000, #8247e5, 20%),
         text-colors: (
           selected: #f3f4f6
         ),
