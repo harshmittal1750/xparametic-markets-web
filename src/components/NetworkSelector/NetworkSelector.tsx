@@ -47,15 +47,16 @@ export default function NetworkSelector({
 
   return (
     <>
-      <Button
-        variant={itsDesktop ? 'outline' : 'ghost'}
-        color="default"
+      <button
+        type="button"
         aria-label="Switch network"
         onClick={handleShow}
         className={cn(
           networSelectorClasses.network,
           {
-            [networSelectorClasses.responsive]: responsive
+            [networSelectorClasses.responsive]: responsive,
+            'pm-c-button-ghost--default': !itsDesktop,
+            'pm-c-button-outline--default': itsDesktop
           },
           className
         )}
@@ -69,7 +70,7 @@ export default function NetworkSelector({
             </span>
           </>
         )}
-      </Button>
+      </button>
       <Modal
         disableGutters
         onHide={handleHide}

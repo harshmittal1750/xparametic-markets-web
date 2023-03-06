@@ -1,15 +1,16 @@
 .network {
+  gap: 8px;
   height: 44px !important;
+  font-weight: 700;
+  font-size: 1.3rem !important;
+  line-height: 1.5;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase;
+  padding: 0px 12px;
 
   @media (min-width: 1024px) {
-    width: unset;
+    width: unset !important;
     margin-left: unset;
-    padding: 0px 12px !important;
-    font-weight: 700;
-    font-size: 1.3rem !important;
-    line-height: 1.5;
-    letter-spacing: 0.08em !important;
-    text-transform: uppercase;
   }
 
   &Icon {
@@ -18,7 +19,6 @@
 }
 .responsive {
   width: 44px;
-  padding: 0px !important;
 }
 .dialog {
   border-radius: 20px 20px 0px 0px;
