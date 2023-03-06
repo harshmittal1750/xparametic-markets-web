@@ -13,7 +13,6 @@ import * as Yup from 'yup';
 import { useNetwork, useAppSelector } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-
 import { Button } from '../Button';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';

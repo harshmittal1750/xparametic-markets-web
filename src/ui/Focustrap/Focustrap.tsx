@@ -21,16 +21,15 @@ function getFocusables(node: HTMLElement) {
   const [trapStart, edgeStart, ...elements] = Array.from(
     node.querySelectorAll(focusables)
   ) as Array<HTMLElement>;
-  const { length } = elements;
 
   return [
     {
       start: trapStart,
-      end: elements[length - 1]
+      end: elements[elements.length - 1]
     },
     {
       start: edgeStart,
-      end: elements[length - 2]
+      end: elements[elements.length - 2]
     }
   ];
 }
@@ -62,11 +61,9 @@ export default function Focustrap<E extends HTMLElement>({
         }, [])
       },
       <>
-        <button
-          type="button"
-          className={focustrapClasses.trap}
-          data-testid={trappersId.start}
-        />
+        <button type="button" className={focustrapClasses.trap}>
+          {trappersId.start}
+        </button>
         {children.props.children}
         <button
           type="button"
@@ -75,8 +72,9 @@ export default function Focustrap<E extends HTMLElement>({
             []
           )}
           className={focustrapClasses.trap}
-          data-testid={trappersId.end}
-        />
+        >
+          {trappersId.end}
+        </button>
       </>
     )
   );
