@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import uuid from 'react-uuid';
 
@@ -99,14 +100,11 @@ function CreateMarketForm() {
   const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
   const { createMarketToken } = useAppSelector(state => state.polkamarkets);
-
-  function redirectToHomePage() {
-    return history.push('/');
-  }
-
-  function redirectToMarketPage(marketSlug) {
-    return history.push(`/markets/${marketSlug}`);
-  }
+  const handleFormRef = useCallback(
+    (hasError: boolean) => (node: HTMLFormElement | null) =>
+      hasError && node?.scrollIntoView(),
+    []
+  );
 
   async function handleFormSubmit(values: CreateMarketFormData) {
     const polkamarketsService = new PolkamarketsService(networkConfig);
@@ -148,9 +146,10 @@ function CreateMarketForm() {
         marketId,
         networkConfig.NETWORK_ID
       );
-      redirectToMarketPage(res.data.slug);
+
+      history.push(`/markets/${res.data.slug}`);
     } catch (err) {
-      redirectToHomePage();
+      history.push('/');
     }
   }
 
@@ -182,11 +181,16 @@ function CreateMarketForm() {
         }}
         validationSchema={validationSchema}
       >
-        <Form className="pm-c-create-market-form">
-          <CreateMarketFormConfigure />
-          <CreateMarketFormFund />
-          <CreateMarketFormActions />
-        </Form>
+        {values => (
+          <Form
+            ref={handleFormRef(values.isSubmitting && !values.isValid)}
+            className="pm-c-create-market-form"
+          >
+            <CreateMarketFormConfigure />
+            <CreateMarketFormFund />
+            <CreateMarketFormActions />
+          </Form>
+        )}
       </Formik>
     </>
   );
