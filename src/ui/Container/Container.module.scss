@@ -1,5 +1,8 @@
 .root {
+  max-width: var(--max-width);
   width: 100%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .gutters {
@@ -12,14 +15,11 @@
 }
 
 .size {
-  margin-left: auto;
-  margin-right: auto;
-
   &Sm {
-    max-width: 768px;
+    --max-width: 768px;
   }
 
   &Md {
-    max-width: 1024px;
+    --max-width: 1024px;
   }
 }

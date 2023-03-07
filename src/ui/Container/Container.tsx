@@ -27,7 +27,6 @@ export default forwardRef(function Container<
       {
         [ContainerClasses.guttersX]: !$enableGutters,
         [ContainerClasses.gutters]: $enableGutters,
-        [ContainerClasses.size]: $size,
         [ContainerClasses.sizeSm]: $size === 'sm',
         [ContainerClasses.sizeMd]: $size === 'md'
       },
