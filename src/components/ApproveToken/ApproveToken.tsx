@@ -1,30 +1,35 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import cn from 'classnames';
+
 import { QuestionIcon } from 'assets/icons';
 
 import { useNetwork, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
+import type { ButtonProps } from '../Button';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 import Tooltip from '../Tooltip';
+import approveTokenClasses from './ApproveToken.module.scss';
 
-type ApproveTokenProps = {
+interface ApproveTokenProps
+  extends Pick<ButtonProps, 'fullwidth' | 'children'> {
   address: string;
   ticker: string;
   wrapped?: boolean;
-  children: JSX.Element;
   onApprove?(isApproved: boolean): void;
-};
+}
 
 function ApproveToken({
   address,
   ticker,
   wrapped = false,
   children,
-  onApprove
-}: ApproveTokenProps): JSX.Element | null {
+  onApprove,
+  ...props
+}: ApproveTokenProps) {
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
@@ -94,19 +99,18 @@ function ApproveToken({
         <ButtonLoading
           color="primary"
           size="sm"
-          fullwidth
-          style={{
-            justifyContent: isApprovingToken ? 'center' : 'space-between'
-          }}
           onClick={handleApproveToken}
           loading={isApprovingToken}
           disabled={isApprovingToken}
+          className={cn(approveTokenClasses.root, {
+            [approveTokenClasses.center]: isApprovingToken,
+            [approveTokenClasses.spaced]: !isApprovingToken
+          })}
+          {...props}
         >
           {`Allow Polkamarkets to use your ${ticker}`}
           <Tooltip text="You only have to do this once.">
-            <QuestionIcon
-              style={{ width: '1.4rem', height: '1.4rem', opacity: 0.35 }}
-            />
+            <QuestionIcon className={approveTokenClasses.icon} />
           </Tooltip>
         </ButtonLoading>
         {approveTokenTransactionSuccess &&
@@ -142,7 +146,7 @@ function ApproveToken({
     );
   }
 
-  return children;
+  return <>{children}</>;
 }
 
 export default ApproveToken;
