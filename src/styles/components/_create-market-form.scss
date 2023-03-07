@@ -83,10 +83,14 @@
 
     &__actions {
       display: flex;
+      flex-direction: column-reverse;
       justify-content: flex-end;
       gap: 2rem;
-
       width: 100%;
+
+      @media (min-width: 768px) {
+        flex-direction: unset;
+      }
 
       button {
         @extend .body, .semibold;
