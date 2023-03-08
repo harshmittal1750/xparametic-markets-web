@@ -16,6 +16,7 @@ import {
 } from 'hooks';
 
 import { Button } from '../Button';
+import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 import { calculateTradeDetails } from './utils';
@@ -25,7 +26,7 @@ function TradeFormInput() {
   const { network } = useNetwork();
 
   const token = useAppSelector(state => state.market.market.token);
-  const { name, ticker, icon, iconName, address, wrapped } = token;
+  const { name, ticker, iconName, address, wrapped } = token;
 
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
@@ -177,7 +178,11 @@ function TradeFormInput() {
           {type === 'buy' ? (
             <div className="pm-c-amount-input__logo">
               <figure aria-label={name}>
-                {iconName === 'Token' ? <TokenIcon ticker={ticker} /> : icon}
+                {iconName === 'Token' ? (
+                  <TokenIcon ticker={ticker} />
+                ) : (
+                  <Icon name={iconName} />
+                )}
               </figure>
               <Text as="span" scale="caption" fontWeight="bold">
                 {ticker}
