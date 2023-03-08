@@ -1,8 +1,7 @@
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
+import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
-
-import { TokenIcon } from 'assets/icons';
 
 import Icon from 'components/Icon';
 
@@ -15,19 +14,19 @@ type MarketFooterStatsProps = {
 };
 
 export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
-  const { volume, expiresAt, liquidity, token } = market;
+  const { volume, expiresAt, liquidity, token, network } = market;
 
   return (
     <div className="pm-c-market-footer__stats">
       <>
-        <Tooltip text={token.name}>
-          {token.iconName === 'Token' ? (
-            <TokenIcon ticker={token.ticker} />
-          ) : (
-            <Icon name={token.iconName} />
-          )}
-        </Tooltip>
-        <span className="pm-c-divider--circle" />
+        {!isEmpty(network.currency) ? (
+          <>
+            <Tooltip text={network.name}>
+              <Icon name={network.currency.iconName} />
+            </Tooltip>
+            <span className="pm-c-divider--circle" />
+          </>
+        ) : null}
       </>
       {!!volume && (
         <>
