@@ -11,7 +11,7 @@
     &__notification-overlay {
       @include flex-column(flex-start, center);
       position: absolute;
-      z-index: 100;
+      z-index: 1;
       inset: 0;
 
       padding-top: 7.5rem;
