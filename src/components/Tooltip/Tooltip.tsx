@@ -56,7 +56,9 @@ function Tooltip({
   } = usePopperTooltip({ placement: position });
   return (
     <>
-      <div ref={setTriggerRef}>{children}</div>
+      <div ref={setTriggerRef} className="pm-c-tooltip__wrapper">
+        {children}
+      </div>
       {!disabled && visible && (
         <div
           ref={setTooltipRef}
