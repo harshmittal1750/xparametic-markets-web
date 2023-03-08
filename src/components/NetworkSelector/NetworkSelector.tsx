@@ -85,14 +85,14 @@ export default function NetworkSelector({
           ? {
               style: {
                 left: rect?.left,
-                top: `calc(${rect?.top}px + ${rect?.height}px + var(--grid-margin)`,
+                top: `calc(${rect?.top}px + ${rect?.height}px + var(--grid-margin))`,
                 width: rect?.width
               }
             }
           : {
-              initial: { bottom: '-100%' },
+              initial: { bottom: -999 },
               animate: { bottom: 0 },
-              exit: { bottom: '-100%' }
+              exit: { bottom: -999 }
             })}
       >
         {!itsDesktop && (
