@@ -9,6 +9,8 @@ import type { Network } from 'types/network';
 import { Token } from 'types/token';
 import { Adornment, Container, Tag } from 'ui';
 
+import { TokenIcon } from 'assets/icons';
+
 import { ModalContent } from 'components';
 import Modal from 'components/Modal';
 
@@ -110,7 +112,11 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
         $variant="subtle"
       >
         <Adornment $size="sm" $edge="start">
-          <Icon name={currency.iconName} />
+          {currency.iconName === 'Token' ? (
+            <TokenIcon ticker={currency.ticker} />
+          ) : (
+            <Icon name={currency.iconName} />
+          )}
         </Adornment>
         {currency.ticker}
         <Adornment $size="sm" $edge="end">
@@ -167,10 +173,17 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                     className={selectTokenModalClasses.buttonListItem}
                     onClick={() => handleSelect(token)}
                   >
-                    <Icon
-                      name={token.iconName}
-                      className={selectTokenModalClasses.buttonListItemIcon}
-                    />
+                    {token.iconName === 'Token' ? (
+                      <TokenIcon
+                        className={selectTokenModalClasses.buttonListItemIcon}
+                        ticker={token.ticker}
+                      />
+                    ) : (
+                      <Icon
+                        name={token.iconName}
+                        className={selectTokenModalClasses.buttonListItemIcon}
+                      />
+                    )}
                     <span
                       className={selectTokenModalClasses.buttonListItemTicker}
                     >
@@ -194,10 +207,17 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                     onClick={() => handleSelect(token)}
                     onKeyPress={() => handleSelect(token)}
                   >
-                    <Icon
-                      name={token.iconName}
-                      className={selectTokenModalClasses.listItemIcon}
-                    />
+                    {token.iconName === 'Token' ? (
+                      <TokenIcon
+                        className={selectTokenModalClasses.listItemIcon}
+                        ticker={token.ticker}
+                      />
+                    ) : (
+                      <Icon
+                        name={token.iconName}
+                        className={selectTokenModalClasses.listItemIcon}
+                      />
+                    )}
                     <div className={selectTokenModalClasses.listItemNameGroup}>
                       <span className={selectTokenModalClasses.listItemName}>
                         {token.name}

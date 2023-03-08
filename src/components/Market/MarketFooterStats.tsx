@@ -2,6 +2,8 @@ import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import { Market } from 'models/market';
 
+import { TokenIcon } from 'assets/icons';
+
 import Icon from 'components/Icon';
 
 import Text from '../Text';
@@ -19,7 +21,11 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
     <div className="pm-c-market-footer__stats">
       <>
         <Tooltip text={token.name}>
-          <Icon name={token.iconName} />
+          {token.iconName === 'Token' ? (
+            <TokenIcon ticker={token.ticker} />
+          ) : (
+            <Icon name={token.iconName} />
+          )}
         </Tooltip>
         <span className="pm-c-divider--circle" />
       </>
