@@ -20,11 +20,8 @@ function MarketHeadWrapper(
     <Hero
       className={marketClasses.hero}
       $image={imageUrl}
-      style={{
-        // @ts-expect-error No need to assert React.CSSProperties here
-        '--linear-gradient':
-          avatarColor || localStorage.getItem('MARKET_AVATAR_COLOR')
-      }}
+      $backdrop="custom"
+      $backdropColor={avatarColor}
       {...props}
     />
   );
