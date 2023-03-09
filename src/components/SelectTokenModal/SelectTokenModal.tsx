@@ -1,12 +1,15 @@
 import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
 import { tokens } from 'config';
+import isEmpty from 'lodash/isEmpty';
 import { changeCreateMarketToken } from 'redux/ducks/polkamarkets';
 import { PolkamarketsService } from 'services';
 import { Currency } from 'types/currency';
 import type { Network } from 'types/network';
 import { Token } from 'types/token';
 import { Adornment, Container, Tag } from 'ui';
+
+import { TokenIcon } from 'assets/icons';
 
 import { ModalContent } from 'components';
 import Modal from 'components/Modal';
@@ -109,7 +112,11 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
         $variant="subtle"
       >
         <Adornment $size="sm" $edge="start">
-          <Icon name={currency.iconName} />
+          {currency.iconName === 'Token' ? (
+            <TokenIcon ticker={currency.ticker} />
+          ) : (
+            <Icon name={currency.iconName} />
+          )}
         </Adornment>
         {currency.ticker}
         <Adornment $size="sm" $edge="end">
@@ -166,10 +173,17 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                     className={selectTokenModalClasses.buttonListItem}
                     onClick={() => handleSelect(token)}
                   >
-                    <Icon
-                      name={token.iconName}
-                      className={selectTokenModalClasses.buttonListItemIcon}
-                    />
+                    {token.iconName === 'Token' ? (
+                      <TokenIcon
+                        className={selectTokenModalClasses.buttonListItemIcon}
+                        ticker={token.ticker}
+                      />
+                    ) : (
+                      <Icon
+                        name={token.iconName}
+                        className={selectTokenModalClasses.buttonListItemIcon}
+                      />
+                    )}
                     <span
                       className={selectTokenModalClasses.buttonListItemTicker}
                     >
@@ -181,32 +195,51 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
             </ul>
           </Container>
           <Container className={selectTokenModalClasses.dialogList}>
-            <VirtualizedList
-              height="100%"
-              data={filteredTokens}
-              itemContent={(_index, token) => (
-                <div
-                  role="button"
-                  tabIndex={0}
-                  className={selectTokenModalClasses.listItem}
-                  onClick={() => handleSelect(token)}
-                  onKeyPress={() => handleSelect(token)}
-                >
-                  <Icon
-                    name={token.iconName}
-                    className={selectTokenModalClasses.listItemIcon}
-                  />
-                  <div className={selectTokenModalClasses.listItemNameGroup}>
-                    <span className={selectTokenModalClasses.listItemName}>
-                      {token.name}
-                    </span>
-                    <span className={selectTokenModalClasses.listItemTicker}>
-                      {token.ticker}
-                    </span>
+            {!isEmpty(filteredTokens) ? (
+              <VirtualizedList
+                height="100%"
+                data={filteredTokens}
+                itemContent={(_index, token) => (
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    className={selectTokenModalClasses.listItem}
+                    onClick={() => handleSelect(token)}
+                    onKeyPress={() => handleSelect(token)}
+                  >
+                    {token.iconName === 'Token' ? (
+                      <TokenIcon
+                        className={selectTokenModalClasses.listItemIcon}
+                        ticker={token.ticker}
+                      />
+                    ) : (
+                      <Icon
+                        name={token.iconName}
+                        className={selectTokenModalClasses.listItemIcon}
+                      />
+                    )}
+                    <div className={selectTokenModalClasses.listItemNameGroup}>
+                      <span className={selectTokenModalClasses.listItemName}>
+                        {token.name}
+                      </span>
+                      <span className={selectTokenModalClasses.listItemTicker}>
+                        {token.ticker}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              )}
-            />
+                )}
+              />
+            ) : (
+              <div className={selectTokenModalClasses.listEmpty}>
+                <Icon
+                  className={selectTokenModalClasses.listEmptyIcon}
+                  name="Ban"
+                />
+                <p className={selectTokenModalClasses.listEmptyDescription}>
+                  No token found
+                </p>
+              </div>
+            )}
           </Container>
         </ModalContent>
       </Modal>

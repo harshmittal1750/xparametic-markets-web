@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { networks, currencies } from 'config';
+import { networks, currencies, tokens } from 'config';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { Currency } from 'types/currency';
@@ -24,6 +24,14 @@ export function getCurrencyByTicker(ticker: string) {
   );
 
   return currencyByTicker || currencies.TOKEN;
+}
+
+export function getTokenByTicker(ticker: string) {
+  const tokenByTicker = Object.values(tokens).find(
+    token => token.ticker === ticker
+  );
+
+  return tokenByTicker;
 }
 
 export interface MarketInitialState {
@@ -66,7 +74,6 @@ const initialState: MarketInitialState = {
       symbol: 'TOKEN',
       ticker: 'TOKEN',
       decimals: 18,
-      icon: '',
       iconName: 'Token',
       wrapped: false
     },
@@ -140,7 +147,10 @@ const marketSlice = createSlice({
         const ticker = market.token.wrapped
           ? network.currency.ticker
           : market.token.symbol;
-        const currencyByTokenSymbol = getCurrencyByTicker(ticker);
+
+        const tokenByTicker = getTokenByTicker(ticker);
+        const currencyByTicker = getCurrencyByTicker(ticker);
+
         return {
           payload: {
             ...market,
@@ -149,8 +159,7 @@ const marketSlice = createSlice({
             token: {
               ...market.token,
               ticker,
-              icon: currencyByTokenSymbol.icon,
-              iconName: currencyByTokenSymbol.iconName
+              iconName: (tokenByTicker || currencyByTicker).iconName
             },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
@@ -176,7 +185,10 @@ const marketSlice = createSlice({
         const ticker = market.token.wrapped
           ? network.currency.ticker
           : market.token.symbol;
-        const currencyByTokenSymbol = getCurrencyByTicker(ticker);
+
+        const tokenByTicker = getTokenByTicker(ticker);
+        const currencyByTicker = getCurrencyByTicker(ticker);
+
         return {
           payload: {
             ...market,
@@ -185,8 +197,7 @@ const marketSlice = createSlice({
             token: {
               ...market.token,
               ticker,
-              icon: currencyByTokenSymbol.icon,
-              iconName: currencyByTokenSymbol.iconName
+              iconName: (tokenByTicker || currencyByTicker).iconName
             },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,

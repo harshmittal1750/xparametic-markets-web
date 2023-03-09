@@ -115,7 +115,6 @@ const marketsSlice = createSlice({
                 token: {
                   ...market.token,
                   ticker: market.token.symbol,
-                  icon: currencyByTokenSymbol.icon,
                   iconName: currencyByTokenSymbol.iconName
                 }
               } as Market;
