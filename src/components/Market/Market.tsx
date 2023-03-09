@@ -41,6 +41,7 @@ function Market({ market }: MarketCardProps) {
       onClick={handleNavigation}
     >
       <MarketAvatar
+        ref={ref}
         $size="md"
         imageUrl={market.imageUrl}
         verified={!isDesktop && market.verified}
