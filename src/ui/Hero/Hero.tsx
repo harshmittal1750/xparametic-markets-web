@@ -35,7 +35,7 @@ export default function Hero({
       )}
       style={{
         // @ts-expect-error No need to assert React.CSSProperties here
-        '--image': `url(${$image})`,
+        '--image': `url('${$image}')`,
         ...style
       }}
       {...props}
