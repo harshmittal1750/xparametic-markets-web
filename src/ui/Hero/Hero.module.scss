@@ -17,7 +17,7 @@
       rgba(50, 90, 233, 0) 50%
     );
   }
-  &Default {
+  &Custom {
     --color: var(--color-background-secondary);
     --backdrop: linear-gradient(
         0deg,

@@ -4,22 +4,24 @@ import cn from 'classnames';
 
 import HeroClasses from './Hero.module.scss';
 
-type HeroProps = Pick<
-  React.ComponentPropsWithoutRef<'div'>,
-  'className' | 'style' | 'children'
-> & {
+interface HeroProps
+  extends Pick<
+    React.ComponentPropsWithoutRef<'div'>,
+    'className' | 'style' | 'children'
+  > {
   $image?: React.CSSProperties['backgroundImage'];
   $rounded?: boolean;
-} & (
-    | { $backdrop?: 'main'; $backdropColor?: undefined }
-    | { $backdrop?: 'custom'; $backdropColor: string }
-  );
+  $backdrop?: 'main' | (string & {});
+}
+
+function isMain(params: HeroProps['$backdrop']): params is 'main' {
+  return params === 'main';
+}
 
 export default function Hero({
   $image,
   $rounded,
   $backdrop,
-  $backdropColor,
   className,
   style,
   ...props
@@ -30,15 +32,17 @@ export default function Hero({
         HeroClasses.root,
         {
           [HeroClasses.rounded]: $rounded,
-          [HeroClasses.backdropMain]: $backdrop === 'main',
-          [HeroClasses.backdropDefault]: $backdrop === 'custom'
+          [HeroClasses.backdropMain]: isMain($backdrop),
+          [HeroClasses.backdropCustom]: !isMain($backdrop)
         },
         className
       )}
       style={{
         // @ts-expect-error No need to assert React.CSSProperties here
         '--hero-image': `url('${$image}')`,
-        '--hero-backdrop-color': $backdropColor,
+        ...(!isMain($backdrop) && {
+          '--hero-backdrop-color': $backdrop
+        }),
         ...style
       }}
       {...props}

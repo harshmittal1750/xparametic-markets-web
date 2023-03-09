@@ -20,8 +20,7 @@ function MarketHeadWrapper(
     <Hero
       className={marketClasses.hero}
       $image={imageUrl}
-      $backdrop="custom"
-      $backdropColor={avatarColor}
+      $backdrop={avatarColor}
       {...props}
     />
   );
