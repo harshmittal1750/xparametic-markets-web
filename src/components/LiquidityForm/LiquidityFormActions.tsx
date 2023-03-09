@@ -135,6 +135,7 @@ function LiquidityFormActions() {
       {isWrongNetwork ? <NetworkSwitch /> : null}
       {transactionType === 'add' && !isWrongNetwork ? (
         <ApproveToken
+          fullwidth
           address={token.address}
           ticker={token.ticker}
           wrapped={token.wrapped}

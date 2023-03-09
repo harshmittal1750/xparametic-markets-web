@@ -275,6 +275,7 @@ function TradeFormActions() {
         ) : null}
         {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
           <ApproveToken
+            fullwidth
             address={token.address}
             ticker={token.ticker}
             wrapped={token.wrapped}

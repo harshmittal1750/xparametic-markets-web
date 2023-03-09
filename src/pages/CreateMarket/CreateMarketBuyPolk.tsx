@@ -2,9 +2,7 @@ import { useState } from 'react';
 
 import { roundNumber } from 'helpers/math';
 
-import { TwarningIcon } from 'assets/icons';
-
-import { Text, ProgressBar } from 'components';
+import { Text, ProgressBar, Icon } from 'components';
 import { ButtonLoading } from 'components/Button';
 
 import { useAppSelector, useNetwork } from 'hooks';
@@ -35,7 +33,11 @@ function CreateMarketBuyPolk({
   return (
     <div className="pm-p-create-market-buy-polk">
       <div className="pm-p-create-market-buy-polk__group--column">
-        <TwarningIcon className="pm-p-create-market-buy-polk__icon" />
+        <Icon
+          size="lg"
+          name="Warning"
+          className="pm-p-create-market-buy-polk__icon"
+        />
         <Text
           as="p"
           scale="body"

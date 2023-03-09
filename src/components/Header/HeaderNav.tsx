@@ -16,7 +16,7 @@ import Modal from 'components/Modal';
 import NetworkSelector from 'components/NetworkSelector';
 import Text from 'components/Text';
 
-import HeaderNavClasses from './HeaderNav.module.scss';
+import headerNavClasses from './HeaderNav.module.scss';
 
 function HeaderNavModal({
   children
@@ -36,30 +36,30 @@ function HeaderNavModal({
         fullScreen
         fullWidth
         className={{
-          dialog: HeaderNavClasses.dialog
+          dialog: headerNavClasses.dialog
         }}
       >
-        <header className={HeaderNavClasses.header}>
+        <header className={headerNavClasses.header}>
           <Button
             size="xs"
             variant="ghost"
             onClick={handleHide}
-            className={HeaderNavClasses.hide}
+            className={headerNavClasses.hide}
           >
             <Icon name="Cross" size="lg" />
           </Button>
         </header>
         {typeof children === 'function' ? children(handleHide) : children}
-        <footer className={HeaderNavClasses.footer}>
+        <footer className={headerNavClasses.footer}>
           <Text
             color="gray"
             scale="tiny-uppercase"
             fontWeight="bold"
-            className={HeaderNavClasses.title}
+            className={headerNavClasses.title}
           >
             Join our community
           </Text>
-          <ul className={HeaderNavClasses.socials}>
+          <ul className={headerNavClasses.socials}>
             {Object.values(socials).map(social => (
               <li key={social.name}>
                 <Text
@@ -68,12 +68,12 @@ function HeaderNavModal({
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={HeaderNavClasses.social}
+                  className={headerNavClasses.social}
                 >
                   <Icon
                     title={social.name}
                     name={social.name}
-                    className={HeaderNavClasses.icon}
+                    className={headerNavClasses.icon}
                   />
                 </Text>
               </li>
@@ -82,7 +82,7 @@ function HeaderNavModal({
           <Feature name="regular">
             <CreateMarket
               fullwidth
-              className={HeaderNavClasses.createMarket}
+              className={headerNavClasses.createMarket}
               onCreateClick={handleHide}
             />
           </Feature>
@@ -97,16 +97,16 @@ function HeaderNavMenu({
   NavLinkProps?: Omit<ReactRouterDom.NavLinkProps, 'to'>;
 }) {
   return (
-    <ul className={HeaderNavClasses.list}>
+    <ul className={headerNavClasses.list}>
       {Object.values(pages)
         .filter(page => page.enabled && page.navigation)
         .reverse()
         .map(page => (
-          <li key={page.name} className={HeaderNavClasses.item}>
+          <li key={page.name} className={headerNavClasses.item}>
             <NavLink
               to={page.pathname}
-              className={HeaderNavClasses.link}
-              activeClassName={HeaderNavClasses.active}
+              className={headerNavClasses.link}
+              activeClassName={headerNavClasses.active}
               isActive={(_, location) => {
                 if (
                   location.pathname === pages.home.pathname ||
@@ -144,9 +144,9 @@ export default function HeaderNav() {
   const isDesktop = useMedia('(min-width: 1024px)');
 
   return (
-    <nav className={HeaderNavClasses.root}>
+    <nav className={headerNavClasses.root}>
       {isDesktop && !isTv && <HeaderNavMenuModal />}
-      <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
+      <Link to="/" aria-label="Homepage" className={headerNavClasses.logos}>
         <PolkamarketsLogo />
       </Link>
       {isTv ? (
@@ -154,7 +154,7 @@ export default function HeaderNav() {
       ) : (
         !isDesktop && (
           <>
-            <NetworkSelector responsive />
+            <NetworkSelector responsive className={headerNavClasses.network} />
             <HeaderNavMenuModal />
           </>
         )

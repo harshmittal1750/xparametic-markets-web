@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { TwarningIcon } from 'assets/icons';
-
 import { Button } from 'components/Button';
 import Checkbox from 'components/Checkbox';
+import Icon from 'components/Icon';
 import Link from 'components/Link';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
@@ -51,9 +50,10 @@ export default function BetaWarning() {
             fontWeight="semibold"
             id={betaWarningProps['aria-labelledby']}
           >
-            <TwarningIcon
+            <Icon
+              size="lg"
+              name="Warning"
               className="pm-c-beta-warning__header-title__adornment"
-              size={16}
             />
             Warning
           </ModalHeaderTitle>

@@ -2,18 +2,13 @@
   @include themes($create-market-form-themes) {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
     gap: 2rem;
-
-    width: 70rem;
 
     &__card {
       display: flex;
       flex-direction: column;
       gap: 2.4rem;
 
-      width: 70rem;
       padding: $create-market-form-card-padding-y
         $create-market-form-card-padding-x;
 
@@ -38,9 +33,13 @@
 
       &-categories-group--row {
         display: grid;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         grid-template-rows: auto;
         grid-gap: 2.4rem;
+
+        @media (min-width: 768px) {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
 
       &-liquidity-details {
@@ -88,13 +87,14 @@
 
     &__actions {
       display: flex;
-      flex-direction: row;
+      flex-direction: column-reverse;
       justify-content: flex-end;
-      align-items: center;
       gap: 2rem;
-
       width: 100%;
-      padding: 0.4rem 0rem 2.4rem 0rem;
+
+      @media (min-width: 768px) {
+        flex-direction: unset;
+      }
 
       button {
         @extend .body, .semibold;

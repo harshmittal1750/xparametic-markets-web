@@ -46,7 +46,12 @@ export default function HeaderActions() {
           [headerClasses.container]: !isDesktop
         })}
       >
-        {isDesktop && <NetworkSelector responsive />}
+        {isDesktop && (
+          <NetworkSelector
+            responsive
+            className={headerActionsClasses.network}
+          />
+        )}
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
         <Button
           variant="ghost"
