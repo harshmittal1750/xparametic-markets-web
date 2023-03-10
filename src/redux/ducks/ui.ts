@@ -16,7 +16,7 @@ const initialState = {
   },
   market: {
     avatar: {
-      color: ''
+      color: localStorage.getItem('MARKET_AVATAR_COLOR') || ''
     }
   }
 };
