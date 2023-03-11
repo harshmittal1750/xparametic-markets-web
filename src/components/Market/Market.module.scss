@@ -6,5 +6,9 @@
       display: unset;
       margin-right: var(--size-8);
     }
+
+    &Tooltip {
+      text-transform: initial;
+    }
   }
 }

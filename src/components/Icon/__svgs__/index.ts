@@ -1,4 +1,5 @@
 export { ReactComponent as Arrow } from './Arrow.svg';
+export { ReactComponent as Ban } from './Ban.svg';
 export { ReactComponent as Binance } from './Binance.svg';
 export { ReactComponent as Bitcoin } from './Bitcoin.svg';
 export { ReactComponent as Calendar } from './Calendar.svg';
@@ -44,4 +45,5 @@ export { ReactComponent as Todo } from './Todo.svg';
 export { ReactComponent as Token } from './Token.svg';
 export { ReactComponent as Twitter } from './Twitter.svg';
 export { ReactComponent as USDCoin } from './USDCoin.svg';
+export { ReactComponent as Warning } from './Warning.svg';
 export { ReactComponent as Youtube } from './Youtube.svg';

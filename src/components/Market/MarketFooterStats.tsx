@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
+import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 
 import Icon from 'components/Icon';
@@ -13,15 +14,19 @@ type MarketFooterStatsProps = {
 };
 
 export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
-  const { volume, expiresAt, liquidity, token } = market;
+  const { volume, expiresAt, liquidity, token, network } = market;
 
   return (
     <div className="pm-c-market-footer__stats">
       <>
-        <Tooltip text={token.name}>
-          <Icon name={token.iconName} />
-        </Tooltip>
-        <span className="pm-c-divider--circle" />
+        {!isEmpty(network.currency) ? (
+          <>
+            <Tooltip text={network.name}>
+              <Icon name={network.currency.iconName} />
+            </Tooltip>
+            <span className="pm-c-divider--circle" />
+          </>
+        ) : null}
       </>
       {!!volume && (
         <>
@@ -42,7 +47,11 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               fontWeight="semibold"
               color="lighter-gray"
             >
-              {`${roundNumber(volume, 3)} ${token.ticker}`}
+              {`${roundNumber(volume, 3)} `}
+              <Tooltip
+                className={marketClasses.footerStatsTooltip}
+                text={token.name}
+              >{`${token.ticker}`}</Tooltip>
             </Text>
           </Text>
           <span className="pm-c-divider--circle" />
@@ -57,7 +66,11 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               className={marketClasses.footerStatsIcon}
             />
             <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-              {`${roundNumber(liquidity, 3)} ${token.ticker}`}
+              {`${roundNumber(liquidity, 3)} `}
+              <Tooltip
+                className={marketClasses.footerStatsTooltip}
+                text={token.name}
+              >{`${token.ticker}`}</Tooltip>
             </Text>
           </Text>
           <span className="pm-c-divider--circle" />

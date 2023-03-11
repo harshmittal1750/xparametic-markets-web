@@ -52,7 +52,6 @@ function CreateMarketFormConfigure() {
               value: 'other'
             }
           ]}
-          style={{ height: '100%' }}
         />
         <Input
           label="Subcategory"

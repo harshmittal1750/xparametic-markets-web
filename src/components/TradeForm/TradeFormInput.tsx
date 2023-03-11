@@ -6,7 +6,7 @@ import {
   setTradeDetails
 } from 'redux/ducks/trade';
 
-import { WalletIcon } from 'assets/icons';
+import { TokenIcon, WalletIcon } from 'assets/icons';
 
 import {
   useAppSelector,
@@ -16,6 +16,7 @@ import {
 } from 'hooks';
 
 import { Button } from '../Button';
+import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 import { calculateTradeDetails } from './utils';
@@ -25,7 +26,7 @@ function TradeFormInput() {
   const { network } = useNetwork();
 
   const token = useAppSelector(state => state.market.market.token);
-  const { name, ticker, icon, address, wrapped } = token;
+  const { name, ticker, iconName, address, wrapped } = token;
 
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
@@ -176,7 +177,13 @@ function TradeFormInput() {
           </button>
           {type === 'buy' ? (
             <div className="pm-c-amount-input__logo">
-              <figure aria-label={name}>{icon}</figure>
+              <figure aria-label={name}>
+                {iconName === 'Token' ? (
+                  <TokenIcon ticker={ticker} />
+                ) : (
+                  <Icon name={iconName} />
+                )}
+              </figure>
               <Text as="span" scale="caption" fontWeight="bold">
                 {ticker}
               </Text>

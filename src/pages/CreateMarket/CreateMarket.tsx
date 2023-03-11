@@ -26,25 +26,21 @@ function CreateMarket() {
   }, [polkBalance, networkConfig]);
 
   return (
-    <Container className="pm-p-create-market">
-      <div className="pm-p-create-market__header">
-        <Text
-          as="h4"
-          scale="heading"
-          fontWeight="semibold"
-          className="pm-p-create-market__header-title"
-        >
-          Create New Market
-        </Text>
-      </div>
-      <div className="pm-p-create-market__notification-wrapper">
-        {needsBuyPolk ? (
-          <div className="pm-p-create-market__notification-overlay">
-            <CreateMarketBuyPolk requiredPolkBalance={requiredBalance} />
-          </div>
-        ) : null}
-        <CreateMarketForm />
-      </div>
+    <Container $size="sm" $enableGutters className="pm-p-create-market">
+      {needsBuyPolk && (
+        <div className="pm-p-create-market__notification-overlay">
+          <CreateMarketBuyPolk requiredPolkBalance={requiredBalance} />
+        </div>
+      )}
+      <Text
+        as="h4"
+        scale="heading"
+        fontWeight="semibold"
+        className="pm-p-create-market__header-title"
+      >
+        Create New Market
+      </Text>
+      <CreateMarketForm />
     </Container>
   );
 }

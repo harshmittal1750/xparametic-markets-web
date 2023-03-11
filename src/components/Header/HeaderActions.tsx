@@ -37,8 +37,6 @@ export default function HeaderActions() {
     Wrapper: theme.device.type.isDesktop ? 'div' : Container
   };
 
-  console.log(theme.device.mode);
-
   return (
     <headerActionsComponent.Root>
       <headerActionsComponent.Wrapper
@@ -46,7 +44,12 @@ export default function HeaderActions() {
           [headerClasses.container]: !theme.device.type.isDesktop
         })}
       >
-        {theme.device.type.isDesktop && <NetworkSelector responsive />}
+        {theme.device.type.isDesktop && (
+          <NetworkSelector
+            responsive
+            className={headerActionsClasses.network}
+          />
+        )}
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
         <Button
           variant="ghost"
