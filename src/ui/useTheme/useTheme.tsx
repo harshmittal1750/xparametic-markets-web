@@ -6,8 +6,8 @@ import { useLocalStorage, useTimeoutEffect } from 'hooks';
 
 export type ThemeProps = {
   device: {
-    type: 'mobile' | 'tablet' | 'desktop' | 'tv';
     mode: 'light' | 'dark';
+    type: Record<'isTv' | 'isDesktop' | 'isTablet', boolean>;
     setMode: React.Dispatch<
       React.SetStateAction<ThemeProps['device']['mode'] | 'system'>
     >;
@@ -28,7 +28,11 @@ const STYLE_RULES = [
 const ThemeContext = createContext<ThemeProps>({
   device: {
     mode: 'light',
-    type: 'mobile',
+    type: {
+      isTv: false,
+      isDesktop: false,
+      isTablet: false
+    },
     setMode: () => {}
   }
 });
@@ -53,25 +57,26 @@ export default function ThemeProvider(props: ThemeProviderProps) {
   const isTablet = useMedia('(min-width: 512px)');
   const isDesktop = useMedia('(min-width: 1024px)');
   const isTv = useMedia('(min-width: 1440px)');
-  const value: ThemeProps = useMemo(() => {
-    const system = (() => {
-      if (isDark) return 'dark';
-      return 'light';
-    })();
-
-    return {
+  const value: ThemeProps = useMemo(
+    () => ({
       device: {
-        mode: stored === 'system' ? system : stored,
-        type: (() => {
-          if (isTv) return 'tv';
-          if (isDesktop) return 'desktop';
-          if (isTablet) return 'tablet';
-          return 'mobile';
+        mode: (() => {
+          if (stored) {
+            if (isDark) return 'dark';
+            return 'light';
+          }
+          return stored;
         })(),
+        type: {
+          isTv,
+          isDesktop,
+          isTablet
+        },
         setMode: setStored
       }
-    };
-  }, [isDark, isDesktop, isTablet, isTv, setStored, stored]);
+    }),
+    [isDark, isDesktop, isTablet, isTv, setStored, stored]
+  );
 
   handleChangeTheme(value.device.mode);
   useEffect(() => {
