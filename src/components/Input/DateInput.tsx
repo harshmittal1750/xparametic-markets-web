@@ -1,14 +1,14 @@
-/* eslint-disable no-nested-ternary */
 import 'react-datepicker/dist/react-datepicker.css';
 import { DateTimePickerProps, DateTimePicker } from '@material-ui/pickers';
 import { useField, useFormikContext } from 'formik';
 import styled from 'styled-components';
-
-import { useTheme } from 'hooks';
+import { ThemeProps, useTheme } from 'ui';
 
 import InputErrorMessage from './InputErrorMessage';
 
-const StyledDateTimePicker = styled(DateTimePicker)<{ $hasError: boolean }>`
+type StyledDateTimePickerProps = { theme: ThemeProps; $hasError: boolean };
+
+const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
   .MuiOutlinedInput-input {
     padding: 1.2rem;
 
@@ -18,7 +18,8 @@ const StyledDateTimePicker = styled(DateTimePicker)<{ $hasError: boolean }>`
     line-height: 1.5;
     letter-spacing: -0.014rem;
 
-    color: ${props => (props.theme === 'dark' ? '#f9fafb' : '#171b23')};
+    color: ${props =>
+      props.theme.device.mode === 'dark' ? '#f9fafb' : '#171b23'};
     border: 0.1rem solid transparent;
 
     &:hover,
@@ -30,23 +31,21 @@ const StyledDateTimePicker = styled(DateTimePicker)<{ $hasError: boolean }>`
   .MuiOutlinedInput-root {
     outline: none;
     border: 0.1rem solid
-      ${props =>
-        props.$hasError
-          ? '#e12d39'
-          : props.theme === 'dark'
-          ? '#252c3b'
-          : '#e0e2e7'};
+      ${props => {
+        if (props.$hasError) return '#e12d39';
+        if (props.theme.device.mode === 'dark') return '#252c3b';
+        return '#e0e2e7';
+      }};
     transition: 0.2s border ease-out;
 
     &:hover {
       outline: none;
       border: 0.1rem solid
-        ${props =>
-          props.$hasError
-            ? '#e12d39'
-            : props.theme === 'dark'
-            ? '#637084'
-            : '#c2cad6'};
+        ${props => {
+          if (props.$hasError) return '#e12d39';
+          if (props.theme.device.mode === 'dark') return '#637084';
+          return '#c2cad6';
+        }};
     }
 
     &.Mui-focused fieldset {
@@ -69,7 +68,7 @@ interface DateInputProps
 }
 
 function DateInput({ label, name, description, ...props }: DateInputProps) {
-  const { theme } = useTheme();
+  const theme = useTheme();
   const [field, meta] = useField(name);
   const { setFieldValue } = useFormikContext();
 

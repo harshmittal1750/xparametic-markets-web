@@ -1,11 +1,9 @@
-import { SVGProps, memo } from 'react';
+import { memo } from 'react';
 
-import { useTheme } from 'hooks';
+import { useTheme } from 'ui';
 
-function ThirdPlaceIcon(props: SVGProps<SVGSVGElement>) {
-  const { theme } = useTheme();
-
-  const backgroundColor = theme === 'dark' ? '#3B4760' : '#C3CCDA';
+function ThirdPlaceIcon(props: React.SVGProps<SVGSVGElement>) {
+  const theme = useTheme();
 
   return (
     <svg
@@ -31,7 +29,10 @@ function ThirdPlaceIcon(props: SVGProps<SVGSVGElement>) {
         />
       </mask>
       <g mask="url(#mask0_2445_47023)">
-        <path fill={backgroundColor} d="M-11 -1H25V17H-11z" />
+        <path
+          fill={theme.device.mode === 'dark' ? '#3B4760' : '#C3CCDA'}
+          d="M-11 -1H25V17H-11z"
+        />
         <path fill="#28C1B8" d="M-9.5 16.5L8 9l17 8h-36l1.5-.5z" />
       </g>
     </svg>

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import sortOutcomes from 'helpers/sortOutcomes';
 import type { Market } from 'models/market';
-import { useMedia } from 'ui';
+import { useTheme } from 'ui';
 
 import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
 
@@ -20,8 +20,8 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
-  const isDesktop = useMedia('(min-width: 1024px)');
-  const MAX_OUTCOMES_EXPANDABLE = isDesktop ? 2 : 1;
+  const theme = useTheme();
+  const MAX_OUTCOMES_EXPANDABLE = theme.device.type.isDesktop ? 2 : 1;
   const isMarketResolved = market.state === 'resolved';
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
@@ -32,7 +32,8 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
     max: MAX_OUTCOMES_EXPANDABLE,
     truncateMax: MAX_OUTCOMES_EXPANDABLE
   });
-  const needExpandOutcomes = sortedOutcomes.length > (isDesktop ? 3 : 2);
+  const needExpandOutcomes =
+    sortedOutcomes.length > (theme.device.type.isDesktop ? 3 : 2);
   const getOutcomeActive = useCallback(
     (id: string | number) =>
       market.id === trade.selectedMarketId &&

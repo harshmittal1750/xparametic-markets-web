@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { kebabCase, uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
-import { useMedia } from 'ui';
+import { useTheme } from 'ui';
 
 import { Area } from 'components/plots';
 import type { AreaDataPoint } from 'components/plots/Area/Area.type';
@@ -41,7 +41,7 @@ export default function OutcomeItem({
   $variant,
   ...props
 }: OutcomeProps) {
-  const isTablet = useMedia('(min-width: 512px)');
+  const theme = useTheme();
 
   return (
     <button
@@ -78,7 +78,7 @@ export default function OutcomeItem({
         </div>
         <div className="pm-c-market-outcomes__item-endAdornment">
           {endAdornment ||
-            (data && isTablet && (
+            (data && theme.device.type.isTablet && (
               <Area
                 id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
                 data={data}
@@ -89,7 +89,7 @@ export default function OutcomeItem({
             ))}
         </div>
       </div>
-      {isTablet && children}
+      {theme.device.type.isTablet && children}
       {!isResolved && typeof percent !== 'undefined' && (
         <Line
           percent={percent}

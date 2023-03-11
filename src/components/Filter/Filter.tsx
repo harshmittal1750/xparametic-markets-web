@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import cn from 'classnames';
-import { useMedia } from 'ui';
+import { useTheme } from 'ui';
 
 import { ArrowDownSmallIcon } from 'assets/icons';
 
@@ -38,7 +38,7 @@ function Filter({
   onTouch,
   className
 }: FilterProps) {
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
 
   const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option | undefined>();
@@ -138,7 +138,7 @@ function Filter({
         fontWeight="bold"
         type="button"
       >
-        {isDesktop ? (
+        {theme.device.type.isDesktop ? (
           <>
             <span className="pm-c-filter__label">{description}</span>
             {selectedOption.name}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
 import { formatNumberToString } from 'helpers/math';
-import { useMedia } from 'ui';
+import { useTheme } from 'ui';
 
 import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 
@@ -26,19 +26,21 @@ function MetaMaskWallet(props: React.PropsWithChildren<{}>) {
   return <div className="pm-c-wallet-info__currency" {...props} />;
 }
 export default function WalletInfo() {
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const { network } = useNetwork();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-  const MetaMaskWalletComponent = isDesktop ? MetaMaskWallet : Fragment;
+  const MetaMaskWalletComponent = theme.device.type.isDesktop
+    ? MetaMaskWallet
+    : Fragment;
 
   return (
     <div className="pm-c-wallet-info">
       <div className="pm-c-wallet-info__currency pm-c-wallet-info__profile">
         {formatNumberToString(polkBalance)}
         <span className="pm-c-wallet-info__currency__ticker">POLK</span>
-        {isDesktop && (
+        {theme.device.type.isDesktop && (
           <>
             <Feature name="fantasy">
               <WalletInfoClaim />
@@ -50,7 +52,7 @@ export default function WalletInfo() {
                   style={{ padding: '0.5rem 1rem' }}
                   onClick={() => window.open(network.buyEc20Url, '_blank')}
                 >
-                  Buy {isDesktop && '$POLK'}
+                  Buy {theme.device.type.isDesktop && '$POLK'}
                 </Button>
               </Feature>
             )}
@@ -58,7 +60,7 @@ export default function WalletInfo() {
         )}
       </div>
       <MetaMaskWalletComponent>
-        {isDesktop && (
+        {theme.device.type.isDesktop && (
           <>
             <MetaMaskIcon />
             {ethBalance.toFixed(4)}
@@ -73,14 +75,14 @@ export default function WalletInfo() {
           className={cn(
             'pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__address',
             {
-              'pm-c-wallet-info__currency__button': isDesktop
+              'pm-c-wallet-info__currency__button': theme.device.type.isDesktop
             }
           )}
         >
-          {!isDesktop && <MetaMaskIcon />}
+          {!theme.device.type.isDesktop && <MetaMaskIcon />}
           {ethAddress.match(/^.{4}|.{4}$/gm)?.join('...')}
         </Link>
-        {isDesktop && <Transak />}
+        {theme.device.type.isDesktop && <Transak />}
       </MetaMaskWalletComponent>
     </div>
   );
