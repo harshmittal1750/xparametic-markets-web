@@ -61,7 +61,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     () => ({
       device: {
         mode: (() => {
-          if (stored) {
+          if (stored === 'system') {
             if (isDark) return 'dark';
             return 'light';
           }
