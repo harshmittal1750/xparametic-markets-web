@@ -1,5 +1,5 @@
 import { Fragment, useCallback, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -21,11 +21,17 @@ import { useFilters } from 'hooks';
 
 import homeClasses from './Home.module.scss';
 
+type FormFields = {
+  favorites: boolean;
+  state: string[];
+  network: string[];
+};
+
 type ListItemNestedProps = {
-  onToggleChange: (
-    path?: string
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+  name: string;
   subitems: Dropdown;
+  register: UseFormRegister<FormFields>;
+  watch: UseFormWatch<FormFields>;
 };
 
 function HomeFilterModal(
@@ -60,11 +66,18 @@ function ModalFilterAnimation({
     </AnimatePresence>
   );
 }
-function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
+function ListItemNested({
+  name,
+  subitems,
+  register,
+  watch
+}: ListItemNestedProps) {
   const [expand, setExpand] = useState(false);
   const handleExpand = useCallback(() => {
     setExpand(prevExpand => !prevExpand);
   }, []);
+
+  const fields = watch();
 
   return (
     <>
@@ -89,10 +102,9 @@ function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
                   <Adornment $edge="end">
                     <Toggle
                       type="checkbox"
-                      checked={option.selected}
                       value={option.value}
-                      name={option.label}
-                      onChange={onToggleChange(option.path)}
+                      checked={fields[name].includes(option.value)}
+                      {...register(name as keyof FormFields)}
                     />
                   </Adornment>
                 </ListItem>
@@ -126,13 +138,9 @@ export default function HomeFilter({
   );
   const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
 
-  const {
-    watch,
-    register,
-    handleSubmit,
-    formState: { errors },
-    getValues
-  } = useForm({ defaultValues: { favorites: true } });
+  const { register, watch } = useForm<FormFields>({
+    defaultValues: { favorites: true, state: [], network: [] }
+  });
 
   return (
     <ModalFilterRoot
@@ -166,8 +174,10 @@ export default function HomeFilter({
             <Fragment key={dropdrown}>
               <Divider />
               <ListItemNested
+                name={dropdrown}
                 subitems={filters.state.dropdowns[dropdrown]}
-                onToggleChange={handleToggleChange}
+                register={register}
+                watch={watch}
               />
             </Fragment>
           ))}
