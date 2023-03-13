@@ -109,14 +109,18 @@ export default class PolkamarketsService {
     if (this.loggedIn) return true;
 
     try {
-      this.loggedIn = await this.polkamarkets.login();
+      const loggedIn = await this.polkamarkets.login();
       // successful login
-      if (this.loggedIn) {
-        this.address = await this.getAddress();
+      if (loggedIn) {
+        const address = await this.getAddress();
         // TODO: set this in polkamarkets
-        this.polkamarkets.web3.eth.defaultAccount = this.address;
-        // re-fetching contracts
-        this.getContracts();
+        if (address) {
+          this.polkamarkets.web3.eth.defaultAccount = this.address;
+          this.loggedIn = true;
+          this.address = address;
+          // re-fetching contracts
+          this.getContracts();
+        }
       }
     } catch (e) {
       // should be non-blocking
@@ -129,7 +133,9 @@ export default class PolkamarketsService {
   public async getAddress(): Promise<string> {
     if (this.address) return this.address;
 
-    return this.polkamarkets.getAddress() || '';
+    const address = (await this.polkamarkets.getAddress()) || '';
+
+    return address;
   }
 
   public async getBalance(): Promise<number> {
@@ -366,6 +372,7 @@ export default class PolkamarketsService {
 
   public async getActions(): Promise<any[]> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return [];
 
     const response = await this.contracts.pm.getMyActions();
