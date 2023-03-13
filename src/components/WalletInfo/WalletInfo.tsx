@@ -2,8 +2,9 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { formatNumberToString } from 'helpers/math';
 import { useTheme } from 'ui';
+import { formatNumberToString } from 'helpers/math';
+import shortenAddress from 'helpers/shortenAddress';
 
 import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 
@@ -80,7 +81,7 @@ export default function WalletInfo() {
           )}
         >
           {!theme.device.isDesktop && <MetaMaskIcon />}
-          {ethAddress.match(/^.{4}|.{4}$/gm)?.join('...')}
+          {shortenAddress(ethAddress)}
         </Link>
         {theme.device.isDesktop && <Transak />}
       </MetaMaskWalletComponent>
