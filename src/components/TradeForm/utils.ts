@@ -77,7 +77,7 @@ function calculateSharesBought(
   // TODO: move formulas to polkamarketsjs
 
   // taking fee of ethAmount
-  const fee = market.fee * ethAmount;
+  const fee = (market.fee + market.treasuryFee) * ethAmount;
   const amount = ethAmount - fee;
 
   // calculating product of all other outcome shares + amount
@@ -168,7 +168,7 @@ function calculateEthAmountSold(
   // ROI is not relevant on sell
   const maxROI = 1;
   const maxStake = 0;
-  const fee = totalStake * market.fee;
+  const fee = totalStake * (market.fee + market.treasuryFee);
 
   return {
     price,
