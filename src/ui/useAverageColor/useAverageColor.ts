@@ -4,9 +4,9 @@ export default function useAverageColor(
   ref: React.RefObject<HTMLImageElement>
 ) {
   const [RGB, setRGB] = useState({
-    red: 0,
-    green: 0,
-    blue: 0
+    red: 48,
+    green: 51,
+    blue: 190
   });
   const [context] = useState(() =>
     document.createElement('canvas').getContext?.('2d')
@@ -20,7 +20,7 @@ export default function useAverageColor(
         node.crossOrigin = 'Anonymous';
 
         try {
-          context?.drawImage(node, 0, 0, 1, 1);
+          context?.drawImage(node, 0, 0, 1, 64);
           const imageData = context?.getImageData(0, 0, 1, 1);
 
           if (imageData?.data) {
@@ -31,7 +31,7 @@ export default function useAverageColor(
             });
           }
         } catch (error) {
-          setRGB({ red: 48, green: 51, blue: 190 });
+          setRGB(prevRGB => prevRGB);
         }
       }
     }

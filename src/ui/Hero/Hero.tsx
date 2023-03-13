@@ -11,7 +11,11 @@ interface HeroProps
   > {
   $image?: React.CSSProperties['backgroundImage'];
   $rounded?: boolean;
-  $backdrop?: 'main' | 'default';
+  $backdrop?: 'main' | (string & {});
+}
+
+function isMain(params: HeroProps['$backdrop']): params is 'main' {
+  return params === 'main';
 }
 
 export default function Hero({
@@ -28,14 +32,17 @@ export default function Hero({
         HeroClasses.root,
         {
           [HeroClasses.rounded]: $rounded,
-          [HeroClasses.backdropMain]: $backdrop === 'main',
-          [HeroClasses.backdropDefault]: !$backdrop || $backdrop === 'default'
+          [HeroClasses.backdropMain]: isMain($backdrop),
+          [HeroClasses.backdropCustom]: !isMain($backdrop)
         },
         className
       )}
       style={{
         // @ts-expect-error No need to assert React.CSSProperties here
-        '--image': `url(${$image})`,
+        '--hero-image': `url('${$image}')`,
+        ...(!isMain($backdrop) && {
+          '--hero-backdrop-color': $backdrop
+        }),
         ...style
       }}
       {...props}

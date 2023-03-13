@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Market as MarketInterface } from 'models/market';
@@ -26,13 +26,23 @@ function Market({ market }: MarketCardProps) {
     const { clearMarket } = await import('redux/ducks/market');
     const { openTradeForm } = await import('redux/ducks/ui');
     const { selectOutcome } = await import('redux/ducks/trade');
-    const { setMarketAvatarColor } = await import('redux/ducks/ui');
 
-    dispatch(setMarketAvatarColor(`${RGB.red} ${RGB.green} ${RGB.blue}`));
     dispatch(selectOutcome(market.id, market.networkId, market.outcomes[0].id));
     dispatch(clearMarket());
     dispatch(openTradeForm());
-  }, [RGB, dispatch, market.id, market.networkId, market.outcomes]);
+  }, [dispatch, market.id, market.networkId, market.outcomes]);
+
+  useEffect(() => {
+    (async function handleMarketsColor() {
+      const { setMarketColors } = await import('redux/ducks/ui');
+
+      dispatch(
+        setMarketColors({
+          [market.id]: `${RGB.red} ${RGB.green} ${RGB.blue}`
+        })
+      );
+    })();
+  }, [RGB, dispatch, market.id]);
 
   return (
     <Link
@@ -41,6 +51,7 @@ function Market({ market }: MarketCardProps) {
       onClick={handleNavigation}
     >
       <MarketAvatar
+        ref={ref}
         $size="md"
         imageUrl={market.imageUrl}
         verified={!isDesktop && market.verified}
