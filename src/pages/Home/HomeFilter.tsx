@@ -25,11 +25,14 @@ type FormFields = {
   favorites: boolean;
   state: string[];
   network: string[];
+  volume: string;
+  liquidity: string;
 };
 
 type ListItemNestedProps = {
   name: string;
   subitems: Dropdown;
+  type: 'checkbox' | 'radio';
   register: UseFormRegister<FormFields>;
   watch: UseFormWatch<FormFields>;
 };
@@ -69,6 +72,7 @@ function ModalFilterAnimation({
 function ListItemNested({
   name,
   subitems,
+  type,
   register,
   watch
 }: ListItemNestedProps) {
@@ -101,9 +105,13 @@ function ListItemNested({
                   <ListItemText>{option.label}</ListItemText>
                   <Adornment $edge="end">
                     <Toggle
-                      type="checkbox"
+                      type={type}
                       value={option.value}
-                      checked={fields[name].includes(option.value)}
+                      checked={
+                        type === 'radio'
+                          ? fields[name] === option.value
+                          : fields[name].includes(option.value)
+                      }
                       {...register(name as keyof FormFields)}
                     />
                   </Adornment>
@@ -139,7 +147,13 @@ export default function HomeFilter({
   const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
 
   const { register, watch } = useForm<FormFields>({
-    defaultValues: { favorites: true, state: [], network: [] }
+    defaultValues: {
+      favorites: true,
+      state: [],
+      network: [],
+      volume: 'any',
+      liquidity: 'any'
+    }
   });
 
   return (
@@ -176,6 +190,7 @@ export default function HomeFilter({
               <ListItemNested
                 name={dropdrown}
                 subitems={filters.state.dropdowns[dropdrown]}
+                type={filters.state.dropdowns[dropdrown].type}
                 register={register}
                 watch={watch}
               />
