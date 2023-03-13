@@ -12,6 +12,7 @@ export type Option = {
 export type Dropdown = {
   title: string;
   options: Option[];
+  type: 'checkbox' | 'radio';
 };
 
 export type FiltersState = {
