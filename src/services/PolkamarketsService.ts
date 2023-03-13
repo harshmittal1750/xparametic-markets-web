@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
+import { features } from 'config';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
 
@@ -419,6 +420,8 @@ export default class PolkamarketsService {
 
   public async isPolkClaimed(): Promise<boolean> {
     if (!this.address) return false;
+
+    if (features.regular.enabled) return false;
 
     let claimed;
 
