@@ -10,6 +10,7 @@ const filtersInitialState: FiltersState = {
   dropdowns: {
     state: {
       title: 'Market State',
+      type: 'checkbox',
       options: [
         {
           label: 'Open',
@@ -27,6 +28,70 @@ const filtersInitialState: FiltersState = {
           selected: false
         }
       ]
+    },
+    volume: {
+      title: 'Market Volume',
+      type: 'radio',
+      options: [
+        { label: 'Any', value: 'any', selected: true },
+        {
+          label: 'Under $10',
+          value: '0-10',
+          selected: false
+        },
+        {
+          label: '$10 - $100',
+          value: '10-100',
+          selected: false
+        },
+        {
+          label: '$100 - $1000',
+          value: '100-1000',
+          selected: false
+        },
+        {
+          label: 'Over $1000',
+          value: '1000-',
+          selected: false
+        },
+        {
+          label: 'Custom',
+          value: 'custom',
+          selected: false
+        }
+      ]
+    },
+    liquidity: {
+      title: 'Market Liquidity',
+      type: 'radio',
+      options: [
+        { label: 'Any', value: 'any', selected: true },
+        {
+          label: 'Under $10',
+          value: '0-10',
+          selected: false
+        },
+        {
+          label: '$10 - $100',
+          value: '10-100',
+          selected: false
+        },
+        {
+          label: '$100 - $1000',
+          value: '100-1000',
+          selected: false
+        },
+        {
+          label: 'Over $1000',
+          value: '1000-',
+          selected: false
+        },
+        {
+          label: 'Custom',
+          value: 'custom',
+          selected: false
+        }
+      ]
     }
   }
 };
@@ -38,6 +103,7 @@ function addNetworks(filtersState: FiltersState, networks: Network[]) {
       ...filtersState.dropdowns,
       network: {
         title: 'Market Network',
+        type: 'checkbox' as const,
         options: [
           ...networks.map(network => {
             return {
