@@ -23,12 +23,10 @@ export default function Home() {
   return (
     <Switch>
       <Route exact path={routeMatch.path}>
-        {ui.hero.enabled && theme.device.type.isDesktop && <HomeHero />}
+        {ui.hero.enabled && theme.device.isDesktop && <HomeHero />}
         <Container ref={ref} $enableGutters className={homeClasses.nav}>
           <HomeNav
-            onFilterClick={
-              theme.device.type.isDesktop ? handleToggle : handleShow
-            }
+            onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
           />
         </Container>
         <div className={homeClasses.root}>

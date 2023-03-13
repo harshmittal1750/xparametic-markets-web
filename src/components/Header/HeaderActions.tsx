@@ -34,18 +34,18 @@ export default function HeaderActions() {
     [theme.device]
   );
   const headerActionsComponent = {
-    Root: theme.device.type.isDesktop ? Fragment : HeaderActionsWrapper,
-    Wrapper: theme.device.type.isDesktop ? 'div' : Container
+    Root: theme.device.isDesktop ? Fragment : HeaderActionsWrapper,
+    Wrapper: theme.device.isDesktop ? 'div' : Container
   };
 
   return (
     <headerActionsComponent.Root>
       <headerActionsComponent.Wrapper
         className={cn(headerActionsClasses.root, {
-          [headerClasses.container]: !theme.device.type.isDesktop
+          [headerClasses.container]: !theme.device.isDesktop
         })}
       >
-        {theme.device.type.isDesktop && (
+        {theme.device.isDesktop && (
           <NetworkSelector
             responsive
             className={headerActionsClasses.network}

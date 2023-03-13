@@ -7,11 +7,10 @@ import { useLocalStorage, useTimeoutEffect } from 'hooks';
 export type ThemeProps = {
   device: {
     mode: 'light' | 'dark';
-    type: Record<'isTv' | 'isDesktop' | 'isTablet', boolean>;
     setMode: React.Dispatch<
       React.SetStateAction<ThemeProps['device']['mode'] | 'system'>
     >;
-  };
+  } & Record<'isTv' | 'isDesktop' | 'isTablet', boolean>;
 };
 export type ThemeProviderProps = Omit<
   React.ProviderProps<Record<string, never>>,
@@ -28,11 +27,9 @@ const STYLE_RULES = [
 const ThemeContext = createContext<ThemeProps>({
   device: {
     mode: 'light',
-    type: {
-      isTv: false,
-      isDesktop: false,
-      isTablet: false
-    },
+    isTv: false,
+    isDesktop: false,
+    isTablet: false,
     setMode: () => {}
   }
 });
@@ -74,11 +71,9 @@ export default function ThemeProvider(props: ThemeProviderProps) {
           }
           return stored;
         })(),
-        type: {
-          isTv,
-          isDesktop,
-          isTablet
-        },
+        isTv,
+        isDesktop,
+        isTablet,
         setMode: setStored
       }
     }),

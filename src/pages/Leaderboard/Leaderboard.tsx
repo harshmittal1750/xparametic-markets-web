@@ -363,7 +363,7 @@ function Leaderboard() {
               <LeaderboardTable
                 loggedInUser={userEthAddress}
                 columns={
-                  theme.device.type.isDesktop
+                  theme.device.isDesktop
                     ? columns
                     : columns.filter(
                         column =>
@@ -375,7 +375,7 @@ function Leaderboard() {
                 ticker={ticker}
                 isLoading={isLoadingQuery}
               />
-              {theme.device.type.isDesktop ? (
+              {theme.device.isDesktop ? (
                 <div className="flex-column gap-6 justify-start align-start">
                   {walletConnected ? (
                     <LeaderboardYourStats

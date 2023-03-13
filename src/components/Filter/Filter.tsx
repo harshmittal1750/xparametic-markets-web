@@ -138,7 +138,7 @@ function Filter({
         fontWeight="bold"
         type="button"
       >
-        {theme.device.type.isDesktop ? (
+        {theme.device.isDesktop ? (
           <>
             <span className="pm-c-filter__label">{description}</span>
             {selectedOption.name}

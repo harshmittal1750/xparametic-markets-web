@@ -40,11 +40,11 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
       >
         <Icon
           name="Filter"
-          {...(!theme.device.type.isDesktop && {
+          {...(!theme.device.isDesktop && {
             title: 'Filter'
           })}
         />
-        {theme.device.type.isDesktop && 'Filter'}
+        {theme.device.isDesktop && 'Filter'}
       </Button>
       <HomeNavSearch />
       <Filter
@@ -54,7 +54,7 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
         onChange={handleSelectedFilter}
         className="pm-p-home__navigation__actions"
       />
-      {theme.device.type.isDesktop && (
+      {theme.device.isDesktop && (
         <Feature name="regular">
           <CreateMarket />
         </Feature>

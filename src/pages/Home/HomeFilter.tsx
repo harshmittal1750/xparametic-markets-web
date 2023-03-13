@@ -123,14 +123,14 @@ export default function HomeFilter({
     },
     [filters.controls]
   );
-  const ModalFilterRoot = theme.device.type.isDesktop
+  const ModalFilterRoot = theme.device.isDesktop
     ? ModalFilterAnimation
     : HomeFilterModal;
 
   return (
     <ModalFilterRoot
       show={show}
-      {...(theme.device.type.isDesktop
+      {...(theme.device.isDesktop
         ? {
             style: {
               height: window.innerHeight - rect.height,
@@ -140,7 +140,7 @@ export default function HomeFilter({
         : { onHide: onFilterHide })}
     >
       <List className={homeClasses.filterList}>
-        {!theme.device.type.isDesktop && (
+        {!theme.device.isDesktop && (
           <ListItem>
             <ListItemText>Filter</ListItemText>
             <Adornment $edge="end">

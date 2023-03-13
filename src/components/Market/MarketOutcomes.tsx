@@ -21,7 +21,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const theme = useTheme();
-  const MAX_OUTCOMES_EXPANDABLE = theme.device.type.isDesktop ? 2 : 1;
+  const MAX_OUTCOMES_EXPANDABLE = theme.device.isDesktop ? 2 : 1;
   const isMarketResolved = market.state === 'resolved';
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
@@ -33,7 +33,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
     truncateMax: MAX_OUTCOMES_EXPANDABLE
   });
   const needExpandOutcomes =
-    sortedOutcomes.length > (theme.device.type.isDesktop ? 3 : 2);
+    sortedOutcomes.length > (theme.device.isDesktop ? 3 : 2);
   const getOutcomeActive = useCallback(
     (id: string | number) =>
       market.id === trade.selectedMarketId &&

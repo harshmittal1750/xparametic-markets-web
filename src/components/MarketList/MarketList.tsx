@@ -28,7 +28,7 @@ type VirtuosoProps = Omit<
 function Virtuoso({ data }: VirtuosoProps) {
   const theme = useTheme();
   const [back, backRect] = useRect();
-  const HEIGHT = theme.device.type.isDesktop
+  const HEIGHT = theme.device.isDesktop
     ? `${backRect.height}px`
     : `calc(${backRect.height}px + var(--header-y))`;
   const virtuoso = useRef<VirtuosoHandle>(null);

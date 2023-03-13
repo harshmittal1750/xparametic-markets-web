@@ -24,8 +24,8 @@ export default function NetworkSelector({
   const networks = useNetworks();
   const [rect, setRect] = useState<DOMRect | null>(null);
   const theme = useTheme();
-  const itsDesktop = !responsive || theme.device.type.isDesktop;
-  const itsTv = !responsive || theme.device.type.isTv;
+  const itsDesktop = !responsive || theme.device.isDesktop;
+  const itsTv = !responsive || theme.device.isTv;
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
       setRect(event.currentTarget.getBoundingClientRect()),

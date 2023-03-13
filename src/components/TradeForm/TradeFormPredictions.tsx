@@ -31,7 +31,7 @@ export default function TradeFormPredictions() {
   });
   const needExpandOutcomes = sortedOutcomes.length > 3;
   const outcomes =
-    theme.device.type.isDesktop && needExpandOutcomes
+    theme.device.isDesktop && needExpandOutcomes
       ? expandableOutcomes.onseted
       : sortedOutcomes;
   const handleOutcomeClick = useCallback(
@@ -65,7 +65,7 @@ export default function TradeFormPredictions() {
 
   return (
     <div className="pm-c-trade-form-predictions">
-      {theme.device.type.isDesktop ? (
+      {theme.device.isDesktop ? (
         <Virtuoso
           height="100%"
           data={outcomes}

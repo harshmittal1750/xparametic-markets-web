@@ -143,17 +143,15 @@ export default function HeaderNav() {
   const theme = useTheme();
 
   return (
-    <nav className={HeaderNavClasses.root}>
-      {theme.device.type.isDesktop && !theme.device.type.isTv && (
-        <HeaderNavMenuModal />
-      )}
-      <Link to="/" aria-label="Homepage" className={HeaderNavClasses.logos}>
+    <nav className={headerNavClasses.root}>
+      {theme.device.isDesktop && !theme.device.isTv && <HeaderNavMenuModal />}
+      <Link to="/" aria-label="Homepage" className={headerNavClasses.logos}>
         <PolkamarketsLogo />
       </Link>
-      {theme.device.type.isTv ? (
+      {theme.device.isTv ? (
         <HeaderNavMenu />
       ) : (
-        !theme.device.type.isDesktop && (
+        !theme.device.isDesktop && (
           <>
             <NetworkSelector responsive className={headerNavClasses.network} />
             <HeaderNavMenuModal />

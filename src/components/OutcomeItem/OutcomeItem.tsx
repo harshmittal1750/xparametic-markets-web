@@ -78,7 +78,7 @@ export default function OutcomeItem({
         </div>
         <div className="pm-c-market-outcomes__item-endAdornment">
           {endAdornment ||
-            (data && theme.device.type.isTablet && (
+            (data && theme.device.isTablet && (
               <Area
                 id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
                 data={data}
@@ -89,7 +89,7 @@ export default function OutcomeItem({
             ))}
         </div>
       </div>
-      {theme.device.type.isTablet && children}
+      {theme.device.isTablet && children}
       {!isResolved && typeof percent !== 'undefined' && (
         <Line
           percent={percent}

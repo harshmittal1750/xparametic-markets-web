@@ -31,7 +31,7 @@ export default function WalletInfo() {
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-  const MetaMaskWalletComponent = theme.device.type.isDesktop
+  const MetaMaskWalletComponent = theme.device.isDesktop
     ? MetaMaskWallet
     : Fragment;
 
@@ -40,7 +40,7 @@ export default function WalletInfo() {
       <div className="pm-c-wallet-info__currency pm-c-wallet-info__profile">
         {formatNumberToString(polkBalance)}
         <span className="pm-c-wallet-info__currency__ticker">POLK</span>
-        {theme.device.type.isDesktop && (
+        {theme.device.isDesktop && (
           <>
             <Feature name="fantasy">
               <WalletInfoClaim />
@@ -52,7 +52,7 @@ export default function WalletInfo() {
                   style={{ padding: '0.5rem 1rem' }}
                   onClick={() => window.open(network.buyEc20Url, '_blank')}
                 >
-                  Buy {theme.device.type.isDesktop && '$POLK'}
+                  Buy {theme.device.isDesktop && '$POLK'}
                 </Button>
               </Feature>
             )}
@@ -60,7 +60,7 @@ export default function WalletInfo() {
         )}
       </div>
       <MetaMaskWalletComponent>
-        {theme.device.type.isDesktop && (
+        {theme.device.isDesktop && (
           <>
             <MetaMaskIcon />
             {ethBalance.toFixed(4)}
@@ -75,14 +75,14 @@ export default function WalletInfo() {
           className={cn(
             'pm-c-button-subtle--default pm-c-button--sm pm-c-wallet-info__currency__address',
             {
-              'pm-c-wallet-info__currency__button': theme.device.type.isDesktop
+              'pm-c-wallet-info__currency__button': theme.device.isDesktop
             }
           )}
         >
-          {!theme.device.type.isDesktop && <MetaMaskIcon />}
+          {!theme.device.isDesktop && <MetaMaskIcon />}
           {ethAddress.match(/^.{4}|.{4}$/gm)?.join('...')}
         </Link>
-        {theme.device.type.isDesktop && <Transak />}
+        {theme.device.isDesktop && <Transak />}
       </MetaMaskWalletComponent>
     </div>
   );

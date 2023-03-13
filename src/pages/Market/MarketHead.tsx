@@ -32,43 +32,43 @@ function MarketHeadWrapper(
 export default function MarketHead() {
   const market = useAppSelector(state => state.market.market);
   const theme = useTheme();
-  const MarketHeadWrapperComponent = theme.device.type.isDesktop
+  const MarketHeadWrapperComponent = theme.device.isDesktop
     ? MarketHeadWrapper
     : Fragment;
 
   return (
     <MarketHeadWrapperComponent>
       <Container
-        $enableGutters={!theme.device.type.isDesktop}
+        $enableGutters={!theme.device.isDesktop}
         className={marketClasses.heroInfo}
       >
         <MarketAvatar
-          $size={theme.device.type.isDesktop ? 'lg' : 'md'}
+          $size={theme.device.isDesktop ? 'lg' : 'md'}
           imageUrl={market.imageUrl}
-          verified={!theme.device.type.isDesktop && market.verified}
+          verified={!theme.device.isDesktop && market.verified}
         />
         <div>
           <MarketCategory
             category={market.category}
             subcategory={market.subcategory}
-            verified={theme.device.type.isDesktop && market.verified}
+            verified={theme.device.isDesktop && market.verified}
           />
           <Text
             as="h2"
-            fontWeight={theme.device.type.isDesktop ? 'bold' : 'medium'}
-            scale={theme.device.type.isDesktop ? 'heading-large' : 'body'}
+            fontWeight={theme.device.isDesktop ? 'bold' : 'medium'}
+            scale={theme.device.isDesktop ? 'heading-large' : 'body'}
             className={marketClasses.heroInfoTitle}
           >
             {market.title}
           </Text>
         </div>
-        {theme.device.type.isDesktop && (
+        {theme.device.isDesktop && (
           <div className={marketClasses.heroInfoActions}>
             <MarketFooterActions $variant="filled" market={market} />
           </div>
         )}
       </Container>
-      {theme.device.type.isDesktop && (
+      {theme.device.isDesktop && (
         <Container className={marketClasses.heroStats}>
           <MarketFooter market={market} />
         </Container>

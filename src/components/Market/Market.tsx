@@ -43,13 +43,13 @@ function Market({ market }: MarketCardProps) {
       <MarketAvatar
         $size="md"
         imageUrl={market.imageUrl}
-        verified={!theme.device.type.isDesktop && market.verified}
+        verified={!theme.device.isDesktop && market.verified}
       />
       <div className="pm-c-market__body-details">
         <MarketCategory
           category={market.category}
           subcategory={market.subcategory}
-          verified={theme.device.type.isDesktop && market.verified}
+          verified={theme.device.isDesktop && market.verified}
         />
         <Text as="p" scale="body" fontWeight="medium">
           {market.title}

@@ -55,7 +55,7 @@ function TradeForm() {
         <TradeFormCharts />
         {ui.tradeForm.liquidity && marketPath && (
           <>
-            {theme.device.type.isDesktop && (
+            {theme.device.isDesktop && (
               <Text
                 scale="tiny-uppercase"
                 style={{ color: 'var(--color-text-quaternary)' }}

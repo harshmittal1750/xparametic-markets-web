@@ -117,7 +117,7 @@ function PortfolioTabs() {
     return undefined;
   }, [bonds, markets]);
 
-  const positions = theme.device.type.isDesktop
+  const positions = theme.device.isDesktop
     ? marketPositions
     : getDefaultCols(marketPositions);
 

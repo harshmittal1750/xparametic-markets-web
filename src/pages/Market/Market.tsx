@@ -107,12 +107,10 @@ function MarketUI() {
     market.token.ticker,
     network.network
   );
-  const SidebarWrapperComponent = theme.device.type.isDesktop
+  const SidebarWrapperComponent = theme.device.isDesktop
     ? Fragment
     : SidebarWrapper;
-  const MarketBodyComponent = theme.device.type.isDesktop
-    ? MarketBody
-    : Fragment;
+  const MarketBodyComponent = theme.device.isDesktop ? MarketBody : Fragment;
 
   return (
     <>
@@ -161,9 +159,9 @@ function MarketUI() {
               </Text>
             </div>
           )}
-          {!theme.device.type.isDesktop && <MarketAnalytics />}
+          {!theme.device.isDesktop && <MarketAnalytics />}
           <MarketAbout />
-          {!theme.device.type.isDesktop && (
+          {!theme.device.isDesktop && (
             <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
               <VoteArrows
