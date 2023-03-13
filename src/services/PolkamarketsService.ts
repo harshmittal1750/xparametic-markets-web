@@ -156,10 +156,10 @@ export default class PolkamarketsService {
     return requiredBalance;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public async getMarketFee(): Promise<number> {
-    const fee = await this.contracts.pm.getFee();
-
-    return fee;
+    // TODO: make it variable
+    return 0.02;
   }
 
   public async createMarket(
@@ -176,6 +176,8 @@ export default class PolkamarketsService {
     // ensuring user has wallet connected
     await this.login();
 
+    const fee = '20000000000000000';
+
     let response;
     const args = {
       name,
@@ -185,10 +187,10 @@ export default class PolkamarketsService {
       category,
       value,
       oracleAddress: this.address,
-      odds
+      odds,
+      fee
     };
 
-    // TODO: remove !token condition
     if (wrapped) {
       response = await this.contracts.pm.createMarketWithETH(args);
     } else {
