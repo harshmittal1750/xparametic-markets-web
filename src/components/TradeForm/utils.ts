@@ -45,7 +45,10 @@ function formatMiniTableItems(
     },
     {
       key: 'fee',
-      title: `Fee (${roundNumber(market.fee * 100, 0)}%)`,
+      title: `Fee (${roundNumber(
+        (market.fee + market.treasuryFee) * 100,
+        0
+      )}%)`,
       value: roundNumber(fee, 3)
     }
   ];
