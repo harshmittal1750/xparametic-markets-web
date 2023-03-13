@@ -108,7 +108,7 @@ export default function TradeFormPredictions() {
                 rows={[
                   {
                     key: 'invested',
-                    title: 'invested',
+                    title: 'your shares',
                     value:
                       roundNumber(
                         portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
