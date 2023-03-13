@@ -16,7 +16,7 @@ const initialState = {
     visible: false
   },
   market: {
-    colors: JSON.parse(localStorage.getItem(MARKET_COLORS) || '') || {}
+    colors: JSON.parse(localStorage.getItem(MARKET_COLORS) || '{}') || {}
   }
 };
 
