@@ -109,6 +109,8 @@ const initialState: MarketInitialState = {
     ],
     tradingViewSymbol: null,
     fee: 0,
+    treasuryFee: 0,
+    treasury: '0x0000000000000000000000000000000000000000',
     question: {
       id: '0x0000000000000000000000000000000000000000000000000000000000000000',
       bond: 0,
