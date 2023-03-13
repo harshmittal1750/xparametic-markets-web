@@ -46,7 +46,14 @@ function handleChangeTheme(arg: ThemeProps['device']['mode']) {
   );
 }
 
-export const useTheme = () => useContext(ThemeContext);
+export function isThemeDark(
+  mode: ThemeProps['device']['mode']
+): mode is 'dark' {
+  return mode === 'dark';
+}
+export function useTheme() {
+  return useContext(ThemeContext);
+}
 export default function ThemeProvider(props: ThemeProviderProps) {
   const [stored, setStored] = useLocalStorage<
     ThemeProps['device']['mode'] | 'system'

@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { useTheme } from 'ui';
+import { isThemeDark, useTheme } from 'ui';
 
 function SecondPlaceIcon(props: React.SVGProps<SVGSVGElement>) {
   const theme = useTheme();
@@ -30,7 +30,7 @@ function SecondPlaceIcon(props: React.SVGProps<SVGSVGElement>) {
       </mask>
       <g mask="url(#mask0_2445_47025)">
         <path
-          fill={theme.device.mode === 'dark' ? '#3B4760' : '#C3CCDA'}
+          fill={isThemeDark(theme.device.mode) ? '#3B4760' : '#C3CCDA'}
           d="M-11 -1H25V17H-11z"
         />
         <path fill="#8976FF" d="M-9.5 11.5L8 4l20 10-20 8-17.5-10.5z" />

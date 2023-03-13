@@ -2,7 +2,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { DateTimePickerProps, DateTimePicker } from '@material-ui/pickers';
 import { useField, useFormikContext } from 'formik';
 import styled from 'styled-components';
-import { ThemeProps, useTheme } from 'ui';
+import { ThemeProps, isThemeDark, useTheme } from 'ui';
 
 import InputErrorMessage from './InputErrorMessage';
 
@@ -19,7 +19,7 @@ const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
     letter-spacing: -0.014rem;
 
     color: ${props =>
-      props.theme.device.mode === 'dark' ? '#f9fafb' : '#171b23'};
+      isThemeDark(props.theme.device.mode) ? '#f9fafb' : '#171b23'};
     border: 0.1rem solid transparent;
 
     &:hover,
@@ -33,7 +33,7 @@ const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
     border: 0.1rem solid
       ${props => {
         if (props.$hasError) return '#e12d39';
-        if (props.theme.device.mode === 'dark') return '#252c3b';
+        if (isThemeDark(props.theme.device.mode)) return '#252c3b';
         return '#e0e2e7';
       }};
     transition: 0.2s border ease-out;
@@ -43,7 +43,7 @@ const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
       border: 0.1rem solid
         ${props => {
           if (props.$hasError) return '#e12d39';
-          if (props.theme.device.mode === 'dark') return '#637084';
+          if (isThemeDark(props.theme.device.mode)) return '#637084';
           return '#c2cad6';
         }};
     }

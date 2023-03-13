@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import { useTheme } from 'ui';
+import { isThemeDark, useTheme } from 'ui';
 
 function RankDownIcon(props: React.SVGProps<SVGSVGElement>) {
   const theme = useTheme();
@@ -18,7 +18,7 @@ function RankDownIcon(props: React.SVGProps<SVGSVGElement>) {
         width="20"
         height="20"
         y="0"
-        fill={theme.device.mode === 'dark' ? '#FFFFFF' : '#000000'}
+        fill={isThemeDark(theme.device.mode) ? '#FFFFFF' : '#000000'}
         fillOpacity="0.1"
         rx="10"
       />

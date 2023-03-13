@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useEffect } from 'react';
 
 import cn from 'classnames';
-import { Container, useTheme } from 'ui';
+import { Container, isThemeDark, useTheme } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -29,7 +29,8 @@ export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const theme = useTheme();
   const handleTheme = useCallback(
-    () => theme.device.setMode(theme.device.mode === 'dark' ? 'light' : 'dark'),
+    () =>
+      theme.device.setMode(isThemeDark(theme.device.mode) ? 'light' : 'dark'),
     [theme.device]
   );
   const headerActionsComponent = {
@@ -59,7 +60,7 @@ export default function HeaderActions() {
           className={headerActionsClasses.theme}
         >
           <Icon
-            name={theme.device.mode === 'dark' ? 'Sun' : 'Moon'}
+            name={isThemeDark(theme.device.mode) ? 'Sun' : 'Moon'}
             size="lg"
           />
         </Button>
