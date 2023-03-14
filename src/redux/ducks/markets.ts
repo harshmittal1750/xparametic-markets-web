@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { environment } from 'config';
 // import dayjs from 'dayjs';
-// import inRange from 'lodash/inRange';
+import { toMinMax } from 'helpers/string';
+import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
@@ -242,8 +243,10 @@ type MarketsSelectorArgs = {
       checked: boolean;
       marketsByNetwork: FavoriteMarketsByNetwork;
     };
-    networks: string[];
     states: string[];
+    networks: string[];
+    volume: string;
+    liquidity: string;
   };
 };
 
@@ -263,6 +266,32 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
 
   const filterByState = marketState =>
     !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
+
+  const filterByRange = (value: number, range: string) => {
+    const { min, max } = toMinMax(range);
+
+    if (!max) {
+      return value >= min;
+    }
+
+    return inRange(value, min, max);
+  };
+
+  const filterByVolume = (volume: number) => {
+    if (filters.volume !== 'any') {
+      return filterByRange(volume, filters.volume);
+    }
+
+    return true;
+  };
+
+  const filterByLiquidity = (liquidity: number) => {
+    if (filters.liquidity !== 'any') {
+      return filterByRange(liquidity, filters.liquidity);
+    }
+
+    return true;
+  };
 
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
@@ -293,7 +322,9 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
           market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
-        filterByState(market.state)
+        filterByState(market.state) &&
+        filterByVolume(market.volume) &&
+        filterByLiquidity(market.liquidity)
     )
   );
 };
