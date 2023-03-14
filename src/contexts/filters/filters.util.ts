@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import set from 'lodash/set';
 import type { Network } from 'types/network';
 
@@ -20,6 +21,25 @@ const defaultRangeOptions = [
   {
     label: 'Over $1000',
     value: '1000-'
+  }
+];
+
+const defaultDateRangeOptions = [
+  {
+    label: 'Any',
+    value: 'any'
+  },
+  {
+    label: 'Ends today',
+    value: `${dayjs().utc().startOf('day')}-${dayjs().utc().endOf('day')}`
+  },
+  {
+    label: 'End this week',
+    value: `${dayjs().utc().startOf('week')}-${dayjs().utc().endOf('week')}`
+  },
+  {
+    label: 'End this month',
+    value: `${dayjs().utc().startOf('month')}-${dayjs().utc().endOf('month')}`
   }
 ];
 
@@ -62,6 +82,11 @@ const filters: Filters = {
       title: 'Market Liquidity',
       options: defaultRangeOptions,
       multiple: false
+    },
+    endDate: {
+      title: 'Market End Date',
+      options: defaultDateRangeOptions,
+      multiple: false
     }
   }
 };
@@ -83,7 +108,8 @@ const filtersInitialState: FiltersState = {
     states: [],
     networks: [],
     volume: 'any',
-    liquidity: 'any'
+    liquidity: 'any',
+    endDate: 'any'
   }
 };
 

@@ -8,7 +8,8 @@ export enum Dropdowns {
   STATES = 'states',
   NETWORKS = 'networks',
   VOLUME = 'volume',
-  LIQUIDITY = 'liquidity'
+  LIQUIDITY = 'liquidity',
+  END_DATE = 'endDate'
 }
 
 export type Toggle = {
