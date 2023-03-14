@@ -1,20 +1,8 @@
 import { renderHook } from '@testing-library/react-hooks';
+import { mockMatchMedia } from 'helpers/test';
 
 import useMedia from './useMedia';
 
-function mockMatchMedia({ matches }: { matches: boolean }) {
-  Object.defineProperty(window, 'matchMedia', {
-    writable: true,
-    value: jest.fn().mockImplementation(media => ({
-      matches,
-      media,
-      onchange: null,
-      addEventListener: jest.fn(),
-      removeEventListener: jest.fn(),
-      dispatchEvent: jest.fn()
-    }))
-  });
-}
 function renderMedia() {
   return renderHook(initialProps => useMedia(initialProps.query), {
     initialProps: {

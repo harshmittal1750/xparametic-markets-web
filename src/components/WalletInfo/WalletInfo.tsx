@@ -2,9 +2,9 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { useTheme } from 'ui';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
+import { useTheme } from 'ui';
 
 import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 
