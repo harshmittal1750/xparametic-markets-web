@@ -6,6 +6,7 @@ export type {
   DropdownMultipleState,
   ToggleState
 } from './filters.type';
+export { Toggles, Dropdowns } from './filters.type';
 export { filtersInitialState } from './filters.util';
 
 export { FiltersContext, FiltersProvider };

@@ -1,10 +1,10 @@
 // Filters
 
-enum Toggles {
+export enum Toggles {
   FAVORITES = 'favorites'
 }
 
-enum Dropdowns {
+export enum Dropdowns {
   STATES = 'states',
   NETWORKS = 'networks',
   VOLUME = 'volume',
