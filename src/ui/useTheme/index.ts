@@ -1,2 +1,6 @@
-export { default, useTheme, isThemeDark } from './useTheme';
-export type { ThemeProps } from './useTheme';
+export { default } from './ThemeProvider';
+export type { ThemeProps } from './ThemeProvider';
+
+export { default as isThemeDark } from './isThemeDark';
+
+export { default as useTheme } from './useTheme';
