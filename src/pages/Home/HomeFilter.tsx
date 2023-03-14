@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useForm, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -15,13 +15,15 @@ import {
 import { Icon, Modal, ToggleSwitch } from 'components';
 import type { ModalProps } from 'components/Modal';
 
-import type {
+import {
   Dropdown,
   DropdownState,
   DropdownMultipleState,
-  ToggleState
+  ToggleState,
+  Toggles,
+  Dropdowns,
+  filtersInitialState
 } from 'contexts/filters';
-import { filtersInitialState } from 'contexts/filters';
 
 import { useFilters } from 'hooks';
 
@@ -87,7 +89,8 @@ function ListItemNested({
     setExpand(prevExpand => !prevExpand);
   }, []);
 
-  const fields = watch();
+  // TODO: Fix this type assertion
+  const field = watch(name as keyof FormFields) as any;
 
   return (
     <>
@@ -115,8 +118,8 @@ function ListItemNested({
                       value={option.value}
                       checked={
                         multiple
-                          ? fields[name].includes(option.value)
-                          : fields[name] === option.value
+                          ? field.includes(option.value)
+                          : field === option.value
                       }
                       {...register(name as keyof FormFields)}
                     />
@@ -140,7 +143,9 @@ export default function HomeFilter({
   show: boolean;
 }) {
   const isDesktop = useMedia('(min-width: 1024px)');
-  const { filters } = useFilters();
+  const { filters, controls } = useFilters();
+  const { updateToggle, updateDropdown } = controls;
+
   const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
 
   const { register, watch } = useForm<FormFields>({
@@ -149,6 +154,24 @@ export default function HomeFilter({
       ...filtersInitialState.dropdowns
     }
   });
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (Object.values(Toggles).includes(name as Toggles)) {
+        updateToggle({
+          toggle: name as Toggles,
+          state: value[`${name}`]
+        });
+      } else if (Object.values(Dropdowns).includes(name as Dropdowns)) {
+        updateDropdown({
+          dropdown: name as Dropdowns,
+          state: value[`${name}`]
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, updateToggle, updateDropdown]);
 
   return (
     <ModalFilterRoot
@@ -173,7 +196,7 @@ export default function HomeFilter({
             </ListItem>
           )}
           <ListItem>
-            <ListItemText>Favorites</ListItemText>
+            <ListItemText>{filters.toggles.favorites.title}</ListItemText>
             <Adornment $edge="end">
               <ToggleSwitch id="favorites" {...register('favorites')} />
             </Adornment>
