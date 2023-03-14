@@ -67,10 +67,19 @@ function relativeTimeToX(timestamp: number) {
   };
 }
 
+function toStartEnd(values: string) {
+  const [start, end] = values.split('-');
+  return {
+    start: dayjs(start).utc(),
+    end: dayjs(end).utc()
+  };
+}
+
 export {
   fromTimestampToDate,
   fromTimestampToCustomFormatDate,
   toUTC,
   relativeTimeFromNow,
-  relativeTimeToX
+  relativeTimeToX,
+  toStartEnd
 };
