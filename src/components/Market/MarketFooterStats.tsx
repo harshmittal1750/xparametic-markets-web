@@ -14,7 +14,15 @@ type MarketFooterStatsProps = {
 };
 
 export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
-  const { volume, expiresAt, liquidity, token, network } = market;
+  const {
+    volume,
+    volumeEur,
+    expiresAt,
+    liquidity,
+    liquidityEur,
+    token,
+    network
+  } = market;
 
   return (
     <div className="pm-c-market-footer__stats">
@@ -34,58 +42,102 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             as="span"
             scale="tiny-uppercase"
             fontWeight="semibold"
-            color="gray"
+            className={marketClasses.footerStatsText}
           >
-            <Icon
-              name="Stats"
-              title="Volume"
-              className={marketClasses.footerStatsIcon}
-            />
-            <Text
-              as="strong"
-              scale="tiny-uppercase"
-              fontWeight="semibold"
-              color="lighter-gray"
+            <Tooltip
+              className={marketClasses.footerStatsTooltip}
+              text={`Volume: ${roundNumber(volumeEur, 3)} EUR`}
             >
-              {`${roundNumber(volume, 3)} `}
-              <Tooltip
-                className={marketClasses.footerStatsTooltip}
-                text={token.name}
-              >{`${token.ticker}`}</Tooltip>
-            </Text>
+              <Icon
+                name="Stats"
+                title="Volume"
+                className={marketClasses.footerStatsIcon}
+              />
+              <Text
+                as="strong"
+                scale="tiny-uppercase"
+                fontWeight="semibold"
+                className={marketClasses.footerStatsText}
+              >
+                {`${roundNumber(volume, 3)} `}
+              </Text>
+            </Tooltip>
+            <Tooltip
+              className={marketClasses.footerStatsTooltip}
+              text={token.name}
+            >
+              <Text
+                as="strong"
+                scale="tiny-uppercase"
+                fontWeight="semibold"
+                className={marketClasses.footerStatsText}
+              >{`${token.ticker}`}</Text>
+            </Tooltip>
           </Text>
           <span className="pm-c-divider--circle" />
         </>
       )}
       {!!liquidity && (
         <>
-          <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-            <Icon
-              name="Liquidity"
-              title="Liquidity"
-              className={marketClasses.footerStatsIcon}
-            />
-            <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-              {`${roundNumber(liquidity, 3)} `}
-              <Tooltip
-                className={marketClasses.footerStatsTooltip}
-                text={token.name}
-              >{`${token.ticker}`}</Tooltip>
-            </Text>
+          <Text
+            as="span"
+            scale="tiny-uppercase"
+            fontWeight="semibold"
+            className={marketClasses.footerStatsText}
+          >
+            <Tooltip
+              className={marketClasses.footerStatsTooltip}
+              text={`Liquidity: ${roundNumber(liquidityEur, 3)} EUR`}
+            >
+              <Icon
+                name="Liquidity"
+                title="Liquidity"
+                className={marketClasses.footerStatsIcon}
+              />
+              <Text
+                as="strong"
+                scale="tiny-uppercase"
+                fontWeight="semibold"
+                className={marketClasses.footerStatsText}
+              >
+                {`${roundNumber(liquidity, 3)} `}
+              </Text>
+            </Tooltip>
+            <Tooltip
+              className={marketClasses.footerStatsTooltip}
+              text={token.name}
+            >
+              <Text
+                as="strong"
+                scale="tiny-uppercase"
+                fontWeight="semibold"
+                className={marketClasses.footerStatsText}
+              >{`${token.ticker}`}</Text>
+            </Tooltip>
           </Text>
           <span className="pm-c-divider--circle" />
         </>
       )}
       {expiresAt && (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-          <Icon
-            name="Calendar"
-            title="Expires at"
-            className={marketClasses.footerStatsIcon}
-          />
-          <Text as="strong" scale="tiny-uppercase" fontWeight="semibold">
-            {dayjs(expiresAt).utc().format('MMMM D, YYYY')}
-          </Text>
+          <Tooltip
+            className={marketClasses.footerStatsTooltip}
+            text={`Expires on ${dayjs(expiresAt).utc().format('MMMM D, YYYY')}`}
+          >
+            <Icon
+              name="Calendar"
+              title="Expires at"
+              className={marketClasses.footerStatsIcon}
+            />
+            <Text
+              as="strong"
+              scale="tiny-uppercase"
+              fontWeight="semibold"
+              className={marketClasses.footerStatsText}
+            >
+              {dayjs(expiresAt).utc().format('MMMM D, YYYY')}
+            </Text>
+          </Tooltip>
         </Text>
       )}
     </div>
