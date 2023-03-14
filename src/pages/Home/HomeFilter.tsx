@@ -15,24 +15,30 @@ import {
 import { Icon, Modal, ToggleSwitch } from 'components';
 import type { ModalProps } from 'components/Modal';
 
-import type { Dropdown } from 'contexts/filters/filters.type';
+import type {
+  Dropdown,
+  DropdownState,
+  DropdownMultipleState,
+  ToggleState
+} from 'contexts/filters';
+import { filtersInitialState } from 'contexts/filters';
 
 import { useFilters } from 'hooks';
 
 import homeClasses from './Home.module.scss';
 
 type FormFields = {
-  favorites: boolean;
-  state: string[];
-  network: string[];
-  volume: string;
-  liquidity: string;
+  favorites: ToggleState;
+  states: DropdownState | DropdownMultipleState;
+  networks: DropdownState | DropdownMultipleState;
+  volume: DropdownState | DropdownMultipleState;
+  liquidity: DropdownState | DropdownMultipleState;
 };
 
 type ListItemNestedProps = {
   name: string;
   subitems: Dropdown;
-  type: 'checkbox' | 'radio';
+  multiple: boolean;
   register: UseFormRegister<FormFields>;
   watch: UseFormWatch<FormFields>;
 };
@@ -72,7 +78,7 @@ function ModalFilterAnimation({
 function ListItemNested({
   name,
   subitems,
-  type,
+  multiple,
   register,
   watch
 }: ListItemNestedProps) {
@@ -101,16 +107,16 @@ function ListItemNested({
           >
             <List className={homeClasses.filterSubList}>
               {subitems.options.map(option => (
-                <ListItem key={option.path}>
+                <ListItem key={option.value}>
                   <ListItemText>{option.label}</ListItemText>
                   <Adornment $edge="end">
                     <Toggle
-                      type={type}
+                      type={multiple ? 'checkbox' : 'radio'}
                       value={option.value}
                       checked={
-                        type === 'radio'
-                          ? fields[name] === option.value
-                          : fields[name].includes(option.value)
+                        multiple
+                          ? fields[name].includes(option.value)
+                          : fields[name] === option.value
                       }
                       {...register(name as keyof FormFields)}
                     />
@@ -134,25 +140,13 @@ export default function HomeFilter({
   show: boolean;
 }) {
   const isDesktop = useMedia('(min-width: 1024px)');
-  const filters = useFilters();
-  const handleToggleChange = useCallback(
-    (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      filters.controls.toggleDropdownOption({
-        path,
-        selected: event.target.checked
-      });
-    },
-    [filters.controls]
-  );
+  const { filters } = useFilters();
   const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
 
   const { register, watch } = useForm<FormFields>({
     defaultValues: {
-      favorites: true,
-      state: [],
-      network: [],
-      volume: 'any',
-      liquidity: 'any'
+      ...filtersInitialState.toggles,
+      ...filtersInitialState.dropdowns
     }
   });
 
@@ -184,13 +178,13 @@ export default function HomeFilter({
               <ToggleSwitch id="favorites" {...register('favorites')} />
             </Adornment>
           </ListItem>
-          {Object.keys(filters.state.dropdowns).map(dropdrown => (
+          {Object.keys(filters.dropdowns).map(dropdrown => (
             <Fragment key={dropdrown}>
               <Divider />
               <ListItemNested
                 name={dropdrown}
-                subitems={filters.state.dropdowns[dropdrown]}
-                type={filters.state.dropdowns[dropdrown].type}
+                subitems={filters.dropdowns[dropdrown]}
+                multiple={filters.dropdowns[dropdrown].multiple}
                 register={register}
                 watch={watch}
               />
