@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { environment } from 'config';
-// import dayjs from 'dayjs';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import { toStartEnd } from 'helpers/date';
 import { toMinMax } from 'helpers/string';
 import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
@@ -14,6 +16,8 @@ import { MarketState } from 'types/market';
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
 import { getCurrencyByTicker, getNetworkById } from './market';
+
+dayjs.extend(isBetween);
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
@@ -247,6 +251,7 @@ type MarketsSelectorArgs = {
     networks: string[];
     volume: string;
     liquidity: string;
+    endDate: string;
   };
 };
 
@@ -293,6 +298,15 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     return true;
   };
 
+  const filterByEndDate = (expiresAt: string) => {
+    if (filters.endDate !== 'any') {
+      const { start, end } = toStartEnd(filters.endDate);
+      return dayjs(expiresAt).utc().isBetween(start, end);
+    }
+
+    return true;
+  };
+
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
@@ -324,7 +338,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
         filterByNetworkId(market.networkId) &&
         filterByState(market.state) &&
         filterByVolume(market.volume) &&
-        filterByLiquidity(market.liquidity)
+        filterByLiquidity(market.liquidity) &&
+        filterByEndDate(market.expiresAt)
     )
   );
 };
