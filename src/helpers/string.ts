@@ -10,4 +10,12 @@ export function shiftSlash(arg: string) {
   return arg.replace(/^\//, '');
 }
 
-export { capitalize, toHexadecimal };
+function toMinMax(values: string) {
+  const [min, max] = values.split('-');
+  return {
+    min: min === '' ? 0 : Number(min),
+    max: max === '' ? undefined : Number(max)
+  };
+}
+
+export { capitalize, toHexadecimal, toMinMax };
