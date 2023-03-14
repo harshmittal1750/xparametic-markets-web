@@ -22,7 +22,9 @@ export default function useMarkets() {
         marketsByNetwork: favoriteMarkets.favoriteMarkets
       },
       states: filtersState.dropdowns.states as string[],
-      networks: filtersState.dropdowns.networks as string[]
+      networks: filtersState.dropdowns.networks as string[],
+      volume: filtersState.dropdowns.volume as string,
+      liquidity: filtersState.dropdowns.liquidity as string
     }
   });
 
