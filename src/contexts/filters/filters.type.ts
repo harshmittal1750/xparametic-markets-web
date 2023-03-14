@@ -1,39 +1,75 @@
-export type Switch = {
-  checked: boolean;
+// Filters
+
+enum Toggles {
+  FAVORITES = 'favorites'
+}
+
+enum Dropdowns {
+  STATES = 'states',
+  NETWORKS = 'networks',
+  VOLUME = 'volume',
+  LIQUIDITY = 'liquidity'
+}
+
+export type Toggle = {
+  title: string;
 };
 
 export type Option = {
   label: string;
   value: string;
-  selected: boolean;
-  path?: string;
 };
 
 export type Dropdown = {
   title: string;
   options: Option[];
-  type: 'checkbox' | 'radio';
+  multiple: boolean;
 };
+
+export type Filters = {
+  toggles: Record<Toggles, Toggle>;
+  dropdowns: Record<Dropdowns, Dropdown>;
+};
+
+// State
+
+export type ToggleState = boolean;
+export type DropdownState = string;
+export type DropdownMultipleState = string[];
 
 export type FiltersState = {
-  favorites: Switch;
-  dropdowns: { [key: string]: Dropdown };
+  toggles: Record<Toggles, ToggleState>;
+  dropdowns: Record<Dropdowns, DropdownState | DropdownMultipleState>;
 };
 
+// Context
+
 export type FiltersContextState = {
+  filters: Filters;
   state: FiltersState;
   controls: {
-    toggleFavorites: () => void;
-    toggleDropdownOption: (value: {
-      path: Option['path'];
-      selected: Option['selected'];
-    }) => void;
-  };
-  selected: {
-    favorites: boolean;
-    dropdowns: {
-      networks: Option['value'][];
-      states: Option['value'][];
-    };
+    updateToggle: ({ toggle, state }: UpdateTogglePayload) => void;
+    updateDropdown: ({ dropdown, state }: UpdateDropdownPayload) => void;
   };
 };
+
+// Reducer
+
+export enum FiltersActions {
+  UPDATE_TOGGLE = 'UPDATE_TOGGLE',
+  UPDATE_DROPDOWN = 'UPDATE_DROPDOWN'
+}
+
+export type UpdateTogglePayload = {
+  toggle: Toggles;
+  state: ToggleState;
+};
+
+export type UpdateDropdownPayload = {
+  dropdown: Dropdowns;
+  state: DropdownState | DropdownMultipleState;
+};
+
+export type FiltersAction =
+  | { type: FiltersActions.UPDATE_TOGGLE; payload: UpdateTogglePayload }
+  | { type: FiltersActions.UPDATE_DROPDOWN; payload: UpdateDropdownPayload };
