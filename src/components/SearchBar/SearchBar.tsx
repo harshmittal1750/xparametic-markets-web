@@ -1,18 +1,42 @@
+import { useRef, useCallback, FormEvent } from 'react';
+
 import cn from 'classnames';
 
 import { SearchIcon } from 'assets/icons';
 
 import { SearchBarProps } from './SearchBar.type';
 
-/**
- * A search bar with standard search input
- */
-function SearchBar({ className, onSearch, ...props }: SearchBarProps) {
+function SearchBar({
+  className,
+  onChange,
+  onSearch,
+  ...props
+}: SearchBarProps) {
+  const inputElementRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = useCallback(
+    (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (inputElementRef.current && onSearch) {
+        onSearch(inputElementRef.current.value);
+      }
+    },
+    [onSearch]
+  );
+
+  const handleChange = useCallback(() => {
+    if (inputElementRef.current && onChange) {
+      onChange(inputElementRef.current.value);
+    }
+  }, [onChange]);
+
   return (
     <form
       role="search"
       className={cn('pm-c-searchbar', className?.form)}
-      onSubmit={onSearch}
+      onSubmit={handleSubmit}
     >
       <button
         type="submit"
@@ -22,10 +46,12 @@ function SearchBar({ className, onSearch, ...props }: SearchBarProps) {
         <SearchIcon />
       </button>
       <input
+        ref={inputElementRef}
         type="text"
         role="searchbox"
         autoComplete="off"
         className={cn('pm-c-searchbar__input', className?.input)}
+        onChange={handleChange}
         {...props}
       />
     </form>

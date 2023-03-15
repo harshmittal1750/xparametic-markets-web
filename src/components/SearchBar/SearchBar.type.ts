@@ -1,7 +1,9 @@
+import { InputHTMLAttributes } from 'react';
+
 type SearchBarComponents = 'form' | 'input' | 'button';
 
-export interface SearchBarProps
-  extends Omit<React.ComponentPropsWithoutRef<'input'>, 'className'> {
+export type SearchBarProps = {
   className?: Partial<Record<SearchBarComponents, string>>;
-  onSearch: React.EventHandler<React.FormEvent<HTMLFormElement>>;
-}
+  onChange?: (value: string) => void;
+  onSearch?: (value: string) => void;
+} & Omit<InputHTMLAttributes<HTMLInputElement>, 'className' | 'onChange'>;
