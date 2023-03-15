@@ -1,4 +1,4 @@
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
 import { tokens } from 'config';
 import isEmpty from 'lodash/isEmpty';
@@ -38,9 +38,9 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
 
   const currency = createMarketToken || network.currency;
 
-  const handleSearch = useCallback(
-    async (value: string) => {
-      const text = value;
+  const handleChange = useCallback(
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      const text = event.target.value;
 
       setSearchString(text);
 
@@ -159,9 +159,10 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
           </Container>
           <Container className={selectTokenModalClasses.dialogContent}>
             <SearchBar
-              name="Search token"
               placeholder="Search name or paste address"
-              onChange={handleSearch}
+              onSearch={() => {}}
+              onChange={handleChange}
+              value={searchString}
             />
             <ul className={selectTokenModalClasses.buttonList}>
               {filteredTokens.map((token, index) => (
