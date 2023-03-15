@@ -1,6 +1,8 @@
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 
-export default function useUpdateEffect(...args: Parameters<typeof useEffect>) {
+export default function useUpdateEffect(
+  ...args: Parameters<typeof useLayoutEffect>
+) {
   const didMount = useRef(true);
 
   useLayoutEffect(() => {

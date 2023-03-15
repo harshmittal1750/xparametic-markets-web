@@ -1,6 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useRef } from 'react';
+import { createContext, useContext, useMemo } from 'react';
 
 import useMedia from 'ui/useMedia';
+import useUpdateEffect from 'ui/useUpdateEffect';
 
 import { useLocalStorage } from 'hooks';
 
@@ -51,7 +52,6 @@ export default function ThemeProvider(props: ThemeProviderProps) {
   const [mode, setMode] = useLocalStorage<
     ThemeProps['device']['mode'] | undefined
   >(THEME_MODE, undefined);
-  const isFirstMount = useRef(true);
   const isDark = useMedia('(prefers-color-scheme: dark)');
   const isTablet = useMedia('(min-width: 512px)');
   const isDesktop = useMedia('(min-width: 1024px)');
@@ -76,12 +76,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
   );
 
   handleChangeTheme(value.device.mode);
-  useEffect(() => {
-    isFirstMount.current = false;
-  });
-  useEffect(() => {
-    if (isFirstMount.current) return undefined;
-
+  useUpdateEffect(() => {
     let timer = 0;
     const style = document.createElement('style');
 
