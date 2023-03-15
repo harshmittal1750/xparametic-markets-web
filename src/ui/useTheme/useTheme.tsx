@@ -18,7 +18,7 @@ type ThemeProviderProps = Omit<
   'value'
 >;
 
-export const STYLE_RULES =
+export const IDLE_STYLES =
   "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
 const THEME_MODE = 'THEME_MODE';
 const ThemeContext = createContext<ThemeProps>({
@@ -80,7 +80,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     let timer = 0;
     const style = document.createElement('style');
 
-    style.appendChild(document.createTextNode(STYLE_RULES));
+    style.appendChild(document.createTextNode(IDLE_STYLES));
     document.head.appendChild(style);
     (() => window.getComputedStyle(document.body))();
     timer = window.setTimeout(() => document.head.removeChild(style), 1);
