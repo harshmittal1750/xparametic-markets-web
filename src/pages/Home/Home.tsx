@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
 import { pages, ui } from 'config';
-import { Container, useMedia, useRect } from 'ui';
+import { Container, useRect, useTheme } from 'ui';
 
 import { MarketList } from 'components';
 
@@ -13,7 +13,7 @@ import HomeNav from './HomeNav';
 
 export default function Home() {
   const routeMatch = useRouteMatch();
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const [ref, rect] = useRect();
   const [show, setShow] = useState(false);
   const handleShow = useCallback(() => setShow(true), []);
@@ -23,9 +23,11 @@ export default function Home() {
   return (
     <Switch>
       <Route exact path={routeMatch.path}>
-        {ui.hero.enabled && isDesktop && <HomeHero />}
+        {ui.hero.enabled && theme.device.isDesktop && <HomeHero />}
         <Container ref={ref} $enableGutters className={homeClasses.nav}>
-          <HomeNav onFilterClick={isDesktop ? handleToggle : handleShow} />
+          <HomeNav
+            onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
+          />
         </Container>
         <div className={homeClasses.root}>
           <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />

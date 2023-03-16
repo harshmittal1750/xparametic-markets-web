@@ -243,52 +243,70 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         })
       );
 
-      Promise.all([
-        polkamarketsService.getPortfolio(),
-        polkamarketsService.getUserVotes(),
-        polkamarketsService.getBonds(),
-        polkamarketsService.getBondMarketIds()
-      ]).then(([portfolio, votes, bonds, bondMarketIds]) => {
-        dispatch(changePortfolio(portfolio));
-        dispatch(changeVotes(votes as Votes));
-        dispatch(changeBonds(bonds));
+      polkamarketsService
+        .getPortfolio()
+        .then(portfolio => {
+          dispatch(changePortfolio(portfolio));
+        })
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'portfolio',
+              value: false
+            })
+          );
+        });
+
+      polkamarketsService
+        .getUserVotes()
+        .then(votes => {
+          dispatch(changeVotes(votes as Votes));
+        })
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'votes',
+              value: false
+            })
+          );
+        });
+
+      polkamarketsService
+        .getBonds()
+        .then(bonds => {
+          dispatch(changeBonds(bonds));
+        })
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'bonds',
+              value: false
+            })
+          );
+        });
+
+      polkamarketsService.getBondMarketIds().then(bondMarketIds => {
         dispatch(changeMarketsWithBonds(bondMarketIds));
       });
 
-      dispatch(
-        changeLoading({
-          key: 'portfolio',
-          value: false
+      polkamarketsService
+        .getActions()
+        .then(actions => {
+          dispatch(changeActions(actions as Action[]));
+          dispatch(changeMarketsWithActions(actions as Action[]));
         })
-      );
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'actions',
+              value: false
+            })
+          );
+        });
 
-      dispatch(
-        changeLoading({
-          key: 'bonds',
-          value: false
-        })
-      );
-
-      dispatch(
-        changeLoading({
-          key: 'votes',
-          value: false
-        })
-      );
-
-      const actions = (await polkamarketsService.getActions()) as Action[];
-      dispatch(changeActions(actions));
-      dispatch(changeMarketsWithActions(actions));
-
-      dispatch(
-        changeLoading({
-          key: 'actions',
-          value: false
-        })
-      );
-
-      const bondActions = await polkamarketsService.getBondActions();
-      dispatch(changeBondActions(bondActions));
+      polkamarketsService.getBondActions().then(bondActions => {
+        dispatch(changeBondActions(bondActions));
+      });
     }
   };
 }

@@ -1,5 +1,5 @@
 .root {
-  background: var(--backdrop), var(--image), var(--color);
+  background: var(--backdrop), var(--hero-image), var(--color);
   background-clip: border-box;
   background-repeat: no-repeat;
   background-size: cover;
@@ -11,23 +11,18 @@
   &Main {
     --color: rgba(16, 65, 110, 0.8);
     --backdrop: linear-gradient(
-        0deg,
-        rgb(var(--linear-gradient) / var(--alpha-quaternary)) 0%,
-        rgb(var(--linear-gradient) / var(--alpha-quinary)) 100%
-      ),
-      linear-gradient(
-        90deg,
-        rgba(16, 65, 110, 0.8) 0%,
-        rgba(36, 56, 125, 0.664) 24.22%,
-        rgba(50, 90, 233, 0) 50%
-      );
+      90deg,
+      rgba(16, 65, 110, 0.8) 0%,
+      rgba(36, 56, 125, 0.664) 24.22%,
+      rgba(50, 90, 233, 0) 50%
+    );
   }
-  &Default {
+  &Custom {
     --color: var(--color-background-secondary);
     --backdrop: linear-gradient(
         0deg,
-        rgb(var(--linear-gradient) / var(--alpha-quaternary)) 0%,
-        rgb(var(--linear-gradient) / var(--alpha-quinary)) 100%
+        rgb(var(--hero-backdrop-color) / var(--alpha-quaternary)) 0%,
+        rgb(var(--hero-backdrop-color) / var(--alpha-quinary)) 100%
       ),
       linear-gradient(
         0deg,

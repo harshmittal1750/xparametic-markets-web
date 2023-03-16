@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
 import Slider from 'rc-slider';
-
-import { useTheme } from 'hooks';
+import { useTheme } from 'ui';
 
 const marks = {
   0: '0%',
@@ -21,12 +19,7 @@ export type Theme = {
   handleBorderColor: string;
 };
 
-type Themes = {
-  light: Theme;
-  dark: Theme;
-};
-
-export const themes: Themes = {
+export const themes = {
   light: {
     trackBackgroundColor: '#8B96A7',
     railBackgroundColor: '#E3E8F0',
@@ -58,9 +51,8 @@ function StepSlider({
   onChange,
   disabled = false
 }: StepSliderProps) {
-  const { theme } = useTheme();
-
-  const currentTheme: Theme = themes[theme];
+  const theme = useTheme();
+  const currentTheme: Theme = themes[theme.device.mode];
 
   return (
     <div className="step-slider">

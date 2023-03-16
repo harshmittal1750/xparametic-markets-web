@@ -3,7 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
-import { Adornment, Container, useMedia } from 'ui';
+import { Adornment, Container, useTheme } from 'ui';
 import Spinner from 'ui/Spinner';
 
 import {
@@ -82,7 +82,7 @@ function SidebarWrapper({
 function MarketUI() {
   const network = useNetwork();
   const dispatch = useAppDispatch();
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const hasSidebar = useAppSelector(state => state.ui.rightSidebar.visible);
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
@@ -104,7 +104,10 @@ function MarketUI() {
     market.token.ticker,
     network.network
   );
-  const SidebarWrapperComponent = isDesktop ? Fragment : SidebarWrapper;
+  const SidebarWrapperComponent = theme.device.isDesktop
+    ? Fragment
+    : SidebarWrapper;
+  const MarketBodyComponent = theme.device.isDesktop ? MarketBody : Fragment;
 
   return (
     <div className={marketClasses.root}>
@@ -153,9 +156,9 @@ function MarketUI() {
               </Text>
             </div>
           )}
-          {!isDesktop && <MarketAnalytics />}
+          {!theme.device.isDesktop && <MarketAnalytics />}
           <MarketAbout />
-          {!isDesktop && (
+          {!theme.device.isDesktop && (
             <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
               <VoteArrows

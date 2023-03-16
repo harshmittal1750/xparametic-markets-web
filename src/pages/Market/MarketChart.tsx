@@ -2,10 +2,11 @@ import { useState } from 'react';
 import TradingViewWidget, { Themes } from 'react-tradingview-widget';
 
 import sortOutcomes from 'helpers/sortOutcomes';
+import { useTheme } from 'ui';
 
 import { ChartHeader, LineChart, Text } from 'components';
 
-import { useAppSelector, useTheme } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 const intervals = [
   { id: '24h', name: '24H', value: 24 },
@@ -83,7 +84,7 @@ export default function MarketChart() {
           marketOverview: <MarketOverview />,
           tradingView: (
             <TradingViewWidget
-              theme={Themes[theme.theme === 'dark' ? 'DARK' : 'LIGHT']}
+              theme={Themes[theme.device.mode.toUpperCase()]}
               width="100%"
               height={454}
               symbol={tradingViewSymbol}

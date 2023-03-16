@@ -7,7 +7,7 @@ import {
   useGetLeaderboardGroupBySlugQuery,
   useJoinLeaderboardGroupMutation
 } from 'services/Polkamarkets';
-import { Container, useMedia } from 'ui';
+import { Container, useTheme } from 'ui';
 
 import { CreateLeaderboardGroup, Link, Tabs } from 'components';
 import { ButtonLoading } from 'components/Button';
@@ -147,7 +147,7 @@ type Timeframe = '1w' | '1m' | 'at';
 function Leaderboard() {
   // Custom hooks
   const { slug } = useParams<LeaderboardURLParams>();
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
 
   const { network } = useNetwork();
 
@@ -363,7 +363,7 @@ function Leaderboard() {
               <LeaderboardTable
                 loggedInUser={userEthAddress}
                 columns={
-                  isDesktop
+                  theme.device.isDesktop
                     ? columns
                     : columns.filter(
                         column =>
@@ -375,7 +375,7 @@ function Leaderboard() {
                 ticker={ticker}
                 isLoading={isLoadingQuery}
               />
-              {isDesktop ? (
+              {theme.device.isDesktop ? (
                 <div className="flex-column gap-6 justify-start align-start">
                   {walletConnected ? (
                     <LeaderboardYourStats

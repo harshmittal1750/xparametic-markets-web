@@ -11,8 +11,8 @@ export const avatarProps = {
 
 export interface AvatarProps
   extends Pick<
-    React.ComponentPropsWithoutRef<'img'>,
-    'src' | 'alt' | 'className'
+    React.ComponentPropsWithRef<'img'>,
+    'src' | 'alt' | 'className' | 'ref'
   > {
   $size?: typeof avatarProps.$size[number];
   $radius?: typeof avatarProps.$radius[number];
