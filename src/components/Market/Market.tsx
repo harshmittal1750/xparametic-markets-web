@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Market as MarketInterface } from 'models/market';
-import { useAverageColor, useMedia } from 'ui';
+import { useAverageColor, useTheme } from 'ui';
 
 import MarketAvatar from 'components/MarketAvatar';
 import MarketCategory from 'components/MarketCategory';
@@ -19,7 +19,7 @@ type MarketCardProps = {
 
 function Market({ market }: MarketCardProps) {
   const dispatch = useAppDispatch();
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const ref = useRef<HTMLImageElement>(null);
   const RGB = useAverageColor(ref);
   const handleNavigation = useCallback(async () => {
@@ -54,13 +54,13 @@ function Market({ market }: MarketCardProps) {
         ref={ref}
         $size="md"
         imageUrl={market.imageUrl}
-        verified={!isDesktop && market.verified}
+        verified={!theme.device.isDesktop && market.verified}
       />
       <div className="pm-c-market__body-details">
         <MarketCategory
           category={market.category}
           subcategory={market.subcategory}
-          verified={isDesktop && market.verified}
+          verified={theme.device.isDesktop && market.verified}
         />
         <Text as="p" scale="body" fontWeight="medium">
           {market.title}

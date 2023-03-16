@@ -4,7 +4,7 @@ import { Virtuoso } from 'react-virtuoso';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
-import { useMedia } from 'ui';
+import { useTheme } from 'ui';
 
 import Icon from 'components/Icon';
 import MiniTable from 'components/MiniTable';
@@ -21,7 +21,7 @@ export default function TradeFormPredictions() {
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const symbol = useAppSelector(state => state.market.market.token.ticker);
   const rawOutcomes = useAppSelector(state => state.market.market.outcomes);
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const sortedOutcomes = sortOutcomes({
     outcomes: rawOutcomes,
     timeframe: '7d'
@@ -31,7 +31,7 @@ export default function TradeFormPredictions() {
   });
   const needExpandOutcomes = sortedOutcomes.length > 3;
   const outcomes =
-    isDesktop && needExpandOutcomes
+    theme.device.isDesktop && needExpandOutcomes
       ? expandableOutcomes.onseted
       : sortedOutcomes;
   const handleOutcomeClick = useCallback(
@@ -65,7 +65,7 @@ export default function TradeFormPredictions() {
 
   return (
     <div className="pm-c-trade-form-predictions">
-      {isDesktop ? (
+      {theme.device.isDesktop ? (
         <Virtuoso
           height="100%"
           data={outcomes}

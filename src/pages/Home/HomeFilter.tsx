@@ -8,7 +8,7 @@ import {
   ListItem,
   ListItemText,
   Toggle,
-  useMedia
+  useTheme
 } from 'ui';
 
 import { Icon, Modal, ToggleSwitch } from 'components';
@@ -112,7 +112,7 @@ export default function HomeFilter({
   rect: DOMRect;
   show: boolean;
 }) {
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const filters = useFilters();
   const handleToggleChange = useCallback(
     (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,12 +123,14 @@ export default function HomeFilter({
     },
     [filters.controls]
   );
-  const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
+  const ModalFilterRoot = theme.device.isDesktop
+    ? ModalFilterAnimation
+    : HomeFilterModal;
 
   return (
     <ModalFilterRoot
       show={show}
-      {...(isDesktop
+      {...(theme.device.isDesktop
         ? {
             style: {
               height: window.innerHeight - rect.height,
@@ -138,7 +140,7 @@ export default function HomeFilter({
         : { onHide: onFilterHide })}
     >
       <List className={homeClasses.filterList}>
-        {!isDesktop && (
+        {!theme.device.isDesktop && (
           <ListItem>
             <ListItemText>Filter</ListItemText>
             <Adornment $edge="end">

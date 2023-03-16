@@ -4,7 +4,7 @@ import { ui, features } from 'config';
 import { isEmpty } from 'lodash';
 import { setFilter } from 'redux/ducks/portfolio';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
-import { useMedia } from 'ui';
+import { useTheme } from 'ui';
 
 import {
   ButtonGroup,
@@ -64,7 +64,7 @@ const PortfolioTabsFilter = memo(TabsFilter);
 function PortfolioTabs() {
   const { network } = useNetwork();
   const [currentTab, setCurrentTab] = useState('marketPositions');
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const {
     bonds,
     portfolio,
@@ -117,7 +117,7 @@ function PortfolioTabs() {
     return undefined;
   }, [bonds, markets]);
 
-  const positions = isDesktop
+  const positions = theme.device.isDesktop
     ? marketPositions
     : getDefaultCols(marketPositions);
 

@@ -8,7 +8,7 @@ import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
-import { useMedia, useRect } from 'ui';
+import { useRect, useTheme } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -26,9 +26,9 @@ type VirtuosoProps = Omit<
 >;
 
 function Virtuoso({ data }: VirtuosoProps) {
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const [back, backRect] = useRect();
-  const HEIGHT = isDesktop
+  const HEIGHT = theme.device.isDesktop
     ? `${backRect.height}px`
     : `calc(${backRect.height}px + var(--header-y))`;
   const virtuoso = useRef<VirtuosoHandle>(null);

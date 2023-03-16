@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, List, ListItem, useMedia } from 'ui';
+import { Adornment, List, ListItem, useTheme } from 'ui';
 
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
@@ -23,10 +23,9 @@ export default function NetworkSelector({
 }: NetworkSelectorProps) {
   const networks = useNetworks();
   const [rect, setRect] = useState<DOMRect | null>(null);
-  const isDesktop = useMedia('(min-width: 1024px)');
-  const isTv = useMedia('(min-width: 1280px)');
-  const itsDesktop = !responsive || isDesktop;
-  const itsTv = !responsive || isTv;
+  const theme = useTheme();
+  const itsDesktop = !responsive || theme.device.isDesktop;
+  const itsTv = !responsive || theme.device.isTv;
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
       setRect(event.currentTarget.getBoundingClientRect()),
