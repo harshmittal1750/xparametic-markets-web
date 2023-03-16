@@ -7,19 +7,19 @@ import { Filters, FiltersState } from './filters.type';
 const defaultRangeOptions = [
   { label: 'Any', value: 'any' },
   {
-    label: 'Under $10',
+    label: 'Under €10',
     value: '0-10'
   },
   {
-    label: '$10 - $100',
+    label: '€10 - €100',
     value: '10-100'
   },
   {
-    label: '$100 - $1000',
+    label: '€100 - €1000',
     value: '100-1000'
   },
   {
-    label: 'Over $1000',
+    label: 'Over €1000',
     value: '1000-'
   }
 ];
