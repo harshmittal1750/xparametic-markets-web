@@ -61,11 +61,6 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               >
                 {`${roundNumber(volume, 3)} `}
               </Text>
-            </Tooltip>
-            <Tooltip
-              className={marketClasses.footerStatsTooltip}
-              text={token.name}
-            >
               <Text
                 as="strong"
                 scale="tiny-uppercase"
@@ -102,11 +97,6 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               >
                 {`${roundNumber(liquidity, 3)} `}
               </Text>
-            </Tooltip>
-            <Tooltip
-              className={marketClasses.footerStatsTooltip}
-              text={token.name}
-            >
               <Text
                 as="strong"
                 scale="tiny-uppercase"
