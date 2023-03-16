@@ -51,7 +51,7 @@ const filters: Filters = {
   },
   dropdowns: {
     states: {
-      title: 'Market State',
+      title: 'State',
       options: [
         {
           label: 'Open',
@@ -69,22 +69,22 @@ const filters: Filters = {
       multiple: true
     },
     networks: {
-      title: 'Market Network',
+      title: 'Network',
       options: [],
       multiple: true
     },
     volume: {
-      title: 'Market Volume',
+      title: 'Volume',
       options: defaultRangeOptions,
       multiple: false
     },
     liquidity: {
-      title: 'Market Liquidity',
+      title: 'Liquidity',
       options: defaultRangeOptions,
       multiple: false
     },
     endDate: {
-      title: 'Market End Date',
+      title: 'End Date',
       options: defaultDateRangeOptions,
       multiple: false
     }
