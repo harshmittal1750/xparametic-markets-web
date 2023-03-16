@@ -107,7 +107,6 @@ function MarketUI() {
   const SidebarWrapperComponent = theme.device.isDesktop
     ? Fragment
     : SidebarWrapper;
-  const MarketBodyComponent = theme.device.isDesktop ? MarketBody : Fragment;
 
   return (
     <div className={marketClasses.root}>
