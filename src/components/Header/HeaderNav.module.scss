@@ -64,6 +64,9 @@
 }
 .footer {
   margin-top: auto;
+  display: flex;
+  flex-flow: column nowrap;
+  align-self: center;
 }
 .title {
   text-align: center;
