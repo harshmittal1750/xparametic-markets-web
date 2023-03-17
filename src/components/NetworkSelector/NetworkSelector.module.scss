@@ -1,4 +1,4 @@
-.network {
+.root {
   gap: 8px;
   height: 44px !important;
   font-weight: 700;
@@ -16,10 +16,12 @@
   &Icon {
     margin-left: auto;
   }
+
+  &Responsive {
+    width: 44px;
+  }
 }
-.responsive {
-  width: 44px;
-}
+
 .dialog {
   border-radius: 20px 20px 0px 0px;
   background-color: var(--color-surface-primary);
@@ -37,33 +39,39 @@
   padding-right: 20px;
   padding-left: 20px;
   border-bottom: 1px solid var(--color-border);
-}
-.title {
-  margin-right: auto;
-  color: var(--color-text-primary);
+
+  &Title {
+    margin-right: auto;
+    color: var(--color-text-primary);
+  }
 }
 .list {
   background-color: transparent;
   padding-top: 8px;
   padding-bottom: 8px;
-}
-.item {
-  padding-left: 8px;
-  padding-right: 8px;
-}
-.button {
-  justify-content: unset !important;
-  padding: 0px 16px !important;
-  min-height: 56px !important;
-  border-radius: 12px !important;
-  @media (min-width: 1024px) {
-    min-height: 48px !important;
+
+  &Item {
+    padding-left: 8px;
+    padding-right: 8px;
+
+    &Button {
+      justify-content: unset !important;
+      padding: 0px 16px !important;
+      min-height: 56px !important;
+      border-radius: 12px !important;
+
+      @media (min-width: 1024px) {
+        min-height: 48px !important;
+      }
+
+      &Icon {
+        margin-right: 8px;
+        margin-left: -4px;
+      }
+    }
+
+    &Selected {
+      background-color: var(--color-text-quinary) !important;
+    }
   }
-}
-.selected {
-  background-color: var(--color-text-quinary) !important;
-}
-.icon {
-  margin-right: 8px;
-  margin-left: -4px;
 }
