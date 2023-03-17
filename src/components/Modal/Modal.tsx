@@ -1,14 +1,30 @@
-import { Fragment, forwardRef, useCallback, useEffect } from 'react';
+import { Fragment, forwardRef, useCallback, useEffect, useMemo } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
 import { Focustrap } from 'ui';
 
 import { usePortal, usePrevious, useMount, useTimeoutEffect } from 'hooks';
 
 import ModalClasses from './Modal.module.scss';
-import type { ModalProps } from './Modal.type';
 import { modalTrappersId } from './Modal.util';
+
+type ModalComponents = 'root' | 'backdrop' | 'dialog';
+
+export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
+  onHide?(): void;
+  show: boolean;
+  className?: Partial<Record<ModalComponents, string>>;
+  centered?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  fullScreen?: boolean;
+  fullWidth?: boolean;
+  disableGutters?: boolean;
+  disablePortal?: boolean;
+  disableOverlay?: boolean;
+  mountFirstShowNext?: boolean;
+}
 
 function ModalWrapper({
   children,
@@ -54,22 +70,32 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
     disableGutters,
     disablePortal,
     disableOverlay,
+    mountFirstShowNext,
     ...props
   },
   ref
 ) {
-  const { current: didMount } = useMount();
-  const { current: showPrev } = usePrevious(show);
+  const didMount = useMount();
+  const showPrev = usePrevious(show);
   const handleRootKeydown = useCallback(
-    (event: React.KeyboardEvent) => event.key === 'Escape' && onHide?.(),
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Escape') onHide?.();
+    },
     [onHide]
   );
   const handleBackdropClick = useCallback(() => onHide?.(), [onHide]);
-  const ModalWrapperComponent = disablePortal ? Fragment : ModalWrapper;
+  const ModalWrapperComponent = useMemo(
+    () => (disablePortal ? Fragment : ModalWrapper),
+    [disablePortal]
+  );
 
   return (
     <ModalWrapperComponent
-      {...(!disablePortal && { show, showPrev, didMount })}
+      {...(!disablePortal && {
+        show: mountFirstShowNext || show,
+        showPrev: showPrev.current,
+        didMount: didMount.current
+      })}
     >
       <AnimatePresence>
         {show && (
