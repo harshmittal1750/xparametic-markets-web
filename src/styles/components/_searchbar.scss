@@ -5,7 +5,8 @@
     align-items: center;
 
     width: 100%;
-    padding: var(--size-16);
+    padding-left: var(--size-16);
+    padding-right: var(--size-16);
     transition: $searchbar-transitions;
 
     background-color: transparent;
