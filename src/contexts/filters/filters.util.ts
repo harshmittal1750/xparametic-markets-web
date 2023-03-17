@@ -85,7 +85,13 @@ const filters: Filters = {
     },
     endDate: {
       title: 'End Date',
-      options: defaultDateRangeOptions,
+      options: [
+        ...defaultDateRangeOptions,
+        {
+          label: 'Custom',
+          value: 'custom'
+        }
+      ],
       multiple: false
     }
   }
