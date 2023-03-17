@@ -5,8 +5,6 @@ export type { AvatarProps } from './Avatar';
 
 export { default as ButtonGroup } from './ButtonGroup';
 
-export { default as Popover } from './Popover';
-
 export { default as Container } from './Container';
 export type { ContainerProps } from './Container';
 

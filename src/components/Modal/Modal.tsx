@@ -77,8 +77,8 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
   },
   ref
 ) {
-  const didMount = useMount();
-  const showPrev = usePrevious(show);
+  const { current: didMount } = useMount();
+  const { current: showPrev } = usePrevious(show);
   const handleRootKeydown = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.key === 'Escape') onHide?.();
@@ -86,23 +86,12 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
     [onHide]
   );
   const handleBackdropClick = useCallback(() => onHide?.(), [onHide]);
-  const ModalWrapperComponent = useCallback(
-    (wrapperProps: React.PropsWithChildren<Record<string, unknown>>) =>
-      disablePortal ? (
-        <Fragment {...wrapperProps} />
-      ) : (
-        <ModalWrapper
-          show={show}
-          showPrev={showPrev.current}
-          didMount={didMount.current}
-          {...wrapperProps}
-        />
-      ),
-    [didMount, disablePortal, show, showPrev]
-  );
+  const ModalWrapperComponent = disablePortal ? Fragment : ModalWrapper;
 
   return (
-    <ModalWrapperComponent>
+    <ModalWrapperComponent
+      {...(!disablePortal && { show, showPrev, didMount })}
+    >
       <AnimatePresence>
         {show && (
           <motion.div
