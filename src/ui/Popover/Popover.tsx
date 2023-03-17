@@ -5,20 +5,20 @@ import { useRect, useTheme } from 'ui';
 
 import Modal from 'components/Modal';
 
-import networSelectorClasses from './ButtonPopover.module.scss';
+import networSelectorClasses from './Popover.module.scss';
 
-type NetworkSelectorProps = React.PropsWithChildren<{
+type PopoverProps = React.PropsWithChildren<{
   responsive?: boolean;
   className?: string;
   label: React.ReactNode;
 }>;
 
-export default function ButtonPopover({
+export default function Popover({
   responsive,
   className,
   children,
   label
-}: NetworkSelectorProps) {
+}: PopoverProps) {
   const theme = useTheme();
   const [rectButton, setRectButton] = useState<DOMRect | null>(null);
   const [refModal, rectModal] = useRect();
@@ -41,6 +41,7 @@ export default function ButtonPopover({
       </button>
       <Modal
         ref={refModal}
+        mountFirstShowNext
         disableGutters
         onHide={handleHide}
         disableOverlay={isDesktop}
