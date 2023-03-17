@@ -337,8 +337,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
         filterByState(market.state) &&
-        filterByVolume(market.volume) &&
-        filterByLiquidity(market.liquidity) &&
+        filterByVolume(market.volumeEur) &&
+        filterByLiquidity(market.liquidityEur) &&
         filterByEndDate(market.expiresAt)
     )
   );
