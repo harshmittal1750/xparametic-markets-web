@@ -84,7 +84,7 @@ export default function NetworkSelector({
           ? {
               style: {
                 left: rect?.left,
-                top: `calc(${rect?.top}px + ${rect?.height}px + var(--grid-margin))`,
+                top: `calc(${rect?.height}px + var(--grid-margin))`,
                 width: rect?.width
               }
             }
