@@ -20,6 +20,8 @@ export { default as ListItem } from './ListItem';
 
 export { default as ListItemText } from './ListItemText';
 
+export { default as RangePicker } from './RangePicker';
+
 export { default as Spinner } from './Spinner';
 
 export { default as Tag } from './Tag';
