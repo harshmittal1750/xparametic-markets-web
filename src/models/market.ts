@@ -67,6 +67,8 @@ export interface Market {
   outcomes: Outcome[];
   tradingViewSymbol: any;
   fee: number;
+  treasuryFee: number;
+  treasury: string;
   question: Question;
   networkId: string;
   network: Network;

@@ -1,4 +1,3 @@
-import type React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 
@@ -12,18 +11,15 @@ export function renderWithProviders(
   options?: Omit<RenderOptions, 'wrapper'>
 ) {
   return render(ui, {
-    wrapper: function Wrapper({
-      // 🐛 BACKLOG: to be imported from some high-level app component
+    wrapper: ({
       children
-    }: React.PropsWithChildren<Record<string, unknown>>) {
-      return (
-        <Provider store={store}>
-          <BrowserRouter>
-            <MemoryRouter>{children}</MemoryRouter>
-          </BrowserRouter>
-        </Provider>
-      );
-    },
+    }: React.PropsWithChildren<Record<string, unknown>>) => (
+      <Provider store={store}>
+        <BrowserRouter>
+          <MemoryRouter>{children}</MemoryRouter>
+        </BrowserRouter>
+      </Provider>
+    ),
     ...options
   });
 }
@@ -36,4 +32,17 @@ export function renderClassName({ withClassName }: { withClassName: string }) {
     input,
     expected: `${withClassName} ${input}`
   };
+}
+export function mockMatchMedia({ matches }: { matches: boolean }) {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: jest.fn().mockImplementation(media => ({
+      matches,
+      media,
+      onchange: null,
+      addEventListener: jest.fn(),
+      removeEventListener: jest.fn(),
+      dispatchEvent: jest.fn()
+    }))
+  });
 }

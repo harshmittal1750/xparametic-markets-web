@@ -1,11 +1,9 @@
-import { SVGProps, memo } from 'react';
+import { memo } from 'react';
 
-import { useTheme } from 'hooks';
+import { isThemeDark, useTheme } from 'ui';
 
-function RankStableIcon(props: SVGProps<SVGSVGElement>) {
-  const { theme } = useTheme();
-
-  const backgroundColor = theme === 'dark' ? '#FFFFFF' : '#000000';
+function RankStableIcon(props: React.SVGProps<SVGSVGElement>) {
+  const theme = useTheme();
 
   return (
     <svg
@@ -20,7 +18,7 @@ function RankStableIcon(props: SVGProps<SVGSVGElement>) {
         width="21"
         height="21"
         y="0"
-        fill={backgroundColor}
+        fill={isThemeDark(theme.device.mode) ? '#FFFFFF' : '#000000'}
         fillOpacity="0.1"
         rx="10"
       />

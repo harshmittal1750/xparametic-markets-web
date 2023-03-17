@@ -4,7 +4,7 @@ import type ReactRouterDom from 'react-router-dom';
 
 import { pages, socials } from 'config';
 import { shiftSlash } from 'helpers/string';
-import { useMedia } from 'ui';
+import { useTheme } from 'ui';
 
 import { PolkamarketsLogo } from 'assets/icons';
 
@@ -140,19 +140,18 @@ function HeaderNavMenuModal() {
   );
 }
 export default function HeaderNav() {
-  const isTv = useMedia('(min-width: 1440px)');
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
 
   return (
     <nav className={headerNavClasses.root}>
-      {isDesktop && !isTv && <HeaderNavMenuModal />}
+      {theme.device.isDesktop && !theme.device.isTv && <HeaderNavMenuModal />}
       <Link to="/" aria-label="Homepage" className={headerNavClasses.logos}>
         <PolkamarketsLogo />
       </Link>
-      {isTv ? (
+      {theme.device.isTv ? (
         <HeaderNavMenu />
       ) : (
-        !isDesktop && (
+        !theme.device.isDesktop && (
           <>
             <NetworkSelector responsive className={headerNavClasses.network} />
             <HeaderNavMenuModal />

@@ -12,13 +12,12 @@ import WrongNetwork from 'pages/WrongNetwork';
 
 import { Layout } from 'components';
 
-import { useAppSelector, useNetwork, useTheme } from 'hooks';
+import { useAppSelector, useNetwork } from 'hooks';
 
 const restrictedCountries =
   process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
 
 function AppRoutes() {
-  const theme = useTheme();
   const { network } = useNetwork();
 
   const walletConnected = useAppSelector(
@@ -30,14 +29,6 @@ function AppRoutes() {
 
   const isAllowedNetwork =
     !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
-
-  if (theme.theme === 'dark') {
-    document.documentElement.classList.add('theme--dark');
-    document.documentElement.classList.remove('theme--light');
-  } else {
-    document.documentElement.classList.add('theme--light');
-    document.documentElement.classList.remove('theme--dark');
-  }
 
   useEffect(() => {
     async function fetchUserCountry() {

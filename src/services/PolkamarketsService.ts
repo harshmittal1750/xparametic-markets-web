@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
+import { features } from 'config';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
 
@@ -109,14 +110,18 @@ export default class PolkamarketsService {
     if (this.loggedIn) return true;
 
     try {
-      this.loggedIn = await this.polkamarkets.login();
+      const loggedIn = await this.polkamarkets.login();
       // successful login
-      if (this.loggedIn) {
-        this.address = await this.getAddress();
+      if (loggedIn) {
+        const address = await this.getAddress();
         // TODO: set this in polkamarkets
-        this.polkamarkets.web3.eth.defaultAccount = this.address;
-        // re-fetching contracts
-        this.getContracts();
+        if (address) {
+          this.polkamarkets.web3.eth.defaultAccount = this.address;
+          this.loggedIn = true;
+          this.address = address;
+          // re-fetching contracts
+          this.getContracts();
+        }
       }
     } catch (e) {
       // should be non-blocking
@@ -129,7 +134,9 @@ export default class PolkamarketsService {
   public async getAddress(): Promise<string> {
     if (this.address) return this.address;
 
-    return this.polkamarkets.getAddress() || '';
+    const address = (await this.polkamarkets.getAddress()) || '';
+
+    return address;
   }
 
   public async getBalance(): Promise<number> {
@@ -149,10 +156,10 @@ export default class PolkamarketsService {
     return requiredBalance;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public async getMarketFee(): Promise<number> {
-    const fee = await this.contracts.pm.getFee();
-
-    return fee;
+    // TODO: make it variable
+    return 0.02;
   }
 
   public async createMarket(
@@ -169,6 +176,8 @@ export default class PolkamarketsService {
     // ensuring user has wallet connected
     await this.login();
 
+    const fee = '20000000000000000';
+
     let response;
     const args = {
       name,
@@ -178,10 +187,10 @@ export default class PolkamarketsService {
       category,
       value,
       oracleAddress: this.address,
-      odds
+      odds,
+      fee
     };
 
-    // TODO: remove !token condition
     if (wrapped) {
       response = await this.contracts.pm.createMarketWithETH(args);
     } else {
@@ -366,6 +375,7 @@ export default class PolkamarketsService {
 
   public async getActions(): Promise<any[]> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return [];
 
     const response = await this.contracts.pm.getMyActions();
@@ -412,6 +422,8 @@ export default class PolkamarketsService {
 
   public async isPolkClaimed(): Promise<boolean> {
     if (!this.address) return false;
+
+    if (features.regular.enabled) return false;
 
     let claimed;
 

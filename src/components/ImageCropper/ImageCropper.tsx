@@ -1,11 +1,8 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-shadow */
 import { useState, useCallback, useMemo } from 'react';
 import Cropper from 'react-easy-crop';
 
 import Slider from 'rc-slider';
-
-import { useTheme } from 'hooks';
+import { useTheme } from 'ui';
 
 import { Button } from '../Button';
 import { Theme, themes } from '../StepSlider';
@@ -19,12 +16,12 @@ type ImageCropperProps = {
 };
 
 function ImageCroppper({ image, onCrop, onCancel }: ImageCropperProps) {
-  const { theme } = useTheme();
+  const theme = useTheme();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
 
-  const currentTheme: Theme = themes[theme];
+  const currentTheme: Theme = themes[theme.device.mode];
   const imageURL = useMemo(
     () => (image ? URL.createObjectURL(image) : ''),
     [image]

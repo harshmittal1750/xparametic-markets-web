@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 
-import { Container, Hero, useMedia } from 'ui';
+import { Container, Hero, useTheme } from 'ui';
 
 import { MarketAvatar, MarketCategory, Text } from 'components';
 import MarketFooter from 'components/Market/MarketFooter';
@@ -13,57 +13,59 @@ import marketClasses from './Market.module.scss';
 function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
+  const id = useAppSelector(state => state.market.market.id);
   const imageUrl = useAppSelector(state => state.market.market.imageUrl);
-  const avatarColor = useAppSelector(state => state.ui.market.avatar.color);
+  const colors = useAppSelector(state => state.ui.market.colors);
 
   return (
     <Hero
       className={marketClasses.hero}
       $image={imageUrl}
-      style={{
-        // @ts-expect-error No need to assert React.CSSProperties here
-        '--linear-gradient':
-          avatarColor || localStorage.getItem('MARKET_AVATAR_COLOR')
-      }}
+      $backdrop={colors[id]}
       {...props}
     />
   );
 }
 export default function MarketHead() {
   const market = useAppSelector(state => state.market.market);
-  const isDesktop = useMedia('(min-width: 1024px)');
-  const MarketHeadWrapperComponent = isDesktop ? MarketHeadWrapper : Fragment;
+  const theme = useTheme();
+  const MarketHeadWrapperComponent = theme.device.isDesktop
+    ? MarketHeadWrapper
+    : Fragment;
 
   return (
     <MarketHeadWrapperComponent>
-      <Container $enableGutters={!isDesktop} className={marketClasses.heroInfo}>
+      <Container
+        $enableGutters={!theme.device.isDesktop}
+        className={marketClasses.heroInfo}
+      >
         <MarketAvatar
-          $size={isDesktop ? 'lg' : 'md'}
+          $size={theme.device.isDesktop ? 'lg' : 'md'}
           imageUrl={market.imageUrl}
-          verified={!isDesktop && market.verified}
+          verified={!theme.device.isDesktop && market.verified}
         />
         <div>
           <MarketCategory
             category={market.category}
             subcategory={market.subcategory}
-            verified={isDesktop && market.verified}
+            verified={theme.device.isDesktop && market.verified}
           />
           <Text
             as="h2"
-            fontWeight={isDesktop ? 'bold' : 'medium'}
-            scale={isDesktop ? 'heading-large' : 'body'}
+            fontWeight={theme.device.isDesktop ? 'bold' : 'medium'}
+            scale={theme.device.isDesktop ? 'heading-large' : 'body'}
             className={marketClasses.heroInfoTitle}
           >
             {market.title}
           </Text>
         </div>
-        {isDesktop && (
+        {theme.device.isDesktop && (
           <div className={marketClasses.heroInfoActions}>
             <MarketFooterActions $variant="filled" market={market} />
           </div>
         )}
       </Container>
-      {isDesktop && (
+      {theme.device.isDesktop && (
         <Container className={marketClasses.heroStats}>
           <MarketFooter market={market} />
         </Container>

@@ -1,6 +1,4 @@
-import React, { Children, cloneElement, useCallback, useEffect } from 'react';
-
-import { usePrevious } from 'hooks';
+import React, { cloneElement, useCallback, useEffect, useRef } from 'react';
 
 import focustrapClasses from './Focustrap.module.scss';
 
@@ -18,64 +16,60 @@ const focusables = [
 ].join(', ');
 
 function getFocusables(node: HTMLElement) {
-  const [trapStart, edgeStart, ...elements] = Array.from(
+  const [edgeStart, ...elements] = Array.from(
     node.querySelectorAll(focusables)
   ) as Array<HTMLElement>;
 
-  return [
-    {
-      start: trapStart,
-      end: elements[elements.length - 1]
-    },
-    {
-      start: edgeStart,
-      end: elements[elements.length - 2]
-    }
-  ];
+  return {
+    start: edgeStart,
+    end: elements[elements.length - 1]
+  };
 }
 export default function Focustrap<E extends HTMLElement>({
   children,
   trappersId
 }: FocustrapProps) {
-  const { current: focusPrev } = usePrevious(document.activeElement);
+  const focusPrev = useRef<Element | null>(null);
+  const edgeStart = useRef<HTMLElement | null>(null);
+  const edgeEnd = useRef<HTMLElement | null>(null);
+  const onFocus = useCallback((event: React.FocusEvent<E>) => {
+    const edge = getFocusables(event.currentTarget);
 
-  useEffect(() => () => (focusPrev as HTMLElement)?.focus(), [focusPrev]);
+    edgeStart.current = edge.start;
+    edgeEnd.current = edge.end;
+  }, []);
 
-  return Children.only(
-    cloneElement(
-      children,
-      {
-        onFocus: useCallback((event: React.FocusEvent<E>) => {
-          const [trap, edge] = getFocusables(event.currentTarget);
+  useEffect(() => {
+    if (!focusPrev.current) {
+      focusPrev.current = document.activeElement;
+    }
 
-          if (event.target === trap.start) {
-            window.requestAnimationFrame(() => {
-              window.setTimeout(() => edge.end?.focus());
-            });
-          }
-          if (event.target === trap.end) {
-            window.requestAnimationFrame(() => {
-              window.setTimeout(() => edge.start?.focus());
-            });
-          }
-        }, [])
-      },
-      <>
-        <button type="button" className={focustrapClasses.trap}>
-          {trappersId.start}
-        </button>
-        {children.props.children}
-        <button
-          type="button"
-          ref={useCallback(
-            (node: HTMLButtonElement | null) => node?.focus(),
-            []
-          )}
-          className={focustrapClasses.trap}
-        >
-          {trappersId.end}
-        </button>
-      </>
-    )
+    return () => {
+      (focusPrev.current as HTMLElement)?.focus();
+      focusPrev.current = null;
+    };
+  }, []);
+
+  return (
+    <>
+      <button
+        type="button"
+        className={focustrapClasses.trap}
+        ref={useCallback((node: HTMLButtonElement | null) => node?.focus(), [])}
+        onFocus={useCallback(() => edgeEnd.current?.focus(), [])}
+      >
+        {trappersId.start}
+      </button>
+      {cloneElement(children, {
+        onFocus
+      })}
+      <button
+        type="button"
+        onFocus={useCallback(() => edgeStart.current?.focus(), [])}
+        className={focustrapClasses.trap}
+      >
+        {trappersId.end}
+      </button>
+    </>
   );
 }

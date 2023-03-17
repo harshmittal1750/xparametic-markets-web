@@ -9,7 +9,7 @@ import {
   ListItem,
   ListItemText,
   Toggle,
-  useMedia
+  useTheme
 } from 'ui';
 
 import { Icon, Modal, ToggleSwitch } from 'components';
@@ -142,11 +142,13 @@ export default function HomeFilter({
   rect: DOMRect;
   show: boolean;
 }) {
-  const isDesktop = useMedia('(min-width: 1024px)');
+  const theme = useTheme();
   const { filters, controls } = useFilters();
   const { updateToggle, updateDropdown } = controls;
 
-  const ModalFilterRoot = isDesktop ? ModalFilterAnimation : HomeFilterModal;
+  const ModalFilterRoot = theme.device.isDesktop
+    ? ModalFilterAnimation
+    : HomeFilterModal;
 
   const { register, watch } = useForm<FormFields>({
     defaultValues: {
@@ -176,7 +178,7 @@ export default function HomeFilter({
   return (
     <ModalFilterRoot
       show={show}
-      {...(isDesktop
+      {...(theme.device.isDesktop
         ? {
             style: {
               height: window.innerHeight - rect.height,
@@ -187,7 +189,7 @@ export default function HomeFilter({
     >
       <form>
         <List className={homeClasses.filterList}>
-          {!isDesktop && (
+          {!theme.device.isDesktop && (
             <ListItem>
               <ListItemText>Filter</ListItemText>
               <Adornment $edge="end">

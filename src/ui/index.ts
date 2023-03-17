@@ -31,3 +31,9 @@ export { default as useAverageColor } from './useAverageColor';
 export { default as useMedia } from './useMedia';
 
 export { default as useRect } from './useRect';
+
+export { default as ThemeProvider } from './useTheme';
+export { useTheme, isThemeDark } from './useTheme';
+export type { ThemeProps } from './useTheme';
+
+export { default as useUpdateEffect } from './useUpdateEffect';
