@@ -2,13 +2,14 @@ import { createContext, useCallback, useMemo, useReducer } from 'react';
 
 import { useNetworks } from 'contexts/networks';
 
-import filtersReducer, { FiltersActions } from './filters.reducer';
-import { FiltersContextState, Option } from './filters.type';
+import filtersReducer from './filters.reducer';
 import {
-  addNetworks,
-  createDepthPaths,
-  filtersInitialState
-} from './filters.util';
+  FiltersActions,
+  FiltersContextState,
+  UpdateTogglePayload,
+  UpdateDropdownPayload
+} from './filters.type';
+import { addNetworks, filtersInitialState } from './filters.util';
 
 const FiltersContext = createContext<FiltersContextState>(
   {} as FiltersContextState
@@ -17,64 +18,39 @@ const FiltersContext = createContext<FiltersContextState>(
 function FiltersProvider({ children }) {
   const { networks } = useNetworks();
 
-  const filtersInitialStateWithNetworks = useMemo(
-    () => addNetworks(filtersInitialState, networks),
-    [networks]
-  );
+  const filtersWithNetworks = useMemo(() => addNetworks(networks), [networks]);
 
-  const filtersInitialStateWithDepthPaths = useMemo(
-    () => createDepthPaths(filtersInitialStateWithNetworks),
-    [filtersInitialStateWithNetworks]
-  );
-
-  const [state, dispatch] = useReducer(
+  const [filtersState, dispatch] = useReducer(
     filtersReducer,
-    filtersInitialStateWithDepthPaths
+    filtersInitialState
   );
 
-  const toggleFavorites = useCallback(() => {
-    dispatch({ type: FiltersActions.TOGGLE_FAVORITES });
+  const updateToggle = useCallback(({ toggle, state }: UpdateTogglePayload) => {
+    dispatch({
+      type: FiltersActions.UPDATE_TOGGLE,
+      payload: { toggle, state }
+    });
   }, []);
 
-  const toggleDropdownOption = useCallback(
-    (value: { path: Option['path']; selected: Option['selected'] }) => {
-      const { path, selected } = value;
-      if (path) {
-        dispatch({
-          type: FiltersActions.TOGGLE_DROPDOWN_OPTION,
-          payload: { path, selected }
-        });
-      }
+  const updateDropdown = useCallback(
+    ({ dropdown, state }: UpdateDropdownPayload) => {
+      dispatch({
+        type: FiltersActions.UPDATE_DROPDOWN,
+        payload: { dropdown, state }
+      });
     },
     []
   );
 
-  function pickSelectedOptions(options: Option[]) {
-    return options
-      .filter(option => option.selected)
-      .map(option => option.value);
-  }
-
-  const selectedOptions = useMemo(() => {
-    const { dropdowns } = state;
-    return {
-      favorites: state.favorites.checked,
-      dropdowns: {
-        networks: pickSelectedOptions(dropdowns.network.options),
-        states: pickSelectedOptions(dropdowns.state.options)
-      }
-    };
-  }, [state]);
-
   return (
     <FiltersContext.Provider
       value={{
-        state,
+        filters: filtersWithNetworks,
+        state: filtersState,
         controls: {
-          toggleFavorites,
-          toggleDropdownOption
-        },
-        selected: selectedOptions
+          updateToggle,
+          updateDropdown
+        }
       }}
     >
       {children}

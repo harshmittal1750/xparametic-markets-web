@@ -1,7 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { environment } from 'config';
-// import dayjs from 'dayjs';
-// import inRange from 'lodash/inRange';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import { toStartEnd } from 'helpers/date';
+import { toMinMax } from 'helpers/string';
+import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
@@ -13,6 +16,8 @@ import { MarketState } from 'types/market';
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
 import { getCurrencyByTicker, getNetworkById } from './market';
+
+dayjs.extend(isBetween);
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
@@ -242,8 +247,11 @@ type MarketsSelectorArgs = {
       checked: boolean;
       marketsByNetwork: FavoriteMarketsByNetwork;
     };
-    networks: string[];
     states: string[];
+    networks: string[];
+    volume: string;
+    liquidity: string;
+    endDate: string;
   };
 };
 
@@ -263,6 +271,41 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
 
   const filterByState = marketState =>
     !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
+
+  const filterByRange = (value: number, range: string) => {
+    const { min, max } = toMinMax(range);
+
+    if (!max) {
+      return value >= min;
+    }
+
+    return inRange(value, min, max);
+  };
+
+  const filterByVolume = (volume: number) => {
+    if (filters.volume !== 'any') {
+      return filterByRange(volume, filters.volume);
+    }
+
+    return true;
+  };
+
+  const filterByLiquidity = (liquidity: number) => {
+    if (filters.liquidity !== 'any') {
+      return filterByRange(liquidity, filters.liquidity);
+    }
+
+    return true;
+  };
+
+  const filterByEndDate = (expiresAt: string) => {
+    if (filters.endDate !== 'any') {
+      const { start, end } = toStartEnd(filters.endDate);
+      return dayjs(expiresAt).utc().isBetween(start, end);
+    }
+
+    return true;
+  };
 
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
@@ -293,7 +336,10 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
           market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
-        filterByState(market.state)
+        filterByState(market.state) &&
+        filterByVolume(market.volumeEur) &&
+        filterByLiquidity(market.liquidityEur) &&
+        filterByEndDate(market.expiresAt)
     )
   );
 };

@@ -1,4 +1,5 @@
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
+import { useForm, UseFormRegister, UseFormWatch } from 'react-hook-form';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -14,17 +15,34 @@ import {
 import { Icon, Modal, ToggleSwitch } from 'components';
 import type { ModalProps } from 'components/Modal';
 
-import type { Dropdown } from 'contexts/filters/filters.type';
+import {
+  Dropdown,
+  DropdownState,
+  DropdownMultipleState,
+  ToggleState,
+  Toggles,
+  Dropdowns,
+  filtersInitialState
+} from 'contexts/filters';
 
 import { useFilters } from 'hooks';
 
 import homeClasses from './Home.module.scss';
 
+type FormFields = {
+  favorites: ToggleState;
+  states: DropdownState | DropdownMultipleState;
+  networks: DropdownState | DropdownMultipleState;
+  volume: DropdownState | DropdownMultipleState;
+  liquidity: DropdownState | DropdownMultipleState;
+};
+
 type ListItemNestedProps = {
-  onToggleChange: (
-    path?: string
-  ) => (event: React.ChangeEvent<HTMLInputElement>) => void;
+  name: string;
   subitems: Dropdown;
+  multiple: boolean;
+  register: UseFormRegister<FormFields>;
+  watch: UseFormWatch<FormFields>;
 };
 
 function HomeFilterModal(
@@ -59,11 +77,20 @@ function ModalFilterAnimation({
     </AnimatePresence>
   );
 }
-function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
+function ListItemNested({
+  name,
+  subitems,
+  multiple,
+  register,
+  watch
+}: ListItemNestedProps) {
   const [expand, setExpand] = useState(false);
   const handleExpand = useCallback(() => {
     setExpand(prevExpand => !prevExpand);
   }, []);
+
+  // TODO: Fix this type assertion
+  const field = watch(name as keyof FormFields) as any;
 
   return (
     <>
@@ -83,15 +110,18 @@ function ListItemNested({ onToggleChange, subitems }: ListItemNestedProps) {
           >
             <List className={homeClasses.filterSubList}>
               {subitems.options.map(option => (
-                <ListItem key={option.path}>
+                <ListItem key={option.value}>
                   <ListItemText>{option.label}</ListItemText>
                   <Adornment $edge="end">
                     <Toggle
-                      type="checkbox"
-                      checked={option.selected}
+                      type={multiple ? 'checkbox' : 'radio'}
                       value={option.value}
-                      name={option.label}
-                      onChange={onToggleChange(option.path)}
+                      checked={
+                        multiple
+                          ? field.includes(option.value)
+                          : field === option.value
+                      }
+                      {...register(name as keyof FormFields)}
                     />
                   </Adornment>
                 </ListItem>
@@ -113,19 +143,37 @@ export default function HomeFilter({
   show: boolean;
 }) {
   const theme = useTheme();
-  const filters = useFilters();
-  const handleToggleChange = useCallback(
-    (path?: string) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      filters.controls.toggleDropdownOption({
-        path,
-        selected: event.target.checked
-      });
-    },
-    [filters.controls]
-  );
+  const { filters, controls } = useFilters();
+  const { updateToggle, updateDropdown } = controls;
+
   const ModalFilterRoot = theme.device.isDesktop
     ? ModalFilterAnimation
     : HomeFilterModal;
+
+  const { register, watch } = useForm<FormFields>({
+    defaultValues: {
+      ...filtersInitialState.toggles,
+      ...filtersInitialState.dropdowns
+    }
+  });
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (Object.values(Toggles).includes(name as Toggles)) {
+        updateToggle({
+          toggle: name as Toggles,
+          state: value[`${name}`]
+        });
+      } else if (Object.values(Dropdowns).includes(name as Dropdowns)) {
+        updateDropdown({
+          dropdown: name as Dropdowns,
+          state: value[`${name}`]
+        });
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, updateToggle, updateDropdown]);
 
   return (
     <ModalFilterRoot
@@ -139,35 +187,36 @@ export default function HomeFilter({
           }
         : { onHide: onFilterHide })}
     >
-      <List className={homeClasses.filterList}>
-        {!theme.device.isDesktop && (
+      <form>
+        <List className={homeClasses.filterList}>
+          {!theme.device.isDesktop && (
+            <ListItem>
+              <ListItemText>Filter</ListItemText>
+              <Adornment $edge="end">
+                <Icon name="Cross" onClick={onFilterHide} />
+              </Adornment>
+            </ListItem>
+          )}
           <ListItem>
-            <ListItemText>Filter</ListItemText>
+            <ListItemText>{filters.toggles.favorites.title}</ListItemText>
             <Adornment $edge="end">
-              <Icon name="Cross" onClick={onFilterHide} />
+              <ToggleSwitch id="favorites" {...register('favorites')} />
             </Adornment>
           </ListItem>
-        )}
-        <ListItem>
-          <ListItemText>Favorites</ListItemText>
-          <Adornment $edge="end">
-            <ToggleSwitch
-              name="favorites"
-              checked={filters.state.favorites.checked}
-              onChange={filters.controls.toggleFavorites}
-            />
-          </Adornment>
-        </ListItem>
-        {Object.keys(filters.state.dropdowns).map(dropdrown => (
-          <Fragment key={dropdrown}>
-            <Divider />
-            <ListItemNested
-              subitems={filters.state.dropdowns[dropdrown]}
-              onToggleChange={handleToggleChange}
-            />
-          </Fragment>
-        ))}
-      </List>
+          {Object.keys(filters.dropdowns).map(dropdrown => (
+            <Fragment key={dropdrown}>
+              <Divider />
+              <ListItemNested
+                name={dropdrown}
+                subitems={filters.dropdowns[dropdrown]}
+                multiple={filters.dropdowns[dropdrown].multiple}
+                register={register}
+                watch={watch}
+              />
+            </Fragment>
+          ))}
+        </List>
+      </form>
     </ModalFilterRoot>
   );
 }
