@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useEffect } from 'react';
+import { Fragment, forwardRef, useCallback, useEffect } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -42,19 +42,22 @@ function ModalWrapper({
 
   return <Portal>{children}</Portal>;
 }
-export default function Modal({
-  onHide,
-  show,
-  className,
-  centered,
-  size,
-  fullScreen,
-  fullWidth,
-  disableGutters,
-  disablePortal,
-  disableOverlay,
-  ...props
-}: ModalProps) {
+export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
+  {
+    onHide,
+    show,
+    className,
+    centered,
+    size,
+    fullScreen,
+    fullWidth,
+    disableGutters,
+    disablePortal,
+    disableOverlay,
+    ...props
+  },
+  ref
+) {
   const { current: didMount } = useMount();
   const { current: showPrev } = usePrevious(show);
   const handleRootKeydown = useCallback(
@@ -98,6 +101,7 @@ export default function Modal({
             />
             <Focustrap<HTMLDivElement> trappersId={modalTrappersId}>
               <motion.div
+                ref={ref}
                 initial={{ y: 8 }}
                 animate={{ y: 0 }}
                 exit={{ y: 8 }}
@@ -123,4 +127,4 @@ export default function Modal({
       </AnimatePresence>
     </ModalWrapperComponent>
   );
-}
+});
