@@ -71,7 +71,6 @@ export default function NetworkSelector({
         )}
       </button>
       <Modal
-        mountFirstShowNext
         disableGutters
         onHide={handleHide}
         disableOverlay={isDesktop}

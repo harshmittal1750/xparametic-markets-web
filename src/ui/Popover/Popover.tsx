@@ -41,7 +41,6 @@ export default function Popover({
       </button>
       <Modal
         ref={refModal}
-        mountFirstShowNext
         disableGutters
         onHide={handleHide}
         disableOverlay={isDesktop}

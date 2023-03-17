@@ -33,14 +33,13 @@ export default function HeaderActions() {
       theme.device.setMode(isThemeDark(theme.device.mode) ? 'light' : 'dark'),
     [theme.device]
   );
-  const headerActionsComponent = {
-    Root: theme.device.isDesktop ? Fragment : HeaderActionsWrapper,
-    Wrapper: theme.device.isDesktop ? 'div' : Container
-  };
+  const { Root, Wrapper } = theme.device.isDesktop
+    ? { Root: Fragment, Wrapper: 'div' }
+    : { Root: HeaderActionsWrapper, Wrapper: Container };
 
   return (
-    <headerActionsComponent.Root>
-      <headerActionsComponent.Wrapper
+    <Root>
+      <Wrapper
         className={cn(headerActionsClasses.root, {
           [headerClasses.container]: !theme.device.isDesktop
         })}
@@ -64,7 +63,7 @@ export default function HeaderActions() {
             size="lg"
           />
         </Button>
-      </headerActionsComponent.Wrapper>
-    </headerActionsComponent.Root>
+      </Wrapper>
+    </Root>
   );
 }

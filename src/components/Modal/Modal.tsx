@@ -1,4 +1,4 @@
-import { Fragment, forwardRef, useCallback, useEffect, useMemo } from 'react';
+import { Fragment, forwardRef, useCallback, useEffect } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,7 +8,11 @@ import { Focustrap } from 'ui';
 import { usePortal, usePrevious, useMount, useTimeoutEffect } from 'hooks';
 
 import ModalClasses from './Modal.module.scss';
-import { modalTrappersId } from './Modal.util';
+
+export const modalTrappersId = {
+  start: 'modal-trapper-start',
+  end: 'modal-trapper-end'
+};
 
 type ModalComponents = 'root' | 'backdrop' | 'dialog';
 
@@ -23,7 +27,6 @@ export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
   disableGutters?: boolean;
   disablePortal?: boolean;
   disableOverlay?: boolean;
-  mountFirstShowNext?: boolean;
 }
 
 function ModalWrapper({
@@ -70,7 +73,6 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
     disableGutters,
     disablePortal,
     disableOverlay,
-    mountFirstShowNext,
     ...props
   },
   ref
@@ -84,19 +86,23 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
     [onHide]
   );
   const handleBackdropClick = useCallback(() => onHide?.(), [onHide]);
-  const ModalWrapperComponent = useMemo(
-    () => (disablePortal ? Fragment : ModalWrapper),
-    [disablePortal]
+  const ModalWrapperComponent = useCallback(
+    (wrapperProps: React.PropsWithChildren<Record<string, unknown>>) =>
+      disablePortal ? (
+        <Fragment {...wrapperProps} />
+      ) : (
+        <ModalWrapper
+          show={show}
+          showPrev={showPrev.current}
+          didMount={didMount.current}
+          {...wrapperProps}
+        />
+      ),
+    [didMount, disablePortal, show, showPrev]
   );
 
   return (
-    <ModalWrapperComponent
-      {...(!disablePortal && {
-        show: mountFirstShowNext || show,
-        showPrev: showPrev.current,
-        didMount: didMount.current
-      })}
-    >
+    <ModalWrapperComponent>
       <AnimatePresence>
         {show && (
           <motion.div
