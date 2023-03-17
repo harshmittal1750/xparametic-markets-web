@@ -1,12 +1,11 @@
-import { Fragment, useCallback, useEffect } from 'react';
+import { Fragment, useEffect } from 'react';
 
 import cn from 'classnames';
-import { Container, isThemeDark, useTheme } from 'ui';
+import { Container, useTheme } from 'ui';
 
-import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
-import Icon from 'components/Icon';
 import NetworkSelector from 'components/NetworkSelector';
+import ThemeSelector from 'components/ThemeSelector';
 import WalletInfo from 'components/WalletInfo';
 
 import { useAppSelector, usePortal } from 'hooks';
@@ -28,11 +27,6 @@ function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
 export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const theme = useTheme();
-  const handleTheme = useCallback(
-    () =>
-      theme.device.setMode(isThemeDark(theme.device.mode) ? 'light' : 'dark'),
-    [theme.device]
-  );
   const { Root, Wrapper } = theme.device.isDesktop
     ? { Root: Fragment, Wrapper: 'div' }
     : { Root: HeaderActionsWrapper, Wrapper: Container };
@@ -51,18 +45,7 @@ export default function HeaderActions() {
           />
         )}
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
-        <Button
-          variant="ghost"
-          color="default"
-          aria-label="Switch theme"
-          onClick={handleTheme}
-          className={headerActionsClasses.theme}
-        >
-          <Icon
-            name={isThemeDark(theme.device.mode) ? 'Sun' : 'Moon'}
-            size="lg"
-          />
-        </Button>
+        <ThemeSelector />
       </Wrapper>
     </Root>
   );
