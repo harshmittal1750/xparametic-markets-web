@@ -1,12 +1,23 @@
 import React, { useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, List, ListItem, isThemeDark, useRect, useTheme } from 'ui';
+import {
+  Adornment,
+  List,
+  ListItem,
+  THEME_MODE_KEY,
+  THEME_MODE_SYSTEM,
+  isThemeDark,
+  useRect,
+  useTheme
+} from 'ui';
 
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Text from 'components/Text';
+
+import { useLocalStorage } from 'hooks';
 
 import themeSelectorClasses from './ThemeSelector.module.scss';
 
@@ -20,6 +31,7 @@ type Modes = Lowercase<keyof typeof modes>;
 
 export default function NetworkSelector() {
   const theme = useTheme();
+  const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODE_SYSTEM);
   const [rectButton, setRectButton] = useState<DOMRect | null>(null);
   const [refDialog, rectDialog] = useRect();
   const handleShow = useCallback(
@@ -30,9 +42,7 @@ export default function NetworkSelector() {
   const handleHide = useCallback(() => setRectButton(null), []);
   const handleTheme = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      const name = event.currentTarget.name.toLowerCase() as Modes;
-
-      theme.device.setMode(name === 'system' ? undefined : name);
+      theme.device.setMode(event.currentTarget.name.toLowerCase() as Modes);
       handleHide();
     },
     [handleHide, theme.device]
@@ -48,7 +58,7 @@ export default function NetworkSelector() {
         className={themeSelectorClasses.root}
       >
         <Icon
-          name={isThemeDark(theme.device.mode) ? 'Sun' : 'Moon'}
+          name={isThemeDark(theme.device.mode) ? 'Moon' : 'Sun'}
           size="lg"
         />
       </Button>
@@ -110,8 +120,7 @@ export default function NetworkSelector() {
                 onClick={handleTheme}
                 className={cn(themeSelectorClasses.listItemButton, {
                   [themeSelectorClasses.listItemSelected]:
-                    (mode === 'system' && !theme.device.mode) ||
-                    mode === theme.device.mode
+                    mode.toLowerCase() === modeStored
                 })}
               >
                 <span className={themeSelectorClasses.listItemButtonIcon}>
