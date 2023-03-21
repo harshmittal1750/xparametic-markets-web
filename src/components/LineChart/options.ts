@@ -80,7 +80,7 @@ function generateCustomOptions(theme: string, ticker: string) {
       type: 'datetime' as const,
       labels: {
         show: true,
-        format: 'hh:mm TT',
+        datetimeUTC: false,
         style: {
           cssClass: 'apexcharts-xaxis-label'
         }
