@@ -9,6 +9,7 @@ export const IDLE_STYLES =
   "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
 export const THEME_MODE_KEY = 'THEME_MODE_KEY';
 export const THEME_MODE_SYSTEM = 'system';
+export const THEME_MODE_DEFAULT = 'dark';
 
 export type ThemeModes =
   | ThemeProps['device']['mode']
@@ -52,9 +53,10 @@ export function isThemeDark(
   return mode === 'dark';
 }
 export default function ThemeProvider(props: ThemeProviderProps) {
+  // setting default theme to dark
   const [mode, setMode] = useLocalStorage<ThemeModes>(
     THEME_MODE_KEY,
-    THEME_MODE_SYSTEM
+    THEME_MODE_DEFAULT
   );
   const isDark = useMedia('(prefers-color-scheme: dark)');
   const isTablet = useMedia('(min-width: 512px)');
