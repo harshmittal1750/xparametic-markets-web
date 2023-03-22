@@ -14,6 +14,10 @@
   &__view {
     flex: 1 0 auto;
 
+    @media (min-width: 768px) {
+      min-height: 360px;
+    }
+
     ::-webkit-scrollbar {
       width: 4px;
     }

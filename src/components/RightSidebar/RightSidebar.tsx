@@ -1,5 +1,5 @@
-import * as config from 'config';
-import { Container, useRect } from 'ui';
+import { ui as configUI } from 'config';
+import { Container } from 'ui';
 
 import { useAppSelector } from 'hooks';
 
@@ -7,29 +7,20 @@ import LiquidityForm from '../LiquidityForm';
 import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
+import rightSidebarClasses from './RightSidebar.module.scss';
 
 export default function RightSidebar() {
   const ui = useAppSelector(state => state.ui);
-  const [ref, rect] = useRect();
   const [form] = Object.keys(ui).filter(
     key => /Form/.test(key) && ui[key].visible
   );
 
   return (
-    <Container
-      ref={ref}
-      $enableGutters
-      className="pm-l-right-sidebar"
-      style={
-        {
-          '--min-height': `calc(100vh - ${rect.top}px - 48px)`
-        } as React.CSSProperties
-      }
-    >
+    <Container $enableGutters className={rightSidebarClasses.root}>
       {
         {
           liquidityForm: <LiquidityForm />,
-          reportForm: config.ui.reportForm.enabled ? (
+          reportForm: configUI.reportForm.enabled ? (
             <ReportForm />
           ) : (
             <TradeFormClosed />

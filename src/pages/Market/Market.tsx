@@ -79,9 +79,6 @@ function SidebarWrapper({
     </Container>
   );
 }
-function MarketBody(props: React.PropsWithChildren<Record<string, unknown>>) {
-  return <div className={marketClasses.body} {...props} />;
-}
 function MarketUI() {
   const network = useNetwork();
   const dispatch = useAppDispatch();
@@ -110,21 +107,20 @@ function MarketUI() {
   const SidebarWrapperComponent = theme.device.isDesktop
     ? Fragment
     : SidebarWrapper;
-  const MarketBodyComponent = theme.device.isDesktop ? MarketBody : Fragment;
 
   return (
-    <>
-      <SEO
-        title={market.title}
-        description={formatSEODescription(
-          market.category,
-          market.subcategory,
-          market.expiresAt
-        )}
-        image={market.bannerUrl}
-      />
-      <MarketHead />
-      <MarketBodyComponent>
+    <div className={marketClasses.root}>
+      <div className={marketClasses.body}>
+        <SEO
+          title={market.title}
+          description={formatSEODescription(
+            market.category,
+            market.subcategory,
+            market.expiresAt
+          )}
+          image={market.bannerUrl}
+        />
+        <MarketHead />
         <Container $enableGutters className={marketClasses.bodyContent}>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
@@ -205,13 +201,13 @@ function MarketUI() {
             </Tabs>
           </section>
         </Container>
-        {hasSidebar && (
-          <SidebarWrapperComponent>
-            <RightSidebar />
-          </SidebarWrapperComponent>
-        )}
-      </MarketBodyComponent>
-    </>
+      </div>
+      {hasSidebar && (
+        <SidebarWrapperComponent>
+          <RightSidebar />
+        </SidebarWrapperComponent>
+      )}
+    </div>
   );
 }
 export default function Market() {

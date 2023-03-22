@@ -1,0 +1,11 @@
+.root {
+  overflow-y: auto;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+
+  @media (min-width: 1024px) {
+    width: 384px;
+    height: calc(100vh - var(--header-y));
+  }
+}
