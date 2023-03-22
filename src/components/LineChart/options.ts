@@ -1,5 +1,4 @@
 import { categoricalColorsInHex } from 'helpers/color';
-import { relativeTimeFromNow } from 'helpers/date';
 
 function generateCustomOptions(
   theme: string,
@@ -24,7 +23,7 @@ function generateCustomOptions(
       },
       x: {
         show: true,
-        formatter: value => `${relativeTimeFromNow(value)}`
+        format: 'MMM dd, yyyy HH:mm'
       },
       y: {
         show: true,
