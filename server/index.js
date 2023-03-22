@@ -23,7 +23,7 @@ const {
 const indexPath = path.resolve(__dirname, '..', 'build', 'index.html');
 
 const defaultMetadata = {
-  title: 'Polkamarkets - Autonomous Prediction Market ',
+  title: 'Polkamarkets - Autonomous Prediction Markets',
   description:
     'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange.',
   image: '/polkamarkets_meta.jpg'
