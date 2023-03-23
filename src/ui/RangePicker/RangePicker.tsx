@@ -31,14 +31,20 @@ function RangePicker({
   const [endDate, setEndDate] = useState<MaterialUiPickersDate>(null);
 
   useEffect(() => {
-    if (startDate && endDate) {
-      onChange({ start: startDate.startOf('day'), end: endDate.endOf('day') });
+    if (startDate || endDate) {
+      onChange({
+        start: startDate ? startDate.startOf('day') : startDate,
+        end: endDate ? endDate.endOf('day') : endDate
+      });
     }
   }, [startDate, endDate, onChange]);
 
   useEffect(() => {
-    if (shouldCallOnChange && startDate && endDate) {
-      onChange({ start: startDate.startOf('day'), end: endDate.endOf('day') });
+    if (shouldCallOnChange && (startDate || endDate)) {
+      onChange({
+        start: startDate ? startDate.startOf('day') : null,
+        end: endDate ? endDate.endOf('day') : null
+      });
     }
   }, [endDate, onChange, shouldCallOnChange, startDate]);
 
