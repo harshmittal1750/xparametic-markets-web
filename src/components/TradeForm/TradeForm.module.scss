@@ -18,3 +18,18 @@
     min-width: calc(50vw - var(--grid-margin) - 4px);
   }
 }
+
+.wrappedToggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--size-8);
+
+  width: 100%;
+  margin-top: var(--size-24);
+  margin-bottom: var(--size-8);
+
+  &Title {
+    color: var(--color-text-1);
+  }
+}

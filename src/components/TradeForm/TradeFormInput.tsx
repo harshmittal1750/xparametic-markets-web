@@ -3,10 +3,13 @@ import React, { useEffect, useState, useCallback } from 'react';
 import {
   setTradeAmount,
   setMaxAmount,
+  setWrapped,
   setTradeDetails
 } from 'redux/ducks/trade';
 
 import { TokenIcon, WalletIcon } from 'assets/icons';
+
+import ToggleSwitch from 'components/ToggleSwitch';
 
 import {
   useAppSelector,
@@ -19,14 +22,16 @@ import { Button } from '../Button';
 import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
+import TradeFormClasses from './TradeForm.module.scss';
 import { calculateTradeDetails } from './utils';
 
 function TradeFormInput() {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
+  const { currency } = network;
 
   const token = useAppSelector(state => state.market.market.token);
-  const { name, ticker, iconName, address, wrapped } = token;
+  const { name, ticker, iconName, address, wrapped: tokenWrapped } = token;
 
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
@@ -43,6 +48,8 @@ function TradeFormInput() {
     state => state.trade.selectedOutcomeId
   );
 
+  const wrapped = useAppSelector(state => state.trade.wrapped);
+
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
@@ -57,7 +64,7 @@ function TradeFormInput() {
   const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(address);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
 
-  const balance = wrapped ? ethBalance : erc20Balance;
+  const balance = wrapped ? erc20Balance : ethBalance;
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;
 
@@ -87,7 +94,7 @@ function TradeFormInput() {
     dispatch(setTradeAmount(0));
     setAmount(0);
     setStepAmount(0);
-  }, [dispatch, type]);
+  }, [dispatch, type, wrapped]);
 
   useEffect(() => {
     if (![type, market, outcome, amount].includes(undefined)) {
@@ -123,6 +130,10 @@ function TradeFormInput() {
     dispatch(setTradeAmount(newAmount));
     setStepAmount(value);
   }
+
+  const handleChangeWrapped = useCallback(() => {
+    dispatch(setWrapped(!wrapped));
+  }, [dispatch, wrapped]);
 
   return (
     <form className="pm-c-amount-input">
@@ -203,6 +214,19 @@ function TradeFormInput() {
         onChange={value => handleChangeSlider(value)}
         disabled={isWrongNetwork || isLoadingBalance}
       />
+      {tokenWrapped ? (
+        <div className={TradeFormClasses.wrappedToggle}>
+          <Text
+            as="span"
+            scale="caption"
+            fontWeight="bold"
+            className={TradeFormClasses.wrappedToggleTitle}
+          >
+            {`Wrap ${currency.name}`}
+          </Text>
+          <ToggleSwitch checked={wrapped} onChange={handleChangeWrapped} />
+        </div>
+      ) : null}
     </form>
   );
 }
