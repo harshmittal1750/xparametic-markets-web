@@ -113,7 +113,9 @@ function ListItemNested({
 
       updateDropdown({
         dropdown: name as Dropdowns,
-        state: `${range.start?.utc()}-${range.end?.utc()}`
+        state: `${range.start ? range.start.utc() : ''}-${
+          range.end ? range.end.utc() : ''
+        }`
       });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
