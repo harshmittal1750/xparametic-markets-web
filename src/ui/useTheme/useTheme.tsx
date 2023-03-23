@@ -5,12 +5,19 @@ import useUpdateEffect from 'ui/useUpdateEffect';
 
 import { useLocalStorage } from 'hooks';
 
+export const IDLE_STYLES =
+  "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
+export const THEME_MODE_KEY = 'THEME_MODE_KEY';
+export const THEME_MODE_SYSTEM = 'system';
+export const THEME_MODE_DEFAULT = 'dark';
+
+export type ThemeModes =
+  | ThemeProps['device']['mode']
+  | typeof THEME_MODE_SYSTEM;
 export type ThemeProps = {
   device: {
     mode: 'light' | 'dark';
-    setMode: React.Dispatch<
-      React.SetStateAction<ThemeProps['device']['mode'] | undefined>
-    >;
+    setMode: React.Dispatch<React.SetStateAction<ThemeModes>>;
   } & Record<'isTv' | 'isDesktop' | 'isTablet', boolean>;
 };
 type ThemeProviderProps = Omit<
@@ -18,9 +25,6 @@ type ThemeProviderProps = Omit<
   'value'
 >;
 
-export const IDLE_STYLES =
-  "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
-const THEME_MODE = 'THEME_MODE';
 const ThemeContext = createContext<ThemeProps>({
   device: {
     mode: 'light',
@@ -49,9 +53,11 @@ export function isThemeDark(
   return mode === 'dark';
 }
 export default function ThemeProvider(props: ThemeProviderProps) {
-  const [mode, setMode] = useLocalStorage<
-    ThemeProps['device']['mode'] | undefined
-  >(THEME_MODE, undefined);
+  // setting default theme to dark
+  const [mode, setMode] = useLocalStorage<ThemeModes>(
+    THEME_MODE_KEY,
+    THEME_MODE_DEFAULT
+  );
   const isDark = useMedia('(prefers-color-scheme: dark)');
   const isTablet = useMedia('(min-width: 512px)');
   const isDesktop = useMedia('(min-width: 1024px)');
@@ -60,7 +66,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     () => ({
       device: {
         mode: (() => {
-          if (!mode) {
+          if (mode === THEME_MODE_SYSTEM) {
             if (isDark) return 'dark';
             return 'light';
           }

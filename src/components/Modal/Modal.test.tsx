@@ -10,9 +10,8 @@ import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 
-import Modal from './Modal';
+import Modal, { modalTrappersId } from './Modal';
 import ModalStyles from './Modal.module.scss';
-import { modalTrappersId } from './Modal.util';
 
 const defaultProps = {
   show: true,

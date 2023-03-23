@@ -86,10 +86,10 @@ const pages = {
     navigation: true,
     name: 'Markets',
     meta: {
-      title: 'Illuminate Fantasy League, Powered By Polkamarkets',
+      title: 'Polkamarkets - Autonomous Prediction Markets',
       description:
-        'The Illuminate Fantasy League is a prediction marketplace powered by Polkamarkets, made to celebrate the Football World Cup 2022 with the Moonbeam Community. Join now, bring your friends and start placing your World Cup Predictions for every tournament match to win the IFC title!',
-      image: `${process.env.PUBLIC_URL}/ifl_meta.jpg`
+        'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange.',
+      image: `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`
     },
     enabled: true,
     pages: {

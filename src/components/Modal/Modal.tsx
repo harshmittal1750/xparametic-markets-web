@@ -1,14 +1,33 @@
-import { Fragment, useCallback, useEffect } from 'react';
+import { Fragment, forwardRef, useCallback, useEffect } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { HTMLMotionProps } from 'framer-motion';
 import { Focustrap } from 'ui';
 
 import { usePortal, usePrevious, useMount, useTimeoutEffect } from 'hooks';
 
 import ModalClasses from './Modal.module.scss';
-import type { ModalProps } from './Modal.type';
-import { modalTrappersId } from './Modal.util';
+
+export const modalTrappersId = {
+  start: 'modal-trapper-start',
+  end: 'modal-trapper-end'
+};
+
+type ModalComponents = 'root' | 'backdrop' | 'dialog';
+
+export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
+  onHide?(): void;
+  show: boolean;
+  className?: Partial<Record<ModalComponents, string>>;
+  centered?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  fullScreen?: boolean;
+  fullWidth?: boolean;
+  disableGutters?: boolean;
+  disablePortal?: boolean;
+  disableOverlay?: boolean;
+}
 
 function ModalWrapper({
   children,
@@ -42,23 +61,28 @@ function ModalWrapper({
 
   return <Portal>{children}</Portal>;
 }
-export default function Modal({
-  onHide,
-  show,
-  className,
-  centered,
-  size,
-  fullScreen,
-  fullWidth,
-  disableGutters,
-  disablePortal,
-  disableOverlay,
-  ...props
-}: ModalProps) {
+export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
+  {
+    onHide,
+    show,
+    className,
+    centered,
+    size,
+    fullScreen,
+    fullWidth,
+    disableGutters,
+    disablePortal,
+    disableOverlay,
+    ...props
+  },
+  ref
+) {
   const { current: didMount } = useMount();
   const { current: showPrev } = usePrevious(show);
   const handleRootKeydown = useCallback(
-    (event: React.KeyboardEvent) => event.key === 'Escape' && onHide?.(),
+    (event: React.KeyboardEvent) => {
+      if (event.key === 'Escape') onHide?.();
+    },
     [onHide]
   );
   const handleBackdropClick = useCallback(() => onHide?.(), [onHide]);
@@ -98,6 +122,7 @@ export default function Modal({
             />
             <Focustrap<HTMLDivElement> trappersId={modalTrappersId}>
               <motion.div
+                ref={ref}
                 initial={{ y: 8 }}
                 animate={{ y: 0 }}
                 exit={{ y: 8 }}
@@ -123,4 +148,4 @@ export default function Modal({
       </AnimatePresence>
     </ModalWrapperComponent>
   );
-}
+});

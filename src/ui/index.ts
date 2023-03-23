@@ -33,7 +33,13 @@ export { default as useMedia } from './useMedia';
 export { default as useRect } from './useRect';
 
 export { default as ThemeProvider } from './useTheme';
-export { useTheme, isThemeDark } from './useTheme';
+export {
+  useTheme,
+  isThemeDark,
+  THEME_MODE_KEY,
+  THEME_MODE_SYSTEM,
+  THEME_MODE_DEFAULT
+} from './useTheme';
 export type { ThemeProps } from './useTheme';
 
 export { default as useUpdateEffect } from './useUpdateEffect';

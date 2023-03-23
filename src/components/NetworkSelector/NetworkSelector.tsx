@@ -21,11 +21,11 @@ export default function NetworkSelector({
   responsive,
   className
 }: NetworkSelectorProps) {
+  const theme = useTheme();
   const networks = useNetworks();
   const [rect, setRect] = useState<DOMRect | null>(null);
-  const theme = useTheme();
-  const itsDesktop = !responsive || theme.device.isDesktop;
-  const itsTv = !responsive || theme.device.isTv;
+  const isDesktop = !responsive || theme.device.isDesktop;
+  const isTv = !responsive || theme.device.isTv;
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
       setRect(event.currentTarget.getBoundingClientRect()),
@@ -51,20 +51,20 @@ export default function NetworkSelector({
         aria-label="Switch network"
         onClick={handleShow}
         className={cn(
-          networSelectorClasses.network,
+          networSelectorClasses.root,
           {
-            [networSelectorClasses.responsive]: responsive,
-            'pm-c-button-ghost--default': !itsDesktop,
-            'pm-c-button-outline--default': itsDesktop
+            [networSelectorClasses.rootResponsive]: responsive,
+            'pm-c-button-ghost--default': !isDesktop,
+            'pm-c-button-outline--default': isDesktop
           },
           className
         )}
       >
         <Icon name={networks.network.currency.iconName} size="lg" />
-        {itsDesktop && (
+        {isDesktop && (
           <>
-            {itsTv && networks.network.name}
-            <span className={networSelectorClasses.networkIcon}>
+            {isTv && networks.network.name}
+            <span className={networSelectorClasses.rootIcon}>
               <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
             </span>
           </>
@@ -73,33 +73,33 @@ export default function NetworkSelector({
       <Modal
         disableGutters
         onHide={handleHide}
-        disableOverlay={itsDesktop}
-        fullWidth={!itsDesktop}
+        disableOverlay={isDesktop}
+        fullWidth={!isDesktop}
         show={!!rect}
         className={{
           backdrop: networSelectorClasses.backdrop,
           dialog: networSelectorClasses.dialog
         }}
-        {...(itsDesktop
+        {...(isDesktop
           ? {
               style: {
                 left: rect?.left,
-                top: `calc(${rect?.top}px + ${rect?.height}px + var(--grid-margin))`,
+                top: `calc(${rect?.height}px + var(--grid-margin))`,
                 width: rect?.width
               }
             }
           : {
-              initial: { bottom: -999 },
+              initial: { bottom: -240 },
               animate: { bottom: 0 },
-              exit: { bottom: -999 }
+              exit: { bottom: -240 }
             })}
       >
-        {!itsDesktop && (
+        {!isDesktop && (
           <header className={networSelectorClasses.header}>
             <Text
               scale="heading"
               fontWeight="bold"
-              className={networSelectorClasses.title}
+              className={networSelectorClasses.headerTitle}
             >
               Select Network
             </Text>
@@ -118,24 +118,27 @@ export default function NetworkSelector({
         )}
         <List className={networSelectorClasses.list}>
           {networks.networks.map(network => (
-            <ListItem key={network.id} className={networSelectorClasses.item}>
+            <ListItem
+              key={network.id}
+              className={networSelectorClasses.listItem}
+            >
               <Button
                 variant="ghost"
                 fullwidth
                 onClick={handleNetworkClick(network.name)}
-                className={cn(networSelectorClasses.button, {
-                  [networSelectorClasses.selected]:
+                className={cn(networSelectorClasses.listItemButton, {
+                  [networSelectorClasses.listItemSelected]:
                     network.id === networks.network.id
                 })}
               >
-                <span className={networSelectorClasses.icon}>
+                <span className={networSelectorClasses.listItemButtonIcon}>
                   <Icon
                     name={network.currency.iconName}
-                    size={itsDesktop ? 'lg' : 'xl'}
+                    size={isDesktop ? 'lg' : 'xl'}
                   />
                 </span>
                 <Text
-                  scale={itsDesktop ? 'caption' : 'body'}
+                  scale={isDesktop ? 'caption' : 'body'}
                   fontWeight="semibold"
                 >
                   {network.name}

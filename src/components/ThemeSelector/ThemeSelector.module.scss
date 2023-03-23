@@ -1,27 +1,10 @@
 .root {
-  gap: 8px;
   height: 44px !important;
-  font-weight: 700;
-  font-size: 1.3rem !important;
-  line-height: 1.5;
-  letter-spacing: 0.08em !important;
-  text-transform: uppercase;
-  padding: 0px 12px;
-
-  @media (min-width: 1024px) {
-    width: unset !important;
-    margin-left: unset;
-  }
-
-  &Icon {
-    margin-left: auto;
-  }
-
-  &Responsive {
-    width: 44px;
-  }
+  width: 44px;
+  padding: 0px !important;
+  background-color: unset !important;
+  margin-left: auto;
 }
-
 .dialog {
   border-radius: 20px 20px 0px 0px;
   background-color: var(--color-surface-primary);
