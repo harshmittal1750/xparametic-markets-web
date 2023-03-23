@@ -70,8 +70,8 @@ function relativeTimeToX(timestamp: number) {
 function toStartEnd(values: string) {
   const [start, end] = values.split('-');
   return {
-    start: dayjs(start).utc(),
-    end: dayjs(end).utc()
+    start: start ? dayjs(start).utc() : null,
+    end: end ? dayjs(end).utc() : null
   };
 }
 
