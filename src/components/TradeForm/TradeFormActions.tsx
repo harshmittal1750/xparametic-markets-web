@@ -35,6 +35,7 @@ function TradeFormActions() {
 
   // Market selectors
   const type = useAppSelector(state => state.trade.type);
+  const wrapped = useAppSelector(state => state.trade.wrapped);
   const marketId = useAppSelector(state => state.trade.selectedMarketId);
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
@@ -47,6 +48,7 @@ function TradeFormActions() {
   const maxAmount = useAppSelector(state => state.trade.maxAmount);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
   const token = useAppSelector(state => state.market.market.token);
+  const { wrapped: tokenWrapped } = token;
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
@@ -132,7 +134,8 @@ function TradeFormActions() {
         marketId,
         predictionId,
         amount,
-        minShares
+        minShares,
+        tokenWrapped && !wrapped
       );
 
       setIsLoading(false);
@@ -193,7 +196,8 @@ function TradeFormActions() {
         marketId,
         predictionId,
         ethAmount,
-        minShares
+        minShares,
+        tokenWrapped && !wrapped
       );
 
       setIsLoading(false);
