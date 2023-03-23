@@ -299,8 +299,16 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   };
 
   const filterByEndDate = (expiresAt: string) => {
+    if (filters.endDate === 'custom') {
+      return true;
+    }
+
     if (filters.endDate !== 'any') {
       const { start, end } = toStartEnd(filters.endDate);
+
+      if (!start) return dayjs(expiresAt).utc().isBefore(end);
+      if (!end) return dayjs(expiresAt).utc().isAfter(start);
+
       return dayjs(expiresAt).utc().isBetween(start, end);
     }
 

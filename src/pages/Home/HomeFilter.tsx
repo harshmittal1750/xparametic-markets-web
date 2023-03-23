@@ -1,5 +1,10 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
-import { useForm, UseFormRegister, UseFormWatch } from 'react-hook-form';
+import {
+  useForm,
+  UseFormRegister,
+  UseFormWatch,
+  UseFormSetValue
+} from 'react-hook-form';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import {
@@ -9,7 +14,8 @@ import {
   ListItem,
   ListItemText,
   Toggle,
-  useTheme
+  useTheme,
+  RangePicker
 } from 'ui';
 
 import { Icon, Modal, ToggleSwitch } from 'components';
@@ -24,8 +30,9 @@ import {
   Dropdowns,
   filtersInitialState
 } from 'contexts/filters';
+import type { UpdateDropdownPayload } from 'contexts/filters/filters.type';
 
-import { useFilters } from 'hooks';
+import { useFilters, usePrevious } from 'hooks';
 
 import homeClasses from './Home.module.scss';
 
@@ -35,6 +42,7 @@ type FormFields = {
   networks: DropdownState | DropdownMultipleState;
   volume: DropdownState | DropdownMultipleState;
   liquidity: DropdownState | DropdownMultipleState;
+  endDate: DropdownState | DropdownMultipleState;
 };
 
 type ListItemNestedProps = {
@@ -43,6 +51,8 @@ type ListItemNestedProps = {
   multiple: boolean;
   register: UseFormRegister<FormFields>;
   watch: UseFormWatch<FormFields>;
+  setValue: UseFormSetValue<FormFields>;
+  updateDropdown: ({ dropdown, state }: UpdateDropdownPayload) => void;
 };
 
 function HomeFilterModal(
@@ -82,7 +92,9 @@ function ListItemNested({
   subitems,
   multiple,
   register,
-  watch
+  watch,
+  setValue,
+  updateDropdown
 }: ListItemNestedProps) {
   const [expand, setExpand] = useState(false);
   const handleExpand = useCallback(() => {
@@ -91,6 +103,24 @@ function ListItemNested({
 
   // TODO: Fix this type assertion
   const field = watch(name as keyof FormFields) as any;
+  const { current: previousField } = usePrevious(field);
+
+  const handleChangeRange = useCallback(
+    range => {
+      if (field !== 'custom') {
+        setValue(name as keyof FormFields, 'custom');
+      }
+
+      updateDropdown({
+        dropdown: name as Dropdowns,
+        state: `${range.start ? range.start.utc() : ''}-${
+          range.end ? range.end.utc() : ''
+        }`
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [name, setValue, updateDropdown]
+  );
 
   return (
     <>
@@ -126,6 +156,16 @@ function ListItemNested({
                   </Adornment>
                 </ListItem>
               ))}
+              {name === 'endDate' ? (
+                <ListItem className={homeClasses.filterSubListItem}>
+                  <RangePicker
+                    shouldCallOnChange={
+                      previousField !== 'custom' && field === 'custom'
+                    }
+                    onChange={handleChangeRange}
+                  />
+                </ListItem>
+              ) : null}
             </List>
           </motion.div>
         )}
@@ -150,7 +190,7 @@ export default function HomeFilter({
     ? ModalFilterAnimation
     : HomeFilterModal;
 
-  const { register, watch } = useForm<FormFields>({
+  const { register, watch, setValue } = useForm<FormFields>({
     defaultValues: {
       ...filtersInitialState.toggles,
       ...filtersInitialState.dropdowns
@@ -212,6 +252,8 @@ export default function HomeFilter({
                 multiple={filters.dropdowns[dropdrown].multiple}
                 register={register}
                 watch={watch}
+                setValue={setValue}
+                updateDropdown={updateDropdown}
               />
             </Fragment>
           ))}

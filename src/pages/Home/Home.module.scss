@@ -50,6 +50,10 @@
 
     &List {
       background-color: var(--color-background-primary);
+
+      &Item {
+        padding-right: var(--size-12);
+      }
     }
   }
 }
