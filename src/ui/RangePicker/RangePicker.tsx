@@ -32,13 +32,13 @@ function RangePicker({
 
   useEffect(() => {
     if (startDate && endDate) {
-      onChange({ start: startDate, end: endDate });
+      onChange({ start: startDate.startOf('day'), end: endDate.endOf('day') });
     }
   }, [startDate, endDate, onChange]);
 
   useEffect(() => {
     if (shouldCallOnChange && startDate && endDate) {
-      onChange({ start: startDate, end: endDate });
+      onChange({ start: startDate.startOf('day'), end: endDate.endOf('day') });
     }
   }, [endDate, onChange, shouldCallOnChange, startDate]);
 
