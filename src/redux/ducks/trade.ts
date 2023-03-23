@@ -16,6 +16,7 @@ const initialState = {
   selectedMarketId: '',
   selectedMarketNetworkId: '',
   selectedOutcomeId: '',
+  wrapped: false,
   amount: 0,
   maxAmount: 0,
   shares: 0,
@@ -43,6 +44,10 @@ const tradeSlice = createSlice({
     setMaxAmount: (state, action) => ({
       ...state,
       maxAmount: action.payload
+    }),
+    setWrapped: (state, action) => ({
+      ...state,
+      wrapped: action.payload
     }),
     outcomeSelected: (state, action) => ({
       ...state,
@@ -81,6 +86,7 @@ const {
   setTradeDetails,
   setTradeAmount,
   setMaxAmount,
+  setWrapped,
   toggleAcceptRules,
   toggleAcceptOddChanges,
   reset
@@ -92,6 +98,7 @@ export {
   setTradeDetails,
   setTradeAmount,
   setMaxAmount,
+  setWrapped,
   toggleAcceptRules,
   toggleAcceptOddChanges,
   reset
