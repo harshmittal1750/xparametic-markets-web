@@ -16,6 +16,7 @@ export interface LiquidityDetails {
 
 export interface LiquidityInitialState {
   transactionType: TransactionType;
+  wrapped: boolean;
   amount: number;
   maxAmount: number;
   acceptedTerms: boolean;
@@ -24,6 +25,7 @@ export interface LiquidityInitialState {
 
 const initialState: LiquidityInitialState = {
   transactionType: 'add',
+  wrapped: false,
   amount: 0,
   maxAmount: 0,
   acceptedTerms: false,
@@ -42,6 +44,10 @@ const liquiditySlice = createSlice({
     changeTransactionType: (state, action: PayloadAction<TransactionType>) => ({
       ...state,
       transactionType: action.payload
+    }),
+    setWrapped: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      wrapped: action.payload
     }),
     changeAmount: (state, action: PayloadAction<number>) => ({
       ...state,
@@ -69,6 +75,7 @@ export default liquiditySlice.reducer;
 
 const {
   changeTransactionType,
+  setWrapped,
   changeAmount,
   changeMaxAmount,
   setLiquidityDetails,
@@ -78,6 +85,7 @@ const {
 
 export {
   changeTransactionType,
+  setWrapped,
   changeAmount,
   changeMaxAmount,
   setLiquidityDetails,
