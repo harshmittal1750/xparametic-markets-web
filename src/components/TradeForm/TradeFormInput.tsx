@@ -9,8 +9,6 @@ import {
 
 import { TokenIcon, WalletIcon } from 'assets/icons';
 
-import ToggleSwitch from 'components/ToggleSwitch';
-
 import {
   useAppSelector,
   useAppDispatch,
@@ -22,6 +20,7 @@ import { Button } from '../Button';
 import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
+import ToggleSwitch from '../ToggleSwitch';
 import TradeFormClasses from './TradeForm.module.scss';
 import { calculateTradeDetails } from './utils';
 
