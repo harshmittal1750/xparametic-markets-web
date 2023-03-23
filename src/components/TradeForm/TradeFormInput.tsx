@@ -223,7 +223,11 @@ function TradeFormInput() {
           >
             {`Wrap ${currency.name}`}
           </Text>
-          <ToggleSwitch checked={wrapped} onChange={handleChangeWrapped} />
+          <ToggleSwitch
+            checked={wrapped}
+            onChange={handleChangeWrapped}
+            disabled={isWrongNetwork || isLoadingBalance}
+          />
         </div>
       ) : null}
     </form>
