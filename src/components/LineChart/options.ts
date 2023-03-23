@@ -1,7 +1,10 @@
 import { categoricalColorsInHex } from 'helpers/color';
-import { relativeTimeFromNow } from 'helpers/date';
 
-function generateCustomOptions(theme: string, ticker: string) {
+function generateCustomOptions(
+  theme: string,
+  ticker: string,
+  xAxisFormat: string
+) {
   return {
     chart: {
       type: 'line' as const,
@@ -20,7 +23,7 @@ function generateCustomOptions(theme: string, ticker: string) {
       },
       x: {
         show: true,
-        formatter: value => `${relativeTimeFromNow(value)}`
+        format: 'MMM dd, yyyy HH:mm'
       },
       y: {
         show: true,
@@ -80,7 +83,8 @@ function generateCustomOptions(theme: string, ticker: string) {
       type: 'datetime' as const,
       labels: {
         show: true,
-        format: 'hh:mm TT',
+        datetimeUTC: false,
+        format: xAxisFormat,
         style: {
           cssClass: 'apexcharts-xaxis-label'
         }
