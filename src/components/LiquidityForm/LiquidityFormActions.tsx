@@ -33,6 +33,8 @@ function LiquidityFormActions() {
   );
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const token = useAppSelector(state => state.market.market.token);
+  const { wrapped: tokenWrapped } = token;
+  const wrapped = useAppSelector(state => state.liquidity.wrapped);
   const amount = useAppSelector(state => state.liquidity.amount);
   const maxAmount = useAppSelector(state => state.liquidity.maxAmount);
   const [isApproved, setApproved] = useState(false);
@@ -67,7 +69,11 @@ function LiquidityFormActions() {
 
     try {
       // performing buy action on smart contract
-      const response = await polkamarketsService.addLiquidity(marketId, amount);
+      const response = await polkamarketsService.addLiquidity(
+        marketId,
+        amount,
+        tokenWrapped && !wrapped
+      );
 
       setIsLoading(false);
 
@@ -100,7 +106,8 @@ function LiquidityFormActions() {
       // performing buy action on smart contract
       const response = await polkamarketsService.removeLiquidity(
         marketId,
-        amount
+        amount,
+        tokenWrapped && !wrapped
       );
 
       setIsLoading(false);
