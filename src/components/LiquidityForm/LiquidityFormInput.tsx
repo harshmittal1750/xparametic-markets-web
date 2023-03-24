@@ -110,7 +110,7 @@ function LiquidityFormInput() {
         currency={currentCurrency()}
         disabled={isWrongNetwork || isLoadingBalance}
       />
-      {tokenWrapped ? (
+      {!isWrongNetwork && tokenWrapped ? (
         <div className={LiquidityFormClasses.wrappedToggle}>
           <Text
             as="span"

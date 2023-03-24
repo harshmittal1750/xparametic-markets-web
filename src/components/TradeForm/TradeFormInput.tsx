@@ -219,7 +219,7 @@ function TradeFormInput() {
         onChange={value => handleChangeSlider(value)}
         disabled={isWrongNetwork || isLoadingBalance}
       />
-      {tokenWrapped ? (
+      {!isWrongNetwork && tokenWrapped ? (
         <div className={TradeFormClasses.wrappedToggle}>
           <Text
             as="span"
