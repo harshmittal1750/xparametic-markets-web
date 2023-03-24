@@ -282,7 +282,7 @@ function TradeFormActions() {
             fullwidth
             address={token.address}
             ticker={token.ticker}
-            wrapped={token.wrapped}
+            wrapped={token.wrapped && !wrapped}
           >
             <ButtonLoading
               color="success"

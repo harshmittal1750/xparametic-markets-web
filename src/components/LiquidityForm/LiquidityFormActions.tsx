@@ -145,7 +145,7 @@ function LiquidityFormActions() {
           fullwidth
           address={token.address}
           ticker={token.ticker}
-          wrapped={token.wrapped}
+          wrapped={token.wrapped && !wrapped}
           onApprove={setApproved}
         >
           <ButtonLoading
