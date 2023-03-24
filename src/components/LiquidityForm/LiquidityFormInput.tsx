@@ -6,6 +6,7 @@ import {
   setLiquidityDetails,
   setWrapped
 } from 'redux/ducks/liquidity';
+import { setTokenTicker } from 'redux/ducks/market';
 
 import {
   useAppDispatch,
@@ -93,7 +94,12 @@ function LiquidityFormInput() {
 
   const handleChangeWrapped = useCallback(() => {
     dispatch(setWrapped(!wrapped));
-  }, [dispatch, wrapped]);
+    dispatch(
+      setTokenTicker({
+        ticker: !wrapped ? token.symbol : token.symbol.substring(1)
+      })
+    );
+  }, [dispatch, token.symbol, wrapped]);
 
   return (
     <div className="pm-c-liquidity-form__input">

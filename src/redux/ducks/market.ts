@@ -267,6 +267,16 @@ const marketSlice = createSlice({
       ...state,
       isLoadingPriceCharts: false,
       error: action.payload
+    }),
+    setTokenTicker: (state, action) => ({
+      ...state,
+      market: {
+        ...state.market,
+        token: {
+          ...state.market.token,
+          ticker: action.payload.ticker
+        }
+      }
     })
   }
 });
@@ -286,7 +296,8 @@ const {
   setChartViewType,
   priceChartsRequest,
   priceChartsSuccess,
-  priceChartsError
+  priceChartsError,
+  setTokenTicker
 } = marketSlice.actions;
 
 export {
@@ -296,7 +307,8 @@ export {
   changeQuestion,
   changeVotes,
   changeData,
-  setChartViewType
+  setChartViewType,
+  setTokenTicker
 };
 
 export function getMarket(marketSlug: string) {

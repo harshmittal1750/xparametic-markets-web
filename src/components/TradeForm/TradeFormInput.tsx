@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
+import { setTokenTicker } from 'redux/ducks/market';
 import {
   setTradeAmount,
   setMaxAmount,
@@ -132,7 +133,12 @@ function TradeFormInput() {
 
   const handleChangeWrapped = useCallback(() => {
     dispatch(setWrapped(!wrapped));
-  }, [dispatch, wrapped]);
+    dispatch(
+      setTokenTicker({
+        ticker: !wrapped ? token.symbol : token.symbol.substring(1)
+      })
+    );
+  }, [dispatch, token.symbol, wrapped]);
 
   return (
     <form className="pm-c-amount-input">
