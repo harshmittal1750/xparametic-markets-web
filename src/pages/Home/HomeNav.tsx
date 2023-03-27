@@ -79,6 +79,7 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
         {theme.device.isDesktop && 'Filter'}
       </Button>
       <SearchBar
+        size="sm"
         name="Search Markets"
         placeholder="Search markets"
         onSearch={handleSearch}
