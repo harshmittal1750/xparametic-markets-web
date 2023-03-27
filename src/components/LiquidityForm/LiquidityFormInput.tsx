@@ -3,8 +3,10 @@ import { useCallback, useEffect } from 'react';
 import {
   changeAmount,
   changeMaxAmount,
-  setLiquidityDetails
+  setLiquidityDetails,
+  setWrapped
 } from 'redux/ducks/liquidity';
+import { setTokenTicker } from 'redux/ducks/market';
 
 import {
   useAppDispatch,
@@ -14,11 +16,15 @@ import {
 } from 'hooks';
 
 import AmountInput from '../AmountInput';
+import Text from '../Text';
+import ToggleSwitch from '../ToggleSwitch';
+import LiquidityFormClasses from './LiquidityForm.module.scss';
 import { calculateLiquidityDetails } from './utils';
 
 function LiquidityFormInput() {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
+  const { currency } = network;
   const transactionType = useAppSelector(
     state => state.liquidity.transactionType
   );
@@ -30,12 +36,14 @@ function LiquidityFormInput() {
 
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
   const { token } = market;
+  const { wrapped: tokenWrapped } = token;
 
   const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(
     token.address
   );
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
-  const balance = token.wrapped ? ethBalance : erc20Balance;
+  const wrapped = useAppSelector(state => state.liquidity.wrapped);
+  const balance = wrapped ? erc20Balance : ethBalance;
 
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const amount = useAppSelector(state => state.liquidity.amount);
@@ -61,7 +69,7 @@ function LiquidityFormInput() {
   useEffect(() => {
     dispatch(changeMaxAmount(max()));
     dispatch(changeAmount(0));
-  }, [dispatch, max, transactionType]);
+  }, [dispatch, max, transactionType, wrapped]);
 
   useEffect(() => {
     const liquidityDetails = calculateLiquidityDetails(
@@ -84,6 +92,15 @@ function LiquidityFormInput() {
     dispatch(changeAmount(liquidityAmount));
   }
 
+  const handleChangeWrapped = useCallback(() => {
+    dispatch(setWrapped(!wrapped));
+    dispatch(
+      setTokenTicker({
+        ticker: !wrapped ? token.symbol : token.symbol.substring(1)
+      })
+    );
+  }, [dispatch, token.symbol, wrapped]);
+
   return (
     <div className="pm-c-liquidity-form__input">
       <AmountInput
@@ -93,6 +110,23 @@ function LiquidityFormInput() {
         currency={currentCurrency()}
         disabled={isWrongNetwork || isLoadingBalance}
       />
+      {!isWrongNetwork && tokenWrapped ? (
+        <div className={LiquidityFormClasses.wrappedToggle}>
+          <Text
+            as="span"
+            scale="caption"
+            fontWeight="bold"
+            className={LiquidityFormClasses.wrappedToggleTitle}
+          >
+            {`Wrap ${currency.name}`}
+          </Text>
+          <ToggleSwitch
+            checked={wrapped}
+            onChange={handleChangeWrapped}
+            disabled={isWrongNetwork || isLoadingBalance}
+          />
+        </div>
+      ) : null}
     </div>
   );
 }

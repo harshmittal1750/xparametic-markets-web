@@ -207,12 +207,11 @@ export default class PolkamarketsService {
     marketId: string | number,
     outcomeId: string | number,
     value: number,
-    minOutcomeSharesToBuy: number
+    minOutcomeSharesToBuy: number,
+    wrapped: boolean
   ) {
     // ensuring user has wallet connected
     await this.login();
-
-    const wrapped = await this.isMarketERC20TokenWrapped(marketId);
 
     const response = await this.contracts.pm.buy({
       marketId,
@@ -229,12 +228,11 @@ export default class PolkamarketsService {
     marketId: string | number,
     outcomeId: string | number,
     value: number,
-    maxOutcomeSharesToSell: number
+    maxOutcomeSharesToSell: number,
+    wrapped: boolean
   ) {
     // ensuring user has wallet connected
     await this.login();
-
-    const wrapped = await this.isMarketERC20TokenWrapped(marketId);
 
     const response = await this.contracts.pm.sell({
       marketId,
@@ -247,11 +245,13 @@ export default class PolkamarketsService {
     return response;
   }
 
-  public async addLiquidity(marketId: string | number, value: number) {
+  public async addLiquidity(
+    marketId: string | number,
+    value: number,
+    wrapped: boolean
+  ) {
     // ensuring user has wallet connected
     await this.login();
-
-    const wrapped = await this.isMarketERC20TokenWrapped(marketId);
 
     const response = await this.contracts.pm.addLiquidity({
       marketId,
@@ -262,11 +262,13 @@ export default class PolkamarketsService {
     return response;
   }
 
-  public async removeLiquidity(marketId: string | number, shares: number) {
+  public async removeLiquidity(
+    marketId: string | number,
+    shares: number,
+    wrapped: boolean
+  ) {
     // ensuring user has wallet connected
     await this.login();
-
-    const wrapped = await this.isMarketERC20TokenWrapped(marketId);
 
     const response = await this.contracts.pm.removeLiquidity({
       marketId,
