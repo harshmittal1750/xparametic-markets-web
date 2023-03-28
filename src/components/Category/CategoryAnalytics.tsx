@@ -56,7 +56,7 @@ function CategoryAnalytics({
         </Text>
       </div>
       {chartData ? (
-        <AreaChart data={chartData} height="5rem" color="white" />
+        <AreaChart data={chartData} height={40} color="white" />
       ) : null}
     </div>
   );
