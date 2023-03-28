@@ -247,11 +247,17 @@ function formatLiquidityPositions(
   return { headers, rows };
 }
 
-function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
+function formatPortfolioAnalytics(
+  closedMarketsProfit: number,
+  openPositions: number,
+  liquidityProvided: number,
+  liquidityFeesEarned: number,
+  ticker: string
+) {
   return [
     {
       title: 'Total earnings',
-      value: `${roundNumber(portfolio.closedMarketsProfit, 3)} ${ticker}`,
+      value: `${roundNumber(closedMarketsProfit, 3)} ${ticker}`,
       change: {
         type: 'up',
         amount: 2.58
@@ -262,7 +268,7 @@ function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
     },
     {
       title: 'Open positions',
-      value: portfolio.openPositions,
+      value: openPositions,
       change: {
         type: 'down',
         amount: 2.58
@@ -273,7 +279,7 @@ function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
     },
     {
       title: 'Liquidity provided',
-      value: `${roundNumber(portfolio.liquidityProvided, 3)} ${ticker}`,
+      value: `${roundNumber(liquidityProvided, 3)} ${ticker}`,
       change: {
         type: 'up',
         amount: 2.58
@@ -284,7 +290,7 @@ function formatPortfolioAnalytics(portfolio: Portfolio, ticker: string) {
     },
     {
       title: 'Liquidity earnings',
-      value: `${roundNumber(portfolio.liquidityFeesEarned, 3)} ${ticker}`,
+      value: `${roundNumber(liquidityFeesEarned, 3)} ${ticker}`,
       change: {
         type: 'up',
         amount: 2.58
