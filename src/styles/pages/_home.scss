@@ -29,13 +29,6 @@
     }
   }
 
-  &__navigation {
-    &__actions:not(:last-child) {
-      display: inherit;
-      height: auto;
-    }
-  }
-
   &__mobile-info {
     @include flex-column(center, center);
     margin-top: px-to-rem(16px);

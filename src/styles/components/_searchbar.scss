@@ -5,13 +5,20 @@
     align-items: center;
 
     width: 100%;
-    padding: var(--size-16);
     transition: $searchbar-transitions;
 
     background-color: transparent;
 
     border: 0.1rem solid themed('border-color');
     border-radius: $searchbar-border-radius;
+
+    &--sm {
+      padding: var(--size-12) var(--size-14);
+    }
+
+    &--md {
+      padding: var(--size-16);
+    }
 
     &__input {
       width: 100%;

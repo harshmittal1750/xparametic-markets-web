@@ -1,15 +1,22 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
-import { setSorter } from 'redux/ducks/markets';
+import { setSorter, setSearchQuery } from 'redux/ducks/markets';
 import { useTheme } from 'ui';
 
-import { Button, CreateMarket, Feature, Filter, Icon } from 'components';
+import {
+  Button,
+  CreateMarket,
+  Feature,
+  Filter,
+  Icon,
+  SearchBar
+} from 'components';
 import { FilterProps } from 'components/Filter/Filter';
 
-import { useAppDispatch } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 import useMarkets from 'hooks/useMarkets';
 
-import HomeNavSearch from './HomeNavSearch';
+import homeClasses from './Home.module.scss';
 import { filters } from './utils';
 
 type HomeNavProps = {
@@ -20,13 +27,38 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const markets = useMarkets();
+  const searchQuery = useAppSelector(state => state.markets.searchQuery);
   const handleSelectedFilter: FilterProps['onChange'] = useCallback(
-    filter => {
+    filter =>
       dispatch(
-        setSorter({ value: filter.value, sortBy: filter.optionalTrigger })
-      );
-    },
+        setSorter({
+          value: filter.value,
+          sortBy: filter.optionalTrigger
+        })
+      ),
     [dispatch]
+  );
+  const [searchValue, setSearchValue] = useState(() => searchQuery);
+  const handleSearch = useCallback(
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      dispatch(setSearchQuery(searchValue));
+    },
+    [dispatch, searchValue]
+  );
+  const handleDispatchSearch = useCallback(
+    (value: string) => dispatch(setSearchQuery(value)),
+    [dispatch]
+  );
+  const handleSearchChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+
+      setSearchValue(value);
+
+      if (!value) handleDispatchSearch(value);
+    },
+    [handleDispatchSearch]
   );
 
   return (
@@ -34,9 +66,9 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
       <Button
         variant="outline"
         size="sm"
-        className="pm-p-home__navigation__actions"
         onClick={onFilterClick}
         disabled={markets.state !== 'success'}
+        className={homeClasses.navAction}
       >
         <Icon
           name="Filter"
@@ -46,13 +78,19 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
         />
         {theme.device.isDesktop && 'Filter'}
       </Button>
-      <HomeNavSearch />
+      <SearchBar
+        size="sm"
+        name="Search Markets"
+        placeholder="Search markets"
+        onSearch={handleSearch}
+        onChange={handleSearchChange}
+        value={searchValue}
+      />
       <Filter
         description="Sort by"
         defaultOption="expiresAt"
         options={filters}
         onChange={handleSelectedFilter}
-        className="pm-p-home__navigation__actions"
       />
       {theme.device.isDesktop && (
         <Feature name="regular">
