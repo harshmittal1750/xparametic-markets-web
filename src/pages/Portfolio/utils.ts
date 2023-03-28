@@ -2,7 +2,6 @@ import { ui } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import { Market, Outcome } from 'models/market';
-import { Portfolio } from 'models/portfolio';
 import { Action } from 'redux/ducks/polkamarkets';
 import { GetMarketsByIdsData } from 'services/Polkamarkets/types';
 
