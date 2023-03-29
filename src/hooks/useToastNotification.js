@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-import create from 'zustand';
-import shallow from 'zustand/shallow';
+import { create } from 'zustand';
+import { shallow } from 'zustand/shallow';
 
 const useToastStore = create((set, get) => ({
   toastList: new Set(),
