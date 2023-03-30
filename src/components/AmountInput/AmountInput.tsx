@@ -104,7 +104,8 @@ export default function AmountInput({
           type="number"
           id={label}
           value={amount}
-          step=".00001"
+          lang="en"
+          step=".0001"
           min={0}
           max={max}
           onChange={handleChangeAmount}
