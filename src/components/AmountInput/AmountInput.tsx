@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 
-import { WalletIcon } from 'assets/icons';
+import { TokenIcon, WalletIcon } from 'assets/icons';
 
 import { Button } from '../Button';
+import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 
@@ -65,6 +66,8 @@ export default function AmountInput({
     setStepAmount(value);
   }
 
+  const { name, ticker, iconName } = currency;
+
   return (
     <div className="pm-c-amount-input">
       <div className="pm-c-amount-input__header">
@@ -120,7 +123,22 @@ export default function AmountInput({
           >
             Max
           </button>
-          {endAdornment}
+          {endAdornment || (
+            <div className="pm-c-amount-input__logo">
+              {iconName !== 'shares' ? (
+                <figure aria-label={name}>
+                  {iconName === 'Token' ? (
+                    <TokenIcon ticker={ticker} />
+                  ) : (
+                    <Icon name={iconName} />
+                  )}
+                </figure>
+              ) : null}
+              <Text as="span" scale="caption" fontWeight="bold">
+                {ticker}
+              </Text>
+            </div>
+          )}
         </div>
       </div>
       <StepSlider
