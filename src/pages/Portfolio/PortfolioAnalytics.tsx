@@ -2,21 +2,37 @@ import { useMemo } from 'react';
 
 import { CategoryAnalytics } from 'components';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import { formatPortfolioAnalytics } from './utils';
 
 function PortfolioAnalytics() {
-  const {
-    network: { currency }
-  } = useNetwork();
-  const { ticker } = currency;
+  const closedMarketsProfit = useAppSelector(
+    state => state.portfolio.portfolio.closedMarketsProfit
+  );
 
-  const apiPortfolio = useAppSelector(state => state.portfolio.portfolio);
+  const openPositions = useAppSelector(
+    state => state.portfolio.portfolio.openPositions
+  );
+
+  const liquidityProvided = useAppSelector(
+    state => state.portfolio.portfolio.liquidityProvided
+  );
+
+  const liquidityFeesEarned = useAppSelector(
+    state => state.portfolio.portfolio.liquidityFeesEarned
+  );
 
   const analytics = useMemo(
-    () => formatPortfolioAnalytics(apiPortfolio, ticker),
-    [apiPortfolio, ticker]
+    () =>
+      formatPortfolioAnalytics(
+        closedMarketsProfit,
+        openPositions,
+        liquidityProvided,
+        liquidityFeesEarned,
+        '€'
+      ),
+    [closedMarketsProfit, liquidityFeesEarned, liquidityProvided, openPositions]
   );
 
   return (
