@@ -26,7 +26,7 @@ const PortfolioChart = () => {
       <div className="portfolio-chart__header">
         <div className="portfolio-chart__header-balance">
           <Text as="h4" scale="heading" fontWeight="semibold" color="light">
-            {`${roundNumber(holdingsValue, 3)} €`}
+            {`${roundNumber(holdingsValue, 2)} €`}
           </Text>
           <Text as="span" scale="tiny" fontWeight="medium" color="dark-gray">
             Total Balance
@@ -52,7 +52,7 @@ const PortfolioChart = () => {
             fontWeight="semibold"
             color={holdingsPerformanceColor}
           >
-            {`${roundNumber(holdingsPerformance.change, 3)} €`}
+            {`${roundNumber(holdingsPerformance.change, 2)} €`}
           </Text>
         </div>
       </div>
