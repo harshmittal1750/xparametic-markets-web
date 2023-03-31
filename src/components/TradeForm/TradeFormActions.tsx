@@ -13,6 +13,7 @@ import TWarningIcon from 'assets/icons/TWarningIcon';
 import {
   useAppDispatch,
   useAppSelector,
+  useERC20Balance,
   useNetwork,
   usePolkamarketsService
 } from 'hooks';
@@ -48,7 +49,7 @@ function TradeFormActions() {
   const maxAmount = useAppSelector(state => state.trade.maxAmount);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
   const token = useAppSelector(state => state.market.market.token);
-  const { wrapped: tokenWrapped } = token;
+  const { wrapped: tokenWrapped, address } = token;
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
@@ -60,6 +61,7 @@ function TradeFormActions() {
   const [transactionSuccessHash, setTransactionSuccessHash] =
     useState(undefined);
   const [needsPricesRefresh, setNeedsPricesRefresh] = useState(false);
+  const { refreshBalance } = useERC20Balance(address);
 
   function handleCancel() {
     dispatch(selectOutcome('', '', ''));
@@ -157,6 +159,7 @@ function TradeFormActions() {
 
       // updating wallet
       await updateWallet();
+      await refreshBalance();
     } catch (error) {
       setIsLoading(false);
     }
@@ -219,6 +222,7 @@ function TradeFormActions() {
 
       // updating wallet
       await updateWallet();
+      await refreshBalance();
     } catch (error) {
       setIsLoading(false);
     }

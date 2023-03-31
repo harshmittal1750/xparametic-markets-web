@@ -9,6 +9,7 @@ import { PolkamarketsApiService } from 'services';
 import {
   useAppDispatch,
   useAppSelector,
+  useERC20Balance,
   useNetwork,
   usePolkamarketsService
 } from 'hooks';
@@ -33,7 +34,7 @@ function LiquidityFormActions() {
   );
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const token = useAppSelector(state => state.market.market.token);
-  const { wrapped: tokenWrapped } = token;
+  const { wrapped: tokenWrapped, address } = token;
   const wrapped = useAppSelector(state => state.liquidity.wrapped);
   const amount = useAppSelector(state => state.liquidity.amount);
   const maxAmount = useAppSelector(state => state.liquidity.maxAmount);
@@ -48,6 +49,7 @@ function LiquidityFormActions() {
 
   const [isLoading, setIsLoading] = useState(false);
   const { show, close } = useToastNotification();
+  const { refreshBalance } = useERC20Balance(address);
 
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
@@ -91,6 +93,7 @@ function LiquidityFormActions() {
 
       // updating wallet
       await updateWallet();
+      await refreshBalance();
     } catch (error) {
       setIsLoading(false);
     }
@@ -126,6 +129,7 @@ function LiquidityFormActions() {
 
       // updating wallet
       await updateWallet();
+      await refreshBalance();
     } catch (error) {
       setIsLoading(false);
     }
