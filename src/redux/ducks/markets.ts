@@ -93,7 +93,7 @@ const marketsSlice = createSlice({
         markets: uniqBy(
           [...state.markets, ...action.payload.data],
           (market: Market) => `${market.networkId}${market.id}`
-        ).filter(isMarketFromAvailableNetwork),
+        ),
         isLoading: {
           ...state.isLoading,
           [action.payload.type]: false
@@ -107,7 +107,7 @@ const marketsSlice = createSlice({
         return {
           payload: {
             type,
-            data: data.map(market => {
+            data: data.filter(isMarketFromAvailableNetwork).map(market => {
               const network = getNetworkById(market.networkId);
               const currencyByTokenSymbol = getCurrencyByTicker(
                 market.token.symbol
