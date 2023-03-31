@@ -5,16 +5,11 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import { AreaChart, Label, Text } from 'components';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import { balance } from './mock';
 
 const PortfolioChart = () => {
-  const {
-    network: { currency }
-  } = useNetwork();
-  const { ticker } = currency;
-
   const holdingsChart = useAppSelector(
     state => state.portfolio.portfolio.holdingsChart
   );
@@ -31,7 +26,7 @@ const PortfolioChart = () => {
       <div className="portfolio-chart__header">
         <div className="portfolio-chart__header-balance">
           <Text as="h4" scale="heading" fontWeight="semibold" color="light">
-            {`${roundNumber(holdingsValue, 3)} ${ticker}`}
+            {`${roundNumber(holdingsValue, 3)} €`}
           </Text>
           <Text as="span" scale="tiny" fontWeight="medium" color="dark-gray">
             Total Balance
@@ -57,12 +52,12 @@ const PortfolioChart = () => {
             fontWeight="semibold"
             color={holdingsPerformanceColor}
           >
-            {`${roundNumber(holdingsPerformance.change, 3)} ${ticker}`}
+            {`${roundNumber(holdingsPerformance.change, 3)} €`}
           </Text>
         </div>
       </div>
       <div className="portfolio-chart__view">
-        <AreaChart serie={holdingsChartData} ticker={ticker} height={210} />
+        <AreaChart serie={holdingsChartData} ticker="€" height={210} />
       </div>
     </div>
   );
