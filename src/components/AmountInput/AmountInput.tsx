@@ -33,7 +33,7 @@ export default function AmountInput({
   disabled = false,
   endAdornment
 }: AmountInputProps) {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number | undefined>(0);
   const [stepAmount, setStepAmount] = useState(0);
 
   useEffect(() => {
@@ -44,11 +44,13 @@ export default function AmountInput({
   }, [max]);
 
   function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = parseFloat(event.currentTarget.value);
+    const { value } = event.currentTarget;
 
-    setAmount(value);
-    setStepAmount(100 * ((value || 0) / max));
-    onChange(value || 0);
+    const newAmount = value ? parseFloat(value) : undefined;
+
+    setAmount(newAmount);
+    setStepAmount(100 * ((newAmount || 0) / max));
+    onChange(newAmount || 0);
   }
   function handleSetMaxAmount() {
     const roundedMax = round(max);
