@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 
-import { WalletIcon } from 'assets/icons';
+import { TokenIcon, WalletIcon } from 'assets/icons';
 
 import { Button } from '../Button';
+import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 
@@ -32,7 +33,7 @@ export default function AmountInput({
   disabled = false,
   endAdornment
 }: AmountInputProps) {
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number | undefined>(0);
   const [stepAmount, setStepAmount] = useState(0);
 
   useEffect(() => {
@@ -43,11 +44,13 @@ export default function AmountInput({
   }, [max]);
 
   function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
-    const value = parseFloat(event.currentTarget.value);
+    const { value } = event.currentTarget;
 
-    setAmount(value);
-    setStepAmount(100 * ((value || 0) / max));
-    onChange(value || 0);
+    const newAmount = value ? parseFloat(value) : undefined;
+
+    setAmount(newAmount);
+    setStepAmount(100 * ((newAmount || 0) / max));
+    onChange(newAmount || 0);
   }
   function handleSetMaxAmount() {
     const roundedMax = round(max);
@@ -64,6 +67,8 @@ export default function AmountInput({
     onChange(newAmount);
     setStepAmount(value);
   }
+
+  const { name, ticker, iconName } = currency;
 
   return (
     <div className="pm-c-amount-input">
@@ -104,7 +109,8 @@ export default function AmountInput({
           type="number"
           id={label}
           value={amount}
-          step=".00001"
+          lang="en"
+          step=".0001"
           min={0}
           max={max}
           onChange={handleChangeAmount}
@@ -119,7 +125,22 @@ export default function AmountInput({
           >
             Max
           </button>
-          {endAdornment}
+          {endAdornment || (
+            <div className="pm-c-amount-input__logo">
+              {iconName !== 'shares' ? (
+                <figure aria-label={name}>
+                  {iconName === 'Token' ? (
+                    <TokenIcon ticker={ticker} />
+                  ) : (
+                    <Icon name={iconName} />
+                  )}
+                </figure>
+              ) : null}
+              <Text as="span" scale="caption" fontWeight="bold">
+                {ticker}
+              </Text>
+            </div>
+          )}
         </div>
       </div>
       <StepSlider

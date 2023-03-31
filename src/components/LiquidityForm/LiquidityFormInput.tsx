@@ -85,7 +85,7 @@ function LiquidityFormInput() {
   function currentCurrency() {
     return transactionType === 'add'
       ? token
-      : { name: 'Shares', ticker: 'Shares' };
+      : { name: 'Shares', ticker: 'Shares', iconName: 'shares' };
   }
 
   function handleChangeAmount(liquidityAmount: number) {
