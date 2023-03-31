@@ -256,7 +256,7 @@ function formatPortfolioAnalytics(
   return [
     {
       title: 'Total earnings',
-      value: `${roundNumber(closedMarketsProfit, 3)} ${ticker}`,
+      value: `${roundNumber(closedMarketsProfit, 2)} ${ticker}`,
       change: {
         type: 'up',
         amount: 2.58
@@ -278,7 +278,7 @@ function formatPortfolioAnalytics(
     },
     {
       title: 'Liquidity provided',
-      value: `${roundNumber(liquidityProvided, 3)} ${ticker}`,
+      value: `${roundNumber(liquidityProvided, 2)} ${ticker}`,
       change: {
         type: 'up',
         amount: 2.58
@@ -289,7 +289,7 @@ function formatPortfolioAnalytics(
     },
     {
       title: 'Liquidity earnings',
-      value: `${roundNumber(liquidityFeesEarned, 3)} ${ticker}`,
+      value: `${roundNumber(liquidityFeesEarned, 2)} ${ticker}`,
       change: {
         type: 'up',
         amount: 2.58
