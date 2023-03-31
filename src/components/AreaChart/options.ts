@@ -29,7 +29,7 @@ function generateCustomOptions(
 
         return `<div class="apexcharts-tooltip-box">
           <span class="apexcharts-tooltip-text-value">${currentValue.toFixed(
-            3
+            ticker === '€' ? 2 : 3
           )} ${ticker}</span>
           <span class="apexcharts-tooltip-text-date">${formatedDate}</span>
           <span class="apexcharts-tooltip-text-date">${formatedTime}</span>
