@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { fromPriceChartToLineChartSeries } from 'helpers/chart';
 import { roundNumber } from 'helpers/math';
 
@@ -9,17 +11,24 @@ import { useAppSelector } from 'hooks';
 
 import { balance } from './mock';
 
-const PortfolioChart = () => {
+export default function PortfolioChart() {
   const holdingsChart = useAppSelector(
     state => state.portfolio.portfolio.holdingsChart
   );
-  const { holdingsValue, holdingsPerformance } = useAppSelector(
-    state => state.portfolio.portfolio
+  const holdingsValue = useAppSelector(
+    state => state.portfolio.portfolio.holdingsValue
   );
-
-  const holdingsChartData = fromPriceChartToLineChartSeries(holdingsChart);
-  const holdingsPerformanceColor =
-    holdingsPerformance.change >= 0 ? 'success' : 'danger';
+  const holdingsPerformance = useAppSelector(
+    state => state.portfolio.portfolio.holdingsPerformance
+  );
+  const holdingsChartData = useMemo(
+    () => fromPriceChartToLineChartSeries(holdingsChart),
+    [holdingsChart]
+  );
+  const hasHoldingsPerformance = holdingsPerformance.change >= 0;
+  const holdingsPerformanceColor = hasHoldingsPerformance
+    ? 'success'
+    : 'danger';
 
   return (
     <div className="portfolio-chart">
@@ -36,11 +45,7 @@ const PortfolioChart = () => {
           className={`portfolio-chart__header-change--${balance.change.type}`}
         >
           <Label color={holdingsPerformanceColor}>
-            {holdingsPerformance.change >= 0 ? (
-              <CaretUpIcon />
-            ) : (
-              <CaretDownIcon />
-            )}
+            {hasHoldingsPerformance ? <CaretUpIcon /> : <CaretDownIcon />}
             {`${roundNumber(
               Math.abs(holdingsPerformance.changePercent) * 100,
               2
@@ -61,6 +66,4 @@ const PortfolioChart = () => {
       </div>
     </div>
   );
-};
-
-export default PortfolioChart;
+}

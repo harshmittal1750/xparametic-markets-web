@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { getPortfolio } from 'redux/ducks/portfolio';
 import { Container } from 'ui';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -9,17 +8,20 @@ import PortfolioAnalytics from './PortfolioAnalytics';
 import PortfolioChart from './PortfolioChart';
 import PortfolioTabs from './PortfolioTabs';
 
-const PortfolioPage = () => {
+export default function PortfolioPage() {
   const dispatch = useAppDispatch();
-  const { network } = useNetwork();
-
+  const network = useNetwork();
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   useEffect(() => {
     if (ethAddress) {
-      dispatch(getPortfolio(ethAddress, network.id));
+      (async () => {
+        const { getPortfolio } = await import('redux/ducks/portfolio');
+
+        dispatch(getPortfolio(ethAddress, network.network.id));
+      })();
     }
-  }, [ethAddress, dispatch, network.id]);
+  }, [ethAddress, dispatch, network.network.id]);
 
   return (
     <Container className="portfolio-page">
@@ -28,6 +30,4 @@ const PortfolioPage = () => {
       <PortfolioTabs />
     </Container>
   );
-};
-
-export default PortfolioPage;
+}
