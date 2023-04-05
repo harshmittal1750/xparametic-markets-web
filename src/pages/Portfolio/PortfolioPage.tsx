@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { getPortfolio } from 'redux/ducks/portfolio';
 import { Container } from 'ui';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -14,13 +15,7 @@ export default function PortfolioPage() {
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   useEffect(() => {
-    if (ethAddress) {
-      (async () => {
-        const { getPortfolio } = await import('redux/ducks/portfolio');
-
-        dispatch(getPortfolio(ethAddress, network.network.id));
-      })();
-    }
+    if (ethAddress) dispatch(getPortfolio(ethAddress, network.network.id));
   }, [ethAddress, dispatch, network.network.id]);
 
   return (
