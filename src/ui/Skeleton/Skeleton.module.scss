@@ -1,0 +1,22 @@
+@keyframes skeleton {
+  0% {
+    background-color: var(--color-text-quaternary);
+  }
+  100% {
+    background-color: var(--color-text-quinary);
+  }
+}
+
+.root {
+  position: relative;
+  width: 100%;
+  height: auto;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    animation: skeleton 1s linear infinite alternate;
+    border-radius: 8px;
+  }
+}
