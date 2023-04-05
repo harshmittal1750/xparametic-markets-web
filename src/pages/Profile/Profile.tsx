@@ -2,8 +2,6 @@ import { useParams } from 'react-router-dom';
 
 import { Container } from 'ui';
 
-import { useWindowDimensions } from 'hooks';
-
 import ProfileAchievements from './ProfileAchievements';
 import ProfileActivities from './ProfileActivities';
 import ProfileSummary from './ProfileSummary';
@@ -13,11 +11,9 @@ type ProfileUrlParams = {
   address: string;
 };
 
-function Profile() {
+export default function Profile() {
   const { address } = useParams<ProfileUrlParams>();
-  const { height } = useWindowDimensions();
-
-  const listHeight = Math.min(Math.ceil(height * 0.5), 700);
+  const listHeight = Math.min(Math.ceil(window.innerHeight * 0.5), 700);
 
   return (
     <Container className="pm-p-profile">
@@ -30,5 +26,3 @@ function Profile() {
     </Container>
   );
 }
-
-export default Profile;
