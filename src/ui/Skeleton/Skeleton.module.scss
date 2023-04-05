@@ -1,4 +1,4 @@
-@keyframes skeleton {
+@keyframes animation {
   0% {
     background-color: var(--color-text-quaternary);
   }
@@ -8,6 +8,7 @@
 }
 
 .root {
+  display: block;
   position: relative;
   width: 100%;
   height: auto;
@@ -16,7 +17,7 @@
     content: '';
     position: absolute;
     inset: 0px;
-    animation: skeleton 1s linear infinite alternate;
+    animation: animation 1s linear infinite alternate;
     border-radius: 8px;
   }
 }
