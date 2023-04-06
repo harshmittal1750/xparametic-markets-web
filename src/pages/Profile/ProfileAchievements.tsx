@@ -1,4 +1,3 @@
-import { isEmpty } from 'lodash';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Skeleton } from 'ui';
 
