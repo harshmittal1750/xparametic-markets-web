@@ -152,6 +152,8 @@ export { default as CreateLeaderboardGroupForm } from './CreateLeaderboardGroupF
 
 export { default as CreateMarket } from './CreateMarket';
 
+export { default as CreateMarketFormDetails } from './CreateMarketFormDetails';
+
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
