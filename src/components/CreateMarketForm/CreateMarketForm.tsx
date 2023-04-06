@@ -13,6 +13,7 @@ import { Button } from '../Button';
 import CreateMarketFormDetails from '../CreateMarketFormDetails';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
+import CreateMarketFormClasses from './CreateMarketForm.module.scss';
 import type { CreateMarketFormData } from './CreateMarketForm.type';
 import CreateMarketFormActions from './CreateMarketFormActions';
 import CreateMarketFormFund from './CreateMarketFormFund';
@@ -109,9 +110,11 @@ function CreateMarketForm() {
             ref={handleFormRef(values.isSubmitting && !values.isValid)}
             className="pm-c-create-market-form"
           >
-            <CreateMarketFormDetails />
-            <CreateMarketFormFund />
-            <CreateMarketFormActions />
+            <div className={CreateMarketFormClasses.step}>
+              <CreateMarketFormDetails />
+              <CreateMarketFormFund />
+              <CreateMarketFormActions />
+            </div>
           </Form>
         )}
       </Formik>
