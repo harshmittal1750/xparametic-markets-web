@@ -3,8 +3,7 @@ import { colorByOutcomeId } from 'helpers/color';
 import { selectOutcome } from 'redux/ducks/trade';
 import { PolkamarketsService } from 'services';
 
-import Outcome from 'components/Outcome';
-import VirtualizedList from 'components/VirtualizedList';
+import { Alert, Link, Outcome, VirtualizedList } from 'components';
 
 import { useAppSelector } from 'hooks';
 
@@ -70,6 +69,41 @@ function ReportFormOutcomeSelect({ type }: ReportFormOutcomeSelectProps) {
       <VirtualizedList
         height="100%"
         data={outcomes}
+        components={{
+          Header: () => (
+            <Alert
+              style={{ marginBottom: 'var(--grid-margin)' }}
+              variant="information"
+              description={
+                <>
+                  Earn POLK by reporting the correct outcome.
+                  <Link
+                    title="Learn more"
+                    href="https://help.polkamarkets.com/en/articles/5610525-how-market-resolution-works"
+                    aria-label="Learn more"
+                    target="_blank"
+                    rel="noreferrer"
+                    variant="information"
+                  />
+                </>
+              }
+            />
+          ),
+          Footer: () => (
+            <Outcome
+              id="-1"
+              title="Invalid"
+              helpText="A market is invalid when no outcome is correct"
+              color="warning"
+              state={checkOutcomeState({ id: '-1' })}
+              bond={getOutcomeBond(-1)}
+              resolvedOutcomeId={resolvedOutcomeId}
+              marketQuestionFinalized={isMarketQuestionFinalized}
+              onSelect={handleOutcomeSelect}
+              isStarted={isStarted}
+            />
+          )
+        }}
         itemContent={(_index, outcome) => (
           <div className="pm-c-report-form-outcome-select__item">
             <Outcome
@@ -86,18 +120,6 @@ function ReportFormOutcomeSelect({ type }: ReportFormOutcomeSelectProps) {
             />
           </div>
         )}
-      />
-      <Outcome
-        id="-1"
-        title="Invalid"
-        helpText="A market is invalid when no outcome is correct"
-        color="warning"
-        state={checkOutcomeState({ id: '-1' })}
-        bond={getOutcomeBond(-1)}
-        resolvedOutcomeId={resolvedOutcomeId}
-        marketQuestionFinalized={isMarketQuestionFinalized}
-        onSelect={handleOutcomeSelect}
-        isStarted={isStarted}
       />
     </div>
   );

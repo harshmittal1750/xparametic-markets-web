@@ -5,7 +5,6 @@ import { useAppSelector } from 'hooks';
 
 import ReportFormActions from './ReportFormActions';
 import ReportFormDetails from './ReportFormDetails';
-import ReportFormInfo from './ReportFormInfo';
 import ReportFormInput from './ReportFormInput';
 import ReportFormOutcomeSelect from './ReportFormOutcomeSelect';
 import { ReportFormOutcomeSelectType } from './ReportFormOutcomeSelect.type';
@@ -73,7 +72,6 @@ function ReportForm() {
     >
       <Form className="pm-c-report-form">
         <div className="pm-c-report-form__view">
-          <ReportFormInfo />
           <ReportFormOutcomeSelect type={outcomeSelectType} />
         </div>
         <div className="pm-c-report-form__actions">
