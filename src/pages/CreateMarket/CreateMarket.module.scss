@@ -1,0 +1,30 @@
+.root {
+  position: relative;
+  padding-top: var(--size-64);
+  padding-bottom: var(--size-64);
+}
+
+.heading {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-main-primary);
+  margin-bottom: var(--size-20);
+}
+
+.subheading {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+
+  &Link {
+    color: var(--color-main-primary);
+    text-decoration: underline;
+
+    &:hover {
+      color: #5d55fa;
+    }
+  }
+}
