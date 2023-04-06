@@ -7,10 +7,9 @@ import { useTheme } from 'ui';
 
 import Text from 'components/Text';
 
-import { useAppDispatch, useAppSelector, useMarketPath } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 
 import TradeFormActions from './TradeFormActions';
-import TradeFormCharts from './TradeFormCharts';
 import TradeFormClosed from './TradeFormClosed';
 import TradeFormDetails from './TradeFormDetails';
 import TradeFormInput from './TradeFormInput';
@@ -19,7 +18,6 @@ import TradeFormPredictions from './TradeFormPredictions';
 import TradeFormTypeSelector from './TradeFormTypeSelector';
 
 function TradeForm() {
-  const marketPath = useMarketPath();
   const dispatch = useAppDispatch();
   const theme = useTheme();
   const { id, networkId, outcomes } = useAppSelector(
@@ -52,18 +50,15 @@ function TradeForm() {
   return (
     <div className="pm-c-trade-form">
       <div className="pm-c-trade-form__view">
-        <TradeFormCharts />
-        {ui.tradeForm.liquidity && marketPath && (
+        {ui.tradeForm.liquidity && theme.device.isDesktop && (
           <>
-            {theme.device.isDesktop && (
-              <Text
-                scale="tiny-uppercase"
-                style={{ color: 'var(--color-text-quaternary)' }}
-                fontWeight="semibold"
-              >
-                Select outcome
-              </Text>
-            )}
+            <Text
+              scale="tiny-uppercase"
+              style={{ color: 'var(--color-text-quaternary)' }}
+              fontWeight="semibold"
+            >
+              Select outcome
+            </Text>
             <TradeFormPredictions />
           </>
         )}
