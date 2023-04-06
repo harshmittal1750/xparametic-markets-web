@@ -1,5 +1,6 @@
-import isEmpty from 'lodash/isEmpty';
+import { isEmpty } from 'lodash';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
+import { Skeleton } from 'ui';
 
 import { ScrollableArea } from 'components';
 import { Text } from 'components/new';
@@ -17,19 +18,26 @@ function ProfileAchievements({
   address,
   listHeight
 }: ProfileAchievementsProps) {
-  const { network } = useNetwork();
-
-  const { data: leaderboard, isLoading } = useGetLeaderboardByAddressQuery({
+  const network = useNetwork();
+  const leaderboard = useGetLeaderboardByAddressQuery({
     address,
     timeframe: 'at',
-    networkId: network.id
+    networkId: network.network.id
   });
 
-  if (isLoading || !leaderboard) return null;
+  if (leaderboard.isLoading)
+    return (
+      <div className="flex-column gap-4 width-full">
+        <Text as="h2" fontSize="heading-2" fontWeight="semibold" color="1">
+          Achievements
+        </Text>
+        <div className="border-radius-small border-solid border-1">
+          <Skeleton style={{ height: 320 }} />
+        </div>
+      </div>
+    );
 
-  const { achievements } = leaderboard;
-
-  if (isEmpty(achievements)) return null;
+  if (!leaderboard.data?.achievements.length) return null;
 
   return (
     <div className="flex-column gap-4 width-full">
@@ -43,7 +51,7 @@ function ProfileAchievements({
           style={{ height: listHeight }}
           fullwidth
         >
-          {achievements.map((achievement, index) => (
+          {leaderboard.data.achievements.map((achievement, index) => (
             <ProfileAchievement
               key={achievement.id}
               achievement={achievement}

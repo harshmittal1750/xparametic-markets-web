@@ -1,5 +1,6 @@
 import isEmpty from 'lodash/isEmpty';
 import { useGetPortfolioFeedByAddressQuery } from 'services/Polkamarkets';
+import { Skeleton } from 'ui';
 
 import { ScrollableArea } from 'components';
 
@@ -13,16 +14,23 @@ type ProfileActivitiesProps = {
 };
 
 function ProfileActivities({ address, listHeight }: ProfileActivitiesProps) {
-  const { network } = useNetwork();
-
-  const { data: activities, isLoading } = useGetPortfolioFeedByAddressQuery({
+  const network = useNetwork();
+  const feed = useGetPortfolioFeedByAddressQuery({
     address,
-    networkId: network.id
+    networkId: network.network.id
   });
 
-  if (isLoading || !activities) return null;
+  if (feed.isLoading)
+    return (
+      <div className="flex-column gap-4 width-full">
+        <h2 className="text-heading-2 font-semibold text-1">Activity</h2>
+        <div className="border-radius-small border-solid border-1">
+          <Skeleton style={{ height: 320 }} />
+        </div>
+      </div>
+    );
 
-  if (isEmpty(activities)) return null;
+  if (isEmpty(feed.data)) return null;
 
   return (
     <div className="flex-column gap-4 width-full">
@@ -34,7 +42,7 @@ function ProfileActivities({ address, listHeight }: ProfileActivitiesProps) {
           style={{ height: listHeight }}
           fullwidth
         >
-          {activities.map((activity, index) => (
+          {feed.data?.map((activity, index) => (
             <ProfileActivity
               key={activity.timestamp}
               activity={activity}
