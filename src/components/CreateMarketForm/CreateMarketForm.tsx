@@ -10,11 +10,11 @@ import { useNetwork, useAppSelector } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
+import CreateMarketFormDetails from '../CreateMarketFormDetails';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 import type { CreateMarketFormData } from './CreateMarketForm.type';
 import CreateMarketFormActions from './CreateMarketFormActions';
-import CreateMarketFormConfigure from './CreateMarketFormConfigure';
 import CreateMarketFormFund from './CreateMarketFormFund';
 import { initialValues, validationSchema } from './CreateMarktForm.util';
 
@@ -109,7 +109,7 @@ function CreateMarketForm() {
             ref={handleFormRef(values.isSubmitting && !values.isValid)}
             className="pm-c-create-market-form"
           >
-            <CreateMarketFormConfigure />
+            <CreateMarketFormDetails />
             <CreateMarketFormFund />
             <CreateMarketFormActions />
           </Form>
