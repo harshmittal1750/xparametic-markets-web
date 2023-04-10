@@ -12,6 +12,7 @@ import useToastNotification from 'hooks/useToastNotification';
 import { Button } from '../Button';
 import CreateMarketFormDetails from '../CreateMarketFormDetails';
 import CreateMarketFormOutcomes from '../CreateMarketFormOutcomes';
+import Steps from '../Steps';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 import CreateMarketFormClasses from './CreateMarketForm.module.scss';
@@ -111,12 +112,20 @@ function CreateMarketForm() {
             ref={handleFormRef(values.isSubmitting && !values.isValid)}
             className="pm-c-create-market-form"
           >
-            <div className={CreateMarketFormClasses.step}>
-              {/* <CreateMarketFormDetails /> */}
-              <CreateMarketFormOutcomes />
-              {/* <CreateMarketFormFund />
-              <CreateMarketFormActions /> */}
-            </div>
+            <Steps
+              steps={[
+                {
+                  id: 'details',
+                  title: 'Market Details',
+                  component: <CreateMarketFormDetails />
+                },
+                {
+                  id: 'outcomes',
+                  title: 'Choose Outcomes',
+                  component: <CreateMarketFormOutcomes />
+                }
+              ]}
+            />
           </Form>
         )}
       </Formik>
