@@ -1,6 +1,6 @@
+import CreateMarketFormOutcomes from '../CreateMarketFormOutcomes';
 import { Input, ImageUploadInput, SelectInput, DateInput } from '../Input';
 import Text from '../Text';
-import CreateMarketFormOutcomes from './CreateMarketFormOutcomes';
 
 function CreateMarketFormConfigure() {
   return (
