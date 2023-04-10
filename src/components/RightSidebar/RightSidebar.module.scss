@@ -3,9 +3,11 @@
   flex-shrink: 0;
   position: sticky;
   top: 0;
+  max-height: calc(100vh - 128px);
 
   @media (min-width: 1024px) {
     width: 384px;
+    max-height: unset;
     height: calc(100vh - var(--header-y));
   }
 }
