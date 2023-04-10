@@ -1,7 +1,7 @@
 .root {
   display: flex;
   flex-direction: column;
-  gap: var(--size-16);
+  gap: var(--size-36);
 }
 
 .action {
@@ -16,8 +16,32 @@
 
   grid-template-columns: 7fr 1.5fr 2fr;
   gap: var(--size-16);
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 2px;
+}
+
+.distribuitionTypeSelector {
+  color: var(--color-main-primary);
+
+  &:hover {
+    color: #5d55fa;
+  }
+}
+
+.answerTypeSelector {
+  width: fit-content;
+
+  &Button {
+    padding: var(--size-12) var(--size-32) !important;
+    font-size: 1.5rem !important;
+    line-height: 1 !important;
+    font-weight: 600 !important;
+
+    @media (max-width: 576px) {
+      padding: var(--size-8) var(--size-16) !important;
+      font-size: 1.2rem !important;
+    }
+  }
 }
 
 .outcomes {
