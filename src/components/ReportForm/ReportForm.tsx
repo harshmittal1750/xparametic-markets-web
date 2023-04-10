@@ -7,7 +7,6 @@ import ReportFormActions from './ReportFormActions';
 import ReportFormDetails from './ReportFormDetails';
 import ReportFormInput from './ReportFormInput';
 import ReportFormOutcomeSelect from './ReportFormOutcomeSelect';
-import { ReportFormOutcomeSelectType } from './ReportFormOutcomeSelect.type';
 
 type ReportFormData = {
   market: string;
@@ -27,9 +26,6 @@ function ReportForm() {
   const isMarketQuestionFinalized = useAppSelector(
     state => state.market.market.question.isFinalized
   );
-
-  const outcomeSelectType: ReportFormOutcomeSelectType =
-    outcomes.length > 2 ? 'multiple' : 'binary';
 
   // Derivated state
   const minimumBond = marketBond * 2;
@@ -71,8 +67,8 @@ function ReportForm() {
       validationSchema={validationSchema}
     >
       <Form className="pm-c-report-form">
-        <div className="pm-c-report-form__view">
-          <ReportFormOutcomeSelect type={outcomeSelectType} />
+        <div className="pm-c-trade-form__view">
+          <ReportFormOutcomeSelect />
         </div>
         <div className="pm-c-report-form__actions">
           {!isMarketQuestionFinalized ? (
