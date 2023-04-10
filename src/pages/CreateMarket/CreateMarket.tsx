@@ -33,20 +33,22 @@ function CreateMarket() {
           <CreateMarketBuyPolk requiredPolkBalance={requiredBalance} />
         </div>
       )}
-      <h2 className={CreateMarketClasses.heading}>
-        Create Your Forecasting Market
-      </h2>
-      <h3 className={CreateMarketClasses.subheading}>
-        Set up a new forecasting market by providing the necessary details and
-        funding information. Follow the step-by-step process to create a market
-        that&apos;s engaging and easy to participate in for users.{' '}
-        <a
-          href="help.polkamarkets.com"
-          className={CreateMarketClasses.subheadingLink}
-        >
-          Learn more
-        </a>
-      </h3>
+      <div className={CreateMarketClasses.header}>
+        <h2 className={CreateMarketClasses.heading}>
+          Create Your Forecasting Market
+        </h2>
+        <h3 className={CreateMarketClasses.subheading}>
+          Set up a new forecasting market by providing the necessary details and
+          funding information. Follow the step-by-step process to create a
+          market that&apos;s engaging and easy to participate in for users.{' '}
+          <a
+            href="help.polkamarkets.com"
+            className={CreateMarketClasses.subheadingLink}
+          >
+            Learn more
+          </a>
+        </h3>
+      </div>
       <CreateMarketForm />
     </Container>
   );
