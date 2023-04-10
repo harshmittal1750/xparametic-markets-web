@@ -112,20 +112,21 @@
 
 .pm-c-outcome-input--default {
   @include themes($input-themes) {
-    height: 44px;
     outline: none;
-    padding: 0rem;
+    height: 52px;
+    padding: 0px $input-padding-x;
 
     width: 100%;
 
-    @extend .caption, .medium;
-    font-stretch: normal;
-    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1;
     text-align: left;
     color: themed('input-value-color');
 
     &::placeholder {
       color: themed('input-placeholder-color');
+      opacity: 50%;
     }
 
     background-color: transparent;
@@ -144,15 +145,16 @@
       margin: 0rem;
       padding: 0px $input-padding-x;
 
-      background-color: transparent;
+      background-color: themed('input-background-color');
 
-      border-width: 0.1rem;
+      border-width: 1.5px;
       border-style: solid;
       border-radius: $input-border-radius;
       border-color: themed('input-border-default-color');
 
       &:focus-within {
         border-color: themed('input-border-default-focus-color');
+        background-color: themed('input-background-focus-color');
       }
 
       transition: $input-transitions;
