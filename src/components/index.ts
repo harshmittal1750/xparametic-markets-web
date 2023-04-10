@@ -193,6 +193,8 @@ export { default as OutcomeItemText } from './OutcomeItemText';
 
 export { default as SelectTokenModal } from './SelectTokenModal';
 
+export { default as Steps } from './Steps';
+
 export { default as ThemeSelector } from './ThemeSelector';
 
 export { default as VirtualizedList } from './VirtualizedList';
