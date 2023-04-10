@@ -10,8 +10,8 @@ import type { CreateMarketFormData } from './CreateMarketForm.type';
 const initialValues: CreateMarketFormData = {
   question: '',
   outcomes: [
-    { id: uuid(), name: '', probability: 50 },
-    { id: uuid(), name: '', probability: 50 }
+    { id: uuid(), name: 'Yes', probability: 50 },
+    { id: uuid(), name: 'No', probability: 50 }
   ],
   image: {
     file: undefined,

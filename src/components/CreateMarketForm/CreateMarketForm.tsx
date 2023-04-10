@@ -11,13 +11,14 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
 import CreateMarketFormDetails from '../CreateMarketFormDetails';
+import CreateMarketFormOutcomes from '../CreateMarketFormOutcomes';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 import CreateMarketFormClasses from './CreateMarketForm.module.scss';
 import type { CreateMarketFormData } from './CreateMarketForm.type';
+import { initialValues, validationSchema } from './CreateMarketForm.util';
 import CreateMarketFormActions from './CreateMarketFormActions';
 import CreateMarketFormFund from './CreateMarketFormFund';
-import { initialValues, validationSchema } from './CreateMarktForm.util';
 
 function CreateMarketForm() {
   const history = useHistory();
@@ -111,9 +112,10 @@ function CreateMarketForm() {
             className="pm-c-create-market-form"
           >
             <div className={CreateMarketFormClasses.step}>
-              <CreateMarketFormDetails />
-              <CreateMarketFormFund />
-              <CreateMarketFormActions />
+              {/* <CreateMarketFormDetails /> */}
+              <CreateMarketFormOutcomes />
+              {/* <CreateMarketFormFund />
+              <CreateMarketFormActions /> */}
             </div>
           </Form>
         )}
