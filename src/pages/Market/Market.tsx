@@ -60,7 +60,7 @@ function SidebarWrapper({
             fontWeight="bold"
             className={marketClasses.sidebarDialogHeaderTitle}
           >
-            Select Network
+            Select your outcome
           </Text>
           <Adornment $edge="end">
             <Button
