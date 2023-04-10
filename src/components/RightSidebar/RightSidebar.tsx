@@ -1,7 +1,7 @@
 import { ui as configUI } from 'config';
 import { Container } from 'ui';
 
-import { useAppSelector } from 'hooks';
+import { useMarketForms } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
 import ReportForm from '../ReportForm';
@@ -20,10 +20,7 @@ const forms = {
 };
 
 export default function RightSidebar() {
-  const ui = useAppSelector(state => state.ui);
-  const [form] = Object.keys(ui).filter(
-    key => /Form/.test(key) && ui[key].visible
-  );
+  const form = useMarketForms();
 
   return (
     <Container $enableGutters className={rightSidebarClasses.root}>
