@@ -50,15 +50,17 @@ function TradeForm() {
   return (
     <div className="pm-c-trade-form">
       <div className="pm-c-trade-form__view">
-        {ui.tradeForm.liquidity && theme.device.isDesktop && (
+        {ui.tradeForm.liquidity && (
           <>
-            <Text
-              scale="tiny-uppercase"
-              style={{ color: 'var(--color-text-quaternary)' }}
-              fontWeight="semibold"
-            >
-              Select outcome
-            </Text>
+            {theme.device.isDesktop && (
+              <Text
+                scale="tiny-uppercase"
+                style={{ color: 'var(--color-text-quaternary)' }}
+                fontWeight="semibold"
+              >
+                Select outcome
+              </Text>
+            )}
             <TradeFormPredictions />
           </>
         )}
