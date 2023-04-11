@@ -9,52 +9,80 @@ import InputErrorMessage from './InputErrorMessage';
 type StyledDateTimePickerProps = { theme: ThemeProps; $hasError: boolean };
 
 const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
-  .MuiOutlinedInput-input {
-    padding: 1.2rem;
-
-    font-family: 'Gilroy', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: -0.014rem;
-
-    color: ${props =>
-      isThemeDark(props.theme.device.mode) ? '#f9fafb' : '#171b23'};
-    border: 0.1rem solid transparent;
-
-    &:hover,
-    &:focus {
-      border: 0.1rem solid transparent;
-    }
-  }
-
   .MuiOutlinedInput-root {
     outline: none;
-    border: 0.1rem solid
-      ${props => {
+    background-color: ${props =>
+      isThemeDark(props.theme.device.mode)
+        ? 'rgba(35, 42, 54, 0.3)'
+        : 'rgba(227, 231, 240, 0.3)'};
+    transition: 0.2s border-color ease-out;
+
+    &:hover {
+      fieldset {
+        border: 1.5px solid;
+        border-color: ${props => {
+          if (props.$hasError) return '#e12d39';
+          if (isThemeDark(props.theme.device.mode)) return '#252c3b';
+          return '#e0e2e7';
+        }};
+      }
+    }
+
+    fieldset {
+      border: 1.5px solid;
+      border-color: ${props => {
         if (props.$hasError) return '#e12d39';
         if (isThemeDark(props.theme.device.mode)) return '#252c3b';
         return '#e0e2e7';
       }};
-    transition: 0.2s border ease-out;
-
-    &:hover {
-      outline: none;
-      border: 0.1rem solid
-        ${props => {
-          if (props.$hasError) return '#e12d39';
-          if (isThemeDark(props.theme.device.mode)) return '#637084';
-          return '#c2cad6';
-        }};
     }
 
-    &.Mui-focused fieldset {
-      outline: none;
-      border: none;
+    &.Mui-focused {
+      background-color: ${props => {
+        if (props.$hasError)
+          return isThemeDark(props.theme.device.mode)
+            ? 'rgba(35, 42, 54, 0.3)'
+            : 'rgba(227, 231, 240, 0.3)';
+        return isThemeDark(props.theme.device.mode) ? '#232a36' : '#dde1e8';
+      }}
+
+      transition: 0.2s border-color ease-out;
+
+      fieldset {
+        outline: none;
+        border: 1.5px solid;
+        border-color: ${props => (props.$hasError ? '#e12d39' : '#7069fa')};
+      }
     }
 
     &.Mui-selected {
       outline: none;
+      border: none;
+    }
+
+    &.Mui-disabled {
+      background-color: ${props =>
+        isThemeDark(props.theme.device.mode) ? '#292d32' : '#eff1f4'};
+
+      fieldset {
+        border: 1.5px solid transparent;
+      }
+    }
+  }
+
+  .MuiOutlinedInput-input {
+    padding: var(--size-16);
+
+    font-family: 'Gilroy', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1;
+
+    color: ${props =>
+      isThemeDark(props.theme.device.mode) ? '#f9fafb' : '#171b23'};
+
+    &:hover,
+    &:focus {
       border: none;
     }
   }
