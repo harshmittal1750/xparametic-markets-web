@@ -6,6 +6,7 @@ export type Outcome = {
 
 export type CreateMarketFormData = {
   question: string;
+  description: string;
   answerType: 'binary' | 'multiple';
   outcomes: Outcome[];
   image: {

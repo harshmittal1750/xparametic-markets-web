@@ -9,6 +9,7 @@ import type { CreateMarketFormData } from './CreateMarketForm.type';
 
 const initialValues: CreateMarketFormData = {
   question: '',
+  description: '',
   answerType: 'binary',
   outcomes: [
     { id: uuid(), name: 'Yes', probability: 50 },
@@ -28,6 +29,9 @@ const initialValues: CreateMarketFormData = {
 
 const validationSchema = Yup.object().shape({
   question: Yup.string().required('Market Question is required.'),
+  description: Yup.string()
+    .min(100, 'Market Description must be at least 100 characters long.')
+    .required('Market Description is required.'),
   image: Yup.object().shape({
     hash: Yup.string().required('Image is required.')
   }),
