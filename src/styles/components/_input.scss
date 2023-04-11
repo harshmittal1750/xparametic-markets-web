@@ -251,11 +251,12 @@
             color: themed('input-placeholder-color');
           }
         }
-
-        &:not(:checked) {
-          color: themed('input-placeholder-color');
-        }
       }
+    }
+
+    &--empty {
+      color: themed('input-placeholder-color');
+      opacity: 50%;
     }
   }
 }

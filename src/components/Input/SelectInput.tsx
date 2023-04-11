@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React from 'react';
 
+import cn from 'classnames';
 import { useField } from 'formik';
 
 import InputErrorMessage from './InputErrorMessage';
@@ -40,17 +41,17 @@ const SelectInput = React.forwardRef<
         id={name}
         {...field}
         {...props}
-        className={`pm-c-input--${hasError ? 'error' : 'default'}`}
+        className={cn({
+          'pm-c-input--error': hasError,
+          'pm-c-input--default': !hasError,
+          'pm-c-select-input--empty': !field.value
+        })}
       >
-        <option value="" disabled className="pm-c-select-input__option">
+        <option value="" disabled selected>
           {placeholder}
         </option>
         {options.map(option => (
-          <option
-            key={option.value}
-            value={option.value}
-            className="pm-c-select-input__option"
-          >
+          <option key={option.value} value={option.value}>
             {option.name}
           </option>
         ))}
