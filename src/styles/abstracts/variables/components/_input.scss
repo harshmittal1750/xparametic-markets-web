@@ -13,7 +13,7 @@ $input-themes: (
     input-border-error-color: #e12d39,
     input-border-default-focus-color: #7069fa,
     input-value-color: #171b23,
-    input-placeholder-color: var(--color-text-secondary),
+    input-placeholder-color: rgba(var(--color-text-secondary--rgb), 0.5),
     input-description-default-color: #59749b,
     input-error-color: #e12d39,
     input-select-background-color: #ffffff
@@ -28,7 +28,7 @@ $input-themes: (
     input-border-error-color: #e12d39,
     input-border-default-focus-color: #7069fa,
     input-value-color: #f9fafb,
-    input-placeholder-color: var(--color-text-secondary),
+    input-placeholder-color: rgba(var(--color-text-secondary--rgb), 0.5),
     input-description-default-color: #59749b,
     input-error-color: #e12d39,
     input-select-background-color: #171b23
