@@ -1,4 +1,10 @@
-import { Input, ImageUploadInput, SelectInput, DateInput } from '../Input';
+import {
+  Input,
+  ImageUploadInput,
+  SelectInput,
+  DateInput,
+  TextArea
+} from '../Input';
 import CreateMarketFormDetailsClasses from './CreateMarketFormDetails.module.scss';
 
 function CreateMarketFormDetails() {
@@ -10,11 +16,13 @@ function CreateMarketFormDetails() {
         placeholder="What would you like to see the world predict?"
         description="eg: Will the Democracts win the 2024 US presidential election?"
       />
-      <Input
+      <TextArea
+        rows={5}
         name="description"
         label="Description"
         placeholder="Write the market details here"
         description="Provide background info and market resolution criteria here."
+        className={CreateMarketFormDetailsClasses.textArea}
       />
       <div className={CreateMarketFormDetailsClasses.groupRow}>
         <SelectInput
