@@ -9,6 +9,7 @@ import type { CreateMarketFormData } from './CreateMarketForm.type';
 
 const initialValues: CreateMarketFormData = {
   question: '',
+  answerType: 'binary',
   outcomes: [
     { id: uuid(), name: 'Yes', probability: 50 },
     { id: uuid(), name: 'No', probability: 50 }
