@@ -44,10 +44,36 @@ function CreateMarketFormDetails() {
             }
           ]}
         />
-        <Input
+        <SelectInput
           label="Subcategory"
           name="subcategory"
-          placeholder="Subcategory"
+          placeholder="Select Subcategory"
+          options={[
+            {
+              name: 'Society',
+              value: 'society'
+            },
+            {
+              name: 'Economy/Finance',
+              value: 'economy/finance'
+            },
+            {
+              name: 'Politics',
+              value: 'politics'
+            },
+            {
+              name: 'Entertainment/Arts',
+              value: 'entertainment/arts'
+            },
+            {
+              name: 'Sports',
+              value: 'sports'
+            },
+            {
+              name: 'Other',
+              value: 'other'
+            }
+          ]}
         />
       </div>
       <Input
