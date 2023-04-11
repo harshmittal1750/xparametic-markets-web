@@ -35,6 +35,7 @@
   --color-shadow: rgb(var(--neutral-500--rgb) / var(--alpha-quinary));
   --color-text-primary: var(--neutral-700);
   --color-text-secondary: #8193ae;
+  --color-text-secondary--rgb: 129, 147, 174;
   --color-text-quaternary: rgb(
     var(--color-text--rgb) / var(--alpha-quaternary)
   );
@@ -88,6 +89,7 @@
     --color-shadow: var(--color-background-quaternary);
     --color-text-primary: var(--neutral-100);
     --color-text-secondary: #a5bee4;
+    --color-text-secondary--rgb: 165, 190, 228;
     --color-vote-arrows-background--neutral: #232a36;
 
     --color-vote-arrows-border--neutral: #3d4759;
