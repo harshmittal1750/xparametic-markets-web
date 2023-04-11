@@ -1,8 +1,7 @@
 .pm-c-input {
   @include themes($input-themes) {
     margin: 0rem;
-    height: 52px;
-    padding: 0px $input-padding-x;
+    padding: $input-padding-y $input-padding-x;
 
     outline: none;
     border-radius: 0.4rem;
