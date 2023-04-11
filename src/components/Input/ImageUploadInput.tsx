@@ -42,8 +42,8 @@ function ImageUploadButton({
       ref={ref}
       htmlFor={name}
       className={classNames({
-        'pm-c-button-normal--primary': true,
-        'pm-c-button--sm': true,
+        'pm-c-button-subtle--primary': true,
+        'pm-c-button--normal': true,
         caption: true,
         semibold: true
       })}
