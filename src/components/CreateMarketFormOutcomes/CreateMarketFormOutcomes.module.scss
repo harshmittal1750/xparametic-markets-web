@@ -49,8 +49,12 @@
 
   grid-template-columns: 7fr 3fr auto;
   gap: var(--size-16);
-  align-items: baseline;
+  align-items: flex-start;
   margin-bottom: var(--size-16);
+}
+
+.remove {
+  padding: 18px !important;
 }
 
 .error {

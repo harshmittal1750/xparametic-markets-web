@@ -159,13 +159,14 @@ function CreateMarketFormOutcomes() {
               />
               <Button
                 key={`${outcome.id}[2]`}
-                variant="outline"
+                variant="subtle"
                 color="default"
-                size="xs"
+                size="normal"
+                className={CreateMarketFormOutcomesClasses.remove}
                 onClick={() => handleRemoveOutcome(outcome.id)}
                 disabled={!hasMoreThanTwoOutcomes}
               >
-                -
+                <Icon name="Minus" size="md" />
               </Button>
             </Fragment>
           ))}
@@ -180,10 +181,10 @@ function CreateMarketFormOutcomes() {
             fullwidth
             variant="subtle"
             color="primary"
-            size="sm"
+            size="normal"
             onClick={handleAddOutcome}
           >
-            <Icon name="Plus" />
+            <Icon name="Plus" size="md" />
           </Button>
         ) : null}
       </div>
