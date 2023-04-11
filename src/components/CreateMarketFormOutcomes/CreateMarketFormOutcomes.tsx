@@ -13,25 +13,23 @@ import ButtonGroup from '../ButtonGroup';
 import Icon from '../Icon';
 import { InputErrorMessage, OutcomeInput, ProbabilityInput } from '../Input';
 import CreateMarketFormOutcomesClasses from './CreateMarketFormOutcomes.module.scss';
-import {
-  OutcomeType,
-  ProbabilityDistribution
-} from './CreateMarketFormOutcomes.type';
+import { ProbabilityDistribution } from './CreateMarketFormOutcomes.type';
 
 function CreateMarketFormOutcomes() {
-  const [outcomeType, setOutcomeType] = useState<OutcomeType>('binary');
-  const { current: previousOutcomeType } = usePrevious(outcomeType);
-
   const [probabilityDistribution, setProbabilityDistribution] =
     useState<ProbabilityDistribution>('uniform');
 
   const { values, setFieldValue } = useFormikContext();
+
+  const answerType = getIn(values, 'answerType');
+  const { current: previousAnswerType } = usePrevious(answerType);
+
   const outcomes = getIn(values, 'outcomes');
 
   useEffect(() => {
     if (
-      outcomeType === 'binary' &&
-      previousOutcomeType === 'multiple' &&
+      answerType === 'binary' &&
+      previousAnswerType === 'multiple' &&
       outcomes.length > 2
     ) {
       setProbabilityDistribution('uniform');
@@ -40,7 +38,7 @@ function CreateMarketFormOutcomes() {
         { id: uuid(), name: 'No', probability: 50 }
       ]);
     }
-  }, [outcomeType, outcomes, previousOutcomeType, setFieldValue]);
+  }, [answerType, outcomes, previousAnswerType, setFieldValue]);
 
   const validProbabilities = useMemo(() => {
     const probabilities = outcomes.map(outcome => outcome.probability);
@@ -117,19 +115,19 @@ function CreateMarketFormOutcomes() {
             group: CreateMarketFormOutcomesClasses.answerTypeSelector,
             button: CreateMarketFormOutcomesClasses.answerTypeSelectorButton
           }}
-          defaultActiveId="binary"
+          defaultActiveId={answerType}
           buttons={[
             { id: 'binary', name: 'Yes / No', color: 'primary' },
             { id: 'multiple', name: 'Multi Choice', color: 'primary' }
           ]}
-          onChange={type => setOutcomeType(type as OutcomeType)}
+          onChange={type => setFieldValue('answerType', type)}
         />
       </div>
       <div>
         <div className={CreateMarketFormOutcomesClasses.header}>
           <span className="pm-c-input__label--default">Outcome</span>
           <span className="pm-c-input__label--default">Probability</span>
-          {outcomeType === 'multiple' ? (
+          {answerType === 'multiple' ? (
             <button
               type="button"
               className={cn(
@@ -177,7 +175,7 @@ function CreateMarketFormOutcomes() {
             <InputErrorMessage message="Sum of probabilities must be 100%" />
           ) : null}
         </div>
-        {outcomeType === 'multiple' ? (
+        {answerType === 'multiple' ? (
           <Button
             fullwidth
             variant="subtle"
