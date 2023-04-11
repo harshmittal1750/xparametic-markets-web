@@ -15,6 +15,7 @@ function CreateMarketFormDetails() {
         label="Question"
         placeholder="What would you like to see the world predict?"
         description="eg: Will the Democracts win the 2024 US presidential election?"
+        required
       />
       <TextArea
         rows={5}
@@ -23,6 +24,7 @@ function CreateMarketFormDetails() {
         placeholder="Write the market details here"
         description="Provide background info and market resolution criteria here."
         className={CreateMarketFormDetailsClasses.textArea}
+        required
       />
       <div className={CreateMarketFormDetailsClasses.groupRow}>
         <SelectInput
@@ -51,6 +53,7 @@ function CreateMarketFormDetails() {
               value: 'other'
             }
           ]}
+          required
         />
         <SelectInput
           label="Subcategory"
@@ -82,12 +85,14 @@ function CreateMarketFormDetails() {
               value: 'other'
             }
           ]}
+          required
         />
       </div>
       <Input
         name="resolutionSource"
         label="Resolution Source"
         placeholder="https://www.google.com/"
+        required
       />
       <div className={CreateMarketFormDetailsClasses.groupRow}>
         <DateInput label="Closing Date - Local Time" name="closingDate" />
