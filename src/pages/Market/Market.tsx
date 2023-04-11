@@ -133,7 +133,7 @@ function MarketUI() {
           image={market.bannerUrl}
         />
         <MarketHead />
-        <Container $enableGutters className={marketClasses.bodyContent}>
+        <Container $enableGutters>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">
