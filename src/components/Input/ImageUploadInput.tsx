@@ -119,6 +119,7 @@ function ImageUploadInput({
       if (isValidImage(files[0].type)) {
         setInvalidImageError(undefined);
 
+        setFieldTouched(name, true);
         setFieldValue(name, {
           file: files[0],
           hash: '',
