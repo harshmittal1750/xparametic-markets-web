@@ -1,14 +1,18 @@
 import { useLayoutEffect, useRef } from 'react';
 
+/**
+ * Fires the effect callback just after updates.
+ * Has the same signature as `useLayoutEffect`, but with the dependency list required.
+ */
 export default function useUpdateEffect(
-  ...args: Parameters<typeof useLayoutEffect>
+  effect: React.EffectCallback,
+  deps: React.DependencyList
 ) {
-  const didMount = useRef(true);
+  const isMountPhase = useRef(true);
 
   useLayoutEffect(() => {
-    if (didMount.current) {
-      didMount.current = false;
-    } else args[0]();
+    if (isMountPhase.current) isMountPhase.current = false;
+    else effect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, args[1]);
+  }, deps);
 }
