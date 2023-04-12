@@ -98,11 +98,15 @@ interface DateInputProps
 function DateInput({ label, name, description, ...props }: DateInputProps) {
   const theme = useTheme();
   const [field, meta] = useField(name);
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, setFieldTouched } = useFormikContext();
 
   const hasError = meta.touched && meta.error;
 
   function handleChange(date) {
+    if (!meta.touched) {
+      setFieldTouched(name, true);
+    }
+
     setFieldValue(name, new Date(date));
   }
 
