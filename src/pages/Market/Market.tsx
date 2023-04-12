@@ -72,7 +72,7 @@ function SidebarWrapper({
             fontWeight="bold"
             className={marketClasses.sidebarDialogHeaderTitle}
           >
-            Select your outcome
+            Select Outcome
           </Text>
           <Adornment $edge="end">
             <Button
