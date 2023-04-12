@@ -1,6 +1,5 @@
-import { useState } from 'react';
-
 import cn from 'classnames';
+import { useFormikContext } from 'formik';
 
 import { Button } from 'components/Button';
 
@@ -8,19 +7,25 @@ import StepsClasses from './Steps.module.scss';
 import type { Step } from './Steps.type';
 
 type StepsProps = {
+  current: number;
+  currentStepFields: string[];
   steps: Step[];
+  onChange: (step: number) => void;
 };
 
-function Steps({ steps }: StepsProps) {
-  const [currentStep, setCurrentStep] = useState(0);
+function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
+  const { isValid, touched } = useFormikContext();
+
+  const isCurrentStepValid =
+    currentStepFields.every(field => touched[field]) && isValid;
 
   return (
     <div className={StepsClasses.root}>
       <div className={StepsClasses.steps}>
         {steps.map((step, index) => {
-          const inProgress = index === currentStep;
-          const finished = index < currentStep;
-          const waiting = index > currentStep;
+          const inProgress = index === current;
+          const finished = index < current;
+          const waiting = index > current;
 
           return (
             <div
@@ -43,26 +48,27 @@ function Steps({ steps }: StepsProps) {
         })}
       </div>
       <div className={StepsClasses.currentStep}>
-        {steps[currentStep] ? steps[currentStep].component : null}
+        {steps[current] ? steps[current].component : null}
       </div>
       <div className={StepsClasses.footer}>
         <p className={StepsClasses.footerHelperText}>
           * This information is mandatory
         </p>
         <div className={StepsClasses.controls}>
-          <Button
-            variant="ghost"
-            color="default"
-            onClick={() => setCurrentStep(currentStep - 1)}
-            disabled={currentStep === 0}
-          >
-            Previous Step
-          </Button>
+          {current > 0 ? (
+            <Button
+              variant="ghost"
+              color="default"
+              onClick={() => onChange(current - 1)}
+            >
+              Previous Step
+            </Button>
+          ) : null}
           <Button
             variant="subtle"
             color="default"
-            onClick={() => setCurrentStep(currentStep + 1)}
-            disabled={currentStep === steps.length - 1}
+            onClick={() => onChange(current + 1)}
+            disabled={current === steps.length - 1 || !isCurrentStepValid}
           >
             Next Step
           </Button>
