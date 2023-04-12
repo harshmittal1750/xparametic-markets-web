@@ -19,12 +19,16 @@ function CreateMarketFormOutcomes() {
   const [probabilityDistribution, setProbabilityDistribution] =
     useState<ProbabilityDistribution>('uniform');
 
-  const { values, setFieldValue } = useFormikContext();
+  const { values, setFieldValue, setFieldTouched } = useFormikContext();
 
   const answerType = getIn(values, 'answerType');
   const { current: previousAnswerType } = usePrevious(answerType);
 
   const outcomes = getIn(values, 'outcomes');
+
+  useEffect(() => {
+    setFieldTouched('outcomes', true);
+  }, [setFieldTouched]);
 
   useEffect(() => {
     if (
