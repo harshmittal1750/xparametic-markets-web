@@ -52,7 +52,7 @@ function Badge({
     >
       <div className="pm-c-badge__circle" />
       {label ? (
-        <Text className="pm-c-badge__label" as="label">
+        <Text className="pm-c-badge__label" as="span">
           {label}
         </Text>
       ) : null}
