@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Formik, Form } from 'formik';
@@ -26,6 +26,15 @@ function CreateMarketForm() {
   const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
   const { createMarketToken } = useAppSelector(state => state.polkamarkets);
+  const [currentStep, setCurrentStep] = useState(0);
+
+  const handleStepChange = useCallback(
+    (step: number) => {
+      setCurrentStep(step);
+    },
+    [setCurrentStep]
+  );
+
   const handleFormRef = useCallback(
     (hasError: boolean) => (node: HTMLFormElement | null) =>
       hasError && node?.scrollIntoView(),
@@ -79,6 +88,8 @@ function CreateMarketForm() {
     }
   }
 
+  const currentValidationSchema = validationSchema[currentStep];
+
   return (
     <>
       <ToastNotification id="createMarket" duration={10000}>
@@ -105,7 +116,7 @@ function CreateMarketForm() {
           await handleFormSubmit(values);
           actions.setSubmitting(false);
         }}
-        validationSchema={validationSchema}
+        validationSchema={currentValidationSchema}
       >
         {values => (
           <Form
@@ -113,6 +124,8 @@ function CreateMarketForm() {
             className="pm-c-create-market-form"
           >
             <Steps
+              current={currentStep}
+              currentStepFields={Object.keys(currentValidationSchema.fields)}
               steps={[
                 {
                   id: 'details',
@@ -125,6 +138,7 @@ function CreateMarketForm() {
                   component: <CreateMarketFormOutcomes />
                 }
               ]}
+              onChange={handleStepChange}
             />
           </Form>
         )}
