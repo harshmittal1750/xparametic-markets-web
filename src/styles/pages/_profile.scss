@@ -50,6 +50,10 @@
         display: inline-block;
       }
     }
+
+    &-accent {
+      color: var(--color-text-primary);
+    }
   }
 
   &__stats {
