@@ -19,16 +19,11 @@
 
   &__view {
     justify-content: flex-start;
+    min-height: 360px;
   }
 
   &__actions {
     justify-content: flex-end;
-  }
-
-  @media only screen and (max-height: 870px) {
-    & > :last-child {
-      padding-bottom: 2.4rem;
-    }
   }
 }
 
