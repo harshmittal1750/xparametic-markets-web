@@ -3,6 +3,7 @@ import type {
   GetPortfolioByAddressData,
   GetPortfolioFeedByAddressData
 } from 'services/Polkamarkets/types';
+import type { LeaderboardTimeframe } from 'types/leaderboard';
 import type { Network } from 'types/network';
 
 import type { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
@@ -46,5 +47,11 @@ export type ProfileSummaryProps = {
 export type ProfileStatsProps = {
   isLoading: boolean;
   data?: GetPortfolioByAddressData;
+  ticker: string;
+};
+export type ProfileYourStatsProps = {
+  onTimeframe(arg: LeaderboardTimeframe): void;
+  data?: GetLeaderboardByAddressData;
+  isLoading: boolean;
   ticker: string;
 };

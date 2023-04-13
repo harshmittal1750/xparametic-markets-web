@@ -1,5 +1,3 @@
-import type { GetLeaderboardByAddressData } from 'services/Polkamarkets/types';
-import type { LeaderboardTimeframe } from 'types/leaderboard';
 import { Skeleton } from 'ui';
 
 import { AlertMini } from 'components';
@@ -7,13 +5,7 @@ import { Dropdown, Text } from 'components/new';
 
 import ProfileLeaderboardRanks from './ProfileLeaderboardRanks';
 import ProfilePredictionStatistics from './ProfilePredictionStatistics';
-
-type ProfileYourStatsProps = {
-  onTimeframe(arg: LeaderboardTimeframe): void;
-  data?: GetLeaderboardByAddressData;
-  isLoading: boolean;
-  ticker: string;
-};
+import type { ProfileYourStatsProps } from './types';
 
 function ProfileYourStats({
   ticker,
