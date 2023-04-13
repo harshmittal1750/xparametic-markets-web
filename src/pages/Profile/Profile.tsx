@@ -1,6 +1,11 @@
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
+import {
+  useGetLeaderboardByAddressQuery,
+  useGetPortfolioByAddressQuery
+} from 'services/Polkamarkets';
+import type { LeaderboardTimeframe } from 'types/leaderboard';
 import { Container } from 'ui';
 
 import { useNetwork } from 'hooks';
@@ -16,11 +21,17 @@ type ProfileUrlParams = {
 };
 
 export default function Profile() {
+  const [timeframe, setTimeframe] = useState<LeaderboardTimeframe>('at');
   const { address } = useParams<ProfileUrlParams>();
   const { network } = useNetwork();
   const portfolio = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id
+  });
+  const leaderboard = useGetLeaderboardByAddressQuery({
+    address,
+    networkId: network.id,
+    timeframe
   });
   const ticker = network.currency.symbol || network.currency.ticker;
   const props = {
@@ -43,7 +54,12 @@ export default function Profile() {
           data={portfolio.data}
         />
       </div>
-      <ProfileYourStats {...props} />
+      <ProfileYourStats
+        onTimeframe={setTimeframe}
+        isLoading={leaderboard.isLoading}
+        ticker={ticker}
+        data={leaderboard.data}
+      />
       <div className="pm-p-profile-lists margin-top-6">
         <ProfileAchievements {...props} />
         <ProfileActivities {...props} />

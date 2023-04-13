@@ -5,7 +5,7 @@ import { Skeleton } from 'ui';
 
 import { ShareIcon } from 'assets/icons';
 
-import { Alert, Tooltip } from 'components';
+import { AlertMini, Tooltip } from 'components';
 import { Text } from 'components/new';
 
 type ProfileSummaryProps = {
@@ -37,7 +37,10 @@ export default function ProfileSummary({
           );
         if (!data)
           return (
-            <Alert variant="warning" description="No summary data available" />
+            <AlertMini
+              variant="default"
+              description="No summary data available."
+            />
           );
         return (
           <>

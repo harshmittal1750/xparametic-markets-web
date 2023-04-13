@@ -5,7 +5,7 @@ import { roundNumber } from 'helpers/math';
 import type { GetPortfolioByAddressData } from 'services/Polkamarkets/types';
 import { Skeleton } from 'ui';
 
-import { Alert } from 'components';
+import { AlertMini } from 'components';
 import { Text } from 'components/new';
 
 type ProfileStatsProps = {
@@ -44,8 +44,6 @@ export default function ProfileSummaryStat({
     [data, ticker]
   );
 
-  console.log(ui.profile.summary.liquidityProvided.enabled);
-
   return (
     <div className="pm-p-profile-summary__stats">
       {(() => {
@@ -59,13 +57,16 @@ export default function ProfileSummaryStat({
           );
         if (!data)
           return (
-            <Alert variant="warning" description="No summary data available" />
+            <AlertMini
+              variant="default"
+              description="No summary data available."
+            />
           );
         return stats
-          .filter(
-            stat =>
-              !ui.profile.summary.liquidityProvided.enabled &&
-              stat.title === 'Liquidity provided'
+          .filter(stat =>
+            !ui.profile.summary.liquidityProvided.enabled
+              ? stat.title !== 'Liquidity provided'
+              : true
           )
           .map(stat => (
             <div
