@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom';
 
 import {
   useGetLeaderboardByAddressQuery,
-  useGetPortfolioByAddressQuery
+  useGetPortfolioByAddressQuery,
+  useGetPortfolioFeedByAddressQuery
 } from 'services/Polkamarkets';
 import type { LeaderboardTimeframe } from 'types/leaderboard';
 import { Container } from 'ui';
@@ -20,6 +21,8 @@ type ProfileUrlParams = {
   address: string;
 };
 
+const LIST_HEIGHT = Math.min(Math.ceil(window.innerHeight * 0.5), 700);
+
 export default function Profile() {
   const [timeframe, setTimeframe] = useState<LeaderboardTimeframe>('at');
   const { address } = useParams<ProfileUrlParams>();
@@ -33,11 +36,11 @@ export default function Profile() {
     networkId: network.id,
     timeframe
   });
-  const ticker = network.currency.symbol || network.currency.ticker;
-  const props = {
+  const activity = useGetPortfolioFeedByAddressQuery({
     address,
-    listHeight: Math.min(Math.ceil(window.innerHeight * 0.5), 700)
-  };
+    networkId: network.id
+  });
+  const ticker = network.currency.symbol || network.currency.ticker;
 
   return (
     <Container className="pm-p-profile">
@@ -61,8 +64,16 @@ export default function Profile() {
         data={leaderboard.data}
       />
       <div className="pm-p-profile-lists margin-top-6">
-        <ProfileAchievements {...props} />
-        <ProfileActivities {...props} />
+        <ProfileAchievements
+          listHeight={LIST_HEIGHT}
+          isLoading={leaderboard.isLoading}
+          data={leaderboard.data}
+        />
+        <ProfileActivities
+          isLoading={activity.isLoading}
+          listHeight={LIST_HEIGHT}
+          data={activity.data}
+        />
       </div>
     </Container>
   );
