@@ -17,15 +17,11 @@ import ProfileSummary from './ProfileSummary';
 import ProfileSummaryStat from './ProfileSummaryStat';
 import ProfileYourStats from './ProfileYourStats';
 
-type ProfileUrlParams = {
-  address: string;
-};
-
 const LIST_HEIGHT = Math.min(Math.ceil(window.innerHeight * 0.5), 700);
 
 export default function Profile() {
   const [timeframe, setTimeframe] = useState<LeaderboardTimeframe>('at');
-  const { address } = useParams<ProfileUrlParams>();
+  const { address } = useParams<Record<'address', string>>();
   const { network } = useNetwork();
   const portfolio = useGetPortfolioByAddressQuery({
     address,

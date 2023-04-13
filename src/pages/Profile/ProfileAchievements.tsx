@@ -1,16 +1,10 @@
-import type { GetLeaderboardByAddressData } from 'services/Polkamarkets/types';
 import { Skeleton } from 'ui';
 
 import { AlertMini, ScrollableArea } from 'components';
 import { Text } from 'components/new';
 
 import ProfileAchievement from './ProfileAchievement';
-
-type ProfileAchievementsProps = {
-  listHeight: number;
-  data?: GetLeaderboardByAddressData;
-  isLoading: boolean;
-};
+import type { ProfileAchievementsProps } from './types';
 
 export default function ProfileAchievements({
   listHeight,
@@ -24,7 +18,7 @@ export default function ProfileAchievements({
       </Text>
       <div className="border-radius-small border-solid border-1">
         {(() => {
-          if (isLoading) return <Skeleton style={{ height: 320 }} />;
+          if (isLoading) return <Skeleton style={{ height: listHeight }} />;
           if (!data?.achievements.length)
             return (
               <AlertMini

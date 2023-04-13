@@ -1,6 +1,4 @@
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
-import type { GetPortfolioByAddressData } from 'services/Polkamarkets/types';
-import type { Network } from 'types/network';
 import { Skeleton } from 'ui';
 
 import { ShareIcon } from 'assets/icons';
@@ -8,12 +6,7 @@ import { ShareIcon } from 'assets/icons';
 import { AlertMini, Tooltip } from 'components';
 import { Text } from 'components/new';
 
-type ProfileSummaryProps = {
-  address: string;
-  isLoading: boolean;
-  data?: GetPortfolioByAddressData;
-  network: Network;
-};
+import type { ProfileSummaryProps } from './types';
 
 export default function ProfileSummary({
   address,

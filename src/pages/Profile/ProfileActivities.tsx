@@ -1,15 +1,9 @@
-import type { GetPortfolioFeedByAddressData } from 'services/Polkamarkets/types';
 import { Skeleton } from 'ui';
 
 import { AlertMini, ScrollableArea } from 'components';
 
 import ProfileActivity from './ProfileActivity';
-
-type ProfileActivitiesProps = {
-  listHeight: number;
-  data?: GetPortfolioFeedByAddressData;
-  isLoading: boolean;
-};
+import type { ProfileActivitiesProps } from './types';
 
 export default function ProfileActivities({
   isLoading,
@@ -21,7 +15,7 @@ export default function ProfileActivities({
       <h2 className="text-heading-2 font-semibold text-1">Activity</h2>
       <div className="border-radius-small border-solid border-1">
         {(() => {
-          if (isLoading) return <Skeleton style={{ height: 320 }} />;
+          if (isLoading) return <Skeleton style={{ height: listHeight }} />;
           if (!data?.length)
             return (
               <AlertMini

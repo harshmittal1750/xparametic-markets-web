@@ -2,17 +2,12 @@ import { useMemo } from 'react';
 
 import { ui } from 'config';
 import { roundNumber } from 'helpers/math';
-import type { GetPortfolioByAddressData } from 'services/Polkamarkets/types';
 import { Skeleton } from 'ui';
 
 import { AlertMini } from 'components';
 import { Text } from 'components/new';
 
-type ProfileStatsProps = {
-  isLoading: boolean;
-  data?: GetPortfolioByAddressData;
-  ticker: string;
-};
+import type { ProfileStatsProps } from './types';
 
 export default function ProfileSummaryStat({
   isLoading,
