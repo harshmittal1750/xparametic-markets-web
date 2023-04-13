@@ -9,14 +9,11 @@ import {
 import type { LeaderboardTimeframe } from 'types/leaderboard';
 import { Container } from 'ui';
 
-import { Button, Text } from 'components';
-import Logos from 'components/Logos/Logos';
-
 import { useNetwork } from 'hooks';
 
-import profileClasses from './Profile.module.scss';
 import ProfileAchievements from './ProfileAchievements';
 import ProfileActivities from './ProfileActivities';
+import ProfileError from './ProfileError';
 import ProfileSummary from './ProfileSummary';
 import ProfileSummaryStat from './ProfileSummaryStat';
 import ProfileYourStats from './ProfileYourStats';
@@ -46,18 +43,7 @@ export default function Profile() {
   return (
     <Container className="pm-p-profile">
       {hasError ? (
-        <div className={profileClasses.container}>
-          <Logos size="lg" standard="mono" />
-          <Text color="gray">Something went wrong. Please, try again!</Text>
-          <Button
-            size="xs"
-            color="primary"
-            className={profileClasses.containerButton}
-            onClick={() => window.location.reload()}
-          >
-            Try Again
-          </Button>
-        </div>
+        <ProfileError />
       ) : (
         <>
           <div className="pm-p-profile-summary">
