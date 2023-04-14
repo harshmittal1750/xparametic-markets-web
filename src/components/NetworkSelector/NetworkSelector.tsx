@@ -83,7 +83,7 @@ const NetworkSelector = forwardRef<HTMLButtonElement, NetworkSelectorProps>(
             ? {
                 style: {
                   left: rect?.left,
-                  top: `calc(${rect?.height}px + var(--grid-margin))`,
+                  top: `calc(${rect?.height}px + ${rect?.top}px + 8px)`,
                   width: rect?.width
                 }
               }
