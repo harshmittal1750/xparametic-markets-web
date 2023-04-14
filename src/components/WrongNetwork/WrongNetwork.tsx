@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import type { Network } from 'types/network';
 import { Alert, useTheme } from 'ui';
 
-import { Button, Text } from 'components';
+import { Button, Icon, Text } from 'components';
 
 import { useLayout } from 'hooks';
 
@@ -25,8 +25,10 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
     <Alert
       $type="warning"
       $variant="subtle"
-      $enableGutters={!theme.device.isTablet}
+      $enableGutters={!theme.device.isDesktop}
+      className={wrongNetwork.root}
     >
+      <Icon name="Warning" className={wrongNetwork.icon} />
       <Text
         fontWeight="medium"
         scale={theme.device.isDesktop ? 'caption' : 'tiny'}

@@ -9,16 +9,25 @@ interface AlertProps extends ContainerProps<'div'> {
   $variant?: 'subtle';
 }
 
-export default function Alert({ $type, $variant, ...props }: AlertProps) {
+export default function Alert({
+  $type,
+  $variant,
+  className,
+  ...props
+}: AlertProps) {
   return (
     <Container
       $as="div"
       role="alert"
       aria-busy="false"
-      className={cn(alertClasses.root, {
-        [alertClasses.typeWarning]: $type === 'warning',
-        [alertClasses.variantSubtle]: $variant === 'subtle'
-      })}
+      className={cn(
+        alertClasses.root,
+        {
+          [alertClasses.typeWarning]: $type === 'warning',
+          [alertClasses.variantSubtle]: $variant === 'subtle'
+        },
+        className
+      )}
       {...props}
     />
   );
