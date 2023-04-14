@@ -55,7 +55,26 @@ export default class PolkamarketsService {
 
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
-      web3EventsProvider: WEB3_EVENTS_PROVIDER
+      web3EventsProvider: WEB3_EVENTS_PROVIDER,
+      isSocialLogin: true,
+      socialLoginParams: {
+        isTestnet: true,
+        urls: ['http://localhost:3000/'],
+        networkConfig: [
+          {
+            chainId: 80001,
+            dappAPIKey: process.env.REACT_APP_NETWORK_80001_SOCIAL_LOGIN_DAPP
+          }
+          // {
+          //   chainId: 5,
+          //   dappAPIKey: process.env.REACT_APP_NETWORK_5_SOCIAL_LOGIN_DAPP
+          // }
+        ],
+        whiteLabelData: {
+          logo: 'https://www.polkamarkets.com/favicon.ico',
+          name: 'Polkamarkets'
+        }
+      }
     });
 
     this.polkamarkets.start();
@@ -99,6 +118,34 @@ export default class PolkamarketsService {
     this.contracts.voting = this.polkamarkets.getVotingContract({
       contractAddress: this.votingContractAddress
     });
+  }
+
+  public logoutSocialLogin() {
+    this.polkamarkets.socialLoginLogout();
+  }
+
+  public socialLoginGoogle() {
+    this.polkamarkets.socialLoginGoogle();
+  }
+
+  public socialLoginFacebook() {
+    this.polkamarkets.socialLoginFacebook();
+  }
+
+  public socialLoginTwitter() {
+    this.polkamarkets.socialLoginTwitter();
+  }
+
+  public socialLoginGithub() {
+    this.polkamarkets.socialLoginGithub();
+  }
+
+  public socialLoginDiscord() {
+    this.polkamarkets.socialLoginDiscord();
+  }
+
+  public socialLoginEmail(email) {
+    this.polkamarkets.socialLoginEmail(email);
   }
 
   // returns wether wallet is connected to service or not
