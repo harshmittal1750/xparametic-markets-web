@@ -11,7 +11,7 @@ import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 import { Button } from 'components/Button';
 import Feature from 'components/Feature';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useNetwork, usePolkamarketsService } from 'hooks';
 
 import { Transak } from '../integrations';
 import WalletInfoClaim from './WalletInfoClaim';
@@ -35,6 +35,12 @@ export default function WalletInfo() {
   const MetaMaskWalletComponent = theme.device.isDesktop
     ? MetaMaskWallet
     : Fragment;
+
+  const polkamarketsService = usePolkamarketsService();
+
+  async function handleSocialLoginLogout() {
+    await polkamarketsService.logoutSocialLogin();
+  }
 
   return (
     <div className="pm-c-wallet-info">
@@ -85,6 +91,14 @@ export default function WalletInfo() {
         </Link>
         {theme.device.isDesktop && <Transak />}
       </MetaMaskWalletComponent>
+      <Button
+        variant="outline"
+        color="default"
+        size="sm"
+        onClick={handleSocialLoginLogout}
+      >
+        Logout
+      </Button>
     </div>
   );
 }
