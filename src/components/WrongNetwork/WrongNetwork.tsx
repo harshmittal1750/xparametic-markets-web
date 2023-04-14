@@ -1,7 +1,11 @@
+import { useCallback } from 'react';
+
 import type { Network } from 'types/network';
 import { Alert, useTheme } from 'ui';
 
 import { Button, Text } from 'components';
+
+import { useLayout } from 'hooks';
 
 import wrongNetwork from './WrongNetwork.module.scss';
 
@@ -11,6 +15,11 @@ type WrongNetworkProps = {
 
 export default function WrongNetwork({ network }: WrongNetworkProps) {
   const theme = useTheme();
+  const layout = useLayout();
+  const handleChangeClick = useCallback(
+    () => layout.networkSelector.current?.click(),
+    [layout.networkSelector]
+  );
 
   return (
     <Alert
@@ -28,6 +37,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
           variant="ghost"
           size={theme.device.isDesktop ? 'sm' : 'xs'}
           className={wrongNetwork.link}
+          onClick={handleChangeClick}
         >
           changing it
         </Button>{' '}

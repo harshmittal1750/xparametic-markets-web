@@ -3,12 +3,18 @@ import { useLocation } from 'react-router-dom';
 
 import { pages, environment } from 'config';
 
+import { WrongNetwork } from 'components';
 import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import SEO from 'components/SEO';
 
-import { useAppSelector, useMarketPath, useNetwork } from 'hooks';
+import {
+  LayoutProvider,
+  useAppSelector,
+  useMarketPath,
+  useNetwork
+} from 'hooks';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const { network } = useNetwork();
@@ -28,14 +34,14 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   }, [location.pathname]);
 
   return (
-    <>
+    <LayoutProvider>
       {page?.meta && <SEO {...page.meta} />}
       <BetaWarning />
-      {!isAllowedNetwork && 'hello?'}
+      {!isAllowedNetwork && <WrongNetwork network={network} />}
       <Header $gutterBottom={!isHomePathname} />
       {children}
       <Footer $gutterTop={!isHomePathname} />
       <div id="toast-notification-portal" />
-    </>
+    </LayoutProvider>
   );
 }

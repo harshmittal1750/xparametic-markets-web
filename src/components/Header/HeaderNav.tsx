@@ -16,6 +16,8 @@ import Modal from 'components/Modal';
 import NetworkSelector from 'components/NetworkSelector';
 import Text from 'components/Text';
 
+import { useLayout } from 'hooks';
+
 import headerNavClasses from './HeaderNav.module.scss';
 
 function HeaderNavModal({
@@ -141,6 +143,7 @@ function HeaderNavMenuModal() {
 }
 export default function HeaderNav() {
   const theme = useTheme();
+  const layout = useLayout();
 
   return (
     <nav className={headerNavClasses.root}>
@@ -153,7 +156,11 @@ export default function HeaderNav() {
       ) : (
         !theme.device.isDesktop && (
           <>
-            <NetworkSelector responsive className={headerNavClasses.network} />
+            <NetworkSelector
+              ref={layout.networkSelector}
+              responsive
+              className={headerNavClasses.network}
+            />
             <HeaderNavMenuModal />
           </>
         )
