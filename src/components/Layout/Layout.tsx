@@ -9,12 +9,7 @@ import Footer from 'components/Footer';
 import Header from 'components/Header';
 import SEO from 'components/SEO';
 
-import {
-  LayoutProvider,
-  useAppSelector,
-  useMarketPath,
-  useNetwork
-} from 'hooks';
+import { useAppSelector, useMarketPath, useNetwork } from 'hooks';
 
 export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const { network } = useNetwork();
@@ -34,7 +29,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   }, [location.pathname]);
 
   return (
-    <LayoutProvider>
+    <>
       {page?.meta && <SEO {...page.meta} />}
       <BetaWarning />
       {!isAllowedNetwork && <WrongNetwork network={network} />}
@@ -42,6 +37,6 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
       {children}
       <Footer $gutterTop={!isHomePathname} />
       <div id="toast-notification-portal" />
-    </LayoutProvider>
+    </>
   );
 }
