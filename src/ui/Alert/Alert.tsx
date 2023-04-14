@@ -1,9 +1,10 @@
 import cn from 'classnames';
+import type { ContainerProps } from 'ui/Container';
 import Container from 'ui/Container';
 
 import alertClasses from './Alert.module.scss';
 
-interface AlertProps extends React.ComponentPropsWithoutRef<'div'> {
+interface AlertProps extends ContainerProps<'div'> {
   $type?: 'warning';
   $variant?: 'subtle';
 }
@@ -11,7 +12,6 @@ interface AlertProps extends React.ComponentPropsWithoutRef<'div'> {
 export default function Alert({ $type, $variant, ...props }: AlertProps) {
   return (
     <Container
-      $enableGutters
       $as="div"
       role="alert"
       aria-busy="false"
