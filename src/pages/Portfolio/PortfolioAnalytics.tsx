@@ -1,13 +1,16 @@
 import { useMemo } from 'react';
 
+import { Skeleton } from 'ui';
+
 import { CategoryAnalytics } from 'components';
 
-import { useAppSelector } from 'hooks';
-
+import type { PortfolioAsyncProps } from './type';
 import { formatPortfolioAnalytics } from './utils';
 
-function PortfolioAnalytics() {
-  const portfolio = useAppSelector(state => state.portfolio.portfolio);
+export default function PortfolioAnalytics({
+  isLoading,
+  portfolio
+}: PortfolioAsyncProps) {
   const analytics = useMemo(
     () =>
       formatPortfolioAnalytics(
@@ -27,17 +30,19 @@ function PortfolioAnalytics() {
 
   return (
     <ul className="portfolio-page__analytics">
-      {analytics
-        ?.filter(analytic => analytic.enabled)
-        .map(analytic => (
-          <li key={analytic.title}>
-            <CategoryAnalytics {...analytic} />
-          </li>
-        ))}
+      {(() => {
+        if (isLoading)
+          return [0, 1, 2, 3].map(skeleton => (
+            <Skeleton key={skeleton} style={{ height: 104 }} />
+          ));
+        return analytics
+          ?.filter(analytic => analytic.enabled)
+          .map(analytic => (
+            <li key={analytic.title}>
+              <CategoryAnalytics {...analytic} />
+            </li>
+          ));
+      })()}
     </ul>
   );
 }
-
-PortfolioAnalytics.displayName = 'PortfolioAnalytics';
-
-export default PortfolioAnalytics;

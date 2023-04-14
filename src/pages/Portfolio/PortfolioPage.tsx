@@ -11,21 +11,23 @@ import PortfolioTabs from './PortfolioTabs';
 export default function PortfolioPage() {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
-  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const polkamarkets = useAppSelector(state => state.polkamarkets);
+  const portfolio = useAppSelector(state => state.portfolio.portfolio);
+  const isLoading = !portfolio.address;
 
   useEffect(() => {
     (async function handlePortfolio() {
       const { getPortfolio } = await import('redux/ducks/portfolio');
 
-      dispatch(getPortfolio(ethAddress, network.id));
+      dispatch(getPortfolio(polkamarkets.ethAddress, network.id));
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ethAddress, network.id]);
+  }, [polkamarkets.ethAddress, network.id]);
 
   return (
     <Container className="portfolio-page">
-      <PortfolioAnalytics />
-      <PortfolioChart />
+      <PortfolioAnalytics portfolio={portfolio} isLoading={isLoading} />
+      <PortfolioChart portfolio={portfolio} isLoading={isLoading} />
       <PortfolioTabs />
     </Container>
   );

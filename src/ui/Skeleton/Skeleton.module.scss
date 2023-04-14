@@ -1,0 +1,23 @@
+@keyframes animation {
+  0% {
+    background-color: var(--color-text-quaternary);
+  }
+  100% {
+    background-color: var(--color-text-quinary);
+  }
+}
+
+.root {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: auto;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0px;
+    animation: animation 1s linear infinite alternate;
+    border-radius: 8px;
+  }
+}
