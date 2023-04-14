@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { getPortfolio } from 'redux/ducks/portfolio';
 import { Container } from 'ui';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -11,12 +10,17 @@ import PortfolioTabs from './PortfolioTabs';
 
 export default function PortfolioPage() {
   const dispatch = useAppDispatch();
-  const network = useNetwork();
+  const { network } = useNetwork();
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   useEffect(() => {
-    if (ethAddress) dispatch(getPortfolio(ethAddress, network.network.id));
-  }, [ethAddress, dispatch, network.network.id]);
+    (async function handlePortfolio() {
+      const { getPortfolio } = await import('redux/ducks/portfolio');
+
+      dispatch(getPortfolio(ethAddress, network.id));
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ethAddress, network.id]);
 
   return (
     <Container className="portfolio-page">

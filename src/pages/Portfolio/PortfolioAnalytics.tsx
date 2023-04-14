@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { CategoryAnalytics } from 'components';
 
 import { useAppSelector } from 'hooks';
@@ -5,24 +7,22 @@ import { useAppSelector } from 'hooks';
 import { formatPortfolioAnalytics } from './utils';
 
 function PortfolioAnalytics() {
-  const closedMarketsProfit = useAppSelector(
-    state => state.portfolio.portfolio.closedMarketsProfit
-  );
-  const openPositions = useAppSelector(
-    state => state.portfolio.portfolio.openPositions
-  );
-  const liquidityProvided = useAppSelector(
-    state => state.portfolio.portfolio.liquidityProvided
-  );
-  const liquidityFeesEarned = useAppSelector(
-    state => state.portfolio.portfolio.liquidityFeesEarned
-  );
-  const analytics = formatPortfolioAnalytics(
-    closedMarketsProfit,
-    openPositions,
-    liquidityProvided,
-    liquidityFeesEarned,
-    '€'
+  const portfolio = useAppSelector(state => state.portfolio.portfolio);
+  const analytics = useMemo(
+    () =>
+      formatPortfolioAnalytics(
+        portfolio.closedMarketsProfit,
+        portfolio.openPositions,
+        portfolio.liquidityProvided,
+        portfolio.liquidityFeesEarned,
+        '€'
+      ),
+    [
+      portfolio.closedMarketsProfit,
+      portfolio.liquidityFeesEarned,
+      portfolio.liquidityProvided,
+      portfolio.openPositions
+    ]
   );
 
   return (
