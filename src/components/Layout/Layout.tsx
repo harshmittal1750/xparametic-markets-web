@@ -15,10 +15,10 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   const { network } = useNetwork();
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const location = useLocation();
-  const page = Object.values(pages).filter(
-    ({ pathname }) => pathname === location.pathname
-  )[0];
   const marketPath = useMarketPath();
+  const [page] = Object.values(pages).filter(
+    ({ pathname }) => pathname === location.pathname
+  );
   const isHomePathname =
     location.pathname === pages.home.pathname || marketPath;
   const isAllowedNetwork =

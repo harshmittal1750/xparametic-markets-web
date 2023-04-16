@@ -33,8 +33,8 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
         fontWeight="medium"
         scale={theme.device.isDesktop ? 'caption' : 'tiny'}
       >
-        The selected network <strong>{network.name}</strong> does not match to
-        the one on your wallet. Consider{' '}
+        The selected network <strong>{network.name}</strong> does not match your
+        wallet&apos;s active one. Consider{' '}
         <Button
           variant="ghost"
           size={theme.device.isDesktop ? 'sm' : 'xs'}
@@ -43,7 +43,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
         >
           changing it
         </Button>{' '}
-        for better experience.
+        for a better experience.
       </Text>
     </Alert>
   );
