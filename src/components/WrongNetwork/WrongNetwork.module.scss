@@ -1,19 +1,4 @@
-.root {
-  gap: 8px;
-  align-items: flex-start;
-
-  @media (min-width: 1024px) {
-    align-items: center;
-  }
-}
-
 .link {
-  padding: 0px !important;
   color: inherit !important;
-  vertical-align: baseline !important;
-  text-decoration: underline !important;
-}
-
-.icon {
-  flex-shrink: 0;
+  font-size: inherit;
 }

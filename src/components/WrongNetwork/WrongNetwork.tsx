@@ -1,7 +1,7 @@
 import type { Network } from 'types/network';
-import { Alert, useTheme } from 'ui';
+import { Alert } from 'ui';
 
-import { Icon, NetworkSelector, Text } from 'components';
+import { Link, NetworkSelector } from 'components';
 
 import wrongNetwork from './WrongNetwork.module.scss';
 
@@ -10,25 +10,29 @@ type WrongNetworkProps = {
 };
 
 export default function WrongNetwork({ network }: WrongNetworkProps) {
-  const theme = useTheme();
-
   return (
     <Alert
       $type="warning"
       $variant="subtle"
-      $enableGutters={!theme.device.isDesktop}
-      className={wrongNetwork.root}
+      actions={
+        <NetworkSelector
+          anchorOrigin="right"
+          size="xs"
+          color="warning"
+          variant="normal"
+        />
+      }
     >
-      <Icon name="Warning" className={wrongNetwork.icon} />
-      <Text
-        fontWeight="medium"
-        scale={theme.device.isDesktop ? 'caption' : 'tiny'}
-      >
-        The selected network <strong>{network.name}</strong> does not match your
-        wallet&apos;s active one. Change the App network or learn how to change
-        it in wallet.
-        <NetworkSelector size="xs" />
-      </Text>
+      The selected network <strong>{network.name}</strong> does not match your
+      wallet&apos;s active one. Change the App network or learn{' '}
+      <Link
+        className={wrongNetwork.link}
+        title="how to change"
+        target="_blank"
+        rel="noreferrer noopener"
+        href="https://help.polkamarkets.com/en/articles/5608490-how-to-connect-your-wallet-to-polkamarkets"
+      />{' '}
+      it in MetaMask.
     </Alert>
   );
 }
