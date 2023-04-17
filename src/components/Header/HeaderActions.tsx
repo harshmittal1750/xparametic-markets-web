@@ -8,7 +8,7 @@ import NetworkSelector from 'components/NetworkSelector';
 import ThemeSelector from 'components/ThemeSelector';
 import WalletInfo from 'components/WalletInfo';
 
-import { useAppSelector, useLayout, usePortal } from 'hooks';
+import { useAppSelector, usePortal } from 'hooks';
 
 import headerClasses from './Header.module.scss';
 import headerActionsClasses from './HeaderActions.module.scss';
@@ -26,7 +26,6 @@ function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
 }
 export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const layout = useLayout();
   const theme = useTheme();
   const { Root, Wrapper } = theme.device.isDesktop
     ? { Root: Fragment, Wrapper: 'div' }
@@ -41,7 +40,7 @@ export default function HeaderActions() {
       >
         {theme.device.isDesktop && (
           <NetworkSelector
-            ref={layout.networkSelector}
+            size="sm"
             responsive
             className={headerActionsClasses.network}
           />

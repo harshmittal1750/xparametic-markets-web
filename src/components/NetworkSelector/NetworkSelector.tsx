@@ -1,9 +1,9 @@
-import { forwardRef, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import cn from 'classnames';
 import { Adornment, List, ListItem, useTheme } from 'ui';
 
-import { Button } from 'components/Button';
+import { Button, ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Text from 'components/Text';
@@ -12,144 +12,143 @@ import { useNetworks } from 'contexts/networks';
 
 import networSelectorClasses from './NetworkSelector.module.scss';
 
-type NetworkSelectorProps = {
+interface NetworkSelectorProps extends ButtonProps {
   responsive?: boolean;
-  className?: string;
+}
+type Rect = DOMRect | null;
+
+const defaultSx = {
+  initial: { bottom: -240 },
+  animate: { bottom: 0 },
+  exit: { bottom: -240 }
 };
 
-const NetworkSelector = forwardRef<HTMLButtonElement, NetworkSelectorProps>(
-  function NetworkSelector({ responsive, className }, ref) {
-    const theme = useTheme();
-    const networks = useNetworks();
-    const [rect, setRect] = useState<DOMRect | null>(null);
-    const isDesktop = !responsive || theme.device.isDesktop;
-    const isTv = !responsive || theme.device.isTv;
-    const handleShow = useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) =>
-        setRect(event.currentTarget.getBoundingClientRect()),
-      []
-    );
-    const handleHide = useCallback(() => setRect(null), []);
-    const handleNetworkClick = useCallback(
-      (name: string) => () => {
-        const [network] = networks.networks.filter(
-          _network => _network.name === name
-        );
+function getDefaultSx(rect: Rect) {
+  return {
+    style: {
+      left: rect?.left,
+      top: `calc(${rect?.height}px + ${rect?.top}px + 8px)`,
+      width: rect?.width
+    }
+  };
+}
+export default function NetworkSelector({
+  responsive,
+  ...props
+}: NetworkSelectorProps) {
+  const theme = useTheme();
+  const networks = useNetworks();
+  const [rect, setRect] = useState<Rect>(null);
+  const handleShow = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) =>
+      setRect(event.currentTarget.getBoundingClientRect()),
+    []
+  );
+  const handleHide = useCallback(() => setRect(null), []);
+  const handleNetworkClick = useCallback(
+    (name: string) => () => {
+      const [network] = networks.networks.filter(
+        _network => _network.name === name
+      );
 
-        networks.changeToNetwork(network);
-        handleHide();
-      },
-      [handleHide, networks]
-    );
+      networks.changeToNetwork(network);
+      handleHide();
+    },
+    [handleHide, networks]
+  );
+  const isDesktop = !responsive || theme.device.isDesktop;
+  const isTv = !responsive || theme.device.isTv;
+  const isSmall = props.size === 'xs';
 
-    return (
-      <>
-        <button
-          ref={ref}
-          type="button"
-          aria-label="Switch network"
-          onClick={handleShow}
-          className={cn(
-            networSelectorClasses.root,
-            {
-              [networSelectorClasses.rootResponsive]: responsive,
-              'pm-c-button-ghost--default': !isDesktop,
-              'pm-c-button-outline--default': isDesktop
-            },
-            className
-          )}
-        >
+  return (
+    <>
+      <Button
+        type="button"
+        aria-label="Switch network"
+        onClick={handleShow}
+        variant="outline"
+        {...props}
+      >
+        {!isSmall && (
           <Icon name={networks.network.currency.iconName} size="lg" />
-          {isDesktop && (
-            <>
-              {isTv && networks.network.name}
+        )}
+        {isDesktop && (
+          <>
+            {isTv && (isSmall ? 'Change' : networks.network.name)}
+            {!isSmall && (
               <span className={networSelectorClasses.rootIcon}>
                 <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
               </span>
-            </>
-          )}
-        </button>
-        <Modal
-          disableGutters
-          onHide={handleHide}
-          disableOverlay={isDesktop}
-          fullWidth={!isDesktop}
-          show={!!rect}
-          className={{
-            backdrop: networSelectorClasses.backdrop,
-            dialog: networSelectorClasses.dialog
-          }}
-          {...(isDesktop
-            ? {
-                style: {
-                  left: rect?.left,
-                  top: `calc(${rect?.height}px + ${rect?.top}px + 8px)`,
-                  width: rect?.width
-                }
-              }
-            : {
-                initial: { bottom: -240 },
-                animate: { bottom: 0 },
-                exit: { bottom: -240 }
-              })}
-        >
-          {!isDesktop && (
-            <header className={networSelectorClasses.header}>
-              <Text
-                scale="heading"
-                fontWeight="bold"
-                className={networSelectorClasses.headerTitle}
+            )}
+          </>
+        )}
+      </Button>
+      <Modal
+        disableGutters
+        onHide={handleHide}
+        disableOverlay={isDesktop}
+        fullWidth={!isDesktop}
+        show={!!rect}
+        className={{
+          backdrop: networSelectorClasses.backdrop,
+          dialog: networSelectorClasses.dialog
+        }}
+        {...(isDesktop ? getDefaultSx(rect) : defaultSx)}
+      >
+        {!isDesktop && (
+          <header className={networSelectorClasses.header}>
+            <Text
+              scale="heading"
+              fontWeight="bold"
+              className={networSelectorClasses.headerTitle}
+            >
+              Select Network
+            </Text>
+            <Adornment $edge="end">
+              <Button
+                size="xs"
+                variant="ghost"
+                color="default"
+                aria-label="Settings"
+                onClick={handleHide}
               >
-                Select Network
-              </Text>
-              <Adornment $edge="end">
-                <Button
-                  size="xs"
-                  variant="ghost"
-                  color="default"
-                  aria-label="Settings"
-                  onClick={handleHide}
-                >
-                  <Icon name="Cross" size="lg" />
-                </Button>
-              </Adornment>
-            </header>
-          )}
-          <List className={networSelectorClasses.list}>
-            {networks.networks.map(network => (
-              <ListItem
-                key={network.id}
-                className={networSelectorClasses.listItem}
+                <Icon name="Cross" size="lg" />
+              </Button>
+            </Adornment>
+          </header>
+        )}
+        <List className={networSelectorClasses.list}>
+          {networks.networks.map(network => (
+            <ListItem
+              key={network.id}
+              className={networSelectorClasses.listItem}
+            >
+              <Button
+                variant="ghost"
+                fullwidth
+                onClick={handleNetworkClick(network.name)}
+                className={cn(networSelectorClasses.listItemButton, {
+                  [networSelectorClasses.listItemSelected]:
+                    network.id === networks.network.id
+                })}
               >
-                <Button
-                  variant="ghost"
-                  fullwidth
-                  onClick={handleNetworkClick(network.name)}
-                  className={cn(networSelectorClasses.listItemButton, {
-                    [networSelectorClasses.listItemSelected]:
-                      network.id === networks.network.id
-                  })}
+                <span className={networSelectorClasses.listItemButtonIcon}>
+                  <Icon
+                    name={network.currency.iconName}
+                    size={isDesktop ? 'lg' : 'xl'}
+                  />
+                </span>
+                <Text
+                  scale={isDesktop ? 'caption' : 'body'}
+                  fontWeight="semibold"
                 >
-                  <span className={networSelectorClasses.listItemButtonIcon}>
-                    <Icon
-                      name={network.currency.iconName}
-                      size={isDesktop ? 'lg' : 'xl'}
-                    />
-                  </span>
-                  <Text
-                    scale={isDesktop ? 'caption' : 'body'}
-                    fontWeight="semibold"
-                  >
-                    {network.name}
-                  </Text>
-                </Button>
-              </ListItem>
-            ))}
-          </List>
-        </Modal>
-      </>
-    );
-  }
-);
-
-export default NetworkSelector;
+                  {network.name}
+                </Text>
+              </Button>
+            </ListItem>
+          ))}
+        </List>
+      </Modal>
+    </>
+  );
+}
