@@ -30,7 +30,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
         title="how to change"
         target="_blank"
         rel="noreferrer noopener"
-        href="https://help.polkamarkets.com/en/articles/5608490-how-to-connect-your-wallet-to-polkamarkets"
+        href="https://support.metamask.io/hc/en-us/articles/360043227612-How-to-add-a-custom-network-RPC"
       />{' '}
       it in MetaMask.
     </Alert>
