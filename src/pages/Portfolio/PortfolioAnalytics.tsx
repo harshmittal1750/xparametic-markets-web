@@ -4,28 +4,34 @@ import { Skeleton } from 'ui';
 
 import { CategoryAnalytics } from 'components';
 
+import { useAppSelector } from 'hooks';
+
 import type { PortfolioAsyncProps } from './type';
 import { formatPortfolioAnalytics } from './utils';
 
-export default function PortfolioAnalytics({
-  isLoading,
-  portfolio
-}: PortfolioAsyncProps) {
+export default function PortfolioAnalytics({ isLoading }: PortfolioAsyncProps) {
+  const closedMarketsProfit = useAppSelector(
+    state => state.portfolio.portfolio.closedMarketsProfit
+  );
+  const openPositions = useAppSelector(
+    state => state.portfolio.portfolio.openPositions
+  );
+  const liquidityProvided = useAppSelector(
+    state => state.portfolio.portfolio.liquidityProvided
+  );
+  const liquidityFeesEarned = useAppSelector(
+    state => state.portfolio.portfolio.liquidityFeesEarned
+  );
   const analytics = useMemo(
     () =>
       formatPortfolioAnalytics(
-        portfolio.closedMarketsProfit,
-        portfolio.openPositions,
-        portfolio.liquidityProvided,
-        portfolio.liquidityFeesEarned,
+        closedMarketsProfit,
+        openPositions,
+        liquidityProvided,
+        liquidityFeesEarned,
         '€'
       ),
-    [
-      portfolio.closedMarketsProfit,
-      portfolio.liquidityFeesEarned,
-      portfolio.liquidityProvided,
-      portfolio.openPositions
-    ]
+    [closedMarketsProfit, liquidityFeesEarned, liquidityProvided, openPositions]
   );
 
   return (
