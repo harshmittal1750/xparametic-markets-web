@@ -23,7 +23,7 @@ function generateCustomOptions(
       },
       x: {
         show: true,
-        format: 'MMM dd, yyyy HH:mm'
+        format: 'MMM dd, yyyy h:mm TT'
       },
       y: {
         show: true,
