@@ -59,7 +59,7 @@ export default class PolkamarketsService {
       isSocialLogin: true,
       socialLoginParams: {
         isTestnet: true,
-        urls: ['http://localhost:3000/'],
+        urls: [process.env.PUBLIC_URL],
         networkConfig: [
           {
             chainId: 80001,
