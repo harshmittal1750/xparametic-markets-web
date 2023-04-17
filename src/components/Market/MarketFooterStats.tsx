@@ -112,7 +112,9 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
           <Tooltip
             className={marketClasses.footerStatsTooltip}
-            text={`Expires on ${dayjs(expiresAt).utc().format('MMMM D, YYYY')}`}
+            text={`Expires on ${dayjs(expiresAt)
+              .utc(true)
+              .format('MMM D, YYYY h:mm A')}`}
           >
             <Icon
               name="Calendar"
@@ -125,7 +127,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               fontWeight="semibold"
               className={marketClasses.footerStatsText}
             >
-              {dayjs(expiresAt).utc().format('MMMM D, YYYY')}
+              {dayjs(expiresAt).utc(true).format('MMM D, YYYY h:mm A')}
             </Text>
           </Tooltip>
         </Text>
