@@ -23,9 +23,6 @@ export { default as useCookie } from './useCookie';
 
 export { default as useExpandableOutcomes } from './useExpandableOutcomes';
 
-export { default as LayoutProvider } from './useLayout';
-export { useLayout } from './useLayout';
-
 export { default as useMarketForms } from './useMarketForms';
 
 export { default as useMarketPath } from './useMarketPath';

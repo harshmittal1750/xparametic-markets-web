@@ -12,7 +12,6 @@ import { FiltersProvider } from 'contexts/filters';
 import { NetworksProvider } from 'contexts/networks';
 import { VoteProvider } from 'contexts/vote';
 
-import { LayoutProvider } from 'hooks';
 import { NetworkProvider } from 'hooks/useNetwork';
 import { PolkamarketsServiceProvider } from 'hooks/usePolkamarketsService';
 
@@ -28,9 +27,7 @@ export default function App() {
                   <FiltersProvider>
                     <FavoriteMarketsProvider>
                       <VoteProvider>
-                        <LayoutProvider>
-                          <Routes />
-                        </LayoutProvider>
+                        <Routes />
                       </VoteProvider>
                     </FavoriteMarketsProvider>
                   </FiltersProvider>
