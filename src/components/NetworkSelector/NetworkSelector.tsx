@@ -14,6 +14,7 @@ import networSelectorClasses from './NetworkSelector.module.scss';
 
 interface NetworkSelectorProps extends ButtonProps {
   responsive?: boolean;
+  anchorOrigin?: 'left' | 'right';
 }
 type Rect = DOMRect | null;
 
@@ -23,17 +24,25 @@ const defaultSx = {
   exit: { bottom: -240 }
 };
 
-function getDefaultSx(rect: Rect) {
+function getDefaultSx(
+  rect: Rect,
+  anchorOrigin: NetworkSelectorProps['anchorOrigin'] = 'left'
+) {
   return {
     style: {
-      left: rect?.left,
       top: `calc(${rect?.height}px + ${rect?.top}px + 8px)`,
-      width: rect?.width
+      width: rect?.width,
+      [anchorOrigin]:
+        anchorOrigin === 'left'
+          ? rect?.left
+          : Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
     }
   };
 }
 export default function NetworkSelector({
   responsive,
+  className,
+  anchorOrigin = 'left',
   ...props
 }: NetworkSelectorProps) {
   const theme = useTheme();
@@ -67,6 +76,13 @@ export default function NetworkSelector({
         aria-label="Switch network"
         onClick={handleShow}
         variant="outline"
+        className={cn(
+          networSelectorClasses.root,
+          {
+            [networSelectorClasses.sizeXs]: isSmall
+          },
+          className
+        )}
         {...props}
       >
         {!isSmall && (
@@ -93,7 +109,7 @@ export default function NetworkSelector({
           backdrop: networSelectorClasses.backdrop,
           dialog: networSelectorClasses.dialog
         }}
-        {...(isDesktop ? getDefaultSx(rect) : defaultSx)}
+        {...(isDesktop ? getDefaultSx(rect, anchorOrigin) : defaultSx)}
       >
         {!isDesktop && (
           <header className={networSelectorClasses.header}>
