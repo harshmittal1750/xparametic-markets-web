@@ -122,7 +122,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             text={`Trading Fee: ${roundNumber(fee + treasuryFee, 1)}%`}
           >
             <Icon
-              name="Dollar"
+              name="Fee"
               title="Trading Fee"
               className={marketClasses.footerStatsIcon}
             />
