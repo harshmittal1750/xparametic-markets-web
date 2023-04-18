@@ -21,7 +21,6 @@ export default function AppRoutes() {
       try {
         const userCountry = await getUserCountry();
 
-        setLoading(false);
         setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
       } finally {
         setLoading(false);
