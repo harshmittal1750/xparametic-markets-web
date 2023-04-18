@@ -23,8 +23,8 @@ export default function AppRoutes() {
 
         setLoading(false);
         setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
-      } catch (error) {
-        // unsupported
+      } finally {
+        setLoading(false);
       }
     })();
   }, []);
