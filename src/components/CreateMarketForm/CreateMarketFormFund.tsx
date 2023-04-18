@@ -81,7 +81,7 @@ function CreateMarketFormFund() {
             </>
           }
         />
-        <NetworkSelector />
+        <NetworkSelector size="sm" />
         <AmountInput
           label="Add Liquidity"
           max={roundDown(balance)}

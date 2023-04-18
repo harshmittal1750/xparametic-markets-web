@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import cn from 'classnames';
 import { Adornment, List, ListItem, useTheme } from 'ui';
 
-import { Button } from 'components/Button';
+import { Button, ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import Text from 'components/Text';
@@ -12,20 +12,42 @@ import { useNetworks } from 'contexts/networks';
 
 import networSelectorClasses from './NetworkSelector.module.scss';
 
-type NetworkSelectorProps = {
+interface NetworkSelectorProps extends ButtonProps {
   responsive?: boolean;
-  className?: string;
+  anchorOrigin?: 'left' | 'right';
+}
+type Rect = DOMRect | null;
+
+const defaultSx = {
+  initial: { bottom: -240 },
+  animate: { bottom: 0 },
+  exit: { bottom: -240 }
 };
 
+function getDefaultSx(
+  rect: Rect,
+  anchorOrigin: NetworkSelectorProps['anchorOrigin'] = 'left'
+) {
+  return {
+    style: {
+      top: `calc(${rect?.height}px + ${rect?.top}px + 8px)`,
+      width: rect?.width,
+      [anchorOrigin]:
+        anchorOrigin === 'left'
+          ? rect?.left
+          : Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
+    }
+  };
+}
 export default function NetworkSelector({
   responsive,
-  className
+  className,
+  anchorOrigin = 'left',
+  ...props
 }: NetworkSelectorProps) {
   const theme = useTheme();
   const networks = useNetworks();
-  const [rect, setRect] = useState<DOMRect | null>(null);
-  const isDesktop = !responsive || theme.device.isDesktop;
-  const isTv = !responsive || theme.device.isTv;
+  const [rect, setRect] = useState<Rect>(null);
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
       setRect(event.currentTarget.getBoundingClientRect()),
@@ -43,33 +65,40 @@ export default function NetworkSelector({
     },
     [handleHide, networks]
   );
+  const isDesktop = !responsive || theme.device.isDesktop;
+  const isTv = !responsive || theme.device.isTv;
+  const isSmall = props.size === 'xs';
 
   return (
     <>
-      <button
+      <Button
         type="button"
         aria-label="Switch network"
         onClick={handleShow}
+        variant="outline"
         className={cn(
           networSelectorClasses.root,
           {
-            [networSelectorClasses.rootResponsive]: responsive,
-            'pm-c-button-ghost--default': !isDesktop,
-            'pm-c-button-outline--default': isDesktop
+            [networSelectorClasses.sizeXs]: isSmall
           },
           className
         )}
+        {...props}
       >
-        <Icon name={networks.network.currency.iconName} size="lg" />
+        {!isSmall && (
+          <Icon name={networks.network.currency.iconName} size="lg" />
+        )}
         {isDesktop && (
           <>
-            {isTv && networks.network.name}
-            <span className={networSelectorClasses.rootIcon}>
-              <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
-            </span>
+            {isTv && (isSmall ? 'Change' : networks.network.name)}
+            {!isSmall && (
+              <span className={networSelectorClasses.rootIcon}>
+                <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
+              </span>
+            )}
           </>
         )}
-      </button>
+      </Button>
       <Modal
         disableGutters
         onHide={handleHide}
@@ -80,19 +109,7 @@ export default function NetworkSelector({
           backdrop: networSelectorClasses.backdrop,
           dialog: networSelectorClasses.dialog
         }}
-        {...(isDesktop
-          ? {
-              style: {
-                left: rect?.left,
-                top: `calc(${rect?.height}px + var(--grid-margin))`,
-                width: rect?.width
-              }
-            }
-          : {
-              initial: { bottom: -240 },
-              animate: { bottom: 0 },
-              exit: { bottom: -240 }
-            })}
+        {...(isDesktop ? getDefaultSx(rect, anchorOrigin) : defaultSx)}
       >
         {!isDesktop && (
           <header className={networSelectorClasses.header}>

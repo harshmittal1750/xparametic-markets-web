@@ -1,5 +1,7 @@
 export { default as Adornment } from './Adornment';
 
+export { default as Alert } from './Alert';
+
 export { default as Avatar } from './Avatar';
 export type { AvatarProps } from './Avatar';
 
