@@ -14,7 +14,7 @@ const restrictedCountries =
 
 export default function AppRoutes() {
   const [isLoading, setLoading] = useState(true);
-  const [isRestricted, setRestricted] = useState<boolean | undefined>(false);
+  const [isRestricted, setRestricted] = useState(false);
 
   useEffect(() => {
     (async function handleCountry() {
@@ -22,7 +22,7 @@ export default function AppRoutes() {
         const userCountry = await getUserCountry();
 
         setLoading(false);
-        setRestricted(restrictedCountries?.includes(userCountry.countryCode));
+        setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
       } catch (error) {
         // unsupported
       }
