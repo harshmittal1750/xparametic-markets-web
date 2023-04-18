@@ -59,17 +59,11 @@ export default class PolkamarketsService {
       isSocialLogin: true,
       socialLoginParams: {
         isTestnet: true,
-        urls: [process.env.PUBLIC_URL],
-        networkConfig: [
-          {
-            chainId: 80001,
-            dappAPIKey: process.env.REACT_APP_NETWORK_80001_SOCIAL_LOGIN_DAPP
-          }
-          // {
-          //   chainId: 5,
-          //   dappAPIKey: process.env.REACT_APP_NETWORK_5_SOCIAL_LOGIN_DAPP
-          // }
-        ],
+        urls: [process.env.PUBLIC_URL || process.env.REACT_APP_PUBLIC_URL],
+        networkConfig: {
+          chainId: 80001,
+          dappAPIKey: process.env.REACT_APP_NETWORK_80001_SOCIAL_LOGIN_DAPP
+        },
         whiteLabelData: {
           logo: 'https://www.polkamarkets.com/favicon.ico',
           name: 'Polkamarkets'
