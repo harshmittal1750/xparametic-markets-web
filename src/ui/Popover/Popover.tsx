@@ -18,7 +18,10 @@ interface PopoverProps<E extends HTMLElement>
     | 'style'
   > {
   show: E | null;
-  position: `${'top' | 'bottom'}${'Left' | 'Right'}` | 'center';
+  position: {
+    x: 'left' | 'right';
+    y: 'top' | 'bottom';
+  };
 }
 
 const defaultPopoverSx = {
@@ -38,11 +41,15 @@ function getPopoverSx<E extends HTMLElement>(
   element: E | null
 ) {
   const rect = element?.getBoundingClientRect();
+  const positionY = position.y === 'bottom' ? 'top' : 'bottom';
 
   return {
     style: {
-      left: rect?.left,
-      top: `calc(${rect?.height}px + var(--grid-margin))`,
+      [position.x]: {
+        left: rect?.left,
+        right: Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
+      }[position.x],
+      [positionY]: `calc(${rect?.height}px + var(--grid-margin))`,
       width: rect?.width
     }
   };
