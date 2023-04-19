@@ -156,6 +156,8 @@ export { default as CreateMarketFormDetails } from './CreateMarketFormDetails';
 
 export { default as CreateMarketFormOutcomes } from './CreateMarketFormOutcomes';
 
+export { default as CreateMarketFormFund } from './CreateMarketFormFund';
+
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 

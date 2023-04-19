@@ -53,6 +53,14 @@
   --color-main-primary: rgb(var(--purple-500--rgb));
   --color-main-quinary: rgb(var(--purple-500--rgb) / var(--alpha-quinary));
 
+  --color-alert-background--warning: rgba(240, 180, 41, 0.1);
+
+  --color-amount-input-background: rgba(227, 231, 240, 0.3);
+  --color-amount-input-background--focus: var(--color-bg-4);
+  --color-amount-input-background--disabled: #eff1f4;
+  --color-amount-input-border: #e0e2e7;
+  --color-amount-input-border--focus: #7069fa;
+
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
   --color-categorical-0: #0fb5ae;
@@ -95,6 +103,12 @@
     --color-vote-arrows-border--neutral: #3d4759;
     --color-vote-arrows-border--positive: #65d6ad33;
     --color-vote-arrows-border--negative: #f86a6a33;
+
+    --color-alert-background--warning: rgba(240, 180, 41, 0.05);
+
+    --color-amount-input-background: rgba(35, 42, 54, 0.3);
+    --color-amount-input-background--disabled: #292d32;
+    --color-amount-input-border: #252c3b;
   }
 
   --grid-margin: var(--size-12);

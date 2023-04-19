@@ -1,0 +1,55 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-36);
+}
+
+.networkSelector {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.alert {
+  display: flex;
+  flex-direction: row;
+  gap: var(--size-16);
+
+  padding: var(--size-20);
+  border-radius: var(--size-8);
+
+  background-color: var(--color-alert-background--warning);
+
+  &Body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--size-12);
+  }
+
+  &Icon {
+    flex-shrink: 0;
+    fill: #f7c948;
+  }
+
+  &Title {
+    font-size: 1.5rem;
+    line-height: 1;
+    font-weight: 600;
+    color: #f7c948;
+  }
+
+  &Description {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+
+  &Action {
+    @extend .alertTitle;
+
+    &:hover {
+      color: #fbbf24;
+    }
+  }
+}
