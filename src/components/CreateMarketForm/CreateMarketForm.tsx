@@ -11,6 +11,7 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
 import CreateMarketFormDetails from '../CreateMarketFormDetails';
+import CreateMarketFormFund from '../CreateMarketFormFund';
 import CreateMarketFormOutcomes from '../CreateMarketFormOutcomes';
 import Steps from '../Steps';
 import Toast from '../Toast';
@@ -19,7 +20,6 @@ import CreateMarketFormClasses from './CreateMarketForm.module.scss';
 import type { CreateMarketFormData } from './CreateMarketForm.type';
 import { initialValues, validationSchema } from './CreateMarketForm.util';
 import CreateMarketFormActions from './CreateMarketFormActions';
-import CreateMarketFormFund from './CreateMarketFormFund';
 
 function CreateMarketForm() {
   const history = useHistory();
@@ -136,6 +136,11 @@ function CreateMarketForm() {
                   id: 'outcomes',
                   title: 'Choose Outcomes',
                   component: <CreateMarketFormOutcomes />
+                },
+                {
+                  id: 'fund',
+                  title: 'Funding Information',
+                  component: <CreateMarketFormFund />
                 }
               ]}
               onChange={handleStepChange}
