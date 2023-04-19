@@ -12,9 +12,7 @@ export default function PortfolioPage() {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-  const isLoading = useAppSelector(
-    state => state.polkamarkets.isLoading.portfolio
-  );
+  const isLoading = useAppSelector(state => state.portfolio.isLoading);
 
   useEffect(() => {
     (async function handlePortfolio() {
