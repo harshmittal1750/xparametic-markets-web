@@ -3,11 +3,11 @@ import { useLocation } from 'react-router-dom';
 
 import { pages, environment } from 'config';
 
-import { WrongNetwork } from 'components';
 import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import SEO from 'components/SEO';
+import WrongNetwork from 'components/WrongNetwork';
 
 import { useAppSelector, useMarketPath, useNetwork } from 'hooks';
 
