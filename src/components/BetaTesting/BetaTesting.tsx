@@ -21,7 +21,12 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
       $type="info"
       $variant="subtle"
       actions={
-        <Button size="xs" variant="ghost" onClick={() => setShow(false)}>
+        <Button
+          size="xs"
+          color="primary"
+          variant="outline"
+          onClick={() => setShow(false)}
+        >
           <Icon name="Cross" />
         </Button>
       }
@@ -36,7 +41,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
         rel="noreferrer noopener"
         href="//discord.gg/Szjn2EEf7w"
       />{' '}
-      is highly appreciated 🎉
+      is highly appreciated! 🎉
     </Banner>
   );
 }
