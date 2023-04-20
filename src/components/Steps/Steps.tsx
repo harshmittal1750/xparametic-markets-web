@@ -64,14 +64,24 @@ function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
               Previous Step
             </Button>
           ) : null}
-          <Button
-            variant="subtle"
-            color="default"
-            onClick={() => onChange(current + 1)}
-            disabled={current === steps.length - 1 || !isCurrentStepValid}
-          >
-            Next Step
-          </Button>
+          {current === steps.length - 1 ? (
+            <Button
+              variant="normal"
+              color="success"
+              disabled={!isCurrentStepValid}
+            >
+              Create Market
+            </Button>
+          ) : (
+            <Button
+              variant="subtle"
+              color="default"
+              onClick={() => onChange(current + 1)}
+              disabled={current === steps.length - 1 || !isCurrentStepValid}
+            >
+              Next Step
+            </Button>
+          )}
         </div>
       </div>
     </div>
