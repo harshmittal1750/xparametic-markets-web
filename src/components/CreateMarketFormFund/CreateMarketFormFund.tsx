@@ -174,6 +174,12 @@ function CreateMarketFormFund() {
           </div>
         </div>
       </div>
+      <div className={CreateMarketFormFundClasses.append}>
+        <h4 className={CreateMarketFormFundClasses.appendTitle}>
+          Great! Your market is almost ready. Please review the details of your
+          forecasting market below and confirm its accuracy before submitting.
+        </h4>
+      </div>
     </>
   );
 }

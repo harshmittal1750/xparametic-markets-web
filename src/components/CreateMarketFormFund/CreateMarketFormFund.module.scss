@@ -2,6 +2,25 @@
   display: flex;
   flex-direction: column;
   gap: var(--size-36);
+  margin-bottom: var(--size-64);
+}
+
+.append {
+  display: flex;
+  flex-direction: column;
+  padding: var(--size-32);
+  gap: var(--size-32);
+
+  margin: calc(var(--size-32) * -1);
+  background-color: var(--color-create-market-preview-background);
+  border-radius: 0 0 var(--size-8) var(--size-8);
+
+  &Title {
+    font-size: 1.8rem;
+    line-height: 1.45;
+    font-weight: 500;
+    color: #65d6ad;
+  }
 }
 
 .networkSelector {

@@ -61,6 +61,8 @@
   --color-amount-input-border: #e0e2e7;
   --color-amount-input-border--focus: #7069fa;
 
+  --color-create-market-preview-background: rgba(101, 214, 173, 0.15);
+
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
   --color-categorical-0: #0fb5ae;
@@ -109,6 +111,8 @@
     --color-amount-input-background: rgba(35, 42, 54, 0.3);
     --color-amount-input-background--disabled: #292d32;
     --color-amount-input-border: #252c3b;
+
+    --color-create-market-preview-background: rgba(101, 214, 173, 0.06);
   }
 
   --grid-margin: var(--size-12);
