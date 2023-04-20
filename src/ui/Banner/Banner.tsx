@@ -50,7 +50,7 @@ export default function Banner({
     >
       <div className={bannerClasses.container}>
         <Adornment $size={theme.device.isDesktop ? 'md' : 'sm'} $edge="start">
-          {$type && <Icon name={icons[$type]} />}
+          {$type && <Icon size="lg" name={icons[$type]} />}
         </Adornment>
         <Text fontWeight="medium" scale="caption">
           {children}
