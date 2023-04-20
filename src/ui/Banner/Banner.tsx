@@ -11,13 +11,14 @@ import bannerClasses from './Banner.module.scss';
 
 interface BannerProps
   extends Pick<ContainerProps<'div'>, 'children' | 'className'> {
-  $type?: 'warning';
+  $type?: 'warning' | 'info';
   $variant?: 'subtle';
   actions?: React.ReactNode;
 }
 
 const icons = {
-  warning: 'Warning'
+  warning: 'Warning',
+  info: 'Speaker'
 } as const;
 
 export default function Banner({
@@ -40,6 +41,7 @@ export default function Banner({
         bannerClasses.root,
         {
           [bannerClasses.typeWarning]: $type === 'warning',
+          [bannerClasses.typeInfo]: $type === 'info',
           [bannerClasses.variantSubtle]: $variant === 'subtle'
         },
         className
@@ -54,7 +56,9 @@ export default function Banner({
           {children}
         </Text>
       </div>
-      <div className={bannerClasses.actions}>{actions}</div>
+      <Adornment $edge="end" className={bannerClasses.actions}>
+        {actions}
+      </Adornment>
     </Container>
   );
 }
