@@ -4,11 +4,12 @@ import type { ContainerProps } from 'ui/Container';
 import Container from 'ui/Container';
 import { useTheme } from 'ui/useTheme';
 
-import { Icon, Text } from 'components';
+import Icon from 'components/Icon';
+import Text from 'components/Text';
 
-import alertClasses from './Alert.module.scss';
+import bannerClasses from './Banner.module.scss';
 
-interface AlertProps
+interface BannerProps
   extends Pick<ContainerProps<'div'>, 'children' | 'className'> {
   $type?: 'warning';
   $variant?: 'subtle';
@@ -19,14 +20,14 @@ const icons = {
   warning: 'Warning'
 } as const;
 
-export default function Alert({
+export default function Banner({
   $type,
   $variant,
   className,
   children,
   actions,
   ...props
-}: AlertProps) {
+}: BannerProps) {
   const theme = useTheme();
 
   return (
@@ -36,16 +37,16 @@ export default function Alert({
       role="alert"
       aria-busy="false"
       className={cn(
-        alertClasses.root,
+        bannerClasses.root,
         {
-          [alertClasses.typeWarning]: $type === 'warning',
-          [alertClasses.variantSubtle]: $variant === 'subtle'
+          [bannerClasses.typeWarning]: $type === 'warning',
+          [bannerClasses.variantSubtle]: $variant === 'subtle'
         },
         className
       )}
       {...props}
     >
-      <div className={alertClasses.container}>
+      <div className={bannerClasses.container}>
         <Adornment $size={theme.device.isDesktop ? 'md' : 'sm'} $edge="start">
           {$type && <Icon style={{ flexShrink: 0 }} name={icons[$type]} />}
         </Adornment>
@@ -53,7 +54,7 @@ export default function Alert({
           {children}
         </Text>
       </div>
-      <div className={alertClasses.actions}>{actions}</div>
+      <div className={bannerClasses.actions}>{actions}</div>
     </Container>
   );
 }

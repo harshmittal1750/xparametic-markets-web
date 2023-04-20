@@ -1,5 +1,5 @@
 import type { Network } from 'types/network';
-import { Alert } from 'ui';
+import { Banner } from 'ui';
 
 import { Link, NetworkSelector } from 'components';
 
@@ -11,7 +11,7 @@ type WrongNetworkProps = {
 
 export default function WrongNetwork({ network }: WrongNetworkProps) {
   return (
-    <Alert
+    <Banner
       $type="warning"
       $variant="subtle"
       actions={
@@ -33,6 +33,6 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
         href="https://support.metamask.io/hc/en-us/articles/360043227612-How-to-add-a-custom-network-RPC"
       />{' '}
       it in MetaMask.
-    </Alert>
+    </Banner>
   );
 }
