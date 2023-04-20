@@ -3,7 +3,8 @@
   flex-direction: column;
   gap: 8px;
   align-items: flex-start;
-  min-height: 44px;
+  padding-top: calc(#{var(--grid-margin)} / 2);
+  padding-bottom: calc(#{var(--grid-margin)} / 2);
   color: rgb(var(--channel) / 1);
   background-color: rgb(var(--channel) / var(--alpha));
 
@@ -14,7 +15,7 @@
 }
 
 .container {
-  display: flex;
+  display: inherit;
 }
 
 .actions {

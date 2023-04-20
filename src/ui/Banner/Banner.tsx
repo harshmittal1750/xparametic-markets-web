@@ -34,7 +34,7 @@ export default function Banner({
     <Container
       $as="div"
       $enableGutters={!theme.device.isDesktop}
-      role="alert"
+      role="banner"
       aria-busy="false"
       className={cn(
         bannerClasses.root,
@@ -48,7 +48,7 @@ export default function Banner({
     >
       <div className={bannerClasses.container}>
         <Adornment $size={theme.device.isDesktop ? 'md' : 'sm'} $edge="start">
-          {$type && <Icon style={{ flexShrink: 0 }} name={icons[$type]} />}
+          {$type && <Icon name={icons[$type]} />}
         </Adornment>
         <Text fontWeight="medium" scale="caption">
           {children}
