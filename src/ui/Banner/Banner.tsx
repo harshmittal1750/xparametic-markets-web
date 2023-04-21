@@ -4,6 +4,8 @@ import type { ContainerProps } from 'ui/Container';
 import Container from 'ui/Container';
 import { useTheme } from 'ui/useTheme';
 
+import { Button } from 'components';
+import type { ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
 import Text from 'components/Text';
 
@@ -14,6 +16,7 @@ interface BannerProps
   $type?: 'warning' | 'info';
   $variant?: 'subtle';
   actions?: React.ReactNode;
+  onHide?: ButtonProps['onClick'];
 }
 
 const icons = {
@@ -27,6 +30,7 @@ export default function Banner({
   className,
   children,
   actions,
+  onHide,
   ...props
 }: BannerProps) {
   const theme = useTheme();
@@ -34,7 +38,6 @@ export default function Banner({
   return (
     <Container
       $as="div"
-      $enableGutters={!theme.device.isDesktop}
       role="banner"
       aria-busy="false"
       className={cn(
@@ -48,17 +51,22 @@ export default function Banner({
       )}
       {...props}
     >
+      <Adornment $size={theme.device.isDesktop ? 'md' : 'sm'} $edge="start">
+        {$type && <Icon size="lg" name={icons[$type]} />}
+      </Adornment>
       <div className={bannerClasses.container}>
-        <Adornment $size={theme.device.isDesktop ? 'md' : 'sm'} $edge="start">
-          {$type && <Icon size="lg" name={icons[$type]} />}
-        </Adornment>
         <Text fontWeight="medium" scale="caption">
           {children}
         </Text>
-      </div>
-      <Adornment $edge="end" className={bannerClasses.actions}>
         {actions}
-      </Adornment>
+      </div>
+      {onHide && (
+        <Adornment $edge="end" className={bannerClasses.actions}>
+          <Button size="xs" color="primary" variant="ghost" onClick={onHide}>
+            <Icon name="Cross" />
+          </Button>
+        </Adornment>
+      )}
     </Container>
   );
 }

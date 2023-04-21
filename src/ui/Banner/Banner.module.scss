@@ -1,20 +1,22 @@
 .root {
   display: flex;
-  flex-direction: column;
   gap: 8px;
-  align-items: flex-start;
   min-height: 44px;
+  padding-top: 12px;
+  padding-bottom: 12px;
   color: rgb(var(--channel) / 1);
   background-color: rgb(var(--channel) / var(--alpha));
 
   @media (min-width: 1024px) {
     align-items: center;
-    flex-direction: unset;
   }
 }
 
 .container {
   display: inherit;
+  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .actions {
