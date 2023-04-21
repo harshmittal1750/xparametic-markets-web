@@ -3,34 +3,21 @@ import { useState } from 'react';
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
-import { Button, Icon, Link } from 'components';
+import { Link } from 'components';
 
 import betaTesting from './BetaTesting.module.scss';
 
-type WrongNetworkProps = {
+type BetaTestingProps = {
   network: Network;
 };
 
-export default function WrongNetwork({ network }: WrongNetworkProps) {
+export default function BetaTesting({ network }: BetaTestingProps) {
   const [show, setShow] = useState(true);
 
   if (!show) return null;
 
   return (
-    <Banner
-      $type="info"
-      $variant="subtle"
-      actions={
-        <Button
-          size="xs"
-          color="primary"
-          variant="outline"
-          onClick={() => setShow(false)}
-        >
-          <Icon name="Cross" />
-        </Button>
-      }
-    >
+    <Banner $type="info" $variant="subtle" onHide={() => setShow(false)}>
       Welcome to Polkamarkets! You&apos;re on <strong>{network.name}</strong>{' '}
       and placing predictions with <strong>{network.currency.ticker}</strong>.
       Your{' '}

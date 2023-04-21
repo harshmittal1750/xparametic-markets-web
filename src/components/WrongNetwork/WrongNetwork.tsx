@@ -16,7 +16,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
       $variant="subtle"
       actions={
         <NetworkSelector
-          anchorOrigin="right"
+          anchorOrigin="left"
           size="xs"
           color="warning"
           variant="outline"
