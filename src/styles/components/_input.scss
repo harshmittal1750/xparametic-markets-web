@@ -62,11 +62,11 @@
         width: var(--size-12);
         flex-shrink: 0;
 
-        fill: themed('input-error-color');
+        fill: themed('input-error-color') !important;
       }
 
       &-message {
-        color: themed('input-error-color');
+        color: themed('input-error-color') !important;
       }
     }
   }

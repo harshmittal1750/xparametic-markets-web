@@ -1,0 +1,108 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-8);
+}
+
+.group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--size-4);
+
+  &:focus-within {
+    border-color: var(--color-main-primary);
+  }
+
+  transition: border-color 0.2s ease-in-out;
+}
+
+.error {
+  border-color: var(--color-number-input-button-border--error);
+
+  &:focus-within {
+    border-color: var(--color-number-input-button-border--error);
+  }
+}
+
+.button {
+  cursor: pointer;
+  user-select: none;
+
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  height: fit-content;
+  padding: var(--size-16);
+
+  color: var(--color-text-primary);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  background-color: var(--color-number-input-button-background);
+
+  outline: 0;
+  border: none;
+  border-right: 1px solid var(--color-border);
+
+  &:hover,
+  &:focus {
+    background-color: var(--color-number-input-button-background--hover);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    background-color: var(--color-number-input-button-background--disabled);
+  }
+
+  transition: background-color 0.2s ease-in-out;
+}
+
+.buttonMinus {
+  @extend .button;
+  border-radius: var(--size-4) 0 0 var(--size-4);
+}
+
+.buttonPlus {
+  @extend .button;
+  border-radius: 0;
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--size-8);
+
+  padding: var(--size-12);
+  width: 100%;
+}
+
+.input {
+  padding: 0;
+  outline: 0;
+  border: none;
+  background-color: transparent;
+
+  font-size: 1.5rem;
+  line-height: 1;
+  font-weight: 600;
+  text-align: left;
+  color: var(--color-text-primary);
+
+  width: 100%;
+  min-width: 100px;
+}
+
+.inputAdornment {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  font-weight: 500;
+  color: #5d55fa !important;
+}

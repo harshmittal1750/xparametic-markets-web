@@ -63,6 +63,11 @@
 
   --color-create-market-preview-background: rgba(101, 214, 173, 0.15);
 
+  --color-number-input-button-background: rgba(227, 231, 240, 0.3);
+  --color-number-input-button-background--hover: var(--color-bg-4);
+  --color-number-input-button-background--disabled: #eff1f4;
+  --color-number-input-button-border--error: #e12d39;
+
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
   --color-categorical-0: #0fb5ae;
@@ -113,6 +118,9 @@
     --color-amount-input-border: #252c3b;
 
     --color-create-market-preview-background: rgba(101, 214, 173, 0.06);
+
+    --color-number-input-button-background: rgba(35, 42, 54, 0.3);
+    --color-number-input-button-background--disabled: #292d32;
   }
 
   --grid-margin: var(--size-12);
