@@ -35,7 +35,7 @@
 
 .type {
   &Warning {
-    --channel: 240 180 41;
+    --channel: var(--color-warning--rgb);
   }
   &Info {
     --channel: var(--color-main--rgb);
