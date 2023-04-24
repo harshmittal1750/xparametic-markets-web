@@ -45,7 +45,8 @@ export default function Banner({
         {
           [bannerClasses.typeWarning]: $type === 'warning',
           [bannerClasses.typeInfo]: $type === 'info',
-          [bannerClasses.variantSubtle]: $variant === 'subtle'
+          [bannerClasses.variantSubtle]: $variant === 'subtle',
+          [bannerClasses.center]: !actions && theme.device.isDesktop
         },
         className
       )}
@@ -62,7 +63,7 @@ export default function Banner({
       </div>
       {onHide && (
         <Adornment $edge="end" className={bannerClasses.actions}>
-          <Button size="xs" color="primary" variant="ghost" onClick={onHide}>
+          <Button size="xs" variant="ghost" onClick={onHide}>
             <Icon name="Cross" />
           </Button>
         </Adornment>

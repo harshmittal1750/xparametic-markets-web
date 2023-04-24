@@ -6,10 +6,10 @@
   padding-bottom: 12px;
   color: rgb(var(--channel) / 1);
   background-color: rgb(var(--channel) / var(--alpha));
+}
 
-  @media (min-width: 1024px) {
-    align-items: center;
-  }
+.center {
+  align-items: center;
 }
 
 .container {
