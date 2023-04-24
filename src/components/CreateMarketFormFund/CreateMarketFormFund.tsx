@@ -15,6 +15,7 @@ import Tooltip from 'components/Tooltip';
 import { useAppSelector, useNetwork, useERC20Balance } from 'hooks';
 
 import Icon from '../Icon';
+import NumberInput from '../NumberInput';
 import AmountInput from './AmountInput';
 import CreateMarketFormFundClasses from './CreateMarketFormFund.module.scss';
 
@@ -35,7 +36,7 @@ function CreateMarketFormFund() {
   const currency = createMarketToken || network.network.currency;
 
   const [field, _meta, helpers] = useField('liquidity');
-  const [fee, setFee] = useState(0);
+  const [_fee, setFee] = useState(0);
 
   useEffect(() => {
     async function getMarketFee() {
@@ -163,17 +164,11 @@ function CreateMarketFormFund() {
               </Tooltip>
             </Text>
 
-            <Text
-              as="span"
-              scale="caption"
-              fontWeight="semibold"
-              className="pm-c-create-market-form__card-liquidity-details__earn-trading-fee__amount"
-            >
-              {`${roundNumber(fee * 100, 3)} %`}
-            </Text>
+            <NumberInput name="fee" min={0} max={100} />
           </div>
         </div>
       </div>
+
       <div className={CreateMarketFormFundClasses.append}>
         <h4 className={CreateMarketFormFundClasses.appendTitle}>
           Great! Your market is almost ready. Please review the details of your
