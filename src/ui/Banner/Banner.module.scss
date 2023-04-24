@@ -12,6 +12,10 @@
   align-items: center;
 }
 
+.icon {
+  flex-shrink: 0;
+}
+
 .container {
   display: inherit;
   gap: 8px;
