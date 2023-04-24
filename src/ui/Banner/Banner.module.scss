@@ -14,6 +14,12 @@
 
 .icon {
   flex-shrink: 0;
+  display: inherit;
+
+  @media (min-width: 1024px) {
+    margin-left: -4px;
+    margin-right: 4px;
+  }
 }
 
 .container {
