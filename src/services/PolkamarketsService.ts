@@ -27,6 +27,8 @@ export default class PolkamarketsService {
 
   public votingContractAddress: string | undefined;
 
+  static isSocialLogin: boolean = true; // TODO change to env variable
+
   // util functions
   static bytes32ToInt(bytes32Str: string): number {
     return Number(realitioLib.bytes32ToString(bytes32Str, { type: 'int' }));
@@ -56,7 +58,7 @@ export default class PolkamarketsService {
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
       web3EventsProvider: WEB3_EVENTS_PROVIDER,
-      isSocialLogin: true,
+      isSocialLogin: PolkamarketsService.isSocialLogin,
       socialLoginParams: {
         isTestnet: true,
         urls: [process.env.PUBLIC_URL || process.env.REACT_APP_PUBLIC_URL],
