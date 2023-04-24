@@ -18,5 +18,6 @@ export type CreateMarketFormData = {
   subcategory: string;
   closingDate: string;
   liquidity: number;
+  fee: number;
   resolutionSource: string;
 };

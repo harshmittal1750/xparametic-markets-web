@@ -24,6 +24,7 @@ const initialValues: CreateMarketFormData = {
   subcategory: '',
   closingDate: dayjs().toString(),
   liquidity: 0,
+  fee: 0,
   resolutionSource: ''
 };
 
@@ -67,7 +68,11 @@ const validationSchema = [
       })
   }),
   Yup.object().shape({
-    liquidity: Yup.number().moreThan(0).required('Liquidity is required.')
+    liquidity: Yup.number().moreThan(0).required('Liquidity is required.'),
+    fee: Yup.number()
+      .min(0, 'Fee must be greater than or equal to 0%')
+      .max(100, 'Fee must be less than or equal to 100%')
+      .required('Fee is required.')
   })
 ];
 
