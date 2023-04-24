@@ -17,6 +17,7 @@ import Pill from 'components/Pill';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
+import PolkamarketsService from '../../services/PolkamarketsService';
 import { connectMetamaskProps } from './ConnectMetamask.util';
 
 export default function ConnectMetamask() {
@@ -30,13 +31,18 @@ export default function ConnectMetamask() {
   function handleTryAgain() {
     window.location.reload();
   }
-  function handleMetamaskModal() {
-    setShow(true);
-  }
   const handleMetamaskLogin = useCallback(async () => {
     await polkamarketsService.login();
     dispatch(login(polkamarketsService));
   }, [dispatch, polkamarketsService]);
+
+  function handleMetamaskModal() {
+    if (PolkamarketsService.isSocialLogin) {
+      handleMetamaskLogin();
+    } else {
+      setShow(true);
+    }
+  }
 
   return (
     <>

@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
@@ -11,8 +11,14 @@ import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 import { Button } from 'components/Button';
 import Feature from 'components/Feature';
 
-import { useAppSelector, useNetwork, usePolkamarketsService } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 
+import { changeIsLoggedIn } from '../../redux/ducks/polkamarkets';
 import { Transak } from '../integrations';
 import WalletInfoClaim from './WalletInfoClaim';
 
@@ -27,6 +33,7 @@ function MetaMaskWallet(props: React.PropsWithChildren<{}>) {
   return <div className="pm-c-wallet-info__currency" {...props} />;
 }
 export default function WalletInfo() {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
   const { network } = useNetwork();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
@@ -38,9 +45,10 @@ export default function WalletInfo() {
 
   const polkamarketsService = usePolkamarketsService();
 
-  async function handleSocialLoginLogout() {
+  const handleSocialLoginLogout = useCallback(async () => {
     await polkamarketsService.logoutSocialLogin();
-  }
+    dispatch(changeIsLoggedIn(false));
+  }, [dispatch, polkamarketsService]);
 
   return (
     <div className="pm-c-wallet-info">
