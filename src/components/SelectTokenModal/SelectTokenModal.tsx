@@ -1,5 +1,6 @@
 import { useCallback, useState, ChangeEvent, useMemo } from 'react';
 
+import cn from 'classnames';
 import { tokens } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import { changeCreateMarketToken } from 'redux/ducks/polkamarkets';
@@ -7,7 +8,7 @@ import { PolkamarketsService } from 'services';
 import { Currency } from 'types/currency';
 import type { Network } from 'types/network';
 import { Token } from 'types/token';
-import { Adornment, Container, Tag } from 'ui';
+import { Adornment, Container } from 'ui';
 
 import { TokenIcon } from 'assets/icons';
 
@@ -29,14 +30,22 @@ type SelectTokenModalProps = {
 
 export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   const dispatch = useAppDispatch();
-  const [show, setShow] = useState(false);
-  const handleHide = useCallback(() => setShow(false), []);
+  const [rect, setRect] = useState<DOMRect | null>(null);
+
   const [searchString, setSearchString] = useState<string>('');
   const [searchToken, setSearchToken] = useState<any>(null);
   const { createMarketToken } = useAppSelector(state => state.polkamarkets);
   const { networkConfig } = useNetwork();
 
   const currency = createMarketToken || network.currency;
+
+  const handleShow = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) =>
+      setRect(event.currentTarget.getBoundingClientRect()),
+    []
+  );
+
+  const handleHide = useCallback(() => setRect(null), []);
 
   const handleChange = useCallback(
     async (event: ChangeEvent<HTMLInputElement>) => {
@@ -105,26 +114,27 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
 
   return (
     <>
-      <Tag
-        onClick={() => setShow(true)}
-        $color="default"
-        $size="sm"
-        $variant="subtle"
+      <button
+        type="button"
+        aria-label="Select token"
+        onClick={handleShow}
+        className={cn(
+          selectTokenModalClasses.root,
+          'pm-c-button-outline--default'
+        )}
       >
-        <Adornment $size="sm" $edge="start">
-          {currency.iconName === 'Token' ? (
-            <TokenIcon ticker={currency.ticker} />
-          ) : (
-            <Icon name={currency.iconName} />
-          )}
-        </Adornment>
+        {currency.iconName === 'Token' ? (
+          <TokenIcon ticker={currency.ticker} size="lg" />
+        ) : (
+          <Icon name={currency.iconName} size="lg" />
+        )}
         {currency.ticker}
-        <Adornment $size="sm" $edge="end">
-          <Icon name="Chevron" dir="down" />
-        </Adornment>
-      </Tag>
+        <span className={selectTokenModalClasses.rootIcon}>
+          <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
+        </span>
+      </button>
       <Modal
-        show={show}
+        show={!!rect}
         onHide={handleHide}
         disableGutters
         size="sm"
