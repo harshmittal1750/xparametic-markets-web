@@ -1,5 +1,7 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
 import { useState, useEffect, useCallback } from 'react';
 
+import cn from 'classnames';
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
 import { PolkamarketsService } from 'services';
@@ -63,38 +65,72 @@ function CreateMarketFormFund() {
     <>
       <div className={CreateMarketFormFundClasses.root}>
         <div className={CreateMarketFormFundClasses.networkSelector}>
-          <NetworkSelector />
-          <SelectTokenModal network={network.network} />
-        </div>
-        <div role="alert" className={CreateMarketFormFundClasses.alert}>
-          <Icon
-            name="Warning"
-            size="md"
-            className={CreateMarketFormFundClasses.alertIcon}
-          />
-          <div className={CreateMarketFormFundClasses.alertBody}>
-            <h3 className={CreateMarketFormFundClasses.alertTitle}>
-              Attention needed
-            </h3>
-            <p className={CreateMarketFormFundClasses.alertDescription}>
-              Providing liquidity is risky and could result in near total loss.
-              It is important to withdraw liquidity before the event occurs and
-              to be aware the market could move abruptly at any time.
-            </p>
-            <a
-              href="//help.polkamarkets.com/en/articles/6153227-strategies-and-risks-for-liquidity-providers"
-              aria-label="More Info"
-              target="_blank"
-              rel="noreferrer"
-              className={CreateMarketFormFundClasses.alertAction}
+          <div className="pm-c-input__group width-full">
+            <label
+              htmlFor="network"
+              className={cn(
+                'pm-c-input__label--default',
+                'pm-c-input__label--required'
+              )}
             >
-              More info
-              <Icon
-                name="Arrow"
-                dir="right"
-                style={{ marginLeft: 'var(--size-4)' }}
-              />
-            </a>
+              Network (Chain)
+            </label>
+            <NetworkSelector />
+          </div>
+          <div className="pm-c-input__group width-full">
+            <label
+              htmlFor="token"
+              className={cn(
+                'pm-c-input__label--default',
+                'pm-c-input__label--required'
+              )}
+            >
+              Token
+            </label>
+            <SelectTokenModal network={network.network} />
+          </div>
+        </div>
+        <div className="pm-c-input__group">
+          <label
+            htmlFor="liquidity"
+            className={cn(
+              'pm-c-input__label--default',
+              'pm-c-input__label--required'
+            )}
+          >
+            Add Liquidity
+          </label>
+          <div role="alert" className={CreateMarketFormFundClasses.alert}>
+            <Icon
+              name="Warning"
+              size="md"
+              className={CreateMarketFormFundClasses.alertIcon}
+            />
+            <div className={CreateMarketFormFundClasses.alertBody}>
+              <h3 className={CreateMarketFormFundClasses.alertTitle}>
+                Attention needed
+              </h3>
+              <p className={CreateMarketFormFundClasses.alertDescription}>
+                Providing liquidity is risky and could result in near total
+                loss. It is important to withdraw liquidity before the event
+                occurs and to be aware the market could move abruptly at any
+                time.
+              </p>
+              <a
+                href="//help.polkamarkets.com/en/articles/6153227-strategies-and-risks-for-liquidity-providers"
+                aria-label="More Info"
+                target="_blank"
+                rel="noreferrer"
+                className={CreateMarketFormFundClasses.alertAction}
+              >
+                More info
+                <Icon
+                  name="Arrow"
+                  dir="right"
+                  style={{ marginLeft: 'var(--size-4)' }}
+                />
+              </a>
+            </div>
           </div>
         </div>
         <AmountInput
