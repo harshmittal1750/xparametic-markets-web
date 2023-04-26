@@ -1,7 +1,7 @@
 import cn from 'classnames';
 import { useFormikContext } from 'formik';
 
-import { Button } from 'components/Button';
+import { Button, ButtonLoading } from 'components/Button';
 
 import StepsClasses from './Steps.module.scss';
 import type { Step } from './Steps.type';
@@ -14,7 +14,7 @@ type StepsProps = {
 };
 
 function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
-  const { isValid, touched } = useFormikContext();
+  const { isValid, touched, isSubmitting } = useFormikContext();
 
   const isCurrentStepValid =
     currentStepFields.every(field => touched[field]) && isValid;
@@ -60,18 +60,21 @@ function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
               variant="ghost"
               color="default"
               onClick={() => onChange(current - 1)}
+              disabled={isSubmitting}
             >
               Previous Step
             </Button>
           ) : null}
           {current === steps.length - 1 ? (
-            <Button
+            <ButtonLoading
+              type="submit"
               variant="normal"
               color="success"
-              disabled={!isCurrentStepValid}
+              loading={isSubmitting}
+              disabled={!isValid || isSubmitting}
             >
               Create Market
-            </Button>
+            </ButtonLoading>
           ) : (
             <Button
               variant="subtle"
