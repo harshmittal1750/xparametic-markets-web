@@ -34,6 +34,14 @@
   }
 }
 
+.fee {
+  @media (max-width: 576px) {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: var(--size-8) !important;
+  }
+}
+
 .alert {
   display: flex;
   flex-direction: row;

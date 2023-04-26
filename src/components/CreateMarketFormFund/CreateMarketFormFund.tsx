@@ -184,7 +184,12 @@ function CreateMarketFormFund() {
           </div>
           <hr className="pm-c-create-market-form__card-liquidity-details__separator" />
 
-          <div className="pm-c-create-market-form__card-liquidity-details__earn-trading-fee">
+          <div
+            className={cn(
+              'pm-c-create-market-form__card-liquidity-details__earn-trading-fee',
+              CreateMarketFormFundClasses.fee
+            )}
+          >
             <Text
               as="span"
               scale="caption"
@@ -199,7 +204,6 @@ function CreateMarketFormFund() {
                 <InfoIcon />
               </Tooltip>
             </Text>
-
             <NumberInput name="fee" min={0} max={100} />
           </div>
         </div>
