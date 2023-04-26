@@ -13,6 +13,7 @@ export { ReactComponent as Crown } from './Crown.svg';
 export { ReactComponent as Delta } from './Delta.svg';
 export { ReactComponent as Ethereum } from './Ethereum.svg';
 export { ReactComponent as Explore } from './Explore.svg';
+export { ReactComponent as Fee } from './Fee.svg';
 export { ReactComponent as Filter } from './Filter.svg';
 export { ReactComponent as Gear } from './Gear.svg';
 export { ReactComponent as GitHub } from './GitHub.svg';

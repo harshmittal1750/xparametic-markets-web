@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { getPortfolio } from 'redux/ducks/portfolio';
 import { Container } from 'ui';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
@@ -9,25 +8,26 @@ import PortfolioAnalytics from './PortfolioAnalytics';
 import PortfolioChart from './PortfolioChart';
 import PortfolioTabs from './PortfolioTabs';
 
-const PortfolioPage = () => {
+export default function PortfolioPage() {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
-
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const isLoading = useAppSelector(state => state.portfolio.isLoading);
 
   useEffect(() => {
-    if (ethAddress) {
+    (async function handlePortfolio() {
+      const { getPortfolio } = await import('redux/ducks/portfolio');
+
       dispatch(getPortfolio(ethAddress, network.id));
-    }
-  }, [ethAddress, dispatch, network.id]);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ethAddress, network.id]);
 
   return (
     <Container className="portfolio-page">
-      <PortfolioAnalytics />
-      <PortfolioChart />
+      <PortfolioAnalytics isLoading={isLoading} />
+      <PortfolioChart isLoading={isLoading} />
       <PortfolioTabs />
     </Container>
   );
-};
-
-export default PortfolioPage;
+}

@@ -1,6 +1,6 @@
 @keyframes animation {
   0% {
-    background-color: var(--color-text-quaternary);
+    background-color: var(--color-text-sextary);
   }
   100% {
     background-color: var(--color-text-quinary);
@@ -17,7 +17,7 @@
     content: '';
     position: absolute;
     inset: 0px;
-    animation: animation 1s linear infinite alternate;
+    animation: animation 600ms linear infinite alternate;
     border-radius: 8px;
   }
 }

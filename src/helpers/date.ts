@@ -6,7 +6,7 @@ import utc from 'dayjs/plugin/utc';
 
 function fromTimestampToDate(timestamp: number) {
   dayjs.extend(utc);
-  return dayjs(timestamp);
+  return dayjs(timestamp).utc(true);
 }
 
 function fromTimestampToCustomFormatDate(timestamp: number, format: string) {

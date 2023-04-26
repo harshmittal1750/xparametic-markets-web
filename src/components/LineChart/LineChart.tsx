@@ -43,7 +43,7 @@ function LineChart({ series, ticker, height = 200 }: LineChartProps) {
       generateCustomOptions(
         theme.device.mode,
         ticker,
-        moreThan24h ? 'MMM, dd' : 'HH:mm'
+        moreThan24h ? 'MMM, dd' : 'h:mm TT'
       ),
     [moreThan24h, theme.device.mode, ticker]
   );

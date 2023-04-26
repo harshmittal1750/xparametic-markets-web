@@ -40,6 +40,7 @@ export default function HeaderActions() {
       >
         {theme.device.isDesktop && (
           <NetworkSelector
+            size="sm"
             responsive
             className={headerActionsClasses.network}
           />

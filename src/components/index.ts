@@ -194,3 +194,5 @@ export { default as SelectTokenModal } from './SelectTokenModal';
 export { default as ThemeSelector } from './ThemeSelector';
 
 export { default as VirtualizedList } from './VirtualizedList';
+
+export { default as WrongNetwork } from './WrongNetwork';
