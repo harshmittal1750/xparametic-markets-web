@@ -163,6 +163,8 @@ export type { IconProps } from './Icon';
 
 export { default as Feature } from './Feature';
 
+export { default as FormikPersist } from './FormikPersist';
+
 export { default as Header } from './Header';
 
 export { default as MarketAvatar } from './MarketAvatar';
