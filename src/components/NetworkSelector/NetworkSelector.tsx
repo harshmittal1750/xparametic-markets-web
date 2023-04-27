@@ -13,42 +13,16 @@ import networSelectorClasses from './NetworkSelector.module.scss';
 
 interface NetworkSelectorProps extends ButtonProps {
   responsive?: boolean;
-  anchorOrigin?: 'left' | 'right';
 }
-type Rect = DOMRect | null;
 
-const defaultSx = {
-  initial: { bottom: -240 },
-  animate: { bottom: 0 },
-  exit: { bottom: -240 }
-};
-
-function getDefaultSx(
-  rect: Rect,
-  anchorOrigin: NetworkSelectorProps['anchorOrigin'] = 'left'
-) {
-  return {
-    style: {
-      top: `calc(${rect?.height}px + ${rect?.top}px + 8px)`,
-      width: rect?.width,
-      [anchorOrigin]:
-        anchorOrigin === 'left'
-          ? rect?.left
-          : Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
-    }
-  };
-}
 export default function NetworkSelector({
   responsive,
   className,
-  anchorOrigin = 'left',
   ...props
 }: NetworkSelectorProps) {
   const theme = useTheme();
   const networks = useNetworks();
   const [show, setShow] = useState<HTMLButtonElement | null>(null);
-  const isDesktop = !responsive || theme.device.isDesktop;
-  const isTv = !responsive || theme.device.isTv;
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
       setShow(event.currentTarget),
@@ -99,7 +73,7 @@ export default function NetworkSelector({
             )}
           </>
         )}
-      </button>
+      </Button>
       <Popover position="bottomLeft" onHide={handleHide} show={show}>
         {!isDesktop && (
           <header className={networSelectorClasses.header}>

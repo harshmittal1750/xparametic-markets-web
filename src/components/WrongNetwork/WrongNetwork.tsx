@@ -14,14 +14,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
     <Alert
       $type="warning"
       $variant="subtle"
-      actions={
-        <NetworkSelector
-          anchorOrigin="right"
-          size="xs"
-          color="warning"
-          variant="normal"
-        />
-      }
+      actions={<NetworkSelector size="xs" color="warning" variant="normal" />}
     >
       The selected network <strong>{network.name}</strong> does not match your
       wallet&apos;s active one. Change the App network or learn{' '}
