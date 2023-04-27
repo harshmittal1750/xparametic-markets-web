@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, List, ListItem, useTheme } from 'ui';
+import { Adornment, List, ListItem, Popover, useTheme } from 'ui';
 
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
-import Modal from 'components/Modal';
 import Text from 'components/Text';
 
 import { useNetworks } from 'contexts/networks';
@@ -23,15 +22,15 @@ export default function NetworkSelector({
 }: NetworkSelectorProps) {
   const theme = useTheme();
   const networks = useNetworks();
-  const [rect, setRect] = useState<DOMRect | null>(null);
+  const [show, setShow] = useState<HTMLButtonElement | null>(null);
   const isDesktop = !responsive || theme.device.isDesktop;
   const isTv = !responsive || theme.device.isTv;
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
-      setRect(event.currentTarget.getBoundingClientRect()),
+      setShow(event.currentTarget),
     []
   );
-  const handleHide = useCallback(() => setRect(null), []);
+  const handleHide = useCallback(() => setShow(null), []);
   const handleNetworkClick = useCallback(
     (name: string) => () => {
       const [network] = networks.networks.filter(
@@ -65,35 +64,12 @@ export default function NetworkSelector({
           <>
             {isTv && networks.network.name}
             <span className={networSelectorClasses.rootIcon}>
-              <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
+              <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
             </span>
           </>
         )}
       </button>
-      <Modal
-        disableGutters
-        onHide={handleHide}
-        disableOverlay={isDesktop}
-        fullWidth={!isDesktop}
-        show={!!rect}
-        className={{
-          backdrop: networSelectorClasses.backdrop,
-          dialog: networSelectorClasses.dialog
-        }}
-        {...(isDesktop
-          ? {
-              style: {
-                left: rect?.left,
-                top: `calc(${rect?.height}px + var(--grid-margin))`,
-                width: rect?.width
-              }
-            }
-          : {
-              initial: { bottom: -240 },
-              animate: { bottom: 0 },
-              exit: { bottom: -240 }
-            })}
-      >
+      <Popover position="bottomLeft" onHide={handleHide} show={show}>
         {!isDesktop && (
           <header className={networSelectorClasses.header}>
             <Text
@@ -147,7 +123,7 @@ export default function NetworkSelector({
             </ListItem>
           ))}
         </List>
-      </Modal>
+      </Popover>
     </>
   );
 }
