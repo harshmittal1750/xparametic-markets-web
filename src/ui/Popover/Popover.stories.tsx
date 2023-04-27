@@ -12,11 +12,7 @@ function Template() {
       <button type="button" onClick={event => setShow(event.currentTarget)}>
         {show ? 'Hide' : 'Show'}
       </button>
-      <Popover
-        show={show}
-        position={{ x: 'left', y: 'bottom' }}
-        onHide={() => setShow(null)}
-      >
+      <Popover show={show} position="topLeft" onHide={() => setShow(null)}>
         Hello
       </Popover>
     </>
@@ -26,8 +22,9 @@ function Template() {
 const PopoverMeta: Meta<typeof Popover> = {
   component: Popover
 };
-
-export const PopoverExample = {
+const PopoverExample = {
   render: () => <Template />
 };
+
 export default PopoverMeta;
+export { PopoverExample };
