@@ -1,12 +1,22 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { ComponentMeta, ComponentStory } from '@storybook/react';
 
 import Icon from './Icon';
 
-type Story = StoryObj<typeof Icon>;
+const Meta: ComponentMeta<typeof Icon> = {
+  component: Icon,
+  argTypes: {
+    dir: {}
+  }
+};
+const Story: ComponentStory<typeof Icon> = props => <Icon {...props} />;
 
-const IconMeta: Meta<typeof Icon> = {
-  component: Icon
+const Example = Story.bind({});
+Example.args = {
+  name: 'Arrow',
+  title: 'Go back somewhere',
+  size: 'lg',
+  dir: 'up'
 };
 
-export const Example: Story = {};
-export default IconMeta;
+export default Meta;
+export { Example };
