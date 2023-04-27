@@ -88,8 +88,8 @@ export default function Popover<E extends HTMLElement>({
   return (
     <Modal
       disableGutters
-      disableOverlay={theme.device.isDesktop}
-      fullWidth={!theme.device.isDesktop}
+      disableOverlay={disableMobileSheet ? undefined : theme.device.isDesktop}
+      fullWidth={disableMobileSheet ? undefined : !theme.device.isDesktop}
       show={!!show}
       className={{
         dialog: cn(
