@@ -6,6 +6,8 @@ import { PolkamarketsService } from 'services';
 import * as marketService from 'services/Polkamarkets/market';
 import { Token } from 'types/token';
 
+import FormikPersist from 'components/FormikPersist';
+
 import { useNetwork, useAppSelector } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
@@ -123,6 +125,7 @@ function CreateMarketForm() {
             ref={handleFormRef(values.isSubmitting && !values.isValid)}
             className="pm-c-create-market-form"
           >
+            <FormikPersist name="createMarket" />
             <Steps
               current={currentStep}
               currentStepFields={Object.keys(currentValidationSchema.fields)}
