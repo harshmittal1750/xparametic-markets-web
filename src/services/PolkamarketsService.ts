@@ -118,6 +118,7 @@ export default class PolkamarketsService {
 
   public logoutSocialLogin() {
     this.polkamarkets.socialLoginLogout();
+    this.loggedIn = false;
   }
 
   public socialLoginGoogle() {

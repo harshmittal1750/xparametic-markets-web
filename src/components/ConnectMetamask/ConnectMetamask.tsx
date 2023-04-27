@@ -92,15 +92,27 @@ export default function ConnectMetamask() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Button
-        variant="outline"
-        color="default"
-        size="sm"
-        onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
-      >
-        <MetaMaskIcon />
-        Connect MetaMask
-      </Button>
+      {!PolkamarketsService.isSocialLogin && (
+        <Button
+          variant="outline"
+          color="default"
+          size="sm"
+          onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
+        >
+          <MetaMaskIcon />
+          Connect MetaMask
+        </Button>
+      )}
+      {PolkamarketsService.isSocialLogin && (
+        <Button
+          variant="outline"
+          color="default"
+          size="sm"
+          onClick={handleMetamaskLogin}
+        >
+          Login
+        </Button>
+      )}
     </>
   );
 }
