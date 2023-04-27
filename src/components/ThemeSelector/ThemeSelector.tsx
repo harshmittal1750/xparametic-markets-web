@@ -31,13 +31,13 @@ type Modes = Lowercase<keyof typeof modes>;
 export default function NetworkSelector() {
   const theme = useTheme();
   const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODE_DEFAULT);
-  const [rectButton, setRectButton] = useState<HTMLButtonElement | null>(null);
+  const [show, setShow] = useState<HTMLButtonElement | null>(null);
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
-      setRectButton(event.currentTarget),
+      setShow(event.currentTarget),
     []
   );
-  const handleHide = useCallback(() => setRectButton(null), []);
+  const handleHide = useCallback(() => setShow(null), []);
   const handleTheme = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       theme.device.setMode(event.currentTarget.name.toLowerCase() as Modes);
@@ -60,7 +60,7 @@ export default function NetworkSelector() {
           size="lg"
         />
       </Button>
-      <Popover position="bottomRight" onHide={handleHide} show={rectButton}>
+      <Popover position="bottomRight" onHide={handleHide} show={show}>
         {!theme.device.isDesktop && (
           <header className={themeSelectorClasses.header}>
             <Text

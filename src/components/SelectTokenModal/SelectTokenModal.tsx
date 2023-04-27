@@ -105,12 +105,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
 
   return (
     <>
-      <Tag
-        onClick={() => setShow(true)}
-        $color="default"
-        $size="sm"
-        $variant="subtle"
-      >
+      <Tag onClick={() => setShow(true)} $size="sm">
         <Adornment $size="sm" $edge="start">
           {currency.iconName === 'Token' ? (
             <TokenIcon ticker={currency.ticker} />
