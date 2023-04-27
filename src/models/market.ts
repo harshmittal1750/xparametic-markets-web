@@ -51,6 +51,7 @@ export interface Market {
   imageUrl: string;
   bannerUrl: string;
   title: string;
+  description: string;
   volume: number;
   volumeEur: number;
   shares: number;

@@ -20,6 +20,8 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
     expiresAt,
     liquidity,
     liquidityEur,
+    fee,
+    treasuryFee,
     token,
     network
   } = market;
@@ -108,11 +110,41 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
           <span className="pm-c-divider--circle" />
         </>
       )}
+      <>
+        <Text
+          as="span"
+          scale="tiny-uppercase"
+          fontWeight="semibold"
+          className={marketClasses.footerStatsText}
+        >
+          <Tooltip
+            className={marketClasses.footerStatsTooltip}
+            text={`Trading Fee: ${roundNumber(fee + treasuryFee, 1)}%`}
+          >
+            <Icon
+              name="Fee"
+              title="Trading Fee"
+              className={marketClasses.footerStatsIcon}
+            />
+            <Text
+              as="strong"
+              scale="tiny-uppercase"
+              fontWeight="semibold"
+              className={marketClasses.footerStatsText}
+            >
+              {`${roundNumber(fee + treasuryFee, 1)}%`}
+            </Text>
+          </Tooltip>
+        </Text>
+        <span className="pm-c-divider--circle" />
+      </>
       {expiresAt && (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
           <Tooltip
             className={marketClasses.footerStatsTooltip}
-            text={`Expires on ${dayjs(expiresAt).utc().format('MMMM D, YYYY')}`}
+            text={`Expires on ${dayjs(expiresAt)
+              .utc(true)
+              .format('MMM D, YYYY h:mm A')}`}
           >
             <Icon
               name="Calendar"
@@ -125,7 +157,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               fontWeight="semibold"
               className={marketClasses.footerStatsText}
             >
-              {dayjs(expiresAt).utc().format('MMMM D, YYYY')}
+              {dayjs(expiresAt).utc(true).format('MMM D, YYYY h:mm A')}
             </Text>
           </Tooltip>
         </Text>
