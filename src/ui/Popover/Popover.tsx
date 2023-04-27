@@ -1,5 +1,3 @@
-import { useCallback } from 'react';
-
 import cn from 'classnames';
 import { useTheme } from 'ui';
 
@@ -8,8 +6,8 @@ import type { ModalProps } from 'components';
 
 import popoverClasses from './Popover.module.scss';
 
-const positionInline = ['Right', 'Left'] as const;
 const positionBlock = ['top', 'bottom'] as const;
+const positionInline = ['Right', 'Left'] as const;
 
 type PositionBlock = typeof positionBlock[number];
 type PositionInline = typeof positionInline[number];
@@ -23,7 +21,6 @@ export interface PopoverProps<E extends HTMLElement>
     | 'initial'
     | 'animate'
     | 'exit'
-    | 'style'
   > {
   show: E | null;
   position: `${PositionBlock}${PositionInline}`;
@@ -45,7 +42,7 @@ const defaultPopoverSx = {
 function getPopoverSx<E extends HTMLElement>(
   position: PopoverProps<E>['position'],
   element: E | null
-): Record<'style', React.CSSProperties> {
+): React.CSSProperties {
   const rect = element?.getBoundingClientRect();
   const positions = [...positionInline, ...positionBlock].reduce(
     (pre, cur) => ({
@@ -58,17 +55,15 @@ function getPopoverSx<E extends HTMLElement>(
   const positionX = positions.Right ? 'right' : 'left';
 
   return {
-    style: {
-      [positionX]: {
-        left: rect?.left,
-        right: Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
-      }[positionX],
-      [positionY]: {
-        top: rect ? rect.top + rect.height : 0,
-        bottom: 0
-      }[positionY],
-      width: rect?.width
-    }
+    [positionX]: {
+      left: rect?.left,
+      right: Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
+    }[positionX],
+    [positionY]: {
+      top: rect ? rect.top + rect.height : 0,
+      bottom: window.innerHeight - (rect?.top || 0)
+    }[positionY],
+    width: rect?.width
   };
 }
 
@@ -77,14 +72,10 @@ export default function Popover<E extends HTMLElement>({
   show,
   position,
   disableMobileSheet,
+  style,
   ...props
 }: PopoverProps<E>) {
   const theme = useTheme();
-  const getSxProps = useCallback(() => {
-    if (theme.device.isDesktop) return getPopoverSx(position, show);
-    if (disableMobileSheet) return {};
-    return defaultPopoverSx;
-  }, [disableMobileSheet, position, show, theme.device.isDesktop]);
 
   return (
     <Modal
@@ -102,7 +93,23 @@ export default function Popover<E extends HTMLElement>({
         ),
         ...className
       }}
-      {...getSxProps()}
+      {...(() => {
+        if (theme.device.isDesktop)
+          return {
+            style: {
+              ...getPopoverSx(position, show),
+              ...style
+            }
+          };
+        if (disableMobileSheet)
+          return {
+            style
+          };
+        return {
+          style,
+          ...defaultPopoverSx
+        };
+      })()}
       {...props}
     />
   );
