@@ -37,7 +37,7 @@ export default function Profile() {
     address,
     networkId: network.id
   });
-  const ticker = network.currency.symbol || network.currency.ticker;
+
   const hasError = portfolio.isError || leaderboard.isError || activity.isError;
 
   return (
@@ -55,14 +55,14 @@ export default function Profile() {
             />
             <ProfileSummaryStat
               isLoading={portfolio.isLoading}
-              ticker={ticker}
+              ticker="€"
               data={portfolio.data}
             />
           </div>
           <ProfileYourStats
             onTimeframe={setTimeframe}
             isLoading={leaderboard.isLoading}
-            ticker={ticker}
+            ticker="€"
             data={leaderboard.data}
           />
           <div className="pm-p-profile-lists margin-top-6">
