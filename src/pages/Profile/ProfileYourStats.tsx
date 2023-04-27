@@ -52,19 +52,19 @@ function ProfileYourStats({
             <>
               <ProfileLeaderboardRanks
                 ranks={{
-                  rankByVolume: data.rank.volume,
+                  rankByVolume: data.rank.volumeEur,
                   rankByMarketsCreated: data.rank.marketsCreated,
                   rankByWonPredictions: data.rank.claimWinningsCount,
-                  rankByLiquidityAdded: data.rank.tvlLiquidity
+                  rankByLiquidityAdded: data.rank.tvlLiquidityEur
                 }}
                 isLoading={false}
               />
               <ProfilePredictionStatistics
                 statistics={{
-                  volume: data.volume,
+                  volume: data.volumeEur,
                   marketsCreated: data.marketsCreated,
                   wonPredictions: data.claimWinningsCount,
-                  liquidityAdded: data.liquidity
+                  liquidityAdded: data.liquidityEur
                 }}
                 ticker={ticker}
                 isLoading={false}
