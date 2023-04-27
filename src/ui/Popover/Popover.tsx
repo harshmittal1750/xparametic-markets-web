@@ -3,7 +3,8 @@ import { useCallback } from 'react';
 import cn from 'classnames';
 import { useTheme } from 'ui';
 
-import Modal, { ModalProps } from 'components/Modal';
+import { Modal } from 'components';
+import type { ModalProps } from 'components';
 
 import popoverClasses from './Popover.module.scss';
 
@@ -63,7 +64,7 @@ function getPopoverSx<E extends HTMLElement>(
         right: Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
       }[positionX],
       [positionY]: {
-        top: `calc(${rect?.height}px + var(--grid-margin))`,
+        top: rect ? rect.top + rect.height : 0,
         bottom: 0
       }[positionY],
       width: rect?.width

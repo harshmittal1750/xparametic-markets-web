@@ -1,8 +1,10 @@
 .dialog {
-  border-radius: var(--border-radius, 20px);
+  border-radius: var(--border-radius, 4px);
   background-color: var(--color-surface-primary);
   position: absolute;
   min-width: fit-content;
+  box-shadow: 0px 4px 24px var(--color-shadow);
+  border: 1px solid var(--color-border);
 
   &Sheet {
     --border-radius: 20px 20px 0px 0px;
