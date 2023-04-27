@@ -94,9 +94,9 @@ export type GetLeaderboardByTimeframeArgs = {
 export type GetLeaderboardByAddressData = GetLeaderboardBaseData & {
   rank: {
     marketsCreated: number;
-    volume: number;
-    tvlVolume: number;
-    tvlLiquidity: number;
+    volumeEur: number;
+    tvlVolumeEur: number;
+    tvlLiquidityEur: number;
     claimWinningsCount: number;
   };
 };
