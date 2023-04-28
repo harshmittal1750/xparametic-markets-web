@@ -159,6 +159,8 @@ export { default as Feature } from './Feature';
 
 export { default as Header } from './Header';
 
+export { default as Logos } from './Logos';
+
 export { default as MarketAvatar } from './MarketAvatar';
 
 export { default as MarketCategory } from './MarketCategory';

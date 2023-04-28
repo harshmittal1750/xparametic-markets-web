@@ -8,29 +8,29 @@ import type { LeaderboardGroup } from 'types/leaderboard';
 import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderboardGroupForm';
 
 export const leaderboardColumns = [
-  'volume',
+  'volumeEur',
   'marketsCreated',
   'transactions',
   'balance',
   'wonPredictions',
-  'netVolume',
-  'netLiquidity'
+  'netVolumeEur',
+  'netLiquidityEur'
 ];
 
 export const defaultLeaderboardColumns = [
-  'volume',
+  'volumeEur',
   'marketsCreated',
   'wonPredictions',
-  'netVolume',
-  'netLiquidity'
+  'netVolumeEur',
+  'netLiquidityEur'
 ];
 
 const emptyLeaderboardRowWithoutUser: Omit<GetLeaderboardBaseData, 'user'> = {
   marketsCreated: 0,
-  volume: 0,
-  tvlVolume: 0,
-  liquidity: 0,
-  tvlLiquidity: 0,
+  volumeEur: 0,
+  tvlVolumeEur: 0,
+  liquidityEur: 0,
+  tvlLiquidityEur: 0,
   claimWinningsCount: 0,
   transactions: 0,
   erc20Balance: 0,

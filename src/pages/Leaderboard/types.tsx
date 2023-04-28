@@ -16,17 +16,17 @@ export type LeaderboardTableRow = {
     address: string;
     place: number;
   };
-  volume?: {
+  volumeEur?: {
     volume: number;
     ticker: string;
   };
   marketsCreated?: number;
   wonPredictions?: number;
-  netVolume?: {
+  netVolumeEur?: {
     volume: number;
     ticker: string;
   };
-  netLiquidity?: {
+  netLiquidityEur?: {
     liquidity: number;
     ticker: string;
   };
