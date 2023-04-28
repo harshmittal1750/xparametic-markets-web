@@ -70,6 +70,7 @@ function CreateMarketForm() {
       data,
       values.liquidity,
       odds,
+      values.fee,
       token,
       wrapped
     );
