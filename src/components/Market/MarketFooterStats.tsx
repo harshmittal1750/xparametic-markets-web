@@ -17,7 +17,6 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
   const {
     volume,
     volumeEur,
-    expiresAt,
     liquidity,
     liquidityEur,
     fee,
@@ -25,6 +24,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
     token,
     network
   } = market;
+  const expiresAt = dayjs(market.expiresAt).utc(true).format('MMM D, YYYY');
 
   return (
     <div className="pm-c-market-footer__stats">
@@ -138,13 +138,11 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
         </Text>
         <span className="pm-c-divider--circle" />
       </>
-      {expiresAt && (
+      {market.expiresAt && (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
           <Tooltip
             className={marketClasses.footerStatsTooltip}
-            text={`Expires on ${dayjs(expiresAt)
-              .utc(true)
-              .format('MMM D, YYYY h:mm A')}`}
+            text={`Expires on ${expiresAt}`}
           >
             <Icon
               name="Calendar"
@@ -157,7 +155,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               fontWeight="semibold"
               className={marketClasses.footerStatsText}
             >
-              {dayjs(expiresAt).utc(true).format('MMM D, YYYY h:mm A')}
+              {expiresAt}
             </Text>
           </Tooltip>
         </Text>
