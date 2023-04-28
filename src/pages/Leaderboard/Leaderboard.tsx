@@ -39,7 +39,7 @@ const tabs = [
   {
     id: 'volume',
     title: 'Volume',
-    sortBy: 'volume'
+    sortBy: 'volumeEur'
   },
   {
     id: 'marketsCreated',
@@ -64,12 +64,12 @@ const tabs = [
   {
     id: 'netVolume',
     title: 'Net Volume',
-    sortBy: 'tvlVolume'
+    sortBy: 'tvlVolumeEur'
   },
   {
     id: 'netLiquidity',
     title: 'Net Liquidity',
-    sortBy: 'tvlLiquidity'
+    sortBy: 'tvlLiquidityEur'
   }
 ].filter(tab => ui.leaderboard.columns.includes(tab.id));
 
@@ -83,7 +83,7 @@ const columns: LeaderboardTableColumn[] = [
   },
   {
     title: 'Volume',
-    key: 'volume',
+    key: 'volumeEur',
     align: 'right',
     width: 140,
     render: volumeColumnRender
@@ -115,14 +115,14 @@ const columns: LeaderboardTableColumn[] = [
   },
   {
     title: 'Net Volume',
-    key: 'netVolume',
+    key: 'netVolumeEur',
     align: 'right',
     width: 140,
     render: volumeColumnRender
   },
   {
     title: 'Net Liquidity',
-    key: 'netLiquidity',
+    key: 'netLiquidityEur',
     align: 'right',
     width: 140,
     render: liquidityColumnRender
