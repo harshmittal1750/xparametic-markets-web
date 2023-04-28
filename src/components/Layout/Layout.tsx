@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { pages, environment } from 'config';
 
-import { BetaTesting } from 'components';
+import BetaTesting from 'components/BetaTesting';
 import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
