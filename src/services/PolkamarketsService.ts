@@ -170,13 +170,12 @@ export default class PolkamarketsService {
     category: string,
     value: number,
     odds: Array<number>,
+    fee: number,
     token: string = '',
     wrapped: boolean = false
   ) {
     // ensuring user has wallet connected
     await this.login();
-
-    const fee = '20000000000000000';
 
     let response;
     const args = {
@@ -188,7 +187,7 @@ export default class PolkamarketsService {
       value,
       oracleAddress: this.address,
       odds,
-      fee
+      fee: (fee * 1e16).toString()
     };
 
     if (wrapped) {
