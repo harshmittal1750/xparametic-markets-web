@@ -71,7 +71,7 @@ function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
               variant="normal"
               color="success"
               loading={isSubmitting}
-              disabled={!isValid || isSubmitting}
+              disabled={!isCurrentStepValid || isSubmitting}
             >
               Create Market
             </ButtonLoading>
