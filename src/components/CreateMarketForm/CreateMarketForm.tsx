@@ -123,7 +123,10 @@ function CreateMarketForm() {
             ref={handleFormRef(values.isSubmitting && !values.isValid)}
             className="pm-c-create-market-form"
           >
-            <FormikPersist />
+            <FormikPersist
+              currentStep={currentStep}
+              onChangeCurrentStep={handleStepChange}
+            />
             <Steps
               current={currentStep}
               currentStepFields={Object.keys(currentValidationSchema.fields)}
