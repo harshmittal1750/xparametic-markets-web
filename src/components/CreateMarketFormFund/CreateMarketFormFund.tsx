@@ -55,6 +55,7 @@ function CreateMarketFormFund() {
 
   const handleChangeAmount = useCallback(
     (amount: number) => {
+      helpers.setTouched(true);
       helpers.setValue(amount);
     },
     [helpers]
