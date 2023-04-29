@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import cn from 'classnames';
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
-import { PolkamarketsService } from 'services';
 import { Token } from 'types/token';
 
 import { InfoIcon } from 'assets/icons';
@@ -37,21 +36,6 @@ function CreateMarketFormFund() {
   const currency = createMarketToken || network.network.currency;
 
   const [field, _meta, helpers] = useField('liquidity');
-  const [_fee, setFee] = useState(0);
-
-  useEffect(() => {
-    async function getMarketFee() {
-      const polkamarketsService = new PolkamarketsService(
-        network.networkConfig
-      );
-
-      const response = await polkamarketsService.getMarketFee();
-      setFee(response);
-    }
-
-    getMarketFee();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const handleChangeAmount = useCallback(
     (amount: number) => {
