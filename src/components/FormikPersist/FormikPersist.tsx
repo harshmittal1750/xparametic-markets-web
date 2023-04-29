@@ -4,40 +4,59 @@ import { FormikTouched, useFormikContext } from 'formik';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
 
-function FormikPersist<T>({ name }) {
-  const { values, setValues, touched, setTouched } = useFormikContext<T>();
-  const valuesRef = useRef<T>();
-  const touchedValuesRef = useRef<FormikTouched<T>>();
+import type { CreateMarketFormData } from '../CreateMarketForm';
 
-  const onSave = () => {
-    window.localStorage.setItem(`${name}Values`, JSON.stringify(values));
-    window.localStorage.setItem(`${name}Touched`, JSON.stringify(touched));
+function FormikPersist() {
+  const { values, setValues, touched, setTouched } =
+    useFormikContext<CreateMarketFormData>();
+
+  const valuesRef = useRef<CreateMarketFormData>();
+  const touchedValuesRef = useRef<FormikTouched<CreateMarketFormData>>();
+
+  const onSaveValues = async () => {
+    window.localStorage.setItem('createMarketValues', JSON.stringify(values));
   };
 
-  const debouncedOnSave = debounce(onSave, 300);
+  const onSaveTouched = () => {
+    window.localStorage.setItem('createMarketTouched', JSON.stringify(touched));
+  };
+
+  const debouncedOnSaveValues = debounce(onSaveValues, 300);
+  const debouncedOnSaveTouched = debounce(onSaveTouched, 300);
 
   useEffect(() => {
-    const savedValues = window.localStorage.getItem(`${name}Values`);
-    const savedTouched = window.localStorage.getItem(`${name}Touched`);
+    const savedValues = window.localStorage.getItem('createMarketValues');
 
-    if (savedValues && savedTouched) {
+    if (savedValues) {
       const parsedValues = JSON.parse(savedValues);
-      const parsedTouched = JSON.parse(savedTouched);
 
       valuesRef.current = parsedValues;
-      touchedValuesRef.current = parsedTouched;
 
       setValues(parsedValues);
-      setTouched(parsedTouched, false);
     }
-  }, [name, setTouched, setValues]);
+  }, [setValues]);
 
   useEffect(() => {
-    if (
-      !isEqual(valuesRef.current, values) ||
-      !isEqual(touchedValuesRef.current, touched)
-    ) {
-      debouncedOnSave();
+    const savedTouched = window.localStorage.getItem('createMarketTouched');
+
+    if (savedTouched) {
+      const parsedTouched = JSON.parse(savedTouched);
+
+      touchedValuesRef.current = parsedTouched;
+
+      setTouched(parsedTouched, false);
+    }
+  }, [setTouched]);
+
+  useEffect(() => {
+    if (!isEqual(valuesRef.current, values)) {
+      debouncedOnSaveValues();
+    }
+  });
+
+  useEffect(() => {
+    if (!isEqual(touchedValuesRef.current, touched)) {
+      debouncedOnSaveTouched();
     }
   });
 
