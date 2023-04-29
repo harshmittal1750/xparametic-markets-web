@@ -1,3 +1,5 @@
+import { useField } from 'formik';
+
 import {
   Input,
   ImageUploadInput,
@@ -8,6 +10,12 @@ import {
 import CreateMarketFormDetailsClasses from './CreateMarketFormDetails.module.scss';
 
 function CreateMarketFormDetails() {
+  const [field] = useField('image');
+
+  const uploadedImageURL = field.value.isUploaded
+    ? `https://polkamarkets.infura-ipfs.io/ipfs/${field.value.hash}`
+    : undefined;
+
   return (
     <div className={CreateMarketFormDetailsClasses.root}>
       <Input
@@ -101,6 +109,7 @@ function CreateMarketFormDetails() {
           name="image"
           notUploadedActionLabel="Upload Image"
           uploadedActionLabel="Re-Upload"
+          initialImagePreviewURL={uploadedImageURL}
         />
       </div>
     </div>
