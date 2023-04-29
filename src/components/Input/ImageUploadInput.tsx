@@ -204,11 +204,11 @@ function ImageUploadInput({
           hidden
         />
         <div className="pm-c-file-upload-input__actions">
-          {croppedImagePreviewURL ? (
+          {croppedImagePreviewURL || initialImagePreviewURL ? (
             <img
               className="pm-c-file-upload-input__thumbnail"
               alt="Thumbnail"
-              src={croppedImagePreviewURL}
+              src={croppedImagePreviewURL || initialImagePreviewURL}
               width={64}
               height={64}
             />
@@ -216,16 +216,7 @@ function ImageUploadInput({
           <ImageUploadButton name={name} loading={isUploading}>
             {uploadActionLabel}
           </ImageUploadButton>
-          {field.value.isUploaded ? (
-            <Text
-              as="span"
-              scale="caption"
-              fontWeight="medium"
-              className="pm-c-file-upload-input__status"
-            >
-              {field.value.file.name}
-            </Text>
-          ) : (
+          {field.value.isUploaded ? null : (
             <Text
               as="span"
               scale="caption"
