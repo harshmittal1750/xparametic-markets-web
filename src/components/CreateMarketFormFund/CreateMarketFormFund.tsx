@@ -9,15 +9,14 @@ import { Token } from 'types/token';
 
 import { InfoIcon } from 'assets/icons';
 
-import NetworkSelector from 'components/NetworkSelector';
-import SelectTokenModal from 'components/SelectTokenModal';
-import Text from 'components/Text';
-import Tooltip from 'components/Tooltip';
-
 import { useAppSelector, useNetwork, useERC20Balance } from 'hooks';
 
 import Icon from '../Icon';
+import NetworkSelector from '../NetworkSelector';
 import NumberInput from '../NumberInput';
+import SelectTokenModal from '../SelectTokenModal';
+import Text from '../Text';
+import Tooltip from '../Tooltip';
 import AmountInput from './AmountInput';
 import CreateMarketFormFundClasses from './CreateMarketFormFund.module.scss';
 

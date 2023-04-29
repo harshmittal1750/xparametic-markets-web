@@ -12,13 +12,12 @@ import { Adornment, Container } from 'ui';
 
 import { TokenIcon } from 'assets/icons';
 
-import { ModalContent } from 'components';
-import Modal from 'components/Modal';
-
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import { Button } from '../Button';
 import Icon from '../Icon';
+import Modal from '../Modal';
+import ModalContent from '../ModalContent';
 import SearchBar from '../SearchBar';
 import Text from '../Text';
 import VirtualizedList from '../VirtualizedList';

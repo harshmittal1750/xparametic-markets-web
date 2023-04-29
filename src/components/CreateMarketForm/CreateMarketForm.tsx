@@ -6,8 +6,6 @@ import { PolkamarketsService } from 'services';
 import * as marketService from 'services/Polkamarkets/market';
 import { Token } from 'types/token';
 
-import FormikPersist from 'components/FormikPersist';
-
 import { useNetwork, useAppSelector } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
@@ -15,13 +13,12 @@ import { Button } from '../Button';
 import CreateMarketFormDetails from '../CreateMarketFormDetails';
 import CreateMarketFormFund from '../CreateMarketFormFund';
 import CreateMarketFormOutcomes from '../CreateMarketFormOutcomes';
+import FormikPersist from '../FormikPersist';
 import Steps from '../Steps';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
-import CreateMarketFormClasses from './CreateMarketForm.module.scss';
 import type { CreateMarketFormData } from './CreateMarketForm.type';
 import { initialValues, validationSchema } from './CreateMarketForm.util';
-import CreateMarketFormActions from './CreateMarketFormActions';
 
 function CreateMarketForm() {
   const history = useHistory();

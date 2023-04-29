@@ -4,10 +4,9 @@ import { useFormikContext } from 'formik';
 import has from 'lodash/has';
 import { Token } from 'types/token';
 
-import { ApproveToken } from 'components';
-
 import { useAppSelector, useNetwork } from 'hooks';
 
+import ApproveToken from '../ApproveToken';
 import { Button, ButtonLoading } from '../Button';
 
 function CreateMarketFormActions() {
