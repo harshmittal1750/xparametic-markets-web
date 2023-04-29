@@ -24,7 +24,7 @@ const initialValues: CreateMarketFormData = {
   subcategory: '',
   closingDate: dayjs().toString(),
   liquidity: 0,
-  fee: 0,
+  fee: 2,
   resolutionSource: ''
 };
 
