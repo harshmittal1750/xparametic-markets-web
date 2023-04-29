@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import cn from 'classnames';
 import { useField, useFormikContext } from 'formik';
@@ -19,6 +19,10 @@ function NumberInput({ name, min, max, step = 1 }: NumberInputProps) {
   const { setFieldValue, setFieldTouched } = useFormikContext();
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    setFieldTouched(name, true);
+  }, [name, setFieldTouched]);
 
   const handleDecrease = useCallback(() => {
     setFieldTouched(name, true, false);
