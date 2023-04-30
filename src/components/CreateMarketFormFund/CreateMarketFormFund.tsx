@@ -25,6 +25,8 @@ function CreateMarketFormFund() {
   const { ethBalance, createMarketToken } = useAppSelector(
     state => state.polkamarkets
   );
+  const [field] = useField('liquidity');
+
   let erc20Address = '';
 
   if (createMarketToken && (createMarketToken as Token).addresses) {
@@ -35,16 +37,6 @@ function CreateMarketFormFund() {
 
   const balance = erc20Address ? erc20Balance : ethBalance;
   const currency = createMarketToken || network.network.currency;
-
-  const [field, _meta, helpers] = useField('liquidity');
-
-  const handleChangeAmount = useCallback(
-    (amount: number) => {
-      helpers.setTouched(true);
-      helpers.setValue(amount);
-    },
-    [helpers]
-  );
 
   return (
     <>
@@ -122,7 +114,6 @@ function CreateMarketFormFund() {
           label="Wallet"
           max={roundDown(balance)}
           currency={currency}
-          onChange={handleChangeAmount}
         />
         <div className="pm-c-create-market-form__card-liquidity-details">
           <div className="pm-c-create-market-form__card-liquidity-details__group">
