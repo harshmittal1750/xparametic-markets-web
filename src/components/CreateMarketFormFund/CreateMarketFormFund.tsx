@@ -1,6 +1,4 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import { useCallback } from 'react';
-
 import cn from 'classnames';
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
