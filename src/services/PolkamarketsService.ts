@@ -164,6 +164,7 @@ export default class PolkamarketsService {
 
   public async createMarket(
     name: string,
+    description: string,
     image: string,
     duration: number,
     outcomes: Array<string>,
@@ -180,6 +181,7 @@ export default class PolkamarketsService {
     let response;
     const args = {
       name,
+      description,
       image,
       duration,
       outcomes,
