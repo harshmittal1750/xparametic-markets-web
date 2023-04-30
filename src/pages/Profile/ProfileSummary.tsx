@@ -1,127 +1,87 @@
-import { ui } from 'config';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
-import { roundNumber } from 'helpers/math';
-import { useGetPortfolioByAddressQuery } from 'services/Polkamarkets';
+import { Skeleton } from 'ui';
 
 import { ShareIcon } from 'assets/icons';
 
-import { Tooltip } from 'components';
+import { AlertMini, Tooltip } from 'components';
 import { Text } from 'components/new';
 
-import { useNetwork } from 'hooks';
+import type { ProfileSummaryProps } from './types';
 
-import ProfileSummaryStat from './ProfileSummaryStat';
-
-type ProfileSummaryProps = {
-  address: string;
-};
-
-function ProfileSummary({ address }: ProfileSummaryProps) {
-  const { network } = useNetwork();
-  const { currency } = network;
-
-  const { data: portfolio, isLoading } = useGetPortfolioByAddressQuery({
-    address,
-    networkId: network.id
-  });
-
-  if (isLoading || !portfolio) return null;
-
+export default function ProfileSummary({
+  address,
+  isLoading,
+  data,
+  network
+}: ProfileSummaryProps) {
   return (
-    <div className="pm-p-profile-summary">
-      <div className="pm-p-profile-summary__details">
-        <div className="pm-p-profile-summary__address-group">
-          <Text
-            className="pm-p-profile-summary__address"
-            as="span"
-            fontSize="heading-2"
-            fontWeight="bold"
-            color="1"
-          >
-            {address}
-          </Text>
-          <Tooltip position="bottom-start" text="View on Explorer">
-            <a
-              target="_blank"
-              href={`${network.explorerURL}/address/${address}`}
-              rel="noreferrer"
-            >
-              <ShareIcon className="pm-p-profile-summary__explorer-icon" />
-            </a>
-          </Tooltip>
-        </div>
-        <div className="pm-p-profile-summary__history">
-          {!!portfolio.firstPositionAt && (
+    <div className="pm-p-profile-summary__details">
+      {(() => {
+        if (isLoading)
+          return (
             <>
-              <Text
-                as="span"
-                fontSize="body-4"
-                fontWeight="semibold"
-                color="3"
-                transform="uppercase"
-              >
-                {`First prediction: `}
-                <Text
-                  as="strong"
-                  fontSize="body-4"
-                  fontWeight="semibold"
-                  color="2"
-                  transform="uppercase"
-                >
-                  {fromTimestampToCustomFormatDate(
-                    portfolio.firstPositionAt * 1000,
-                    'MMMM DD, YYYY'
-                  )}
-                </Text>
-              </Text>
-              <span className="pm-c-divider--circle" />
+              <div className="pm-p-profile-summary__address-group">
+                <Skeleton style={{ height: 32 }} />
+              </div>
+              <div className="pm-p-profile-summary__history">
+                <Skeleton style={{ width: 400, height: 16 }} />
+              </div>
             </>
-          )}
-          <Text
-            as="span"
-            fontSize="body-4"
-            fontWeight="semibold"
-            color="3"
-            transform="uppercase"
-          >
-            {`Total predictions: `}
+          );
+        if (!data)
+          return (
+            <AlertMini
+              variant="default"
+              description="No summary data available."
+            />
+          );
+        return (
+          <>
             <Text
-              as="strong"
+              className="pm-p-profile-summary__address"
+              as="h2"
+              fontSize="heading-2"
+              fontWeight="bold"
+              color="1"
+            >
+              {address}
+              <Tooltip position="bottom-start" text="View on Explorer">
+                <a
+                  target="_blank"
+                  href={`${network.explorerURL}/address/${address}`}
+                  rel="noreferrer"
+                >
+                  <ShareIcon className="pm-p-profile-summary__explorer-icon" />
+                </a>
+              </Tooltip>
+            </Text>
+            <Text
               fontSize="body-4"
               fontWeight="semibold"
-              color="2"
+              color="3"
               transform="uppercase"
+              className="pm-p-profile-summary__history"
             >
-              {portfolio.totalPositions}
+              {!!data?.firstPositionAt && (
+                <>
+                  First prediction:{' '}
+                  <span className="pm-p-profile-summary__history-accent">
+                    {fromTimestampToCustomFormatDate(
+                      data.firstPositionAt * 1000,
+                      'MMMM DD, YYYY'
+                    )}
+                  </span>
+                  <span className="pm-c-divider--circle" />
+                </>
+              )}
+              Total predictions:{' '}
+              <span className="pm-p-profile-summary__history-accent">
+                {data.totalPositions}
+              </span>
             </Text>
-          </Text>
-        </div>
-      </div>
-      <div className="pm-p-profile-summary__stats">
-        <ProfileSummaryStat
-          title="Total earnings"
-          value={`${roundNumber(portfolio.closedMarketsProfit, 3)} ${
-            currency.symbol || currency.ticker
-          }`}
-          backgroundColor="yellow"
-        />
-        <ProfileSummaryStat
-          title="Won predictions"
-          value={portfolio.wonPositions.toString()}
-          backgroundColor="orange"
-        />
-        {ui.profile.summary.liquidityProvided.enabled ? (
-          <ProfileSummaryStat
-            title="Liquidity provided"
-            value={`${roundNumber(portfolio.liquidityProvided, 3)} ${
-              currency.symbol || currency.ticker
-            }`}
-            backgroundColor="pink"
-          />
-        ) : null}
-      </div>
+          </>
+        );
+      })()}
     </div>
   );
 }
-
-export default ProfileSummary;

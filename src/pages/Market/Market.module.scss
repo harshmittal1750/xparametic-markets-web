@@ -57,12 +57,11 @@
 }
 
 .body {
+  width: 100%;
   border-right: 1px solid var(--color-border);
 
   @media (min-width: 1024px) {
-    &Content {
-      background-color: var(--color-surface-primary);
-    }
+    background-color: var(--color-surface-primary);
   }
 }
 

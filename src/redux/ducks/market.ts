@@ -53,6 +53,7 @@ const initialState: MarketInitialState = {
     imageUrl: '',
     bannerUrl: '',
     title: '',
+    description: '',
     volume: 0,
     volumeEur: 0,
     shares: 0,

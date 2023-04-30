@@ -50,7 +50,7 @@ function CreateMarketFormFund() {
             >
               Network (Chain)
             </label>
-            <NetworkSelector />
+            <NetworkSelector size="sm" />
           </div>
           <div className="pm-c-input__group width-full">
             <label

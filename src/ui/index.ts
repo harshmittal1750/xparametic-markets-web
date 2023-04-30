@@ -1,5 +1,7 @@
 export { default as Adornment } from './Adornment';
 
+export { default as Alert } from './Alert';
+
 export { default as Avatar } from './Avatar';
 export type { AvatarProps } from './Avatar';
 
@@ -21,6 +23,8 @@ export { default as ListItem } from './ListItem';
 export { default as ListItemText } from './ListItemText';
 
 export { default as RangePicker } from './RangePicker';
+
+export { default as Skeleton } from './Skeleton';
 
 export { default as Spinner } from './Spinner';
 

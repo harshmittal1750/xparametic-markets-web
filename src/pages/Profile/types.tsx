@@ -1,4 +1,12 @@
-import { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
+import type {
+  GetLeaderboardByAddressData,
+  GetPortfolioByAddressData,
+  GetPortfolioFeedByAddressData
+} from 'services/Polkamarkets/types';
+import type { LeaderboardTimeframe } from 'types/leaderboard';
+import type { Network } from 'types/network';
+
+import type { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
 
 // Leaderboard ranks
 export type LeaderboardRanksColumn = TableMiniColumn;
@@ -18,4 +26,32 @@ export type PredictionStatistics = {
   marketsCreated: number;
   wonPredictions: number;
   liquidityAdded: number;
+};
+
+export type ProfileAchievementsProps = {
+  listHeight: number;
+  data?: GetLeaderboardByAddressData;
+  isLoading: boolean;
+};
+export type ProfileActivitiesProps = {
+  listHeight: number;
+  data?: GetPortfolioFeedByAddressData;
+  isLoading: boolean;
+};
+export type ProfileSummaryProps = {
+  address: string;
+  isLoading: boolean;
+  data?: GetPortfolioByAddressData;
+  network: Network;
+};
+export type ProfileStatsProps = {
+  isLoading: boolean;
+  data?: GetPortfolioByAddressData;
+  ticker: string;
+};
+export type ProfileYourStatsProps = {
+  onTimeframe(arg: LeaderboardTimeframe): void;
+  data?: GetLeaderboardByAddressData;
+  isLoading: boolean;
+  ticker: string;
 };
