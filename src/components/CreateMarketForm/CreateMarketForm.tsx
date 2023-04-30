@@ -2,11 +2,10 @@ import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Formik, Form } from 'formik';
-import { PolkamarketsService } from 'services';
 import * as marketService from 'services/Polkamarkets/market';
 import { Token } from 'types/token';
 
-import { useNetwork, useAppSelector } from 'hooks';
+import { useNetwork, useAppSelector, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
@@ -22,6 +21,7 @@ import { initialValues, validationSchema } from './CreateMarketForm.util';
 
 function CreateMarketForm() {
   const history = useHistory();
+  const polkamarketsService = usePolkamarketsService();
   const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
   const { createMarketToken } = useAppSelector(state => state.polkamarkets);
@@ -40,8 +40,13 @@ function CreateMarketForm() {
     []
   );
 
+  function resetLocalStorage() {
+    localStorage.removeItem('createMarketValues');
+    localStorage.removeItem('createMarketTouched');
+    localStorage.removeItem('createMarketCurrentStep');
+  }
+
   async function handleFormSubmit(values: CreateMarketFormData) {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
     const closingDate = new Date(values.closingDate).getTime() / 1000; // TODO: move to dayjs
     let wrapped = false;
     let token = '';
@@ -61,6 +66,7 @@ function CreateMarketForm() {
 
     const response = await polkamarketsService.createMarket(
       values.question,
+      values.description,
       values.image.hash,
       closingDate,
       outcomes,
@@ -82,6 +88,7 @@ function CreateMarketForm() {
         networkConfig.NETWORK_ID
       );
 
+      resetLocalStorage();
       history.push(`/markets/${res.data.slug}`);
     } catch (err) {
       history.push('/');
