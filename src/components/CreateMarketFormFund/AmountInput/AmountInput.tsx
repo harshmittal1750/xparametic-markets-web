@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 
 import cn from 'classnames';
+import { useField } from 'formik';
 
 import { Button } from '../../Button';
 import StepSlider from '../../StepSlider';
@@ -12,7 +13,6 @@ type AmountInputProps = Partial<
 > & {
   label: string;
   max: number;
-  onChange(value: number): void;
   currency: any;
   disabled?: boolean;
 };
@@ -24,45 +24,58 @@ function round(value) {
 export default function AmountInput({
   label,
   max,
-  onChange,
   currency,
   customHeaderItem,
   disabled = false
 }: AmountInputProps) {
-  const [amount, setAmount] = useState<number | undefined>(0);
-  const [stepAmount, setStepAmount] = useState(0);
+  const [field, meta, helpers] = useField('liquidity');
+  const { value: liquidity } = field;
+  const { touched } = meta;
+  const [amount, setAmount] = useState(liquidity);
 
-  useEffect(() => {
-    onChange(0);
-    setAmount(0);
-    setStepAmount(0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [max]);
+  const handleChangeAmount = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.currentTarget;
 
-  function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
-    const { value } = event.currentTarget;
+      const newAmount = value ? parseFloat(value) : undefined;
 
-    const newAmount = value ? parseFloat(value) : undefined;
+      if (!touched) {
+        helpers.setTouched(true);
+      }
 
-    setAmount(newAmount);
-    setStepAmount(100 * ((newAmount || 0) / max));
-    onChange(newAmount || 0);
-  }
-  function handleSetMaxAmount() {
+      helpers.setValue(newAmount || 0);
+      setAmount(newAmount);
+    },
+    [helpers, touched]
+  );
+
+  const handleSetMaxAmount = useCallback(() => {
     const roundedMax = round(max);
 
-    setAmount(roundedMax);
-    setStepAmount(100);
-    onChange(roundedMax);
-  }
-  function handleChangeSlider(value: number) {
-    const percentage = value / 100;
-    const newAmount = round(max * percentage);
+    if (!touched) {
+      helpers.setTouched(true);
+    }
 
-    setAmount(newAmount);
-    onChange(newAmount);
-    setStepAmount(value);
-  }
+    helpers.setValue(roundedMax);
+    setAmount(roundedMax);
+  }, [helpers, max, touched]);
+
+  const handleChangeSlider = useCallback(
+    (value: number) => {
+      const percentage = value / 100;
+      const newAmount = round(max * percentage);
+
+      if (!touched) {
+        helpers.setTouched(true);
+      }
+
+      helpers.setValue(newAmount);
+      setAmount(newAmount);
+    },
+    [helpers, max, touched]
+  );
+
+  const step = 100 * ((amount || 0) / max);
 
   return (
     <div className="pm-c-amount-input">
@@ -101,7 +114,7 @@ export default function AmountInput({
           id={label}
           value={amount}
           lang="en"
-          step=".0001"
+          step="any"
           min={0}
           max={max}
           onChange={handleChangeAmount}
@@ -118,7 +131,7 @@ export default function AmountInput({
         </Button>
       </div>
       <StepSlider
-        currentValue={stepAmount}
+        currentValue={step}
         onChange={value => handleChangeSlider(value)}
         disabled={disabled}
       />
