@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
+import { useTheme } from 'ui';
 
 import Icon from 'components/Icon';
 
@@ -25,19 +26,18 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
     network
   } = market;
   const expiresAt = dayjs(market.expiresAt).utc(true).format('MMM D, YYYY');
+  const theme = useTheme();
 
   return (
     <div className="pm-c-market-footer__stats">
-      <>
-        {!isEmpty(network.currency) ? (
-          <>
-            <Tooltip text={network.name}>
-              <Icon name={network.currency.iconName} />
-            </Tooltip>
-            <span className="pm-c-divider--circle" />
-          </>
-        ) : null}
-      </>
+      {theme.device.isTablet && !isEmpty(network.currency) && (
+        <>
+          <Tooltip text={network.name}>
+            <Icon name={network.currency.iconName} />
+          </Tooltip>
+          <span className="pm-c-divider--circle" />
+        </>
+      )}
       {!!volume && (
         <>
           <Text
@@ -107,38 +107,40 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               >{`${token.ticker}`}</Text>
             </Tooltip>
           </Text>
+          {theme.device.isTablet && <span className="pm-c-divider--circle" />}
+        </>
+      )}
+      {theme.device.isTablet && (
+        <>
+          <Text
+            as="span"
+            scale="tiny-uppercase"
+            fontWeight="semibold"
+            className={marketClasses.footerStatsText}
+          >
+            <Tooltip
+              className={marketClasses.footerStatsTooltip}
+              text={`Trading Fee: ${roundNumber(fee + treasuryFee, 1)}%`}
+            >
+              <Icon
+                name="Fee"
+                title="Trading Fee"
+                className={marketClasses.footerStatsIcon}
+              />
+              <Text
+                as="strong"
+                scale="tiny-uppercase"
+                fontWeight="semibold"
+                className={marketClasses.footerStatsText}
+              >
+                {`${roundNumber(fee + treasuryFee, 1)}%`}
+              </Text>
+            </Tooltip>
+          </Text>
           <span className="pm-c-divider--circle" />
         </>
       )}
-      <>
-        <Text
-          as="span"
-          scale="tiny-uppercase"
-          fontWeight="semibold"
-          className={marketClasses.footerStatsText}
-        >
-          <Tooltip
-            className={marketClasses.footerStatsTooltip}
-            text={`Trading Fee: ${roundNumber(fee + treasuryFee, 1)}%`}
-          >
-            <Icon
-              name="Fee"
-              title="Trading Fee"
-              className={marketClasses.footerStatsIcon}
-            />
-            <Text
-              as="strong"
-              scale="tiny-uppercase"
-              fontWeight="semibold"
-              className={marketClasses.footerStatsText}
-            >
-              {`${roundNumber(fee + treasuryFee, 1)}%`}
-            </Text>
-          </Tooltip>
-        </Text>
-        <span className="pm-c-divider--circle" />
-      </>
-      {market.expiresAt && (
+      {theme.device.isTablet && market.expiresAt && (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
           <Tooltip
             className={marketClasses.footerStatsTooltip}

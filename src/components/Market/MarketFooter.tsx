@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import { inRange } from 'lodash';
 import { Market } from 'models/market';
+import { useTheme } from 'ui';
 
 import Pill from 'components/Pill/Pill';
 import VoteArrows from 'components/VoteArrows';
@@ -41,7 +42,7 @@ const tags = {
 };
 
 export default function MarketFooter({ market, children }: MarketFooterProps) {
-  const { id, slug, network, votes } = market;
+  const theme = useTheme();
   const tag = (() => {
     if (market.state === 'closed') return 'awaiting';
     if (inRange(dayjs().diff(dayjs(market.expiresAt), 'hours'), -24, 1))
@@ -58,22 +59,26 @@ export default function MarketFooter({ market, children }: MarketFooterProps) {
       <MarketFooterStats market={market} />
       <div className="pm-c-market-footer__group--row">
         {children}
-        {tag && (
+        {theme.device.isTablet && (
           <>
-            <div className="pm-c-market-footer__tags">
-              <Pill badge {...tags[tag]} />
-            </div>
-            <div className="pm-c-market-footer__divider--circle" />
+            {tag && (
+              <>
+                <div className="pm-c-market-footer__tags">
+                  <Pill badge {...tags[tag]} />
+                </div>
+                <div className="pm-c-market-footer__divider--circle" />
+              </>
+            )}
+            <VoteArrows
+              key={market.slug}
+              size="sm"
+              marketId={market.id}
+              marketSlug={market.slug}
+              marketNetworkId={market.network.id}
+              votes={market.votes}
+            />
           </>
         )}
-        <VoteArrows
-          key={slug}
-          size="sm"
-          marketId={id}
-          marketSlug={slug}
-          marketNetworkId={network.id}
-          votes={votes}
-        />
       </div>
     </div>
   );
