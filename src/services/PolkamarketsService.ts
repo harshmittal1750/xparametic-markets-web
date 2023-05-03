@@ -119,30 +119,35 @@ export default class PolkamarketsService {
   public logoutSocialLogin() {
     this.polkamarkets.socialLoginLogout();
     this.loggedIn = false;
+    this.address = '';
   }
 
-  public socialLoginGoogle() {
-    this.polkamarkets.socialLoginGoogle();
+  public async socialLoginGoogle() {
+    await this.polkamarkets.socialLoginGoogle();
   }
 
-  public socialLoginFacebook() {
-    this.polkamarkets.socialLoginFacebook();
+  public async socialLoginFacebook() {
+    await this.polkamarkets.socialLoginFacebook();
   }
 
-  public socialLoginTwitter() {
-    this.polkamarkets.socialLoginTwitter();
+  public async socialLoginTwitter() {
+    await this.polkamarkets.socialLoginTwitter();
   }
 
-  public socialLoginGithub() {
-    this.polkamarkets.socialLoginGithub();
+  public async socialLoginGithub() {
+    await this.polkamarkets.socialLoginGithub();
   }
 
-  public socialLoginDiscord() {
-    this.polkamarkets.socialLoginDiscord();
+  public async socialLoginDiscord() {
+    await this.polkamarkets.socialLoginDiscord();
   }
 
-  public socialLoginEmail(email) {
-    this.polkamarkets.socialLoginEmail(email);
+  public async socialLoginEmail(email) {
+    await this.polkamarkets.socialLoginEmail(email);
+  }
+
+  public async socialLoginMetamask() {
+    await this.polkamarkets.socialLoginMetamask();
   }
 
   // returns wether wallet is connected to service or not

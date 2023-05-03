@@ -14,9 +14,13 @@ import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ModalSectionText from 'components/ModalSectionText';
 import Pill from 'components/Pill';
+import Text from 'components/Text';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
+import DiscordIcon from '../../assets/icons/DiscordIcon';
+import FacebookIcon from '../../assets/icons/FacebookIcon';
+import GoogleIcon from '../../assets/icons/GoogleIcon';
 import PolkamarketsService from '../../services/PolkamarketsService';
 import { connectMetamaskProps } from './ConnectMetamask.util';
 
@@ -24,25 +28,59 @@ export default function ConnectMetamask() {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const handleHide = useCallback(() => {
     setShow(false);
+  }, []);
+
+  const [email, setEmail] = useState('');
+
+  const handleHideLogin = useCallback(() => {
+    setShowLogin(false);
   }, []);
 
   function handleTryAgain() {
     window.location.reload();
   }
+
+  const handleLogin = () => {
+    setShowLogin(true);
+  };
+
   const handleMetamaskLogin = useCallback(async () => {
     await polkamarketsService.login();
     dispatch(login(polkamarketsService));
   }, [dispatch, polkamarketsService]);
 
   function handleMetamaskModal() {
-    if (PolkamarketsService.isSocialLogin) {
-      handleMetamaskLogin();
-    } else {
-      setShow(true);
-    }
+    setShow(true);
   }
+
+  const socialLogin = useCallback(
+    async provider => {
+      // eslint-disable-next-line default-case
+      switch (provider) {
+        case 'google':
+          await polkamarketsService.socialLoginGoogle();
+          break;
+        case 'facebook':
+          await polkamarketsService.socialLoginFacebook();
+          break;
+        case 'discord':
+          await polkamarketsService.socialLoginDiscord();
+          break;
+        case 'email':
+          await polkamarketsService.socialLoginEmail(email);
+          break;
+        case 'metamask':
+          await polkamarketsService.socialLoginMetamask();
+          break;
+      }
+      setShowLogin(false);
+      dispatch(login(polkamarketsService));
+    },
+    [dispatch, polkamarketsService, email]
+  );
 
   return (
     <>
@@ -92,6 +130,103 @@ export default function ConnectMetamask() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      <Modal show={showLogin} centered size="sm" onHide={handleHideLogin}>
+        <ModalContent>
+          <ModalHeader>
+            <ModalHeaderHide onClick={handleHideLogin} />
+            <ModalHeaderTitle>Login</ModalHeaderTitle>
+            <Text as="h4" fontWeight="medium" scale="caption" color="white">
+              Select one of the following to continue
+            </Text>
+          </ModalHeader>
+          <ModalSection>
+            <Button
+              style={{ marginRight: '3rem' }}
+              variant="outline"
+              color="default"
+              size="sm"
+              onClick={() => socialLogin('google')}
+            >
+              <GoogleIcon />
+            </Button>
+            <Button
+              style={{ marginRight: '3rem' }}
+              variant="outline"
+              color="default"
+              size="sm"
+              onClick={() => socialLogin('facebook')}
+            >
+              <FacebookIcon />
+            </Button>
+            <Button
+              variant="outline"
+              color="default"
+              size="sm"
+              onClick={() => socialLogin('discord')}
+            >
+              <DiscordIcon />
+            </Button>
+
+            <ModalSectionText>
+              <hr
+                style={{
+                  marginTop: '2rem',
+                  border: 'none',
+                  borderBottom: '0.1rem solid white'
+                }}
+              />
+            </ModalSectionText>
+            <ModalSectionText>
+              <form>
+                <div className="pm-c-input__group">
+                  <input
+                    className="pm-c-input--default"
+                    id="email"
+                    value={email}
+                    placeholder="Write your email here"
+                    onChange={e => setEmail(e.target.value)}
+                  />
+                </div>
+              </form>
+              <Button
+                style={{ marginTop: '1rem' }}
+                color="default"
+                size="sm"
+                onClick={() => socialLogin('email')}
+                disabled={!email}
+              >
+                Email login
+              </Button>
+              <ModalSectionText>
+                <hr
+                  style={{
+                    marginTop: '2rem',
+                    border: 'none',
+                    borderBottom: '0.1rem solid white'
+                  }}
+                />
+              </ModalSectionText>
+              <ModalSectionText>
+                <Button
+                  variant="outline"
+                  color="default"
+                  size="sm"
+                  onClick={
+                    !window.ethereum
+                      ? handleMetamaskModal
+                      : () => socialLogin('metamask')
+                  }
+                >
+                  <MetaMaskIcon />
+                  Connect MetaMask
+                </Button>
+              </ModalSectionText>
+            </ModalSectionText>
+          </ModalSection>
+        </ModalContent>
+      </Modal>
+
       {!PolkamarketsService.isSocialLogin && (
         <Button
           variant="outline"
@@ -108,7 +243,7 @@ export default function ConnectMetamask() {
           variant="outline"
           color="default"
           size="sm"
-          onClick={handleMetamaskLogin}
+          onClick={handleLogin}
         >
           Login
         </Button>
