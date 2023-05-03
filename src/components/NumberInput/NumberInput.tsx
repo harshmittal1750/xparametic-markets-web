@@ -73,7 +73,7 @@ function NumberInput({ name, min, max, step = 1 }: NumberInputProps) {
             className={NumberInputClasses.input}
             min={min}
             max={max}
-            step={step}
+            step="any"
             {...field}
           />
           <span className={NumberInputClasses.inputAdornment}>%</span>
