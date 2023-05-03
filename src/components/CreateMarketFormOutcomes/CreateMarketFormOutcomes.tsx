@@ -48,7 +48,8 @@ function CreateMarketFormOutcomes() {
     const probabilities = outcomes.map(outcome => outcome.probability);
     const sumOfProbabilities = sum(probabilities);
     return almost(sumOfProbabilities, 100);
-  }, [outcomes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [outcomes, probabilityDistribution]);
 
   const toggleProbabilityDistribution = useCallback(() => {
     if (probabilityDistribution === 'uniform') {
@@ -131,22 +132,20 @@ function CreateMarketFormOutcomes() {
         <div className={CreateMarketFormOutcomesClasses.header}>
           <span className="pm-c-input__label--default">Outcome</span>
           <span className="pm-c-input__label--default">Probability</span>
-          {answerType === 'multiple' ? (
-            <button
-              type="button"
-              className={cn(
-                CreateMarketFormOutcomesClasses.action,
-                CreateMarketFormOutcomesClasses.distribuitionTypeSelector,
-                'caption',
-                'semibold'
-              )}
-              onClick={toggleProbabilityDistribution}
-            >
-              {probabilityDistribution === 'uniform'
-                ? 'Set manually'
-                : 'Set uniformly'}
-            </button>
-          ) : null}
+          <button
+            type="button"
+            className={cn(
+              CreateMarketFormOutcomesClasses.action,
+              CreateMarketFormOutcomesClasses.distribuitionTypeSelector,
+              'caption',
+              'semibold'
+            )}
+            onClick={toggleProbabilityDistribution}
+          >
+            {probabilityDistribution === 'uniform'
+              ? 'Set manually'
+              : 'Set uniformly'}
+          </button>
         </div>
         <div className={CreateMarketFormOutcomesClasses.outcomes}>
           {outcomes.map(outcome => (
@@ -159,7 +158,6 @@ function CreateMarketFormOutcomes() {
               <ProbabilityInput
                 key={`${outcome.id}[1]`}
                 outcomeId={outcome.id}
-                disabled={probabilityDistribution === 'uniform'}
               />
               <Button
                 key={`${outcome.id}[2]`}
