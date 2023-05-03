@@ -23,8 +23,9 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
         />
       }
     >
-      The selected network <strong>{network.name}</strong> does not match your
-      wallet&apos;s active one. <strong>Change</strong> the App network or learn{' '}
+      The selected network <strong>{network.name}</strong> does not match
+      Polkamarkets&apos; networks. <strong>Change</strong> the App network or
+      learn{' '}
       <Link
         className={wrongNetwork.link}
         title="how to change"
