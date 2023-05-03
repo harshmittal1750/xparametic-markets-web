@@ -71,7 +71,7 @@ const validationSchema = [
     liquidity: Yup.number().moreThan(0).required('Liquidity is required.'),
     fee: Yup.number()
       .min(0, 'Fee must be greater than or equal to 0%')
-      .max(100, 'Fee must be less than or equal to 100%')
+      .max(5, 'Fee must be less than or equal to 5%')
       .required('Fee is required.')
   })
 ];

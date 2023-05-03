@@ -177,7 +177,7 @@ function CreateMarketFormFund() {
                 <InfoIcon />
               </Tooltip>
             </Text>
-            <NumberInput name="fee" min={0} max={100} />
+            <NumberInput name="fee" min={0} max={5} />
           </div>
         </div>
       </div>
