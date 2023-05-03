@@ -123,7 +123,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
         )}
       >
         {currency.iconName === 'Token' ? (
-          <TokenIcon ticker={currency.ticker} size="lg" />
+          <TokenIcon ticker={currency.ticker} size={20} />
         ) : (
           <Icon name={currency.iconName} size="lg" />
         )}
