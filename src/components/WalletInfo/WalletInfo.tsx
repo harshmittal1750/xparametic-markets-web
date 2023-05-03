@@ -18,7 +18,7 @@ import {
   usePolkamarketsService
 } from 'hooks';
 
-import { changeIsLoggedIn } from '../../redux/ducks/polkamarkets';
+import { logout } from '../../redux/ducks/polkamarkets';
 import { Transak } from '../integrations';
 import WalletInfoClaim from './WalletInfoClaim';
 
@@ -47,7 +47,7 @@ export default function WalletInfo() {
 
   const handleSocialLoginLogout = useCallback(async () => {
     await polkamarketsService.logoutSocialLogin();
-    dispatch(changeIsLoggedIn(false));
+    dispatch(logout());
   }, [dispatch, polkamarketsService]);
 
   return (

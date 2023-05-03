@@ -208,6 +208,17 @@ function login(polkamarketsService: PolkamarketsService) {
   };
 }
 
+function logout() {
+  return async dispatch => {
+    dispatch(changeIsLoggedIn(false));
+    dispatch(changeEthAddress(''));
+    dispatch(changeEthBalance(0));
+    dispatch(changePolkBalance(0));
+    dispatch(changePolkClaimed(false));
+    dispatch(changePolkApproved(false));
+  };
+}
+
 function fetchAditionalData(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
     const isLoggedIn = await polkamarketsService.isLoggedIn();
@@ -325,5 +336,6 @@ export {
   changeVoteByMarketId,
   changeCreateMarketToken,
   login,
+  logout,
   fetchAditionalData
 };
