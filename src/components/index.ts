@@ -144,6 +144,8 @@ export {
 
 export { default as ApproveToken } from './ApproveToken';
 
+export { default as BetaTesting } from './BetaTesting';
+
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';

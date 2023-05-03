@@ -37,6 +37,7 @@ export { ReactComponent as RadioFilled } from './RadioFilled.svg';
 export { ReactComponent as Share } from './Share.svg';
 export { ReactComponent as Sort } from './Sort.svg';
 export { ReactComponent as Sparkles } from './Sparkles.svg';
+export { ReactComponent as Speaker } from './Speaker.svg';
 export { ReactComponent as Star } from './Star.svg';
 export { ReactComponent as Stats } from './Stats.svg';
 export { ReactComponent as Sun } from './Sun.svg';
