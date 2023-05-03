@@ -42,8 +42,10 @@ function CreateMarket() {
           funding information. Follow the step-by-step process to create a
           market that&apos;s engaging and easy to participate in for users.{' '}
           <a
-            href="help.polkamarkets.com"
             className={CreateMarketClasses.subheadingLink}
+            href="https://help.polkamarkets.com/en/articles/5610512-how-to-create-a-prediction-market"
+            target="_blank"
+            rel="noreferrer"
           >
             Learn more
           </a>
