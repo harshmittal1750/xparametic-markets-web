@@ -31,11 +31,7 @@ function CreateMarketFormOutcomes() {
   }, [setFieldTouched]);
 
   useEffect(() => {
-    if (
-      answerType === 'binary' &&
-      previousAnswerType === 'multiple' &&
-      outcomes.length > 2
-    ) {
+    if (answerType === 'binary' && previousAnswerType === 'multiple') {
       setProbabilityDistribution('uniform');
       setFieldValue('outcomes', [
         { id: uuid(), name: 'Yes', probability: 50 },
