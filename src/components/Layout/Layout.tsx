@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 
 import { pages, environment } from 'config';
 
+import BetaTesting from 'components/BetaTesting';
 import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
@@ -32,6 +33,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
     <>
       {page?.meta && <SEO {...page.meta} />}
       <BetaWarning />
+      <BetaTesting network={network} />
       {!isAllowedNetwork && <WrongNetwork network={network} />}
       <Header $gutterBottom={!isHomePathname} />
       {children}

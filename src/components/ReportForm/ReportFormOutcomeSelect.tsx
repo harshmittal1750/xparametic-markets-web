@@ -6,7 +6,10 @@ import { selectOutcome } from 'redux/ducks/trade';
 import { PolkamarketsService } from 'services';
 import { useTheme } from 'ui';
 
-import { Alert, Link, Outcome, VirtualizedList } from 'components';
+import { Alert } from 'components/Alert';
+import Link from 'components/Link';
+import Outcome from 'components/Outcome';
+import VirtualizedList from 'components/VirtualizedList';
 
 import { useAppSelector } from 'hooks';
 
