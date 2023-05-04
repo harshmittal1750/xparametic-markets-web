@@ -123,31 +123,31 @@ export default class PolkamarketsService {
   }
 
   public async socialLoginGoogle() {
-    await this.polkamarkets.socialLoginGoogle();
+    return this.polkamarkets.socialLoginGoogle();
   }
 
   public async socialLoginFacebook() {
-    await this.polkamarkets.socialLoginFacebook();
+    return this.polkamarkets.socialLoginFacebook();
   }
 
   public async socialLoginTwitter() {
-    await this.polkamarkets.socialLoginTwitter();
+    return this.polkamarkets.socialLoginTwitter();
   }
 
   public async socialLoginGithub() {
-    await this.polkamarkets.socialLoginGithub();
+    return this.polkamarkets.socialLoginGithub();
   }
 
   public async socialLoginDiscord() {
-    await this.polkamarkets.socialLoginDiscord();
+    return this.polkamarkets.socialLoginDiscord();
   }
 
   public async socialLoginEmail(email) {
-    await this.polkamarkets.socialLoginEmail(email);
+    return this.polkamarkets.socialLoginEmail(email);
   }
 
   public async socialLoginMetamask() {
-    await this.polkamarkets.socialLoginMetamask();
+    return this.polkamarkets.socialLoginMetamask();
   }
 
   // returns wether wallet is connected to service or not

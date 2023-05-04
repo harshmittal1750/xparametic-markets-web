@@ -129,7 +129,7 @@ type VolumeColumnRenderArgs = {
 function volumeColumnRender({ volume, ticker }: VolumeColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__volume caption semibold text-1">
-      {`${volume.toFixed(1)} `}
+      {`${volume?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -146,7 +146,7 @@ function liquidityColumnRender({
 }: LiquidityColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
-      {`${liquidity.toFixed(1)} `}
+      {`${liquidity?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -160,7 +160,7 @@ type BalanceColumnRenderArgs = {
 function balanceColumnRender({ balance, ticker }: BalanceColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__balance caption semibold text-1">
-      {`${balance.toFixed(1)} `}
+      {`${balance?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );

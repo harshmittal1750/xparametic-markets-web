@@ -58,26 +58,30 @@ export default function ConnectMetamask() {
 
   const socialLogin = useCallback(
     async provider => {
+      let success;
       // eslint-disable-next-line default-case
       switch (provider) {
         case 'google':
-          await polkamarketsService.socialLoginGoogle();
+          success = await polkamarketsService.socialLoginGoogle();
           break;
         case 'facebook':
-          await polkamarketsService.socialLoginFacebook();
+          success = await polkamarketsService.socialLoginFacebook();
           break;
         case 'discord':
-          await polkamarketsService.socialLoginDiscord();
+          success = await polkamarketsService.socialLoginDiscord();
           break;
         case 'email':
-          await polkamarketsService.socialLoginEmail(email);
+          success =await polkamarketsService.socialLoginEmail(email);
           break;
         case 'metamask':
-          await polkamarketsService.socialLoginMetamask();
+          success = await polkamarketsService.socialLoginMetamask();
           break;
       }
-      setShowLogin(false);
-      dispatch(login(polkamarketsService));
+
+      if (success) {
+        setShowLogin(false);
+        dispatch(login(polkamarketsService));
+      }
     },
     [dispatch, polkamarketsService, email]
   );
