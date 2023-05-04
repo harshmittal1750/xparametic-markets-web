@@ -223,7 +223,9 @@ export default class PolkamarketsService {
     wrapped: boolean = false
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const fee = '20000000000000000';
 
@@ -260,7 +262,9 @@ export default class PolkamarketsService {
     wrapped: boolean
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.pm.buy({
       marketId,
@@ -281,7 +285,9 @@ export default class PolkamarketsService {
     wrapped: boolean
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.pm.sell({
       marketId,
@@ -300,7 +306,9 @@ export default class PolkamarketsService {
     wrapped: boolean
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.pm.addLiquidity({
       marketId,
@@ -317,7 +325,9 @@ export default class PolkamarketsService {
     wrapped: boolean
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.pm.removeLiquidity({
       marketId,
@@ -330,7 +340,9 @@ export default class PolkamarketsService {
 
   public async claimWinnings(marketId: string | number) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const wrapped = await this.isMarketERC20TokenWrapped(marketId);
 
@@ -347,7 +359,9 @@ export default class PolkamarketsService {
     outcomeId: string | number
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const wrapped = await this.isMarketERC20TokenWrapped(marketId);
 
@@ -362,7 +376,9 @@ export default class PolkamarketsService {
 
   public async claimLiquidity(marketId: string | number) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.pm.claimLiquidity({
       marketId
@@ -373,7 +389,9 @@ export default class PolkamarketsService {
 
   public async getMarketData(marketId: string | number) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const marketData = await this.contracts.pm.getMarketData({ marketId });
 
@@ -407,7 +425,9 @@ export default class PolkamarketsService {
 
   public async getMarketPrices(marketId: string | number) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.pm.getMarketPrices({ marketId });
 
@@ -416,7 +436,9 @@ export default class PolkamarketsService {
 
   public async getPortfolio(): Promise<Object> {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
     if (!this.address) return {};
 
     const response = await this.contracts.pm.getMyPortfolio();
@@ -426,7 +448,9 @@ export default class PolkamarketsService {
 
   public async getActions(): Promise<any[]> {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
     if (!this.address) return [];
 
     const response = await this.contracts.pm.getMyActions();
@@ -436,7 +460,9 @@ export default class PolkamarketsService {
 
   public async resolveMarket(marketId: string | number) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.pm.resolveMarketOutcome({
       marketId
@@ -453,7 +479,9 @@ export default class PolkamarketsService {
 
   public async getERC20Balance(erc20ContractAddress: string): Promise<number> {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     if (!this.address) return 0;
 
@@ -496,7 +524,9 @@ export default class PolkamarketsService {
 
   public async claimPolk(): Promise<boolean> {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     // TODO improve this: ensuring erc20 contract is initialized
     // eslint-disable-next-line no-underscore-dangle
@@ -535,7 +565,9 @@ export default class PolkamarketsService {
     spenderAddress: string
   ): Promise<boolean> {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     if (!this.address || !erc20ContractAddress || !spenderAddress) return false;
 
@@ -562,7 +594,9 @@ export default class PolkamarketsService {
     amount?: number
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const contract = this.polkamarkets.getFantasyERC20Contract({
       contractAddress: erc20ContractAddress
@@ -651,7 +685,9 @@ export default class PolkamarketsService {
     amount: number
   ) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     // translating outcome id to answerId
     const answerId = realitioLib.answerToBytes32(outcomeId, { type: 'int' });
@@ -667,7 +703,9 @@ export default class PolkamarketsService {
 
   public async claimWinningsAndWithdraw(questionId: string) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     const response = await this.contracts.realitio.claimWinningsAndWithdraw({
       questionId
@@ -678,7 +716,9 @@ export default class PolkamarketsService {
 
   public async getBonds(): Promise<Object> {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
     if (!this.address) return {};
 
     const bonds = await this.contracts.realitio.getMyBonds();
@@ -688,7 +728,9 @@ export default class PolkamarketsService {
 
   public async getBondActions(): Promise<Object> {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
     if (!this.address) return [];
 
     const response = await this.contracts.realitio.getMyActions();
@@ -758,7 +800,9 @@ export default class PolkamarketsService {
     if (!this.contracts.voting.getContract()._address) return {};
 
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
     if (!this.address) return {};
 
     const response = await this.contracts.voting.getUserVotes({
@@ -770,7 +814,9 @@ export default class PolkamarketsService {
 
   public async upvoteItem(itemId) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     // ensuring user has wallet connected
     if (!this.address) return false;
@@ -782,7 +828,9 @@ export default class PolkamarketsService {
 
   public async downvoteItem(itemId) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     // ensuring user has wallet connected
     if (!this.address) return false;
@@ -794,7 +842,9 @@ export default class PolkamarketsService {
 
   public async removeUpvoteItem(itemId) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     // ensuring user has wallet connected
     if (!this.address) return false;
@@ -806,7 +856,9 @@ export default class PolkamarketsService {
 
   public async removeDownvoteItem(itemId) {
     // ensuring user has wallet connected
-    await this.login();
+    if (!PolkamarketsService.isSocialLogin) {
+      await this.login();
+    }
 
     // ensuring user has wallet connected
     if (!this.address) return false;
