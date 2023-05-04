@@ -23,13 +23,16 @@ export default function Adornment({
 }: AdornmentProps) {
   return (
     <span
-      className={cn(adornmentClasses.root, {
-        [adornmentClasses.edgeStart]: $edge === 'start',
-        [adornmentClasses.edgeEnd]: $edge === 'end',
-        [adornmentClasses.sizeSm]: $size === 'sm',
-        [adornmentClasses.sizeMd]: $size === 'md',
+      className={cn(
+        adornmentClasses.root,
+        {
+          [adornmentClasses.edgeStart]: $edge === 'start',
+          [adornmentClasses.edgeEnd]: $edge === 'end',
+          [adornmentClasses.sizeSm]: $size === 'sm',
+          [adornmentClasses.sizeMd]: $size === 'md'
+        },
         className
-      })}
+      )}
       {...props}
     />
   );

@@ -1,0 +1,49 @@
+.root {
+  display: flex;
+  gap: 8px;
+  min-height: 44px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  color: rgb(var(--channel) / 1);
+  background-color: rgb(var(--channel) / var(--alpha));
+}
+
+.center {
+  align-items: center;
+}
+
+.icon {
+  flex-shrink: 0;
+  display: inherit;
+
+  @media (min-width: 1024px) {
+    margin-left: -4px;
+    margin-right: 4px;
+  }
+}
+
+.container {
+  display: inherit;
+  gap: 8px;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.actions {
+  margin-left: auto;
+}
+
+.type {
+  &Warning {
+    --channel: var(--color-warning--rgb);
+  }
+  &Info {
+    --channel: var(--color-main--rgb);
+  }
+}
+
+.variant {
+  &Subtle {
+    --alpha: 0.16;
+  }
+}

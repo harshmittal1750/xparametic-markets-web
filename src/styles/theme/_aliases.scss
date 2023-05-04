@@ -52,6 +52,9 @@
 
   --color-main-primary: rgb(var(--purple-500--rgb));
   --color-main-quinary: rgb(var(--purple-500--rgb) / var(--alpha-quinary));
+  --color-main--rgb: var(--purple-600--rgb);
+
+  --color-warning--rgb: var(--yellow-600--rgb);
 
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
@@ -84,6 +87,8 @@
     --color-background--rgb: var(--neutral-900--rgb);
     --color-text--rgb: var(--neutral-200--rgb);
     --color-surface--rgb: var(--neutral-850--rgb);
+    --color-main--rgb: var(--purple-300--rgb);
+    --color-warning--rgb: var(--yellow-300--rgb);
 
     --color-border: var(--neutral-800);
     --color-shadow: var(--color-background-quaternary);
