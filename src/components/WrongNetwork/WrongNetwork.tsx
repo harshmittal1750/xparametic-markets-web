@@ -1,7 +1,8 @@
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
-import { Link, NetworkSelector } from 'components';
+import Link from 'components/Link';
+import NetworkSelector from 'components/NetworkSelector';
 
 import wrongNetwork from './WrongNetwork.module.scss';
 
