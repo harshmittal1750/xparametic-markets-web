@@ -32,7 +32,7 @@ function PredictionCard({ market, $gutter, className }: PredictionCardProps) {
       </div>
       <div className="prediction-card__footer">
         <Market.Footer market={market}>
-          {theme.device.isTablet ? (
+          {theme.device.isDesktop ? (
             <>
               <MarketFooterActions $variant="text" market={market} />
               <div className="pm-c-market-footer__divider--circle" />

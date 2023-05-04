@@ -59,7 +59,7 @@ export default function MarketFooter({ market, children }: MarketFooterProps) {
       <MarketFooterStats market={market} />
       <div className="pm-c-market-footer__group--row">
         {children}
-        {theme.device.isTablet && (
+        {theme.device.isDesktop && (
           <>
             {tag && (
               <>

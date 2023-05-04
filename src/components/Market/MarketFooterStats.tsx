@@ -30,7 +30,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
 
   return (
     <div className="pm-c-market-footer__stats">
-      {theme.device.isTablet && !isEmpty(network.currency) && (
+      {theme.device.isDesktop && !isEmpty(network.currency) && (
         <>
           <Tooltip text={network.name}>
             <Icon name={network.currency.iconName} />
@@ -107,10 +107,10 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
               >{`${token.ticker}`}</Text>
             </Tooltip>
           </Text>
-          {theme.device.isTablet && <span className="pm-c-divider--circle" />}
+          {theme.device.isDesktop && <span className="pm-c-divider--circle" />}
         </>
       )}
-      {theme.device.isTablet && (
+      {theme.device.isDesktop && (
         <>
           <Text
             as="span"
@@ -140,7 +140,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
           <span className="pm-c-divider--circle" />
         </>
       )}
-      {theme.device.isTablet && market.expiresAt && (
+      {theme.device.isDesktop && market.expiresAt && (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
           <Tooltip
             className={marketClasses.footerStatsTooltip}
