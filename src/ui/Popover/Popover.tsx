@@ -27,18 +27,6 @@ export interface PopoverProps<E extends HTMLElement>
   disableMobileSheet?: boolean;
 }
 
-const defaultPopoverSx = {
-  initial: {
-    bottom: -240
-  },
-  animate: {
-    bottom: 0
-  },
-  exit: {
-    bottom: -240
-  }
-};
-
 function getPopoverSx<E extends HTMLElement>(
   position: PopoverProps<E>['position'],
   element: E | null
@@ -82,9 +70,13 @@ export default function Popover<E extends HTMLElement>({
   return (
     <Modal
       disableGutters
+      show={!!show}
       disableOverlay={disableMobileSheet ? undefined : theme.device.isDesktop}
       fullWidth={disableMobileSheet ? undefined : !theme.device.isDesktop}
-      show={!!show}
+      style={{
+        ...(theme.device.isDesktop ? getPopoverSx(position, show) : {}),
+        ...style
+      }}
       className={{
         dialog: cn(
           popoverClasses.dialog,
@@ -95,23 +87,11 @@ export default function Popover<E extends HTMLElement>({
         ),
         ...className
       }}
-      {...(() => {
-        if (theme.device.isDesktop)
-          return {
-            style: {
-              ...getPopoverSx(position, show),
-              ...style
-            }
-          };
-        if (disableMobileSheet)
-          return {
-            style
-          };
-        return {
-          style,
-          ...defaultPopoverSx
-        };
-      })()}
+      {...(!theme.device.isDesktop && {
+        initial: { bottom: -240 },
+        animate: { bottom: 0 },
+        exit: { bottom: -240 }
+      })}
       {...props}
     />
   );
