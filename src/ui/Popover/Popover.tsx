@@ -53,11 +53,13 @@ function getPopoverSx<E extends HTMLElement>(
   );
   const positionY = positions.bottom ? 'top' : 'bottom';
   const positionX = positions.Right ? 'right' : 'left';
+  const scrollWidth = window.innerWidth - document.documentElement.clientWidth;
 
   return {
     [positionX]: {
-      left: rect?.left,
-      right: Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
+      left: rect ? rect.left + scrollWidth : 0,
+      right:
+        Math.abs(Math.round(rect?.right || 0) - window.innerWidth) - scrollWidth
     }[positionX],
     [positionY]: {
       top: rect ? rect.top + rect.height : 0,
