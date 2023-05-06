@@ -66,11 +66,9 @@ export default function NetworkSelector({
         {isDesktop && (
           <>
             {isTv && (isSmall ? 'Change' : networks.network.name)}
-            {!isSmall && (
-              <span className={networSelectorClasses.rootIcon}>
-                <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
-              </span>
-            )}
+            <span className={networSelectorClasses.rootIcon}>
+              <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
+            </span>
           </>
         )}
       </Button>
