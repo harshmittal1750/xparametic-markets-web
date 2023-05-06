@@ -1,5 +1,5 @@
 import cn from 'classnames';
-import { useTheme } from 'ui';
+import { useRect, useTheme } from 'ui';
 
 import { Modal } from 'components';
 import type { ModalProps } from 'components';
@@ -51,13 +51,12 @@ function getPopoverStyle<E extends HTMLElement>(
   const positionY = positions.bottom ? 'top' : 'bottom';
   const positionX = positions.Right ? 'right' : 'left';
   const windowWidth = window.innerWidth;
-  const scrollWidth = windowWidth - document.documentElement.clientWidth;
   const rectTop = Math.round(rect.top);
 
   return {
     [positionX]: {
-      left: Math.round(rect.left) + scrollWidth,
-      right: Math.abs(Math.round(rect.right) - windowWidth) - scrollWidth
+      left: Math.round(rect.left),
+      right: Math.abs(Math.round(rect.right) - windowWidth)
     }[positionX],
     [positionY]: {
       top: rectTop + rect.height,
@@ -87,9 +86,11 @@ export default function Popover<E extends HTMLElement>({
   disableMobileSheet,
   ...outProps
 }: PopoverProps<E>) {
+  const [ref, rect] = useRect();
   const theme = useTheme();
   const props = {
-    ...(theme.device.isDesktop ? {} : getPopoverMotion(-240)),
+    // TODO: Node on first mount doesn't animate
+    ...(theme.device.isDesktop ? {} : getPopoverMotion(-rect.height)),
     ...outProps
   };
   const style = {
@@ -99,6 +100,7 @@ export default function Popover<E extends HTMLElement>({
 
   return (
     <Modal
+      ref={ref}
       disableGutters
       show={!!show}
       disableOverlay={disableMobileSheet ? undefined : theme.device.isDesktop}
