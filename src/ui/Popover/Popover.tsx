@@ -32,6 +32,15 @@ function getPopoverStyle<E extends HTMLElement>(
   element: E | null
 ): React.CSSProperties {
   const rect = element?.getBoundingClientRect();
+
+  if (!rect) {
+    return {
+      left: 0,
+      top: 0,
+      width: 0
+    };
+  }
+
   const positions = [...positionInline, ...positionBlock].reduce(
     (pre, cur) => ({
       ...pre,
@@ -41,19 +50,20 @@ function getPopoverStyle<E extends HTMLElement>(
   );
   const positionY = positions.bottom ? 'top' : 'bottom';
   const positionX = positions.Right ? 'right' : 'left';
-  const scrollWidth = window.innerWidth - document.documentElement.clientWidth;
+  const windowWidth = window.innerWidth;
+  const scrollWidth = windowWidth - document.documentElement.clientWidth;
+  const rectTop = Math.round(rect.top);
 
   return {
     [positionX]: {
-      left: rect ? rect.left + scrollWidth : 0,
-      right:
-        Math.abs(Math.round(rect?.right || 0) - window.innerWidth) - scrollWidth
+      left: Math.round(rect.left) + scrollWidth,
+      right: Math.abs(Math.round(rect.right) - windowWidth) - scrollWidth
     }[positionX],
     [positionY]: {
-      top: rect ? rect.top + rect.height : 0,
-      bottom: window.innerHeight - (rect?.top || 0)
+      top: rectTop + rect.height,
+      bottom: windowWidth - rectTop
     }[positionY],
-    width: rect?.width
+    width: rect.width
   };
 }
 function getPopoverMotion(bottom: number | string) {
