@@ -27,7 +27,7 @@ export interface PopoverProps<E extends HTMLElement>
   disableMobileSheet?: boolean;
 }
 
-function getPopoverSx<E extends HTMLElement>(
+function getPopoverStyle<E extends HTMLElement>(
   position: PopoverProps<E>['position'],
   element: E | null
 ): React.CSSProperties {
@@ -56,16 +56,36 @@ function getPopoverSx<E extends HTMLElement>(
     width: rect?.width
   };
 }
+function getPopoverMotion(bottom: number | string) {
+  return {
+    initial: {
+      bottom
+    },
+    animate: {
+      bottom: 0
+    },
+    exit: {
+      bottom
+    }
+  };
+}
 
 export default function Popover<E extends HTMLElement>({
   className,
   show,
   position,
   disableMobileSheet,
-  style,
-  ...props
+  ...outProps
 }: PopoverProps<E>) {
   const theme = useTheme();
+  const props = {
+    ...(theme.device.isDesktop ? {} : getPopoverMotion(-240)),
+    ...outProps
+  };
+  const style = {
+    ...(theme.device.isDesktop ? getPopoverStyle(position, show) : {}),
+    ...outProps.style
+  };
 
   return (
     <Modal
@@ -73,10 +93,7 @@ export default function Popover<E extends HTMLElement>({
       show={!!show}
       disableOverlay={disableMobileSheet ? undefined : theme.device.isDesktop}
       fullWidth={disableMobileSheet ? undefined : !theme.device.isDesktop}
-      style={{
-        ...(theme.device.isDesktop ? getPopoverSx(position, show) : {}),
-        ...style
-      }}
+      style={style}
       className={{
         dialog: cn(
           popoverClasses.dialog,
@@ -87,11 +104,6 @@ export default function Popover<E extends HTMLElement>({
         ),
         ...className
       }}
-      {...(!theme.device.isDesktop && {
-        initial: { bottom: -240 },
-        animate: { bottom: 0 },
-        exit: { bottom: -240 }
-      })}
       {...props}
     />
   );
