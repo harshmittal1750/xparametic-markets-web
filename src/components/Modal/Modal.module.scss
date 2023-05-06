@@ -54,3 +54,8 @@
 .gutters {
   padding: var(--grid-margin);
 }
+
+.overflow {
+  overflow: hidden;
+  padding-right: var(--scroll-x);
+}

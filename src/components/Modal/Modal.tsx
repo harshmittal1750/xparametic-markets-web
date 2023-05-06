@@ -42,11 +42,9 @@ function ModalWrapper({
   const Portal = usePortal({
     root: document.body,
     onEffect() {
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add(ModalClasses.overflow);
 
-      return () => {
-        document.body.removeAttribute('style');
-      };
+      return () => document.body.classList.remove(ModalClasses.overflow);
     }
   });
   const timeoutEffect = useTimeoutEffect();
