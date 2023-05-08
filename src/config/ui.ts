@@ -9,6 +9,11 @@ import environment from './environment';
 import features from './features';
 
 const ui = {
+  layout: {
+    disclaimer: {
+      enabled: features.regular.enabled
+    }
+  },
   hero: {
     enabled: [
       environment.UI_HERO_IMAGE,
