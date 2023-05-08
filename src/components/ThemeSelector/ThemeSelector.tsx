@@ -6,7 +6,7 @@ import {
   List,
   ListItem,
   THEME_MODE_KEY,
-  THEME_MODES,
+  THEME_MODE_DEFAULT,
   isThemeDark,
   useRect,
   useTheme,
@@ -30,7 +30,7 @@ const modes = {
 
 export default function NetworkSelector() {
   const theme = useTheme();
-  const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODES.dark);
+  const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODE_DEFAULT);
   const [rectButton, setRectButton] = useState<DOMRect | null>(null);
   const [refDialog, rectDialog] = useRect();
   const handleShow = useCallback(
