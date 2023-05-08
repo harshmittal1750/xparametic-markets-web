@@ -3,7 +3,7 @@ import { forwardRef, useCallback, useEffect } from 'react';
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { HTMLMotionProps } from 'framer-motion';
-import { Focustrap } from 'ui';
+import { Focustrap, useTheme } from 'ui';
 
 import { usePortal, usePrevious, useMount, useTimeoutEffect } from 'hooks';
 
@@ -46,12 +46,16 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
   const { current: didMount } = useMount();
   const { current: showPrev } = usePrevious(show);
   const timeoutEffect = useTimeoutEffect();
+  const theme = useTheme();
   const root = document.body;
+  const rootClasses = theme.device.isMobileDevice
+    ? [ModalClasses.overflow]
+    : [ModalClasses.overflow, ModalClasses.scrollOffset];
   const Portal = usePortal({
     root,
     onEffect() {
-      root.classList.add(ModalClasses.overflow);
-      return () => root.classList.remove(ModalClasses.overflow);
+      root.classList.add(...rootClasses);
+      return () => root.classList.remove(...rootClasses);
     }
   });
   const handleRootKeydown = useCallback(
@@ -65,9 +69,7 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
   useEffect(() => {
     if (showPrev && !show) {
       if (didMount) timeoutEffect(Portal.unmount, 300);
-    } else {
-      Portal.mount(!!show);
-    }
+    } else Portal.mount(show);
   }, [Portal, didMount, show, showPrev, timeoutEffect]);
 
   return (

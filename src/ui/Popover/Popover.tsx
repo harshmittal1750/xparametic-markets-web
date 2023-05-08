@@ -89,7 +89,7 @@ export default function Popover<E extends HTMLElement>({
   const [ref, rect] = useRect();
   const theme = useTheme();
   const props = {
-    // TODO: Node on first mount doesn't animate
+    // TODO: Node on first mount doesn't animate because it's not on DOM tree yet
     ...(theme.device.isDesktop ? {} : getPopoverMotion(-rect.height)),
     ...outProps
   };
