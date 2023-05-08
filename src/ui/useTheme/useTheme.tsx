@@ -31,7 +31,7 @@ export const THEME_MODE_DEFAULT: ThemeModes = (() => {
 export type ThemeModes = keyof typeof THEME_MODES;
 export type ThemeProps = {
   device: {
-    mode: 'light' | 'dark';
+    mode: Exclude<ThemeModes, THEME_MODES.system>;
     setMode: React.Dispatch<React.SetStateAction<ThemeModes>>;
   } & Record<'isTv' | 'isDesktop' | 'isTablet', boolean>;
 };
