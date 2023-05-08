@@ -43,7 +43,7 @@ function CreateMarketFormOutcomes() {
   const validProbabilities = useMemo(() => {
     const probabilities = outcomes.map(outcome => outcome.probability);
     const sumOfProbabilities = sum(probabilities);
-    return almost(sumOfProbabilities, 100);
+    return almost(sumOfProbabilities, 100, 0.01);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outcomes, probabilityDistribution]);
 
