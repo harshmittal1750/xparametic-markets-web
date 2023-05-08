@@ -1,6 +1,6 @@
 import { environment, features } from 'config';
 
-function useFantasyTokenName() {
+function useFantasyTokenTicker() {
   if (features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER) {
     return environment.FEATURE_FANTASY_TOKEN_TICKER;
   }
@@ -8,4 +8,4 @@ function useFantasyTokenName() {
   return undefined;
 }
 
-export default useFantasyTokenName;
+export default useFantasyTokenTicker;
