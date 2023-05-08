@@ -6,10 +6,11 @@ import {
   List,
   ListItem,
   THEME_MODE_KEY,
-  THEME_MODE_DEFAULT,
+  THEME_MODES,
   isThemeDark,
   useRect,
-  useTheme
+  useTheme,
+  ThemeModes
 } from 'ui';
 
 import { Button } from 'components/Button';
@@ -25,13 +26,11 @@ const modes = {
   Light: 'Sun',
   Dark: 'Moon',
   System: 'Sparkles'
-} as const;
-
-type Modes = Lowercase<keyof typeof modes>;
+};
 
 export default function NetworkSelector() {
   const theme = useTheme();
-  const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODE_DEFAULT);
+  const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODES.dark);
   const [rectButton, setRectButton] = useState<DOMRect | null>(null);
   const [refDialog, rectDialog] = useRect();
   const handleShow = useCallback(
@@ -42,7 +41,9 @@ export default function NetworkSelector() {
   const handleHide = useCallback(() => setRectButton(null), []);
   const handleTheme = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      theme.device.setMode(event.currentTarget.name.toLowerCase() as Modes);
+      theme.device.setMode(
+        event.currentTarget.name.toLowerCase() as ThemeModes
+      );
       handleHide();
     },
     [handleHide, theme.device]
