@@ -19,6 +19,7 @@ import {
 import {
   useAppDispatch,
   useAppSelector,
+  useFantasyTokenTicker,
   usePolkamarketsService,
   useSortableData
 } from 'hooks';
@@ -44,6 +45,7 @@ const PortfolioMarketTable = ({
   const history = useHistory();
 
   const polkamarketsService = usePolkamarketsService();
+  const fantasyTokenTicker = useFantasyTokenTicker();
   const filter = useAppSelector(state => state.portfolio.filter);
 
   const [isLoadingClaimWinnings, setIsLoadingClaimWinnings] = useState({});
@@ -211,7 +213,7 @@ const PortfolioMarketTable = ({
                       >
                         {`${roundNumber(price.value, 3)} `}
                         <Text as="strong" scale="caption" fontWeight="semibold">
-                          {` ${market.token.symbol}`}
+                          {` ${fantasyTokenTicker || market.token.symbol}`}
                         </Text>
                       </Text>
                       <Text
@@ -248,7 +250,7 @@ const PortfolioMarketTable = ({
                       >
                         {`${roundNumber(profit.value, 3)} `}
                         <Text as="strong" scale="caption" fontWeight="semibold">
-                          {` ${market.token.symbol}`}
+                          {` ${fantasyTokenTicker || market.token.symbol}`}
                         </Text>
                       </Text>
                       <Text
@@ -292,7 +294,7 @@ const PortfolioMarketTable = ({
                     >
                       {`${roundNumber(value, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${market.token.symbol}`}
+                        {` ${fantasyTokenTicker || market.token.symbol}`}
                       </Text>
                     </Text>
                   </td>
@@ -314,7 +316,7 @@ const PortfolioMarketTable = ({
                     >
                       {`${roundNumber(maxPayout, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${market.token.symbol}`}
+                        {` ${fantasyTokenTicker || market.token.symbol}`}
                       </Text>
                     </Text>
                   </td>
