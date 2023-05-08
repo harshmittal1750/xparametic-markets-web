@@ -18580,7 +18580,7 @@ polished@^4.2.2:
 
 "polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feature/v2-social-login":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#31070aa87af0779d6b88dfb05701795a2307ebbc"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#28a8766c3d5152f263e891fd0b5cb1f92d179a68"
   dependencies:
     "@biconomy/smart-account" "^2.0.0"
     "@biconomy/web3-auth" "^2.0.0"
