@@ -63,14 +63,16 @@ export default function WalletInfo() {
       </div>
       <MetaMaskWalletComponent>
         {theme.device.isDesktop && (
-          <>
-            <MetaMaskIcon />
-            {ethBalance.toFixed(4)}
-            <span className="pm-c-wallet-info__currency__ticker">
-              {' '}
-              {network.currency.ticker}
-            </span>
-          </>
+          <Feature name="regular">
+            <>
+              <MetaMaskIcon />
+              {ethBalance.toFixed(4)}
+              <span className="pm-c-wallet-info__currency__ticker">
+                {' '}
+                {network.currency.ticker}
+              </span>
+            </>
+          </Feature>
         )}
         <Link
           to={`/user/${ethAddress}`}
