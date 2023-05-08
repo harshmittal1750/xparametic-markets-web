@@ -1,25 +1,37 @@
+import { environment, features } from 'config';
 import dayjs from 'dayjs';
 import set from 'lodash/set';
 import type { Network } from 'types/network';
 
 import { Filters, FiltersState } from './filters.type';
 
+const fantasyTokenTicker =
+  features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER
+    ? environment.FEATURE_FANTASY_TOKEN_TICKER
+    : undefined;
+
 const defaultRangeOptions = [
   { label: 'Any', value: 'any' },
   {
-    label: 'Under €10',
+    label: fantasyTokenTicker ? `Under 10 ${fantasyTokenTicker}` : 'Under €10',
     value: '0-10'
   },
   {
-    label: '€10 - €100',
+    label: fantasyTokenTicker
+      ? `10 ${fantasyTokenTicker} - 100 ${fantasyTokenTicker}`
+      : '€10 - €100',
     value: '10-100'
   },
   {
-    label: '€100 - €1000',
+    label: fantasyTokenTicker
+      ? `100 ${fantasyTokenTicker} - 1000 ${fantasyTokenTicker}`
+      : '€100 - €1000',
     value: '100-1000'
   },
   {
-    label: 'Over €1000',
+    label: fantasyTokenTicker
+      ? `Over 1000 ${fantasyTokenTicker}`
+      : 'Over €1000',
     value: '1000-'
   }
 ];
