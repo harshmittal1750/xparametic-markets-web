@@ -1,19 +1,34 @@
 import { createContext, useContext, useMemo } from 'react';
 
+import { environment } from 'config';
 import useMedia from 'ui/useMedia';
 import useUpdateEffect from 'ui/useUpdateEffect';
 
 import { useLocalStorage } from 'hooks';
 
+export const enum THEME_MODES {
+  light = 'light',
+  dark = 'dark',
+  system = 'system'
+}
+
 export const IDLE_STYLES =
   "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
 export const THEME_MODE_KEY = 'THEME_MODE_KEY';
-export const THEME_MODE_SYSTEM = 'system';
-export const THEME_MODE_DEFAULT = 'dark';
+export const THEME_MODE_CONFIGURABLE:
+  | Exclude<ThemeModes, 'system'>
+  | undefined = (() => {
+  switch (environment.DEFAULT_THEME?.toLowerCase()) {
+    case THEME_MODES.light:
+      return THEME_MODES.light;
+    case THEME_MODES.dark:
+      return THEME_MODES.dark;
+    default:
+      return undefined;
+  }
+})();
 
-export type ThemeModes =
-  | ThemeProps['device']['mode']
-  | typeof THEME_MODE_SYSTEM;
+export type ThemeModes = keyof typeof THEME_MODES;
 export type ThemeProps = {
   device: {
     mode: 'light' | 'dark';
@@ -59,7 +74,7 @@ export function isThemeDark(
 export default function ThemeProvider(props: ThemeProviderProps) {
   const [mode, setMode] = useLocalStorage<ThemeModes>(
     THEME_MODE_KEY,
-    THEME_MODE_DEFAULT
+    THEME_MODES.dark
   );
   const isDark = useMedia('(prefers-color-scheme: dark)');
   const isTablet = useMedia('(min-width: 512px)');
@@ -69,7 +84,8 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     () => ({
       device: {
         mode: (() => {
-          if (mode === THEME_MODE_SYSTEM) {
+          if (THEME_MODE_CONFIGURABLE) return THEME_MODE_CONFIGURABLE;
+          if (mode === THEME_MODES.system) {
             if (isDark) return 'dark';
             return 'light';
           }
