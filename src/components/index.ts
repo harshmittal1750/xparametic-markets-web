@@ -144,6 +144,8 @@ export {
 
 export { default as ApproveToken } from './ApproveToken';
 
+export { default as BetaTesting } from './BetaTesting';
+
 export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
@@ -158,6 +160,8 @@ export type { IconProps } from './Icon';
 export { default as Feature } from './Feature';
 
 export { default as Header } from './Header';
+
+export { default as Logos } from './Logos';
 
 export { default as MarketAvatar } from './MarketAvatar';
 
@@ -192,3 +196,5 @@ export { default as SelectTokenModal } from './SelectTokenModal';
 export { default as ThemeSelector } from './ThemeSelector';
 
 export { default as VirtualizedList } from './VirtualizedList';
+
+export { default as WrongNetwork } from './WrongNetwork';

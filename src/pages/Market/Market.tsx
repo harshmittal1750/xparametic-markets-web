@@ -20,7 +20,12 @@ import {
   Icon
 } from 'components';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useMarketForms,
+  useNetwork
+} from 'hooks';
 
 import marketClasses from './Market.module.scss';
 import MarketAbout from './MarketAbout';
@@ -31,16 +36,23 @@ import MarketNews from './MarketNews';
 import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
+const forms = {
+  liquidityForm: 'Liquidity',
+  reportForm: 'Report',
+  tradeForm: 'Trade'
+};
+
 function SidebarWrapper({
   children
 }: React.PropsWithChildren<Record<string, unknown>>) {
   const [show, setShow] = useState(false);
   const handleHide = useCallback(() => setShow(false), []);
+  const form = useMarketForms();
 
   return (
     <Container $enableGutters className={marketClasses.sectionTrade}>
       <Button color="primary" size="sm" fullwidth onClick={() => setShow(true)}>
-        Trade
+        {forms[form]}
       </Button>
       <Modal
         disableGutters
@@ -60,7 +72,7 @@ function SidebarWrapper({
             fontWeight="bold"
             className={marketClasses.sidebarDialogHeaderTitle}
           >
-            Select Network
+            Select Outcome
           </Text>
           <Adornment $edge="end">
             <Button
@@ -121,7 +133,7 @@ function MarketUI() {
           image={market.bannerUrl}
         />
         <MarketHead />
-        <Container $enableGutters className={marketClasses.bodyContent}>
+        <Container $enableGutters>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">

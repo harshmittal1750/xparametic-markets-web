@@ -13,7 +13,7 @@ export default function MarketAnalytics() {
   const market = useAppSelector(state => state.market.market);
   const analytics = {
     Volume: roundNumber(market.volume, 3),
-    Expires: dayjs(market.expiresAt).utc().format('MMMM D, YYYY'),
+    Expires: dayjs(market.expiresAt).utc(true).format('MMM D, YYYY h:mm A'),
     Liquidity: roundNumber(market.liquidity, 3),
     // TODO: get the actual 24h volume
     '24H volume': roundNumber(market.volume, 3)

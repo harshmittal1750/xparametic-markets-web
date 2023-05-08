@@ -14,10 +14,10 @@
 .edge {
   &Start {
     margin-right: var(--margin-inline);
-    margin-left: calc(-1 * #{var(--margin-inline)});
+    margin-left: calc(-1 * #{var(--margin-inline)} / 2);
   }
   &End {
-    margin-right: calc(-1 * #{var(--margin-inline)});
+    margin-right: calc(-1 * #{var(--margin-inline)} / 2);
     margin-left: var(--margin-inline);
   }
 }

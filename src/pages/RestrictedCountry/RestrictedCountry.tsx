@@ -34,7 +34,7 @@ export default function RestrictedCountry() {
               <Link
                 href="https://www.polkamarkets.com/legal/terms-conditions"
                 title="Excluded Jurisdictions."
-                scale="body"
+                scale="caption"
                 fontWeight="medium"
                 className="text-gray"
                 target="_blank"
@@ -45,7 +45,7 @@ export default function RestrictedCountry() {
               <Link
                 href="mailto:general@polkamarkets.com"
                 title="general@polkamarkets.com"
-                scale="body"
+                scale="caption"
                 fontWeight="medium"
                 className="text-gray"
                 target="_blank"

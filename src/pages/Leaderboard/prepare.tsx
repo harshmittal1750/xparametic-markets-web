@@ -222,19 +222,19 @@ function prepareLeaderboardTableRows({
           place: index + 1,
           achievements: row.achievements
         },
-        volume: {
-          volume: row.volume,
-          ticker
+        volumeEur: {
+          volume: row.volumeEur,
+          ticker: '€'
         },
         marketsCreated: row.marketsCreated,
         wonPredictions: row.claimWinningsCount,
-        netVolume: {
-          volume: row.tvlVolume,
-          ticker
+        netVolumeEur: {
+          volume: row.tvlVolumeEur,
+          ticker: '€'
         },
-        netLiquidity: {
-          liquidity: row.tvlLiquidity,
-          ticker
+        netLiquidityEur: {
+          liquidity: row.tvlLiquidityEur,
+          ticker: '€'
         },
         transactions: row.transactions,
         balance: {
@@ -277,12 +277,12 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
           : null,
         render: rankColumnRender
       },
-      volume: {
+      volumeEur: {
         value:
-          yourStats && yourStats.volume
+          yourStats && yourStats.volumeEur
             ? {
-                volume: yourStats.volume.volume,
-                ticker: yourStats.volume.ticker
+                volume: yourStats.volumeEur.volume,
+                ticker: yourStats.volumeEur.ticker
               }
             : null,
         render: volumeColumnRender
@@ -293,22 +293,22 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
       wonPredictions: {
         value: yourStats ? yourStats.wonPredictions : null
       },
-      netVolume: {
+      netVolumeEur: {
         value:
-          yourStats && yourStats.netVolume
+          yourStats && yourStats.netVolumeEur
             ? {
-                volume: yourStats.netVolume.volume,
-                ticker: yourStats.netVolume.ticker
+                volume: yourStats.netVolumeEur.volume,
+                ticker: yourStats.netVolumeEur.ticker
               }
             : null,
         render: volumeColumnRender
       },
-      netLiquidity: {
+      netLiquidityEur: {
         value:
-          yourStats && yourStats.netLiquidity
+          yourStats && yourStats.netLiquidityEur
             ? {
-                liquidity: yourStats.netLiquidity.liquidity,
-                ticker: yourStats.netLiquidity.ticker
+                liquidity: yourStats.netLiquidityEur.liquidity,
+                ticker: yourStats.netLiquidityEur.ticker
               }
             : null,
         render: liquidityColumnRender

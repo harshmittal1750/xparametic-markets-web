@@ -16,6 +16,7 @@
 
   &Item {
     min-width: calc(50vw - var(--grid-margin) - 4px);
+    display: inline-flex;
   }
 }
 

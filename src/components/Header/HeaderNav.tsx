@@ -153,7 +153,11 @@ export default function HeaderNav() {
       ) : (
         !theme.device.isDesktop && (
           <>
-            <NetworkSelector responsive className={headerNavClasses.network} />
+            <NetworkSelector
+              size="sm"
+              responsive
+              className={headerNavClasses.network}
+            />
             <HeaderNavMenuModal />
           </>
         )
