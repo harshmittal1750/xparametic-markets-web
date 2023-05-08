@@ -23,6 +23,8 @@ export { default as useCookie } from './useCookie';
 
 export { default as useExpandableOutcomes } from './useExpandableOutcomes';
 
+export { default as useFantasyTokenName } from './useFantasyTokenName';
+
 export { default as useMarketForms } from './useMarketForms';
 
 export { default as useMarketPath } from './useMarketPath';
