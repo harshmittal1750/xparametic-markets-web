@@ -67,8 +67,6 @@ export default class PolkamarketsService {
           chainId: 80001,
           dappAPIKey: process.env.REACT_APP_NETWORK_80001_SOCIAL_LOGIN_DAPP
         },
-        web3AuthClientId:
-          'BCs5evI19-MmRe5aN_bCgHtbpeBrPIo8nfAXwB_9dWSRcmi-9cKJAlRMDFgW506z8SihuviGXZyLr5e8IFWZGlc',
         whiteLabelData: {
           logo: 'https://www.polkamarkets.com/favicon.ico',
           name: 'Polkamarkets'
