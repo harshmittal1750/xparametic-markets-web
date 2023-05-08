@@ -16,7 +16,7 @@ export const IDLE_STYLES =
   "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
 export const THEME_MODE_KEY = 'THEME_MODE_KEY';
 export const THEME_MODE_DEFAULT: ThemeModes = (() => {
-  switch (environment.UI_THEME?.toLowerCase()) {
+  switch (environment.UI_THEME_MODE?.toLowerCase()) {
     case THEME_MODES.light:
       return THEME_MODES.light;
     case THEME_MODES.dark:
