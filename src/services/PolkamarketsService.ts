@@ -458,7 +458,6 @@ export default class PolkamarketsService {
     // ensuring user has wallet connected
     await this.login();
 
-    console.log('!!!!!!!!!!this.address:', this.address);
     // console.trace();
     if (!this.address) {
       return 0;
