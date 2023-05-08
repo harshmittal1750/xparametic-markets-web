@@ -10,6 +10,7 @@ import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 
 import { Button } from 'components/Button';
 import Feature from 'components/Feature';
+import Icon from 'components/Icon';
 
 import { useAppSelector, useNetwork } from 'hooks';
 
@@ -80,8 +81,18 @@ export default function WalletInfo() {
             }
           )}
         >
-          {!theme.device.isDesktop && <MetaMaskIcon />}
-          {shortenAddress(ethAddress)}
+          <Feature name="regular">
+            <>
+              {!theme.device.isDesktop && <MetaMaskIcon />}
+              {shortenAddress(ethAddress)}
+            </>
+          </Feature>
+          <Feature name="fantasy">
+            <>
+              <Icon name="User" />
+              Profile
+            </>
+          </Feature>
         </Link>
         {theme.device.isDesktop && <Transak />}
       </MetaMaskWalletComponent>
