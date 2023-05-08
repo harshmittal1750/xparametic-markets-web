@@ -9,6 +9,13 @@ import environment from './environment';
 import features from './features';
 
 const ui = {
+  layout: {
+    header: {
+      networkSelector: {
+        enabled: features.regular.enabled
+      }
+    }
+  },
   hero: {
     enabled: [
       environment.UI_HERO_IMAGE,
