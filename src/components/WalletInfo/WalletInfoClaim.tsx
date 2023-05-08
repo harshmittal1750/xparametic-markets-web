@@ -66,14 +66,16 @@ function WalletInfoClaim() {
           </Toast>
         </ToastNotification>
       ) : null}
-      <ButtonLoading
-        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
-        loading={isClaiming}
-        disabled={isPolkClaimed || isClaiming}
-        onClick={handleClaim}
-      >
-        {isPolkClaimed ? '$POLK Claimed' : 'Claim $POLK'}
-      </ButtonLoading>
+      {!isPolkClaimed ? (
+        <ButtonLoading
+          className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
+          loading={isClaiming}
+          disabled={isClaiming}
+          onClick={handleClaim}
+        >
+          Claim $POLK
+        </ButtonLoading>
+      ) : null}
     </>
   );
 }
