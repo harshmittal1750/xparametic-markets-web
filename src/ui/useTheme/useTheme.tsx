@@ -15,16 +15,16 @@ export const enum THEME_MODES {
 export const IDLE_STYLES =
   "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
 export const THEME_MODE_KEY = 'THEME_MODE_KEY';
-export const THEME_MODE_CONFIGURABLE:
-  | Exclude<ThemeModes, 'system'>
-  | undefined = (() => {
+export const THEME_MODE_DEFAULT: ThemeModes = (() => {
   switch (environment.DEFAULT_THEME?.toLowerCase()) {
     case THEME_MODES.light:
       return THEME_MODES.light;
     case THEME_MODES.dark:
       return THEME_MODES.dark;
+    case THEME_MODES.system:
+      return THEME_MODES.system;
     default:
-      return undefined;
+      return THEME_MODES.dark;
   }
 })();
 
@@ -74,7 +74,7 @@ export function isThemeDark(
 export default function ThemeProvider(props: ThemeProviderProps) {
   const [mode, setMode] = useLocalStorage<ThemeModes>(
     THEME_MODE_KEY,
-    THEME_MODES.dark
+    THEME_MODE_DEFAULT
   );
   const isDark = useMedia('(prefers-color-scheme: dark)');
   const isTablet = useMedia('(min-width: 512px)');
@@ -84,7 +84,6 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     () => ({
       device: {
         mode: (() => {
-          if (THEME_MODE_CONFIGURABLE) return THEME_MODE_CONFIGURABLE;
           if (mode === THEME_MODES.system) {
             if (isDark) return 'dark';
             return 'light';
