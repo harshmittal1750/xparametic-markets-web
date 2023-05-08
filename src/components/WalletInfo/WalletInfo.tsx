@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
+import { features } from 'config';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
 import { useTheme } from 'ui';
@@ -25,7 +26,15 @@ function MetaMaskIcon() {
   );
 }
 function MetaMaskWallet(props: React.PropsWithChildren<{}>) {
-  return <div className="pm-c-wallet-info__currency" {...props} />;
+  return (
+    <div
+      className={cn({
+        'pm-c-wallet-info__currency': features.regular.enabled,
+        'pm-c-wallet-info__currency--no-border': features.fantasy.enabled
+      })}
+      {...props}
+    />
+  );
 }
 export default function WalletInfo() {
   const theme = useTheme();

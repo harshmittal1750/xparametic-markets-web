@@ -24,6 +24,12 @@
       letter-spacing: -0.014rem;
       color: themed('text-active');
 
+      &--no-border {
+        @extend .pm-c-wallet-info__currency;
+        padding-left: 4px;
+        border: unset;
+      }
+
       &__ticker {
         color: #b5d2fe;
         margin-right: 8px;
