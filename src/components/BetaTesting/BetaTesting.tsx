@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { environment } from 'config';
+import { features } from 'config';
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
@@ -14,7 +14,7 @@ type BetaTestingProps = {
 
 export default function BetaTesting({ network }: BetaTestingProps) {
   // TODO: Turn content customizable through env
-  const [show, setShow] = useState(!!environment.FEATURE_ALERT);
+  const [show, setShow] = useState(features.alert.enabled);
 
   if (!show) return null;
 

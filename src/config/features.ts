@@ -10,6 +10,15 @@ const features = {
   },
   fantasy: {
     enabled: toBoolean(environment.FEATURE_FANTASY)
+  },
+  voting: {
+    enabled: toBoolean(environment.FEATURE_VOTING)
+  },
+  alert: {
+    enabled: toBoolean(environment.FEATURE_ALERT)
+  },
+  news: {
+    enabled: toBoolean(environment.FEATURE_NEWS)
   }
 } as const;
 
