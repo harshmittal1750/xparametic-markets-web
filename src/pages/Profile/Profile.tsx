@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { features } from 'config';
 import {
   useGetLeaderboardByAddressQuery,
   useGetPortfolioByAddressQuery,
@@ -67,11 +68,13 @@ export default function Profile() {
             data={leaderboard.data}
           />
           <div className="pm-p-profile-lists margin-top-6">
-            <ProfileAchievements
-              listHeight={LIST_HEIGHT}
-              isLoading={leaderboard.isLoading}
-              data={leaderboard.data}
-            />
+            {features.achievements.enabled && (
+              <ProfileAchievements
+                listHeight={LIST_HEIGHT}
+                isLoading={leaderboard.isLoading}
+                data={leaderboard.data}
+              />
+            )}
             <ProfileActivities
               isLoading={activity.isLoading}
               listHeight={LIST_HEIGHT}

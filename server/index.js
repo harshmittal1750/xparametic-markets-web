@@ -7,8 +7,7 @@ const app = express();
 app.use(helmet.frameguard({ action: 'deny' }));
 
 const port = process.env.PORT || 5000;
-const isClubs =
-  process.env.REACT_APP_FEATURE_CLUBS?.toLocaleLowerCase() === 'true';
+const isClubs = process.env.REACT_APP_FEATURE_CLUBS?.toLowerCase() === 'true';
 
 const fs = require('fs');
 const path = require('path');
@@ -109,6 +108,11 @@ app.get('/portfolio', (request, response) => {
 });
 
 app.get('/achievements', (request, response) => {
+  if (process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() !== 'true') {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();

@@ -22,6 +22,9 @@ const features = {
   },
   clubs: {
     enabled: toBoolean(environment.FEATURE_CLUBS)
+  },
+  achievements: {
+    enabled: toBoolean(environment.FEATURE_ACHIEVEMENTS)
   }
 } as const;
 
