@@ -10,7 +10,7 @@ const port = process.env.PORT || 5000;
 const isClubsEnabled =
   process.env.REACT_APP_FEATURE_CLUBS?.toLowerCase() === 'true';
 const isAchievementsEnabled =
-  process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() !== 'true';
+  process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() === 'true';
 
 const fs = require('fs');
 const path = require('path');
@@ -111,7 +111,7 @@ app.get('/portfolio', (request, response) => {
 });
 
 app.get('/achievements', (request, response) => {
-  if (isAchievementsEnabled) {
+  if (!isAchievementsEnabled) {
     next();
     return;
   }
