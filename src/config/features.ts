@@ -19,6 +19,9 @@ const features = {
   },
   news: {
     enabled: toBoolean(environment.FEATURE_NEWS)
+  },
+  clubs: {
+    enabled: toBoolean(environment.FEATURE_CLUBS)
   }
 } as const;
 

@@ -7,8 +7,8 @@ const app = express();
 app.use(helmet.frameguard({ action: 'deny' }));
 
 const port = process.env.PORT || 5000;
-const isFantasy =
-  process.env.REACT_APP_FEATURE_FANTASY?.toLocaleLowerCase() === 'true';
+const isClubs =
+  process.env.REACT_APP_FEATURE_CLUBS?.toLocaleLowerCase() === 'true';
 
 const fs = require('fs');
 const path = require('path');
@@ -121,7 +121,7 @@ app.get('/achievements', (request, response) => {
 });
 
 app.get('/clubs', (request, response, next) => {
-  if (!isFantasy) {
+  if (!isClubs) {
     next();
     return;
   }
@@ -135,7 +135,7 @@ app.get('/clubs', (request, response, next) => {
 });
 
 app.get('/clubs/:slug', async (request, response, next) => {
-  if (!isFantasy) {
+  if (!isClubs) {
     next();
     return;
   }
@@ -186,7 +186,7 @@ app.get('/leaderboard', (request, response) => {
 });
 
 app.get('/leaderboard/:slug', async (request, response, next) => {
-  if (!isFantasy) {
+  if (!isClubs) {
     next();
     return;
   }

@@ -17,6 +17,7 @@ const environmentConfigVariables = [
   'FEATURE_VOTING',
   'FEATURE_FANTASY_TOKEN_TICKER',
   'FEATURE_NEWS',
+  'FEATURE_CLUBS',
   'UI_HERO_IMAGE',
   'UI_HERO_HEADER',
   'UI_HERO_TITLE',

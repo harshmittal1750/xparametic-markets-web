@@ -51,7 +51,7 @@ const ui = {
     )
   },
   clubs: {
-    enabled: features.fantasy.enabled
+    enabled: features.clubs.enabled
   },
   profile: {
     summary: {
