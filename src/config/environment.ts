@@ -13,13 +13,14 @@ const environmentConfigVariables = [
   'RESTRICTED_COUNTRIES',
   'WEB3_PROVIDER',
   'FEATURE_FANTASY',
+  'FEATURE_ALERT',
+  'FEATURE_VOTING',
   'UI_HERO_IMAGE',
   'UI_HERO_HEADER',
   'UI_HERO_TITLE',
   'UI_HERO_ACTION_TITLE',
   'UI_HERO_ACTION_URL',
-  'UI_LEADERBOARD_COLUMNS',
-  'FEATURE_ALERT'
+  'UI_LEADERBOARD_COLUMNS'
 ] as const;
 
 export type EnvironmentConfigVariable =
