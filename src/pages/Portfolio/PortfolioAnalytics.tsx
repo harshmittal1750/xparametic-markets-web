@@ -4,12 +4,14 @@ import { Skeleton } from 'ui';
 
 import { CategoryAnalytics } from 'components';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useFantasyTokenTicker } from 'hooks';
 
 import type { PortfolioAsyncProps } from './type';
 import { formatPortfolioAnalytics } from './utils';
 
 export default function PortfolioAnalytics({ isLoading }: PortfolioAsyncProps) {
+  const fantasyTokenTicker = useFantasyTokenTicker();
+
   const closedMarketsProfit = useAppSelector(
     state => state.portfolio.portfolio.closedMarketsProfit
   );
@@ -29,9 +31,15 @@ export default function PortfolioAnalytics({ isLoading }: PortfolioAsyncProps) {
         openPositions,
         liquidityProvided,
         liquidityFeesEarned,
-        '€'
+        fantasyTokenTicker || '€'
       ),
-    [closedMarketsProfit, liquidityFeesEarned, liquidityProvided, openPositions]
+    [
+      closedMarketsProfit,
+      fantasyTokenTicker,
+      liquidityFeesEarned,
+      liquidityProvided,
+      openPositions
+    ]
   );
 
   return (

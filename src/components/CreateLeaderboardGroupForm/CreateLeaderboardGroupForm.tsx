@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { ui } from 'config';
 import { Formik, Form } from 'formik';
 import {
   useCreateLeaderboardGroupMutation,
@@ -57,7 +58,9 @@ function CreateLeaderboardGroupForm({
 
   const redirectToLeaderboardGroup = useCallback(
     (leaderboardSlug: string) => {
-      history.push(`/clubs/${leaderboardSlug}?m=f`);
+      history.push(
+        `/clubs/${leaderboardSlug}${ui.layout.disclaimer.enabled ? '?m=f' : ''}`
+      );
       window.location.reload();
     },
     [history]

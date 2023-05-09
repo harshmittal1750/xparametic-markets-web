@@ -14,6 +14,9 @@ const ui = {
       networkSelector: {
         enabled: features.regular.enabled
       }
+    },
+    disclaimer: {
+      enabled: features.regular.enabled
     }
   },
   hero: {

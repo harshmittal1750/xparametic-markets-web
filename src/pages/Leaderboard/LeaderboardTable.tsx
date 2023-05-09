@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import { Table } from 'components/new';
 
-import { useWindowDimensions } from 'hooks';
+import { useFantasyTokenTicker, useWindowDimensions } from 'hooks';
 
 import {
   prepareLeaderboardTableRows,
@@ -26,6 +26,7 @@ function LeaderboardTable({
   isLoading
 }: LeaderboardTableProps) {
   const { height } = useWindowDimensions();
+  const fantasyTokenTicker = useFantasyTokenTicker();
 
   const preparedRows = useMemo(
     () =>
@@ -33,9 +34,10 @@ function LeaderboardTable({
         loggedInUser,
         rows,
         sortBy,
-        ticker
+        ticker,
+        fantasyTokenTicker
       }),
-    [loggedInUser, rows, sortBy, ticker]
+    [fantasyTokenTicker, loggedInUser, rows, sortBy, ticker]
   );
 
   const userIndex = useMemo(() => {
