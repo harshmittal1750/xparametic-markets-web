@@ -1,6 +1,7 @@
 import { Fragment, useEffect } from 'react';
 
 import cn from 'classnames';
+import { ui } from 'config';
 import { Container, useTheme } from 'ui';
 
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -38,7 +39,7 @@ export default function HeaderActions() {
           [headerClasses.container]: !theme.device.isDesktop
         })}
       >
-        {theme.device.isDesktop && (
+        {ui.layout.header.networkSelector.enabled && theme.device.isDesktop && (
           <NetworkSelector
             size="sm"
             responsive

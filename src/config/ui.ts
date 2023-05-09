@@ -10,6 +10,11 @@ import features from './features';
 
 const ui = {
   layout: {
+    header: {
+      networkSelector: {
+        enabled: features.regular.enabled
+      }
+    },
     disclaimer: {
       enabled: features.regular.enabled
     }
