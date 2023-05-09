@@ -13,7 +13,6 @@ const environmentConfigVariables = [
   'RESTRICTED_COUNTRIES',
   'WEB3_PROVIDER',
   'FEATURE_FANTASY',
-  'FEATURE_VOTING',
   'UI_HERO_IMAGE',
   'UI_HERO_HEADER',
   'UI_HERO_TITLE',
