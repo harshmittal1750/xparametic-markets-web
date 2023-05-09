@@ -11,7 +11,7 @@ import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 import { Button } from 'components/Button';
 import Feature from 'components/Feature';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import { useAppSelector, useFantasyTokenTicker, useNetwork } from 'hooks';
 
 import { Transak } from '../integrations';
 import WalletInfoClaim from './WalletInfoClaim';
@@ -29,6 +29,7 @@ function MetaMaskWallet(props: React.PropsWithChildren<{}>) {
 export default function WalletInfo() {
   const theme = useTheme();
   const { network } = useNetwork();
+  const fantasyTokenTicker = useFantasyTokenTicker();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
@@ -40,7 +41,9 @@ export default function WalletInfo() {
     <div className="pm-c-wallet-info">
       <div className="pm-c-wallet-info__currency pm-c-wallet-info__profile">
         {formatNumberToString(polkBalance)}
-        <span className="pm-c-wallet-info__currency__ticker">POLK</span>
+        <span className="pm-c-wallet-info__currency__ticker">
+          {fantasyTokenTicker || 'POLK'}
+        </span>
         {theme.device.isDesktop && (
           <>
             <Feature name="fantasy">

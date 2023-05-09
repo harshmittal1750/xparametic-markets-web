@@ -197,6 +197,7 @@ export {
 export type PrepareLeaderboardTableRowsArgs = {
   rows?: GetLeaderboardByTimeframeData;
   ticker: string;
+  fantasyTokenTicker?: string;
   sortBy: string;
   loggedInUser?: string;
 };
@@ -204,6 +205,7 @@ export type PrepareLeaderboardTableRowsArgs = {
 function prepareLeaderboardTableRows({
   rows = [],
   ticker,
+  fantasyTokenTicker,
   sortBy,
   loggedInUser
 }: PrepareLeaderboardTableRowsArgs): LeaderboardTableRow[] {
@@ -224,22 +226,22 @@ function prepareLeaderboardTableRows({
         },
         volumeEur: {
           volume: row.volumeEur,
-          ticker: '€'
+          ticker: fantasyTokenTicker || '€'
         },
         marketsCreated: row.marketsCreated,
         wonPredictions: row.claimWinningsCount,
         netVolumeEur: {
           volume: row.tvlVolumeEur,
-          ticker: '€'
+          ticker: fantasyTokenTicker || '€'
         },
         netLiquidityEur: {
           liquidity: row.tvlLiquidityEur,
-          ticker: '€'
+          ticker: fantasyTokenTicker || '€'
         },
         transactions: row.transactions,
         balance: {
           balance: row.erc20Balance,
-          ticker
+          ticker: fantasyTokenTicker || ticker
         },
         achievements: row.achievements,
         rank: {

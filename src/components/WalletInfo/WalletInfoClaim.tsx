@@ -6,7 +6,12 @@ import { Transaction } from 'types/transaction';
 import Toast from 'components/Toast';
 import ToastNotification from 'components/ToastNotification';
 
-import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useFantasyTokenTicker,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
@@ -16,6 +21,8 @@ function WalletInfoClaim() {
   const polkamarketsService = usePolkamarketsService();
   const { show: showToastNotification, close: closeToastNotification } =
     useToastNotification();
+
+  const fantasyTokenTicker = useFantasyTokenTicker();
 
   const [transaction, setTransaction] = useState<Transaction>({
     state: 'not_started'
@@ -72,7 +79,9 @@ function WalletInfoClaim() {
         disabled={isPolkClaimed || isClaiming}
         onClick={handleClaim}
       >
-        {isPolkClaimed ? '$POLK Claimed' : 'Claim $POLK'}
+        {isPolkClaimed
+          ? `$${fantasyTokenTicker || 'POLK'} Claimed`
+          : `Claim $${fantasyTokenTicker || 'POLK'}`}
       </ButtonLoading>
     </>
   );

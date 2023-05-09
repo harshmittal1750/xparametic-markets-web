@@ -1,9 +1,12 @@
+import { features } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 
 import Icon from 'components/Icon';
+
+import { useFantasyTokenTicker } from 'hooks';
 
 import Text from '../Text';
 import Tooltip from '../Tooltip';
@@ -25,6 +28,8 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
     token,
     network
   } = market;
+
+  const fantasyTokenTicker = useFantasyTokenTicker();
 
   return (
     <div className="pm-c-market-footer__stats">
@@ -49,6 +54,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             <Tooltip
               className={marketClasses.footerStatsTooltip}
               text={`Volume: ${roundNumber(volumeEur, 3)} EUR`}
+              disabled={features.fantasy.enabled}
             >
               <Icon
                 name="Stats"
@@ -68,7 +74,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
                 scale="tiny-uppercase"
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
-              >{`${token.ticker}`}</Text>
+              >{`${fantasyTokenTicker || token.ticker}`}</Text>
             </Tooltip>
           </Text>
           <span className="pm-c-divider--circle" />
@@ -85,6 +91,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             <Tooltip
               className={marketClasses.footerStatsTooltip}
               text={`Liquidity: ${roundNumber(liquidityEur, 3)} EUR`}
+              disabled={features.fantasy.enabled}
             >
               <Icon
                 name="Liquidity"
@@ -104,7 +111,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
                 scale="tiny-uppercase"
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
-              >{`${token.ticker}`}</Text>
+              >{`${fantasyTokenTicker || token.ticker}`}</Text>
             </Tooltip>
           </Text>
           <span className="pm-c-divider--circle" />
