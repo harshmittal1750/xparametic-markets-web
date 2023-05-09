@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
 
+import { features } from 'config';
+import omit from 'lodash/omit';
+
 import { preparePredictionStatisticsRow } from './prepare';
 import ProfileStats from './ProfileStats';
 import { PredictionStatistics, PredictionStatisticsColumn } from './types';
@@ -39,11 +42,29 @@ function ProfilePredictionStatistics({
     [statistics, ticker]
   );
 
+  const filteredColumns = useMemo(
+    () =>
+      features.fantasy.enabled
+        ? columns.filter(
+            column => !['marketsCreated', 'liquidityAdded'].includes(column.key)
+          )
+        : columns,
+    []
+  );
+
+  const filteredRow = useMemo(
+    () =>
+      features.fantasy.enabled
+        ? omit(row, ['marketsCreated', 'liquidityAdded'])
+        : row,
+    [row]
+  );
+
   return (
     <ProfileStats
       title="Prediction Statistics"
-      columns={columns}
-      row={row}
+      columns={filteredColumns}
+      row={filteredRow}
       isLoading={isLoading}
     />
   );
