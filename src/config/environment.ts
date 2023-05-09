@@ -19,7 +19,8 @@ const environmentConfigVariables = [
   'UI_HERO_TITLE',
   'UI_HERO_ACTION_TITLE',
   'UI_HERO_ACTION_URL',
-  'UI_LEADERBOARD_COLUMNS'
+  'UI_LEADERBOARD_COLUMNS',
+  'UI_THEME_MODE'
 ] as const;
 
 export type EnvironmentConfigVariable =
