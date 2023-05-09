@@ -109,9 +109,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     (() => window.getComputedStyle(document.body))();
     timer = window.setTimeout(() => document.head.removeChild(style), 1);
 
-    return () => {
-      window.clearTimeout(timer);
-    };
+    return () => window.clearTimeout(timer);
   }, [value.device.mode]);
 
   return <ThemeContext.Provider value={value} {...props} />;
