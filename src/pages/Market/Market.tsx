@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { features, ui } from 'config';
+import { ui } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -193,7 +193,7 @@ function MarketUI() {
           )}
           {!theme.device.isDesktop && <MarketAnalytics />}
           <MarketAbout />
-          {features.voting.enabled && !theme.device.isDesktop && (
+          {ui.market.voting.enabled && !theme.device.isDesktop && (
             <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
               <VoteArrows
@@ -206,7 +206,7 @@ function MarketUI() {
             </section>
           )}
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
-            {features.news.enabled ? (
+            {ui.market.news.enabled ? (
               <Tabs value={tab} onChange={setTab}>
                 <Tabs.TabPane tab="Positions" id="positions">
                   {tabPositions}

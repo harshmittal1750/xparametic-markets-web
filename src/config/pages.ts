@@ -1,6 +1,5 @@
 import { lazy } from 'react';
 
-import features from './features';
 import ui from './ui';
 
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
@@ -64,7 +63,7 @@ const pages = {
         'Predict Football World Cup match winners and grab your exclusive NFT Achievements. The Illuminate Fantasy League is a fantasy predictions tournament focused on the 2022 Football World Cup.',
       image: `${process.env.PUBLIC_URL}/ifl_meta_achievements.png`
     },
-    enabled: features.achievements.enabled
+    enabled: ui.achievements.enabled
   },
   portfolio: {
     pathname: '/portfolio',

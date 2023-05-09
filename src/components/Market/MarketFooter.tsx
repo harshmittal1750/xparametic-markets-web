@@ -1,4 +1,4 @@
-import { features } from 'config';
+import { ui } from 'config';
 import dayjs from 'dayjs';
 import { inRange } from 'lodash';
 import { Market } from 'models/market';
@@ -69,7 +69,7 @@ export default function MarketFooter({ market, children }: MarketFooterProps) {
             </div>
           </>
         )}
-        {features.voting.enabled && (
+        {ui.market.voting.enabled && (
           <>
             <div className="pm-c-market-footer__divider--circle" />
             <VoteArrows
