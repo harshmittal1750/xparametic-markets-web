@@ -34,6 +34,7 @@ export type PolkamarketsInitialState = {
     bonds: boolean;
     actions: boolean;
     votes: boolean;
+    login: boolean;
   };
   createMarketToken: Token | Currency | null;
 };
@@ -56,7 +57,8 @@ const initialState: PolkamarketsInitialState = {
     portfolio: false,
     bonds: false,
     actions: false,
-    votes: false
+    votes: false,
+    login: false
   },
   createMarketToken: null
 };
@@ -185,6 +187,13 @@ const {
 function login(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
     const isLoggedIn = await polkamarketsService.isLoggedIn();
+
+    dispatch(
+      changeLoading({
+        key: 'login',
+        value: true
+      })
+    );
     dispatch(changeIsLoggedIn(isLoggedIn));
 
     if (isLoggedIn) {
@@ -203,7 +212,21 @@ function login(polkamarketsService: PolkamarketsService) {
         dispatch(changePolkBalance(polkBalance));
         dispatch(changePolkClaimed(polkClaimed));
         dispatch(changePolkApproved(polkApproved));
+
+        dispatch(
+          changeLoading({
+            key: 'login',
+            value: false
+          })
+        );
       });
+    } else {
+      dispatch(
+        changeLoading({
+          key: 'login',
+          value: false
+        })
+      );
     }
   };
 }

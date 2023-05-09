@@ -22,6 +22,9 @@ function WalletInfoClaim() {
   });
 
   const isPolkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
+  const isLoadingPolkClaimed = useAppSelector(
+    state => state.polkamarkets.isLoading.login
+  );
 
   const [isClaiming, setIsClaiming] = useState(false);
 
@@ -44,6 +47,10 @@ function WalletInfoClaim() {
       setTransaction({ state: 'failure' });
     }
   }, [dispatch, polkamarketsService, showToastNotification]);
+
+  if (!isPolkClaimed && !isClaiming && !isLoadingPolkClaimed) {
+    handleClaim();
+  }
 
   return (
     <>
