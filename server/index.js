@@ -7,7 +7,10 @@ const app = express();
 app.use(helmet.frameguard({ action: 'deny' }));
 
 const port = process.env.PORT || 5000;
-const isClubs = process.env.REACT_APP_FEATURE_CLUBS?.toLowerCase() === 'true';
+const isClubsEnabled =
+  process.env.REACT_APP_FEATURE_CLUBS?.toLowerCase() === 'true';
+const isAchievementsEnabled =
+  process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() !== 'true';
 
 const fs = require('fs');
 const path = require('path');
@@ -108,7 +111,7 @@ app.get('/portfolio', (request, response) => {
 });
 
 app.get('/achievements', (request, response) => {
-  if (process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() !== 'true') {
+  if (isAchievementsEnabled) {
     next();
     return;
   }
@@ -125,7 +128,7 @@ app.get('/achievements', (request, response) => {
 });
 
 app.get('/clubs', (request, response, next) => {
-  if (!isClubs) {
+  if (!isClubsEnabled) {
     next();
     return;
   }
@@ -139,7 +142,7 @@ app.get('/clubs', (request, response, next) => {
 });
 
 app.get('/clubs/:slug', async (request, response, next) => {
-  if (!isClubs) {
+  if (!isClubsEnabled) {
     next();
     return;
   }
@@ -190,7 +193,7 @@ app.get('/leaderboard', (request, response) => {
 });
 
 app.get('/leaderboard/:slug', async (request, response, next) => {
-  if (!isClubs) {
+  if (!isClubsEnabled) {
     next();
     return;
   }
