@@ -1,7 +1,6 @@
 import { Fragment, useCallback, useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
-import { environment } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -170,7 +169,7 @@ function MarketUI() {
           )}
           {!theme.device.isDesktop && <MarketAnalytics />}
           <MarketAbout />
-          {environment.FEATURE_VOTING && !theme.device.isDesktop && (
+          {!theme.device.isDesktop && (
             <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
               <VoteArrows
