@@ -58,7 +58,8 @@ const defaultDateRangeOptions = [
 const filters: Filters = {
   toggles: {
     favorites: {
-      title: 'Favorites'
+      title: 'Favorites',
+      enabled: true
     }
   },
   dropdowns: {
@@ -78,22 +79,26 @@ const filters: Filters = {
           value: 'resolved'
         }
       ],
-      multiple: true
+      multiple: true,
+      enabled: true
     },
     networks: {
       title: 'Network',
       options: [],
-      multiple: true
+      multiple: true,
+      enabled: features.regular.enabled
     },
     volume: {
       title: 'Volume',
       options: defaultRangeOptions,
-      multiple: false
+      multiple: false,
+      enabled: true
     },
     liquidity: {
       title: 'Liquidity',
       options: defaultRangeOptions,
-      multiple: false
+      multiple: false,
+      enabled: features.regular.enabled
     },
     endDate: {
       title: 'End Date',
@@ -104,7 +109,8 @@ const filters: Filters = {
           value: 'custom'
         }
       ],
-      multiple: false
+      multiple: false,
+      enabled: true
     }
   }
 };
