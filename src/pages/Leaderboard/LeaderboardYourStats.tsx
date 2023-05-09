@@ -4,6 +4,8 @@ import some from 'lodash/some';
 
 import { TableMiniColumn } from 'components/new/TableMini';
 
+import { useFantasyTokenTicker } from 'hooks';
+
 import LeaderboardStats from './LeaderboardStats';
 import {
   prepareLeaderboardTableRows,
@@ -63,15 +65,18 @@ function LeaderboardYourStats({
   ticker,
   isLoading
 }: LeaderboardYourStatsProps) {
+  const fantasyTokenTicker = useFantasyTokenTicker();
+
   const preparedRows = useMemo(
     () =>
       prepareLeaderboardTableRows({
         loggedInUser,
         rows,
         sortBy,
-        ticker
+        ticker,
+        fantasyTokenTicker
       }),
-    [loggedInUser, rows, sortBy, ticker]
+    [fantasyTokenTicker, loggedInUser, rows, sortBy, ticker]
   );
 
   const row = useMemo(

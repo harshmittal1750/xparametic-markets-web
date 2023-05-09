@@ -1,25 +1,37 @@
+import { environment, features } from 'config';
 import dayjs from 'dayjs';
 import set from 'lodash/set';
 import type { Network } from 'types/network';
 
 import { Filters, FiltersState } from './filters.type';
 
+const fantasyTokenTicker =
+  features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER
+    ? environment.FEATURE_FANTASY_TOKEN_TICKER
+    : undefined;
+
 const defaultRangeOptions = [
   { label: 'Any', value: 'any' },
   {
-    label: 'Under €10',
+    label: fantasyTokenTicker ? `Under 10 ${fantasyTokenTicker}` : 'Under €10',
     value: '0-10'
   },
   {
-    label: '€10 - €100',
+    label: fantasyTokenTicker
+      ? `10 ${fantasyTokenTicker} - 100 ${fantasyTokenTicker}`
+      : '€10 - €100',
     value: '10-100'
   },
   {
-    label: '€100 - €1000',
+    label: fantasyTokenTicker
+      ? `100 ${fantasyTokenTicker} - 1000 ${fantasyTokenTicker}`
+      : '€100 - €1000',
     value: '100-1000'
   },
   {
-    label: 'Over €1000',
+    label: fantasyTokenTicker
+      ? `Over 1000 ${fantasyTokenTicker}`
+      : 'Over €1000',
     value: '1000-'
   }
 ];
@@ -46,7 +58,8 @@ const defaultDateRangeOptions = [
 const filters: Filters = {
   toggles: {
     favorites: {
-      title: 'Favorites'
+      title: 'Favorites',
+      enabled: true
     }
   },
   dropdowns: {
@@ -66,22 +79,26 @@ const filters: Filters = {
           value: 'resolved'
         }
       ],
-      multiple: true
+      multiple: true,
+      enabled: true
     },
     networks: {
       title: 'Network',
       options: [],
-      multiple: true
+      multiple: true,
+      enabled: features.regular.enabled
     },
     volume: {
       title: 'Volume',
       options: defaultRangeOptions,
-      multiple: false
+      multiple: false,
+      enabled: true
     },
     liquidity: {
       title: 'Liquidity',
       options: defaultRangeOptions,
-      multiple: false
+      multiple: false,
+      enabled: features.regular.enabled
     },
     endDate: {
       title: 'End Date',
@@ -92,7 +109,8 @@ const filters: Filters = {
           value: 'custom'
         }
       ],
-      multiple: false
+      multiple: false,
+      enabled: true
     }
   }
 };

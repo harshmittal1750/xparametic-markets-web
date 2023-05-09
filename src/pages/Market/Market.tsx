@@ -257,7 +257,9 @@ export default function Market() {
     async function handleHome() {
       const { pages } = await import('config');
 
-      history.push(`${pages.home.pathname}?m=f`);
+      history.push(
+        `${pages.home.pathname}${ui.layout.disclaimer.enabled ? '?m=f' : ''}`
+      );
       window.location.reload();
     }
 

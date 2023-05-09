@@ -1,5 +1,7 @@
 import { createContext, useCallback, useMemo, useReducer } from 'react';
 
+import pickBy from 'lodash/pickBy';
+
 import { useNetworks } from 'contexts/networks';
 
 import filtersReducer from './filters.reducer';
@@ -7,7 +9,11 @@ import {
   FiltersActions,
   FiltersContextState,
   UpdateTogglePayload,
-  UpdateDropdownPayload
+  UpdateDropdownPayload,
+  Dropdown,
+  Dropdowns,
+  Toggles,
+  Toggle
 } from './filters.type';
 import { addNetworks, filtersInitialState } from './filters.util';
 
@@ -45,7 +51,16 @@ function FiltersProvider({ children }) {
   return (
     <FiltersContext.Provider
       value={{
-        filters: filtersWithNetworks,
+        filters: {
+          toggles: pickBy(
+            filtersWithNetworks.toggles,
+            value => value.enabled
+          ) as Record<Toggles, Toggle>,
+          dropdowns: pickBy(
+            filtersWithNetworks.dropdowns,
+            value => value.enabled
+          ) as Record<Dropdowns, Dropdown>
+        },
         state: filtersState,
         controls: {
           updateToggle,
