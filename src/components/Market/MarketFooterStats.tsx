@@ -74,7 +74,9 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
                 scale="tiny-uppercase"
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
-              >{`${fantasyTokenTicker || token.ticker}`}</Text>
+              >
+                {`${fantasyTokenTicker || token.ticker}`}
+              </Text>
             </Tooltip>
           </Text>
           <span className="pm-c-divider--circle" />

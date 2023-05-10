@@ -22,6 +22,8 @@ export { default as ListItem } from './ListItem';
 
 export { default as ListItemText } from './ListItemText';
 
+export { default as Popover } from './Popover';
+
 export { default as RangePicker } from './RangePicker';
 
 export { default as Skeleton } from './Skeleton';

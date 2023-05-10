@@ -1,3 +1,26 @@
+body {
+  font-size: 1.6rem;
+  line-height: 1.5;
+  background-color: var(--color-background-primary);
+  font-family: 'Gilroy', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar {
+  width: var(--scroll-x);
+  height: var(--scroll-x);
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: calc(#{var(--scroll-x)} / 2);
+  background-color: var(--color-text-quaternary);
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-text-quinary);
+}
+
 #root {
   display: flex;
   flex-direction: column;
