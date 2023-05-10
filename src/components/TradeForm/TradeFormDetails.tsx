@@ -1,3 +1,6 @@
+import { useMemo } from 'react';
+
+import { features } from 'config';
 import { roundNumber } from 'helpers/math';
 
 import { useAppSelector } from 'hooks';
@@ -29,9 +32,27 @@ function TradeFormDetails() {
     fee
   );
 
+  const filteredMiniTableItems = useMemo(
+    () =>
+      features.fantasy.enabled
+        ? miniTableItems.filter(
+            item =>
+              !(
+                type === 'buy'
+                  ? ['prediction', 'pricePerFraction', 'fee', 'stake']
+                  : ['prediction', 'pricePerFraction', 'fee', 'shares']
+              ).includes(item.key)
+          )
+        : miniTableItems,
+    [miniTableItems, type]
+  );
+
   return (
     <div className="pm-c-trade-form-details">
-      <MiniTable rows={miniTableItems} style={{ paddingBottom: '0.4rem' }} />
+      <MiniTable
+        rows={filteredMiniTableItems}
+        style={{ paddingBottom: '0.4rem' }}
+      />
       {type === 'buy' ? (
         <MiniTable
           rows={[

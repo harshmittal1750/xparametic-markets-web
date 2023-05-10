@@ -1,15 +1,13 @@
-import environment from './environment';
+import isTrue from 'helpers/isTrue';
 
-function toBoolean(value: string | undefined): boolean {
-  return value?.toLocaleLowerCase() === 'true';
-}
+import environment from './environment';
 
 const features = {
   regular: {
-    enabled: !toBoolean(environment.FEATURE_FANTASY)
+    enabled: !isTrue(environment.FEATURE_FANTASY)
   },
   fantasy: {
-    enabled: toBoolean(environment.FEATURE_FANTASY)
+    enabled: isTrue(environment.FEATURE_FANTASY)
   }
 } as const;
 

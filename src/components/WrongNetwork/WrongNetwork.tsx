@@ -1,9 +1,10 @@
 import type { Network } from 'types/network';
 import { Banner } from 'ui';
 
-import { Link, NetworkSelector } from 'components';
+import Link from 'components/Link';
+import NetworkSelector from 'components/NetworkSelector';
 
-import wrongNetwork from './WrongNetwork.module.scss';
+import wrongNetworkClasses from './WrongNetwork.module.scss';
 
 type WrongNetworkProps = {
   network: Network;
@@ -16,10 +17,10 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
       $variant="subtle"
       actions={
         <NetworkSelector
-          anchorOrigin="left"
           size="xs"
           color="warning"
-          variant="outline"
+          variant="ghost"
+          className={wrongNetworkClasses.change}
         />
       }
     >
@@ -27,7 +28,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
       Polkamarkets&apos; networks. <strong>Change</strong> the App network or
       learn{' '}
       <Link
-        className={wrongNetwork.link}
+        className={wrongNetworkClasses.link}
         title="how to change"
         target="_blank"
         rel="noreferrer noopener"

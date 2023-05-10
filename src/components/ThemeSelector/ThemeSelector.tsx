@@ -8,14 +8,12 @@ import {
   THEME_MODE_KEY,
   THEME_MODE_DEFAULT,
   isThemeDark,
-  useRect,
   useTheme,
   ThemeModes
 } from 'ui';
 
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
-import Modal from 'components/Modal';
 import Text from 'components/Text';
 
 import { useLocalStorage } from 'hooks';
@@ -31,14 +29,13 @@ const modes = {
 export default function NetworkSelector() {
   const theme = useTheme();
   const [modeStored] = useLocalStorage(THEME_MODE_KEY, THEME_MODE_DEFAULT);
-  const [rectButton, setRectButton] = useState<DOMRect | null>(null);
-  const [refDialog, rectDialog] = useRect();
+  const [show, setShow] = useState<HTMLButtonElement | null>(null);
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
-      setRectButton(event.currentTarget.getBoundingClientRect()),
+      setShow(event.currentTarget),
     []
   );
-  const handleHide = useCallback(() => setRectButton(null), []);
+  const handleHide = useCallback(() => setShow(null), []);
   const handleTheme = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       theme.device.setMode(
@@ -63,32 +60,7 @@ export default function NetworkSelector() {
           size="lg"
         />
       </Button>
-      <Modal
-        ref={refDialog}
-        disableGutters
-        onHide={handleHide}
-        disableOverlay={theme.device.isDesktop}
-        fullWidth={!theme.device.isDesktop}
-        show={!!rectButton}
-        className={{
-          dialog: themeSelectorClasses.dialog
-        }}
-        {...(theme.device.isDesktop
-          ? {
-              style: {
-                left: rectButton
-                  ? rectButton.left - rectDialog.width + rectButton?.width
-                  : 0,
-                top: `calc(${rectButton?.height}px + var(--grid-margin))`,
-                width: rectButton?.width
-              }
-            }
-          : {
-              initial: { bottom: -240 },
-              animate: { bottom: 0 },
-              exit: { bottom: -240 }
-            })}
-      >
+      <Popover position="bottomRight" onHide={handleHide} show={show}>
         {!theme.device.isDesktop && (
           <header className={themeSelectorClasses.header}>
             <Text
@@ -140,7 +112,7 @@ export default function NetworkSelector() {
             </ListItem>
           ))}
         </List>
-      </Modal>
+      </Popover>
     </>
   );
 }

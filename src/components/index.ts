@@ -178,6 +178,7 @@ export { default as MarketCategory } from './MarketCategory';
 export { default as MarketList } from './MarketList';
 
 export { default as Modal } from './Modal';
+export type { ModalProps } from './Modal';
 
 export { default as ModalContent } from './ModalContent';
 

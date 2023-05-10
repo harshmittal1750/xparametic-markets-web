@@ -9,6 +9,7 @@ import Text from 'components/Text';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
+import Feature from '../Feature';
 import TradeFormActions from './TradeFormActions';
 import TradeFormClosed from './TradeFormClosed';
 import TradeFormDetails from './TradeFormDetails';
@@ -66,7 +67,9 @@ function TradeForm() {
         )}
       </div>
       <div className="pm-c-trade-form__actions">
-        <TradeFormLiquidity />
+        <Feature name="regular">
+          <TradeFormLiquidity />
+        </Feature>
         <TradeFormTypeSelector />
         <TradeFormInput />
         <TradeFormDetails />

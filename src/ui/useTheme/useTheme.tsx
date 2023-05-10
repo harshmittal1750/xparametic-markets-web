@@ -33,7 +33,7 @@ export type ThemeProps = {
   device: {
     mode: Exclude<ThemeModes, THEME_MODES.system>;
     setMode: React.Dispatch<React.SetStateAction<ThemeModes>>;
-  } & Record<'isTv' | 'isDesktop' | 'isTablet', boolean>;
+  } & Record<'isTv' | 'isDesktop' | 'isTablet' | 'isMobileDevice', boolean>;
 };
 type ThemeProviderProps = Omit<
   React.ProviderProps<Record<string, never>>,
@@ -46,6 +46,7 @@ const ThemeContext = createContext<ThemeProps>({
     isTv: false,
     isDesktop: false,
     isTablet: false,
+    isMobileDevice: false,
     setMode: () => {}
   }
 });
@@ -93,6 +94,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
         isTv,
         isDesktop,
         isTablet,
+        isMobileDevice: /Mobi/i.test(window.navigator.userAgent),
         setMode
       }
     }),
