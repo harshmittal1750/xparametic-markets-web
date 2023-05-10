@@ -39,7 +39,7 @@ function TradeFormDetails() {
             item =>
               !(
                 type === 'buy'
-                  ? ['prediction', 'pricePerFraction', 'fee', 'roi', 'stake']
+                  ? ['prediction', 'pricePerFraction', 'fee', 'stake']
                   : ['prediction', 'pricePerFraction', 'fee', 'shares']
               ).includes(item.key)
           )
