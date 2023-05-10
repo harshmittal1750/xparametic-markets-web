@@ -19,9 +19,15 @@ interface NetworkSelectorProps extends ButtonProps {
 type Rect = DOMRect | null;
 
 const defaultSx = {
-  initial: { bottom: -240 },
-  animate: { bottom: 0 },
-  exit: { bottom: -240 }
+  initial: {
+    bottom: -240
+  },
+  animate: {
+    bottom: 0
+  },
+  exit: {
+    bottom: -240
+  }
 };
 
 function getDefaultSx(
