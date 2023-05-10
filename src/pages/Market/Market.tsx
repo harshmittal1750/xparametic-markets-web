@@ -206,12 +206,12 @@ function MarketUI() {
             </section>
           )}
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
-            {ui.market.news.enabled ? (
-              <Tabs value={tab} onChange={setTab}>
-                <Tabs.TabPane tab="Positions" id="positions">
-                  {tabPositions}
-                </Tabs.TabPane>
-                <Tabs.TabPane tab="News (Beta)" id="news">
+            <Tabs value={tab} onChange={setTab}>
+              <Tabs.TabPane tab="Positions" id="positions">
+                {tabPositions}
+              </Tabs.TabPane>
+              {ui.market.news.enabled ? (
+                <Tabs.TabPane tab="News" id="news">
                   {market.news?.length ? (
                     <MarketNews news={market.news} />
                   ) : (
@@ -222,10 +222,8 @@ function MarketUI() {
                     />
                   )}
                 </Tabs.TabPane>
-              </Tabs>
-            ) : (
-              tabPositions
-            )}
+              ) : null}
+            </Tabs>
           </section>
         </Container>
       </div>
