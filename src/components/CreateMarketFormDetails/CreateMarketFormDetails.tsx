@@ -41,34 +41,6 @@ function CreateMarketFormDetails() {
           placeholder="Select Category"
           options={[
             {
-              name: 'Crypto',
-              value: 'crypto'
-            },
-            {
-              name: 'Gaming',
-              value: 'gaming'
-            },
-            {
-              name: 'Sports',
-              value: 'sports'
-            },
-            {
-              name: 'Politics',
-              value: 'politics'
-            },
-            {
-              name: 'Other',
-              value: 'other'
-            }
-          ]}
-          required
-        />
-        <SelectInput
-          label="Subcategory"
-          name="subcategory"
-          placeholder="Select Subcategory"
-          options={[
-            {
               name: 'Society',
               value: 'society'
             },
@@ -93,6 +65,12 @@ function CreateMarketFormDetails() {
               value: 'other'
             }
           ]}
+          required
+        />
+        <Input
+          name="subcategory"
+          label="Subcategory"
+          placeholder="Select Subcategory"
           required
         />
       </div>
