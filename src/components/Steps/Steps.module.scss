@@ -1,0 +1,92 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-24);
+}
+
+.steps {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+  gap: var(--size-8);
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 2px solid;
+  width: 100%;
+
+  &Title {
+    margin-bottom: var(--size-12);
+    font-size: 1.4rem;
+    line-height: 1;
+    font-weight: 600;
+  }
+}
+
+.stepInProgress {
+  @extend .step;
+  border-color: #8888fc;
+
+  &Title {
+    @extend .stepTitle;
+    color: #8888fc;
+  }
+}
+
+.stepFinished {
+  @extend .step;
+  border-color: #65d6ad;
+
+  &Title {
+    @extend .stepTitle;
+    color: #65d6ad;
+  }
+}
+
+.stepWaiting {
+  @extend .step;
+  border-color: #435270;
+
+  &Title {
+    @extend .stepTitle;
+    color: #435270;
+  }
+}
+
+.currentStep {
+  padding: var(--size-32);
+  border: 1px solid var(--color-border);
+  border-radius: var(--size-8);
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--size-8);
+
+  @media (max-width: 576px) {
+    flex-direction: column;
+    align-items: inherit;
+    gap: var(--size-16);
+  }
+
+  &HelperText {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    font-weight: 600;
+    color: #59749b;
+  }
+}
+
+.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--size-8);
+}

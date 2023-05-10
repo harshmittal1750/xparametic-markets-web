@@ -26,6 +26,8 @@ type Button = {
 
 type ButtonGroupSize = 'normal' | 'sm' | 'lg';
 
+type ButtonGroupComponents = 'group' | 'button';
+
 type ButtonGroupProps = {
   /**
    * Id of the default active button
@@ -52,6 +54,7 @@ type ButtonGroupProps = {
    * Aditional styles
    */
   style?: React.CSSProperties;
+  className?: Partial<Record<ButtonGroupComponents, string>>;
 };
 
 function ButtonGroup({
@@ -60,7 +63,8 @@ function ButtonGroup({
   size = 'normal',
   fullwidth = false,
   onChange,
-  style
+  style,
+  className
 }: ButtonGroupProps) {
   const initialState =
     buttons.find(button => button.id === defaultActiveId) || buttons[0];
@@ -76,11 +80,14 @@ function ButtonGroup({
 
   return (
     <div
-      className={classNames({
-        [`pm-c-button-group--${activeButton.color}`]: true,
-        [`pm-c-button-group--${size}`]: true,
-        'pm-c-button-group--fullwidth': fullwidth
-      })}
+      className={classNames(
+        {
+          [`pm-c-button-group--${activeButton.color}`]: true,
+          [`pm-c-button-group--${size}`]: true,
+          'pm-c-button-group--fullwidth': fullwidth
+        },
+        className?.group
+      )}
       style={style}
     >
       {buttons
@@ -91,10 +98,13 @@ function ButtonGroup({
             key={button.id}
             id={button.id}
             name={button.id}
-            className={classNames({
-              'pm-c-button-group__item': true,
-              active: button.id === activeButton.id
-            })}
+            className={classNames(
+              {
+                'pm-c-button-group__item': true,
+                active: button.id === activeButton.id
+              },
+              className?.button
+            )}
             onClick={() => handleChangeActiveButton(button)}
           >
             {button.name}

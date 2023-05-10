@@ -1,0 +1,39 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+
+  padding: var(--size-16);
+  border-radius: var(--size-4);
+
+  background-color: var(--color-amount-input-background);
+
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: var(--color-amount-input-border);
+
+  &:focus-within {
+    border-color: var(--color-amount-input-border--focus);
+    background-color: var(--color-amount-input-background--focus);
+  }
+
+  &:disabled {
+    border-color: transparent;
+    background-color: var(--color-amount-input-background--disabled);
+  }
+
+  transition: border-color, background-color 0.2s ease-in-out;
+}
+
+.input {
+  line-height: 1 !important;
+  font-weight: 500 !important;
+}
+
+.maxAction {
+  font-size: 1.2rem !important;
+  line-height: 1.15 !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase;
+  padding: 6px !important;
+}

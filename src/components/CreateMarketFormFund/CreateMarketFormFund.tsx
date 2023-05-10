@@ -1,27 +1,30 @@
-import { useState, useEffect } from 'react';
-
+/* eslint-disable jsx-a11y/label-has-associated-control */
+import cn from 'classnames';
 import { useField } from 'formik';
 import { roundDown, roundNumber } from 'helpers/math';
-import { PolkamarketsService } from 'services';
 import { Token } from 'types/token';
 
 import { InfoIcon } from 'assets/icons';
 
-import { AlertMini } from 'components/Alert';
-import AmountInput from 'components/AmountInput';
-import Link from 'components/Link';
-import NetworkSelector from 'components/NetworkSelector';
-import SelectTokenModal from 'components/SelectTokenModal';
-import Text from 'components/Text';
-import Tooltip from 'components/Tooltip';
-
 import { useAppSelector, useNetwork, useERC20Balance } from 'hooks';
+
+import Icon from '../Icon';
+import NetworkSelector from '../NetworkSelector';
+import NumberInput from '../NumberInput';
+import SelectTokenModal from '../SelectTokenModal';
+import Text from '../Text';
+import Tooltip from '../Tooltip';
+import AmountInput from './AmountInput';
+import CreateMarketFormFundClasses from './CreateMarketFormFund.module.scss';
+import MarketPreview from './MarketPreview';
 
 function CreateMarketFormFund() {
   const network = useNetwork();
   const { ethBalance, createMarketToken } = useAppSelector(
     state => state.polkamarkets
   );
+  const [field] = useField('liquidity');
+
   let erc20Address = '';
 
   if (createMarketToken && (createMarketToken as Token).addresses) {
@@ -33,61 +36,82 @@ function CreateMarketFormFund() {
   const balance = erc20Address ? erc20Balance : ethBalance;
   const currency = createMarketToken || network.network.currency;
 
-  const [field, _meta, helpers] = useField('liquidity');
-  const [fee, setFee] = useState(0);
-
-  useEffect(() => {
-    (async function getMarketFee() {
-      const polkamarketsService = new PolkamarketsService(
-        network.networkConfig
-      );
-
-      const response = await polkamarketsService.getMarketFee();
-      setFee(response);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  function handleChangeAmount(amount: number) {
-    helpers.setValue(amount);
-  }
-
   return (
     <>
-      <div className="pm-c-create-market-form__card">
-        <Text
-          as="h5"
-          scale="body"
-          fontWeight="medium"
-          className="pm-c-create-market-form__card-title"
-        >
-          Fund Market
-        </Text>
-        <AlertMini
-          variant="information"
-          styles="outline"
-          description={
-            <>
-              {`Providing liquidity is risky and can lead to near total loss. Market prices can move abruptly at any time. `}
-              <Link
-                title="More Info"
+      <div className={CreateMarketFormFundClasses.root}>
+        <div className={CreateMarketFormFundClasses.networkSelector}>
+          <div className="pm-c-input__group width-full">
+            <label
+              htmlFor="network"
+              className={cn(
+                'pm-c-input__label--default',
+                'pm-c-input__label--required'
+              )}
+            >
+              Network (Chain)
+            </label>
+            <NetworkSelector size="sm" />
+          </div>
+          <div className="pm-c-input__group width-full">
+            <label
+              htmlFor="token"
+              className={cn(
+                'pm-c-input__label--default',
+                'pm-c-input__label--required'
+              )}
+            >
+              Token
+            </label>
+            <SelectTokenModal network={network.network} />
+          </div>
+        </div>
+        <div className="pm-c-input__group">
+          <label
+            htmlFor="liquidity"
+            className={cn(
+              'pm-c-input__label--default',
+              'pm-c-input__label--required'
+            )}
+          >
+            Add Liquidity
+          </label>
+          <div role="alert" className={CreateMarketFormFundClasses.alert}>
+            <Icon
+              name="Warning"
+              size="md"
+              className={CreateMarketFormFundClasses.alertIcon}
+            />
+            <div className={CreateMarketFormFundClasses.alertBody}>
+              <h3 className={CreateMarketFormFundClasses.alertTitle}>
+                Attention needed
+              </h3>
+              <p className={CreateMarketFormFundClasses.alertDescription}>
+                Providing liquidity is risky and could result in near total
+                loss. It is important to withdraw liquidity before the event
+                occurs and to be aware the market could move abruptly at any
+                time.
+              </p>
+              <a
                 href="//help.polkamarkets.com/en/articles/6153227-strategies-and-risks-for-liquidity-providers"
                 aria-label="More Info"
                 target="_blank"
                 rel="noreferrer"
-                variant="information"
-                scale="tiny"
-                fontWeight="medium"
-              />
-            </>
-          }
-        />
-        <NetworkSelector size="sm" />
+                className={CreateMarketFormFundClasses.alertAction}
+              >
+                More info
+                <Icon
+                  name="Arrow"
+                  dir="right"
+                  style={{ marginLeft: 'var(--size-4)' }}
+                />
+              </a>
+            </div>
+          </div>
+        </div>
         <AmountInput
-          label="Add Liquidity"
+          label="Wallet"
           max={roundDown(balance)}
           currency={currency}
-          onChange={handleChangeAmount}
-          endAdornment={<SelectTokenModal network={network.network} />}
         />
         <div className="pm-c-create-market-form__card-liquidity-details">
           <div className="pm-c-create-market-form__card-liquidity-details__group">
@@ -133,8 +157,12 @@ function CreateMarketFormFund() {
             </div>
           </div>
           <hr className="pm-c-create-market-form__card-liquidity-details__separator" />
-
-          <div className="pm-c-create-market-form__card-liquidity-details__earn-trading-fee">
+          <div
+            className={cn(
+              'pm-c-create-market-form__card-liquidity-details__earn-trading-fee',
+              CreateMarketFormFundClasses.fee
+            )}
+          >
             <Text
               as="span"
               scale="caption"
@@ -149,17 +177,16 @@ function CreateMarketFormFund() {
                 <InfoIcon />
               </Tooltip>
             </Text>
-
-            <Text
-              as="span"
-              scale="caption"
-              fontWeight="semibold"
-              className="pm-c-create-market-form__card-liquidity-details__earn-trading-fee__amount"
-            >
-              {`${roundNumber(fee * 100, 3)} %`}
-            </Text>
+            <NumberInput name="fee" min={0} max={5} />
           </div>
         </div>
+      </div>
+      <div className={CreateMarketFormFundClasses.append}>
+        <h4 className={CreateMarketFormFundClasses.appendTitle}>
+          Great! Your market is almost ready. Please review the details of your
+          forecasting market below and confirm its accuracy before submitting.
+        </h4>
+        <MarketPreview token={currency} />
       </div>
     </>
   );
