@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { pages, environment } from 'config';
+import { pages, environment, ui } from 'config';
 
 import BetaTesting from 'components/BetaTesting';
 import BetaWarning from 'components/BetaWarning';
@@ -32,8 +32,8 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <>
       {page?.meta && <SEO {...page.meta} />}
-      <BetaWarning />
-      <BetaTesting network={network} />
+      {ui.layout.disclaimer.enabled && <BetaWarning />}
+      {ui.layout.alert.enabled && <BetaTesting network={network} />}
       {!isAllowedNetwork && <WrongNetwork network={network} />}
       <Header $gutterBottom={!isHomePathname} />
       {children}

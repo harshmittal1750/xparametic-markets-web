@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { ui } from 'config';
 import {
   useGetLeaderboardByAddressQuery,
   useGetPortfolioByAddressQuery,
@@ -9,7 +10,7 @@ import {
 import type { LeaderboardTimeframe } from 'types/leaderboard';
 import { Container } from 'ui';
 
-import { useNetwork } from 'hooks';
+import { useFantasyTokenTicker, useNetwork } from 'hooks';
 
 import ProfileAchievements from './ProfileAchievements';
 import ProfileActivities from './ProfileActivities';
@@ -24,6 +25,7 @@ export default function Profile() {
   const [timeframe, setTimeframe] = useState<LeaderboardTimeframe>('at');
   const { address } = useParams<Record<'address', string>>();
   const { network } = useNetwork();
+  const fantasyTokenTicker = useFantasyTokenTicker();
   const portfolio = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id
@@ -55,22 +57,24 @@ export default function Profile() {
             />
             <ProfileSummaryStat
               isLoading={portfolio.isLoading}
-              ticker="€"
+              ticker={fantasyTokenTicker || '€'}
               data={portfolio.data}
             />
           </div>
           <ProfileYourStats
             onTimeframe={setTimeframe}
             isLoading={leaderboard.isLoading}
-            ticker="€"
+            ticker={fantasyTokenTicker || '€'}
             data={leaderboard.data}
           />
           <div className="pm-p-profile-lists margin-top-6">
-            <ProfileAchievements
-              listHeight={LIST_HEIGHT}
-              isLoading={leaderboard.isLoading}
-              data={leaderboard.data}
-            />
+            {ui.achievements.enabled && (
+              <ProfileAchievements
+                listHeight={LIST_HEIGHT}
+                isLoading={leaderboard.isLoading}
+                data={leaderboard.data}
+              />
+            )}
             <ProfileActivities
               isLoading={activity.isLoading}
               listHeight={LIST_HEIGHT}

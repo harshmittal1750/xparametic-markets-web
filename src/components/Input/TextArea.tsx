@@ -9,48 +9,58 @@ type TextAreaProps = {
   label?: string;
   name: string;
   description?: string;
+  required?: boolean;
 };
 
 const TextArea = forwardRef<
   HTMLTextAreaElement,
   TextAreaProps & TextareaHTMLAttributes<HTMLTextAreaElement>
->(({ label, name, description, className, ...props }, ref) => {
-  const [field, meta] = useField(name);
+>(
+  (
+    { label, name, description, className, required = false, ...props },
+    ref
+  ) => {
+    const [field, meta] = useField(name);
 
-  const hasError = meta.touched && meta.error;
+    const hasError = meta.touched && meta.error;
 
-  return (
-    <div className="pm-c-input__group">
-      {!!label && (
-        <label
-          htmlFor={name}
-          className={`pm-c-input__label--${hasError ? 'error' : 'default'}`}
-        >
-          {label}
-        </label>
-      )}
-      <textarea
-        ref={ref}
-        className={cn(
-          {
-            'pm-c-input--error': hasError,
-            'pm-c-input--default': !hasError
-          },
-          className
+    return (
+      <div className="pm-c-input__group">
+        {!!label && (
+          <label
+            htmlFor={name}
+            className={cn({
+              'pm-c-input__label--error': hasError,
+              'pm-c-input__label--default': !hasError,
+              'pm-c-input__label--required': required
+            })}
+          >
+            {label}
+          </label>
         )}
-        id={name}
-        {...field}
-        {...props}
-      />
-      {hasError && meta.error ? (
-        <InputErrorMessage message={meta.error} />
-      ) : null}
-      {description && !hasError ? (
-        <span className="pm-c-input__description">{description}</span>
-      ) : null}
-    </div>
-  );
-});
+        <textarea
+          ref={ref}
+          className={cn(
+            {
+              'pm-c-input--error': hasError,
+              'pm-c-input--default': !hasError
+            },
+            className
+          )}
+          id={name}
+          {...field}
+          {...props}
+        />
+        {hasError && meta.error ? (
+          <InputErrorMessage message={meta.error} />
+        ) : null}
+        {description && !hasError ? (
+          <span className="pm-c-input__description">{description}</span>
+        ) : null}
+      </div>
+    );
+  }
+);
 
 TextArea.displayName = 'TextArea';
 

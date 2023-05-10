@@ -164,23 +164,24 @@ export default class PolkamarketsService {
 
   public async createMarket(
     name: string,
+    description: string,
     image: string,
     duration: number,
     outcomes: Array<string>,
     category: string,
     value: number,
     odds: Array<number>,
+    fee: number,
     token: string = '',
     wrapped: boolean = false
   ) {
     // ensuring user has wallet connected
     await this.login();
 
-    const fee = '20000000000000000';
-
     let response;
     const args = {
       name,
+      description,
       image,
       duration,
       outcomes,
@@ -188,7 +189,7 @@ export default class PolkamarketsService {
       value,
       oracleAddress: this.address,
       odds,
-      fee
+      fee: (fee * 1e16).toString()
     };
 
     if (wrapped) {

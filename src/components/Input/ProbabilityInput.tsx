@@ -75,7 +75,7 @@ const ProbabilityInput = forwardRef<
           {...omit(field, ['onChange'])}
           {...props}
         />
-        <Text as="span" scale="caption" fontWeight="medium" color="primary">
+        <Text as="span" scale="caption" fontWeight="semibold" color="primary">
           %
         </Text>
       </div>

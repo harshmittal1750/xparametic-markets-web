@@ -29,7 +29,6 @@ function PredictionCard({ market, $gutter, className }: PredictionCardProps) {
       <div className="prediction-card__footer">
         <Market.Footer market={market}>
           <MarketFooterActions $variant="text" market={market} />
-          <div className="pm-c-market-footer__divider--circle" />
         </Market.Footer>
       </div>
     </div>

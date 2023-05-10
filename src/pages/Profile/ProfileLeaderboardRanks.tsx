@@ -1,5 +1,8 @@
 import { useMemo } from 'react';
 
+import { features } from 'config';
+import omit from 'lodash/omit';
+
 import { prepareLeaderboardRanksRow } from './prepare';
 import ProfileStats from './ProfileStats';
 import { LeaderboardRanks, LeaderboardRanksColumn } from './types';
@@ -34,11 +37,32 @@ function ProfileLeaderboardRanks({
 }: ProfileLeaderboardRanksProps) {
   const row = useMemo(() => prepareLeaderboardRanksRow(ranks), [ranks]);
 
+  const filteredColumns = useMemo(
+    () =>
+      features.fantasy.enabled
+        ? columns.filter(
+            column =>
+              !['rankByMarketsCreated', 'rankByLiquidityAdded'].includes(
+                column.key
+              )
+          )
+        : columns,
+    []
+  );
+
+  const filteredRow = useMemo(
+    () =>
+      features.fantasy.enabled
+        ? omit(row, ['rankByMarketsCreated', 'rankByLiquidityAdded'])
+        : row,
+    [row]
+  );
+
   return (
     <ProfileStats
       title="Leaderboard Ranks"
-      columns={columns}
-      row={row}
+      columns={filteredColumns}
+      row={filteredRow}
       isLoading={isLoading}
     />
   );

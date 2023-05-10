@@ -1,0 +1,33 @@
+.body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: var(--size-16) var(--grid-margin);
+
+  &Header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--size-24);
+    margin-bottom: var(--size-24);
+    width: 100%;
+  }
+}
+
+.footer {
+  height: inherit;
+}
+
+.stats {
+  &Icon {
+    display: unset;
+    margin-right: var(--size-8);
+  }
+
+  &Text {
+    vertical-align: middle;
+  }
+
+  &Tooltip {
+    text-transform: initial;
+  }
+}

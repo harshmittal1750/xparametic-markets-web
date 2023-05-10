@@ -1,6 +1,7 @@
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
+import { ui } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -119,6 +120,29 @@ function MarketUI() {
   const SidebarWrapperComponent = theme.device.isDesktop
     ? Fragment
     : SidebarWrapper;
+  const tabPositions = useMemo(
+    () =>
+      network.network.id.toString() !== market.networkId.toString() ? (
+        <AlertMini
+          styles="outline"
+          variant="information"
+          description={`Switch network to ${market.network.name} and see your market positions.`}
+        />
+      ) : (
+        <Table
+          columns={tableItems.columns}
+          rows={tableItems.rows}
+          emptyDataDescription="You have no positions."
+        />
+      ),
+    [
+      market.network.name,
+      market.networkId,
+      network.network.id,
+      tableItems.columns,
+      tableItems.rows
+    ]
+  );
 
   return (
     <div className={marketClasses.root}>
@@ -169,7 +193,7 @@ function MarketUI() {
           )}
           {!theme.device.isDesktop && <MarketAnalytics />}
           <MarketAbout />
-          {!theme.device.isDesktop && (
+          {ui.market.voting.enabled && !theme.device.isDesktop && (
             <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
               <VoteArrows
@@ -184,32 +208,21 @@ function MarketUI() {
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
             <Tabs value={tab} onChange={setTab}>
               <Tabs.TabPane tab="Positions" id="positions">
-                {network.network.id.toString() !==
-                market.networkId.toString() ? (
-                  <AlertMini
-                    styles="outline"
-                    variant="information"
-                    description={`Switch network to ${market.network.name} and see your market positions.`}
-                  />
-                ) : (
-                  <Table
-                    columns={tableItems.columns}
-                    rows={tableItems.rows}
-                    emptyDataDescription="You have no positions."
-                  />
-                )}
+                {tabPositions}
               </Tabs.TabPane>
-              <Tabs.TabPane tab="News (Beta)" id="news">
-                {market.news?.length ? (
-                  <MarketNews news={market.news} />
-                ) : (
-                  <AlertMini
-                    styles="outline"
-                    variant="information"
-                    description="There's no news to be shown."
-                  />
-                )}
-              </Tabs.TabPane>
+              {ui.market.news.enabled ? (
+                <Tabs.TabPane tab="News" id="news">
+                  {market.news?.length ? (
+                    <MarketNews news={market.news} />
+                  ) : (
+                    <AlertMini
+                      styles="outline"
+                      variant="information"
+                      description="There's no news to be shown."
+                    />
+                  )}
+                </Tabs.TabPane>
+              ) : null}
             </Tabs>
           </section>
         </Container>
@@ -256,7 +269,9 @@ export default function Market() {
     async function handleHome() {
       const { pages } = await import('config');
 
-      history.push(`${pages.home.pathname}?m=f`);
+      history.push(
+        `${pages.home.pathname}${ui.layout.disclaimer.enabled ? '?m=f' : ''}`
+      );
       window.location.reload();
     }
 
