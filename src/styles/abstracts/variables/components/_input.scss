@@ -1,33 +1,35 @@
-$input-padding-y: 1.2rem !default;
-$input-padding-x: 1.2rem !default;
+$input-padding-y: var(--size-16) !default;
+$input-padding-x: var(--size-16) !default;
 $input-border-radius: 0.4rem !default;
 
 $input-themes: (
   light: (
-    input-label-default-color: #637084,
+    input-label-default-color: #171b23,
     input-label-error-color: #e12d39,
-    input-background-color: #f8faff,
+    input-background-color: rgba(227, 231, 240, 0.3),
+    input-background-focus-color: var(--color-bg-4),
     input-background-disabled-color: #eff1f4,
     input-border-default-color: #e0e2e7,
     input-border-error-color: #e12d39,
-    input-border-default-focus-color: #c2cad6,
+    input-border-default-focus-color: #7069fa,
     input-value-color: #171b23,
-    input-placeholder-color: #a7b0bd,
-    input-description-default-color: #a7b0bd,
+    input-placeholder-color: rgba(var(--color-text-secondary--rgb), 0.5),
+    input-description-default-color: #59749b,
     input-error-color: #e12d39,
     input-select-background-color: #ffffff
   ),
   dark: (
-    input-label-default-color: #c5cad3,
+    input-label-default-color: #ffffff,
     input-label-error-color: #e12d39,
-    input-background-color: #0e1016,
+    input-background-color: rgba(35, 42, 54, 0.3),
+    input-background-focus-color: var(--color-bg-4),
     input-background-disabled-color: #292d32,
     input-border-default-color: #252c3b,
     input-border-error-color: #e12d39,
-    input-border-default-focus-color: #637084,
+    input-border-default-focus-color: #7069fa,
     input-value-color: #f9fafb,
-    input-placeholder-color: #637084,
-    input-description-default-color: #637084,
+    input-placeholder-color: rgba(var(--color-text-secondary--rgb), 0.5),
+    input-description-default-color: #59749b,
     input-error-color: #e12d39,
     input-select-background-color: #171b23
   )

@@ -42,8 +42,8 @@ function ImageUploadButton({
       ref={ref}
       htmlFor={name}
       className={classNames({
-        'pm-c-button-normal--primary': true,
-        'pm-c-button--sm': true,
+        'pm-c-button-subtle--primary': true,
+        'pm-c-button--normal': true,
         caption: true,
         semibold: true
       })}
@@ -119,6 +119,7 @@ function ImageUploadInput({
       if (isValidImage(files[0].type)) {
         setInvalidImageError(undefined);
 
+        setFieldTouched(name, true);
         setFieldValue(name, {
           file: files[0],
           hash: '',
@@ -203,11 +204,11 @@ function ImageUploadInput({
           hidden
         />
         <div className="pm-c-file-upload-input__actions">
-          {croppedImagePreviewURL ? (
+          {croppedImagePreviewURL || initialImagePreviewURL ? (
             <img
               className="pm-c-file-upload-input__thumbnail"
               alt="Thumbnail"
-              src={croppedImagePreviewURL}
+              src={croppedImagePreviewURL || initialImagePreviewURL}
               width={64}
               height={64}
             />
@@ -215,16 +216,7 @@ function ImageUploadInput({
           <ImageUploadButton name={name} loading={isUploading}>
             {uploadActionLabel}
           </ImageUploadButton>
-          {field.value.isUploaded ? (
-            <Text
-              as="span"
-              scale="caption"
-              fontWeight="medium"
-              className="pm-c-file-upload-input__status"
-            >
-              {field.value.file.name}
-            </Text>
-          ) : (
+          {field.value.isUploaded ? null : (
             <Text
               as="span"
               scale="caption"

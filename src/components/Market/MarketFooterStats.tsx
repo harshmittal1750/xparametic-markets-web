@@ -1,10 +1,14 @@
+import { features } from 'config';
 import dayjs from 'dayjs';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 import { useTheme } from 'ui';
 
+import Feature from 'components/Feature';
 import Icon from 'components/Icon';
+
+import { useFantasyTokenTicker } from 'hooks';
 
 import Text from '../Text';
 import Tooltip from '../Tooltip';
@@ -27,16 +31,17 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
   } = market;
   const expiresAt = dayjs(market.expiresAt).utc(true).format('MMM D, YYYY');
   const theme = useTheme();
+  const fantasyTokenTicker = useFantasyTokenTicker();
 
   return (
     <div className="pm-c-market-footer__stats">
       {theme.device.isDesktop && !isEmpty(network.currency) && (
-        <>
+        <Feature name="regular">
           <Tooltip text={network.name}>
             <Icon name={network.currency.iconName} />
           </Tooltip>
           <span className="pm-c-divider--circle" />
-        </>
+        </Feature>
       )}
       {!!volume && (
         <>
@@ -49,6 +54,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             <Tooltip
               className={marketClasses.footerStatsTooltip}
               text={`Volume: ${roundNumber(volumeEur, 3)} EUR`}
+              disabled={features.fantasy.enabled}
             >
               <Icon
                 name="Stats"
@@ -68,14 +74,14 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
                 scale="tiny-uppercase"
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
-              >{`${token.ticker}`}</Text>
+              >{`${fantasyTokenTicker || token.ticker}`}</Text>
             </Tooltip>
           </Text>
           <span className="pm-c-divider--circle" />
         </>
       )}
       {!!liquidity && (
-        <>
+        <Feature name="regular">
           <Text
             as="span"
             scale="tiny-uppercase"
@@ -108,10 +114,10 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             </Tooltip>
           </Text>
           {theme.device.isDesktop && <span className="pm-c-divider--circle" />}
-        </>
+        </Feature>
       )}
       {theme.device.isDesktop && (
-        <>
+        <Feature name="regular">
           <Text
             as="span"
             scale="tiny-uppercase"
@@ -138,7 +144,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
             </Tooltip>
           </Text>
           <span className="pm-c-divider--circle" />
-        </>
+        </Feature>
       )}
       {theme.device.isDesktop && market.expiresAt && (
         <Text as="span" scale="tiny-uppercase" fontWeight="semibold">

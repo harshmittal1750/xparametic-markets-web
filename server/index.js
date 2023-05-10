@@ -7,8 +7,10 @@ const app = express();
 app.use(helmet.frameguard({ action: 'deny' }));
 
 const port = process.env.PORT || 5000;
-const isFantasy =
-  process.env.REACT_APP_FEATURE_FANTASY?.toLocaleLowerCase() === 'true';
+const isClubsEnabled =
+  process.env.REACT_APP_FEATURE_CLUBS?.toLowerCase() === 'true';
+const isAchievementsEnabled =
+  process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() === 'true';
 
 const fs = require('fs');
 const path = require('path');
@@ -109,6 +111,11 @@ app.get('/portfolio', (request, response) => {
 });
 
 app.get('/achievements', (request, response) => {
+  if (!isAchievementsEnabled) {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
@@ -121,7 +128,7 @@ app.get('/achievements', (request, response) => {
 });
 
 app.get('/clubs', (request, response, next) => {
-  if (!isFantasy) {
+  if (!isClubsEnabled) {
     next();
     return;
   }
@@ -135,7 +142,7 @@ app.get('/clubs', (request, response, next) => {
 });
 
 app.get('/clubs/:slug', async (request, response, next) => {
-  if (!isFantasy) {
+  if (!isClubsEnabled) {
     next();
     return;
   }
@@ -186,7 +193,7 @@ app.get('/leaderboard', (request, response) => {
 });
 
 app.get('/leaderboard/:slug', async (request, response, next) => {
-  if (!isFantasy) {
+  if (!isClubsEnabled) {
     next();
     return;
   }

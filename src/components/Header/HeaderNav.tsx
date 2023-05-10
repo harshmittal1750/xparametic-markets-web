@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import type ReactRouterDom from 'react-router-dom';
 
-import { pages, socials } from 'config';
+import { pages, socials, ui } from 'config';
 import { shiftSlash } from 'helpers/string';
 import { useTheme } from 'ui';
 
@@ -153,11 +153,13 @@ export default function HeaderNav() {
       ) : (
         !theme.device.isDesktop && (
           <>
-            <NetworkSelector
-              size="sm"
-              responsive
-              className={headerNavClasses.network}
-            />
+            {ui.layout.header.networkSelector.enabled ? (
+              <NetworkSelector
+                size="sm"
+                responsive
+                className={headerNavClasses.network}
+              />
+            ) : null}
             <HeaderNavMenuModal />
           </>
         )

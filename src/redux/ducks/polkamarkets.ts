@@ -142,7 +142,7 @@ const polkamarketsSlice = createSlice({
     },
     changeCreateMarketToken: (
       state,
-      action: PayloadAction<Token | Currency>
+      action: PayloadAction<Token | Currency | null>
     ) => ({
       ...state,
       createMarketToken: action.payload

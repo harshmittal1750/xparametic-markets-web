@@ -1,15 +1,14 @@
 .pm-c-input {
   @include themes($input-themes) {
     margin: 0rem;
-    height: 44px;
-    padding: 0px $input-padding-x;
+    padding: $input-padding-y $input-padding-x;
 
     outline: none;
     border-radius: 0.4rem;
 
-    @extend .caption, .medium;
-    font-stretch: normal;
-    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1;
     text-align: left;
     color: themed('input-value-color');
 
@@ -17,9 +16,9 @@
       color: themed('input-placeholder-color');
     }
 
-    background-color: transparent;
+    background-color: themed('input-background-color');
 
-    border-width: 0.1rem;
+    border-width: 1.5px;
     border-style: solid;
     border-radius: $input-border-radius;
 
@@ -28,33 +27,46 @@
     &__group {
       display: flex;
       flex-direction: column;
-      gap: 0.2rem;
+      gap: var(--size-8);
     }
 
     &__label {
-      @extend .caption, .medium;
+      font-size: 1.6rem;
+      line-height: 1.3;
+      font-weight: 600;
+
+      &--required {
+        &::after {
+          color: #e32;
+          content: ' *';
+          display: inline;
+          font-weight: bold;
+        }
+      }
     }
 
     &__description {
-      @extend .tiny, .medium;
+      font-size: 1.2rem;
+      line-height: 1;
+      font-weight: 600;
     }
 
     &__error {
       display: inline-flex;
       justify-content: flex-start;
       align-items: center;
-      gap: 0.8rem;
+      gap: var(--size-8);
 
       svg {
-        height: 1.2rem;
-        width: 1.2rem;
+        height: var(--size-12);
+        width: var(--size-12);
         flex-shrink: 0;
 
-        fill: themed('input-error-color');
+        fill: themed('input-error-color') !important;
       }
 
       &-message {
-        color: themed('input-error-color');
+        color: themed('input-error-color') !important;
       }
     }
   }
@@ -67,6 +79,7 @@
 
     &:focus {
       border-color: themed('input-border-default-focus-color');
+      background-color: themed('input-background-focus-color');
     }
 
     &:disabled {
@@ -106,15 +119,15 @@
 
 .pm-c-outcome-input--default {
   @include themes($input-themes) {
-    height: 44px;
     outline: none;
-    padding: 0rem;
+    height: 52px;
+    padding: 0px $input-padding-x;
 
     width: 100%;
 
-    @extend .caption, .medium;
-    font-stretch: normal;
-    font-style: normal;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1;
     text-align: left;
     color: themed('input-value-color');
 
@@ -138,15 +151,16 @@
       margin: 0rem;
       padding: 0px $input-padding-x;
 
-      background-color: transparent;
+      background-color: themed('input-background-color');
 
-      border-width: 0.1rem;
+      border-width: 1.5px;
       border-style: solid;
       border-radius: $input-border-radius;
       border-color: themed('input-border-default-color');
 
       &:focus-within {
         border-color: themed('input-border-default-focus-color');
+        background-color: themed('input-background-focus-color');
       }
 
       transition: $input-transitions;
@@ -244,11 +258,11 @@
             color: themed('input-placeholder-color');
           }
         }
-
-        &:not(:checked) {
-          color: themed('input-placeholder-color');
-        }
       }
+    }
+
+    &--empty {
+      color: themed('input-placeholder-color');
     }
   }
 }
@@ -267,6 +281,10 @@
 
 .pm-c-select-input__label--error {
   @extend .pm-c-input__label--error;
+}
+
+.pm-c-select-input__label--required {
+  @extend .pm-c-input__label--required;
 }
 
 .pm-c-date-input {
