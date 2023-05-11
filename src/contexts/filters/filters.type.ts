@@ -10,7 +10,7 @@ export enum Dropdowns {
   VOLUME = 'volume',
   LIQUIDITY = 'liquidity',
   END_DATE = 'endDate',
-  CATEGORY = 'category'
+  CATEGORIES = 'categories'
 }
 
 export type Toggle = {

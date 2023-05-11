@@ -146,7 +146,7 @@ const filters: Filters = {
       multiple: false,
       enabled: true
     },
-    category: {
+    categories: {
       title: 'Category',
       options: categoriesOptionsFromEnvironment || defaultCategoriesOptions,
       multiple: true,
@@ -174,7 +174,7 @@ const filtersInitialState: FiltersState = {
     volume: 'any',
     liquidity: 'any',
     endDate: 'any',
-    category: []
+    categories: []
   }
 };
 
