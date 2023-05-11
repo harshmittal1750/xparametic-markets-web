@@ -84,7 +84,10 @@ export default function NetworkSelector() {
             </Adornment>
           </header>
         )}
-        <List className={themeSelectorClasses.list}>
+        <List
+          $disableGutters={!theme.device.isDesktop}
+          className={themeSelectorClasses.list}
+        >
           {Object.keys(modes).map(mode => (
             <ListItem key={mode} className={themeSelectorClasses.listItem}>
               <Button

@@ -1,7 +1,7 @@
-import { useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, List, ListItem, Popover, useTheme } from 'ui';
+import { Adornment, Divider, List, ListItem, Popover, useTheme } from 'ui';
 
 import { Button, ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
@@ -95,35 +95,38 @@ export default function NetworkSelector({
             </Adornment>
           </header>
         )}
-        <List className={networSelectorClasses.list}>
+        <List
+          $disableGutters={!theme.device.isDesktop}
+          className={networSelectorClasses.list}
+        >
           {networks.networks.map(network => (
-            <ListItem
-              key={network.id}
-              className={networSelectorClasses.listItem}
-            >
-              <Button
-                variant="ghost"
-                fullwidth
-                onClick={handleNetworkClick(network.name)}
-                className={cn(networSelectorClasses.listItemButton, {
-                  [networSelectorClasses.listItemSelected]:
-                    network.id === networks.network.id
-                })}
-              >
-                <span className={networSelectorClasses.listItemButtonIcon}>
-                  <Icon
-                    name={network.currency.iconName}
-                    size={isDesktop ? 'lg' : 'xl'}
-                  />
-                </span>
-                <Text
-                  scale={isDesktop ? 'caption' : 'body'}
-                  fontWeight="semibold"
+            <Fragment key={network.id}>
+              <Divider />
+              <ListItem className={networSelectorClasses.listItem}>
+                <Button
+                  variant="ghost"
+                  fullwidth
+                  onClick={handleNetworkClick(network.name)}
+                  className={cn(networSelectorClasses.listItemButton, {
+                    [networSelectorClasses.listItemSelected]:
+                      network.id === networks.network.id
+                  })}
                 >
-                  {network.name}
-                </Text>
-              </Button>
-            </ListItem>
+                  <span className={networSelectorClasses.listItemButtonIcon}>
+                    <Icon
+                      name={network.currency.iconName}
+                      size={isDesktop ? 'lg' : 'xl'}
+                    />
+                  </span>
+                  <Text
+                    scale={isDesktop ? 'caption' : 'body'}
+                    fontWeight="semibold"
+                  >
+                    {network.name}
+                  </Text>
+                </Button>
+              </ListItem>
+            </Fragment>
           ))}
         </List>
       </Popover>
