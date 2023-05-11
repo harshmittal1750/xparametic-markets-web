@@ -25,7 +25,8 @@ export default function useMarkets() {
       networks: filtersState.dropdowns.networks as string[],
       volume: filtersState.dropdowns.volume as string,
       liquidity: filtersState.dropdowns.liquidity as string,
-      endDate: filtersState.dropdowns.endDate as string
+      endDate: filtersState.dropdowns.endDate as string,
+      categories: filtersState.dropdowns.categories as string[]
     }
   });
 

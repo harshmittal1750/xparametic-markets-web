@@ -9,8 +9,8 @@ import {
   THEME_MODE_DEFAULT,
   isThemeDark,
   useTheme,
-  ThemeModes,
-  Popover
+  Popover,
+  ThemeModes
 } from 'ui';
 
 import { Button } from 'components/Button';

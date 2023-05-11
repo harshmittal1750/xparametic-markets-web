@@ -39,6 +39,9 @@ const ui = {
       url: environment.UI_HERO_ACTION_URL
     }
   },
+  filters: {
+    categories: environment.UI_FILTERS_CATEGORIES?.split(',')
+  },
   tradeForm: {
     liquidity: {
       enabled: features.regular.enabled
