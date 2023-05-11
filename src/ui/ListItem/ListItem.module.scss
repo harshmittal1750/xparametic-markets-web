@@ -4,17 +4,18 @@
   padding-right: 16px;
   display: flex;
   align-items: center;
-  color: var(--color-text-primary);
+  color: var(--color, var(--color-text-secondary));
 }
 
 .button {
-  background-color: transparent;
+  background-color: var(--background-color, transparent);
   border: none;
   width: 100%;
   cursor: pointer;
 
   &:hover,
   &Active {
-    background-color: var(--color-text-quinary);
+    --background-color: var(--color-text-quinary);
+    --color: var(--color-text-primary);
   }
 }
