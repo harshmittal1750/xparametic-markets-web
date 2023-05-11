@@ -32,22 +32,8 @@
   }
 }
 .list {
-  background-color: transparent;
-
   &Item {
-    padding-left: 8px !important;
-    padding-right: 8px !important;
-
     &Button {
-      justify-content: unset !important;
-      padding: 0px 16px !important;
-      min-height: 56px !important;
-      border-radius: 12px !important;
-
-      @media (min-width: 1024px) {
-        min-height: unset !important;
-      }
-
       &Icon {
         margin-right: 8px;
         margin-left: -4px;
@@ -55,7 +41,7 @@
     }
 
     &Selected {
-      background-color: var(--color-text-quinary) !important;
+      background-color: var(--color-text-quinary);
     }
   }
 }

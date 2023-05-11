@@ -95,36 +95,26 @@ export default function NetworkSelector({
             </Adornment>
           </header>
         )}
-        <List
-          $disableGutters={!theme.device.isDesktop}
-          className={networSelectorClasses.list}
-        >
+        <List $disableGutters={theme.device.isDesktop}>
           {networks.networks.map(network => (
             <Fragment key={network.id}>
-              <Divider />
-              <ListItem className={networSelectorClasses.listItem}>
-                <Button
-                  variant="ghost"
-                  fullwidth
-                  onClick={handleNetworkClick(network.name)}
-                  className={cn(networSelectorClasses.listItemButton, {
-                    [networSelectorClasses.listItemSelected]:
-                      network.id === networks.network.id
-                  })}
+              {theme.device.isDesktop && <Divider />}
+              <ListItem
+                onClick={handleNetworkClick(network.name)}
+                $actived={network.id === networks.network.id}
+              >
+                <Adornment $edge="start" $size="sm">
+                  <Icon
+                    name={network.currency.iconName}
+                    size={isDesktop ? 'lg' : 'xl'}
+                  />
+                </Adornment>
+                <Text
+                  scale={isDesktop ? 'caption' : 'body'}
+                  fontWeight="semibold"
                 >
-                  <span className={networSelectorClasses.listItemButtonIcon}>
-                    <Icon
-                      name={network.currency.iconName}
-                      size={isDesktop ? 'lg' : 'xl'}
-                    />
-                  </span>
-                  <Text
-                    scale={isDesktop ? 'caption' : 'body'}
-                    fontWeight="semibold"
-                  >
-                    {network.name}
-                  </Text>
-                </Button>
+                  {network.name}
+                </Text>
               </ListItem>
             </Fragment>
           ))}
