@@ -252,6 +252,7 @@ type MarketsSelectorArgs = {
     volume: string;
     liquidity: string;
     endDate: string;
+    categories: string[];
   };
 };
 
@@ -315,6 +316,9 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     return true;
   };
 
+  const filterByCategory = (category: string) =>
+    !isEmpty(filters.categories) ? filters.categories.includes(category) : true;
+
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
@@ -347,7 +351,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
         filterByState(market.state) &&
         filterByVolume(market.volumeEur) &&
         filterByLiquidity(market.liquidityEur) &&
-        filterByEndDate(market.expiresAt)
+        filterByEndDate(market.expiresAt) &&
+        filterByCategory(market.category)
     )
   );
 };
