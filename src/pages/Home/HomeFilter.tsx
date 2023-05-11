@@ -227,8 +227,8 @@ export default function HomeFilter({
           }
         : { onHide: onFilterHide })}
     >
-      <form>
-        <List className={homeClasses.filterList}>
+      <List className={homeClasses.filterList}>
+        <form className={homeClasses.filterForm}>
           {!theme.device.isDesktop && (
             <ListItem>
               <ListItemText>Filter</ListItemText>
@@ -257,8 +257,8 @@ export default function HomeFilter({
               />
             </Fragment>
           ))}
-        </List>
-      </form>
+        </form>
+      </List>
     </ModalFilterRoot>
   );
 }
