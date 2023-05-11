@@ -1,11 +1,10 @@
 import { useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, List, ListItem, useTheme } from 'ui';
+import { Adornment, List, ListItem, Popover, useTheme } from 'ui';
 
 import { Button, ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
-import Modal from 'components/Modal';
 import Text from 'components/Text';
 
 import { useNetworks } from 'contexts/networks';
@@ -14,46 +13,22 @@ import networSelectorClasses from './NetworkSelector.module.scss';
 
 interface NetworkSelectorProps extends ButtonProps {
   responsive?: boolean;
-  anchorOrigin?: 'left' | 'right';
 }
-type Rect = DOMRect | null;
 
-const defaultSx = {
-  initial: { bottom: -240 },
-  animate: { bottom: 0 },
-  exit: { bottom: -240 }
-};
-
-function getDefaultSx(
-  rect: Rect,
-  anchorOrigin: NetworkSelectorProps['anchorOrigin'] = 'left'
-) {
-  return {
-    style: {
-      top: `calc(${rect?.height}px + ${rect?.top}px + 8px)`,
-      width: rect?.width,
-      [anchorOrigin]:
-        anchorOrigin === 'left'
-          ? rect?.left
-          : Math.abs(Math.round(rect?.right || 0) - window.innerWidth)
-    }
-  };
-}
 export default function NetworkSelector({
   responsive,
   className,
-  anchorOrigin = 'left',
   ...props
 }: NetworkSelectorProps) {
   const theme = useTheme();
   const networks = useNetworks();
-  const [rect, setRect] = useState<Rect>(null);
+  const [show, setShow] = useState<HTMLButtonElement | null>(null);
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
-      setRect(event.currentTarget.getBoundingClientRect()),
+      setShow(event.currentTarget),
     []
   );
-  const handleHide = useCallback(() => setRect(null), []);
+  const handleHide = useCallback(() => setShow(null), []);
   const handleNetworkClick = useCallback(
     (name: string) => () => {
       const [network] = networks.networks.filter(
@@ -91,26 +66,13 @@ export default function NetworkSelector({
         {isDesktop && (
           <>
             {isTv && (isSmall ? 'Change' : networks.network.name)}
-            {!isSmall && (
-              <span className={networSelectorClasses.rootIcon}>
-                <Icon name="Chevron" size="lg" dir={rect ? 'up' : 'down'} />
-              </span>
-            )}
+            <span className={networSelectorClasses.rootIcon}>
+              <Icon name="Chevron" size="lg" dir={show ? 'up' : 'down'} />
+            </span>
           </>
         )}
       </Button>
-      <Modal
-        disableGutters
-        onHide={handleHide}
-        disableOverlay={isDesktop}
-        fullWidth={!isDesktop}
-        show={!!rect}
-        className={{
-          backdrop: networSelectorClasses.backdrop,
-          dialog: networSelectorClasses.dialog
-        }}
-        {...(isDesktop ? getDefaultSx(rect, anchorOrigin) : defaultSx)}
-      >
+      <Popover position="bottomLeft" onHide={handleHide} show={show}>
         {!isDesktop && (
           <header className={networSelectorClasses.header}>
             <Text
@@ -164,7 +126,7 @@ export default function NetworkSelector({
             </ListItem>
           ))}
         </List>
-      </Modal>
+      </Popover>
     </>
   );
 }

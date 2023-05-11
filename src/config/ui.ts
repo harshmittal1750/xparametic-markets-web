@@ -1,3 +1,4 @@
+import isTrue from 'helpers/isTrue';
 import intersection from 'lodash/intersection';
 
 import {
@@ -9,6 +10,19 @@ import environment from './environment';
 import features from './features';
 
 const ui = {
+  layout: {
+    header: {
+      networkSelector: {
+        enabled: features.regular.enabled
+      }
+    },
+    disclaimer: {
+      enabled: features.regular.enabled
+    },
+    alert: {
+      enabled: isTrue(environment.FEATURE_ALERT)
+    }
+  },
   hero: {
     enabled: [
       environment.UI_HERO_IMAGE,
@@ -41,7 +55,10 @@ const ui = {
     )
   },
   clubs: {
-    enabled: features.fantasy.enabled
+    enabled: isTrue(environment.FEATURE_CLUBS)
+  },
+  achievements: {
+    enabled: isTrue(environment.FEATURE_ACHIEVEMENTS)
   },
   profile: {
     summary: {
@@ -66,6 +83,14 @@ const ui = {
       reportPositions: {
         enabled: features.regular.enabled
       }
+    }
+  },
+  market: {
+    news: {
+      enabled: isTrue(environment.FEATURE_NEWS)
+    },
+    voting: {
+      enabled: isTrue(environment.FEATURE_VOTING)
     }
   }
 } as const;

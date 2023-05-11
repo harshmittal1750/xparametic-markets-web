@@ -1,9 +1,9 @@
-import { Fragment, forwardRef, useCallback, useEffect } from 'react';
+import { forwardRef, useCallback, useEffect } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { HTMLMotionProps } from 'framer-motion';
-import { Focustrap } from 'ui';
+import { Focustrap, useTheme } from 'ui';
 
 import { usePortal, usePrevious, useMount, useTimeoutEffect } from 'hooks';
 
@@ -25,42 +25,9 @@ export interface ModalProps extends Omit<HTMLMotionProps<'div'>, 'className'> {
   fullScreen?: boolean;
   fullWidth?: boolean;
   disableGutters?: boolean;
-  disablePortal?: boolean;
   disableOverlay?: boolean;
 }
 
-function ModalWrapper({
-  children,
-  show,
-  showPrev,
-  didMount
-}: React.PropsWithChildren<{
-  showPrev?: boolean | null;
-  show?: boolean;
-  didMount?: boolean;
-}>) {
-  const Portal = usePortal({
-    root: document.body,
-    onEffect() {
-      document.body.style.overflow = 'hidden';
-
-      return () => {
-        document.body.removeAttribute('style');
-      };
-    }
-  });
-  const timeoutEffect = useTimeoutEffect();
-
-  useEffect(() => {
-    if (showPrev && !show) {
-      if (didMount) timeoutEffect(Portal.unmount, 300);
-    } else {
-      Portal.mount(!!show);
-    }
-  }, [Portal, didMount, show, showPrev, timeoutEffect]);
-
-  return <Portal>{children}</Portal>;
-}
 export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
   {
     onHide,
@@ -71,7 +38,6 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
     fullScreen,
     fullWidth,
     disableGutters,
-    disablePortal,
     disableOverlay,
     ...props
   },
@@ -79,6 +45,19 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
 ) {
   const { current: didMount } = useMount();
   const { current: showPrev } = usePrevious(show);
+  const timeoutEffect = useTimeoutEffect();
+  const theme = useTheme();
+  const root = document.body;
+  const rootClasses = theme.device.isMobileDevice
+    ? [ModalClasses.overflow]
+    : [ModalClasses.overflow, ModalClasses.scrollOffset];
+  const Portal = usePortal({
+    root,
+    onEffect() {
+      root.classList.add(...rootClasses);
+      return () => root.classList.remove(...rootClasses);
+    }
+  });
   const handleRootKeydown = useCallback(
     (event: React.KeyboardEvent) => {
       if (event.key === 'Escape') onHide?.();
@@ -86,19 +65,20 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
     [onHide]
   );
   const handleBackdropClick = useCallback(() => onHide?.(), [onHide]);
-  const ModalWrapperComponent = disablePortal ? Fragment : ModalWrapper;
+
+  useEffect(() => {
+    if (showPrev && !show) {
+      if (didMount) timeoutEffect(Portal.unmount, 300);
+    } else Portal.mount(show);
+  }, [Portal, didMount, show, showPrev, timeoutEffect]);
 
   return (
-    <ModalWrapperComponent
-      {...(!disablePortal && { show, showPrev, didMount })}
-    >
+    <Portal>
       <AnimatePresence>
         {show && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
             role="presentation"
+            onKeyDown={handleRootKeydown}
             className={cn(
               ModalClasses.root,
               {
@@ -107,7 +87,15 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
               },
               className?.root
             )}
-            onKeyDown={handleRootKeydown}
+            initial={{
+              opacity: 0
+            }}
+            animate={{
+              opacity: 1
+            }}
+            exit={{
+              opacity: 0
+            }}
           >
             <div
               aria-hidden="true"
@@ -123,9 +111,15 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
             <Focustrap<HTMLDivElement> trappersId={modalTrappersId}>
               <motion.div
                 ref={ref}
-                initial={{ y: 8 }}
-                animate={{ y: 0 }}
-                exit={{ y: 8 }}
+                initial={{
+                  y: 8
+                }}
+                animate={{
+                  y: 0
+                }}
+                exit={{
+                  y: 8
+                }}
                 role="dialog"
                 aria-modal="true"
                 className={cn(
@@ -146,6 +140,6 @@ export default forwardRef<HTMLDivElement, ModalProps>(function Modal(
           </motion.div>
         )}
       </AnimatePresence>
-    </ModalWrapperComponent>
+    </Portal>
   );
 });

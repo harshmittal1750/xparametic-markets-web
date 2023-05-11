@@ -1,24 +1,39 @@
 import { createContext, useContext, useMemo } from 'react';
 
+import { environment } from 'config';
 import useMedia from 'ui/useMedia';
 import useUpdateEffect from 'ui/useUpdateEffect';
 
 import { useLocalStorage } from 'hooks';
 
+export const enum THEME_MODES {
+  light = 'light',
+  dark = 'dark',
+  system = 'system'
+}
+
 export const IDLE_STYLES =
   "*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important'}";
 export const THEME_MODE_KEY = 'THEME_MODE_KEY';
-export const THEME_MODE_SYSTEM = 'system';
-export const THEME_MODE_DEFAULT = 'dark';
+export const THEME_MODE_DEFAULT: ThemeModes = (() => {
+  switch (environment.UI_THEME_MODE?.toLowerCase()) {
+    case THEME_MODES.light:
+      return THEME_MODES.light;
+    case THEME_MODES.dark:
+      return THEME_MODES.dark;
+    case THEME_MODES.system:
+      return THEME_MODES.system;
+    default:
+      return THEME_MODES.dark;
+  }
+})();
 
-export type ThemeModes =
-  | ThemeProps['device']['mode']
-  | typeof THEME_MODE_SYSTEM;
+export type ThemeModes = keyof typeof THEME_MODES;
 export type ThemeProps = {
   device: {
-    mode: 'light' | 'dark';
+    mode: Exclude<ThemeModes, THEME_MODES.system>;
     setMode: React.Dispatch<React.SetStateAction<ThemeModes>>;
-  } & Record<'isTv' | 'isDesktop' | 'isTablet', boolean>;
+  } & Record<'isTv' | 'isDesktop' | 'isTablet' | 'isMobileDevice', boolean>;
 };
 type ThemeProviderProps = Omit<
   React.ProviderProps<Record<string, never>>,
@@ -31,6 +46,7 @@ const ThemeContext = createContext<ThemeProps>({
     isTv: false,
     isDesktop: false,
     isTablet: false,
+    isMobileDevice: false,
     setMode: () => {}
   }
 });
@@ -69,7 +85,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     () => ({
       device: {
         mode: (() => {
-          if (mode === THEME_MODE_SYSTEM) {
+          if (mode === THEME_MODES.system) {
             if (isDark) return 'dark';
             return 'light';
           }
@@ -78,6 +94,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
         isTv,
         isDesktop,
         isTablet,
+        isMobileDevice: /Mobi/i.test(window.navigator.userAgent),
         setMode
       }
     }),
@@ -94,9 +111,7 @@ export default function ThemeProvider(props: ThemeProviderProps) {
     (() => window.getComputedStyle(document.body))();
     timer = window.setTimeout(() => document.head.removeChild(style), 1);
 
-    return () => {
-      window.clearTimeout(timer);
-    };
+    return () => window.clearTimeout(timer);
   }, [value.device.mode]);
 
   return <ThemeContext.Provider value={value} {...props} />;

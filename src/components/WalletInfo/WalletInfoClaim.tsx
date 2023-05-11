@@ -6,7 +6,12 @@ import { Transaction } from 'types/transaction';
 import Toast from 'components/Toast';
 import ToastNotification from 'components/ToastNotification';
 
-import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useFantasyTokenTicker,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
@@ -16,6 +21,8 @@ function WalletInfoClaim() {
   const polkamarketsService = usePolkamarketsService();
   const { show: showToastNotification, close: closeToastNotification } =
     useToastNotification();
+
+  const fantasyTokenTicker = useFantasyTokenTicker();
 
   const [transaction, setTransaction] = useState<Transaction>({
     state: 'not_started'
@@ -73,14 +80,16 @@ function WalletInfoClaim() {
           </Toast>
         </ToastNotification>
       ) : null}
-      <ButtonLoading
-        className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
-        loading={isClaiming}
-        disabled={isPolkClaimed || isClaiming}
-        onClick={handleClaim}
-      >
-        {isPolkClaimed ? '$POLK Claimed' : 'Claim $POLK'}
-      </ButtonLoading>
+      {!isPolkClaimed ? (
+        <ButtonLoading
+          className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
+          loading={isClaiming}
+          disabled={isClaiming}
+          onClick={handleClaim}
+        >
+          {`Claim $${fantasyTokenTicker || 'POLK'}`}
+        </ButtonLoading>
+      ) : null}
     </>
   );
 }

@@ -14,6 +14,7 @@ export enum Dropdowns {
 
 export type Toggle = {
   title: string;
+  enabled: boolean;
 };
 
 export type Option = {
@@ -25,6 +26,7 @@ export type Dropdown = {
   title: string;
   options: Option[];
   multiple: boolean;
+  enabled: boolean;
 };
 
 export type Filters = {

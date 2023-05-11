@@ -154,10 +154,18 @@ export { default as CreateLeaderboardGroupForm } from './CreateLeaderboardGroupF
 
 export { default as CreateMarket } from './CreateMarket';
 
+export { default as CreateMarketFormDetails } from './CreateMarketFormDetails';
+
+export { default as CreateMarketFormOutcomes } from './CreateMarketFormOutcomes';
+
+export { default as CreateMarketFormFund } from './CreateMarketFormFund';
+
 export { default as Icon, IconClasses } from './Icon';
 export type { IconProps } from './Icon';
 
 export { default as Feature } from './Feature';
+
+export { default as FormikPersist } from './FormikPersist';
 
 export { default as Header } from './Header';
 
@@ -170,6 +178,7 @@ export { default as MarketCategory } from './MarketCategory';
 export { default as MarketList } from './MarketList';
 
 export { default as Modal } from './Modal';
+export type { ModalProps } from './Modal';
 
 export { default as ModalContent } from './ModalContent';
 
@@ -187,11 +196,15 @@ export { default as ModalSectionText } from './ModalSectionText';
 
 export { default as NetworkSelector } from './NetworkSelector';
 
+export { default as NumberInput } from './NumberInput';
+
 export { default as OutcomeItem } from './OutcomeItem';
 
 export { default as OutcomeItemText } from './OutcomeItemText';
 
 export { default as SelectTokenModal } from './SelectTokenModal';
+
+export { default as Steps } from './Steps';
 
 export { default as ThemeSelector } from './ThemeSelector';
 

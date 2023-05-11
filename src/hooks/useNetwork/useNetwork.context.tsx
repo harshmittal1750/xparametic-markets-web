@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { environment, networks } from 'config';
+import { environment, networks, ui } from 'config';
 import { toHexadecimal } from 'helpers/string';
 import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import { PolkamarketsService } from 'services';
@@ -70,7 +70,9 @@ function NetworkProvider({ children }: NetworkProviderProps) {
   );
 
   const reloadWindow = useCallback(() => {
-    history.push(`${location.pathname}?m=f`);
+    history.push(
+      `${location.pathname}${ui.layout.disclaimer.enabled ? '?m=f' : ''}`
+    );
     window.location.reload();
   }, [history, location.pathname]);
 

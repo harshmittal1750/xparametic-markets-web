@@ -12,6 +12,7 @@ type BetaTestingProps = {
 };
 
 export default function BetaTesting({ network }: BetaTestingProps) {
+  // TODO: Turn content customizable through env
   const [show, setShow] = useState(true);
 
   if (!show) return null;

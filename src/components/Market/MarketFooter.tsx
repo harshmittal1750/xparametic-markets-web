@@ -1,3 +1,4 @@
+import { ui } from 'config';
 import dayjs from 'dayjs';
 import { inRange } from 'lodash';
 import { Market } from 'models/market';
@@ -60,20 +61,27 @@ export default function MarketFooter({ market, children }: MarketFooterProps) {
         {children}
         {tag && (
           <>
+            {children?.toString() && (
+              <div className="pm-c-market-footer__divider--circle" />
+            )}
             <div className="pm-c-market-footer__tags">
               <Pill badge {...tags[tag]} />
             </div>
-            <div className="pm-c-market-footer__divider--circle" />
           </>
         )}
-        <VoteArrows
-          key={slug}
-          size="sm"
-          marketId={id}
-          marketSlug={slug}
-          marketNetworkId={network.id}
-          votes={votes}
-        />
+        {ui.market.voting.enabled && (
+          <>
+            <div className="pm-c-market-footer__divider--circle" />
+            <VoteArrows
+              key={slug}
+              size="sm"
+              marketId={id}
+              marketSlug={slug}
+              marketNetworkId={network.id}
+              votes={votes}
+            />
+          </>
+        )}
       </div>
     </div>
   );

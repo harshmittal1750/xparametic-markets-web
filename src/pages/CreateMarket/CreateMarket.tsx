@@ -3,10 +3,11 @@ import { useEffect, useState } from 'react';
 import { PolkamarketsService } from 'services';
 import { Container } from 'ui';
 
-import { Text, CreateMarketForm } from 'components';
+import { CreateMarketForm } from 'components';
 
 import { useAppSelector, useNetwork } from 'hooks';
 
+import CreateMarketClasses from './CreateMarket.module.scss';
 import CreateMarketBuyPolk from './CreateMarketBuyPolk';
 
 function CreateMarket() {
@@ -26,20 +27,30 @@ function CreateMarket() {
   }, [polkBalance, networkConfig]);
 
   return (
-    <Container $size="sm" $enableGutters className="pm-p-create-market">
+    <Container $size="sm" className={CreateMarketClasses.root}>
       {needsBuyPolk && (
         <div className="pm-p-create-market__notification-overlay">
           <CreateMarketBuyPolk requiredPolkBalance={requiredBalance} />
         </div>
       )}
-      <Text
-        as="h4"
-        scale="heading"
-        fontWeight="semibold"
-        className="pm-p-create-market__header-title"
-      >
-        Create New Market
-      </Text>
+      <div className={CreateMarketClasses.header}>
+        <h2 className={CreateMarketClasses.heading}>
+          Create Your Forecasting Market
+        </h2>
+        <h3 className={CreateMarketClasses.subheading}>
+          Set up a new forecasting market by providing the necessary details and
+          funding information. Follow the step-by-step process to create a
+          market that&apos;s engaging and easy to participate in for users.{' '}
+          <a
+            className={CreateMarketClasses.subheadingLink}
+            href="https://help.polkamarkets.com/en/articles/5610512-how-to-create-a-prediction-market"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Learn more
+          </a>
+        </h3>
+      </div>
       <CreateMarketForm />
     </Container>
   );

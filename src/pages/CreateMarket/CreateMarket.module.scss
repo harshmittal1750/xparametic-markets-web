@@ -1,0 +1,39 @@
+.root {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-48);
+  padding-top: var(--size-64);
+  padding-bottom: var(--size-64);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-20);
+}
+
+.heading {
+  font-size: 3rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--color-main-primary);
+}
+
+.subheading {
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+
+  &Link {
+    color: var(--color-main-primary);
+    text-decoration: underline;
+
+    &:hover {
+      color: #5d55fa;
+    }
+  }
+}

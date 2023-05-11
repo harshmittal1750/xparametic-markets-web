@@ -22,6 +22,8 @@ export { default as ListItem } from './ListItem';
 
 export { default as ListItemText } from './ListItemText';
 
+export { default as Popover } from './Popover';
+
 export { default as RangePicker } from './RangePicker';
 
 export { default as Skeleton } from './Skeleton';
@@ -43,9 +45,9 @@ export {
   useTheme,
   isThemeDark,
   THEME_MODE_KEY,
-  THEME_MODE_SYSTEM,
+  THEME_MODES,
   THEME_MODE_DEFAULT
 } from './useTheme';
-export type { ThemeProps } from './useTheme';
+export type { ThemeProps, ThemeModes } from './useTheme';
 
 export { default as useUpdateEffect } from './useUpdateEffect';

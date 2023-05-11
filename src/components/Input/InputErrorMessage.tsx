@@ -15,7 +15,7 @@ function InputErrorMessage({ message }: InputErrorMessageProps) {
         <Text
           as="span"
           scale="tiny"
-          fontWeight="medium"
+          fontWeight="semibold"
           className="pm-c-input__error-message"
         >
           {message}
@@ -27,7 +27,7 @@ function InputErrorMessage({ message }: InputErrorMessageProps) {
               <Text
                 as="span"
                 scale="tiny"
-                fontWeight="medium"
+                fontWeight="semibold"
                 className="pm-c-input__error-message"
               >
                 {error}

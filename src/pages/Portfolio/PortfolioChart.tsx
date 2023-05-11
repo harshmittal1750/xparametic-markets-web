@@ -8,12 +8,14 @@ import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import { AreaChart, Label, Text } from 'components';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useFantasyTokenTicker } from 'hooks';
 
 import { balance } from './mock';
 import type { PortfolioAsyncProps } from './type';
 
 export default function PortfolioChart({ isLoading }: PortfolioAsyncProps) {
+  const fantasyTokenTicker = useFantasyTokenTicker();
+
   const holdingsChart = useAppSelector(
     state => state.portfolio.portfolio.holdingsChart
   );
@@ -39,7 +41,7 @@ export default function PortfolioChart({ isLoading }: PortfolioAsyncProps) {
       <div className="portfolio-chart__header">
         <div className="portfolio-chart__header-balance">
           <Text as="h4" scale="heading" fontWeight="semibold" color="light">
-            {roundNumber(holdingsValue, 2)} €
+            {roundNumber(holdingsValue, 2)} {fantasyTokenTicker || '€'}
           </Text>
           <Text as="span" scale="tiny" fontWeight="medium" color="dark-gray">
             Total Balance
@@ -58,12 +60,17 @@ export default function PortfolioChart({ isLoading }: PortfolioAsyncProps) {
             fontWeight="semibold"
             color={holdingsPerformanceColor}
           >
-            {roundNumber(holdingsPerformance.change, 2)} €
+            {roundNumber(holdingsPerformance.change, 2)}{' '}
+            {fantasyTokenTicker || '€'}
           </Text>
         </div>
       </div>
       <div className="portfolio-chart__view">
-        <AreaChart serie={holdingsChartData} ticker="€" height={210} />
+        <AreaChart
+          serie={holdingsChartData}
+          ticker={fantasyTokenTicker || '€'}
+          height={210}
+        />
       </div>
     </div>
   );

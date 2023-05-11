@@ -72,7 +72,7 @@ const pages = {
         'Predict Football World Cup match winners and grab your exclusive NFT Achievements. The Illuminate Fantasy League is a fantasy predictions tournament focused on the 2022 Football World Cup.',
       image: `${process.env.PUBLIC_URL}/ifl_meta_achievements.png`
     },
-    enabled: true
+    enabled: ui.achievements.enabled
   },
   portfolio: {
     pathname: '/portfolio',
