@@ -32,16 +32,27 @@
   }
 }
 .list {
+  padding-left: 8px;
+  padding-right: 8px;
+
+  @media (min-width: 1024px) {
+    padding-left: unset;
+    padding-right: unset;
+  }
+
   &Item {
-    &Button {
-      &Icon {
-        margin-right: 8px;
-        margin-left: -4px;
+    border-radius: 8px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 8px;
+
+      @media (min-width: 1024px) {
+        margin-bottom: unset;
       }
     }
 
-    &Selected {
-      background-color: var(--color-text-quinary);
+    @media (min-width: 1024px) {
+      border-radius: unset;
     }
   }
 }
