@@ -9,6 +9,7 @@ import {
   THEME_MODE_DEFAULT,
   isThemeDark,
   useTheme,
+  Popover,
   ThemeModes
 } from 'ui';
 
