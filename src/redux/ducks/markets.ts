@@ -317,7 +317,11 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   };
 
   const filterByCategory = (category: string) =>
-    !isEmpty(filters.categories) ? filters.categories.includes(category) : true;
+    !isEmpty(filters.categories)
+      ? filters.categories
+          .map(c => c.toLowerCase())
+          .includes(category.toLowerCase())
+      : true;
 
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
