@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 
 import cn from 'classnames';
 import {
@@ -10,7 +10,8 @@ import {
   isThemeDark,
   useTheme,
   ThemeModes,
-  Popover
+  Popover,
+  Divider
 } from 'ui';
 
 import { Button } from 'components/Button';
@@ -85,35 +86,35 @@ export default function NetworkSelector() {
           </header>
         )}
         <List
-          $disableGutters={!theme.device.isDesktop}
+          $disableGutters={theme.device.isDesktop}
           className={themeSelectorClasses.list}
         >
-          {Object.keys(modes).map(mode => (
-            <ListItem key={mode} className={themeSelectorClasses.listItem}>
-              <Button
-                variant="ghost"
-                fullwidth
-                name={mode}
+          {Object.keys(modes).map((mode, index) => (
+            <Fragment key={mode}>
+              {theme.device.isDesktop && !!index && <Divider />}
+              <ListItem
+                className={themeSelectorClasses.listItem}
                 onClick={handleTheme}
-                className={cn(themeSelectorClasses.listItemButton, {
-                  [themeSelectorClasses.listItemSelected]:
-                    mode.toLowerCase() === modeStored
-                })}
+                $actived={mode.toLowerCase() === modeStored}
+                name={mode}
               >
-                <span className={themeSelectorClasses.listItemButtonIcon}>
+                <Adornment
+                  $edge="start"
+                  $size={theme.device.isDesktop ? 'sm' : 'md'}
+                >
                   <Icon
                     name={modes[mode]}
                     size={theme.device.isDesktop ? 'lg' : 'xl'}
                   />
-                </span>
+                </Adornment>
                 <Text
                   scale={theme.device.isDesktop ? 'caption' : 'body'}
                   fontWeight="semibold"
                 >
                   {mode}
                 </Text>
-              </Button>
-            </ListItem>
+              </ListItem>
+            </Fragment>
           ))}
         </List>
       </Popover>

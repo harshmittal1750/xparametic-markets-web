@@ -30,9 +30,9 @@ export default function NetworkSelector({
   );
   const handleHide = useCallback(() => setShow(null), []);
   const handleNetworkClick = useCallback(
-    (name: string) => () => {
+    (event: React.MouseEvent<HTMLButtonElement>) => {
       const [network] = networks.networks.filter(
-        _network => _network.name === name
+        ({ name }) => name === event.currentTarget.name
       );
 
       networks.changeToNetwork(network);
@@ -99,13 +99,14 @@ export default function NetworkSelector({
           $disableGutters={theme.device.isDesktop}
           className={networSelectorClasses.list}
         >
-          {networks.networks.map(network => (
+          {networks.networks.map((network, index) => (
             <Fragment key={network.id}>
-              {theme.device.isDesktop && <Divider />}
+              {theme.device.isDesktop && !!index && <Divider />}
               <ListItem
-                onClick={handleNetworkClick(network.name)}
+                onClick={handleNetworkClick}
                 $actived={network.id === networks.network.id}
                 className={networSelectorClasses.listItem}
+                name={network.name}
               >
                 <Adornment
                   $edge="start"
