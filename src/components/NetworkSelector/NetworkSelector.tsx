@@ -73,7 +73,7 @@ export default function NetworkSelector({
         )}
       </Button>
       <Popover position="bottomLeft" onHide={handleHide} show={show}>
-        {!isDesktop && (
+        {!theme.device.isDesktop && (
           <header className={networSelectorClasses.header}>
             <Text
               scale="heading"
@@ -114,11 +114,11 @@ export default function NetworkSelector({
                 >
                   <Icon
                     name={network.currency.iconName}
-                    size={isDesktop ? 'lg' : 'xl'}
+                    size={theme.device.isDesktop ? 'lg' : 'xl'}
                   />
                 </Adornment>
                 <Text
-                  scale={isDesktop ? 'caption' : 'body'}
+                  scale={theme.device.isDesktop ? 'caption' : 'body'}
                   fontWeight="semibold"
                 >
                   {network.name}
