@@ -8,8 +8,8 @@ import {
   THEME_MODE_DEFAULT,
   isThemeDark,
   useTheme,
-  ThemeModes,
   Popover,
+  ThemeModes,
   Divider
 } from 'ui';
 
