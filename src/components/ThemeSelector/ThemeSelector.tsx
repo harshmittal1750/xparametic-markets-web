@@ -1,6 +1,5 @@
 import React, { Fragment, useCallback, useState } from 'react';
 
-import cn from 'classnames';
 import {
   Adornment,
   List,
