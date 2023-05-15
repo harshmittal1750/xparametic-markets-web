@@ -20,8 +20,8 @@
 .backdrop {
   background: linear-gradient(
       0deg,
-      var(--color-background-tertiary) 100%,
-      var(--color-background-tertiary) 0%
+      var(--color-background-secondary) 0%,
+      var(--color-background-tertiary) 100%
     ),
     var(--outcome-image), var(--color-background-tertiary);
   background-clip: border-box;
