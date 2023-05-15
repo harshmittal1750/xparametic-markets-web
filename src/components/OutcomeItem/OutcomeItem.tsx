@@ -1,19 +1,19 @@
 import cn from 'classnames';
 import { kebabCase, uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
-import { useTheme } from 'ui';
+import { Avatar, useTheme } from 'ui';
 
 import { Area } from 'components/plots';
 import type { AreaDataPoint } from 'components/plots/Area/Area.type';
 import Text from 'components/Text';
 
-import OutcomeItemClasses from './OutcomeItem.module.scss';
+import outcomeItemClasses from './OutcomeItem.module.scss';
 
 export type OutcomeProps = Pick<
   React.ComponentPropsWithoutRef<'button'>,
   'onClick' | 'children' | 'value'
 > &
-  Partial<Record<'primary', string>> &
+  Partial<Record<'primary' | 'image', string>> &
   Partial<
     Record<
       'isActive' | 'isPositive' | 'isResolved' | 'isWinning' | '$gutterBottom',
@@ -39,6 +39,7 @@ export default function OutcomeItem({
   $gutterBottom,
   data,
   $variant,
+  image,
   ...props
 }: OutcomeProps) {
   const theme = useTheme();
@@ -46,18 +47,23 @@ export default function OutcomeItem({
   return (
     <button
       type="button"
-      className={cn(OutcomeItemClasses.root, {
+      disabled={isResolved}
+      className={cn(outcomeItemClasses.root, {
         'pm-c-market-outcomes__item--default': !isResolved,
         'pm-c-market-outcomes__item--success': isWinning,
         'pm-c-market-outcomes__item--danger': !isWinning,
-        [OutcomeItemClasses.gutterBottom]: $gutterBottom,
-        [OutcomeItemClasses.variantDashed]: $variant === 'dashed',
+        [outcomeItemClasses.gutterBottom]: $gutterBottom,
+        [outcomeItemClasses.variantDashed]: $variant === 'dashed',
+        [outcomeItemClasses.backdrop]: !endAdornment && image,
         active: isActive
       })}
-      disabled={isResolved}
+      style={{
+        // @ts-expect-error No need to assert React.CSSProperties here
+        '--outcome-image': image && `url('${image}')`
+      }}
       {...props}
     >
-      <div className={OutcomeItemClasses.content}>
+      <div className={outcomeItemClasses.content}>
         <div className="pm-c-market-outcomes__item-group--column">
           <Text
             as="p"
@@ -77,16 +83,21 @@ export default function OutcomeItem({
           </Text>
         </div>
         <div className="pm-c-market-outcomes__item-endAdornment">
-          {endAdornment ||
-            (data && theme.device.isTablet && (
-              <Area
-                id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
-                data={data}
-                color={isPositive ? 'green' : 'red'}
-                width={48}
-                height={32}
-              />
-            ))}
+          {(() => {
+            if (endAdornment) return endAdornment;
+            if (image) return <Avatar $size="xs" $radius="xs" src={image} />;
+            if (data && theme.device.isTablet)
+              return (
+                <Area
+                  id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
+                  data={data}
+                  color={isPositive ? 'green' : 'red'}
+                  width={48}
+                  height={32}
+                />
+              );
+            return null;
+          })()}
         </div>
       </div>
       {theme.device.isTablet && children}
@@ -102,7 +113,7 @@ export default function OutcomeItem({
           trailWidth={1}
           trailColor="var(--color-vote-arrows-background--neutral)"
           strokeLinecap="butt"
-          className={OutcomeItemClasses.line}
+          className={outcomeItemClasses.line}
         />
       )}
     </button>

@@ -17,6 +17,19 @@
   }
 }
 
+.backdrop {
+  background: linear-gradient(
+      0deg,
+      var(--color-background-tertiary) 100%,
+      var(--color-background-tertiary) 0%
+    ),
+    var(--outcome-image), var(--color-background-tertiary);
+  background-clip: border-box;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
 .variant {
   &Dashed {
     border-style: dashed;
@@ -25,7 +38,7 @@
 
 .gutter {
   &Bottom {
-    margin-bottom: 12px;
+    margin-bottom: var(--size-12);
   }
 }
 
@@ -33,6 +46,7 @@
   padding: var(--size-16);
   display: flex;
   align-items: center;
+  gap: var(--size-12);
 }
 
 .line {
