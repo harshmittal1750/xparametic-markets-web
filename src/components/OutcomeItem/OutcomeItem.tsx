@@ -20,10 +20,11 @@ export type OutcomeProps = Pick<
       boolean
     >
   > &
-  Partial<Record<'endAdornment' | 'secondary', React.ReactNode>> & {
+  Partial<Record<'itemEnd' | 'secondary', React.ReactNode>> & {
     percent?: number;
     data?: AreaDataPoint[];
     $variant?: 'dashed';
+    $size?: 'sm' | 'md';
   };
 
 export default function OutcomeItem({
@@ -34,9 +35,10 @@ export default function OutcomeItem({
   isPositive,
   isResolved,
   isWinning,
-  endAdornment,
+  itemEnd,
   children,
   $gutterBottom,
+  $size,
   data,
   $variant,
   image,
@@ -54,7 +56,7 @@ export default function OutcomeItem({
         'pm-c-market-outcomes__item--danger': !isWinning,
         [outcomeItemClasses.gutterBottom]: $gutterBottom,
         [outcomeItemClasses.variantDashed]: $variant === 'dashed',
-        [outcomeItemClasses.backdrop]: !endAdornment && image,
+        [outcomeItemClasses.backdrop]: !itemEnd && image,
         active: isActive
       })}
       style={{
@@ -64,6 +66,11 @@ export default function OutcomeItem({
       {...props}
     >
       <div className={outcomeItemClasses.content}>
+        {image && $size === 'md' && (
+          <div>
+            <Avatar $size="xs" $radius="xs" src={image} />
+          </div>
+        )}
         <div className="pm-c-market-outcomes__item-group--column">
           <Text
             as="p"
@@ -73,19 +80,13 @@ export default function OutcomeItem({
           >
             {primary}
           </Text>
-          <Text
-            as="p"
-            scale="tiny"
-            fontWeight="semibold"
-            className="pm-c-market-outcomes__item-odd"
-          >
-            {secondary}
-          </Text>
+          {secondary}
         </div>
-        <div className="pm-c-market-outcomes__item-endAdornment">
+        <div className="pm-c-market-outcomes__item-itemEnd">
           {(() => {
-            if (endAdornment) return endAdornment;
-            if (image) return <Avatar $size="xs" $radius="xs" src={image} />;
+            if (itemEnd) return itemEnd;
+            if (image && $size === 'sm')
+              return <Avatar $size="xs" $radius="xs" src={image} />;
             if (data && theme.device.isTablet)
               return (
                 <Area
