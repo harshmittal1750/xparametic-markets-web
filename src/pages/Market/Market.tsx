@@ -192,7 +192,9 @@ function MarketUI() {
             </div>
           )}
           {!theme.device.isDesktop && <MarketAnalytics />}
-          <MarketAbout />
+          {market.description && (
+            <MarketAbout>{market.description}</MarketAbout>
+          )}
           {ui.market.voting.enabled && !theme.device.isDesktop && (
             <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
