@@ -47,10 +47,9 @@ export default function NetworkSelector({
   return (
     <>
       <Button
-        type="button"
         aria-label="Switch network"
-        onClick={handleShow}
         variant="outline"
+        onClick={handleShow}
         className={cn(
           networSelectorClasses.root,
           {
@@ -87,7 +86,7 @@ export default function NetworkSelector({
                 size="xs"
                 variant="ghost"
                 color="default"
-                aria-label="Settings"
+                aria-label="Hide"
                 onClick={handleHide}
               >
                 <Icon name="Cross" size="lg" />
@@ -103,9 +102,9 @@ export default function NetworkSelector({
             <Fragment key={network.id}>
               {theme.device.isDesktop && !!index && <Divider />}
               <ListItem
+                className={networSelectorClasses.listItem}
                 onClick={handleNetworkClick}
                 $actived={network.id === networks.network.id}
-                className={networSelectorClasses.listItem}
                 name={network.name}
               >
                 <Adornment

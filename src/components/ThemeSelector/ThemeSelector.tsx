@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
 import {
   Adornment,
@@ -50,9 +50,8 @@ export default function NetworkSelector() {
   return (
     <>
       <Button
-        variant="ghost"
-        color="default"
         aria-label="Switch theme"
+        variant="ghost"
         onClick={handleShow}
         className={themeSelectorClasses.root}
       >
@@ -76,7 +75,7 @@ export default function NetworkSelector() {
                 size="xs"
                 variant="ghost"
                 color="default"
-                aria-label="Settings"
+                aria-label="Hide"
                 onClick={handleHide}
               >
                 <Icon name="Cross" size="lg" />
