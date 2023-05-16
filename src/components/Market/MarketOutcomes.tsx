@@ -89,6 +89,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
           return (
             <li key={outcome.id}>
               <OutcomeItem
+                $size="sm"
                 primary={outcome.title}
                 secondary={
                   <OutcomeItemText
@@ -105,7 +106,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
                 value={outcome.id}
                 onClick={handleOutcomeClick}
                 data={outcome.data}
-                endAdornment={
+                itemEnd={
                   isMarketResolved && (
                     <div className="pm-c-market-outcomes__item-result">
                       {(() => {

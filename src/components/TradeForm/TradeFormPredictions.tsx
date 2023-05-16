@@ -51,7 +51,7 @@ export default function TradeFormPredictions() {
       <OutcomeItem
         $variant="dashed"
         onClick={expandableOutcomes.expand}
-        endAdornment={
+        itemEnd={
           <span style={{ color: 'var(--color-text-secondary)' }}>
             <Icon size="lg" name="Plus" />
           </span>
@@ -77,6 +77,7 @@ export default function TradeFormPredictions() {
           }}
           itemContent={(index, outcome) => (
             <OutcomeItem
+              $size="md"
               $gutterBottom={
                 !expandableOutcomes.isExpanded ||
                 index !== expandableOutcomes.onseted.length - 1
