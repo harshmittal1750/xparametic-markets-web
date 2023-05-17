@@ -2,10 +2,16 @@ import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Formik, Form } from 'formik';
+import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import * as marketService from 'services/Polkamarkets/market';
 import { Token } from 'types/token';
 
-import { useNetwork, useAppSelector, usePolkamarketsService } from 'hooks';
+import {
+  useNetwork,
+  useAppSelector,
+  usePolkamarketsService,
+  useAppDispatch
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
@@ -21,6 +27,7 @@ import { initialValues, validationSchema } from './CreateMarketForm.util';
 
 function CreateMarketForm() {
   const history = useHistory();
+  const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
@@ -44,6 +51,11 @@ function CreateMarketForm() {
     localStorage.removeItem('createMarketValues');
     localStorage.removeItem('createMarketTouched');
     localStorage.removeItem('createMarketCurrentStep');
+  }
+
+  async function updateWallet() {
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleFormSubmit(values: CreateMarketFormData) {
@@ -88,6 +100,7 @@ function CreateMarketForm() {
         networkConfig.NETWORK_ID
       );
 
+      await updateWallet();
       resetLocalStorage();
       history.push(`/markets/${res.data.slug}`);
     } catch (err) {
