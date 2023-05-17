@@ -128,7 +128,10 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
           >
             <Tooltip
               className={marketClasses.footerStatsTooltip}
-              text={`Trading Fee: ${roundNumber(fee + treasuryFee, 1)}%`}
+              text={`Trading Fee: ${roundNumber(
+                (fee + treasuryFee) * 100,
+                1
+              )}%`}
             >
               <Icon
                 name="Fee"
@@ -141,7 +144,7 @@ export default function MarketFooterStats({ market }: MarketFooterStatsProps) {
                 fontWeight="semibold"
                 className={marketClasses.footerStatsText}
               >
-                {`${roundNumber(fee + treasuryFee, 1)}%`}
+                {`${roundNumber((fee + treasuryFee) * 100, 1)}%`}
               </Text>
             </Tooltip>
           </Text>
