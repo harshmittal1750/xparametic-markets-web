@@ -4,6 +4,8 @@ import { useFormikContext } from 'formik';
 import { roundNumber } from 'helpers/math';
 import { Avatar } from 'ui';
 
+import { useNetwork } from 'hooks';
+
 import Breadcrumb from '../../Breadcrumb';
 import type { CreateMarketFormData } from '../../CreateMarketForm';
 import Icon from '../../Icon';
@@ -17,6 +19,7 @@ type MarketPreviewProps = {
 
 function MarketPreview({ token }: MarketPreviewProps) {
   const { values } = useFormikContext<CreateMarketFormData>();
+  const { network } = useNetwork();
 
   const {
     image,
@@ -25,6 +28,7 @@ function MarketPreview({ token }: MarketPreviewProps) {
     subcategory,
     closingDate,
     liquidity,
+    fee,
     outcomes
   } = values;
 
@@ -57,22 +61,31 @@ function MarketPreview({ token }: MarketPreviewProps) {
       <div className="prediction-card__footer">
         <div className={cn('pm-c-market-footer', MarketPreviewClasses.footer)}>
           <div className="pm-c-market-footer__stats">
+            <Icon name={network.currency.iconName} size="lg" />
             {closingDate && (
-              <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
-                <Icon
-                  name="Calendar"
-                  title="Expires at"
-                  className={MarketPreviewClasses.statsIcon}
-                />
+              <>
+                <span className="pm-c-divider--circle" />
                 <Text
-                  as="strong"
+                  as="span"
                   scale="tiny-uppercase"
                   fontWeight="semibold"
                   className={MarketPreviewClasses.statsText}
                 >
-                  {dayjs(closingDate).utc().format('MMMM D, YYYY')}
+                  <Icon
+                    name="Calendar"
+                    title="Expires at"
+                    className={MarketPreviewClasses.statsIcon}
+                  />
+                  <Text
+                    as="strong"
+                    scale="tiny-uppercase"
+                    fontWeight="semibold"
+                    className={MarketPreviewClasses.statsText}
+                  >
+                    {dayjs(closingDate).utc().format('MMMM D, YYYY')}
+                  </Text>
                 </Text>
-              </Text>
+              </>
             )}
             {!!liquidity && (
               <>
@@ -107,6 +120,31 @@ function MarketPreview({ token }: MarketPreviewProps) {
                 </Text>
               </>
             )}
+            {fee ? (
+              <>
+                <span className="pm-c-divider--circle" />
+                <Text
+                  as="span"
+                  scale="tiny-uppercase"
+                  fontWeight="semibold"
+                  className={MarketPreviewClasses.statsText}
+                >
+                  <Icon
+                    name="Fee"
+                    title="Trading Fee"
+                    className={MarketPreviewClasses.statsIcon}
+                  />
+                  <Text
+                    as="strong"
+                    scale="tiny-uppercase"
+                    fontWeight="semibold"
+                    className={MarketPreviewClasses.statsText}
+                  >
+                    {`${roundNumber(fee, 1)}%`}
+                  </Text>
+                </Text>
+              </>
+            ) : null}
           </div>
         </div>
       </div>
