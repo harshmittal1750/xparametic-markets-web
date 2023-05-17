@@ -67,20 +67,20 @@ export default function MarketFooter({ market, children }: MarketFooterProps) {
                 <div className="pm-c-market-footer__tags">
                   <Pill badge {...tags[tag]} />
                 </div>
-                {children?.toString() && (
-                  <div className="pm-c-market-footer__divider--circle" />
-                )}
               </>
             )}
             {ui.market.voting.enabled && (
-              <VoteArrows
-                key={market.slug}
-                size="sm"
-                marketId={market.id}
-                marketSlug={market.slug}
-                marketNetworkId={market.network.id}
-                votes={market.votes}
-              />
+              <>
+                {tag && <div className="pm-c-market-footer__divider--circle" />}
+                <VoteArrows
+                  key={market.slug}
+                  size="sm"
+                  marketId={market.id}
+                  marketSlug={market.slug}
+                  marketNetworkId={market.network.id}
+                  votes={market.votes}
+                />
+              </>
             )}
           </>
         )}
