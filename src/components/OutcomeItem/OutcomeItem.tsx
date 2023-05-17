@@ -20,7 +20,7 @@ export type OutcomeProps = Pick<
       boolean
     >
   > &
-  Partial<Record<'itemEnd' | 'secondary', React.ReactNode>> & {
+  Partial<Record<'endAdornment' | 'secondary', React.ReactNode>> & {
     percent?: number;
     data?: AreaDataPoint[];
     $variant?: 'dashed';
@@ -35,7 +35,7 @@ export default function OutcomeItem({
   isPositive,
   isResolved,
   isWinning,
-  itemEnd,
+  endAdornment,
   children,
   $gutterBottom,
   $size,
@@ -56,7 +56,7 @@ export default function OutcomeItem({
         'pm-c-market-outcomes__item--danger': !isWinning,
         [outcomeItemClasses.gutterBottom]: $gutterBottom,
         [outcomeItemClasses.variantDashed]: $variant === 'dashed',
-        [outcomeItemClasses.backdrop]: !itemEnd && image,
+        [outcomeItemClasses.backdrop]: !endAdornment && image,
         active: isActive
       })}
       style={{
@@ -80,11 +80,18 @@ export default function OutcomeItem({
           >
             {primary}
           </Text>
-          {secondary}
+          <Text
+            as="p"
+            scale="tiny"
+            fontWeight="semibold"
+            className="pm-c-market-outcomes__item-odd"
+          >
+            {secondary}
+          </Text>
         </div>
-        <div className="pm-c-market-outcomes__item-itemEnd">
+        <div className="pm-c-market-outcomes__item-endAdornment">
           {(() => {
-            if (itemEnd) return itemEnd;
+            if (endAdornment) return endAdornment;
             if (image && $size === 'sm')
               return <Avatar $size="xs" $radius="xs" src={image} />;
             if (data && theme.device.isTablet)

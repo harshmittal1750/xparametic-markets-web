@@ -51,7 +51,7 @@ export default function TradeFormPredictions() {
       <OutcomeItem
         $variant="dashed"
         onClick={expandableOutcomes.expand}
-        itemEnd={
+        endAdornment={
           <span style={{ color: 'var(--color-text-secondary)' }}>
             <Icon size="lg" name="Plus" />
           </span>
@@ -127,6 +127,7 @@ export default function TradeFormPredictions() {
           {outcomes.map(outcome => (
             <li key={outcome.title} className={tradeFormClasses.horizontalItem}>
               <OutcomeItem
+                $size="md"
                 percent={+outcome.price * 100}
                 primary={outcome.title}
                 secondary={

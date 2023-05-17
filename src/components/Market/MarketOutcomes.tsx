@@ -106,7 +106,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
                 value={outcome.id}
                 onClick={handleOutcomeClick}
                 data={outcome.data}
-                itemEnd={
+                endAdornment={
                   isMarketResolved && (
                     <div className="pm-c-market-outcomes__item-result">
                       {(() => {
