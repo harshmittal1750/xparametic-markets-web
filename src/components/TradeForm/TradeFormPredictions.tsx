@@ -7,7 +7,6 @@ import { selectOutcome } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
 import Icon from 'components/Icon';
-import MiniTable from 'components/MiniTable';
 import OutcomeItem from 'components/OutcomeItem';
 import OutcomeItemText from 'components/OutcomeItemText';
 
@@ -99,27 +98,11 @@ export default function TradeFormPredictions() {
               value={outcome.id}
               onClick={handleOutcomeClick}
               data={outcome.data}
-            >
-              <MiniTable
-                style={{
-                  paddingLeft: 16,
-                  paddingRight: 16,
-                  paddingBottom: 8
-                }}
-                rows={[
-                  {
-                    key: 'invested',
-                    title: 'your shares',
-                    value:
-                      roundNumber(
-                        portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
-                          ?.shares,
-                        3
-                      ) || 0
-                  }
-                ]}
-              />
-            </OutcomeItem>
+              shares={roundNumber(
+                portfolio[trade.selectedMarketId]?.outcomes[outcome.id]?.shares,
+                3
+              )}
+            />
           )}
         />
       ) : (

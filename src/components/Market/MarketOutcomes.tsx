@@ -5,8 +5,6 @@ import sortOutcomes from 'helpers/sortOutcomes';
 import type { Market } from 'models/market';
 import { useTheme } from 'ui';
 
-import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
-
 import OutcomeItem from 'components/OutcomeItem';
 import OutcomeItemText from 'components/OutcomeItemText';
 
@@ -106,20 +104,6 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
                 value={outcome.id}
                 onClick={handleOutcomeClick}
                 data={outcome.data}
-                endAdornment={
-                  isMarketResolved && (
-                    <div className="pm-c-market-outcomes__item-result">
-                      {(() => {
-                        if (isWinningOutcome && !market.voided)
-                          return <CheckIcon />;
-                        if (!isWinningOutcome && !market.voided)
-                          return <RemoveIcon />;
-                        if (market.voided) return <RepeatCycleIcon />;
-                        return null;
-                      })()}
-                    </div>
-                  )
-                }
               />
             </li>
           );

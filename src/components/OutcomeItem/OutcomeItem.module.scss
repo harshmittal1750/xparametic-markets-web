@@ -43,7 +43,10 @@
 }
 
 .content {
-  padding: var(--size-16);
+  padding-left: var(--size-16);
+  padding-right: var(--size-16);
+  margin-bottom: 2px;
+  height: 68px;
   display: flex;
   align-items: center;
   gap: var(--size-12);
@@ -52,4 +55,15 @@
 .line {
   position: absolute;
   bottom: 0;
+}
+
+.item {
+  &Start,
+  &End {
+    display: inherit;
+  }
+}
+
+.secondary {
+  color: var(--color-text-secondary);
 }

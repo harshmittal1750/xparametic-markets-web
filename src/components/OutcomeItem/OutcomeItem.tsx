@@ -3,6 +3,9 @@ import { kebabCase, uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
 import { Avatar, useTheme } from 'ui';
 
+import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
+
+import MiniTable from 'components/MiniTable';
 import { Area } from 'components/plots';
 import type { AreaDataPoint } from 'components/plots/Area/Area.type';
 import Text from 'components/Text';
@@ -13,15 +16,20 @@ export type OutcomeProps = Pick<
   React.ComponentPropsWithoutRef<'button'>,
   'onClick' | 'children' | 'value'
 > &
-  Partial<Record<'primary' | 'image', string>> &
   Partial<
     Record<
-      'isActive' | 'isPositive' | 'isResolved' | 'isWinning' | '$gutterBottom',
+      | 'isActive'
+      | 'isPositive'
+      | 'isResolved'
+      | 'isWinning'
+      | 'isVoided'
+      | '$gutterBottom',
       boolean
     >
   > &
-  Partial<Record<'endAdornment' | 'secondary', React.ReactNode>> & {
-    percent?: number;
+  Partial<Record<'primary' | 'image', string>> &
+  Partial<Record<'endAdornment' | 'secondary', React.ReactNode>> &
+  Partial<Record<'shares' | 'percent', number>> & {
     data?: AreaDataPoint[];
     $variant?: 'dashed';
     $size?: 'sm' | 'md';
@@ -35,8 +43,9 @@ export default function OutcomeItem({
   isPositive,
   isResolved,
   isWinning,
+  isVoided,
   endAdornment,
-  children,
+  shares,
   $gutterBottom,
   $size,
   data,
@@ -67,7 +76,7 @@ export default function OutcomeItem({
     >
       <div className={outcomeItemClasses.content}>
         {image && $size === 'md' && (
-          <div>
+          <div className={outcomeItemClasses.itemStart}>
             <Avatar $size="xs" $radius="xs" src={image} />
           </div>
         )}
@@ -84,14 +93,23 @@ export default function OutcomeItem({
             as="p"
             scale="tiny"
             fontWeight="semibold"
-            className="pm-c-market-outcomes__item-odd"
+            className={`pm-c-market-outcomes__item-odd ${outcomeItemClasses.secondary}`}
           >
             {secondary}
           </Text>
         </div>
-        <div className="pm-c-market-outcomes__item-endAdornment">
+        <div className={outcomeItemClasses.itemEnd}>
           {(() => {
-            if (endAdornment) return endAdornment;
+            if (isResolved)
+              return (
+                <div className="pm-c-market-outcomes__item-result">
+                  {(() => {
+                    if (isVoided) return <RepeatCycleIcon />;
+                    if (isWinning) return <CheckIcon />;
+                    return <RemoveIcon />;
+                  })()}
+                </div>
+              );
             if (image && $size === 'sm')
               return <Avatar $size="xs" $radius="xs" src={image} />;
             if (data && theme.device.isTablet)
@@ -108,7 +126,22 @@ export default function OutcomeItem({
           })()}
         </div>
       </div>
-      {theme.device.isTablet && children}
+      {theme.device.isTablet && $size === 'md' && (
+        <MiniTable
+          style={{
+            paddingLeft: 16,
+            paddingRight: 16,
+            paddingBottom: 8
+          }}
+          rows={[
+            {
+              key: 'invested',
+              title: 'your shares',
+              value: shares || 0
+            }
+          ]}
+        />
+      )}
       {!isResolved && typeof percent !== 'undefined' && (
         <Line
           percent={percent}
