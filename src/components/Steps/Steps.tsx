@@ -1,8 +1,12 @@
 import cn from 'classnames';
 import { useFormikContext } from 'formik';
+import type { Token } from 'types/token';
 
 import { Button, ButtonLoading } from 'components/Button';
 
+import { useAppSelector, useNetwork } from 'hooks';
+
+import ApproveToken from '../ApproveToken';
 import StepsClasses from './Steps.module.scss';
 import type { Step } from './Steps.type';
 
@@ -15,6 +19,19 @@ type StepsProps = {
 
 function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
   const { isValid, touched, isSubmitting } = useFormikContext();
+  const { network } = useNetwork();
+
+  const createMarketToken = useAppSelector(
+    state => state.polkamarkets.createMarketToken
+  );
+
+  let address = '';
+
+  const token = createMarketToken || network.currency;
+
+  if (createMarketToken && (createMarketToken as Token).addresses) {
+    address = (createMarketToken as Token).addresses[network.key];
+  }
 
   const isCurrentStepValid =
     currentStepFields.every(field => touched[field]) && isValid;
@@ -66,15 +83,17 @@ function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
             </Button>
           ) : null}
           {current === steps.length - 1 ? (
-            <ButtonLoading
-              type="submit"
-              variant="normal"
-              color="success"
-              loading={isSubmitting}
-              disabled={!isCurrentStepValid || isSubmitting}
-            >
-              Create Market
-            </ButtonLoading>
+            <ApproveToken address={address} ticker={token.ticker}>
+              <ButtonLoading
+                type="submit"
+                variant="normal"
+                color="success"
+                loading={isSubmitting}
+                disabled={!isCurrentStepValid || isSubmitting}
+              >
+                Create Market
+              </ButtonLoading>
+            </ApproveToken>
           ) : (
             <Button
               variant="subtle"
