@@ -14,14 +14,9 @@ export default function MarketAbout({
         .split(/\\+n/g)
         .filter(Boolean)
         .map(paragraph => (
-          <Text
-            key={paragraph}
-            fontWeight="medium"
-            scale="body"
-            className={marketClasses.aboutDescription}
-          >
+          <p className={marketClasses.aboutDescription} key={paragraph}>
             {paragraph}
-          </Text>
+          </p>
         ))}
     </section>
   );
