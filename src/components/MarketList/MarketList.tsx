@@ -98,7 +98,7 @@ export default function MarketList() {
   }, []);
 
   return (
-    <div className="pm-c-market-list">
+    <div className="pm-c-market-list max-width-screen-xl">
       {
         {
           loading: (
