@@ -1,19 +1,23 @@
-import { useAppSelector } from 'hooks';
+import { Text } from 'components';
 
 import marketClasses from './Market.module.scss';
 import MarketTitle from './MarketTitle';
 
-export default function MarketAbout() {
-  // TODO: add the expand logic
-
-  const description = useAppSelector(state => state.market.market.description);
-
-  if (!description) return null;
-
+export default function MarketAbout({
+  children
+}: React.PropsWithChildren<Record<string, unknown>>) {
   return (
     <section className={marketClasses.section}>
       <MarketTitle>About</MarketTitle>
-      <p style={{ color: 'var(--color-text-primary)' }}>{description}</p>
+      {children
+        ?.toString()
+        .split(/\\+n/g)
+        .filter(Boolean)
+        .map(paragraph => (
+          <p className={marketClasses.aboutDescription} key={paragraph}>
+            {paragraph}
+          </p>
+        ))}
     </section>
   );
 }
