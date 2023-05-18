@@ -32,24 +32,7 @@
   padding-left: 8px;
   padding-right: 8px;
 
-  @media (min-width: 1024px) {
-    padding-left: unset;
-    padding-right: unset;
-  }
-
   &Item {
     border-radius: 8px;
-
-    &:not(:last-of-type) {
-      margin-bottom: 8px;
-
-      @media (min-width: 1024px) {
-        margin-bottom: unset;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      border-radius: unset;
-    }
   }
 }

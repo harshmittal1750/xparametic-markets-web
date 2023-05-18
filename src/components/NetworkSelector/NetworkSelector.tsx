@@ -94,18 +94,16 @@ export default function NetworkSelector({
             </Adornment>
           </header>
         )}
-        <List
-          $disableGutters={theme.device.isDesktop}
-          className={networSelectorClasses.list}
-        >
-          {networks.networks.map((network, index) => (
+        <List className={networSelectorClasses.list}>
+          {networks.networks.map(network => (
             <Fragment key={network.id}>
-              {theme.device.isDesktop && !!index && <Divider />}
               <ListItem
-                className={networSelectorClasses.listItem}
-                onClick={handleNetworkClick}
+                ButtonProps={{
+                  name: network.name,
+                  className: networSelectorClasses.listItem,
+                  onClick: handleNetworkClick
+                }}
                 $actived={network.id === networks.network.id}
-                name={network.name}
               >
                 <Adornment
                   $edge="start"

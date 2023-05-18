@@ -9,8 +9,7 @@ import {
   isThemeDark,
   useTheme,
   Popover,
-  ThemeModes,
-  Divider
+  ThemeModes
 } from 'ui';
 
 import { Button } from 'components/Button';
@@ -83,18 +82,16 @@ export default function NetworkSelector() {
             </Adornment>
           </header>
         )}
-        <List
-          $disableGutters={theme.device.isDesktop}
-          className={themeSelectorClasses.list}
-        >
-          {Object.keys(modes).map((mode, index) => (
+        <List className={themeSelectorClasses.list}>
+          {Object.keys(modes).map(mode => (
             <Fragment key={mode}>
-              {theme.device.isDesktop && !!index && <Divider />}
               <ListItem
-                className={themeSelectorClasses.listItem}
-                onClick={handleTheme}
+                ButtonProps={{
+                  name: mode,
+                  className: themeSelectorClasses.listItem,
+                  onClick: handleTheme
+                }}
                 $actived={mode.toLowerCase() === modeStored}
-                name={mode}
               >
                 <Adornment
                   $edge="start"
