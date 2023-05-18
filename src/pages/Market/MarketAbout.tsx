@@ -11,7 +11,7 @@ export default function MarketAbout({
       <MarketTitle>About</MarketTitle>
       {children
         ?.toString()
-        .split(/\\n/g)
+        .split(/\\+n/g)
         .filter(Boolean)
         .map(paragraph => (
           <Text
