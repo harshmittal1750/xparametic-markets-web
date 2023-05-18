@@ -9,28 +9,22 @@ type ListItemProps = Pick<
   'className' | 'children'
 > & {
   $actived?: boolean;
-} & (
-    | {
-        onClick?: undefined;
-        name?: undefined;
-        ButtonProps?: undefined;
-      }
-    | {
-        onClick?: React.ComponentPropsWithoutRef<'button'>['onClick'];
-        name?: React.ComponentPropsWithoutRef<'button'>['name'];
-        ButtonProps?: React.ComponentPropsWithoutRef<'button'>;
-      }
-  );
+  ButtonProps?: React.ComponentPropsWithoutRef<'button'>;
+};
 
 export default function ListItem({
   className,
   children,
   ButtonProps,
-  name,
-  onClick,
   $actived,
   ...props
 }: ListItemProps) {
+  const {
+    className: buttonClassName,
+    onClick,
+    ...buttonProps
+  } = ButtonProps || {};
+
   return (
     <li
       className={cn(
@@ -50,11 +44,10 @@ export default function ListItem({
             {
               [listItemClasses.buttonActive]: $actived
             },
-            ButtonProps?.className
+            buttonClassName
           )}
           onClick={onClick}
-          name={name}
-          {...ButtonProps}
+          {...buttonProps}
         >
           {children}
         </button>
