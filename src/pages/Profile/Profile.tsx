@@ -43,7 +43,7 @@ export default function Profile() {
   const hasError = portfolio.isError || leaderboard.isError || activity.isError;
 
   return (
-    <Container className="pm-p-profile">
+    <Container className="pm-p-profile max-width-screen-xl">
       {hasError ? (
         <ProfileError />
       ) : (
