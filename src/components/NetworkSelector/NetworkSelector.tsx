@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useState } from 'react';
 
 import cn from 'classnames';
-import { Adornment, Divider, List, ListItem, Popover, useTheme } from 'ui';
+import { Adornment, List, ListItem, Popover, useTheme } from 'ui';
 
 import { Button, ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
