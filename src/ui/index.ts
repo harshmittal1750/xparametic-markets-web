@@ -14,6 +14,8 @@ export { default as Divider } from './Divider';
 
 export { default as Focustrap } from './Focustrap';
 
+export { default as getAverageColor } from './getAverageColor';
+
 export { default as Hero } from './Hero';
 
 export { default as List } from './List';
