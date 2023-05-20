@@ -92,7 +92,8 @@ const initialState: MarketInitialState = {
           chartData: []
         },
         priceCharts: [],
-        shares: 0
+        shares: 0,
+        imageUrl: ''
       },
       {
         id: '-2',
@@ -105,7 +106,8 @@ const initialState: MarketInitialState = {
           chartData: []
         },
         priceCharts: [],
-        shares: 0
+        shares: 0,
+        imageUrl: ''
       }
     ],
     tradingViewSymbol: null,
@@ -164,9 +166,14 @@ const marketSlice = createSlice({
               ticker,
               iconName: (tokenByTicker || currencyByTicker).iconName
             },
-            outcomes: market.outcomes.map(outcome => ({
+            outcomes: market.outcomes.map((outcome, index) => ({
               ...outcome,
-              price: Number(outcome.price.toFixed(3))
+              price: Number(outcome.price.toFixed(3)),
+              imageUrl: [
+                'https://polkamarkets.infura-ipfs.io/ipfs/QmdRGv8odwsnafpz49ZayQNhmJzJTaT2kjXrrm6aBMJ1Qw',
+                'https://polkamarkets.infura-ipfs.io/ipfs/QmeVh77bH7iAVmqrPWNp4SvA59enTfSSPe2VAHoCmJxQmZ',
+                'https://polkamarkets.infura-ipfs.io/ipfs/QmXUiapNZUbxfWpNYMtbT8Xpyk4EdF6gKWa7cw8SBX5gm9'
+              ][index]
             }))
           }
         };
@@ -202,9 +209,14 @@ const marketSlice = createSlice({
               ticker,
               iconName: (tokenByTicker || currencyByTicker).iconName
             },
-            outcomes: market.outcomes.map(outcome => ({
+            outcomes: market.outcomes.map((outcome, index) => ({
               ...outcome,
-              price: Number(outcome.price.toFixed(3))
+              price: Number(outcome.price.toFixed(3)),
+              imageUrl: [
+                'https://polkamarkets.infura-ipfs.io/ipfs/QmdRGv8odwsnafpz49ZayQNhmJzJTaT2kjXrrm6aBMJ1Qw',
+                'https://polkamarkets.infura-ipfs.io/ipfs/QmeVh77bH7iAVmqrPWNp4SvA59enTfSSPe2VAHoCmJxQmZ',
+                'https://polkamarkets.infura-ipfs.io/ipfs/QmXUiapNZUbxfWpNYMtbT8Xpyk4EdF6gKWa7cw8SBX5gm9'
+              ][index]
             }))
           }
         };
