@@ -26,6 +26,7 @@ export interface Outcome {
   };
   priceCharts?: PriceChart[];
   shares: number;
+  imageUrl?: string;
 }
 
 export interface Question {
