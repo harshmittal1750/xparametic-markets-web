@@ -77,6 +77,7 @@ export default function TradeFormPredictions() {
           itemContent={(index, outcome) => (
             <OutcomeItem
               $size="md"
+              image={outcome.imageUrl}
               $gutterBottom={
                 !expandableOutcomes.isExpanded ||
                 index !== expandableOutcomes.onseted.length - 1
@@ -111,6 +112,7 @@ export default function TradeFormPredictions() {
             <li key={outcome.title} className={tradeFormClasses.horizontalItem}>
               <OutcomeItem
                 $size="md"
+                image={outcome.imageUrl}
                 percent={+outcome.price * 100}
                 primary={outcome.title}
                 secondary={

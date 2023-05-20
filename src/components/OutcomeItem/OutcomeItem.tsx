@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import cn from 'classnames';
 import { kebabCase, uniqueId } from 'lodash';
 import { Line } from 'rc-progress';
@@ -54,6 +56,10 @@ export default function OutcomeItem({
   ...props
 }: OutcomeProps) {
   const theme = useTheme();
+  const avatar = useMemo(
+    () => <Avatar $size="xs" $radius="xs" src={image} />,
+    [image]
+  );
 
   return (
     <button
@@ -76,9 +82,7 @@ export default function OutcomeItem({
     >
       <div className={outcomeItemClasses.content}>
         {image && $size === 'md' && (
-          <div className={outcomeItemClasses.itemStart}>
-            <Avatar $size="xs" $radius="xs" src={image} />
-          </div>
+          <div className={outcomeItemClasses.itemStart}>{avatar}</div>
         )}
         <div className="pm-c-market-outcomes__item-group--column">
           <Text
@@ -110,8 +114,7 @@ export default function OutcomeItem({
                   })()}
                 </div>
               );
-            if (image && $size === 'sm')
-              return <Avatar $size="xs" $radius="xs" src={image} />;
+            if (image && $size === 'sm') return avatar;
             if (data && theme.device.isTablet)
               return (
                 <Area

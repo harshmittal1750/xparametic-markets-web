@@ -89,6 +89,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
               <OutcomeItem
                 $size="sm"
                 primary={outcome.title}
+                image={outcome.imageUrl}
                 secondary={
                   <OutcomeItemText
                     price={outcome.price}
