@@ -8,10 +8,22 @@ $ribbon-themes: (
       blue: #6ab7ff,
       purple: #9f7eff,
       warning: #f0b429,
-      success: #27ab83
+      success: #27ab83,
+      categorical-0: var(--color-categorical-0),
+      categorical-1: var(--color-categorical-1),
+      categorical-2: var(--color-categorical-2),
+      categorical-3: var(--color-categorical-3),
+      categorical-4: var(--color-categorical-4),
+      categorical-5: var(--color-categorical-5),
+      categorical-6: var(--color-categorical-6),
+      categorical-7: var(--color-categorical-7),
+      categorical-8: var(--color-categorical-8),
+      categorical-9: var(--color-categorical-9),
+      categorical-10: var(--color-categorical-10),
+      categorical-11: var(--color-categorical-11)
     ),
-    text-color: #0e1016,
-    details-color: #0e1016
+    text-color: #ffffff,
+    details-color: #ffffff
   ),
   dark: (
     background-colors: (
@@ -19,7 +31,19 @@ $ribbon-themes: (
       blue: #6ab7ff,
       purple: #9f7eff,
       warning: #f0b429,
-      success: #27ab83
+      success: #27ab83,
+      categorical-0: var(--color-categorical-0),
+      categorical-1: var(--color-categorical-1),
+      categorical-2: var(--color-categorical-2),
+      categorical-3: var(--color-categorical-3),
+      categorical-4: var(--color-categorical-4),
+      categorical-5: var(--color-categorical-5),
+      categorical-6: var(--color-categorical-6),
+      categorical-7: var(--color-categorical-7),
+      categorical-8: var(--color-categorical-8),
+      categorical-9: var(--color-categorical-9),
+      categorical-10: var(--color-categorical-10),
+      categorical-11: var(--color-categorical-11)
     ),
     text-color: #0e1016,
     details-color: #0e1016

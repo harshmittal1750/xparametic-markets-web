@@ -1,8 +1,16 @@
 import { ReactNode } from 'react';
 
+import type { CategoricalColor } from 'helpers/color';
+
 import Text from '../Text';
 
-export type RibbonColor = 'pink' | 'blue' | 'purple' | 'warning' | 'success';
+export type RibbonColor =
+  | 'pink'
+  | 'blue'
+  | 'purple'
+  | 'warning'
+  | 'success'
+  | CategoricalColor;
 
 type RibbonProps = {
   color?: RibbonColor;
