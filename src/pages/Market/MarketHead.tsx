@@ -13,15 +13,18 @@ import marketClasses from './Market.module.scss';
 function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
-  const id = useAppSelector(state => state.market.market.id);
-  const imageUrl = useAppSelector(state => state.market.market.imageUrl);
-  const colors = useAppSelector(state => state.ui.market.colors);
+  const market = useAppSelector(state => state.market.market);
+  // TODO: prefer get it i.e. useMarketsColor
+  const marketColors = JSON.parse(
+    localStorage.getItem('MARKET_COLORS') || '{}'
+  );
+  const color = marketColors?.[market.network.id]?.[market.id]?.[0];
 
   return (
     <Hero
       className={marketClasses.hero}
-      $image={imageUrl}
-      $backdrop={colors[id]}
+      $image={market.imageUrl}
+      $backdrop={color?.join(' ')}
       {...props}
     />
   );

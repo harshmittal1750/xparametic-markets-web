@@ -8,7 +8,7 @@ import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
-import { useRect, useTheme } from 'ui';
+import { getAverageColor, useRect, useTheme } from 'ui';
 
 import { InfoIcon } from 'assets/icons';
 
@@ -25,6 +25,38 @@ type VirtuosoProps = Omit<
   'useWindowScroll' | 'itemContent' | 'rangeChanged' | 'ref'
 >;
 
+async function buildMarketColor<
+  O = Record<number, string>,
+  M = Record<
+    number,
+    Record<number, Partial<Record<number, [string, Partial<O>]>>>
+  >
+>(data: Array<Market>) {
+  let colorMarket = {} as M;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const market of data) {
+    let outcomes = {} as O;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const outcome of market.outcomes) {
+      outcomes = {
+        ...outcomes,
+        [outcome.id]: await getAverageColor(outcome.imageUrl)
+      };
+    }
+
+    colorMarket = {
+      ...colorMarket,
+      [market.network.id]: {
+        ...colorMarket[market.network.id],
+        [market.id]: [await getAverageColor(market.imageUrl), outcomes]
+      }
+    };
+  }
+
+  return colorMarket;
+}
 function Virtuoso({ data }: VirtuosoProps) {
   const theme = useTheme();
   const [back, backRect] = useRect();
@@ -59,6 +91,22 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
+  useEffect(() => {
+    (async function handleMarketColors() {
+      try {
+        if (data) {
+          // TODO: prefer set it i.e. useMarketsColor
+          localStorage.setItem(
+            'MARKET_COLORS',
+            JSON.stringify(await buildMarketColor([...data]))
+          );
+        }
+      } catch (error) {
+        // unsupported
+      }
+    })();
+  }, [data]);
+
   return (
     <>
       <AnimatePresence>
@@ -84,7 +132,7 @@ function Virtuoso({ data }: VirtuosoProps) {
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
         data={data}
-        style={{ top: renderBack ? -backRect.height : '' }}
+        style={{ top: renderBack ? -backRect.height : undefined }}
       />
     </>
   );

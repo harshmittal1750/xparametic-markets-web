@@ -18,11 +18,10 @@ export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
-  const symbol = useAppSelector(state => state.market.market.token.ticker);
-  const rawOutcomes = useAppSelector(state => state.market.market.outcomes);
+  const market = useAppSelector(state => state.market.market);
   const theme = useTheme();
   const sortedOutcomes = sortOutcomes({
-    outcomes: rawOutcomes,
+    outcomes: market.outcomes,
     timeframe: '7d'
   });
   const expandableOutcomes = useExpandableOutcomes({
@@ -61,6 +60,14 @@ export default function TradeFormPredictions() {
     ),
     [expandableOutcomes.expand, expandableOutcomes.offseted]
   );
+  // TODO: prefer get it i.e. useMarketsColor
+  const marketColors = JSON.parse(
+    localStorage.getItem('MARKET_COLORS') || '{}'
+  );
+  const getOutcomeColors = useCallback(
+    (id: number) => marketColors[market.network.id][market.id][1][id].join(' '),
+    [market.id, market.network.id, marketColors]
+  );
 
   return (
     <div className="pm-c-trade-form-predictions">
@@ -87,7 +94,7 @@ export default function TradeFormPredictions() {
               secondary={
                 <OutcomeItemText
                   price={outcome.price}
-                  symbol={symbol}
+                  symbol={market.token.ticker}
                   isPositive={outcome.isPriceUp}
                 />
               }
@@ -103,6 +110,7 @@ export default function TradeFormPredictions() {
                 portfolio[trade.selectedMarketId]?.outcomes[outcome.id]?.shares,
                 3
               )}
+              activeColor={getOutcomeColors(+outcome.id)}
             />
           )}
         />
@@ -118,7 +126,7 @@ export default function TradeFormPredictions() {
                 secondary={
                   <OutcomeItemText
                     price={outcome.price}
-                    symbol={symbol}
+                    symbol={market.token.ticker}
                     isPositive={outcome.isPriceUp}
                   />
                 }
@@ -129,6 +137,7 @@ export default function TradeFormPredictions() {
                 isPositive={outcome.isPriceUp}
                 value={outcome.id}
                 onClick={handleOutcomeClick}
+                activeColor={getOutcomeColors(+outcome.id)}
               />
             </li>
           ))}

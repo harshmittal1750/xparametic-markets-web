@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
 
-const MARKET_COLORS = 'MARKET_COLORS';
 const initialState = {
   rightSidebar: {
     visible: false
@@ -14,9 +12,6 @@ const initialState = {
   },
   reportForm: {
     visible: false
-  },
-  market: {
-    colors: JSON.parse(localStorage.getItem(MARKET_COLORS) || '{}') || {}
   }
 };
 
@@ -95,22 +90,7 @@ const uiSlice = createSlice({
       reportForm: {
         visible: false
       }
-    }),
-    setMarketColors: (state, action: PayloadAction<Record<string, string>>) => {
-      const colors = {
-        ...state.market.colors,
-        ...action.payload
-      };
-
-      localStorage.setItem(MARKET_COLORS, JSON.stringify(colors));
-
-      return {
-        ...state,
-        market: {
-          colors
-        }
-      };
-    }
+    })
   }
 });
 
@@ -123,6 +103,5 @@ export const {
   openLiquidityForm,
   closeLiquidityForm,
   openReportForm,
-  closeReportForm,
-  setMarketColors
+  closeReportForm
 } = uiSlice.actions;
