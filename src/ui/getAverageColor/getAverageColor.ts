@@ -20,9 +20,8 @@ export default async function getAverageColor(src: string) {
   const context = document.createElement('canvas').getContext?.('2d', {
     willReadFrequently: true
   });
-  const rgb = [48, 51, 190];
 
-  if (!context || !src) return rgb;
+  if (!context || !src) return [];
 
   try {
     const image = await getImage(src, {
@@ -36,6 +35,6 @@ export default async function getAverageColor(src: string) {
       context.getImageData(0, 0, 1, 1).data.filter((_, index) => index <= 2)
     );
   } catch (error) {
-    return rgb;
+    return [];
   }
 }
