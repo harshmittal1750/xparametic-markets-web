@@ -280,7 +280,7 @@ function Leaderboard() {
   ]);
 
   return (
-    <Container className="pm-p-leaderboard">
+    <Container className="pm-p-leaderboard max-width-screen-xl">
       <div className="pm-p-leaderboard__header">
         <div className="flex-row gap-5 align-center">
           {leaderboardGroup?.imageUrl ? (

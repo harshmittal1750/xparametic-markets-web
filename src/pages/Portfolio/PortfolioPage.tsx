@@ -24,7 +24,7 @@ export default function PortfolioPage() {
   }, [ethAddress, network.id]);
 
   return (
-    <Container className="portfolio-page">
+    <Container className="portfolio-page max-width-screen-xl">
       <PortfolioAnalytics isLoading={isLoading} />
       <PortfolioChart isLoading={isLoading} />
       <PortfolioTabs />

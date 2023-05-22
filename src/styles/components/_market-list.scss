@@ -2,6 +2,15 @@
   flex: 1 1 auto;
   padding: var(--grid-margin);
 
+  @media (min-width: 1440px) {
+    padding-left: unset;
+    padding-right: unset;
+
+    &--filters-visible {
+      padding-left: var(--grid-margin);
+    }
+  }
+
   & > [data-virtuoso-scroller='true'] {
     & > [data-viewport-type='window'] {
       & > [data-test-id='virtuoso-item-list'] {

@@ -31,7 +31,7 @@ function Clubs() {
   };
 
   return (
-    <Container className="pm-p-leaderboard">
+    <Container className="pm-p-leaderboard max-width-screen-xl">
       <div className="pm-p-leaderboard__header">
         <div className="flex-column gap-3">
           <h1 className="heading semibold text-1">Clubs</h1>

@@ -1,5 +1,3 @@
-import { Text } from 'components';
-
 import marketClasses from './Market.module.scss';
 import MarketTitle from './MarketTitle';
 

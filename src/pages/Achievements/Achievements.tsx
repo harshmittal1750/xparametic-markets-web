@@ -129,7 +129,7 @@ function Achievements() {
   const empty = isEmpty(achievementsByFilter);
 
   return (
-    <Container className="pm-p-achievements flex-column gap-4">
+    <Container className="pm-p-achievements flex-column gap-4 max-width-screen-xl">
       <div className="flex-row wrap justify-space-between align-center gap-6 padding-bottom-3">
         <h1 className="pm-p-achievements__title heading semibold">
           Achievements
