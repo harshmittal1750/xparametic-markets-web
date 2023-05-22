@@ -71,7 +71,7 @@ export default function ConnectMetamask() {
           success = await polkamarketsService.socialLoginDiscord();
           break;
         case 'email':
-          success =await polkamarketsService.socialLoginEmail(email);
+          success = await polkamarketsService.socialLoginEmail(email);
           break;
         case 'metamask':
           success = await polkamarketsService.socialLoginMetamask();

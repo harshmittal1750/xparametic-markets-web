@@ -21,6 +21,7 @@ export type PolkamarketsInitialState = {
   ethBalance: number;
   polkBalance: number;
   polkApproved: boolean;
+  socialLoginInfo: any;
   polkClaimed: boolean;
   portfolio: any;
   actions: Action[];
@@ -45,6 +46,7 @@ const initialState: PolkamarketsInitialState = {
   ethBalance: 0,
   polkBalance: 0,
   polkApproved: false,
+  socialLoginInfo: null,
   polkClaimed: false,
   portfolio: {},
   actions: [],
@@ -86,6 +88,10 @@ const polkamarketsSlice = createSlice({
     changePolkApproved: (state, action: PayloadAction<boolean>) => ({
       ...state,
       polkApproved: action.payload
+    }),
+    changeSocialLoginInfo: (state, action: PayloadAction<any>) => ({
+      ...state,
+      socialLoginInfo: action.payload
     }),
     changePolkClaimed: (state, action: PayloadAction<boolean>) => ({
       ...state,
@@ -171,6 +177,7 @@ const {
   changePolkBalance,
   changePolkApproved,
   changePolkClaimed,
+  changeSocialLoginInfo,
   changePortfolio,
   changeActions,
   changeMarketsWithActions,
@@ -206,12 +213,14 @@ function login(polkamarketsService: PolkamarketsService) {
         polkamarketsService.getBalance(),
         polkamarketsService.getPolkBalance(),
         polkamarketsService.isPolkClaimed(),
-        polkamarketsService.isRealitioERC20Approved()
-      ]).then(([balance, polkBalance, polkClaimed, polkApproved]) => {
+        polkamarketsService.isRealitioERC20Approved(),
+        polkamarketsService.getSocialLoginUserInfo()
+      ]).then(([balance, polkBalance, polkClaimed, polkApproved, userInfo]) => {
         dispatch(changeEthBalance(balance));
         dispatch(changePolkBalance(polkBalance));
         dispatch(changePolkClaimed(polkClaimed));
         dispatch(changePolkApproved(polkApproved));
+        dispatch(changeSocialLoginInfo(userInfo));
 
         dispatch(
           changeLoading({
@@ -239,6 +248,7 @@ function logout() {
     dispatch(changePolkBalance(0));
     dispatch(changePolkClaimed(false));
     dispatch(changePolkApproved(false));
+    dispatch(changeSocialLoginInfo(null));
   };
 }
 
@@ -351,6 +361,7 @@ export {
   changeEthBalance,
   changePolkBalance,
   changePolkApproved,
+  changeSocialLoginInfo,
   changePolkClaimed,
   changePortfolio,
   changeActions,

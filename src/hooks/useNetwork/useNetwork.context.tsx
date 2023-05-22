@@ -108,7 +108,6 @@ function NetworkProvider({ children }: NetworkProviderProps) {
 
   useEffect(() => {
     async function fetchUserData() {
-      dispatch(login(polkamarketService));
       dispatch(fetchAditionalData(polkamarketService));
     }
 

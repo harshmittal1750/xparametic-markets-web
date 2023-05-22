@@ -1,4 +1,4 @@
-import { Fragment, useCallback } from 'react';
+import { Fragment, useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
@@ -22,6 +22,8 @@ import {
 } from 'hooks';
 
 import { logout } from '../../redux/ducks/polkamarkets';
+import { PolkamarketsService } from '../../services';
+import { updateSocialLoginInfo } from '../../services/Polkamarkets/user';
 import { Transak } from '../integrations';
 import WalletInfoClaim from './WalletInfoClaim';
 
@@ -51,11 +53,38 @@ export default function WalletInfo() {
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const userInfo = useAppSelector(state => state.polkamarkets.socialLoginInfo);
+
   const MetaMaskWalletComponent = theme.device.isDesktop
     ? MetaMaskWallet
     : Fragment;
 
   const polkamarketsService = usePolkamarketsService();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let username;
+      let servers;
+
+      if (userInfo.typeOfLogin === 'discord') {
+        ({ username, servers } =
+          await PolkamarketsService.getDiscordUsernameAndServer(userInfo));
+      }
+      // TODO - what to do with servers info?
+
+      // send data to backend
+      updateSocialLoginInfo(
+        userInfo.idToken,
+        username,
+        userInfo.typeOfLogin,
+        ethAddress
+      );
+    };
+
+    if (userInfo) {
+      fetchData();
+    }
+  }, [userInfo, ethAddress]);
 
   const handleSocialLoginLogout = useCallback(async () => {
     await polkamarketsService.logoutSocialLogin();

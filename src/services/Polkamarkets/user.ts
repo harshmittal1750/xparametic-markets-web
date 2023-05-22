@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { UserGeolocation } from 'models/user';
 
-import api from './api';
+import api, { polkamarketsApiUrl } from './api';
 
 async function getUserGeolocation() {
   const { REACT_APP_IP_API_KEY } = process.env;
@@ -13,4 +13,26 @@ async function getUserGeolocation() {
   });
 }
 
-export { getUserGeolocation };
+async function updateSocialLoginInfo(
+  authenticationToken: string,
+  username: string,
+  loginType: string,
+  walletAddress: string
+) {
+  const url = `${polkamarketsApiUrl}/users`;
+  return api.put(
+    url,
+    {
+      username,
+      login_type: loginType,
+      wallet_address: walletAddress
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${authenticationToken}`
+      }
+    }
+  );
+}
+
+export { getUserGeolocation, updateSocialLoginInfo };
