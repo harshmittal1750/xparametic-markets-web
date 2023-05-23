@@ -27,6 +27,8 @@ export { default as useFantasyTokenTicker } from './useFantasyTokenTicker';
 
 export { default as useMarketForms } from './useMarketForms';
 
+export { default as useMarketsColors } from './useMarketsColors';
+
 export { default as useMarketPath } from './useMarketPath';
 
 export { default as useMount } from './useMount';

@@ -6,11 +6,15 @@ import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
-import Icon from 'components/Icon';
 import OutcomeItem from 'components/OutcomeItem';
 import OutcomeItemText from 'components/OutcomeItemText';
 
-import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useExpandableOutcomes,
+  useMarketsColors
+} from 'hooks';
 
 import tradeFormClasses from './TradeForm.module.scss';
 
@@ -20,6 +24,7 @@ export default function TradeFormPredictions() {
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const theme = useTheme();
+  const marketsColors = useMarketsColors();
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
     timeframe: '7d'
@@ -27,11 +32,6 @@ export default function TradeFormPredictions() {
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: sortedOutcomes
   });
-  const needExpandOutcomes = sortedOutcomes.length > 3;
-  const outcomes =
-    theme.device.isDesktop && needExpandOutcomes
-      ? expandableOutcomes.onseted
-      : sortedOutcomes;
   const handleOutcomeClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       dispatch(
@@ -47,27 +47,20 @@ export default function TradeFormPredictions() {
   const Footer = useCallback(
     () => (
       <OutcomeItem
+        $size="md"
         $variant="dashed"
         onClick={expandableOutcomes.expand}
-        endAdornment={
-          <span style={{ color: 'var(--color-text-secondary)' }}>
-            <Icon size="lg" name="Plus" />
-          </span>
-        }
         primary={expandableOutcomes.offseted.primary}
         secondary={expandableOutcomes.offseted.secondary}
       />
     ),
     [expandableOutcomes.expand, expandableOutcomes.offseted]
   );
-  // TODO: prefer get it i.e. useMarketsColor
-  const marketColors = JSON.parse(
-    localStorage.getItem('MARKET_COLORS') || '{}'
-  );
-  const getOutcomeColors = useCallback(
-    (id: number) => marketColors[market.network.id][market.id][1][id].join(' '),
-    [market.id, market.network.id, marketColors]
-  );
+  const needExpandOutcomes = sortedOutcomes.length > 3;
+  const outcomes =
+    theme.device.isDesktop && needExpandOutcomes
+      ? expandableOutcomes.onseted
+      : sortedOutcomes;
 
   return (
     <div className="pm-c-trade-form-predictions">
@@ -110,7 +103,7 @@ export default function TradeFormPredictions() {
                 portfolio[trade.selectedMarketId]?.outcomes[outcome.id]?.shares,
                 3
               )}
-              activeColor={getOutcomeColors(+outcome.id)}
+              activeColor={marketsColors.outcome(+outcome.id)}
             />
           )}
         />
@@ -137,7 +130,7 @@ export default function TradeFormPredictions() {
                 isPositive={outcome.isPriceUp}
                 value={outcome.id}
                 onClick={handleOutcomeClick}
-                activeColor={getOutcomeColors(+outcome.id)}
+                activeColor={marketsColors.outcome(+outcome.id)}
               />
             </li>
           ))}

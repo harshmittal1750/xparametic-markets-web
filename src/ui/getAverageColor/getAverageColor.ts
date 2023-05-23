@@ -14,9 +14,11 @@ function getImage(src: string, options: Record<'width' | 'height', number>) {
 /**
  * Returns an RGB color array-like `[RRR, GGG, BBB]` from a given `src` image.
  * @param src Source link image.
- * @returns {number[]}
+ * @returns {Promise<Partial<number[]>>}
  */
-export default async function getAverageColor(src: string) {
+export default async function getAverageColor(
+  src: string
+): Promise<Partial<number[]>> {
   const context = document.createElement('canvas').getContext?.('2d', {
     willReadFrequently: true
   });

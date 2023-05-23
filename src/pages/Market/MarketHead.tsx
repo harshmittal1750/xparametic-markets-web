@@ -6,7 +6,7 @@ import { MarketAvatar, MarketCategory, Text } from 'components';
 import MarketFooter from 'components/Market/MarketFooter';
 import MarketFooterActions from 'components/Market/MarketFooterActions';
 
-import { useAppSelector } from 'hooks';
+import { useAppSelector, useMarketsColors } from 'hooks';
 
 import marketClasses from './Market.module.scss';
 
@@ -14,17 +14,13 @@ function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
   const market = useAppSelector(state => state.market.market);
-  // TODO: prefer get it i.e. useMarketsColor
-  const marketColors = JSON.parse(
-    localStorage.getItem('MARKET_COLORS') || '{}'
-  );
-  const color = marketColors?.[market.network.id]?.[market.id]?.[0];
+  const marketsColors = useMarketsColors();
 
   return (
     <Hero
       className={marketClasses.hero}
       $image={market.imageUrl}
-      $backdrop={color?.join(' ')}
+      $backdrop={marketsColors.market}
       {...props}
     />
   );
