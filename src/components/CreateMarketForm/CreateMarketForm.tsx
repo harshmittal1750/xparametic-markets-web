@@ -87,7 +87,8 @@ function CreateMarketForm() {
       odds,
       values.fee,
       token,
-      wrapped
+      wrapped,
+      values.treasuryFee
     );
 
     show('createMarket');

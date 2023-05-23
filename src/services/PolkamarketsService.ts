@@ -173,7 +173,8 @@ export default class PolkamarketsService {
     odds: Array<number>,
     fee: number,
     token: string = '',
-    wrapped: boolean = false
+    wrapped: boolean = false,
+    treasuryFee: number
   ) {
     // ensuring user has wallet connected
     await this.login();
@@ -189,7 +190,9 @@ export default class PolkamarketsService {
       value,
       oracleAddress: this.address,
       odds,
-      fee: (fee * 1e16).toString()
+      fee: (fee * 1e16).toString(),
+      treasuryFee: (treasuryFee * 1e16).toString(),
+      treasury: this.address
     };
 
     if (wrapped) {

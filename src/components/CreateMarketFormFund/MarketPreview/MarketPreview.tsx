@@ -29,6 +29,7 @@ function MarketPreview({ token }: MarketPreviewProps) {
     closingDate,
     liquidity,
     fee,
+    treasuryFee,
     outcomes
   } = values;
 
@@ -140,7 +141,7 @@ function MarketPreview({ token }: MarketPreviewProps) {
                     fontWeight="semibold"
                     className={MarketPreviewClasses.statsText}
                   >
-                    {`${roundNumber(fee, 1)}%`}
+                    {`${roundNumber(fee + treasuryFee, 1)}%`}
                   </Text>
                 </Text>
               </>

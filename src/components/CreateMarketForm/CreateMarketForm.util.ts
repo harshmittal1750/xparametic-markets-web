@@ -25,6 +25,7 @@ const initialValues: CreateMarketFormData = {
   closingDate: dayjs().toString(),
   liquidity: 0,
   fee: 2,
+  treasuryFee: 1,
   resolutionSource: ''
 };
 
@@ -72,7 +73,11 @@ const validationSchema = [
     fee: Yup.number()
       .min(0, 'Fee must be greater than or equal to 0%')
       .max(5, 'Fee must be less than or equal to 5%')
-      .required('Fee is required.')
+      .required('Fee is required.'),
+    treasuryFee: Yup.number()
+      .min(0, 'Creator fee must be greater than or equal to 0%')
+      .max(5, 'Creator fee must be less than or equal to 5%')
+      .required('Creator fee is required.')
   })
 ];
 

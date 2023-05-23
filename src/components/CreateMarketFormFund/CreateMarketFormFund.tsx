@@ -179,6 +179,29 @@ function CreateMarketFormFund() {
             </Text>
             <NumberInput name="fee" min={0} max={5} />
           </div>
+          <hr className="pm-c-create-market-form__card-liquidity-details__separator" />
+          <div
+            className={cn(
+              'pm-c-create-market-form__card-liquidity-details__earn-trading-fee',
+              CreateMarketFormFundClasses.fee
+            )}
+          >
+            <Text
+              as="span"
+              scale="caption"
+              fontWeight="semibold"
+              className="pm-c-create-market-form__card-liquidity-details__earn-trading-fee__title"
+            >
+              Creator Fee Earnings
+              <Tooltip
+                text="Fee given to market creators on every buy/sell transaction"
+                position="top"
+              >
+                <InfoIcon />
+              </Tooltip>
+            </Text>
+            <NumberInput name="treasuryFee" min={0} max={5} />
+          </div>
         </div>
       </div>
       <div className={CreateMarketFormFundClasses.append}>
