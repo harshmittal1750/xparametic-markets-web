@@ -19,17 +19,15 @@ export default function BetaTesting({ network }: BetaTestingProps) {
 
   return (
     <Banner $type="info" $variant="subtle" onHide={() => setShow(false)}>
-      Welcome to Polkamarkets! You&apos;re on <strong>{network.name}</strong>{' '}
-      and placing predictions with <strong>{network.currency.ticker}</strong>.
-      Your{' '}
+      Welcome to the brand new <strong>Polkamarkets V2</strong> 🎉 if you want
+      to use V1 use the following{' '}
       <Link
         className={betaTesting.link}
-        title="feedback"
+        title="link"
         target="_blank"
         rel="noreferrer noopener"
-        href="//discord.gg/Szjn2EEf7w"
-      />{' '}
-      is highly appreciated! 🎉
+        href="//v1.polkamarkets.com"
+      />.
     </Banner>
   );
 }
