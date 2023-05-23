@@ -37,6 +37,10 @@
 .filter {
   position: sticky;
 
+  &Form {
+    height: 100%;
+  }
+
   &List {
     height: 100%;
     background-color: var(--color-background-primary);

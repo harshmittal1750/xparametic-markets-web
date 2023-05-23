@@ -43,7 +43,7 @@ function LiquidityFormInput() {
   );
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const wrapped = useAppSelector(state => state.liquidity.wrapped);
-  const balance = wrapped ? erc20Balance : ethBalance;
+  const balance = wrapped || !tokenWrapped ? erc20Balance : ethBalance;
 
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const amount = useAppSelector(state => state.liquidity.amount);

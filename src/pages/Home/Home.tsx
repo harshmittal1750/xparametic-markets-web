@@ -23,15 +23,17 @@ export default function Home() {
   return (
     <Switch>
       <Route exact path={routeMatch.path}>
-        {ui.hero.enabled && theme.device.isDesktop && <HomeHero />}
-        <Container ref={ref} $enableGutters className={homeClasses.nav}>
-          <HomeNav
-            onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
-          />
-        </Container>
-        <div className={homeClasses.root}>
-          <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
-          <MarketList />
+        <div className="max-width-screen-xl">
+          {ui.hero.enabled && <HomeHero />}
+          <Container ref={ref} $enableGutters className={homeClasses.nav}>
+            <HomeNav
+              onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
+            />
+          </Container>
+          <div className={homeClasses.root}>
+            <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
+            <MarketList filtersVisible={show} />
+          </div>
         </div>
       </Route>
       {Object.values(pages.home.pages).map(page => (
