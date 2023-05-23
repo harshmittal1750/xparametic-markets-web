@@ -11,6 +11,7 @@ type BetaTestingProps = {
   network: Network;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function BetaTesting({ network }: BetaTestingProps) {
   // TODO: Turn content customizable through env
   const [show, setShow] = useState(true);
@@ -27,7 +28,8 @@ export default function BetaTesting({ network }: BetaTestingProps) {
         target="_blank"
         rel="noreferrer noopener"
         href="//v1.polkamarkets.com"
-      />.
+      />
+      .
     </Banner>
   );
 }
