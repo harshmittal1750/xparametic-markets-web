@@ -60,15 +60,15 @@ export default function BetaWarning() {
         </ModalHeader>
         <ModalSection>
           <ModalSectionText>
-            Polkamarkets Protocol is a 100% decentralized protocol for
-            informational and educational purposes only. POLKAMARKET OÜ does not
-            take any custody, profits or host over any markets.
+            Polkamarkets Protocol is a 100% autonomous protocol running on
+            publicly accessible blockchains. This website is a graphical user
+            interface for visualizing data from, and interacting with, the
+            Polkamarkets Protocol Smart Contracts on EVMs or sidechains, via
+            your Web 3 injected wallet.
           </ModalSectionText>
           <ModalSectionText>
-            POLKAMARKET OÜ displays existing markets live on EVMs or sidechains
-            and is a graphical user interface for visualizing data and
-            interacting with the Polkamarkets Protocol Smart Contracts via your
-            Web 3 injected wallet.
+            POLKAMARKET OÜ does not host any markets, nor takes custody of
+            funds, nor charges fees, nor profits from trades.
           </ModalSectionText>
           <ModalSectionText id={betaWarningProps['aria-describedby']}>
             By entering the website I confirm I am not a citizen or resident in
@@ -76,7 +76,7 @@ export default function BetaWarning() {
           </ModalSectionText>
           <Checkbox label="text" onChange={handleAgreed}>
             <Text as="span" scale="caption" fontWeight="medium">
-              I Agree to the Terms & Service & I am aware of the Risks &
+              I Agree to the Terms & Conditions and I understand the Risk
               Disclosure.
             </Text>
           </Checkbox>
@@ -93,7 +93,7 @@ export default function BetaWarning() {
           </Button>
           <Text as="p" color="gray">
             <Link
-              title="Terms & Service"
+              title="Terms & Conditions"
               scale="caption"
               fontWeight="medium"
               href="https://www.polkamarkets.com/legal/terms-conditions"
@@ -101,8 +101,7 @@ export default function BetaWarning() {
             />
             {' • '}
             <Link
-              title="Risks &
-              Disclosure"
+              title="Risk Disclosure"
               scale="caption"
               fontWeight="medium"
               href="https://docs.google.com/document/d/1TR8HYTBOhZeZOb0E5uAo8lbK4v0Oxv3JnQD_AdYENBY/edit"
