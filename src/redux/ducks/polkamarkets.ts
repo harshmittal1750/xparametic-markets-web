@@ -264,6 +264,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         .then(portfolio => {
           dispatch(changePortfolio(portfolio));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({
@@ -278,6 +279,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         .then(votes => {
           dispatch(changeVotes(votes as Votes));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({
@@ -292,6 +294,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         .then(bonds => {
           dispatch(changeBonds(bonds));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({
@@ -311,6 +314,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
           dispatch(changeActions(actions as Action[]));
           dispatch(changeMarketsWithActions(actions as Action[]));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({
