@@ -24,14 +24,9 @@ const ui = {
     }
   },
   hero: {
-    enabled: [
-      environment.UI_HERO_IMAGE,
-      environment.UI_HERO_HEADER,
-      environment.UI_HERO_TITLE,
-      environment.UI_HERO_ACTION_TITLE,
-      environment.UI_HERO_ACTION_URL
-    ].every(Boolean),
+    enabled: !!environment.UI_HERO_IMAGE,
     image: environment.UI_HERO_IMAGE,
+    image_url: environment.UI_HERO_IMAGE_URL,
     header: environment.UI_HERO_HEADER,
     title: environment.UI_HERO_TITLE,
     action: {

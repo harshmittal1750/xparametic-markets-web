@@ -20,6 +20,7 @@ const environmentConfigVariables = [
   'FEATURE_CLUBS',
   'FEATURE_ACHIEVEMENTS',
   'UI_HERO_IMAGE',
+  'UI_HERO_IMAGE_URL',
   'UI_HERO_HEADER',
   'UI_HERO_TITLE',
   'UI_HERO_ACTION_TITLE',
