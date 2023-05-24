@@ -14,8 +14,7 @@ import { InfoIcon } from 'assets/icons';
 
 import PredictionCard from 'components/PredictionCard';
 
-import { useMarketsColors } from 'hooks';
-import useMarkets from 'hooks/useMarkets';
+import { useMarkets, useMarketsColors } from 'hooks';
 
 import { Button } from '../Button';
 import Text from '../Text';
@@ -60,7 +59,7 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
-  useMarketsColors({ markets: data ? [...data] : undefined });
+  useMarketsColors(data);
 
   return (
     <>

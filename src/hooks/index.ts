@@ -25,6 +25,8 @@ export { default as useExpandableOutcomes } from './useExpandableOutcomes';
 
 export { default as useFantasyTokenTicker } from './useFantasyTokenTicker';
 
+export { default as useMarkets } from './useMarkets';
+
 export { default as useMarketForms } from './useMarketForms';
 
 export { default as useMarketsColors } from './useMarketsColors';
