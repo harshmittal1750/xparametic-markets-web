@@ -71,6 +71,7 @@
 
     &__view {
       grid-area: view;
+      margin-bottom: var(--grid-margin);
     }
 
     &__charts {
@@ -124,7 +125,6 @@
       @include breakpoint-to('md') {
         @include flex-column;
         width: 100%;
-        padding-top: 1rem;
       }
     }
   }

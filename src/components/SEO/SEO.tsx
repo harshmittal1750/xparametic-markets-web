@@ -3,14 +3,10 @@ import { Helmet } from 'react-helmet';
 type SEOProps = {
   title: string;
   description: string;
-  imageUrl?: string;
+  image?: string;
 };
 
-const POLKAMARKETS_DEFAULT_BANNER = `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`;
-
-function SEO({ title, description, imageUrl }: SEOProps) {
-  const image = imageUrl || POLKAMARKETS_DEFAULT_BANNER;
-
+export default function SEO({ title, description, image }: SEOProps) {
   return (
     <Helmet
       title={title}
@@ -64,5 +60,3 @@ function SEO({ title, description, imageUrl }: SEOProps) {
     />
   );
 }
-
-export default SEO;

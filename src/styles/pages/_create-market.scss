@@ -1,47 +1,21 @@
 .pm-p-create-market {
   @include themes($create-market-page-themes) {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 2rem;
+    position: relative;
 
-    &__header {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-
-      width: 70rem;
-
-      &-title {
-        font-size: 2.6rem;
-        color: themed('create-market-page-title-color');
-      }
+    &__header-title {
+      margin-bottom: 2rem;
+      font-size: 2.6rem;
+      color: themed('create-market-page-title-color');
     }
 
-    &__notification-wrapper {
-      position: relative;
-      width: fit-content;
-      height: fit-content;
-    }
-
-    &__notification-overlay,
-    &__image-cropper-overlay {
+    &__notification-overlay {
       @include flex-column(flex-start, center);
       position: absolute;
-      z-index: 100;
-
-      width: 100%;
-      height: 100%;
+      z-index: 1;
+      inset: 0;
 
       padding-top: 7.5rem;
       background: themed('notification-overlay-background-color');
-    }
-
-    &__image-cropper-overlay {
-      margin-top: -2.5rem;
-      margin-left: -2.5rem;
     }
   }
 }
@@ -67,8 +41,6 @@
     }
 
     &__icon {
-      height: 1.6rem;
-      width: 1.6rem;
       fill: themed('details-color');
     }
 

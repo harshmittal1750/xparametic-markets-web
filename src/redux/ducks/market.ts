@@ -1,10 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { networks, currencies, tokens } from 'config';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { Currency } from 'types/currency';
 import { Network } from 'types/network';
-
-import NETWORKS from 'hooks/useNetwork/networks';
 
 const chartViewsEnum = [
   { id: 'marketOverview', name: 'Market Overview', color: 'default' },
@@ -15,8 +14,24 @@ function toHex(value: string) {
   return `0x${Number(value).toString(16)}`;
 }
 
-function getNetworkById(id: string) {
-  return NETWORKS[toHex(id)];
+export function getNetworkById(id: string) {
+  return networks[toHex(id)];
+}
+
+export function getCurrencyByTicker(ticker: string) {
+  const currencyByTicker = Object.values(currencies).find(
+    currency => currency.ticker === ticker
+  );
+
+  return currencyByTicker || currencies.TOKEN;
+}
+
+export function getTokenByTicker(ticker: string) {
+  const tokenByTicker = Object.values(tokens).find(
+    token => token.ticker === ticker
+  );
+
+  return tokenByTicker;
 }
 
 export interface MarketInitialState {
@@ -38,6 +53,7 @@ const initialState: MarketInitialState = {
     imageUrl: '',
     bannerUrl: '',
     title: '',
+    description: '',
     volume: 0,
     volumeEur: 0,
     shares: 0,
@@ -53,6 +69,15 @@ const initialState: MarketInitialState = {
     networkId: '',
     network: {} as Network,
     currency: {} as Currency,
+    token: {
+      name: 'Token',
+      address: '',
+      symbol: 'TOKEN',
+      ticker: 'TOKEN',
+      decimals: 18,
+      iconName: 'Token',
+      wrapped: false
+    },
     votes: { up: 0, down: 0 },
     resolvedOutcomeId: -1,
     outcomes: [
@@ -85,6 +110,8 @@ const initialState: MarketInitialState = {
     ],
     tradingViewSymbol: null,
     fee: 0,
+    treasuryFee: 0,
+    treasury: '0x0000000000000000000000000000000000000000',
     question: {
       id: '0x0000000000000000000000000000000000000000000000000000000000000000',
       bond: 0,
@@ -120,11 +147,23 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
+        const ticker = market.token.wrapped
+          ? network.currency.ticker
+          : market.token.symbol;
+
+        const tokenByTicker = getTokenByTicker(ticker);
+        const currencyByTicker = getCurrencyByTicker(ticker);
+
         return {
           payload: {
             ...market,
             network,
             currency: network.currency,
+            token: {
+              ...market.token,
+              ticker,
+              iconName: (tokenByTicker || currencyByTicker).iconName
+            },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
@@ -146,10 +185,23 @@ const marketSlice = createSlice({
       }),
       prepare: (market: Market) => {
         const network = getNetworkById(market.networkId);
+        const ticker = market.token.wrapped
+          ? network.currency.ticker
+          : market.token.symbol;
+
+        const tokenByTicker = getTokenByTicker(ticker);
+        const currencyByTicker = getCurrencyByTicker(ticker);
+
         return {
           payload: {
             ...market,
+            network,
             currency: network.currency,
+            token: {
+              ...market.token,
+              ticker,
+              iconName: (tokenByTicker || currencyByTicker).iconName
+            },
             outcomes: market.outcomes.map(outcome => ({
               ...outcome,
               price: Number(outcome.price.toFixed(3))
@@ -216,6 +268,16 @@ const marketSlice = createSlice({
       ...state,
       isLoadingPriceCharts: false,
       error: action.payload
+    }),
+    setTokenTicker: (state, action) => ({
+      ...state,
+      market: {
+        ...state.market,
+        token: {
+          ...state.market.token,
+          ticker: action.payload.ticker
+        }
+      }
     })
   }
 });
@@ -235,7 +297,8 @@ const {
   setChartViewType,
   priceChartsRequest,
   priceChartsSuccess,
-  priceChartsError
+  priceChartsError,
+  setTokenTicker
 } = marketSlice.actions;
 
 export {
@@ -245,7 +308,8 @@ export {
   changeQuestion,
   changeVotes,
   changeData,
-  setChartViewType
+  setChartViewType,
+  setTokenTicker
 };
 
 export function getMarket(marketSlug: string) {

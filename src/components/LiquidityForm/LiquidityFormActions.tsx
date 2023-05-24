@@ -1,21 +1,30 @@
 import { useState } from 'react';
 
+import cn from 'classnames';
 import { reset } from 'redux/ducks/liquidity';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
 import { closeLiquidityForm } from 'redux/ducks/ui';
-import { PolkamarketsService, PolkamarketsApiService } from 'services';
+import { PolkamarketsApiService } from 'services';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useERC20Balance,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-import { Button } from '../Button';
+import ApproveToken from '../ApproveToken';
+import { Button, ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 
 function LiquidityFormActions() {
   const dispatch = useAppDispatch();
-  const { network, networkConfig } = useNetwork();
+  const { network } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
   const transactionType = useAppSelector(
     state => state.liquidity.transactionType
   );
@@ -24,9 +33,12 @@ function LiquidityFormActions() {
     state => state.market.market.networkId
   );
   const marketSlug = useAppSelector(state => state.market.market.slug);
+  const token = useAppSelector(state => state.market.market.token);
+  const { wrapped: tokenWrapped, address } = token;
+  const wrapped = useAppSelector(state => state.liquidity.wrapped);
   const amount = useAppSelector(state => state.liquidity.amount);
   const maxAmount = useAppSelector(state => state.liquidity.maxAmount);
-
+  const [isApproved, setApproved] = useState(false);
   const [transactionSuccess, setTransactionSuccess] = useState(false);
   const [transactionSuccessHash, setTransactionSuccessHash] =
     useState(undefined);
@@ -37,6 +49,7 @@ function LiquidityFormActions() {
 
   const [isLoading, setIsLoading] = useState(false);
   const { show, close } = useToastNotification();
+  const { refreshBalance } = useERC20Balance(address);
 
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
@@ -46,56 +59,22 @@ function LiquidityFormActions() {
   }
 
   async function updateWallet() {
-    await dispatch(login(networkConfig));
-    await dispatch(fetchAditionalData(networkConfig));
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleAddliquidity() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
 
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     setIsLoading(true);
 
     try {
       // performing buy action on smart contract
-      const response = await polkamarketsService.addLiquidity(marketId, amount);
-
-      setIsLoading(false);
-
-      const { status, transactionHash } = response;
-
-      if (status && transactionHash) {
-        setTransactionSuccess(status);
-        setTransactionSuccessHash(transactionHash);
-        show(transactionType);
-      }
-
-      // triggering cache reload action on api
-      new PolkamarketsApiService().reloadMarket(marketSlug);
-      new PolkamarketsApiService().reloadPortfolio(ethAddress, network.id);
-
-      // updating wallet
-      await updateWallet();
-    } catch (error) {
-      setIsLoading(false);
-    }
-  }
-
-  async function handleRemoveLiquidity() {
-    setTransactionSuccess(false);
-    setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
-    setIsLoading(true);
-
-    try {
-      // performing buy action on smart contract
-      const response = await polkamarketsService.removeLiquidity(
+      const response = await polkamarketsService.addLiquidity(
         marketId,
-        amount
+        amount,
+        tokenWrapped && !wrapped
       );
 
       setIsLoading(false);
@@ -114,6 +93,43 @@ function LiquidityFormActions() {
 
       // updating wallet
       await updateWallet();
+      await refreshBalance();
+    } catch (error) {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleRemoveLiquidity() {
+    setTransactionSuccess(false);
+    setTransactionSuccessHash(undefined);
+
+    setIsLoading(true);
+
+    try {
+      // performing buy action on smart contract
+      const response = await polkamarketsService.removeLiquidity(
+        marketId,
+        amount,
+        tokenWrapped && !wrapped
+      );
+
+      setIsLoading(false);
+
+      const { status, transactionHash } = response;
+
+      if (status && transactionHash) {
+        setTransactionSuccess(status);
+        setTransactionSuccessHash(transactionHash);
+        show(transactionType);
+      }
+
+      // triggering cache reload action on api
+      new PolkamarketsApiService().reloadMarket(marketSlug);
+      new PolkamarketsApiService().reloadPortfolio(ethAddress, network.id);
+
+      // updating wallet
+      await updateWallet();
+      await refreshBalance();
     } catch (error) {
       setIsLoading(false);
     }
@@ -122,24 +138,33 @@ function LiquidityFormActions() {
   const isValidAmount = amount > 0 && amount <= maxAmount;
 
   return (
-    <div className="pm-c-liquidity-form__actions">
-      <Button variant="subtle" color="default" onClick={handleCancel}>
-        Cancel
-      </Button>
+    <div
+      className={cn('pm-c-liquidity-form__actions', {
+        'pm-c-liquidity-form__actions--column': !isApproved
+      })}
+    >
       {isWrongNetwork ? <NetworkSwitch /> : null}
       {transactionType === 'add' && !isWrongNetwork ? (
-        <Button
-          color="primary"
+        <ApproveToken
           fullwidth
-          onClick={handleAddliquidity}
-          disabled={!isValidAmount || !acceptedTerms || isLoading}
-          loading={isLoading}
+          address={token.address}
+          ticker={token.ticker}
+          wrapped={token.wrapped && !wrapped}
+          onApprove={setApproved}
         >
-          Add Liquidity
-        </Button>
+          <ButtonLoading
+            color="primary"
+            fullwidth
+            onClick={handleAddliquidity}
+            disabled={!isValidAmount || !acceptedTerms || isLoading}
+            loading={isLoading}
+          >
+            Add Liquidity
+          </ButtonLoading>
+        </ApproveToken>
       ) : null}
       {transactionType === 'remove' && !isWrongNetwork ? (
-        <Button
+        <ButtonLoading
           color="primary"
           fullwidth
           onClick={handleRemoveLiquidity}
@@ -147,8 +172,11 @@ function LiquidityFormActions() {
           loading={isLoading}
         >
           Remove Liquidity
-        </Button>
+        </ButtonLoading>
       ) : null}
+      <Button variant="subtle" color="default" onClick={handleCancel}>
+        Cancel
+      </Button>
       {transactionSuccess && transactionSuccessHash ? (
         <ToastNotification id={transactionType} duration={10000}>
           <Toast

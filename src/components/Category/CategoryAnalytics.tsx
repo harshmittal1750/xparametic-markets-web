@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 // import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 // import Label from '../Label';
-import MiniAreaChart from '../MiniAreaChart';
+import { AreaChart } from '../Charts/AreaChart';
 import Text from '../Text';
 
 type BackgroundColor = 'yellow' | 'blue' | 'green' | 'pink' | 'orange';
@@ -56,14 +56,7 @@ function CategoryAnalytics({
         </Text>
       </div>
       {chartData ? (
-        <MiniAreaChart
-          serie={chartData}
-          height={40}
-          color="white"
-          gradientShade="light"
-          strokeWidth={1}
-          strokeCurve="straight"
-        />
+        <AreaChart data={chartData} height={40} color="white" />
       ) : null}
     </div>
   );

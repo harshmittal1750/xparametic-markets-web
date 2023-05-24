@@ -1,31 +1,32 @@
 .pm-c-market {
   @include themes($market-themes) {
     &__body {
-      @include flex-column(center, center);
-
-      @include breakpoint-to('md') {
-        @include flex-row;
-      }
+      display: flex;
+      align-items: flex-start;
       gap: 2.4rem;
+      margin-bottom: 24px;
+
+      @media (min-width: 1024px) {
+        align-items: center;
+        margin-bottom: unset;
+      }
+
+      &-avatar {
+        overflow: hidden;
+        flex-shrink: 0;
+        display: inherit;
+        border-radius: 32px;
+      }
 
       &-image {
         object-fit: cover;
-        border-radius: 50%;
-
         height: 6.4rem;
         width: 6.4rem;
       }
 
       &-details {
-        @include flex-column(center, center);
-
-        @include breakpoint-to('md') {
-          @include flex-column(center, flex-start);
-        }
-
-        gap: 0.8rem;
-
         p {
+          margin-top: 12px;
           text-overflow: ellipsis;
           overflow: hidden;
           display: -webkit-box;
@@ -50,21 +51,17 @@
   }
 
   li {
-    flex-grow: 1;
-
-    @include breakpoint-to('sm') {
-      flex-grow: 0;
-    }
+    flex-basis: 50%;
+    flex-grow: 0;
+    max-width: 50%;
   }
 
   &__item {
-    pointer-events: none;
     cursor: pointer;
-    touch-action: manipulation;
     width: 100%;
 
     @include breakpoint-to('md') {
-      pointer-events: all;
+      min-width: 168px;
       width: auto;
     }
 
@@ -75,6 +72,7 @@
     border-radius: $market-outcome-border-radius;
 
     &-group--column {
+      margin-right: auto;
       @include flex-column(center, flex-start);
     }
 
@@ -86,6 +84,12 @@
     &-odd,
     &-value {
       transition: $market-outcome-text-transitions;
+    }
+
+    &-odd {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     &-title {
@@ -121,7 +125,6 @@
   @include themes($market-outcome-themes) {
     @each $color, $color-map in themed('background-colors') {
       &__item--#{$color} {
-        @extend .pm-c-market-outcomes__item;
         @include market-outcomes-item(
           $color,
           map-get(themed('background-colors'), $color),
@@ -145,35 +148,13 @@
     flex-wrap: wrap;
 
     &__group--row {
-      display: none;
-
-      @include breakpoint-to('md') {
-        @include flex-row(flex-end, center, 1.2rem);
-      }
+      @include flex-row(flex-end, center, 1.2rem);
     }
 
     &__stats {
-      @include flex-row;
-      gap: 1.6rem;
-
-      flex-wrap: wrap;
-      justify-content: center;
-
-      .pm-c-divider--circle {
-        display: none;
-      }
-
-      @include breakpoint-to('md') {
-        gap: 0.8rem;
-
-        .pm-c-divider--circle {
-          display: inline-block;
-        }
-      }
-
-      @include breakpoint-to('lg') {
-        justify-content: flex-start;
-      }
+      display: flex;
+      gap: 8px;
+      margin-right: auto;
 
       span,
       strong {
@@ -202,7 +183,6 @@
 
     &__actions {
       @include flex-row(flex-end, flex-start, 1.2rem);
-      padding-top: 0.3rem;
     }
   }
 }
@@ -219,20 +199,48 @@
   }
 }
 
+.pm-c-market-footer__actions-button {
+  width: 16px;
+  height: 16px;
+  background-color: transparent;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: color, background-color 300ms ease;
+
+  &:hover {
+    color: var(--color-text-primary);
+  }
+
+  &-filled {
+    width: 44px;
+    height: 44px;
+    background-color: var(--color-background-quaternary);
+
+    &:hover {
+      background-color: var(--color-background-tertiary);
+    }
+  }
+}
+
 .pm-c-market-footer__actions-share--default {
   @include themes($market-footer-themes) {
-    fill: map-get(map-get(themed('background-colors'), 'share'), 'default');
+    color: map-get(map-get(themed('background-colors'), 'share'), 'default');
   }
 }
 
 .pm-c-market-footer__actions-favorite--default {
   @include themes($market-footer-themes) {
-    fill: map-get(map-get(themed('background-colors'), 'favorite'), 'default');
+    color: map-get(map-get(themed('background-colors'), 'favorite'), 'default');
   }
 }
 
 .pm-c-market-footer__actions-favorite--active {
   @include themes($market-footer-themes) {
-    fill: map-get(map-get(themed('background-colors'), 'favorite'), 'active');
+    color: map-get(map-get(themed('background-colors'), 'favorite'), 'active');
   }
 }

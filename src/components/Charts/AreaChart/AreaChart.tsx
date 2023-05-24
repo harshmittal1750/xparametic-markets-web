@@ -34,7 +34,7 @@ function AreaChart({ data, color, height }: AreaChartProps) {
   const colorVariant = COLOR_VARIANTS[color];
   return (
     <div style={{ height }}>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="99%" height="100%">
         <RechartsAreaChart
           data={data}
           margin={{

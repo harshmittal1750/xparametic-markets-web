@@ -5,7 +5,6 @@ import { useAppSelector } from 'hooks';
 
 import ReportFormActions from './ReportFormActions';
 import ReportFormDetails from './ReportFormDetails';
-import ReportFormInfo from './ReportFormInfo';
 import ReportFormInput from './ReportFormInput';
 import ReportFormOutcomeSelect from './ReportFormOutcomeSelect';
 
@@ -67,12 +66,11 @@ function ReportForm() {
       }}
       validationSchema={validationSchema}
     >
-      <Form className="pm-c-report-form">
-        <div className="pm-c-report-form__group">
-          <ReportFormInfo />
+      <Form className="pm-c-trade-form">
+        <div className="pm-c-trade-form__view">
           <ReportFormOutcomeSelect />
         </div>
-        <div className="pm-c-report-form__group">
+        <div className="pm-c-trade-form__actions">
           {!isMarketQuestionFinalized ? (
             <>
               <ReportFormInput />

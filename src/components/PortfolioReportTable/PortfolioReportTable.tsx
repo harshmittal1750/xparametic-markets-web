@@ -9,19 +9,19 @@ import isEmpty from 'lodash/isEmpty';
 import { Market } from 'models/market';
 import { changeMarketQuestion } from 'redux/ducks/markets';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
-import { PolkamarketsService, PolkamarketsApiService } from 'services';
+import { PolkamarketsApiService } from 'services';
 
 import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import {
   useAppDispatch,
   useAppSelector,
-  useNetwork,
+  usePolkamarketsService,
   useSortableData
 } from 'hooks';
 
 import { AlertMini } from '../Alert';
-import { Button } from '../Button';
+import { ButtonLoading } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
 
@@ -38,7 +38,7 @@ const PortfolioReportTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const { networkConfig } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);
 
   const [isLoadingClaimReport, setIsLoadingClaimReport] = useState({});
@@ -48,8 +48,6 @@ const PortfolioReportTable = ({
   }
 
   async function handleClaimReport(market: Market) {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     handleChangeIsLoading(market.id, true);
 
     try {
@@ -62,8 +60,8 @@ const PortfolioReportTable = ({
       dispatch(changeMarketQuestion({ marketId: market.id, question }));
 
       // updating wallet
-      dispatch(login(networkConfig));
-      await dispatch(fetchAditionalData(networkConfig));
+      dispatch(login(polkamarketsService));
+      await dispatch(fetchAditionalData(polkamarketsService));
 
       handleChangeIsLoading(market.id, false);
     } catch (error) {
@@ -197,7 +195,7 @@ const PortfolioReportTable = ({
                   </Pill>
                 ) : null}
                 {result.type === 'awaiting_claim' ? (
-                  <Button
+                  <ButtonLoading
                     size="sm"
                     variant="normal"
                     color="primary"
@@ -206,7 +204,7 @@ const PortfolioReportTable = ({
                     style={{ marginLeft: 'auto' }}
                   >
                     Claim
-                  </Button>
+                  </ButtonLoading>
                 ) : null}
                 {result.type === 'awaiting_resolution' ? (
                   <Pill variant="subtle" color="warning">

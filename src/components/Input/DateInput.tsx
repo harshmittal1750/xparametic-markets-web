@@ -1,94 +1,130 @@
-/* eslint-disable no-nested-ternary */
 import 'react-datepicker/dist/react-datepicker.css';
-import { DateTimePicker } from '@material-ui/pickers';
+import { DateTimePickerProps, DateTimePicker } from '@material-ui/pickers';
 import { useField, useFormikContext } from 'formik';
 import styled from 'styled-components';
-
-import { useTheme } from 'hooks';
+import { ThemeProps, isThemeDark, useTheme } from 'ui';
 
 import InputErrorMessage from './InputErrorMessage';
 
-const StyledDateTimePicker = styled(DateTimePicker)`
-  .MuiOutlinedInput-input {
-    padding: 1.2rem;
+type StyledDateTimePickerProps = { theme: ThemeProps; $hasError: boolean };
 
-    font-family: 'Gilroy', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 500;
-    line-height: 1.5;
-    letter-spacing: -0.014rem;
-
-    color: ${props => (props.theme === 'dark' ? '#f9fafb' : '#171b23')};
-    border: 0.1rem solid transparent;
-
-    &:hover,
-    &:focus {
-      border: 0.1rem solid transparent;
-    }
-  }
-
+const StyledDateTimePicker = styled(DateTimePicker)<StyledDateTimePickerProps>`
   .MuiOutlinedInput-root {
     outline: none;
-    border: 0.1rem solid
-      ${props =>
-        props.$hasError
-          ? '#e12d39'
-          : props.theme === 'dark'
-          ? '#252c3b'
-          : '#e0e2e7'};
-    transition: 0.2s border ease-out;
+    background-color: ${props =>
+      isThemeDark(props.theme.device.mode)
+        ? 'rgba(35, 42, 54, 0.3)'
+        : 'rgba(227, 231, 240, 0.3)'};
+    transition: 0.2s border-color ease-out;
 
     &:hover {
-      outline: none;
-      border: 0.1rem solid
-        ${props =>
-          props.$hasError
-            ? '#e12d39'
-            : props.theme === 'dark'
-            ? '#637084'
-            : '#c2cad6'};
+      fieldset {
+        border: 1.5px solid;
+        border-color: ${props => {
+          if (props.$hasError) return '#e12d39';
+          if (isThemeDark(props.theme.device.mode)) return '#252c3b';
+          return '#e0e2e7';
+        }};
+      }
     }
 
-    &.Mui-focused fieldset {
-      outline: none;
-      border: none;
+    fieldset {
+      border: 1.5px solid;
+      border-color: ${props => {
+        if (props.$hasError) return '#e12d39';
+        if (isThemeDark(props.theme.device.mode)) return '#252c3b';
+        return '#e0e2e7';
+      }};
+    }
+
+    &.Mui-focused {
+      background-color: ${props => {
+        if (props.$hasError)
+          return isThemeDark(props.theme.device.mode)
+            ? 'rgba(35, 42, 54, 0.3)'
+            : 'rgba(227, 231, 240, 0.3)';
+        return isThemeDark(props.theme.device.mode) ? '#232a36' : '#dde1e8';
+      }}
+
+      transition: 0.2s border-color ease-out;
+
+      fieldset {
+        outline: none;
+        border: 1.5px solid;
+        border-color: ${props => (props.$hasError ? '#e12d39' : '#7069fa')};
+      }
     }
 
     &.Mui-selected {
       outline: none;
       border: none;
     }
+
+    &.Mui-disabled {
+      background-color: ${props =>
+        isThemeDark(props.theme.device.mode) ? '#292d32' : '#eff1f4'};
+
+      fieldset {
+        border: 1.5px solid transparent;
+      }
+    }
+  }
+
+  .MuiOutlinedInput-input {
+    padding: var(--size-16);
+
+    font-family: 'Gilroy', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1;
+
+    color: ${props =>
+      isThemeDark(props.theme.device.mode) ? '#f9fafb' : '#171b23'};
+
+    &:hover,
+    &:focus {
+      border: none;
+    }
   }
 `;
 
-type DateInputProps = {
-  label: string;
+interface DateInputProps
+  extends Omit<DateTimePickerProps, 'value' | 'onChange'> {
+  label?: string;
   name: string;
   description?: string;
-};
+}
 
-function DateInput({ label, name, description }: DateInputProps) {
-  const { theme } = useTheme();
+function DateInput({ label, name, description, ...props }: DateInputProps) {
+  const theme = useTheme();
   const [field, meta] = useField(name);
-  const { setFieldValue } = useFormikContext();
+  const { setFieldValue, setFieldTouched } = useFormikContext();
 
   const hasError = meta.touched && meta.error;
 
   function handleChange(date) {
+    if (!meta.touched) {
+      setFieldTouched(name, true);
+    }
+
     setFieldValue(name, new Date(date));
   }
 
   return (
     <div className="pm-c-date-input__group">
-      <label
-        htmlFor={name}
-        className={`pm-c-date-input__label--${hasError ? 'error' : 'default'}`}
-      >
-        {label}
-      </label>
+      {!!label && (
+        <label
+          htmlFor={name}
+          className={`pm-c-date-input__label--${
+            hasError ? 'error' : 'default'
+          }`}
+        >
+          {label}
+        </label>
+      )}
       <StyledDateTimePicker
         theme={theme}
-        $hasError={hasError}
+        $hasError={!!hasError}
         inputVariant="outlined"
         disablePast
         error={false}
@@ -98,6 +134,7 @@ function DateInput({ label, name, description }: DateInputProps) {
         emptyLabel="DD/MM/YYYY, --:-- --"
         value={field.value}
         onChange={date => handleChange(date)}
+        {...props}
       />
       {hasError && meta.error ? (
         <InputErrorMessage message={meta.error} />

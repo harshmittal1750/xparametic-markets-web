@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { NetworkConfig } from 'config/environment';
 import { PolkamarketsService } from 'services';
+import { Currency } from 'types/currency';
+import { Token } from 'types/token';
 
 export type Action = {
   action: string;
@@ -16,11 +17,11 @@ export type Votes = { [key: string]: { upvoted: boolean; downvoted: boolean } };
 
 export type PolkamarketsInitialState = {
   isLoggedIn: boolean;
-  networkId: string;
   ethAddress: string;
   ethBalance: number;
   polkBalance: number;
   polkApproved: boolean;
+  polkClaimed: boolean;
   portfolio: any;
   actions: Action[];
   marketsWithActions: string[];
@@ -34,15 +35,16 @@ export type PolkamarketsInitialState = {
     actions: boolean;
     votes: boolean;
   };
+  createMarketToken: Token | Currency | null;
 };
 
 const initialState: PolkamarketsInitialState = {
   isLoggedIn: false,
-  networkId: '',
   ethAddress: '',
   ethBalance: 0,
   polkBalance: 0,
   polkApproved: false,
+  polkClaimed: false,
   portfolio: {},
   actions: [],
   marketsWithActions: [],
@@ -55,7 +57,8 @@ const initialState: PolkamarketsInitialState = {
     bonds: false,
     actions: false,
     votes: false
-  }
+  },
+  createMarketToken: null
 };
 
 const polkamarketsSlice = createSlice({
@@ -65,10 +68,6 @@ const polkamarketsSlice = createSlice({
     changeIsLoggedIn: (state, action: PayloadAction<boolean>) => ({
       ...state,
       isLoggedIn: action.payload
-    }),
-    changeNetworkId: (state, action: PayloadAction<string>) => ({
-      ...state,
-      networkId: action.payload
     }),
     changeEthAddress: (state, action: PayloadAction<string>) => ({
       ...state,
@@ -85,6 +84,10 @@ const polkamarketsSlice = createSlice({
     changePolkApproved: (state, action: PayloadAction<boolean>) => ({
       ...state,
       polkApproved: action.payload
+    }),
+    changePolkClaimed: (state, action: PayloadAction<boolean>) => ({
+      ...state,
+      polkClaimed: action.payload
     }),
     changePortfolio: (state, action: PayloadAction<Object>) => ({
       ...state,
@@ -137,6 +140,13 @@ const polkamarketsSlice = createSlice({
         }
       };
     },
+    changeCreateMarketToken: (
+      state,
+      action: PayloadAction<Token | Currency | null>
+    ) => ({
+      ...state,
+      createMarketToken: action.payload
+    }),
     changeLoading: (
       state,
       action: PayloadAction<{ key: string; value: boolean }>
@@ -154,11 +164,11 @@ export default polkamarketsSlice.reducer;
 
 const {
   changeIsLoggedIn,
-  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
   changePolkApproved,
+  changePolkClaimed,
   changePortfolio,
   changeActions,
   changeMarketsWithActions,
@@ -167,14 +177,13 @@ const {
   changeBondActions,
   changeVotes,
   changeVoteByMarketId,
+  changeCreateMarketToken,
   changeLoading
 } = polkamarketsSlice.actions;
 
 // fetching initial wallet details
-function login(networkConfig: NetworkConfig) {
+function login(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     const isLoggedIn = await polkamarketsService.isLoggedIn();
     dispatch(changeIsLoggedIn(isLoggedIn));
 
@@ -184,21 +193,39 @@ function login(networkConfig: NetworkConfig) {
       const address = await polkamarketsService.getAddress();
       dispatch(changeEthAddress(address));
 
-      const balance = await polkamarketsService.getBalance();
-      dispatch(changeEthBalance(balance));
+      polkamarketsService
+        .getBalance()
+        .then(balance => {
+          dispatch(changeEthBalance(balance));
+        })
+        .catch(() => {});
 
-      const polkBalance = await polkamarketsService.getERC20Balance();
-      dispatch(changePolkBalance(polkBalance));
+      polkamarketsService
+        .getPolkBalance()
+        .then(polkBalance => {
+          dispatch(changePolkBalance(polkBalance));
+        })
+        .catch(() => {});
 
-      const polkApproved = await polkamarketsService.isRealitioERC20Approved();
-      dispatch(changePolkApproved(polkApproved));
+      polkamarketsService
+        .isPolkClaimed()
+        .then(polkClaimed => {
+          dispatch(changePolkClaimed(polkClaimed));
+        })
+        .catch(() => {});
+
+      polkamarketsService
+        .isRealitioERC20Approved()
+        .then(polkApproved => {
+          dispatch(changePolkApproved(polkApproved));
+        })
+        .catch(() => {});
     }
   };
 }
 
-function fetchAditionalData(networkConfig: NetworkConfig) {
+function fetchAditionalData(polkamarketsService: PolkamarketsService) {
   return async dispatch => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
     const isLoggedIn = await polkamarketsService.isLoggedIn();
 
     if (isLoggedIn) {
@@ -232,68 +259,91 @@ function fetchAditionalData(networkConfig: NetworkConfig) {
         })
       );
 
-      const portfolio = await polkamarketsService.getPortfolio();
-      dispatch(changePortfolio(portfolio));
-
-      const votes = (await polkamarketsService.getUserVotes()) as Votes;
-      dispatch(changeVotes(votes));
-
-      const bonds = await polkamarketsService.getBonds();
-      dispatch(changeBonds(bonds));
-
-      const bondMarketIds = await polkamarketsService.getBondMarketIds();
-      dispatch(changeMarketsWithBonds(bondMarketIds));
-
-      dispatch(
-        changeLoading({
-          key: 'portfolio',
-          value: false
+      polkamarketsService
+        .getPortfolio()
+        .then(portfolio => {
+          dispatch(changePortfolio(portfolio));
         })
-      );
+        .catch(() => {})
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'portfolio',
+              value: false
+            })
+          );
+        });
 
-      dispatch(
-        changeLoading({
-          key: 'bonds',
-          value: false
+      polkamarketsService
+        .getUserVotes()
+        .then(votes => {
+          dispatch(changeVotes(votes as Votes));
         })
-      );
+        .catch(() => {})
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'votes',
+              value: false
+            })
+          );
+        });
 
-      dispatch(
-        changeLoading({
-          key: 'votes',
-          value: false
+      polkamarketsService
+        .getBonds()
+        .then(bonds => {
+          dispatch(changeBonds(bonds));
         })
-      );
+        .catch(() => {})
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'bonds',
+              value: false
+            })
+          );
+        });
 
-      const actions = (await polkamarketsService.getActions()) as Action[];
-      dispatch(changeActions(actions));
-      dispatch(changeMarketsWithActions(actions));
+      polkamarketsService.getBondMarketIds().then(bondMarketIds => {
+        dispatch(changeMarketsWithBonds(bondMarketIds));
+      });
 
-      dispatch(
-        changeLoading({
-          key: 'actions',
-          value: false
+      polkamarketsService
+        .getActions()
+        .then(actions => {
+          dispatch(changeActions(actions as Action[]));
+          dispatch(changeMarketsWithActions(actions as Action[]));
         })
-      );
+        .catch(() => {})
+        .finally(() => {
+          dispatch(
+            changeLoading({
+              key: 'actions',
+              value: false
+            })
+          );
+        });
 
-      const bondActions = await polkamarketsService.getBondActions();
-      dispatch(changeBondActions(bondActions));
+      polkamarketsService.getBondActions().then(bondActions => {
+        dispatch(changeBondActions(bondActions));
+      });
     }
   };
 }
 
 export {
   changeIsLoggedIn,
-  changeNetworkId,
   changeEthAddress,
   changeEthBalance,
   changePolkBalance,
   changePolkApproved,
+  changePolkClaimed,
   changePortfolio,
   changeActions,
   changeBonds,
   changeBondActions,
   changeVoteByMarketId,
+  changeCreateMarketToken,
   login,
   fetchAditionalData
 };

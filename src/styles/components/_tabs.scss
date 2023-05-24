@@ -6,10 +6,14 @@
     height: 100%;
 
     &__header {
-      @include flex-row(space-between, center);
+      @include flex-row(flex-end, center);
       flex-wrap: wrap;
 
       gap: 1rem;
+
+      @media (min-width: 1024px) {
+        @include flex-row(space-between, center);
+      }
     }
 
     &__filters {
@@ -21,7 +25,7 @@
     }
 
     &__list {
-      gap: 2.4rem;
+      gap: 12px;
 
       &--row {
         @extend .pm-c-tabs__list;
@@ -42,20 +46,19 @@
       padding: 0rem;
 
       list-style-type: none;
-      width: fit-content;
-      height: fit-content;
 
       button {
         border: none;
         outline: none;
-        padding: 0rem;
+        padding: 0px 12px;
+        height: 32px;
+        border-radius: 4px;
 
+        background-color: themed('tabs-item-background');
         color: themed('tabs-item-color');
-        background-color: unset;
 
-        font-size: 1.4rem;
-        text-decoration: none;
-        font-weight: 600;
+        font-weight: 700;
+        font-size: 1.3rem;
         text-transform: uppercase;
 
         cursor: pointer;
@@ -63,12 +66,14 @@
 
         &:hover {
           color: themed('tabs-item-color-hover');
+          background-color: themed('tabs-item-background-hover');
         }
       }
 
       &.active {
         button {
-          color: themed('tabs-item-active-color');
+          color: themed('tabs-item-color-active');
+          background-color: themed('tabs-item-background-active');
         }
       }
     }

@@ -1,6 +1,24 @@
 .pm-p-leaderboard {
   @include flex-column($justify: flex-start, $align: flex-start, $gap: 5);
   width: 100%;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--size-24);
+
+    width: 100%;
+    margin-bottom: var(--size-12);
+  }
+
+  &__avatar {
+    object-fit: cover;
+    border-radius: 50%;
+
+    height: var(--size-64);
+    height: var(--size-64);
+  }
 }
 
 .pm-c-leaderboard-table {

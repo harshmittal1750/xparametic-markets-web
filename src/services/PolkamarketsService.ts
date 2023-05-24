@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
+import { features } from 'config';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
 
@@ -71,13 +72,13 @@ export default class PolkamarketsService {
   }
 
   public getPredictionMarketContract() {
-    this.contracts.pm = this.polkamarkets.getPredictionMarketContract({
+    this.contracts.pm = this.polkamarkets.getPredictionMarketV2Contract({
       contractAddress: this.predictionMarketContractAddress
     });
   }
 
   public getERC20Contract() {
-    this.contracts.erc20 = this.polkamarkets.getERC20Contract({
+    this.contracts.erc20 = this.polkamarkets.getFantasyERC20Contract({
       contractAddress: this.erc20ContractAddress
     });
   }
@@ -109,14 +110,18 @@ export default class PolkamarketsService {
     if (this.loggedIn) return true;
 
     try {
-      this.loggedIn = await this.polkamarkets.login();
+      const loggedIn = await this.polkamarkets.login();
       // successful login
-      if (this.loggedIn) {
-        this.address = await this.getAddress();
+      if (loggedIn) {
+        const address = await this.getAddress();
         // TODO: set this in polkamarkets
-        this.polkamarkets.web3.eth.defaultAccount = this.address;
-        // re-fetching contracts
-        this.getContracts();
+        if (address) {
+          this.polkamarkets.web3.eth.defaultAccount = this.address;
+          this.loggedIn = true;
+          this.address = address;
+          // re-fetching contracts
+          this.getContracts();
+        }
       }
     } catch (e) {
       // should be non-blocking
@@ -129,7 +134,9 @@ export default class PolkamarketsService {
   public async getAddress(): Promise<string> {
     if (this.address) return this.address;
 
-    return this.polkamarkets.getAddress() || '';
+    const address = (await this.polkamarkets.getAddress()) || '';
+
+    return address;
   }
 
   public async getBalance(): Promise<number> {
@@ -149,32 +156,53 @@ export default class PolkamarketsService {
     return requiredBalance;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   public async getMarketFee(): Promise<number> {
-    const fee = await this.contracts.pm.getFee();
-
-    return fee;
+    // TODO: make it variable
+    return 0.02;
   }
 
   public async createMarket(
     name: string,
+    description: string,
     image: string,
     duration: number,
     outcomes: Array<string>,
     category: string,
-    ethAmount: number
+    value: number,
+    odds: Array<number>,
+    fee: number,
+    token: string = '',
+    wrapped: boolean = false,
+    treasuryFee: number
   ) {
     // ensuring user has wallet connected
     await this.login();
 
-    const response = await this.contracts.pm.createMarket({
+    let response;
+    const args = {
       name,
+      description,
       image,
       duration,
       outcomes,
       category,
-      ethAmount,
-      oracleAddress: this.address
-    });
+      value,
+      oracleAddress: this.address,
+      odds,
+      fee: (fee * 1e16).toString(),
+      treasuryFee: (treasuryFee * 1e16).toString(),
+      treasury: this.address
+    };
+
+    if (wrapped) {
+      response = await this.contracts.pm.createMarketWithETH(args);
+    } else {
+      response = await this.contracts.pm.createMarket({
+        ...args,
+        token
+      });
+    }
 
     return response;
   }
@@ -182,8 +210,9 @@ export default class PolkamarketsService {
   public async buy(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number,
-    minOutcomeSharesToBuy: number
+    value: number,
+    minOutcomeSharesToBuy: number,
+    wrapped: boolean
   ) {
     // ensuring user has wallet connected
     await this.login();
@@ -191,8 +220,9 @@ export default class PolkamarketsService {
     const response = await this.contracts.pm.buy({
       marketId,
       outcomeId,
-      ethAmount,
-      minOutcomeSharesToBuy
+      value,
+      minOutcomeSharesToBuy,
+      wrapped
     });
 
     return response;
@@ -201,8 +231,9 @@ export default class PolkamarketsService {
   public async sell(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number,
-    maxOutcomeSharesToSell: number
+    value: number,
+    maxOutcomeSharesToSell: number,
+    wrapped: boolean
   ) {
     // ensuring user has wallet connected
     await this.login();
@@ -210,32 +241,43 @@ export default class PolkamarketsService {
     const response = await this.contracts.pm.sell({
       marketId,
       outcomeId,
-      ethAmount,
-      maxOutcomeSharesToSell
+      value,
+      maxOutcomeSharesToSell,
+      wrapped
     });
 
     return response;
   }
 
-  public async addLiquidity(marketId: string | number, ethAmount: number) {
+  public async addLiquidity(
+    marketId: string | number,
+    value: number,
+    wrapped: boolean
+  ) {
     // ensuring user has wallet connected
     await this.login();
 
     const response = await this.contracts.pm.addLiquidity({
       marketId,
-      ethAmount
+      value,
+      wrapped
     });
 
     return response;
   }
 
-  public async removeLiquidity(marketId: string | number, shares: number) {
+  public async removeLiquidity(
+    marketId: string | number,
+    shares: number,
+    wrapped: boolean
+  ) {
     // ensuring user has wallet connected
     await this.login();
 
     const response = await this.contracts.pm.removeLiquidity({
       marketId,
-      shares
+      shares,
+      wrapped
     });
 
     return response;
@@ -245,8 +287,11 @@ export default class PolkamarketsService {
     // ensuring user has wallet connected
     await this.login();
 
+    const wrapped = await this.isMarketERC20TokenWrapped(marketId);
+
     const response = await this.contracts.pm.claimWinnings({
-      marketId
+      marketId,
+      wrapped
     });
 
     return response;
@@ -259,9 +304,12 @@ export default class PolkamarketsService {
     // ensuring user has wallet connected
     await this.login();
 
+    const wrapped = await this.isMarketERC20TokenWrapped(marketId);
+
     const response = await this.contracts.pm.claimVoidedOutcomeShares({
       marketId,
-      outcomeId
+      outcomeId,
+      wrapped
     });
 
     return response;
@@ -298,6 +346,20 @@ export default class PolkamarketsService {
     return marketData;
   }
 
+  public async getWETHAddress() {
+    const wethAddress = await this.contracts.pm.getWETHAddress();
+
+    return wethAddress;
+  }
+
+  public async isMarketERC20TokenWrapped(marketId: string | number) {
+    const isWrapped = await this.contracts.pm.isMarketERC20TokenWrapped({
+      marketId
+    });
+
+    return isWrapped;
+  }
+
   public async getMarketPrices(marketId: string | number) {
     // ensuring user has wallet connected
     await this.login();
@@ -309,6 +371,7 @@ export default class PolkamarketsService {
 
   public async getPortfolio(): Promise<Object> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return {};
 
     const response = await this.contracts.pm.getMyPortfolio();
@@ -318,6 +381,7 @@ export default class PolkamarketsService {
 
   public async getActions(): Promise<any[]> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return [];
 
     const response = await this.contracts.pm.getMyActions();
@@ -338,30 +402,134 @@ export default class PolkamarketsService {
 
   // ERC20 contract functions
 
-  public async getERC20Balance(): Promise<number> {
+  public async getPolkBalance(): Promise<number> {
+    return this.getERC20Balance(this.erc20ContractAddress);
+  }
+
+  public async getERC20Balance(erc20ContractAddress: string): Promise<number> {
+    // ensuring user has wallet connected
+    await this.login();
+
     if (!this.address) return 0;
+
+    const contract = this.polkamarkets.getFantasyERC20Contract({
+      contractAddress: erc20ContractAddress
+    });
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await contract.__init__();
+
+    // returns user balance in ETH
+    const balance = await contract.getTokenAmount(this.address);
+
+    return parseFloat(balance) || 0;
+  }
+
+  public async isPolkClaimed(): Promise<boolean> {
+    if (!this.address) return false;
+
+    if (features.regular.enabled) return false;
+
+    let claimed;
+
+    try {
+      // TODO improve this: ensuring erc20 contract is initialized
+      // eslint-disable-next-line no-underscore-dangle
+      await this.contracts.erc20.__init__();
+
+      // TODO: only call function when fantasy mode is enabled
+      claimed = await this.contracts.erc20.hasUserClaimedTokens({
+        address: this.address
+      });
+    } catch (error) {
+      return false;
+    }
+
+    return claimed;
+  }
+
+  public async claimPolk(): Promise<boolean> {
+    // ensuring user has wallet connected
+    await this.login();
 
     // TODO improve this: ensuring erc20 contract is initialized
     // eslint-disable-next-line no-underscore-dangle
     await this.contracts.erc20.__init__();
 
-    // returns user balance in ETH
-    const balance = await this.contracts.erc20.getTokenAmount(this.address);
+    await this.contracts.erc20.claimAndApproveTokens();
 
-    return parseFloat(balance) || 0;
+    return true;
   }
 
-  public async approveERC20(address: string, amount: number): Promise<any[]> {
+  public async getERC20TokenInfo(erc20ContractAddress: string): Promise<any> {
+    if (!erc20ContractAddress) return false;
+
+    let token;
+
+    try {
+      const contract = this.polkamarkets.getFantasyERC20Contract({
+        contractAddress: erc20ContractAddress
+      });
+
+      // TODO improve this: ensuring erc20 contract is initialized
+      // eslint-disable-next-line no-underscore-dangle
+      await contract.__init__();
+
+      token = await contract.getTokenInfo();
+    } catch (error) {
+      // invalid answer, returning false
+      return false;
+    }
+
+    return token;
+  }
+
+  public async isERC20Approved(
+    erc20ContractAddress: string,
+    spenderAddress: string
+  ): Promise<boolean> {
     // ensuring user has wallet connected
     await this.login();
 
-    // ensuring erc20 contract is initialized
-    // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
+    if (!this.address || !erc20ContractAddress || !spenderAddress) return false;
 
-    const response = await this.contracts.erc20.approve({
-      address,
-      amount
+    const contract = this.polkamarkets.getFantasyERC20Contract({
+      contractAddress: erc20ContractAddress
+    });
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await contract.__init__();
+
+    const isApproved = await contract.isApproved({
+      address: this.address,
+      amount: 1,
+      spenderAddress
+    });
+
+    return isApproved;
+  }
+
+  public async approveERC20(
+    erc20ContractAddress: string,
+    spenderAddress: string,
+    amount?: number
+  ) {
+    // ensuring user has wallet connected
+    await this.login();
+
+    const contract = this.polkamarkets.getFantasyERC20Contract({
+      contractAddress: erc20ContractAddress
+    });
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await contract.__init__();
+
+    const response = await contract.approve({
+      address: spenderAddress,
+      amount: amount || 2 ** 128 - 1
     });
 
     return response;
@@ -370,12 +538,12 @@ export default class PolkamarketsService {
   public async calcBuyAmount(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number
+    value: number
   ): Promise<number> {
     const response = await this.contracts.pm.calcBuyAmount({
       marketId,
       outcomeId,
-      ethAmount
+      value
     });
 
     return response;
@@ -384,12 +552,12 @@ export default class PolkamarketsService {
   public async calcSellAmount(
     marketId: string | number,
     outcomeId: string | number,
-    ethAmount: number
+    value: number
   ): Promise<number> {
     const response = await this.contracts.pm.calcSellAmount({
       marketId,
       outcomeId,
-      ethAmount
+      value
     });
 
     return response;
@@ -398,35 +566,16 @@ export default class PolkamarketsService {
   // Realitio contract functions
 
   public async isRealitioERC20Approved(): Promise<boolean> {
-    if (!this.address) return false;
-
-    // TODO improve this: ensuring erc20 contract is initialized
-    // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
-
-    // returns user balance in ETH
-    const isApproved = await this.contracts.erc20.isApproved({
-      address: this.address,
-      amount: 1,
-      spenderAddress: this.contracts.realitio.getAddress()
-    });
-
-    return isApproved;
+    return this.isERC20Approved(
+      this.erc20ContractAddress,
+      this.contracts.realitio.getAddress()
+    );
   }
 
   public async approveRealitioERC20(): Promise<any> {
-    // ensuring user has wallet connected
-    await this.login();
-
-    if (!this.address) return false;
-
-    // TODO improve this: ensuring erc20 contract is initialized
-    // eslint-disable-next-line no-underscore-dangle
-    await this.contracts.erc20.__init__();
-
     return this.approveERC20(
-      this.contracts.realitio.getAddress(),
-      2 ** 128 - 1
+      this.erc20ContractAddress,
+      this.contracts.realitio.getAddress()
     );
   }
 
@@ -484,6 +633,7 @@ export default class PolkamarketsService {
 
   public async getBonds(): Promise<Object> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return {};
 
     const bonds = await this.contracts.realitio.getMyBonds();
@@ -493,6 +643,7 @@ export default class PolkamarketsService {
 
   public async getBondActions(): Promise<Object> {
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return [];
 
     const response = await this.contracts.realitio.getMyActions();
@@ -562,6 +713,7 @@ export default class PolkamarketsService {
     if (!this.contracts.voting.getContract()._address) return {};
 
     // ensuring user has wallet connected
+    await this.login();
     if (!this.address) return {};
 
     const response = await this.contracts.voting.getUserVotes({

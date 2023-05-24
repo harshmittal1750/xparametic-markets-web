@@ -1,0 +1,23 @@
+.root {
+  display: inherit;
+}
+
+.size {
+  &Sm {
+    --margin-inline: var(--size-8);
+  }
+  &Md {
+    --margin-inline: var(--size-12);
+  }
+}
+
+.edge {
+  &Start {
+    margin-right: var(--margin-inline);
+    margin-left: calc(-1 * #{var(--margin-inline)} / 2);
+  }
+  &End {
+    margin-right: calc(-1 * #{var(--margin-inline)} / 2);
+    margin-left: var(--margin-inline);
+  }
+}

@@ -5,8 +5,7 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
 
 function fromTimestampToDate(timestamp: number) {
-  dayjs.extend(utc);
-  return dayjs(timestamp);
+  return dayjs(timestamp).utc(false);
 }
 
 function fromTimestampToCustomFormatDate(timestamp: number, format: string) {
@@ -67,10 +66,19 @@ function relativeTimeToX(timestamp: number) {
   };
 }
 
+function toStartEnd(values: string) {
+  const [start, end] = values.split('-');
+  return {
+    start: start ? dayjs(start).utc() : null,
+    end: end ? dayjs(end).utc() : null
+  };
+}
+
 export {
   fromTimestampToDate,
   fromTimestampToCustomFormatDate,
   toUTC,
   relativeTimeFromNow,
-  relativeTimeToX
+  relativeTimeToX,
+  toStartEnd
 };

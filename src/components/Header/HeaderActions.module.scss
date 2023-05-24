@@ -1,0 +1,25 @@
+.root {
+  display: flex;
+  gap: 16px;
+  border-top: 1px solid var(--color-border);
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  transition: background-color 200ms ease-in-out;
+  background-color: var(--color-surface-primary);
+  z-index: 1;
+  @media (min-width: 1024px) {
+    background-color: unset;
+    transition: unset;
+    margin-left: auto;
+    border-top: unset;
+    position: unset;
+    width: unset;
+  }
+}
+.high {
+  z-index: 1300;
+}
+.network {
+  margin-left: auto;
+}

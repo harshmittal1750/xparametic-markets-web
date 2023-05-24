@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
 
+import { ui } from 'config';
 import { selectOutcome } from 'redux/ducks/trade';
 import { openReportForm } from 'redux/ducks/ui';
+import { useTheme } from 'ui';
+
+import Text from 'components/Text';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
+import Feature from '../Feature';
 import TradeFormActions from './TradeFormActions';
-import TradeFormCharts from './TradeFormCharts';
 import TradeFormClosed from './TradeFormClosed';
 import TradeFormDetails from './TradeFormDetails';
 import TradeFormInput from './TradeFormInput';
@@ -16,15 +20,16 @@ import TradeFormTypeSelector from './TradeFormTypeSelector';
 
 function TradeForm() {
   const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const { id, networkId, outcomes } = useAppSelector(
+    state => state.market.market
+  );
 
-  const { id, outcomes } = useAppSelector(state => state.market.market);
   const marketState = useAppSelector(state => state.market.market.state);
   const selectedMarketId = useAppSelector(
     state => state.trade.selectedMarketId
   );
   const isLoadingMarket = useAppSelector(state => state.market.isLoading);
-
-  const isCurrentSelectedMarket = id === selectedMarketId;
 
   useEffect(() => {
     if (marketState === 'closed') {
@@ -33,10 +38,11 @@ function TradeForm() {
   }, [dispatch, marketState]);
 
   useEffect(() => {
-    if (!isCurrentSelectedMarket) {
-      dispatch(selectOutcome(id, outcomes[0].id));
+    if (id !== selectedMarketId) {
+      dispatch(selectOutcome(id, networkId, outcomes[0].id));
     }
-  }, [isCurrentSelectedMarket, dispatch, id, outcomes]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (isLoadingMarket) return null;
 
@@ -44,12 +50,26 @@ function TradeForm() {
 
   return (
     <div className="pm-c-trade-form">
-      <div className="pm-c-trade-form__group" style={{ gap: '1.6rem' }}>
-        <TradeFormCharts />
-        <TradeFormPredictions />
-        <TradeFormLiquidity />
+      <div className="pm-c-trade-form__view">
+        {ui.tradeForm.liquidity && (
+          <>
+            {theme.device.isDesktop && (
+              <Text
+                scale="tiny-uppercase"
+                style={{ color: 'var(--color-text-quaternary)' }}
+                fontWeight="semibold"
+              >
+                Select outcome
+              </Text>
+            )}
+            <TradeFormPredictions />
+          </>
+        )}
       </div>
-      <div className="pm-c-trade-form__group" style={{ gap: '2.4rem' }}>
+      <div className="pm-c-trade-form__actions">
+        <Feature name="regular">
+          <TradeFormLiquidity />
+        </Feature>
         <TradeFormTypeSelector />
         <TradeFormInput />
         <TradeFormDetails />

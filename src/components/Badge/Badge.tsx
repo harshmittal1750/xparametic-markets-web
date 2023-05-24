@@ -1,5 +1,7 @@
 import React from 'react';
 
+import type { CategoricalColor } from 'helpers/color';
+
 import Text from '../Text';
 
 export type BadgeVariant = 'normal' | 'filled';
@@ -12,7 +14,8 @@ export type BadgeColor =
   | 'danger'
   | 'pink'
   | 'blue'
-  | 'purple';
+  | 'purple'
+  | CategoricalColor;
 
 type BadgeProps = {
   /**
@@ -49,7 +52,7 @@ function Badge({
     >
       <div className="pm-c-badge__circle" />
       {label ? (
-        <Text className="pm-c-badge__label" as="label">
+        <Text className="pm-c-badge__label" as="span">
           {label}
         </Text>
       ) : null}

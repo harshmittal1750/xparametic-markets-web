@@ -10,10 +10,17 @@ import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import TWarningIcon from 'assets/icons/TWarningIcon';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useERC20Balance,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
-import { Button } from '../Button';
+import ApproveToken from '../ApproveToken';
+import { Button, ButtonLoading } from '../Button';
 import NetworkSwitch from '../Networks/NetworkSwitch';
 import Text from '../Text';
 import Toast from '../Toast';
@@ -24,10 +31,12 @@ function TradeFormActions() {
   const location = useLocation();
   const dispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
 
   // Market selectors
   const type = useAppSelector(state => state.trade.type);
+  const wrapped = useAppSelector(state => state.trade.wrapped);
   const marketId = useAppSelector(state => state.trade.selectedMarketId);
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
@@ -39,6 +48,8 @@ function TradeFormActions() {
   );
   const maxAmount = useAppSelector(state => state.trade.maxAmount);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const token = useAppSelector(state => state.market.market.token);
+  const { wrapped: tokenWrapped, address } = token;
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
@@ -50,9 +61,10 @@ function TradeFormActions() {
   const [transactionSuccessHash, setTransactionSuccessHash] =
     useState(undefined);
   const [needsPricesRefresh, setNeedsPricesRefresh] = useState(false);
+  const { refreshBalance } = useERC20Balance(address);
 
   function handleCancel() {
-    dispatch(selectOutcome('', ''));
+    dispatch(selectOutcome('', '', ''));
     dispatch(closeTradeForm());
   }
 
@@ -89,15 +101,13 @@ function TradeFormActions() {
   }
 
   async function updateWallet() {
-    await dispatch(login(networkConfig));
-    await dispatch(fetchAditionalData(networkConfig));
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleBuy() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -126,7 +136,8 @@ function TradeFormActions() {
         marketId,
         predictionId,
         amount,
-        minShares
+        minShares,
+        tokenWrapped && !wrapped
       );
 
       setIsLoading(false);
@@ -148,6 +159,7 @@ function TradeFormActions() {
 
       // updating wallet
       await updateWallet();
+      await refreshBalance();
     } catch (error) {
       setIsLoading(false);
     }
@@ -158,8 +170,6 @@ function TradeFormActions() {
   async function handleSell() {
     setTransactionSuccess(false);
     setTransactionSuccessHash(undefined);
-
-    const polkamarketsService = new PolkamarketsService(networkConfig);
 
     setIsLoading(true);
     setNeedsPricesRefresh(false);
@@ -189,7 +199,8 @@ function TradeFormActions() {
         marketId,
         predictionId,
         ethAmount,
-        minShares
+        minShares,
+        tokenWrapped && !wrapped
       );
 
       setIsLoading(false);
@@ -211,6 +222,7 @@ function TradeFormActions() {
 
       // updating wallet
       await updateWallet();
+      await refreshBalance();
     } catch (error) {
       setIsLoading(false);
     }
@@ -238,7 +250,7 @@ function TradeFormActions() {
         {isWrongNetwork ? <NetworkSwitch /> : null}
         {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
-            <Button
+            <ButtonLoading
               color="default"
               fullwidth
               onClick={handlePricesRefresh}
@@ -246,7 +258,7 @@ function TradeFormActions() {
               loading={isLoading}
             >
               Refresh Prices
-            </Button>
+            </ButtonLoading>
             <Text
               as="small"
               scale="caption"
@@ -270,18 +282,25 @@ function TradeFormActions() {
           </div>
         ) : null}
         {type === 'buy' && !needsPricesRefresh && !isWrongNetwork ? (
-          <Button
-            color="success"
+          <ApproveToken
             fullwidth
-            onClick={handleBuy}
-            disabled={!isValidAmount || !hasAcceptedTerms || isLoading}
-            loading={isLoading}
+            address={token.address}
+            ticker={token.ticker}
+            wrapped={token.wrapped && !wrapped}
           >
-            Buy
-          </Button>
+            <ButtonLoading
+              color="success"
+              fullwidth
+              onClick={handleBuy}
+              disabled={!isValidAmount || !hasAcceptedTerms || isLoading}
+              loading={isLoading}
+            >
+              Buy
+            </ButtonLoading>
+          </ApproveToken>
         ) : null}
         {type === 'sell' && !needsPricesRefresh && !isWrongNetwork ? (
-          <Button
+          <ButtonLoading
             color="danger"
             fullwidth
             onClick={handleSell}
@@ -289,7 +308,7 @@ function TradeFormActions() {
             loading={isLoading}
           >
             Sell
-          </Button>
+          </ButtonLoading>
         ) : null}
       </div>
       {transactionSuccess && transactionSuccessHash ? (

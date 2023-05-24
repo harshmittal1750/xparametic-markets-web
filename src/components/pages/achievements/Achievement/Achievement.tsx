@@ -5,18 +5,17 @@ import { Achievement as AchievementProps } from 'types/achievement';
 
 import { CheckIcon, MedalIcon } from 'assets/icons';
 
-import { Button, Divider } from 'components';
-import { ButtonColor, ButtonVariant } from 'components/Button';
+import { Divider } from 'components';
+import { ButtonLoading } from 'components/Button';
+import type { ButtonProps } from 'components/Button';
 
 import { useNetwork } from 'hooks';
 
-type ButtonStatus = {
+interface ButtonStatus extends Pick<ButtonProps, 'variant' | 'color'> {
   title: string;
-  color: ButtonColor;
-  variant: ButtonVariant;
   icon: ReactNode;
   disabled: boolean;
-};
+}
 
 const buttonsByStatus: { [key: string]: ButtonStatus } = {
   unlocked: {
@@ -124,7 +123,7 @@ function Achievement({
               {description}
             </p>
           </div>
-          <Button
+          <ButtonLoading
             size="normal"
             color={buttonsByStatus[status].color}
             variant={buttonsByStatus[status].variant}
@@ -134,7 +133,7 @@ function Achievement({
           >
             {buttonsByStatus[status].icon}
             {buttonsByStatus[status].title}
-          </Button>
+          </ButtonLoading>
         </div>
       </div>
       <div className="pm-c-achievement__footer flex-row gap-3 justify-center align-center padding-4 border-solid border-radius-bottom-corners-small">

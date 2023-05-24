@@ -1,3 +1,4 @@
+import type { CreateLeaderboardGroupFormValues } from 'components/CreateLeaderboardGroupForm';
 import { TableColumn } from 'components/new/Table';
 import { TableMiniColumn, TableMiniRow } from 'components/new/TableMini';
 
@@ -15,18 +16,23 @@ export type LeaderboardTableRow = {
     address: string;
     place: number;
   };
-  volume: {
+  volumeEur?: {
     volume: number;
     ticker: string;
   };
-  marketsCreated: number;
-  wonPredictions: number;
-  netVolume: {
+  marketsCreated?: number;
+  wonPredictions?: number;
+  netVolumeEur?: {
     volume: number;
     ticker: string;
   };
-  netLiquidity: {
+  netLiquidityEur?: {
     liquidity: number;
+    ticker: string;
+  };
+  transactions?: number;
+  balance?: {
+    balance: number;
     ticker: string;
   };
   achievements: Achievement[];
@@ -40,3 +46,10 @@ export type LeaderboardTableRow = {
 
 export type LeaderboardTopWalletsColumn = TableMiniColumn;
 export type LeaderboardTopWalletsRow = TableMiniRow;
+
+export type CreateLeaderboardGroupState = {
+  visible: boolean;
+  mode: 'create' | 'edit';
+  previousValues?: CreateLeaderboardGroupFormValues;
+  slug?: string;
+};

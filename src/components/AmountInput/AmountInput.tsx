@@ -1,20 +1,19 @@
-/* eslint-disable react/jsx-indent */
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-import { WalletIcon } from 'assets/icons';
+import { TokenIcon, WalletIcon } from 'assets/icons';
 
 import { Button } from '../Button';
+import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
 
-type AmountInputProps = {
+type AmountInputProps = Partial<
+  Record<'customHeaderItem' | 'endAdornment', React.ReactNode>
+> & {
   label: string;
   max: number;
-  onChange: (value: number) => void;
+  onChange(value: number): void;
   currency: any;
-  customHeaderItem?: React.ReactNode;
   disabled?: boolean;
 };
 
@@ -22,25 +21,29 @@ function round(value) {
   return Math.floor(value * 1e5) / 1e5;
 }
 
-function AmountInput({
+/**
+ * TODO: SEE IMPACT
+ */
+export default function AmountInput({
   label,
   max,
   onChange,
   currency,
   customHeaderItem,
-  disabled = false
+  disabled = false,
+  endAdornment
 }: AmountInputProps) {
   const [amount, setAmount] = useState<number | undefined>(0);
-  const [stepAmount, setStepAmount] = useState<number>(0);
+  const [stepAmount, setStepAmount] = useState(0);
 
   useEffect(() => {
     onChange(0);
     setAmount(0);
     setStepAmount(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [max]);
 
   function handleChangeAmount(event: React.ChangeEvent<HTMLInputElement>) {
-    event.preventDefault();
     const { value } = event.currentTarget;
 
     const newAmount = value ? parseFloat(value) : undefined;
@@ -49,7 +52,6 @@ function AmountInput({
     setStepAmount(100 * ((newAmount || 0) / max));
     onChange(newAmount || 0);
   }
-
   function handleSetMaxAmount() {
     const roundedMax = round(max);
 
@@ -57,10 +59,8 @@ function AmountInput({
     setStepAmount(100);
     onChange(roundedMax);
   }
-
   function handleChangeSlider(value: number) {
     const percentage = value / 100;
-
     const newAmount = round(max * percentage);
 
     setAmount(newAmount);
@@ -68,44 +68,40 @@ function AmountInput({
     setStepAmount(value);
   }
 
+  const { name, ticker, iconName } = currency;
+
   return (
     <div className="pm-c-amount-input">
       <div className="pm-c-amount-input__header">
         <label className="pm-c-amount-input__header-title" htmlFor={label}>
           {label}
         </label>
-        {!disabled
-          ? customHeaderItem || (
-              <div className="pm-c-amount-input__header-wallet">
-                <figure aria-label="Wallet">
-                  <WalletIcon />
-                </figure>
-                <Button
-                  color="noborder"
-                  style={{ gap: '0.2rem' }}
-                  onClick={handleSetMaxAmount}
-                  disabled={disabled}
+        {!disabled &&
+          (customHeaderItem || (
+            <div className="pm-c-amount-input__header-wallet">
+              <figure aria-label="Wallet">
+                <WalletIcon />
+              </figure>
+              <Button
+                color="noborder"
+                style={{ gap: '0.2rem' }}
+                onClick={handleSetMaxAmount}
+                disabled={disabled}
+              >
+                <Text
+                  as="strong"
+                  scale="tiny"
+                  fontWeight="semibold"
+                  color="light"
                 >
-                  <Text
-                    as="strong"
-                    scale="tiny"
-                    fontWeight="semibold"
-                    color="light"
-                  >
-                    {max}
-                  </Text>
-                  <Text
-                    as="span"
-                    scale="tiny"
-                    fontWeight="semibold"
-                    color="gray"
-                  >
-                    {currency.ticker}
-                  </Text>
-                </Button>
-              </div>
-            )
-          : null}
+                  {max}
+                </Text>
+                <Text as="span" scale="tiny" fontWeight="semibold" color="gray">
+                  {currency.ticker}
+                </Text>
+              </Button>
+            </div>
+          ))}
       </div>
       <div className="pm-c-amount-input__group">
         <input
@@ -113,10 +109,11 @@ function AmountInput({
           type="number"
           id={label}
           value={amount}
-          step=".00001"
+          lang="en"
+          step=".0001"
           min={0}
           max={max}
-          onChange={event => handleChangeAmount(event)}
+          onChange={handleChangeAmount}
           onWheel={event => event.currentTarget.blur()}
           disabled={disabled}
         />
@@ -128,14 +125,22 @@ function AmountInput({
           >
             Max
           </button>
-          <div className="pm-c-amount-input__logo">
-            {currency.icon ? (
-              <figure aria-label={currency.name}>{currency.icon}</figure>
-            ) : null}
-            <Text as="span" scale="caption" fontWeight="bold">
-              {currency.ticker}
-            </Text>
-          </div>
+          {endAdornment || (
+            <div className="pm-c-amount-input__logo">
+              {iconName !== 'shares' ? (
+                <figure aria-label={name}>
+                  {iconName === 'Token' ? (
+                    <TokenIcon ticker={ticker} />
+                  ) : (
+                    <Icon name={iconName} />
+                  )}
+                </figure>
+              ) : null}
+              <Text as="span" scale="caption" fontWeight="bold">
+                {ticker}
+              </Text>
+            </div>
+          )}
         </div>
       </div>
       <StepSlider
@@ -146,7 +151,3 @@ function AmountInput({
     </div>
   );
 }
-
-AmountInput.displayName = 'AmountInput';
-
-export default AmountInput;

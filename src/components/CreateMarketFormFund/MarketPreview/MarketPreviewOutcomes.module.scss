@@ -1,0 +1,47 @@
+.root {
+  position: relative;
+  flex-flow: column nowrap;
+  padding: 0px;
+  align-items: stretch;
+  overflow-x: hidden;
+  display: flex;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out;
+  cursor: pointer;
+  width: 100%;
+
+  @media (min-width: 1024px) {
+    min-width: 168px;
+  }
+}
+
+.variant {
+  &Dashed {
+    border-style: dashed;
+  }
+}
+
+.gutter {
+  &Bottom {
+    margin-bottom: 12px;
+  }
+}
+
+.content {
+  padding: var(--size-16);
+  display: flex;
+  align-items: center;
+}
+
+.line {
+  position: absolute;
+  bottom: 0;
+}
+
+.outcomes {
+  @media (min-width: 576px) {
+    width: 100% !important;
+  }
+}

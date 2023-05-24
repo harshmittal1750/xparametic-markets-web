@@ -1,38 +1,46 @@
 import { memo } from 'react';
-import { Link } from 'react-router-dom';
 
+import cn from 'classnames';
 import { Market as MarketInterface } from 'models/market';
-import { clearMarket } from 'redux/ducks/market';
-import { openTradeForm } from 'redux/ducks/ui';
+import { useTheme } from 'ui';
 
-import { useAppDispatch } from 'hooks';
+import FavoriteMarket from 'components/FavoriteMarket';
+import MarketFooterActions from 'components/Market/MarketFooterActions';
 
 import Market from '../Market';
 
-type PredictionCardProps = {
+interface PredictionCardProps
+  extends Pick<React.ComponentPropsWithoutRef<'div'>, 'className'> {
   market: MarketInterface;
-};
+  $gutter?: boolean;
+}
 
-function PredictionCard({ market }: PredictionCardProps) {
-  const dispatch = useAppDispatch();
-
-  const { slug } = market;
-
-  function handleNavigation() {
-    dispatch(clearMarket());
-    dispatch(openTradeForm());
-  }
+function PredictionCard({ market, $gutter, className }: PredictionCardProps) {
+  const theme = useTheme();
 
   return (
-    <div className="prediction-card">
+    <div
+      className={cn(
+        'prediction-card',
+        { 'prediction-card--gutter': $gutter },
+        className
+      )}
+    >
       <div className="prediction-card__body">
-        <Link to={`/markets/${slug}`} onClick={handleNavigation}>
-          <Market market={market} />
-        </Link>
+        <Market market={market} />
         <Market.Outcomes market={market} />
       </div>
       <div className="prediction-card__footer">
-        <Market.Footer market={market} />
+        <Market.Footer market={market}>
+          {theme.device.isDesktop ? (
+            <>
+              <MarketFooterActions $variant="text" market={market} />
+              <div className="pm-c-market-footer__divider--circle" />
+            </>
+          ) : (
+            <FavoriteMarket market={market} />
+          )}
+        </Market.Footer>
       </div>
     </div>
   );

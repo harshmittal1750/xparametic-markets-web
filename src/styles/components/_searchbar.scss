@@ -5,13 +5,20 @@
     align-items: center;
 
     width: 100%;
-    padding: $searchbar-padding-y $searchbar-padding-x;
     transition: $searchbar-transitions;
 
     background-color: transparent;
 
     border: 0.1rem solid themed('border-color');
     border-radius: $searchbar-border-radius;
+
+    &--sm {
+      padding: var(--size-12) var(--size-14);
+    }
+
+    &--md {
+      padding: var(--size-16);
+    }
 
     &__input {
       width: 100%;
@@ -24,12 +31,12 @@
 
       background-color: unset;
 
-      font-size: 1.6rem;
+      font-size: 1.5rem;
       font-stretch: normal;
       font-style: normal;
-      font-weight: 600;
+      font-weight: 500;
 
-      line-height: 1.4;
+      line-height: 1;
       letter-spacing: normal;
       text-align: left;
       color: themed('text-color');
@@ -40,11 +47,11 @@
     }
 
     &__icon {
-      float: right;
+      float: left;
       cursor: pointer;
       touch-action: manipulation;
 
-      margin-left: 0.6rem;
+      margin-right: 0.8rem;
       padding: 0rem;
       border: none;
       background-color: unset;

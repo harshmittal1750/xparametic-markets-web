@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
-import { getPortfolio } from 'redux/ducks/portfolio';
-import { closeRightSidebar } from 'redux/ducks/ui';
+import { Container } from 'ui';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
@@ -9,35 +8,26 @@ import PortfolioAnalytics from './PortfolioAnalytics';
 import PortfolioChart from './PortfolioChart';
 import PortfolioTabs from './PortfolioTabs';
 
-const PortfolioPage = () => {
+export default function PortfolioPage() {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
-
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
-
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const isLoading = useAppSelector(state => state.portfolio.isLoading);
 
   useEffect(() => {
-    if (rightSidebarIsVisible) {
-      dispatch(closeRightSidebar());
-    }
-  }, [rightSidebarIsVisible, dispatch]);
+    (async function handlePortfolio() {
+      const { getPortfolio } = await import('redux/ducks/portfolio');
 
-  useEffect(() => {
-    if (ethAddress) {
       dispatch(getPortfolio(ethAddress, network.id));
-    }
-  }, [ethAddress, dispatch, network.id]);
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ethAddress, network.id]);
 
   return (
-    <div className="portfolio-page">
-      <PortfolioAnalytics />
-      <PortfolioChart />
+    <Container className="portfolio-page max-width-screen-xl">
+      <PortfolioAnalytics isLoading={isLoading} />
+      <PortfolioChart isLoading={isLoading} />
       <PortfolioTabs />
-    </div>
+    </Container>
   );
-};
-
-export default PortfolioPage;
+}

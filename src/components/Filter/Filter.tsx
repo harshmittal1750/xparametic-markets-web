@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+
+import cn from 'classnames';
+import { useTheme } from 'ui';
 
 import { ArrowDownSmallIcon } from 'assets/icons';
+
+import Icon from 'components/Icon';
 
 import Text from '../Text';
 
@@ -16,12 +21,13 @@ type Option = {
   defaultTrigger?: number | undefined;
 };
 
-type FilterProps = {
+export type FilterProps = {
   description: string;
   defaultOption: string;
   options: Option[];
-  onChange: any;
+  onChange(change: { value: string | number; optionalTrigger?: string }): void;
   onTouch?: (_touched: boolean) => void;
+  className?: string;
 };
 
 function Filter({
@@ -29,19 +35,46 @@ function Filter({
   defaultOption,
   options,
   onChange,
-  onTouch
+  onTouch,
+  className
 }: FilterProps) {
+  const theme = useTheme();
+
+  const [dropdownIsVisible, setDropdownIsVisible] = useState(false);
   const [selectedOption, setSelectedOption] = useState<Option | undefined>();
   const [selectedOptionalTrigger, setSelectedOptionalTrigger] = useState<
     Trigger | undefined
   >();
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  function handleToggleDropdownVisibility() {
+    setDropdownIsVisible(!dropdownIsVisible);
+  }
+
+  function handleCloseDropdown() {
+    setDropdownIsVisible(false);
+  }
+
+  function handleClickOutside(event) {
+    if (ref.current && !ref.current.contains(event.target)) {
+      handleCloseDropdown();
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  });
 
   useEffect(() => {
     const defaultSelectedOption = options.find(
       option => option.value === defaultOption
     );
 
-    const defaultTrigger = defaultSelectedOption?.defaultTrigger || 0;
+    const defaultTrigger = defaultSelectedOption?.defaultTrigger || 1;
     const defaultSelectedTrigger =
       defaultSelectedOption?.optionalTriggers?.[defaultTrigger];
 
@@ -90,23 +123,37 @@ function Filter({
   if (!selectedOption) return null;
 
   return (
-    <div className="pm-c-filter">
-      <div className="pm-c-filter__header">
-        <Text
-          className="pm-c-filter__label"
-          as="label"
-          scale="caption"
-          fontWeight="semibold"
-        >
-          {description}
-        </Text>
-        <button type="button" className="pm-c-filter__button">
-          {selectedOption.name}
-          <ArrowDownSmallIcon />
-        </button>
-      </div>
-
-      <div className="pm-c-filter__content">
+    <div
+      role="button"
+      tabIndex={0}
+      className={cn('pm-c-filter', className)}
+      onKeyPress={handleToggleDropdownVisibility}
+      onClick={handleToggleDropdownVisibility}
+    >
+      <Text
+        className="pm-c-filter__button"
+        /* @ts-ignore */
+        as="button"
+        scale="tiny-uppercase"
+        fontWeight="bold"
+        type="button"
+      >
+        {theme.device.isDesktop ? (
+          <>
+            <span className="pm-c-filter__label">{description}</span>
+            {selectedOption.name}
+            <ArrowDownSmallIcon />
+          </>
+        ) : (
+          <Icon name="Sort" />
+        )}
+      </Text>
+      <div
+        ref={ref}
+        className={cn('pm-c-filter__content', {
+          visible: dropdownIsVisible
+        })}
+      >
         {options.map(option => (
           <div key={option.value} className="pm-c-filter__group">
             <button

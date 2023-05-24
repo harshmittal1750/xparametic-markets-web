@@ -1,30 +1,20 @@
-type ToggleSwitchProps = {
-  name: string;
-  checked?: boolean;
-  disabled?: boolean;
-  handleChange: any;
-};
+import { ComponentPropsWithoutRef, forwardRef } from 'react';
 
-const ToggleSwitch = ({
-  name,
-  checked,
-  disabled = false,
-  handleChange
-}: ToggleSwitchProps) => {
-  return (
-    <label className="toggle-switch" htmlFor={name}>
-      <input
-        type="checkbox"
-        id={name}
-        checked={checked}
-        disabled={disabled}
-        onChange={event => handleChange(event)}
-      />
-      <span className="slider" />
-    </label>
-  );
-};
+type ToggleSwitchProps = ComponentPropsWithoutRef<'input'>;
 
-ToggleSwitch.displayName = 'Toggle switch';
+type Ref = HTMLInputElement;
+
+const ToggleSwitch = forwardRef<Ref, ToggleSwitchProps>(
+  ({ id, ...props }, ref) => {
+    return (
+      <label className="toggle-switch" htmlFor={id}>
+        <input ref={ref} type="checkbox" id={id} {...props} />
+        <span className="slider" />
+      </label>
+    );
+  }
+);
+
+ToggleSwitch.displayName = 'ToggleSwitch';
 
 export default ToggleSwitch;

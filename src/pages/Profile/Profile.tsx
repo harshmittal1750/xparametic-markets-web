@@ -1,48 +1,88 @@
-import { useEffect } from 'react';
+import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { closeRightSidebar } from 'redux/ducks/ui';
+import { ui } from 'config';
+import {
+  useGetLeaderboardByAddressQuery,
+  useGetPortfolioByAddressQuery,
+  useGetPortfolioFeedByAddressQuery
+} from 'services/Polkamarkets';
+import type { LeaderboardTimeframe } from 'types/leaderboard';
+import { Container } from 'ui';
 
-import { useAppDispatch, useAppSelector, useWindowDimensions } from 'hooks';
+import { useFantasyTokenTicker, useNetwork } from 'hooks';
 
 import ProfileAchievements from './ProfileAchievements';
 import ProfileActivities from './ProfileActivities';
+import ProfileError from './ProfileError';
 import ProfileSummary from './ProfileSummary';
+import ProfileSummaryStat from './ProfileSummaryStat';
 import ProfileYourStats from './ProfileYourStats';
 
-type ProfileUrlParams = {
-  address: string;
-};
+const LIST_HEIGHT = Math.min(Math.ceil(window.innerHeight * 0.5), 700);
 
-function Profile() {
-  // Redux selectors
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
-  );
+export default function Profile() {
+  const [timeframe, setTimeframe] = useState<LeaderboardTimeframe>('at');
+  const { address } = useParams<Record<'address', string>>();
+  const { network } = useNetwork();
+  const fantasyTokenTicker = useFantasyTokenTicker();
+  const portfolio = useGetPortfolioByAddressQuery({
+    address,
+    networkId: network.id
+  });
+  const leaderboard = useGetLeaderboardByAddressQuery({
+    address,
+    networkId: network.id,
+    timeframe
+  });
+  const activity = useGetPortfolioFeedByAddressQuery({
+    address,
+    networkId: network.id
+  });
 
-  // Hooks
-  const dispatch = useAppDispatch();
-  const { address } = useParams<ProfileUrlParams>();
-  const { height } = useWindowDimensions();
-
-  useEffect(() => {
-    if (rightSidebarIsVisible) {
-      dispatch(closeRightSidebar());
-    }
-  }, [rightSidebarIsVisible, dispatch]);
-
-  const listHeight = Math.min(Math.ceil(height * 0.5), 700);
+  const hasError = portfolio.isError || leaderboard.isError || activity.isError;
 
   return (
-    <div className="pm-p-profile">
-      <ProfileSummary address={address} />
-      <ProfileYourStats address={address} />
-      <div className="pm-p-profile-lists margin-top-6">
-        <ProfileAchievements address={address} listHeight={listHeight} />
-        <ProfileActivities address={address} listHeight={listHeight} />
-      </div>
-    </div>
+    <Container className="pm-p-profile max-width-screen-xl">
+      {hasError ? (
+        <ProfileError />
+      ) : (
+        <>
+          <div className="pm-p-profile-summary">
+            <ProfileSummary
+              address={address}
+              data={portfolio.data}
+              isLoading={portfolio.isLoading}
+              network={network}
+            />
+            <ProfileSummaryStat
+              isLoading={portfolio.isLoading}
+              ticker={fantasyTokenTicker || '€'}
+              data={portfolio.data}
+            />
+          </div>
+          <ProfileYourStats
+            onTimeframe={setTimeframe}
+            isLoading={leaderboard.isLoading}
+            ticker={fantasyTokenTicker || '€'}
+            data={leaderboard.data}
+          />
+          <div className="pm-p-profile-lists margin-top-6">
+            {ui.achievements.enabled && (
+              <ProfileAchievements
+                listHeight={LIST_HEIGHT}
+                isLoading={leaderboard.isLoading}
+                data={leaderboard.data}
+              />
+            )}
+            <ProfileActivities
+              isLoading={activity.isLoading}
+              listHeight={LIST_HEIGHT}
+              data={activity.data}
+            />
+          </div>
+        </>
+      )}
+    </Container>
   );
 }
-
-export default Profile;

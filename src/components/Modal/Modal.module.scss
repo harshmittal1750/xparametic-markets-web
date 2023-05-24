@@ -1,20 +1,64 @@
 .root {
-  display: flex;
   position: fixed;
-  z-index: 9999;
+  z-index: 1200;
   inset: 0;
-  background: linear-gradient(
-    180deg,
-    var(--color-background-secondary) 0%,
-    var(--color-background-tertiary) 100%
-  );
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0px;
+  z-index: -1;
+}
+
+.overlay {
+  background-color: var(--color-background-secondary);
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
 }
 
 .dialog {
-  margin: auto;
-  width: 41rem;
-
   &:focus {
     outline: none;
   }
+}
+
+.flex {
+  display: flex;
+}
+
+.center {
+  margin: auto;
+}
+
+.sm {
+  width: 400px;
+}
+
+.md {
+  width: 800px;
+}
+
+.lg {
+  width: 1200px;
+}
+
+.fullScreen {
+  height: 100%;
+  display: inline-block;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.gutters {
+  padding: var(--grid-margin);
+}
+
+.overflow {
+  overflow: hidden;
+}
+
+.scrollOffset {
+  padding-right: var(--scroll-x);
 }

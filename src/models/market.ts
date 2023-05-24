@@ -1,4 +1,4 @@
-import { Currency } from 'types/currency';
+import { Currency, Token } from 'types/currency';
 import { News } from 'types/market';
 import { Network } from 'types/network';
 
@@ -51,6 +51,7 @@ export interface Market {
   imageUrl: string;
   bannerUrl: string;
   title: string;
+  description: string;
   volume: number;
   volumeEur: number;
   shares: number;
@@ -67,10 +68,13 @@ export interface Market {
   outcomes: Outcome[];
   tradingViewSymbol: any;
   fee: number;
+  treasuryFee: number;
+  treasury: string;
   question: Question;
   networkId: string;
   network: Network;
   news: News[];
   currency: Currency;
   votes: Votes;
+  token: Token;
 }

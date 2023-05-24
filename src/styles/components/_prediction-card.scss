@@ -3,27 +3,26 @@
   @include themes($prediction-card-themes) {
     background-color: themed('body-background-color');
     box-shadow: themed('shadow');
-
     border: 0.1rem solid themed('border-color');
     border-radius: 0.4rem 0.4rem 0.4rem 0.4rem;
     transition: all 0.2s ease-in-out 0s;
 
-    &__body {
-      @include flex-column(center, center);
-      gap: 2.4rem;
+    &--gutter {
+      margin-bottom: var(--grid-margin);
+    }
 
-      padding: 1.6rem;
-      padding-top: 3.2rem;
+    &__body {
+      padding: 16px var(--grid-margin);
 
       @include breakpoint-to('lg') {
         @include flex-row(space-between, center);
-        padding: 1.6rem;
       }
     }
 
     &__footer {
-      padding: 1rem 1.6rem;
-
+      padding-right: var(--grid-margin);
+      padding-left: var(--grid-margin);
+      height: 36px;
       background-color: themed('footer-background-color');
       border-radius: 0rem 0rem 0.4rem 0.4rem;
       transition: all 0.2s ease-in-out 0s;

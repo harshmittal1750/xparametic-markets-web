@@ -1,45 +1,49 @@
-import { filteredMarketsSelector } from 'redux/ducks/markets';
+import { useCallback, useState } from 'react';
+import { Route, Switch, useRouteMatch } from 'react-router-dom';
 
-import { VoteProvider } from 'contexts/vote';
+import { pages, ui } from 'config';
+import { Container, useRect, useTheme } from 'ui';
 
-import { useAppSelector, useFavoriteMarkets } from 'hooks';
-import useCategories from 'hooks/useCategories';
+import { MarketList } from 'components';
 
-import HomeCategories from './HomeCategories';
-import HomeMobileInfo from './HomeMobileInfo';
-import HomeTabs from './HomeTabs';
+import homeClasses from './Home.module.scss';
+import HomeFilter from './HomeFilter';
+import HomeHero from './HomeHero';
+import HomeNav from './HomeNav';
 
-function Home() {
-  const categories = useCategories();
-  const markets = useAppSelector(state =>
-    filteredMarketsSelector(state.markets, categories)
-  );
-
-  const { favoriteMarkets } = useFavoriteMarkets();
-
-  const openMarkets = markets.filter(market => market.state === 'open');
-  const closedMarkets = markets.filter(market => market.state === 'closed');
-  const resolvedMarkets = markets.filter(market => market.state === 'resolved');
-  const favoritesMarkets = markets.filter(
-    market =>
-      favoriteMarkets[`${market.networkId}`] &&
-      favoriteMarkets[`${market.networkId}`].includes(market.id)
-  );
+export default function Home() {
+  const routeMatch = useRouteMatch();
+  const theme = useTheme();
+  const [ref, rect] = useRect();
+  const [show, setShow] = useState(false);
+  const handleShow = useCallback(() => setShow(true), []);
+  const handleHide = useCallback(() => setShow(false), []);
+  const handleToggle = useCallback(() => setShow(prevShow => !prevShow), []);
 
   return (
-    <div className="pm-p-home">
-      <HomeMobileInfo />
-      <HomeCategories />
-      <VoteProvider>
-        <HomeTabs
-          openMarkets={openMarkets}
-          closedMarkets={closedMarkets}
-          resolvedMarkets={resolvedMarkets}
-          favoritesMarkets={favoritesMarkets}
+    <Switch>
+      <Route exact path={routeMatch.path}>
+        <div className="max-width-screen-xl">
+          {ui.hero.enabled && <HomeHero />}
+          <Container ref={ref} $enableGutters className={homeClasses.nav}>
+            <HomeNav
+              onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
+            />
+          </Container>
+          <div className={homeClasses.root}>
+            <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
+            <MarketList filtersVisible={show} />
+          </div>
+        </div>
+      </Route>
+      {Object.values(pages.home.pages).map(page => (
+        <Route
+          key={page.name}
+          exact={page.exact}
+          path={page.pathname}
+          component={page.Component}
         />
-      </VoteProvider>
-    </div>
+      ))}
+    </Switch>
   );
 }
-
-export default Home;

@@ -1,58 +1,41 @@
-/* eslint-disable no-unused-vars */
-import { useState, ChangeEvent, FormEvent } from 'react';
+import cn from 'classnames';
 
 import { SearchIcon } from 'assets/icons';
 
-type SearchBarProps = {
-  /**
-   * Name of the component
-   */
-  name: string;
-  /**
-   * Placeholder of the input field
-   */
-  placeholder?: string;
-  /**
-   * The callback function triggered when click or press Enter on search button
-   */
-  onSearch: (text: string) => void;
-};
+import { SearchBarProps } from './SearchBar.type';
 
 /**
  * A search bar with standard search input
  */
-function SearchBar({ name, placeholder, onSearch }: SearchBarProps) {
-  const [searchText, setSearchText] = useState('');
-
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const { value } = event.currentTarget;
-
-    setSearchText(value);
-  }
-
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    onSearch(searchText);
-  }
-
+function SearchBar({
+  size = 'md',
+  className,
+  onSearch,
+  ...props
+}: SearchBarProps) {
   return (
-    <form className="pm-c-searchbar" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        className="pm-c-searchbar__input"
-        id={name}
-        name={name}
-        placeholder={placeholder}
-        onChange={handleChange}
-      />
+    <form
+      role="search"
+      className={cn('pm-c-searchbar', className?.form, {
+        'pm-c-searchbar--sm': size === 'sm',
+        'pm-c-searchbar--md': size === 'md'
+      })}
+      onSubmit={onSearch}
+    >
       <button
-        className="pm-c-searchbar__icon"
         type="submit"
         aria-label="Search"
+        className={cn('pm-c-searchbar__icon', className?.button)}
       >
         <SearchIcon />
       </button>
+      <input
+        type="text"
+        role="searchbox"
+        autoComplete="off"
+        className={cn('pm-c-searchbar__input', className?.input)}
+        {...props}
+      />
     </form>
   );
 }

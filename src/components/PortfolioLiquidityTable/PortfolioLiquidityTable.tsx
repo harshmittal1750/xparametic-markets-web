@@ -7,19 +7,18 @@ import classnames from 'classnames';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
-import { PolkamarketsService } from 'services';
 
 import { CaretDownIcon, CaretUpIcon } from 'assets/icons';
 
 import {
   useAppDispatch,
   useAppSelector,
-  useNetwork,
+  usePolkamarketsService,
   useSortableData
 } from 'hooks';
 
 import { AlertMini } from '../Alert';
-import { Button } from '../Button';
+import { ButtonLoading } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
 
@@ -36,11 +35,8 @@ const PortfolioLiquidityTable = ({
 }: MarketTableProps) => {
   const dispatch = useAppDispatch();
   const history = useHistory();
-  const {
-    network: { currency },
-    networkConfig
-  } = useNetwork();
-  const { ticker, symbol } = currency;
+
+  const polkamarketsService = usePolkamarketsService();
   const filter = useAppSelector(state => state.portfolio.filter);
 
   const [isLoadingClaimLiquidity, setIsLoadingClaimLiquidity] = useState({});
@@ -50,16 +46,14 @@ const PortfolioLiquidityTable = ({
   }
 
   async function handleClaimLiquidity(marketId) {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
-
     handleChangeIsLoading(marketId, true);
 
     try {
       await polkamarketsService.claimLiquidity(marketId);
 
       // updating wallet
-      await dispatch(login(networkConfig));
-      await dispatch(fetchAditionalData(networkConfig));
+      await dispatch(login(polkamarketsService));
+      await dispatch(fetchAditionalData(polkamarketsService));
 
       handleChangeIsLoading(marketId, false);
     } catch (error) {
@@ -167,7 +161,7 @@ const PortfolioLiquidityTable = ({
                     >
                       {`${roundNumber(value.value, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${symbol || ticker}`}
+                        {` ${market.token.symbol}`}
                       </Text>
                     </Text>
                     {/* <Text
@@ -214,7 +208,7 @@ const PortfolioLiquidityTable = ({
                     >
                       {`${roundNumber(feesEarned, 3)} `}
                       <Text as="strong" scale="caption" fontWeight="semibold">
-                        {` ${symbol || ticker}`}
+                        {` ${market.token.symbol}`}
                       </Text>
                     </Text>
                   </div>
@@ -232,7 +226,7 @@ const PortfolioLiquidityTable = ({
                     </Pill>
                   ) : null}
                   {result.type === 'awaiting_claim' ? (
-                    <Button
+                    <ButtonLoading
                       size="sm"
                       variant="normal"
                       color="primary"
@@ -241,7 +235,7 @@ const PortfolioLiquidityTable = ({
                       style={{ marginLeft: 'auto' }}
                     >
                       Withdraw
-                    </Button>
+                    </ButtonLoading>
                   ) : null}
                   {result.type === 'awaiting_resolution' ? (
                     <Pill variant="subtle" color="warning">

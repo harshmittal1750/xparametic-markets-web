@@ -12,19 +12,11 @@
     width: 100%;
   }
 
-  &__address--start {
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-
-  &__address--end {
-    flex-shrink: 0;
+  &__address {
+    font-size: min(3.8vw, 2.1rem);
   }
 
   &__explorer-icon {
-    height: px-to-rem(10px);
-    width: px-to-rem(10px);
     margin-left: px-to-rem(6px);
     fill: var(--color-text-3);
 
@@ -35,7 +27,7 @@
     }
   }
 
-  @include breakpoint-to('xl') {
+  @media (min-width: 1024px) {
     @include flex-row(space-between, flex-start, px-to-rem(32px));
   }
 
@@ -58,18 +50,17 @@
         display: inline-block;
       }
     }
+
+    &-accent {
+      color: var(--color-text-primary);
+    }
   }
 
   &__stats {
     display: grid;
     gap: px-to-rem(16px);
-    grid-template-columns: repeat(auto-fit, minmax(px-to-rem(204px), 1fr));
+    grid-template-columns: 1fr 1fr;
     width: 100%;
-
-    @include breakpoint-to('xl') {
-      grid-template-columns: repeat(auto-fit, minmax(px-to-rem(150px), 1fr));
-      max-width: px-to-rem(645px);
-    }
   }
 
   &__stat {

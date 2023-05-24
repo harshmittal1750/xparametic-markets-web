@@ -1,4 +1,4 @@
-import { ReactNode, createContext } from 'react';
+import { ReactNode, createContext, useMemo } from 'react';
 
 import { useLocalStorage } from 'hooks';
 
@@ -21,10 +21,13 @@ function FavoriteMarketsProvider({ children }: FavoriteMarketsProviderProps) {
   const [favoriteMarkets, setFavoriteMarkets] =
     useLocalStorage<FavoriteMarketsByNetwork>('favoriteMarketsByNetwork', {});
 
+  const favoriteMarketsValue = useMemo(
+    () => ({ favoriteMarkets, setFavoriteMarkets }),
+    [favoriteMarkets, setFavoriteMarkets]
+  );
+
   return (
-    <FavoriteMarketsContext.Provider
-      value={{ favoriteMarkets, setFavoriteMarkets }}
-    >
+    <FavoriteMarketsContext.Provider value={favoriteMarketsValue}>
       {children}
     </FavoriteMarketsContext.Provider>
   );

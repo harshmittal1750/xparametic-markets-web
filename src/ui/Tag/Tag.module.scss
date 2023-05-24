@@ -1,0 +1,14 @@
+.root {
+  height: var(--height);
+  padding-left: var(--padding-inline) !important;
+  padding-right: var(--padding-inline) !important;
+  border-radius: var(--border-radius) !important;
+}
+
+.size {
+  &Sm {
+    --border-radius: var(--size-12);
+    --height: var(--size-24);
+    --padding-inline: var(--size-12);
+  }
+}

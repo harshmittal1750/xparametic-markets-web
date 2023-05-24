@@ -1,172 +1,139 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
-import classNames from 'classnames';
-import { fromPriceChartToLineChartSeries } from 'helpers/chart';
-import { Market, Outcome } from 'models/market';
-import { marketSelected } from 'redux/ducks/market';
-import { selectOutcome } from 'redux/ducks/trade';
-import { closeTradeForm, openReportForm, openTradeForm } from 'redux/ducks/ui';
+import sortOutcomes from 'helpers/sortOutcomes';
+import type { Market } from 'models/market';
+import { useTheme } from 'ui';
 
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  CheckIcon,
-  RemoveIcon,
-  RepeatCycleIcon,
-  WarningIcon
-} from 'assets/icons';
+import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
 
-import { Area } from 'components/plots';
+import OutcomeItem from 'components/OutcomeItem';
+import OutcomeItemText from 'components/OutcomeItemText';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
-
-import Text from '../Text';
-
-const outcomeStates = {
-  success: { icon: <CheckIcon /> },
-  warning: { icon: <WarningIcon /> },
-  danger: { icon: <RemoveIcon /> },
-  voided: { icon: <RepeatCycleIcon /> }
-};
-
-type MarketOutcomesItemProps = {
-  market: Market;
-  outcome: Outcome;
-};
-
-function MarketOutcomesItem({ market, outcome }: MarketOutcomesItemProps) {
-  const dispatch = useAppDispatch();
-  const selectedOutcomeId = useAppSelector(
-    state => state.trade.selectedOutcomeId
-  );
-  const selectedMarketId = useAppSelector(
-    state => state.trade.selectedMarketId
-  );
-
-  const { id, marketId, title, price } = outcome;
-
-  const isCurrentSelectedMarket = marketId === selectedMarketId;
-  const isCurrentSelectedPrediction =
-    marketId === selectedMarketId && id === selectedOutcomeId;
-
-  const isMarketResolved = market.state === 'resolved';
-  const isVoided = market.voided;
-  const isWinningOutcome = isMarketResolved && market.resolvedOutcomeId === id;
-
-  useEffect(() => {
-    if (isCurrentSelectedPrediction) {
-      dispatch(openTradeForm());
-    }
-  }, [dispatch, isCurrentSelectedPrediction]);
-
-  // using 7d timeframe
-  const marketPriceChart = outcome.priceCharts?.find(
-    priceChart => priceChart.timeframe === '7d'
-  );
-  const marketPriceUp =
-    !marketPriceChart?.changePercent || marketPriceChart?.changePercent > 0;
-  const chartData = fromPriceChartToLineChartSeries(
-    marketPriceChart?.prices || []
-  );
-
-  function handleItemSelection() {
-    if (market.state === 'closed') {
-      dispatch(openReportForm());
-    } else {
-      dispatch(openTradeForm());
-    }
-
-    if (!isCurrentSelectedMarket) {
-      dispatch(marketSelected(market));
-    }
-
-    if (!isCurrentSelectedPrediction) {
-      dispatch(selectOutcome(market.id, outcome.id));
-    } else {
-      dispatch(selectOutcome(market.id, ''));
-      dispatch(closeTradeForm());
-    }
-  }
-
-  return (
-    <button
-      type="button"
-      className={classNames({
-        'pm-c-market-outcomes__item--default': !isMarketResolved,
-        'pm-c-market-outcomes__item--success': isWinningOutcome,
-        'pm-c-market-outcomes__item--danger': !isWinningOutcome,
-        active: isCurrentSelectedPrediction
-      })}
-      disabled={isMarketResolved}
-      onClick={handleItemSelection}
-    >
-      <div className="pm-c-market-outcomes__item-group--column">
-        <Text
-          as="p"
-          scale="caption"
-          fontWeight="semibold"
-          className="pm-c-market-outcomes__item-title"
-        >
-          {title}
-        </Text>
-        <div className="pm-c-market-outcomes__item-group--row">
-          <Text
-            as="p"
-            scale="tiny-uppercase"
-            fontWeight="medium"
-            className="pm-c-market-outcomes__item-odd"
-          >
-            PRICE
-          </Text>
-          <Text
-            as="span"
-            scale="tiny"
-            fontWeight="medium"
-            className="pm-c-market-outcomes__item-value"
-          >
-            {price.toFixed(3)}
-          </Text>
-          {!isMarketResolved ? (
-            <>{marketPriceUp ? <ArrowUpIcon /> : <ArrowDownIcon />}</>
-          ) : null}
-        </div>
-      </div>
-      {isMarketResolved ? (
-        <div className="pm-c-market-outcomes__item-result">
-          {isWinningOutcome && !isVoided ? outcomeStates.success.icon : null}
-          {!isWinningOutcome && !isVoided ? outcomeStates.danger.icon : null}
-          {isVoided ? outcomeStates.voided.icon : null}
-        </div>
-      ) : (
-        <div className="pm-c-market-outcomes__item-chart">
-          <Area
-            id={`${marketId}-${id}-${title}`}
-            data={chartData}
-            color={marketPriceUp ? 'green' : 'red'}
-            width={48}
-            height={30}
-          />
-        </div>
-      )}
-    </button>
-  );
-}
+import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
 type MarketOutcomesProps = {
   market: Market;
 };
 
-function MarketOutcomes({ market }: MarketOutcomesProps) {
-  const { outcomes } = market;
+export default function MarketOutcomes({ market }: MarketOutcomesProps) {
+  const history = useHistory();
+  const dispatch = useAppDispatch();
+  const trade = useAppSelector(state => state.trade);
+  const theme = useTheme();
+  const MAX_OUTCOMES_EXPANDABLE = theme.device.isDesktop ? 2 : 1;
+  const isMarketResolved = market.state === 'resolved';
+  const sortedOutcomes = sortOutcomes({
+    outcomes: market.outcomes,
+    timeframe: '7d'
+  });
+  const expandableOutcomes = useExpandableOutcomes({
+    outcomes: sortedOutcomes,
+    max: MAX_OUTCOMES_EXPANDABLE,
+    truncateMax: MAX_OUTCOMES_EXPANDABLE
+  });
+  const needExpandOutcomes =
+    sortedOutcomes.length > (theme.device.isDesktop ? 3 : 2);
+  const getOutcomeActive = useCallback(
+    (id: string | number) =>
+      market.id === trade.selectedMarketId &&
+      id === +trade.selectedOutcomeId &&
+      market.networkId === trade.selectedMarketNetworkId,
+    [
+      market.id,
+      market.networkId,
+      trade.selectedMarketId,
+      trade.selectedMarketNetworkId,
+      trade.selectedOutcomeId
+    ]
+  );
+  const handleOutcomeClick = useCallback(
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      const { value } = event.currentTarget;
+      const isOutcomeActive = getOutcomeActive(value);
+      const { marketSelected } = await import('redux/ducks/market');
+      const { selectOutcome } = await import('redux/ducks/trade');
+
+      dispatch(marketSelected(market));
+      dispatch(
+        selectOutcome(market.id, market.networkId, isOutcomeActive ? '' : value)
+      );
+
+      if (market.state === 'closed') {
+        const { openReportForm } = await import('redux/ducks/ui');
+
+        dispatch(openReportForm());
+      } else {
+        const { openTradeForm } = await import('redux/ducks/ui');
+
+        dispatch(openTradeForm());
+      }
+      if (isOutcomeActive) {
+        const { closeTradeForm } = await import('redux/ducks/ui');
+
+        dispatch(closeTradeForm());
+      }
+      history.push(`/markets/${market.slug}`);
+    },
+    [dispatch, getOutcomeActive, history, market]
+  );
+
   return (
     <ul className="pm-c-market-outcomes">
-      {outcomes.map(outcome => (
-        <li key={outcome.id}>
-          <MarketOutcomesItem market={market} outcome={outcome} />
+      {(needExpandOutcomes ? expandableOutcomes.onseted : sortedOutcomes).map(
+        outcome => {
+          const isWinningOutcome =
+            isMarketResolved && market.resolvedOutcomeId === outcome.id;
+          const isOutcomeActive = getOutcomeActive(outcome.id);
+
+          return (
+            <li key={outcome.id}>
+              <OutcomeItem
+                primary={outcome.title}
+                secondary={
+                  <OutcomeItemText
+                    price={outcome.price}
+                    symbol={market.token.ticker}
+                    isPositive={outcome.isPriceUp}
+                  />
+                }
+                percent={+outcome.price * 100}
+                isActive={isOutcomeActive}
+                isPositive={outcome.isPriceUp}
+                isResolved={isMarketResolved}
+                isWinning={isWinningOutcome}
+                value={outcome.id}
+                onClick={handleOutcomeClick}
+                data={outcome.data}
+                endAdornment={
+                  isMarketResolved && (
+                    <div className="pm-c-market-outcomes__item-result">
+                      {(() => {
+                        if (isWinningOutcome && !market.voided)
+                          return <CheckIcon />;
+                        if (!isWinningOutcome && !market.voided)
+                          return <RemoveIcon />;
+                        if (market.voided) return <RepeatCycleIcon />;
+                        return null;
+                      })()}
+                    </div>
+                  )
+                }
+              />
+            </li>
+          );
+        }
+      )}
+      {needExpandOutcomes && !expandableOutcomes.isExpanded && (
+        <li>
+          <OutcomeItem
+            $variant="dashed"
+            value={expandableOutcomes.onseted[0].id}
+            onClick={handleOutcomeClick}
+            {...expandableOutcomes.offseted}
+          />
         </li>
-      ))}
+      )}
     </ul>
   );
 }
-
-export default MarketOutcomes;

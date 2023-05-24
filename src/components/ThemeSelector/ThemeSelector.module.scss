@@ -1,0 +1,60 @@
+.root {
+  height: 44px !important;
+  width: 44px;
+  padding: 0px !important;
+  background-color: unset !important;
+  margin-left: auto;
+}
+.dialog {
+  border-radius: 20px 20px 0px 0px;
+  background-color: var(--color-surface-primary);
+  position: absolute;
+  min-width: fit-content;
+
+  @media (min-width: 1024px) {
+    border-radius: 20px;
+  }
+}
+.header {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-bottom: 1px solid var(--color-border);
+
+  &Title {
+    margin-right: auto;
+    color: var(--color-text-primary);
+  }
+}
+.list {
+  background-color: transparent;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  &Item {
+    padding-left: 8px;
+    padding-right: 8px;
+
+    &Button {
+      justify-content: unset !important;
+      padding: 0px 16px !important;
+      min-height: 56px !important;
+      border-radius: 12px !important;
+
+      @media (min-width: 1024px) {
+        min-height: 48px !important;
+      }
+
+      &Icon {
+        margin-right: 8px;
+        margin-left: -4px;
+      }
+    }
+
+    &Selected {
+      background-color: var(--color-text-quinary) !important;
+    }
+  }
+}

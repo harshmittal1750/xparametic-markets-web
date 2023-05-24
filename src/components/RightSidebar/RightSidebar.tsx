@@ -1,69 +1,30 @@
-import { useAppSelector } from 'hooks';
+import { ui as configUI } from 'config';
+import { Container } from 'ui';
+
+import { useMarketForms } from 'hooks';
 
 import LiquidityForm from '../LiquidityForm';
 import ReportForm from '../ReportForm';
 import TradeForm from '../TradeForm';
+import TradeFormClosed from '../TradeForm/TradeFormClosed';
+import rightSidebarClasses from './RightSidebar.module.scss';
 
-type RightSidebarProps = {
-  hasAlertNotification: boolean;
+const forms = {
+  liquidityForm: <LiquidityForm />,
+  reportForm: configUI.reportForm.enabled ? (
+    <ReportForm />
+  ) : (
+    <TradeFormClosed />
+  ),
+  tradeForm: <TradeForm />
 };
 
-function RightSidebar({ hasAlertNotification }: RightSidebarProps) {
-  const rightSidebarIsVisible = useAppSelector(
-    state => state.ui.rightSidebar.visible
+export default function RightSidebar() {
+  const form = useMarketForms();
+
+  return (
+    <Container $enableGutters className={rightSidebarClasses.root}>
+      {forms[form]}
+    </Container>
   );
-  const tradeFormIsVisible = useAppSelector(
-    state => state.ui.tradeForm.visible
-  );
-  const liquidityFormIsVisible = useAppSelector(
-    state => state.ui.liquidityForm.visible
-  );
-  const reportFormIsVisible = useAppSelector(
-    state => state.ui.reportForm.visible
-  );
-
-  if (!rightSidebarIsVisible) return null;
-
-  if (tradeFormIsVisible)
-    return (
-      <div
-        className={
-          hasAlertNotification
-            ? 'pm-l-right-sidebar--with-notification'
-            : 'pm-l-right-sidebar'
-        }
-      >
-        <TradeForm />
-      </div>
-    );
-
-  if (liquidityFormIsVisible)
-    return (
-      <div
-        className={
-          hasAlertNotification
-            ? 'pm-l-right-sidebar--with-notification'
-            : 'pm-l-right-sidebar'
-        }
-      >
-        <LiquidityForm />
-      </div>
-    );
-
-  if (reportFormIsVisible)
-    return (
-      <div
-        className={
-          hasAlertNotification
-            ? 'pm-l-right-sidebar--with-notification'
-            : 'pm-l-right-sidebar'
-        }
-      >
-        <ReportForm />
-      </div>
-    );
-
-  return null;
 }
-
-export default RightSidebar;

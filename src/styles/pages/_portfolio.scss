@@ -19,8 +19,16 @@
 
   &__analytics {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
-    gap: 2.4rem;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--size-24);
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
   }
 }
 
@@ -72,7 +80,15 @@
   gap: 1rem;
 
   &__header {
-    @include flex-row(space-between, center);
+    display: flex;
+
+    &-filter {
+      margin-left: auto;
+
+      & .pm-c-filter__button {
+        height: 36px;
+      }
+    }
   }
 
   &__content {

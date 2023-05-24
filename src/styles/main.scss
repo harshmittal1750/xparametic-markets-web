@@ -23,15 +23,12 @@
 @import 'base/typography';
 
 // 4. Layout-related sections
-@import 'layout/layout';
 @import 'layout/navbar';
 @import 'layout/sidebar';
-@import 'layout/right-sidebar';
 @import 'layout/footer';
 
 // 5. Components
 @import 'components/alert';
-@import 'components/alert-notification';
 @import 'components/amount-input';
 @import 'components/badge';
 @import 'components/modal';

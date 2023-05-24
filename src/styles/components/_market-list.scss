@@ -1,21 +1,30 @@
 .pm-c-market-list {
-  height: 100%;
-  margin-top: px-to-rem(10px);
+  flex: 1 1 auto;
+  padding: var(--grid-margin);
 
-  &__item {
-    padding-bottom: px-to-rem(20px);
+  @media (min-width: 1440px) {
+    padding-left: unset;
+    padding-right: unset;
+
+    &--filters-visible {
+      padding-left: var(--grid-margin);
+    }
+  }
+
+  & > [data-virtuoso-scroller='true'] {
+    & > [data-viewport-type='window'] {
+      & > [data-test-id='virtuoso-item-list'] {
+        display: inline-grid;
+        width: inherit;
+      }
+    }
   }
 }
 
 .pm-c-market-list__empty-state,
 .pm-p-achievements__empty {
   @include themes($market-list-themes) {
-    width: 100%;
-    height: auto;
-
     padding: px-to-rem(50px) px-to-rem(20px);
-    margin: px-to-rem(10px) px-to-rem(0px);
-
     border: 0.1rem solid themed('state-info-border-color');
     border-radius: 0.4rem;
 

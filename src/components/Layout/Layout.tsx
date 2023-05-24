@@ -1,57 +1,44 @@
-import { ReactNode } from 'react';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
-import cn from 'classnames';
+import { pages, environment, ui } from 'config';
 
-import useAlertNotification from 'hooks/useAlertNotification';
+import BetaTesting from 'components/BetaTesting';
+import BetaWarning from 'components/BetaWarning';
+import Footer from 'components/Footer';
+import Header from 'components/Header';
+import SEO from 'components/SEO';
+import WrongNetwork from 'components/WrongNetwork';
 
-import BetaWarning from '../BetaWarning';
-import Footer from '../Footer';
-import NavBar from '../NavBar';
-import RightSidebar from '../RightSidebar';
-import ScrollableArea from '../ScrollableArea';
-import Sidebar from '../Sidebar';
+import { useAppSelector, useMarketPath, useNetwork } from 'hooks';
 
-type LayoutProps = {
-  children: ReactNode;
-};
+export default function Layout({ children }: React.PropsWithChildren<{}>) {
+  const { network } = useNetwork();
+  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+  const location = useLocation();
+  const marketPath = useMarketPath();
+  const [page] = Object.values(pages).filter(
+    ({ pathname }) => pathname === location.pathname
+  );
+  const isHomePathname =
+    location.pathname === pages.home.pathname || marketPath;
+  const isAllowedNetwork =
+    !isLoggedIn || Object.keys(environment.NETWORKS).includes(network.id);
 
-function Layout({ children }: LayoutProps) {
-  const { alertList } = useAlertNotification();
-  const hasAlertNotification = alertList.size > 0;
+  useEffect(() => {
+    window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
 
   return (
     <>
-      <BetaWarning />
-      <div className="pm-l-layout">
-        <header className="pm-l-layout__header sticky">
-          <div id="alert-notification-portal" className="pm-l-layout__alert" />
-          <NavBar />
-        </header>
-        <nav className="pm-l-layout__nav">
-          <Sidebar />
-        </nav>
-        <ScrollableArea
-          className={cn({
-            'pm-l-layout__scrollable-area--with-alert': hasAlertNotification,
-            'pm-l-layout__scrollable-area': !hasAlertNotification
-          })}
-        >
-          <main className="pm-l-layout__main">
-            {children}
-            <footer className="pm-l-layout__footer">
-              <Footer />
-            </footer>
-          </main>
-        </ScrollableArea>
-        <ScrollableArea>
-          <aside className="pm-l-layout__aside">
-            <RightSidebar hasAlertNotification={hasAlertNotification} />
-          </aside>
-        </ScrollableArea>
-        <div id="toast-notification-portal" />
-      </div>
+      {page?.meta && <SEO {...page.meta} />}
+      {ui.layout.disclaimer.enabled && <BetaWarning />}
+      {ui.layout.alert.enabled && <BetaTesting network={network} />}
+      {!isAllowedNetwork && <WrongNetwork network={network} />}
+      <Header $gutterBottom={!isHomePathname} />
+      {children}
+      <Footer $gutterTop={!isHomePathname} />
+      <div id="toast-notification-portal" />
     </>
   );
 }
-
-export default Layout;

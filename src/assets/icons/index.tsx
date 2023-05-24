@@ -18,6 +18,7 @@ import CaretUpIcon from './CaretUpIcon';
 import ChartGrowthIcon from './ChartGrowthIcon';
 import CheckIcon from './CheckIcon';
 import CloseIcon from './CloseIcon';
+import CrownIcon from './CrownIcon';
 import EthereumIcon from './EthereumIcon';
 import ExploreIcon from './ExploreIcon';
 import FavoriteIcon from './FavoriteIcon';
@@ -41,6 +42,7 @@ import PolkamarketsIcon from './PolkamarketsIcon';
 import PolkamarketsIconCircle from './PolkamarketsIconCircle';
 import PolkamarketsIconSmall from './PolkamarketsIconSmall';
 import PolkamarketsLogo from './PolkamarketsLogo';
+import PolygonIcon from './PolygonIcon';
 import PopcornIcon from './PopcornIcon';
 import PortfolioIcon from './PortifolioIcon';
 import QuestionIcon from './QuestionIcon';
@@ -54,6 +56,7 @@ import SunFogIcon from './SunFogIcon';
 import SunIcon from './SunIcon';
 import TelegramIcon from './TelegramIcon';
 import ToDoIcon from './ToDoIcon';
+import TokenIcon from './TokenIcon';
 import TrophyIcon from './TrophyIcon';
 import TwarningIcon from './TWarningIcon';
 import TwitterIcon from './TwitterIcon';
@@ -84,6 +87,7 @@ export {
   ChartGrowthIcon,
   CheckIcon,
   CloseIcon,
+  CrownIcon,
   EthereumIcon,
   ExploreIcon,
   FavoriteIcon,
@@ -107,6 +111,7 @@ export {
   PolkamarketsIconCircle,
   PolkamarketsIconSmall,
   PolkamarketsLogo,
+  PolygonIcon,
   PopcornIcon,
   PortfolioIcon,
   QuestionIcon,
@@ -120,6 +125,7 @@ export {
   SunIcon,
   TelegramIcon,
   ToDoIcon,
+  TokenIcon,
   TwarningIcon,
   TwitterIcon,
   TrophyIcon,

@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 
+import { ui } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import orderBy from 'lodash/orderBy';
+import pick from 'lodash/pick';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
 
 import {
@@ -150,6 +152,20 @@ function liquidityColumnRender({
   );
 }
 
+type BalanceColumnRenderArgs = {
+  balance: number;
+  ticker: string;
+};
+
+function balanceColumnRender({ balance, ticker }: BalanceColumnRenderArgs) {
+  return (
+    <span className="pm-c-leaderboard-table__balance caption semibold text-1">
+      {`${balance.toFixed(1)} `}
+      <strong className="caption semibold text-3">{ticker}</strong>
+    </span>
+  );
+}
+
 type RankColumnRenderArgs = {
   place: number;
   change: 'up' | 'down' | 'stable';
@@ -172,6 +188,7 @@ export {
   volumeColumnRender,
   achievementsColumnRender,
   liquidityColumnRender,
+  balanceColumnRender,
   rankColumnRender
 };
 
@@ -180,6 +197,7 @@ export {
 export type PrepareLeaderboardTableRowsArgs = {
   rows?: GetLeaderboardByTimeframeData;
   ticker: string;
+  fantasyTokenTicker?: string;
   sortBy: string;
   loggedInUser?: string;
 };
@@ -187,6 +205,7 @@ export type PrepareLeaderboardTableRowsArgs = {
 function prepareLeaderboardTableRows({
   rows = [],
   ticker,
+  fantasyTokenTicker,
   sortBy,
   loggedInUser
 }: PrepareLeaderboardTableRowsArgs): LeaderboardTableRow[] {
@@ -195,35 +214,50 @@ function prepareLeaderboardTableRows({
   return sortedRows.map((row, index) => {
     const isLoggedInUser = loggedInUser === row.user;
 
-    return {
-      key: row.user,
-      highlight: isLoggedInUser,
-      wallet: {
-        isLoggedInUser,
-        address: row.user,
-        place: index + 1,
-        achievements: row.achievements
+    return pick(
+      {
+        key: row.user,
+        highlight: isLoggedInUser,
+        wallet: {
+          isLoggedInUser,
+          address: row.user,
+          place: index + 1,
+          achievements: row.achievements
+        },
+        volumeEur: {
+          volume: row.volumeEur,
+          ticker: fantasyTokenTicker || '€'
+        },
+        marketsCreated: row.marketsCreated,
+        wonPredictions: row.claimWinningsCount,
+        netVolumeEur: {
+          volume: row.tvlVolumeEur,
+          ticker: fantasyTokenTicker || '€'
+        },
+        netLiquidityEur: {
+          liquidity: row.tvlLiquidityEur,
+          ticker: fantasyTokenTicker || '€'
+        },
+        transactions: row.transactions,
+        balance: {
+          balance: row.erc20Balance,
+          ticker: fantasyTokenTicker || ticker
+        },
+        achievements: row.achievements,
+        rank: {
+          place: index + 1,
+          change: 'stable'
+        }
       },
-      volume: {
-        volume: row.volume,
-        ticker
-      },
-      marketsCreated: row.marketsCreated,
-      wonPredictions: row.claimWinningsCount,
-      netVolume: {
-        volume: row.tvlVolume,
-        ticker
-      },
-      netLiquidity: {
-        liquidity: row.tvlLiquidity,
-        ticker
-      },
-      achievements: row.achievements,
-      rank: {
-        place: index + 1,
-        change: 'stable'
-      }
-    };
+      [
+        'key',
+        'highlight',
+        'wallet',
+        'achievements',
+        'rank',
+        ...ui.leaderboard.columns
+      ]
+    ) as LeaderboardTableRow;
   });
 }
 
@@ -234,54 +268,73 @@ export { prepareLeaderboardTableRows };
 function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
   const yourStats = rows.find(row => row.wallet.isLoggedInUser);
 
-  return {
-    rank: {
-      value: yourStats
-        ? {
-            place: yourStats.rank.place,
-            change: yourStats.rank.change
-          }
-        : null,
-      render: rankColumnRender
+  return pick(
+    {
+      rank: {
+        value: yourStats
+          ? {
+              place: yourStats.rank.place,
+              change: yourStats.rank.change
+            }
+          : null,
+        render: rankColumnRender
+      },
+      volumeEur: {
+        value:
+          yourStats && yourStats.volumeEur
+            ? {
+                volume: yourStats.volumeEur.volume,
+                ticker: yourStats.volumeEur.ticker
+              }
+            : null,
+        render: volumeColumnRender
+      },
+      marketsCreated: {
+        value: yourStats ? yourStats.marketsCreated : null
+      },
+      wonPredictions: {
+        value: yourStats ? yourStats.wonPredictions : null
+      },
+      netVolumeEur: {
+        value:
+          yourStats && yourStats.netVolumeEur
+            ? {
+                volume: yourStats.netVolumeEur.volume,
+                ticker: yourStats.netVolumeEur.ticker
+              }
+            : null,
+        render: volumeColumnRender
+      },
+      netLiquidityEur: {
+        value:
+          yourStats && yourStats.netLiquidityEur
+            ? {
+                liquidity: yourStats.netLiquidityEur.liquidity,
+                ticker: yourStats.netLiquidityEur.ticker
+              }
+            : null,
+        render: liquidityColumnRender
+      },
+      transactions: {
+        value: yourStats ? yourStats.transactions : null
+      },
+      balance: {
+        value:
+          yourStats && yourStats.balance
+            ? {
+                balance: yourStats.balance.balance,
+                ticker: yourStats.balance.ticker
+              }
+            : null,
+        render: balanceColumnRender
+      },
+      achievements: {
+        value: yourStats ? yourStats.achievements : null,
+        render: achievements => achievementsColumnRender(achievements, 'small')
+      }
     },
-    volume: {
-      value: yourStats
-        ? {
-            volume: yourStats.volume.volume,
-            ticker: yourStats.volume.ticker
-          }
-        : null,
-      render: volumeColumnRender
-    },
-    marketsCreated: {
-      value: yourStats ? yourStats.marketsCreated : null
-    },
-    wonPredictions: {
-      value: yourStats ? yourStats.wonPredictions : null
-    },
-    netVolume: {
-      value: yourStats
-        ? {
-            volume: yourStats.netVolume.volume,
-            ticker: yourStats.netVolume.ticker
-          }
-        : null,
-      render: volumeColumnRender
-    },
-    netLiquidity: {
-      value: yourStats
-        ? {
-            liquidity: yourStats.netLiquidity.liquidity,
-            ticker: yourStats.netLiquidity.ticker
-          }
-        : null,
-      render: liquidityColumnRender
-    },
-    achievements: {
-      value: yourStats ? yourStats.achievements : null,
-      render: achievements => achievementsColumnRender(achievements, 'small')
-    }
-  };
+    ['rank', 'achievements', ...ui.leaderboard.columns]
+  );
 }
 
 export { prepareLeaderboardYourStatsRow };

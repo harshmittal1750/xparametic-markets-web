@@ -1,89 +1,56 @@
-import { useEffect, useState, Suspense, lazy } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Suspense, useEffect, useState } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { environment } from 'config';
+import { pages, ui } from 'config';
 import { getUserCountry } from 'helpers/location';
-import isEmpty from 'lodash/isEmpty';
-import isUndefined from 'lodash/isUndefined';
-import { fetchAditionalData } from 'redux/ducks/polkamarkets';
+import { Spinner } from 'ui';
+
+import RestrictedCountry from 'pages/RestrictedCountry';
 
 import { Layout } from 'components';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+const restrictedCountries =
+  process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
 
-const Home = lazy(() => import('pages/Home'));
-const Market = lazy(() => import('pages/Market'));
-const Portfolio = lazy(() => import('pages/Portfolio'));
-const WrongNetwork = lazy(() => import('pages/WrongNetwork'));
-const CreateMarket = lazy(() => import('pages/CreateMarket'));
-const RestrictedCountry = lazy(() => import('pages/RestrictedCountry'));
-const Achievements = lazy(() => import('pages/Achievements'));
-const Leaderboard = lazy(() => import('pages/Leaderboard'));
-const Profile = lazy(() => import('pages/Profile'));
-
-const { REACT_APP_RESTRICTED_COUNTRIES } = process.env;
-
-const AppRoutes = () => {
-  const dispatch = useAppDispatch();
-  const walletConnected = useAppSelector(
-    state => state.polkamarkets.isLoggedIn
-  );
-  const { network, networkConfig } = useNetwork();
-
-  const isAllowedNetwork =
-    !walletConnected || Object.keys(environment.NETWORKS).includes(network.id);
-
-  const restrictedCountries = REACT_APP_RESTRICTED_COUNTRIES?.split(',');
-  const [isAllowedCountry, setIsAllowedCountry] = useState(true);
+export default function AppRoutes() {
+  const [isLoading, setLoading] = useState(true);
+  const [isRestricted, setRestricted] = useState(false);
 
   useEffect(() => {
-    if (isAllowedNetwork && walletConnected) {
-      dispatch(fetchAditionalData(networkConfig));
-    }
-  }, [dispatch, isAllowedNetwork, networkConfig, walletConnected]);
-
-  useEffect(() => {
-    async function fetchUserCountry() {
-      if (!isUndefined(restrictedCountries) && !isEmpty(restrictedCountries)) {
+    (async function handleCountry() {
+      try {
         const userCountry = await getUserCountry();
 
-        setIsAllowedCountry(
-          !restrictedCountries.includes(userCountry.countryCode)
-        );
+        setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
+      } finally {
+        setLoading(false);
       }
-    }
-    fetchUserCountry();
-  }, [restrictedCountries]);
+    })();
+  }, []);
 
-  if (!isAllowedCountry)
-    return (
-      <Suspense fallback={null}>
-        <RestrictedCountry />
-      </Suspense>
-    );
+  if (isLoading) return <Spinner />;
 
-  if (!isAllowedNetwork)
-    return (
-      <Suspense fallback={null}>
-        <WrongNetwork />
-      </Suspense>
-    );
+  if (isRestricted) return <RestrictedCountry />;
 
   return (
     <Layout>
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner />}>
         <Switch>
-          <Route component={Home} exact path="/" />
-          <Route component={Market} path="/markets" />
-          <Route component={Portfolio} path="/portfolio" />
-          <Route component={CreateMarket} path="/market/create" />
-          <Route component={Achievements} path="/achievements" />
-          <Route component={Leaderboard} path="/leaderboard" />
-          <Route component={Profile} path="/user/:address" />
+          {Object.values(pages)
+            .filter(page => page.enabled)
+            .map(page => (
+              <Route
+                key={page.name}
+                exact={page.exact}
+                path={page.pathname}
+                component={page.Component}
+              />
+            ))}
+          {ui.clubs.enabled && (
+            <Redirect from="/leaderboard/:slug" to="/clubs/:slug" />
+          )}
         </Switch>
       </Suspense>
     </Layout>
   );
-};
-
-export default AppRoutes;
+}

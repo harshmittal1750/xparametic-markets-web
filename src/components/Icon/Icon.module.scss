@@ -1,23 +1,28 @@
 .root {
   user-select: none;
   vertical-align: middle;
-  display: inherit;
   fill: currentColor;
+  transition: transform 200ms ease;
 }
 
 .sm {
-  width: var(--size-12pxInRem);
-  height: var(--size-12pxInRem);
+  width: var(--size-12);
+  height: var(--size-12);
 }
 
 .md {
-  width: var(--size-16pxInRem);
-  height: var(--size-16pxInRem);
+  width: var(--size-16);
+  height: var(--size-16);
 }
 
 .lg {
-  width: var(--size-24pxInRem);
-  height: var(--size-24pxInRem);
+  width: var(--size-20);
+  height: var(--size-20);
+}
+
+.xl {
+  width: var(--size-32);
+  height: var(--size-32);
 }
 
 .left {

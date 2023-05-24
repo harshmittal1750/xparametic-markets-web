@@ -8,7 +8,7 @@ import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 function LiquidityFormDetails() {
-  const currency = useAppSelector(state => state.market.market.currency);
+  const token = useAppSelector(state => state.market.market.token);
   const liquidityDetails = useAppSelector(
     state => state.liquidity.liquidityDetails
   );
@@ -41,7 +41,7 @@ function LiquidityFormDetails() {
             {
               // eslint-disable-next-line prettier/prettier
               `${roundNumber(liquidityDetails.liquidityStake, 3)} ${
-                currency.symbol
+                token.ticker
               }`
             }
           </Text>
@@ -67,7 +67,7 @@ function LiquidityFormDetails() {
             <Text as="span" scale="caption" fontWeight="semibold">
               {
                 // eslint-disable-next-line prettier/prettier
-                `${roundNumber(feesEarned, 3)} ${currency.symbol}`
+                `${roundNumber(feesEarned, 3)} ${token.ticker}`
               }
             </Text>
           </div>
@@ -118,7 +118,7 @@ function LiquidityFormDetails() {
               </Text>
 
               <Text as="span" scale="caption" fontWeight="semibold">
-                {`${roundNumber(outcomeDetails.stake, 3)} ${currency.symbol}`}
+                {`${roundNumber(outcomeDetails.stake, 3)} ${token.ticker}`}
               </Text>
             </div>
 
@@ -147,7 +147,7 @@ function LiquidityFormDetails() {
             liquidityDetails.totalStake +
               (transactionType === 'remove' ? feesEarned : 0),
             3
-          )} ${currency.symbol}`}
+          )} ${token.ticker}`}
         </Text>
       </div>
     </div>

@@ -1,77 +1,77 @@
-import { useState } from 'react';
+import { Skeleton } from 'ui';
 
-import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
-
+import { AlertMini } from 'components';
 import { Dropdown, Text } from 'components/new';
-
-import { useNetwork } from 'hooks';
 
 import ProfileLeaderboardRanks from './ProfileLeaderboardRanks';
 import ProfilePredictionStatistics from './ProfilePredictionStatistics';
-import { LeaderboardRanks, PredictionStatistics } from './types';
+import type { ProfileYourStatsProps } from './types';
 
-type Timeframe = '1w' | '1m' | 'at';
-
-type ProfileYourStatsProps = {
-  address: string;
-};
-
-function ProfileYourStats({ address }: ProfileYourStatsProps) {
-  // Custom hooks
-  const { network } = useNetwork();
-  const { currency } = network;
-
-  // Local state
-  const [timeframe, setTimeframe] = useState<Timeframe>('1w');
-
-  const { data: leaderboard, isLoading } = useGetLeaderboardByAddressQuery({
-    address,
-    networkId: network.id,
-    timeframe
-  });
-
-  const ticker = currency.symbol || currency.ticker;
-
-  if (isLoading || !leaderboard) return null;
-
-  const ranks: LeaderboardRanks = {
-    rankByVolume: leaderboard.rank.volume,
-    rankByMarketsCreated: leaderboard.rank.marketsCreated,
-    rankByWonPredictions: leaderboard.rank.claimWinningsCount,
-    rankByLiquidityAdded: leaderboard.rank.tvlLiquidity
-  };
-
-  const statistics: PredictionStatistics = {
-    volume: leaderboard.volume,
-    marketsCreated: leaderboard.marketsCreated,
-    wonPredictions: leaderboard.claimWinningsCount,
-    liquidityAdded: leaderboard.liquidity
-  };
-
+function ProfileYourStats({
+  ticker,
+  onTimeframe,
+  data,
+  isLoading
+}: ProfileYourStatsProps) {
   return (
     <div className="flex-column gap-5">
       <div className="flex-row justify-space-between align-center padding-top-5">
         <Text as="h2" fontSize="heading-2" fontWeight="semibold" color="1">
           Statistics
         </Text>
-        <Dropdown
-          key="timeframe"
-          defaultOption="1w"
-          options={[
-            { label: 'Weekly', value: '1w' },
-            { label: 'Monthly', value: '1m' },
-            { label: 'All-time', value: 'at' }
-          ]}
-          onSelect={value => setTimeframe(value)}
-        />
+        {(!isLoading || data) && (
+          <Dropdown
+            key="timeframe"
+            defaultOption="at"
+            options={[
+              { label: 'Weekly', value: '1w' },
+              { label: 'Monthly', value: '1m' },
+              { label: 'All-time', value: 'at' }
+            ]}
+            onSelect={onTimeframe}
+          />
+        )}
       </div>
       <div className="pm-p-profile-your-stats">
-        <ProfileLeaderboardRanks ranks={ranks} isLoading={false} />
-        <ProfilePredictionStatistics
-          statistics={statistics}
-          ticker={ticker}
-          isLoading={false}
-        />
+        {(() => {
+          if (isLoading)
+            return (
+              <>
+                <Skeleton style={{ height: 96 }} />
+                <Skeleton style={{ height: 96 }} />
+              </>
+            );
+          if (!data)
+            return (
+              <AlertMini
+                variant="default"
+                description="No summary data available."
+              />
+            );
+          return (
+            <>
+              <ProfileLeaderboardRanks
+                ranks={{
+                  rankByVolume: data.rank.volumeEur,
+                  rankByMarketsCreated: data.rank.marketsCreated,
+                  rankByWonPredictions: data.rank.claimWinningsCount,
+                  rankByLiquidityAdded: data.rank.tvlLiquidityEur
+                }}
+                isLoading={false}
+              />
+              <ProfilePredictionStatistics
+                statistics={{
+                  volume: data.volumeEur,
+                  marketsCreated: data.marketsCreated,
+                  wonPredictions: data.claimWinningsCount,
+                  liquidityAdded: data.liquidityEur
+                }}
+                ticker={ticker}
+                isLoading={false}
+              />
+            </>
+          );
+        })()}
       </div>
     </div>
   );

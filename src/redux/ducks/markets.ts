@@ -1,25 +1,25 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { environment } from 'config';
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+import { toStartEnd } from 'helpers/date';
+import { toMinMax } from 'helpers/string';
 import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
 import uniqBy from 'lodash/uniqBy';
-import { Category } from 'models/category';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
 
-import { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
+import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
-import networks from 'hooks/useNetwork/networks';
+import { getCurrencyByTicker, getNetworkById } from './market';
+
+dayjs.extend(isBetween);
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
-
-const AVAILABLE_NETWORKS = Object.values(networks).filter(network =>
-  AVAILABLE_NETWORKS_IDS.includes(network.id)
-);
 
 const isMarketFromAvailableNetwork = (market: Market) =>
   AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
@@ -38,7 +38,7 @@ export interface MarketsIntialState {
     resolved: any;
     favorites: any;
   };
-  filter: string;
+  searchQuery: string;
   filterByVerified: boolean;
   sorterByEndingSoon: boolean;
   sorter: {
@@ -61,11 +61,11 @@ const initialState: MarketsIntialState = {
     resolved: null,
     favorites: null
   },
-  filter: '',
+  searchQuery: '',
   filterByVerified: true,
   sorterByEndingSoon: true,
   sorter: {
-    value: 'featured',
+    value: 'volumeEur',
     sortBy: undefined
   }
 };
@@ -93,7 +93,7 @@ const marketsSlice = createSlice({
         markets: uniqBy(
           [...state.markets, ...action.payload.data],
           (market: Market) => `${market.networkId}${market.id}`
-        ).filter(isMarketFromAvailableNetwork),
+        ),
         isLoading: {
           ...state.isLoading,
           [action.payload.type]: false
@@ -107,14 +107,21 @@ const marketsSlice = createSlice({
         return {
           payload: {
             type,
-            data: data.map(market => {
-              const network = AVAILABLE_NETWORKS.find(
-                ({ id }) => id === `${market.networkId}`
+            data: data.filter(isMarketFromAvailableNetwork).map(market => {
+              const network = getNetworkById(market.networkId);
+              const currencyByTokenSymbol = getCurrencyByTicker(
+                market.token.symbol
               );
 
               return {
                 ...market,
-                network
+                network,
+                currency: network.currency,
+                token: {
+                  ...market.token,
+                  ticker: market.token.symbol,
+                  iconName: currencyByTokenSymbol.iconName
+                }
               } as Market;
             })
           },
@@ -136,9 +143,9 @@ const marketsSlice = createSlice({
         [action.payload.type]: action.payload.error
       }
     }),
-    setFilter: (state, action: PayloadAction<string>) => ({
+    setSearchQuery: (state, action: PayloadAction<string>) => ({
       ...state,
-      filter: action.payload
+      searchQuery: action.payload
     }),
     setFilterByVerified: (state, action: PayloadAction<boolean>) => ({
       ...state,
@@ -212,9 +219,9 @@ const {
   request,
   success,
   error,
-  setFilter,
   setFilterByVerified,
   setSorterByEndingSoon,
+  setSearchQuery,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -223,9 +230,9 @@ const {
 } = marketsSlice.actions;
 
 export {
-  setFilter,
   setFilterByVerified,
   setSorterByEndingSoon,
+  setSearchQuery,
   setSorter,
   changeMarketOutcomeData,
   changeMarketQuestion,
@@ -233,29 +240,104 @@ export {
   changeMarketData
 };
 
-export const filteredMarketsSelector = (
-  state: MarketsIntialState,
-  categories: Category[]
-) => {
-  const regExpFromFilter = new RegExp(state.filter, 'i');
-  const regExpFullFilter = new RegExp(`^${state.filter}$`, 'i');
-  const verifiedFilter = verified =>
-    state.filterByVerified ? state.filterByVerified && verified : true;
-  const isEndingSoonFilter = expiresAt =>
-    inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
+type MarketsSelectorArgs = {
+  state: MarketsIntialState;
+  filters: {
+    favorites: {
+      checked: boolean;
+      marketsByNetwork: FavoriteMarketsByNetwork;
+    };
+    states: string[];
+    networks: string[];
+    volume: string;
+    liquidity: string;
+    endDate: string;
+    categories: string[];
+  };
+};
+
+export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
+  const regExpFromSearchQuery = new RegExp(state.searchQuery, 'i');
+
+  const filterByFavorite = (id, networkId) =>
+    filters.favorites.checked
+      ? filters.favorites.marketsByNetwork[`${networkId}`] &&
+        filters.favorites.marketsByNetwork[`${networkId}`].includes(id)
+      : true;
+
+  const filterByNetworkId = networkId =>
+    !isEmpty(filters.networks)
+      ? filters.networks.includes(`${networkId}`)
+      : true;
+
+  const filterByState = marketState =>
+    !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
+
+  const filterByRange = (value: number, range: string) => {
+    const { min, max } = toMinMax(range);
+
+    if (!max) {
+      return value >= min;
+    }
+
+    return inRange(value, min, max);
+  };
+
+  const filterByVolume = (volume: number) => {
+    if (filters.volume !== 'any') {
+      return filterByRange(volume, filters.volume);
+    }
+
+    return true;
+  };
+
+  const filterByLiquidity = (liquidity: number) => {
+    if (filters.liquidity !== 'any') {
+      return filterByRange(liquidity, filters.liquidity);
+    }
+
+    return true;
+  };
+
+  const filterByEndDate = (expiresAt: string) => {
+    if (filters.endDate === 'custom') {
+      return true;
+    }
+
+    if (filters.endDate !== 'any') {
+      const { start, end } = toStartEnd(filters.endDate);
+
+      if (!start) return dayjs(expiresAt).utc().isBefore(end);
+      if (!end) return dayjs(expiresAt).utc().isAfter(start);
+
+      return dayjs(expiresAt).utc().isBetween(start, end);
+    }
+
+    return true;
+  };
+
+  const filterByCategory = (category: string) =>
+    !isEmpty(filters.categories)
+      ? filters.categories
+          .map(c => c.toLowerCase())
+          .includes(category.toLowerCase())
+      : true;
+
+  // const filterByisEndingSoon = expiresAt =>
+  //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
   function sorted(markets: Market[]) {
     if (state.sorter.sortBy) {
-      if (state.sorterByEndingSoon) {
-        return [
-          ...markets.filter(market => isEndingSoonFilter(market.expiresAt)),
-          ...orderBy(
-            markets.filter(market => !isEndingSoonFilter(market.expiresAt)),
-            [state.sorter.value],
-            [state.sorter.sortBy]
-          )
-        ];
-      }
+      // if (state.sorterByEndingSoon) {
+      //   return [
+      //     ...markets.filter(market => filterByisEndingSoon(market.expiresAt)),
+      //     ...orderBy(
+      //       markets.filter(market => !filterByisEndingSoon(market.expiresAt)),
+      //       [state.sorter.value],
+      //       [state.sorter.sortBy]
+      //     )
+      //   ];
+      // }
       return orderBy(markets, [state.sorter.value], [state.sorter.sortBy]);
     }
 
@@ -263,22 +345,23 @@ export const filteredMarketsSelector = (
   }
 
   return sorted(
-    categories.some(category => category.title.match(regExpFullFilter))
-      ? state.markets.filter(
-          ({ category, verified }) =>
-            category.match(regExpFullFilter) && verifiedFilter(verified)
-        )
-      : state.markets.filter(
-          ({ category, subcategory, title, verified }) =>
-            (category.match(regExpFromFilter) ||
-              subcategory.match(regExpFromFilter) ||
-              title.match(regExpFromFilter)) &&
-            verifiedFilter(verified)
-        )
+    state.markets?.filter(
+      market =>
+        (market.category?.match(regExpFromSearchQuery) ||
+          market.subcategory?.match(regExpFromSearchQuery) ||
+          market.title?.match(regExpFromSearchQuery)) &&
+        filterByFavorite(market.id, market.networkId) &&
+        filterByNetworkId(market.networkId) &&
+        filterByState(market.state) &&
+        filterByVolume(market.volumeEur) &&
+        filterByLiquidity(market.liquidityEur) &&
+        filterByEndDate(market.expiresAt) &&
+        filterByCategory(market.category)
+    )
   );
 };
 
-export function getMarkets(marketState: MarketState, networkId: string) {
+export function getMarkets(marketState: MarketState, networkId?: string) {
   return async dispatch => {
     dispatch(request(marketState));
     try {

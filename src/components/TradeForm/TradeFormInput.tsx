@@ -1,28 +1,42 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
+import { setTokenTicker } from 'redux/ducks/market';
 import {
   setTradeAmount,
   setMaxAmount,
+  setWrapped,
   setTradeDetails
 } from 'redux/ducks/trade';
 
-import { WalletIcon } from 'assets/icons';
+import { TokenIcon, WalletIcon } from 'assets/icons';
 
-import { useAppSelector, useAppDispatch, useNetwork } from 'hooks';
+import {
+  useAppSelector,
+  useAppDispatch,
+  useNetwork,
+  useERC20Balance
+} from 'hooks';
 
 import { Button } from '../Button';
+import Icon from '../Icon';
 import StepSlider from '../StepSlider';
 import Text from '../Text';
+import ToggleSwitch from '../ToggleSwitch';
+import TradeFormClasses from './TradeForm.module.scss';
 import { calculateTradeDetails } from './utils';
 
 function TradeFormInput() {
+  const dispatch = useAppDispatch();
   const { network } = useNetwork();
-  const currency = useAppSelector(state => state.market.market.currency);
+  const { currency } = network;
+
+  const token = useAppSelector(state => state.market.market.token);
+  const { name, ticker, iconName, address, wrapped: tokenWrapped } = token;
+
   const marketNetworkId = useAppSelector(
     state => state.market.market.networkId
   );
-  const { name, ticker, icon } = currency;
-  const dispatch = useAppDispatch();
+
   const type = useAppSelector(state => state.trade.type);
   const label = `${type} shares`;
 
@@ -34,13 +48,23 @@ function TradeFormInput() {
     state => state.trade.selectedOutcomeId
   );
 
+  const wrapped = useAppSelector(state => state.trade.wrapped);
+
   const isWrongNetwork = network.id !== `${marketNetworkId}`;
 
   // buy and sell have different maxes
-  const balance = useAppSelector(state => state.polkamarkets.ethBalance);
+
+  const [amount, setAmount] = useState<number | undefined>(0);
+  const [stepAmount, setStepAmount] = useState<number>(0);
+
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const outcome = market.outcomes[selectedOutcomeId];
+
+  const { balance: erc20Balance, isLoadingBalance } = useERC20Balance(address);
+  const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
+
+  const balance = wrapped || !tokenWrapped ? erc20Balance : ethBalance;
 
   const roundDown = (value: number) => Math.floor(value * 1e5) / 1e5;
 
@@ -62,9 +86,6 @@ function TradeFormInput() {
     return roundDown(maxAmount);
   }, [type, balance, portfolio, selectedMarketId, selectedOutcomeId]);
 
-  const [amount, setAmount] = useState<number | undefined>(0);
-  const [stepAmount, setStepAmount] = useState<number>(0);
-
   useEffect(() => {
     dispatch(setMaxAmount(max()));
   }, [dispatch, max, type]);
@@ -73,7 +94,7 @@ function TradeFormInput() {
     dispatch(setTradeAmount(0));
     setAmount(0);
     setStepAmount(0);
-  }, [dispatch, type]);
+  }, [dispatch, type, wrapped]);
 
   useEffect(() => {
     if (![type, market, outcome, amount].includes(undefined)) {
@@ -110,6 +131,15 @@ function TradeFormInput() {
     setStepAmount(value);
   }
 
+  const handleChangeWrapped = useCallback(() => {
+    dispatch(setWrapped(!wrapped));
+    dispatch(
+      setTokenTicker({
+        ticker: !wrapped ? token.symbol : token.symbol.substring(1)
+      })
+    );
+  }, [dispatch, token.symbol, wrapped]);
+
   return (
     <form className="pm-c-amount-input">
       <div className="pm-c-amount-input__header">
@@ -125,7 +155,7 @@ function TradeFormInput() {
               color="noborder"
               style={{ gap: '0.2rem' }}
               onClick={handleSetMaxAmount}
-              disabled={isWrongNetwork}
+              disabled={isWrongNetwork || isLoadingBalance}
             >
               <Text as="strong" scale="tiny" fontWeight="semibold">
                 {max()}
@@ -149,13 +179,13 @@ function TradeFormInput() {
           max={max()}
           onChange={event => handleChangeAmount(event)}
           onWheel={event => event.currentTarget.blur()}
-          disabled={isWrongNetwork}
+          disabled={isWrongNetwork || isLoadingBalance}
         />
         <div className="pm-c-amount-input__actions">
           <button
             type="button"
             onClick={handleSetMaxAmount}
-            disabled={isWrongNetwork}
+            disabled={isWrongNetwork || isLoadingBalance}
           >
             <Text as="span" scale="tiny-uppercase" fontWeight="semibold">
               Max
@@ -163,7 +193,13 @@ function TradeFormInput() {
           </button>
           {type === 'buy' ? (
             <div className="pm-c-amount-input__logo">
-              <figure aria-label={name}>{icon}</figure>
+              <figure aria-label={name}>
+                {iconName === 'Token' ? (
+                  <TokenIcon ticker={ticker} />
+                ) : (
+                  <Icon name={iconName} />
+                )}
+              </figure>
               <Text as="span" scale="caption" fontWeight="bold">
                 {ticker}
               </Text>
@@ -181,8 +217,25 @@ function TradeFormInput() {
       <StepSlider
         currentValue={stepAmount}
         onChange={value => handleChangeSlider(value)}
-        disabled={isWrongNetwork}
+        disabled={isWrongNetwork || isLoadingBalance}
       />
+      {!isWrongNetwork && tokenWrapped ? (
+        <div className={TradeFormClasses.wrappedToggle}>
+          <Text
+            as="span"
+            scale="caption"
+            fontWeight="bold"
+            className={TradeFormClasses.wrappedToggleTitle}
+          >
+            {`Wrap ${currency.name}`}
+          </Text>
+          <ToggleSwitch
+            checked={wrapped}
+            onChange={handleChangeWrapped}
+            disabled={isWrongNetwork || isLoadingBalance}
+          />
+        </div>
+      ) : null}
     </form>
   );
 }

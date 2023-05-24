@@ -41,9 +41,6 @@
     height: 100%;
     overflow: hidden;
 
-    border: 0.1rem solid themed('chart-view-border-color');
-    border-radius: 0.4rem;
-
     &__header {
       @include flex-column(center, flex-start, 1.6rem);
 

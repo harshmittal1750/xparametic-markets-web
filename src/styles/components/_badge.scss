@@ -1,17 +1,24 @@
 .pm-c-badge {
-  @include flex-row(flex-start, center);
+  height: 24px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
   gap: $badge-gap;
+  color: var(--color-text-primary);
 
   &__circle {
     height: $badge-circle-height;
     width: $badge-circle-width;
     border-radius: 50%;
     flex-shrink: 0;
+    background-color: currentColor;
+    opacity: 0.4;
   }
 
   &__label {
     @extend .caption, .semibold;
     text-align: left;
+    line-height: unset !important;
   }
 
   @include themes($badge-themes) {
@@ -28,18 +35,8 @@
     &-filled {
       @extend .pm-c-badge;
 
-      padding: $badge-filled-padding-y $badge-filled-padding-x;
-      border-radius: $badge-filled-border-radius;
-
-      background-color: themed('badge-filled-background-color');
-
-      .pm-c-badge__circle {
-        background-color: $badge-filled-circle-color;
-      }
-
-      .pm-c-badge__label {
-        color: themed('badge-label-color');
-      }
+      padding-left: $badge-filled-padding-x;
+      padding-right: $badge-filled-padding-x;
     }
   }
 }

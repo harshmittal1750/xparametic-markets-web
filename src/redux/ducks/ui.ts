@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
 
+const MARKET_COLORS = 'MARKET_COLORS';
 const initialState = {
-  sidebar: {
-    collapsed: true
-  },
   rightSidebar: {
     visible: false
   },
@@ -15,6 +14,9 @@ const initialState = {
   },
   reportForm: {
     visible: false
+  },
+  market: {
+    colors: JSON.parse(localStorage.getItem(MARKET_COLORS) || '{}') || {}
   }
 };
 
@@ -22,28 +24,6 @@ const uiSlice = createSlice({
   name: 'ui',
   initialState,
   reducers: {
-    openSidebar: state => ({
-      ...state,
-      sidebar: {
-        collapsed: false
-      },
-      rightSidebar: {
-        visible: false
-      }
-    }),
-    closeSidebar: state => ({
-      ...state,
-      sidebar: {
-        collapsed: true
-      },
-      rightSidebar: {
-        visible: !!(
-          state.tradeForm.visible ||
-          state.liquidityForm.visible ||
-          state.reportForm.visible
-        )
-      }
-    }),
     closeRightSidebar: state => ({
       ...state,
       rightSidebar: {
@@ -115,20 +95,34 @@ const uiSlice = createSlice({
       reportForm: {
         visible: false
       }
-    })
+    }),
+    setMarketColors: (state, action: PayloadAction<Record<string, string>>) => {
+      const colors = {
+        ...state.market.colors,
+        ...action.payload
+      };
+
+      localStorage.setItem(MARKET_COLORS, JSON.stringify(colors));
+
+      return {
+        ...state,
+        market: {
+          colors
+        }
+      };
+    }
   }
 });
 
 export default uiSlice.reducer;
 
 export const {
-  openSidebar,
-  closeSidebar,
   closeRightSidebar,
   openTradeForm,
   closeTradeForm,
   openLiquidityForm,
   closeLiquidityForm,
   openReportForm,
-  closeReportForm
+  closeReportForm,
+  setMarketColors
 } = uiSlice.actions;

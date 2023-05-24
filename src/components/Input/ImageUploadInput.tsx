@@ -6,6 +6,8 @@ import { useField, useFormikContext } from 'formik';
 import * as ipfsService from 'services/Polkamarkets/ipfs';
 
 import ImageCropper from 'components/ImageCropper';
+import Modal from 'components/Modal';
+import ModalContent from 'components/ModalContent';
 
 import Text from '../Text';
 import InputErrorMessage from './InputErrorMessage';
@@ -40,8 +42,8 @@ function ImageUploadButton({
       ref={ref}
       htmlFor={name}
       className={classNames({
-        'pm-c-button-normal--primary': true,
-        'pm-c-button--sm': true,
+        'pm-c-button-subtle--primary': true,
+        'pm-c-button--normal': true,
         caption: true,
         semibold: true
       })}
@@ -59,7 +61,7 @@ function ImageUploadButton({
   );
 }
 
-type ThumbnailContext = {
+type ImageContext = {
   image: {
     hash: string;
     file: any;
@@ -70,6 +72,7 @@ type ThumbnailContext = {
 type ImageUploadInputProps = {
   label?: string;
   name: string;
+  initialImagePreviewURL?: string;
   notUploadedActionLabel: string;
   uploadedActionLabel: string;
   description?: string;
@@ -78,18 +81,18 @@ type ImageUploadInputProps = {
 function ImageUploadInput({
   label,
   name,
+  initialImagePreviewURL,
   notUploadedActionLabel,
   uploadedActionLabel,
   ...props
 }: ImageUploadInputProps & React.InputHTMLAttributes<HTMLInputElement>) {
-  const { setFieldValue, setFieldTouched } =
-    useFormikContext<ThumbnailContext>();
+  const { setFieldValue, setFieldTouched } = useFormikContext<ImageContext>();
   const [field, meta] = useField(name);
   const [isUploading, setIsUploading] = useState(false);
   const [isCroppingImage, setIsCroppingImage] = useState(false);
   const [croppedImagePreviewURL, setCropperImagePreviewURL] = useState<
     undefined | string
-  >(undefined);
+  >(initialImagePreviewURL);
   const [invalidImageError, setInvalidImageError] = useState<
     undefined | string
   >(undefined);
@@ -116,6 +119,7 @@ function ImageUploadInput({
       if (isValidImage(files[0].type)) {
         setInvalidImageError(undefined);
 
+        setFieldTouched(name, true);
         setFieldValue(name, {
           file: files[0],
           hash: '',
@@ -176,19 +180,21 @@ function ImageUploadInput({
 
   return (
     <>
-      <ImageCropper
-        visible={isCroppingImage}
-        image={field.value.file}
-        onCrop={handleCroppedImage}
-        onCancel={handleCancelCropImage}
-      />
+      <Modal show={isCroppingImage} size="md" centered>
+        <ModalContent>
+          <ImageCropper
+            image={field.value.file}
+            onCrop={handleCroppedImage}
+            onCancel={handleCancelCropImage}
+          />
+        </ModalContent>
+      </Modal>
       <div className="pm-c-input__group">
         {label ? (
           <label htmlFor={name} className="pm-c-input__label--default">
             {label}
           </label>
         ) : null}
-
         <input
           type="file"
           accept="image/png, image/jpg, image/jpeg"
@@ -198,28 +204,19 @@ function ImageUploadInput({
           hidden
         />
         <div className="pm-c-file-upload-input__actions">
-          {croppedImagePreviewURL ? (
+          {croppedImagePreviewURL || initialImagePreviewURL ? (
             <img
-              className="pm-c-market__body-image"
+              className="pm-c-file-upload-input__thumbnail"
               alt="Thumbnail"
-              src={croppedImagePreviewURL}
-              width={66}
-              height={66}
+              src={croppedImagePreviewURL || initialImagePreviewURL}
+              width={64}
+              height={64}
             />
           ) : null}
           <ImageUploadButton name={name} loading={isUploading}>
             {uploadActionLabel}
           </ImageUploadButton>
-          {field.value.isUploaded ? (
-            <Text
-              as="span"
-              scale="caption"
-              fontWeight="medium"
-              className="pm-c-file-upload-input__status"
-            >
-              {field.value.file.name}
-            </Text>
-          ) : (
+          {field.value.isUploaded ? null : (
             <Text
               as="span"
               scale="caption"

@@ -17,3 +17,22 @@ export type LeaderboardAchievement = {
 };
 
 export type LeaderboardTimeframe = '1w' | '1m' | 'at';
+
+export type LeaderboardGroup = {
+  id: number;
+  title: string;
+  imageUrl: string;
+  slug: string;
+  createdBy: string;
+  users: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type UserLeaderboard = {
+  id: number;
+  title: string;
+  slug: string;
+  admin: boolean;
+  imageUrl: string | null;
+};

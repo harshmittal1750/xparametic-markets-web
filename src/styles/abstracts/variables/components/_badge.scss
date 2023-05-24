@@ -22,9 +22,21 @@ $badge-themes: (
       success: $success-500,
       warning: $warning-500,
       danger: $danger-500,
-      pink: $alternative-colors-pink,
-      blue: $alternative-colors-blue,
-      purple: #9f7eff
+      pink: #ff83b0,
+      blue: #6bb8ff,
+      purple: #9f7eff,
+      categorical-0: var(--color-categorical-0),
+      categorical-1: var(--color-categorical-1),
+      categorical-2: var(--color-categorical-2),
+      categorical-3: var(--color-categorical-3),
+      categorical-4: var(--color-categorical-4),
+      categorical-5: var(--color-categorical-5),
+      categorical-6: var(--color-categorical-6),
+      categorical-7: var(--color-categorical-7),
+      categorical-8: var(--color-categorical-8),
+      categorical-9: var(--color-categorical-9),
+      categorical-10: var(--color-categorical-10),
+      categorical-11: var(--color-categorical-11)
     )
   ),
   dark: (
@@ -36,9 +48,21 @@ $badge-themes: (
       success: $success-500,
       warning: $warning-500,
       danger: $danger-500,
-      pink: $alternative-colors-pink,
-      blue: $alternative-colors-blue,
-      purple: #9f7eff
+      pink: #ff83b0,
+      blue: #6bb8ff,
+      purple: #9f7eff,
+      categorical-0: var(--color-categorical-0),
+      categorical-1: var(--color-categorical-1),
+      categorical-2: var(--color-categorical-2),
+      categorical-3: var(--color-categorical-3),
+      categorical-4: var(--color-categorical-4),
+      categorical-5: var(--color-categorical-5),
+      categorical-6: var(--color-categorical-6),
+      categorical-7: var(--color-categorical-7),
+      categorical-8: var(--color-categorical-8),
+      categorical-9: var(--color-categorical-9),
+      categorical-10: var(--color-categorical-10),
+      categorical-11: var(--color-categorical-11)
     )
   )
 ) !default;

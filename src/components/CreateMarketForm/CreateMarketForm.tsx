@@ -1,130 +1,94 @@
+import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import dayjs from 'dayjs';
 import { Formik, Form } from 'formik';
-import { PolkamarketsService } from 'services';
+import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import * as marketService from 'services/Polkamarkets/market';
-import * as Yup from 'yup';
+import { Token } from 'types/token';
 
-import { useNetwork } from 'hooks';
+import {
+  useNetwork,
+  useAppSelector,
+  usePolkamarketsService,
+  useAppDispatch
+} from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button } from '../Button';
+import CreateMarketFormDetails from '../CreateMarketFormDetails';
+import CreateMarketFormFund from '../CreateMarketFormFund';
+import CreateMarketFormOutcomes from '../CreateMarketFormOutcomes';
+import FormikPersist from '../FormikPersist';
+import Steps from '../Steps';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
-import CreateMarketFormActions from './CreateMarketFormActions';
-import CreateMarketFormConfigure from './CreateMarketFormConfigure';
-import CreateMarketFormFund from './CreateMarketFormFund';
-
-type Outcome = {
-  name: string;
-  // probability: number;
-};
-
-export type CreateMarketFormData = {
-  question: string;
-  firstOutcome: Outcome;
-  secondOutcome: Outcome;
-  image: {
-    file: any;
-    hash: string;
-    isUploaded: boolean;
-  };
-  category: string;
-  subcategory: string;
-  closingDate: string;
-  liquidity: number;
-  resolutionSource: string;
-};
-
-const initialData: CreateMarketFormData = {
-  question: '',
-  firstOutcome: {
-    name: ''
-    // probability: 50
-  },
-  secondOutcome: {
-    name: ''
-    // probability: 50
-  },
-  image: {
-    file: undefined,
-    hash: '',
-    isUploaded: false
-  },
-  category: '',
-  subcategory: '',
-  closingDate: dayjs().toString(),
-  liquidity: 0,
-  resolutionSource: ''
-};
-
-const validationSchema = Yup.object().shape({
-  question: Yup.string().required('Market Question is required.'),
-  firstOutcome: Yup.object().shape({
-    name: Yup.string().required('Outcome name is required.')
-    // probability: Yup.number()
-    //   .min(0, 'The probability of the Outcome must be greater or equal than 0!')
-    //   .max(
-    //     100,
-    //     'The probability of the Outcome must be less or equal than 100!'
-    //   )
-    //   .required('Outcome probability is required.')
-  }),
-  secondOutcome: Yup.object().shape({
-    name: Yup.string().required('Outcome name is required.')
-    // probability: Yup.number()
-    //   .min(0, 'The probability of the Outcome must be greater or equal than 0!')
-    //   .max(
-    //     100,
-    //     'The probability of the Outcome must be less or equal than 100!'
-    //   )
-    //   .required('Outcome probability is required.')
-  }),
-  image: Yup.object().shape({
-    hash: Yup.string().required('Image is required.')
-  }),
-  category: Yup.string().required('Category is required.'),
-  subcategory: Yup.string().required('Subcategory is required.'),
-  closingDate: Yup.date()
-    .min(
-      dayjs().format('MM/DD/YYYY HH:mm'),
-      `Closing date must be later than ${dayjs().format('DD/MM/YYYY HH:mm')}`
-    )
-    .required('Closing date is required.'),
-  liquidity: Yup.number().moreThan(0).required('Liquidity is required.'),
-  resolutionSource: Yup.string()
-    .url('Please enter a valid url.')
-    .required('Resolution source is required.')
-});
+import type { CreateMarketFormData } from './CreateMarketForm.type';
+import { initialValues, validationSchema } from './CreateMarketForm.util';
 
 function CreateMarketForm() {
   const history = useHistory();
-  const { networkConfig } = useNetwork();
+  const dispatch = useAppDispatch();
+  const polkamarketsService = usePolkamarketsService();
+  const { network, networkConfig } = useNetwork();
   const { show, close } = useToastNotification();
+  const { createMarketToken } = useAppSelector(state => state.polkamarkets);
+  const [currentStep, setCurrentStep] = useState(0);
 
-  function redirectToHomePage() {
-    return history.push('/');
+  const handleStepChange = useCallback(
+    (step: number) => {
+      setCurrentStep(step);
+    },
+    [setCurrentStep]
+  );
+
+  const handleFormRef = useCallback(
+    (hasError: boolean) => (node: HTMLFormElement | null) =>
+      hasError && node?.scrollIntoView(),
+    []
+  );
+
+  function resetLocalStorage() {
+    localStorage.removeItem('createMarketValues');
+    localStorage.removeItem('createMarketTouched');
+    localStorage.removeItem('createMarketCurrentStep');
   }
 
-  function redirectToMarketPage(marketSlug) {
-    return history.push(`/markets/${marketSlug}`);
+  async function updateWallet() {
+    await dispatch(login(polkamarketsService));
+    await dispatch(fetchAditionalData(polkamarketsService));
   }
 
   async function handleFormSubmit(values: CreateMarketFormData) {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
     const closingDate = new Date(values.closingDate).getTime() / 1000; // TODO: move to dayjs
-    const outcomes = [values.firstOutcome.name, values.secondOutcome.name];
+    let wrapped = false;
+    let token = '';
+
+    // fetching token address
+    if (createMarketToken && (createMarketToken as Token).addresses) {
+      token = (createMarketToken as Token).addresses[network.key];
+    } else {
+      wrapped = true;
+    }
+
+    const outcomes = values.outcomes.map(outcome => outcome.name);
+    const odds = values.outcomes.map(outcome => outcome.probability);
+
     // data format: "category;subcategory;resolutionSource"
     const data = `${values.category};${values.subcategory};${values.resolutionSource}`;
 
     const response = await polkamarketsService.createMarket(
       values.question,
+      values.description,
       values.image.hash,
       closingDate,
       outcomes,
       data,
-      values.liquidity
+      values.liquidity,
+      odds,
+      values.fee,
+      token,
+      wrapped,
+      values.treasuryFee
     );
 
     show('createMarket');
@@ -136,11 +100,16 @@ function CreateMarketForm() {
         marketId,
         networkConfig.NETWORK_ID
       );
-      redirectToMarketPage(res.data.slug);
+
+      await updateWallet();
+      resetLocalStorage();
+      history.push(`/markets/${res.data.slug}`);
     } catch (err) {
-      redirectToHomePage();
+      history.push('/');
     }
   }
+
+  const currentValidationSchema = validationSchema[currentStep];
 
   return (
     <>
@@ -162,19 +131,47 @@ function CreateMarketForm() {
         </Toast>
       </ToastNotification>
       <Formik
-        initialValues={initialData}
+        initialValues={initialValues}
         onSubmit={async (values, actions) => {
           actions.setSubmitting(true);
           await handleFormSubmit(values);
           actions.setSubmitting(false);
         }}
-        validationSchema={validationSchema}
+        validationSchema={currentValidationSchema}
       >
-        <Form className="pm-c-create-market-form">
-          <CreateMarketFormConfigure />
-          <CreateMarketFormFund />
-          <CreateMarketFormActions />
-        </Form>
+        {values => (
+          <Form
+            ref={handleFormRef(values.isSubmitting && !values.isValid)}
+            className="pm-c-create-market-form"
+          >
+            <FormikPersist
+              currentStep={currentStep}
+              onChangeCurrentStep={handleStepChange}
+            />
+            <Steps
+              current={currentStep}
+              currentStepFields={Object.keys(currentValidationSchema.fields)}
+              steps={[
+                {
+                  id: 'details',
+                  title: 'Market Details',
+                  component: <CreateMarketFormDetails />
+                },
+                {
+                  id: 'outcomes',
+                  title: 'Choose Outcomes',
+                  component: <CreateMarketFormOutcomes />
+                },
+                {
+                  id: 'fund',
+                  title: 'Funding Information',
+                  component: <CreateMarketFormFund />
+                }
+              ]}
+              onChange={handleStepChange}
+            />
+          </Form>
+        )}
       </Formik>
     </>
   );
