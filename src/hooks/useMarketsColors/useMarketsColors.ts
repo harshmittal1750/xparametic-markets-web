@@ -1,100 +1,53 @@
 import { useCallback, useEffect } from 'react';
 
 import type { Market } from 'models/market';
-import { getAverageColor } from 'ui';
 
 import useAppSelector from 'hooks/useAppSelector';
-import usePrevious from 'hooks/usePrevious';
 
-const MARKET_COLORS = 'MARKET_COLORS';
-const MARKET_COLORS_DEFAULT = '{}';
+import type { MarketColors, MarketColorsByNetwork } from './buildMarketsColors';
 
-type OutcomeColors = Record<number, string>;
-type MarketColors = [string, Partial<OutcomeColors>];
-type MarketsColors = Record<
-  number,
-  Record<number, Partial<Record<number, MarketColors>>>
->;
-type UseMarketsColorsProps = {
-  markets?: Market[];
+const MARKET_COLORS_KEY = 'MARKET_COLORS';
+const MARKET_COLORS_COUNT = {
+  count: 0
 };
 
-async function getMarketsColors<
-  O = Record<number, string>,
-  M = Record<
-    number,
-    Record<number, Partial<Record<number, [string, Partial<O>]>>>
-  >
->(data: Array<Market>) {
-  let marketColors = {} as M;
-
-  // eslint-disable-next-line no-restricted-syntax
-  for await (const market of data) {
-    let outcomesColors = {} as O;
-
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const outcome of market.outcomes) {
-      outcomesColors = {
-        ...outcomesColors,
-        [outcome.id]: await getAverageColor(outcome.imageUrl)
-      };
-    }
-
-    marketColors = {
-      ...marketColors,
-      [market.network.id]: {
-        ...marketColors[market.network.id],
-        [market.id]: [await getAverageColor(market.imageUrl), outcomesColors]
-      }
-    };
-  }
-
-  return marketColors;
-}
-export default function useMarketsColors({
-  markets
-}: UseMarketsColorsProps = {}) {
+export default function useMarketsColors(markets?: ReadonlyArray<Market>) {
   const market = useAppSelector(state => state.market.market);
-  const marketColorsStored = localStorage.getItem(MARKET_COLORS);
-  const marketsColors: MarketsColors | Record<string, never> = JSON.parse(
-    marketColorsStored || MARKET_COLORS_DEFAULT
-  );
-  const marketColor = marketsColors?.[market.network.id]?.[market.id];
-  const prevMarketsColors = usePrevious(marketColorsStored);
+  const marketsColorsStored = localStorage.getItem(MARKET_COLORS_KEY) || '{}';
+  const marketsColorsParsed: MarketColorsByNetwork | Record<string, never> =
+    JSON.parse(marketsColorsStored);
+  const marketColors: MarketColors | undefined =
+    marketsColorsParsed?.[market.network.id]?.[market.id];
   const handleOutcomeColor = useCallback(
-    (id: number): string => marketColor?.[1]?.[id]?.join(' '),
-    [marketColor]
+    (id: number) => marketColors?.[1]?.[id]?.join(' '),
+    [marketColors]
   );
 
   useEffect(() => {
     (async function handleMarketsColors() {
-      if (!markets) return null;
+      MARKET_COLORS_COUNT.count += 1;
+
+      if (MARKET_COLORS_COUNT.count > 1 || !markets) return null;
 
       try {
-        const marketColordStoring = JSON.stringify(
-          await getMarketsColors([...markets])
+        const { default: buildMarketsColors } = await import(
+          './buildMarketsColors'
         );
+        const marketsColors = JSON.stringify(await buildMarketsColors(markets));
 
-        if (
-          Object.keys(marketsColors).length &&
-          marketColordStoring === marketColorsStored
-        )
-          return null;
+        if (marketsColors === marketsColorsStored) return null;
 
-        localStorage.setItem(
-          MARKET_COLORS,
-          JSON.stringify(await getMarketsColors([...markets]))
-        );
+        localStorage.setItem(MARKET_COLORS_KEY, marketsColors);
       } catch (error) {
         // unsupported
       }
 
       return null;
     })();
-  }, [marketColorsStored, markets, marketsColors, prevMarketsColors]);
+  }, [marketsColorsStored, markets]);
 
   return {
-    market: marketColor?.[0]?.join(' '),
+    market: marketColors?.[0]?.join(' '),
     outcome: handleOutcomeColor
   };
 }
