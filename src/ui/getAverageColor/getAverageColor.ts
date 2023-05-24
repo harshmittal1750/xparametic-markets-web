@@ -12,18 +12,16 @@ function getImage(src: string, options: Record<'width' | 'height', number>) {
 }
 
 /**
- * Returns an RGB color array-like `[RRR, GGG, BBB]` from a given `src` image.
- * @param src Source link image.
- * @returns {Promise<Partial<number[]>>}
+ * Returns the average color from a given image.
+ * @param {string} src Source link image.
+ * @returns {Promise<string>} RGB color string-like `RRR GGG BBB`
  */
-export default async function getAverageColor(
-  src: string
-): Promise<Partial<number[]>> {
+export default async function getAverageColor(src: string): Promise<string> {
   const context = document.createElement('canvas').getContext?.('2d', {
     willReadFrequently: true
   });
 
-  if (!context || !src) return [];
+  if (!context || !src) return '';
 
   try {
     const image = await getImage(src, {
@@ -33,10 +31,11 @@ export default async function getAverageColor(
 
     context.drawImage(image, 0, 0, 1, 64);
 
-    return Array.from(
-      context.getImageData(0, 0, 1, 1).data.filter((_, index) => index <= 2)
-    );
+    return context
+      .getImageData(0, 0, 1, 1)
+      .data.filter((_, index) => index <= 2)
+      .join(' ');
   } catch (error) {
-    return [];
+    return '';
   }
 }

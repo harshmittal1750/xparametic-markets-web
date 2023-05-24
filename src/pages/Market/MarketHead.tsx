@@ -13,13 +13,13 @@ import marketClasses from './Market.module.scss';
 function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
-  const market = useAppSelector(state => state.market.market);
+  const imageUrl = useAppSelector(state => state.market.market.imageUrl);
   const marketsColors = useMarketsColors();
 
   return (
     <Hero
       className={marketClasses.hero}
-      $image={market.imageUrl}
+      $image={imageUrl}
       $backdrop={marketsColors.market}
       {...props}
     />

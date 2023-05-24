@@ -19,7 +19,7 @@ export default function useMarketsColors(markets?: ReadonlyArray<Market>) {
   const marketColors: MarketColors | undefined =
     marketsColorsParsed?.[market.network.id]?.[market.id];
   const handleOutcomeColor = useCallback(
-    (id: number) => marketColors?.[1]?.[id]?.join(' '),
+    (id: number) => marketColors?.[1]?.[id],
     [marketColors]
   );
 
@@ -47,7 +47,7 @@ export default function useMarketsColors(markets?: ReadonlyArray<Market>) {
   }, [marketsColorsStored, markets]);
 
   return {
-    market: marketColors?.[0]?.join(' '),
+    market: marketColors?.[0],
     outcome: handleOutcomeColor
   };
 }

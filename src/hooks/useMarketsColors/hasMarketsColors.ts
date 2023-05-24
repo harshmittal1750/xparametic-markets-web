@@ -21,8 +21,7 @@ export default function hasMarketsColors(
 
           // eslint-disable-next-line no-restricted-syntax
           for (const [marketColor, outcomeColors] of marketColors) {
-            if (!Array.isArray(marketColor) || !marketColor.some(Boolean))
-              return false;
+            if (typeof marketColor !== 'string') return false;
 
             if (outcomeColors === null || typeof outcomeColors !== 'object')
               return false;
@@ -34,7 +33,7 @@ export default function hasMarketsColors(
               ) {
                 const outcomeColor = outcomeColors[outcomeId];
 
-                return Array.isArray(outcomeColor) && marketColor.some(Boolean);
+                return typeof outcomeColor === 'string';
               }
             }
           }
