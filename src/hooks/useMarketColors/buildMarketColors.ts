@@ -9,7 +9,7 @@ export type MarketColorsByNetwork = Record<
   Record<number, MarketColors>
 >;
 
-export default async function buildMarketsColors(
+export default async function buildMarketColors(
   data: ReadonlyArray<Market>
 ): Promise<MarketColorsByNetwork> {
   let marketColors: MarketColorsByNetwork = {

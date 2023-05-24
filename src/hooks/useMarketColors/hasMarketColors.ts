@@ -1,6 +1,6 @@
-import type { MarketColorsByNetwork } from './buildMarketsColors';
+import type { MarketColorsByNetwork } from './buildMarketColors';
 
-export default function hasMarketsColors(
+export default function hasMarketColors(
   params: unknown
 ): params is MarketColorsByNetwork {
   if (params === null || typeof params !== 'object') return false;

@@ -6,7 +6,7 @@ import { MarketAvatar, MarketCategory, Text } from 'components';
 import MarketFooter from 'components/Market/MarketFooter';
 import MarketFooterActions from 'components/Market/MarketFooterActions';
 
-import { useAppSelector, useMarketsColors } from 'hooks';
+import { useAppSelector, useMarketColors } from 'hooks';
 
 import marketClasses from './Market.module.scss';
 
@@ -14,13 +14,13 @@ function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
   const imageUrl = useAppSelector(state => state.market.market.imageUrl);
-  const marketsColors = useMarketsColors();
+  const marketColors = useMarketColors();
 
   return (
     <Hero
       className={marketClasses.hero}
       $image={imageUrl}
-      $backdrop={marketsColors.market}
+      $backdrop={marketColors.market}
       {...props}
     />
   );

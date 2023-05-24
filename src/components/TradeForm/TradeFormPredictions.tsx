@@ -13,7 +13,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useExpandableOutcomes,
-  useMarketsColors
+  useMarketColors
 } from 'hooks';
 
 import tradeFormClasses from './TradeForm.module.scss';
@@ -24,7 +24,7 @@ export default function TradeFormPredictions() {
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const theme = useTheme();
-  const marketsColors = useMarketsColors();
+  const marketColors = useMarketColors();
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
     timeframe: '7d'
@@ -103,7 +103,7 @@ export default function TradeFormPredictions() {
                 portfolio[trade.selectedMarketId]?.outcomes[outcome.id]?.shares,
                 3
               )}
-              activeColor={marketsColors.outcome(+outcome.id)}
+              activeColor={marketColors.outcome(+outcome.id)}
             />
           )}
         />
@@ -130,7 +130,7 @@ export default function TradeFormPredictions() {
                 isPositive={outcome.isPriceUp}
                 value={outcome.id}
                 onClick={handleOutcomeClick}
-                activeColor={marketsColors.outcome(+outcome.id)}
+                activeColor={marketColors.outcome(+outcome.id)}
               />
             </li>
           ))}
