@@ -50,7 +50,8 @@ const ui = {
       environment.UI_LEADERBOARD_COLUMNS?.split(',') ||
         defaultLeaderboardColumns,
       leaderboardColumns
-    )
+    ),
+    default_column: environment.UI_LEADERBOARD_DEFAULT_COLUMN
   },
   clubs: {
     enabled: isTrue(environment.FEATURE_CLUBS)
