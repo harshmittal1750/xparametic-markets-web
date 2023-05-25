@@ -40,11 +40,11 @@ const columns: TableMiniColumn[] = [
     title: 'Balance'
   },
   {
-    key: 'netVolumeEur',
+    key: 'netVolume',
     title: 'Net Volume'
   },
   {
-    key: 'netLiquidityEur',
+    key: 'netLiquidity',
     title: 'Net Liquidity'
   }
 ].filter(column =>
