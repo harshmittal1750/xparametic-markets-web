@@ -64,20 +64,21 @@ export default function WalletInfo() {
   useEffect(() => {
     const fetchData = async () => {
       let username;
-      let servers;
+      let servers = [];
 
       if (userInfo.typeOfLogin === 'discord') {
         ({ username, servers } =
           await PolkamarketsService.getDiscordUsernameAndServer(userInfo));
       }
-      // TODO - what to do with servers info?
 
       // send data to backend
       updateSocialLoginInfo(
         userInfo.idToken,
         username,
         userInfo.typeOfLogin,
-        ethAddress
+        ethAddress,
+        userInfo.profileImage,
+        servers.map((server: any) => ({ id: server.id, name: server.name }))
       );
     };
 

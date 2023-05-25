@@ -17,7 +17,9 @@ async function updateSocialLoginInfo(
   authenticationToken: string,
   username: string,
   loginType: string,
-  walletAddress: string
+  walletAddress: string,
+  avatar: string,
+  discordServers: any[]
 ) {
   const url = `${polkamarketsApiUrl}/users`;
   return api.put(
@@ -25,7 +27,9 @@ async function updateSocialLoginInfo(
     {
       username,
       login_type: loginType,
-      wallet_address: walletAddress
+      wallet_address: walletAddress,
+      avatar,
+      discord_servers: discordServers
     },
     {
       headers: {
