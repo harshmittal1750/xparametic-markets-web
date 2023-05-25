@@ -297,7 +297,9 @@ function Leaderboard() {
           <div className="flex-column gap-3">
             <div className="flex-row gap-5 align-center">
               <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-              {createGroupState.visible && createGroupState.mode === 'edit' ? (
+              {ui.clubs.enabled &&
+              createGroupState.visible &&
+              createGroupState.mode === 'edit' ? (
                 <CreateLeaderboardGroup
                   mode={createGroupState.mode}
                   previousValues={createGroupState.previousValues}
@@ -321,7 +323,9 @@ function Leaderboard() {
             ) : null}
           </div>
         </div>
-        {createGroupState.visible && !joinGroupState.visible ? (
+        {ui.clubs.enabled &&
+        createGroupState.visible &&
+        !joinGroupState.visible ? (
           <CreateLeaderboardGroup
             mode={createGroupState.mode}
             previousValues={createGroupState.previousValues}
@@ -329,7 +333,7 @@ function Leaderboard() {
             disabled={isLoadingQuery}
           />
         ) : null}
-        {joinGroupState.visible ? (
+        {ui.clubs.enabled && joinGroupState.visible ? (
           <ButtonLoading
             size="sm"
             color="default"
@@ -393,7 +397,7 @@ function Leaderboard() {
                     sortBy={tab.sortBy}
                     isLoading={isLoadingQuery}
                   />
-                  {walletConnected ? (
+                  {ui.clubs.enabled && walletConnected ? (
                     <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
                   ) : null}
                 </div>

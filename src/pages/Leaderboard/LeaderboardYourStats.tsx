@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { ui } from 'config';
 import some from 'lodash/some';
 
 import { TableMiniColumn } from 'components/new/TableMini';
@@ -19,38 +20,36 @@ const columns: TableMiniColumn[] = [
     title: 'Rank'
   },
   {
-    key: 'volume',
+    key: 'volumeEur',
     title: 'Volume'
   },
-  // {
-  //   key: 'marketsCreated',
-  //   title: 'Markets Created'
-  // },
+  {
+    key: 'marketsCreated',
+    title: 'Markets Created'
+  },
   {
     key: 'wonPredictions',
     title: 'Won Predictions'
   },
-  // {
-  //   key: 'transactions',
-  //   title: 'Transactions'
-  // },
+  {
+    key: 'transactions',
+    title: 'Transactions'
+  },
   {
     key: 'balance',
     title: 'Balance'
   },
-  // {
-  //   key: 'netVolume',
-  //   title: 'Net Volume'
-  // },
-  // {
-  //   key: 'netLiquidity',
-  //   title: 'Net Liquidity'
-  // },
   {
-    key: 'achievements',
-    title: 'NFT Achievements'
+    key: 'netVolume',
+    title: 'Net Volume'
+  },
+  {
+    key: 'netLiquidity',
+    title: 'Net Liquidity'
   }
-];
+].filter(column =>
+  ['rank', ...ui.leaderboard.columns].includes(column.key)
+) as TableMiniColumn[];
 
 type LeaderboardYourStatsProps = {
   loggedInUser?: string;
