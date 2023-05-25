@@ -115,14 +115,14 @@ const columns: LeaderboardTableColumn[] = [
   },
   {
     title: 'Net Volume',
-    key: 'netVolumeEur',
+    key: 'netVolume',
     align: 'right',
     width: 140,
     render: volumeColumnRender
   },
   {
     title: 'Net Liquidity',
-    key: 'netLiquidityEur',
+    key: 'netLiquidity',
     align: 'right',
     width: 140,
     render: liquidityColumnRender

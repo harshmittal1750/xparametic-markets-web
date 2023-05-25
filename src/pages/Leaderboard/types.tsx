@@ -22,11 +22,11 @@ export type LeaderboardTableRow = {
   };
   marketsCreated?: number;
   wonPredictions?: number;
-  netVolumeEur?: {
+  netVolume?: {
     volume: number;
     ticker: string;
   };
-  netLiquidityEur?: {
+  netLiquidity?: {
     liquidity: number;
     ticker: string;
   };
