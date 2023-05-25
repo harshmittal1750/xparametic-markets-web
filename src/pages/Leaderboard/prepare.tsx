@@ -249,14 +249,7 @@ function prepareLeaderboardTableRows({
           change: 'stable'
         }
       },
-      [
-        'key',
-        'highlight',
-        'wallet',
-        'achievements',
-        'rank',
-        ...ui.leaderboard.columns
-      ]
+      ['key', 'highlight', 'wallet', 'rank', ...ui.leaderboard.columns]
     ) as LeaderboardTableRow;
   });
 }
@@ -333,7 +326,7 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
         render: achievements => achievementsColumnRender(achievements, 'small')
       }
     },
-    ['rank', 'achievements', ...ui.leaderboard.columns]
+    ['rank', ...ui.leaderboard.columns]
   );
 }
 
