@@ -2,7 +2,7 @@ import { Container } from 'ui';
 
 import type { CreateLeaderboardGroupState } from 'pages/Leaderboard/types';
 
-import { CreateLeaderboardGroup, Link } from 'components';
+import { CreateLeaderboardGroup } from 'components';
 
 import { useAppSelector } from 'hooks';
 
