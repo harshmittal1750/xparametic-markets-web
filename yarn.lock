@@ -18878,9 +18878,9 @@ polished@^4.2.2:
   dependencies:
     "@babel/runtime" "^7.17.8"
 
-"polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js#feature/v2":
+"polkamarkets-js@https://github.com/Polkamarkets/polkamarkets-js":
   version "1.2.1"
-  resolved "https://github.com/Polkamarkets/polkamarkets-js#a924a388a888ed3b2e104202a642b82fce163471"
+  resolved "https://github.com/Polkamarkets/polkamarkets-js#f9e03fe3be339749bd9eba22183db3b248a7309b"
   dependencies:
     "@biconomy/smart-account" "^2.0.0"
     "@biconomy/web3-auth" "^2.0.0"
