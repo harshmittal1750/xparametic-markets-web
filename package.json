@@ -77,7 +77,7 @@
     "zustand": "^4.3.6"
   },
   "scripts": {
-    "start": "craco start",
+    "start": "NODE_OPTIONS=--openssl-legacy-provider craco start",
     "build": "craco build",
     "server": "node server/index.js",
     "test": "craco test",

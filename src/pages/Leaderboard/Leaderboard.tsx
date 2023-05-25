@@ -115,14 +115,14 @@ const columns: LeaderboardTableColumn[] = [
   },
   {
     title: 'Net Volume',
-    key: 'netVolumeEur',
+    key: 'netVolume',
     align: 'right',
     width: 140,
     render: volumeColumnRender
   },
   {
     title: 'Net Liquidity',
-    key: 'netLiquidityEur',
+    key: 'netLiquidity',
     align: 'right',
     width: 140,
     render: liquidityColumnRender
@@ -160,7 +160,9 @@ function Leaderboard() {
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   // Local state
-  const [activeTab, setActiveTab] = useState(tabs[0].id);
+  const [activeTab, setActiveTab] = useState(
+    ui.leaderboard.default_column || tabs[0].id
+  );
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
   // Queries
@@ -295,7 +297,9 @@ function Leaderboard() {
           <div className="flex-column gap-3">
             <div className="flex-row gap-5 align-center">
               <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-              {createGroupState.visible && createGroupState.mode === 'edit' ? (
+              {ui.clubs.enabled &&
+              createGroupState.visible &&
+              createGroupState.mode === 'edit' ? (
                 <CreateLeaderboardGroup
                   mode={createGroupState.mode}
                   previousValues={createGroupState.previousValues}
@@ -307,19 +311,21 @@ function Leaderboard() {
             </div>
             {ui.clubs.enabled ? (
               <p className="tiny medium text-2">
-                {`Play the IFL with your friends, coworkers and community. `}
+                {`Play with your friends, coworkers and community. `}
                 <Link
                   title="Learn more"
                   scale="tiny"
                   fontWeight="medium"
-                  href="https://ifl.polkamarkets.com/docs/clubs"
+                  href="https://docs.v2.polkamarkets.com/"
                   target="_blank"
                 />
               </p>
             ) : null}
           </div>
         </div>
-        {createGroupState.visible && !joinGroupState.visible ? (
+        {ui.clubs.enabled &&
+        createGroupState.visible &&
+        !joinGroupState.visible ? (
           <CreateLeaderboardGroup
             mode={createGroupState.mode}
             previousValues={createGroupState.previousValues}
@@ -327,7 +333,7 @@ function Leaderboard() {
             disabled={isLoadingQuery}
           />
         ) : null}
-        {joinGroupState.visible ? (
+        {ui.clubs.enabled && joinGroupState.visible ? (
           <ButtonLoading
             size="sm"
             color="default"
@@ -391,7 +397,7 @@ function Leaderboard() {
                     sortBy={tab.sortBy}
                     isLoading={isLoadingQuery}
                   />
-                  {walletConnected ? (
+                  {ui.clubs.enabled && walletConnected ? (
                     <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
                   ) : null}
                 </div>

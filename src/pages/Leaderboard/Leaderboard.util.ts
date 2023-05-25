@@ -13,16 +13,16 @@ export const leaderboardColumns = [
   'transactions',
   'balance',
   'wonPredictions',
-  'netVolumeEur',
-  'netLiquidityEur'
+  'netVolume',
+  'netLiquidity'
 ];
 
 export const defaultLeaderboardColumns = [
   'volumeEur',
   'marketsCreated',
   'wonPredictions',
-  'netVolumeEur',
-  'netLiquidityEur'
+  'netVolume',
+  'netLiquidity'
 ];
 
 const emptyLeaderboardRowWithoutUser: Omit<GetLeaderboardBaseData, 'user'> = {
