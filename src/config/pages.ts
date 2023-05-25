@@ -41,7 +41,7 @@ const pages = {
     Component: Leaderboard,
     exact: false,
     navigation: true,
-    name: 'Leaderboard - Polkamarkets',
+    name: 'Leaderboard',
     meta: {
       title: 'Leaderboard - Polkamarkets',
       description:
