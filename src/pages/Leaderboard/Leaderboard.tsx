@@ -307,12 +307,12 @@ function Leaderboard() {
             </div>
             {ui.clubs.enabled ? (
               <p className="tiny medium text-2">
-                {`Play the IFL with your friends, coworkers and community. `}
+                {`Play with your friends, coworkers and community. `}
                 <Link
                   title="Learn more"
                   scale="tiny"
                   fontWeight="medium"
-                  href="https://ifl.polkamarkets.com/docs/clubs"
+                  href="https://docs.v2.polkamarkets.com/"
                   target="_blank"
                 />
               </p>
