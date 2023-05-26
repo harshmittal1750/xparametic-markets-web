@@ -12,22 +12,11 @@ export type MarketColorsByNetwork = Record<
 export default async function buildMarketColors(
   data: ReadonlyArray<Market>
 ): Promise<MarketColorsByNetwork> {
-  let marketColors: MarketColorsByNetwork = {
-    0: {
-      0: [
-        '',
-        {
-          0: ''
-        }
-      ]
-    }
-  };
+  let marketColors: MarketColorsByNetwork = {};
 
   // eslint-disable-next-line no-restricted-syntax
   for await (const market of data) {
-    let outcomesColors: OutcomeColors = {
-      0: ''
-    };
+    let outcomesColors: OutcomeColors = {};
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const outcome of market.outcomes) {
