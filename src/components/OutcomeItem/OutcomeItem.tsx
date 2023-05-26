@@ -30,7 +30,7 @@ export type OutcomeProps = Pick<
   > &
   Partial<Record<'primary' | 'image' | 'activeColor', string>> &
   Partial<Record<'secondary', React.ReactNode>> &
-  Partial<Record<'shares' | 'percent', number>> & {
+  Partial<Record<'invested' | 'percent', number>> & {
     data?: AreaDataPoint[];
     $variant?: 'dashed';
     $size?: 'sm' | 'md';
@@ -45,7 +45,7 @@ export default function OutcomeItem({
   isResolved,
   isWinning,
   isVoided,
-  shares,
+  invested,
   $gutterBottom,
   $size,
   data,
@@ -67,7 +67,8 @@ export default function OutcomeItem({
         [outcomeItemClasses.gutterBottom]: $gutterBottom,
         [outcomeItemClasses.variantDashed]: $variant === 'dashed',
         [outcomeItemClasses.backdrop]: !isResolved && image,
-        [outcomeItemClasses.active]: isActive
+        [outcomeItemClasses.backdropActive]: !isResolved && image && isActive,
+        active: isActive
       })}
       style={{
         // @ts-expect-error No need to assert React.CSSProperties here
@@ -149,8 +150,8 @@ export default function OutcomeItem({
           rows={[
             {
               key: 'invested',
-              title: 'your shares',
-              value: shares || 0
+              title: 'your invested',
+              value: invested || 0
             }
           ]}
         />

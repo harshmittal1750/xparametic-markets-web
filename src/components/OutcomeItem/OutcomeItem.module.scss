@@ -1,10 +1,7 @@
 .root {
   position: relative;
-  flex-flow: column nowrap;
   padding: 0px;
-  align-items: stretch;
-  overflow-x: hidden;
-  display: flex;
+  overflow: hidden;
   border-width: 1px;
   border-style: solid;
   border-radius: 4px;
@@ -24,10 +21,15 @@
       var(--color-background-tertiary) 100%
     ),
     var(--outcome-image), var(--color-background-tertiary);
-  background-clip: border-box;
+  background-clip: content-box;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+
+  &Active {
+    box-shadow: 0px 0px 20px rgb(var(--outcome-color) / 0.4);
+    border-color: rgb(var(--outcome-color) / 0.2) !important;
+  }
 }
 
 .variant {
@@ -55,6 +57,8 @@
 .line {
   position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
 }
 
 .item {
@@ -66,9 +70,4 @@
 
 .secondary {
   color: var(--color-text-secondary);
-}
-
-.active {
-  box-shadow: 0px 0px 20px rgb(var(--outcome-color) / 0.4);
-  border-color: rgb(var(--outcome-color, var(--color-border)) / 0.1) !important;
 }

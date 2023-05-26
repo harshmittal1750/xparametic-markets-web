@@ -99,7 +99,7 @@ export default function TradeFormPredictions() {
               value={outcome.id}
               onClick={handleOutcomeClick}
               data={outcome.data}
-              shares={roundNumber(
+              invested={roundNumber(
                 portfolio[trade.selectedMarketId]?.outcomes[outcome.id]?.shares,
                 3
               )}
