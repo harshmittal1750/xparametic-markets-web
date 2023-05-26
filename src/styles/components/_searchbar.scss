@@ -11,13 +11,18 @@
 
     border: 0.1rem solid themed('border-color');
     border-radius: $searchbar-border-radius;
+    padding-left: var(--padding-inline);
+    padding-right: var(--padding-inline);
+    height: var(--height);
 
     &--sm {
-      padding: var(--size-12) var(--size-14);
+      --padding-inline: var(--size-12);
+      --height: 44px;
     }
 
     &--md {
-      padding: var(--size-16);
+      --padding-inline: var(--size-16);
+      --height: 48px;
     }
 
     &__input {
