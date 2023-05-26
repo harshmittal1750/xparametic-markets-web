@@ -35,7 +35,8 @@ const ui = {
     }
   },
   filters: {
-    categories: environment.UI_FILTERS_CATEGORIES?.split(',')
+    categories: environment.UI_FILTERS_CATEGORIES?.split(','),
+    tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
   },
   tradeForm: {
     liquidity: {
