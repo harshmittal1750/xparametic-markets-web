@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment } from 'config';
+import { environment, ui } from 'config';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { toStartEnd } from 'helpers/date';
@@ -8,7 +8,9 @@ import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
+import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
+import without from 'lodash/without';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
@@ -249,9 +251,11 @@ type MarketsSelectorArgs = {
     };
     states: string[];
     networks: string[];
+    tokens: string[];
     volume: string;
     liquidity: string;
     endDate: string;
+    categories: string[];
   };
 };
 
@@ -268,6 +272,28 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     !isEmpty(filters.networks)
       ? filters.networks.includes(`${networkId}`)
       : true;
+
+  const filterByTokenSymbol = (tokenSymbol: string) => {
+    if (isEmpty(filters.tokens)) {
+      return true;
+    }
+
+    if (
+      some(
+        without(filters.tokens, 'other').map(token =>
+          tokenSymbol.includes(token)
+        )
+      )
+    ) {
+      return true;
+    }
+
+    if (filters.tokens.includes('other')) {
+      return !some(ui.filters.tokens.map(token => tokenSymbol.includes(token)));
+    }
+
+    return false;
+  };
 
   const filterByState = marketState =>
     !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
@@ -315,6 +341,13 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     return true;
   };
 
+  const filterByCategory = (category: string) =>
+    !isEmpty(filters.categories)
+      ? filters.categories
+          .map(c => c.toLowerCase())
+          .includes(category.toLowerCase())
+      : true;
+
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
 
@@ -344,10 +377,12 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
           market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
+        filterByTokenSymbol(market.token.symbol) &&
         filterByState(market.state) &&
         filterByVolume(market.volumeEur) &&
         filterByLiquidity(market.liquidityEur) &&
-        filterByEndDate(market.expiresAt)
+        filterByEndDate(market.expiresAt) &&
+        filterByCategory(market.category)
     )
   );
 };

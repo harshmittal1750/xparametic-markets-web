@@ -19,5 +19,6 @@ export type CreateMarketFormData = {
   closingDate: string;
   liquidity: number;
   fee: number;
+  treasuryFee: number;
   resolutionSource: string;
 };

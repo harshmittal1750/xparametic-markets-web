@@ -88,7 +88,7 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
       />
       <Filter
         description="Sort by"
-        defaultOption="expiresAt"
+        defaultOption="liquidityEur"
         options={filters}
         onChange={handleSelectedFilter}
       />

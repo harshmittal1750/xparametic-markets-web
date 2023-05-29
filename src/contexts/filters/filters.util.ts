@@ -1,16 +1,16 @@
-import { environment, features } from 'config';
+import { environment, features, ui } from 'config';
 import dayjs from 'dayjs';
 import set from 'lodash/set';
 import type { Network } from 'types/network';
 
-import { Filters, FiltersState } from './filters.type';
+import type { Filters, FiltersState, Option } from './filters.type';
 
 const fantasyTokenTicker =
   features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER
     ? environment.FEATURE_FANTASY_TOKEN_TICKER
     : undefined;
 
-const defaultRangeOptions = [
+const defaultRangeOptions: Option[] = [
   { label: 'Any', value: 'any' },
   {
     label: fantasyTokenTicker ? `Under 10 ${fantasyTokenTicker}` : 'Under €10',
@@ -36,7 +36,7 @@ const defaultRangeOptions = [
   }
 ];
 
-const defaultDateRangeOptions = [
+const defaultDateRangeOptions: Option[] = [
   {
     label: 'Any',
     value: 'any'
@@ -54,6 +54,40 @@ const defaultDateRangeOptions = [
     value: `${dayjs().utc().startOf('month')}-${dayjs().utc().endOf('month')}`
   }
 ];
+
+const defaultCategoriesOptions: Option[] = [
+  {
+    label: 'Society',
+    value: 'Society'
+  },
+  {
+    label: 'Economy/Finance',
+    value: 'Economy/Finance'
+  },
+  {
+    label: 'Politics',
+    value: 'Politics'
+  },
+  {
+    label: 'Entertainment/Arts',
+    value: 'Entertainment/Arts'
+  },
+  {
+    label: 'Sports',
+    value: 'Sports'
+  },
+  {
+    label: 'Other',
+    value: 'Other'
+  }
+];
+
+const categoriesOptionsFromEnvironment = ui.filters.categories?.map(
+  category => ({
+    label: category,
+    value: category
+  })
+);
 
 const filters: Filters = {
   toggles: {
@@ -88,6 +122,21 @@ const filters: Filters = {
       multiple: true,
       enabled: features.regular.enabled
     },
+    tokens: {
+      title: 'Token',
+      options: [
+        ...ui.filters.tokens.map(token => ({
+          label: token,
+          value: token
+        })),
+        {
+          label: 'Other',
+          value: 'other'
+        }
+      ],
+      multiple: true,
+      enabled: true
+    },
     volume: {
       title: 'Volume',
       options: defaultRangeOptions,
@@ -111,6 +160,12 @@ const filters: Filters = {
       ],
       multiple: false,
       enabled: true
+    },
+    categories: {
+      title: 'Category',
+      options: categoriesOptionsFromEnvironment || defaultCategoriesOptions,
+      multiple: true,
+      enabled: true
     }
   }
 };
@@ -131,9 +186,11 @@ const filtersInitialState: FiltersState = {
   dropdowns: {
     states: [],
     networks: [],
+    tokens: [],
     volume: 'any',
     liquidity: 'any',
-    endDate: 'any'
+    endDate: 'any',
+    categories: []
   }
 };
 

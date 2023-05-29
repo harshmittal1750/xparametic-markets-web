@@ -209,33 +209,40 @@ function login(polkamarketsService: PolkamarketsService) {
       const address = await polkamarketsService.getAddress();
       dispatch(changeEthAddress(address));
 
-      Promise.all([
-        polkamarketsService.getBalance(),
-        polkamarketsService.getPolkBalance(),
-        polkamarketsService.isPolkClaimed(),
-        polkamarketsService.isRealitioERC20Approved(),
-        polkamarketsService.getSocialLoginUserInfo()
-      ]).then(([balance, polkBalance, polkClaimed, polkApproved, userInfo]) => {
-        dispatch(changeEthBalance(balance));
-        dispatch(changePolkBalance(polkBalance));
-        dispatch(changePolkClaimed(polkClaimed));
-        dispatch(changePolkApproved(polkApproved));
-        dispatch(changeSocialLoginInfo(userInfo));
-
-        dispatch(
-          changeLoading({
-            key: 'login',
-            value: false
-          })
-        );
-      });
-    } else {
-      dispatch(
-        changeLoading({
-          key: 'login',
-          value: false
+      polkamarketsService
+        .getBalance()
+        .then(balance => {
+          dispatch(changeEthBalance(balance));
         })
-      );
+        .catch(() => {});
+
+      polkamarketsService
+        .getPolkBalance()
+        .then(polkBalance => {
+          dispatch(changePolkBalance(polkBalance));
+        })
+        .catch(() => {});
+
+      polkamarketsService
+        .isPolkClaimed()
+        .then(polkClaimed => {
+          dispatch(changePolkClaimed(polkClaimed));
+        })
+        .catch(() => {});
+
+      polkamarketsService
+        .isRealitioERC20Approved()
+        .then(polkApproved => {
+          dispatch(changePolkApproved(polkApproved));
+        })
+        .catch(() => {});
+
+      polkamarketsService
+        .getSocialLoginUserInfo()
+        .then(userInfo => {
+          dispatch(changeSocialLoginInfo(userInfo));
+        })
+        .catch(() => {});
     }
   };
 }
@@ -292,6 +299,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         .then(portfolio => {
           dispatch(changePortfolio(portfolio));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({
@@ -306,6 +314,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         .then(votes => {
           dispatch(changeVotes(votes as Votes));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({
@@ -320,6 +329,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
         .then(bonds => {
           dispatch(changeBonds(bonds));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({
@@ -339,6 +349,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
           dispatch(changeActions(actions as Action[]));
           dispatch(changeMarketsWithActions(actions as Action[]));
         })
+        .catch(() => {})
         .finally(() => {
           dispatch(
             changeLoading({

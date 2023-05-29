@@ -58,7 +58,7 @@ function CreateLeaderboardGroup({
                 title="docs"
                 scale="tiny"
                 fontWeight="medium"
-                href="https://ifl.polkamarkets.com/docs/clubs"
+                href="https://v2.docs.polkamarkets.com"
                 target="_blank"
               />
             </p>

@@ -11,7 +11,7 @@
   padding: var(--size-32);
   gap: var(--size-32);
 
-  margin: calc(var(--size-32) * -1);
+  margin: calc(-1 * var(--size-32));
   background-color: var(--color-create-market-preview-background);
   border-radius: 0 0 var(--size-8) var(--size-8);
 

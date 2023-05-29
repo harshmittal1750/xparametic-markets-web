@@ -7,6 +7,7 @@ import { shiftSlash } from 'helpers/string';
 import { useTheme } from 'ui';
 
 import { PolkamarketsLogo } from 'assets/icons';
+import { ReactComponent as V2Badge } from 'assets/icons/svgs/v2-badge.svg';
 
 import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';
@@ -147,6 +148,7 @@ export default function HeaderNav() {
       {theme.device.isDesktop && !theme.device.isTv && <HeaderNavMenuModal />}
       <Link to="/" aria-label="Homepage" className={headerNavClasses.logos}>
         <PolkamarketsLogo />
+        <V2Badge className={headerNavClasses.logosBadge} />
       </Link>
       {theme.device.isTv ? (
         <HeaderNavMenu />

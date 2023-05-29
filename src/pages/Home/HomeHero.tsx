@@ -12,6 +12,9 @@ export default function HomeHero() {
         $backdrop="main"
         $rounded
         $image={ui.hero.image}
+        $as={ui.hero.image_url ? 'a' : 'div'}
+        href={ui.hero.image_url}
+        target={ui.hero.image_url ? '_blank' : undefined}
         className={`pm-p-home__hero ${HomeClasses.headerHero}`}
       >
         <div className="pm-p-home__hero__content">

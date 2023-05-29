@@ -19,8 +19,10 @@
 .item {
   margin-bottom: 12px;
   @media (min-width: 1440px) {
-    margin-right: 24px;
     margin-bottom: unset;
+    &:not(:last-of-type) {
+      margin-right: 24px;
+    }
   }
 }
 .link {
@@ -44,12 +46,20 @@
 .logos {
   display: inherit;
   margin-right: auto;
+  gap: var(--size-8);
+  align-items: center;
+
   @media (min-width: 1024px) {
     margin-left: 24px;
   }
+
   @media (min-width: 1440px) {
     margin-right: 24px;
     margin-left: unset;
+  }
+
+  &Badge {
+    height: var(--size-24);
   }
 }
 .dialog {

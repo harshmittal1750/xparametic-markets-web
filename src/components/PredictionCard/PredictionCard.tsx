@@ -2,7 +2,9 @@ import { memo } from 'react';
 
 import cn from 'classnames';
 import { Market as MarketInterface } from 'models/market';
+import { useTheme } from 'ui';
 
+import FavoriteMarket from 'components/FavoriteMarket';
 import MarketFooterActions from 'components/Market/MarketFooterActions';
 
 import Market from '../Market';
@@ -14,6 +16,8 @@ interface PredictionCardProps
 }
 
 function PredictionCard({ market, $gutter, className }: PredictionCardProps) {
+  const theme = useTheme();
+
   return (
     <div
       className={cn(
@@ -28,7 +32,14 @@ function PredictionCard({ market, $gutter, className }: PredictionCardProps) {
       </div>
       <div className="prediction-card__footer">
         <Market.Footer market={market}>
-          <MarketFooterActions $variant="text" market={market} />
+          {theme.device.isDesktop ? (
+            <>
+              <MarketFooterActions $variant="text" market={market} />
+              <div className="pm-c-market-footer__divider--circle" />
+            </>
+          ) : (
+            <FavoriteMarket market={market} />
+          )}
         </Market.Footer>
       </div>
     </div>

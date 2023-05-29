@@ -230,11 +230,11 @@ function prepareLeaderboardTableRows({
         },
         marketsCreated: row.marketsCreated,
         wonPredictions: row.claimWinningsCount,
-        netVolumeEur: {
+        netVolume: {
           volume: row.tvlVolumeEur,
           ticker: fantasyTokenTicker || '€'
         },
-        netLiquidityEur: {
+        netLiquidity: {
           liquidity: row.tvlLiquidityEur,
           ticker: fantasyTokenTicker || '€'
         },
@@ -249,14 +249,7 @@ function prepareLeaderboardTableRows({
           change: 'stable'
         }
       },
-      [
-        'key',
-        'highlight',
-        'wallet',
-        'achievements',
-        'rank',
-        ...ui.leaderboard.columns
-      ]
+      ['key', 'highlight', 'wallet', 'rank', ...ui.leaderboard.columns]
     ) as LeaderboardTableRow;
   });
 }
@@ -295,22 +288,22 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
       wonPredictions: {
         value: yourStats ? yourStats.wonPredictions : null
       },
-      netVolumeEur: {
+      netVolume: {
         value:
-          yourStats && yourStats.netVolumeEur
+          yourStats && yourStats.netVolume
             ? {
-                volume: yourStats.netVolumeEur.volume,
-                ticker: yourStats.netVolumeEur.ticker
+                volume: yourStats.netVolume.volume,
+                ticker: yourStats.netVolume.ticker
               }
             : null,
         render: volumeColumnRender
       },
-      netLiquidityEur: {
+      netLiquidity: {
         value:
-          yourStats && yourStats.netLiquidityEur
+          yourStats && yourStats.netLiquidity
             ? {
-                liquidity: yourStats.netLiquidityEur.liquidity,
-                ticker: yourStats.netLiquidityEur.ticker
+                liquidity: yourStats.netLiquidity.liquidity,
+                ticker: yourStats.netLiquidity.ticker
               }
             : null,
         render: liquidityColumnRender
@@ -333,7 +326,7 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
         render: achievements => achievementsColumnRender(achievements, 'small')
       }
     },
-    ['rank', 'achievements', ...ui.leaderboard.columns]
+    ['rank', ...ui.leaderboard.columns]
   );
 }
 
