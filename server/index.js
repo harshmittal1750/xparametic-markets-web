@@ -209,7 +209,7 @@ app.get('/user/:address', (request, response) => {
   });
 });
 
-app.get('/market/create', (request, response) => {
+app.get('/markets/create', (request, response) => {
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
