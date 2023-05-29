@@ -6,7 +6,7 @@ import { pages, socials, ui } from 'config';
 import { shiftSlash } from 'helpers/string';
 import { useTheme } from 'ui';
 
-import { PolkamarketsLogo } from 'assets/icons';
+import * as Logos from 'assets/icons';
 import { ReactComponent as V2Badge } from 'assets/icons/svgs/v2-badge.svg';
 
 import { Button } from 'components/Button';
@@ -18,6 +18,8 @@ import NetworkSelector from 'components/NetworkSelector';
 import Text from 'components/Text';
 
 import headerNavClasses from './HeaderNav.module.scss';
+
+const LogoComponent = ui.logo ? Logos[ui.logo] : null;
 
 function HeaderNavModal({
   children
@@ -147,8 +149,14 @@ export default function HeaderNav() {
     <nav className={headerNavClasses.root}>
       {theme.device.isDesktop && !theme.device.isTv && <HeaderNavMenuModal />}
       <Link to="/" aria-label="Homepage" className={headerNavClasses.logos}>
-        <PolkamarketsLogo />
-        <V2Badge className={headerNavClasses.logosBadge} />
+        {LogoComponent ? (
+          <LogoComponent />
+        ) : (
+          <>
+            <Logos.PolkamarketsLogo />
+            <V2Badge className={headerNavClasses.logosBadge} />
+          </>
+        )}
       </Link>
       {theme.device.isTv ? (
         <HeaderNavMenu />
