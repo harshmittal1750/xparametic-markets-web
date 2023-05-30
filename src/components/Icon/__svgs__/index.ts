@@ -21,6 +21,8 @@ export { ReactComponent as Grid } from './Grid.svg';
 export { ReactComponent as LinkedIn } from './LinkedIn.svg';
 export { ReactComponent as Liquidity } from './Liquidity.svg';
 export { ReactComponent as List } from './List.svg';
+export { ReactComponent as LogIn } from './LogIn.svg';
+export { ReactComponent as LogOut } from './LogOut.svg';
 export { ReactComponent as Magnifier } from './Magnifier.svg';
 export { ReactComponent as Medal } from './Medal.svg';
 export { ReactComponent as Medium } from './Medium.svg';
