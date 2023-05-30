@@ -22,7 +22,7 @@ import { useAppDispatch, usePolkamarketsService } from 'hooks';
 import DiscordIcon from '../../assets/icons/DiscordIcon';
 import FacebookIcon from '../../assets/icons/FacebookIcon';
 import GoogleIcon from '../../assets/icons/GoogleIcon';
-import PolkamarketsService from '../../services/PolkamarketsService';
+import { ui } from '../../config';
 import { connectMetamaskProps } from './ConnectMetamask.util';
 
 export default function ConnectMetamask() {
@@ -87,6 +87,10 @@ export default function ConnectMetamask() {
     [dispatch, polkamarketsService, email]
   );
 
+  function isSocialProviderEnabled(provider) {
+    return ui.socialLogin.providers.includes(provider);
+  }
+
   return (
     <>
       <Modal
@@ -146,93 +150,108 @@ export default function ConnectMetamask() {
             </Text>
           </ModalHeader>
           <ModalSection>
-            <Button
-              style={{ marginRight: '3rem' }}
-              variant="outline"
-              color="default"
-              size="sm"
-              onClick={() => socialLogin('google')}
-            >
-              <GoogleIcon />
-            </Button>
-            <Button
-              style={{ marginRight: '3rem' }}
-              variant="outline"
-              color="default"
-              size="sm"
-              onClick={() => socialLogin('facebook')}
-            >
-              <FacebookIcon />
-            </Button>
-            <Button
-              variant="outline"
-              color="default"
-              size="sm"
-              onClick={() => socialLogin('discord')}
-            >
-              <DiscordIcon />
-            </Button>
-
-            <ModalSectionText>
-              <hr
-                style={{
-                  marginTop: '2rem',
-                  border: 'none',
-                  borderBottom: '0.1rem solid white'
-                }}
-              />
-            </ModalSectionText>
-            <ModalSectionText>
-              <form>
-                <div className="pm-c-input__group">
-                  <input
-                    className="pm-c-input--default"
-                    id="email"
-                    value={email}
-                    placeholder="Write your email here"
-                    onChange={e => setEmail(e.target.value)}
-                  />
-                </div>
-              </form>
+            {isSocialProviderEnabled('google') && (
               <Button
-                style={{ marginTop: '1rem' }}
+                style={{ marginRight: '3rem' }}
+                variant="outline"
                 color="default"
                 size="sm"
-                onClick={() => socialLogin('email')}
-                disabled={!email}
+                onClick={() => socialLogin('google')}
               >
-                Email login
+                <GoogleIcon />
               </Button>
-              <ModalSectionText>
-                <hr
-                  style={{
-                    marginTop: '2rem',
-                    border: 'none',
-                    borderBottom: '0.1rem solid white'
-                  }}
-                />
-              </ModalSectionText>
-              <ModalSectionText>
-                <Button
-                  variant="outline"
-                  color="default"
-                  size="sm"
-                  onClick={
-                    !window.ethereum
-                      ? handleMetamaskModal
-                      : () => socialLogin('metamask')
-                  }
-                >
-                  <MetaMaskIcon />
-                  Connect MetaMask
-                </Button>
-              </ModalSectionText>
-            </ModalSectionText>
+            )}
+            {isSocialProviderEnabled('facebook') && (
+              <Button
+                style={{ marginRight: '3rem' }}
+                variant="outline"
+                color="default"
+                size="sm"
+                onClick={() => socialLogin('facebook')}
+              >
+                <FacebookIcon />
+              </Button>
+            )}
+            {isSocialProviderEnabled('discord') && (
+              <Button
+                variant="outline"
+                color="default"
+                size="sm"
+                onClick={() => socialLogin('discord')}
+              >
+                <DiscordIcon />
+              </Button>
+            )}
+
+            {isSocialProviderEnabled('email') && (
+              <>
+                <ModalSectionText>
+                  <hr
+                    style={{
+                      marginTop: '2rem',
+                      border: 'none',
+                      borderBottom: '0.1rem solid white'
+                    }}
+                  />
+                </ModalSectionText>
+                <ModalSectionText>
+                  <form>
+                    <div className="pm-c-input__group">
+                      <input
+                        className="pm-c-input--default"
+                        id="email"
+                        value={email}
+                        placeholder="Write your email here"
+                        onChange={e => setEmail(e.target.value)}
+                      />
+                    </div>
+                  </form>
+                  <Button
+                    style={{ marginTop: '1rem' }}
+                    color="default"
+                    size="sm"
+                    onClick={() => socialLogin('email')}
+                    disabled={!email}
+                  >
+                    Email login
+                  </Button>
+                </ModalSectionText>
+              </>
+            )}
+
+            {isSocialProviderEnabled('metamask') && (
+              <>
+                <ModalSectionText>
+                  <hr
+                    style={{
+                      marginTop: '2rem',
+                      border: 'none',
+                      borderBottom: '0.1rem solid white'
+                    }}
+                  />
+                </ModalSectionText>
+                <ModalSectionText>
+                  <Button
+                    variant="outline"
+                    color="default"
+                    size="sm"
+                    onClick={
+                      !window.ethereum
+                        ? handleMetamaskModal
+                        : () => socialLogin('metamask')
+                    }
+                  >
+                    <MetaMaskIcon />
+                    Connect MetaMask
+                  </Button>
+                </ModalSectionText>
+              </>
+            )}
           </ModalSection>
         </ModalContent>
       </Modal>
 
-      {!PolkamarketsService.isSocialLogin && (
+      {!ui.socialLogin.enabled && (
         <Button
           variant="outline"
           color="default"
@@ -243,14 +262,14 @@ export default function ConnectMetamask() {
           Connect MetaMask
         </Button>
       )}
-      {PolkamarketsService.isSocialLogin && (
-        <Button variant="ghost" color="default" size="sm" onClick={handleLogin}>
-          <Icon
-            name="LogIn"
-            size="lg"
-            style={{ fill: 'var(--color-text-secondary)' }}
-          />
-          Sign In
+      {ui.socialLogin.enabled && (
+        <Button
+          variant="outline"
+          color="default"
+          size="sm"
+          onClick={handleLogin}
+        >
+          Login
         </Button>
       )}
     </>

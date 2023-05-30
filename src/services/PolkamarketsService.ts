@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
-import { features } from 'config';
+import { features, ui } from 'config';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
 
@@ -28,8 +28,6 @@ export default class PolkamarketsService {
   public achievementsContractAddress: string | undefined;
 
   public votingContractAddress: string | undefined;
-
-  static isSocialLogin: boolean = true; // TODO change to env variable
 
   // util functions
   static bytes32ToInt(bytes32Str: string): number {
@@ -60,10 +58,10 @@ export default class PolkamarketsService {
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider: WEB3_PROVIDER,
       web3EventsProvider: WEB3_EVENTS_PROVIDER,
-      isSocialLogin: PolkamarketsService.isSocialLogin,
+      isSocialLogin: ui.socialLogin.enabled,
       socialLoginParams: {
         useCustomModal: true,
-        isTestnet: true,
+        isTestnet: ui.socialLogin.isTestnet,
         urls: [process.env.PUBLIC_URL || process.env.REACT_APP_PUBLIC_URL],
         networkConfig: {
           chainId: 80001,
