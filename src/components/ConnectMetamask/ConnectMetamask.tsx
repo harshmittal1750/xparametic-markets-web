@@ -5,6 +5,7 @@ import { login } from 'redux/ducks/polkamarkets';
 import { MetaMaskIcon, WarningOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalFooter from 'components/ModalFooter';
@@ -243,13 +244,9 @@ export default function ConnectMetamask() {
         </Button>
       )}
       {PolkamarketsService.isSocialLogin && (
-        <Button
-          variant="outline"
-          color="default"
-          size="sm"
-          onClick={handleLogin}
-        >
-          Login
+        <Button variant="ghost" color="default" size="sm" onClick={handleLogin}>
+          <Icon name="LogIn" size="lg" />
+          Sign In
         </Button>
       )}
     </>
