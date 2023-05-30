@@ -93,6 +93,13 @@ const ui = {
     voting: {
       enabled: isTrue(environment.FEATURE_VOTING)
     }
+  },
+  socialLogin: {
+    enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
+    isTestnet: isTrue(environment.FEATURE_SOCIAL_LOGIN_IS_TESTNET),
+    providers: environment.FEATURE_SOCIAL_LOGIN_PROVIDERS
+      ? environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',')
+      : ['google', 'facebook', 'discord', 'email', 'metamask']
   }
 } as const;
 
