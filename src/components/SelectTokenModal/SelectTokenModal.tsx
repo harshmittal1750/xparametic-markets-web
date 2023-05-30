@@ -70,10 +70,20 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   );
 
   useEffect(() => {
-    if (createMarketToken && !availableTokens.includes(createMarketToken)) {
+    if (
+      createMarketToken &&
+      (createMarketToken as Token).addresses &&
+      !(createMarketToken as Token).addresses[network.key]
+    ) {
       dispatch(changeCreateMarketToken(network.currency));
     }
-  }, [availableTokens, createMarketToken, dispatch, network.currency]);
+  }, [
+    availableTokens,
+    createMarketToken,
+    dispatch,
+    network.currency,
+    network.key
+  ]);
 
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
