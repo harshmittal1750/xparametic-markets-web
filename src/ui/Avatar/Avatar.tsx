@@ -9,24 +9,23 @@ export const avatarProps = {
   $radius: ['sm', 'md', 'lg']
 } as const;
 
-export interface AvatarProps
-  extends Pick<
-    React.ComponentPropsWithRef<'img'>,
-    'src' | 'alt' | 'className' | 'ref'
-  > {
-  $size?: typeof avatarProps.$size[number];
-  $radius?: typeof avatarProps.$radius[number];
-}
+type ImageAttrs = React.ComponentPropsWithRef<'img'>;
+export type AvatarProps = Required<Pick<ImageAttrs, 'src' | 'alt'>> &
+  Pick<ImageAttrs, 'className' | 'ref'> & {
+    $size?: typeof avatarProps.$size[number];
+    $radius?: typeof avatarProps.$radius[number];
+  };
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
   { $size, $radius, className, ...props },
   ref
 ) {
+  const { src, alt } = props;
+
   return (
-    // eslint-disable-next-line jsx-a11y/alt-text
-    <img
-      ref={ref}
+    <div
       className={cn(
+        avatarClasses.root,
         {
           [avatarClasses.radiusSm]: $radius === 'sm',
           [avatarClasses.radiusMd]: $radius === 'md',
@@ -37,8 +36,19 @@ const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
         },
         className
       )}
-      {...props}
-    />
+    >
+      {/* TODO: check wheter !image or error */}
+      {src ? (
+        // eslint-disable-next-line jsx-a11y/alt-text
+        <img ref={ref} className={avatarClasses.image} {...props} />
+      ) : (
+        <span className={avatarClasses.caption}>
+          <strong className={avatarClasses.captionText}>
+            {alt.match(/\w/)}
+          </strong>
+        </span>
+      )}
+    </div>
   );
 });
 
