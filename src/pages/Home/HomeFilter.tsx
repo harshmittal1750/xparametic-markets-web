@@ -78,9 +78,9 @@ function ModalFilterAnimation({
       {show && (
         <motion.div
           className={homeClasses.filter}
-          initial={{ width: 0, x: -264 }}
-          animate={{ width: 'auto', x: 0 }}
-          exit={{ width: 0, x: -264 }}
+          initial={{ width: 0, x: -264, opacity: 0 }}
+          animate={{ width: 'auto', x: 0, opacity: 1 }}
+          exit={{ width: 0, x: -264, opacity: 0 }}
           {...props}
         />
       )}

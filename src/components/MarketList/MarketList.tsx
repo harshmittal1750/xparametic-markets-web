@@ -6,6 +6,7 @@ import type {
 } from 'react-virtuoso';
 import { Virtuoso as ReactVirtuoso } from 'react-virtuoso';
 
+import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { Market } from 'models/market';
 import { useRect, useTheme } from 'ui';
@@ -91,7 +92,12 @@ function Virtuoso({ data }: VirtuosoProps) {
     </>
   );
 }
-export default function MarketList() {
+
+type MarketListProps = {
+  filtersVisible: boolean;
+};
+
+export default function MarketList({ filtersVisible }: MarketListProps) {
   const markets = useMarkets();
 
   useEffect(() => {
@@ -100,7 +106,11 @@ export default function MarketList() {
   }, []);
 
   return (
-    <div className="pm-c-market-list">
+    <div
+      className={cn('pm-c-market-list', {
+        'pm-c-market-list--filters-visible': filtersVisible
+      })}
+    >
       {
         {
           loading: (

@@ -1,39 +1,18 @@
-import { useCallback } from 'react';
-
 import cn from 'classnames';
 import { Market } from 'models/market';
 
+import FavoriteMarket from 'components/FavoriteMarket';
 import Icon from 'components/Icon';
-
-import { useFavoriteMarkets } from 'hooks';
 
 type MarketFooterActionsProps = {
   market: Market;
   $variant: 'filled' | 'text';
 };
 
-const buttonProps = {
-  filled: { variant: 'subtle', color: 'default', size: 'sm' },
-  text: { variant: undefined, color: 'noborder', size: undefined }
-} as const;
-
 export default function MarketFooterActions({
   market,
   $variant = 'text'
 }: MarketFooterActionsProps) {
-  const favoriteMarkets = useFavoriteMarkets();
-  const isFavoriteMarket = favoriteMarkets.favoriteMarkets[
-    `${market.networkId}`
-  ]?.includes(market.id);
-  const handleFavClick = useCallback(
-    () =>
-      favoriteMarkets[
-        isFavoriteMarket ? 'removeFavoriteMarket' : 'addFavoriteMarket'
-      ](market.networkId, market.id),
-    [favoriteMarkets, isFavoriteMarket, market.id, market.networkId]
-  );
-  const props = buttonProps[$variant];
-
   return (
     <div className="pm-c-market-footer__actions">
       <a
@@ -46,17 +25,12 @@ export default function MarketFooterActions({
       >
         <Icon name="Share" title="Share" />
       </a>
-      <button
-        type="button"
-        onClick={handleFavClick}
-        className={cn('pm-c-market-footer__actions-button', {
-          'pm-c-market-footer__actions-button-filled': $variant === 'filled',
-          'pm-c-market-footer__actions-favorite--active': isFavoriteMarket
+      <FavoriteMarket
+        market={market}
+        className={cn({
+          'pm-c-market-footer__actions-button-filled': $variant === 'filled'
         })}
-        {...props}
-      >
-        <Icon name="Star" title="Bookmark market" />
-      </button>
+      />
     </div>
   );
 }

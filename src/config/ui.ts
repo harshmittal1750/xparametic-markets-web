@@ -24,14 +24,9 @@ const ui = {
     }
   },
   hero: {
-    enabled: [
-      environment.UI_HERO_IMAGE,
-      environment.UI_HERO_HEADER,
-      environment.UI_HERO_TITLE,
-      environment.UI_HERO_ACTION_TITLE,
-      environment.UI_HERO_ACTION_URL
-    ].every(Boolean),
+    enabled: !!environment.UI_HERO_IMAGE,
     image: environment.UI_HERO_IMAGE,
+    image_url: environment.UI_HERO_IMAGE_URL,
     header: environment.UI_HERO_HEADER,
     title: environment.UI_HERO_TITLE,
     action: {
@@ -40,7 +35,8 @@ const ui = {
     }
   },
   filters: {
-    categories: environment.UI_FILTERS_CATEGORIES?.split(',')
+    categories: environment.UI_FILTERS_CATEGORIES?.split(','),
+    tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
   },
   tradeForm: {
     liquidity: {
@@ -55,7 +51,8 @@ const ui = {
       environment.UI_LEADERBOARD_COLUMNS?.split(',') ||
         defaultLeaderboardColumns,
       leaderboardColumns
-    )
+    ),
+    default_column: environment.UI_LEADERBOARD_DEFAULT_COLUMN
   },
   clubs: {
     enabled: isTrue(environment.FEATURE_CLUBS)

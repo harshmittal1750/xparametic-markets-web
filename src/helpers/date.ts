@@ -5,8 +5,7 @@ import updateLocale from 'dayjs/plugin/updateLocale';
 import utc from 'dayjs/plugin/utc';
 
 function fromTimestampToDate(timestamp: number) {
-  dayjs.extend(utc);
-  return dayjs(timestamp).utc(true);
+  return dayjs(timestamp).utc(false);
 }
 
 function fromTimestampToCustomFormatDate(timestamp: number, format: string) {

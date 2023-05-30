@@ -28,34 +28,33 @@ const defaultMetadata = {
   title: 'Polkamarkets - Autonomous Prediction Markets',
   description:
     'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange.',
-  image: '/polkamarkets_meta.jpg'
+  image: '/metadata-homepage.png'
 };
 
 const metadataByPage = {
   achievements: {
-    title:
-      'NFT Achievements - Illuminate Fantasy League, powered by Polkamarkets',
+    title: 'Achievements - Polkamarkets',
     description:
-      'Predict Football World Cup match winners and grab your exclusive NFT Achievements. The Illuminate Fantasy League is a fantasy predictions tournament focused on the 2022 Football World Cup.',
-    image: '/ifl_meta_achievements.png'
+      'Place predictions in the Polkamarkets app and grab your exclusive NFT Achievements.',
+    image: '/metadata-homepage.png'
   },
   clubs: {
-    title: 'Clubs - Illuminate Fantasy League, powered by Polkamarkets',
+    title: 'Clubs - Polkamarkets',
     description:
       "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
-    image: '/ifl_meta_clubs.png'
+    image: '/metadata-homepage.png'
   },
   leaderboard: {
-    title: 'Leaderboard - Illuminate Fantasy League, powered by Polkamarkets',
+    title: 'Leaderboard - Polkamarkets',
     description:
-      'Rank up higher on the leaderboard and be the #1 forecaster of the Football World Cup. The best global players will earn prizes from the $1500 USD pool, distributed as gift cards.',
-    image: '/ifl_meta_leaderboard.png'
+      'Rank up higher on the leaderboard and be the #1 forecaster of Polkamarkets.',
+    image: '/metadata-leaderboard.png'
   },
   portfolio: {
-    title: 'Portfolio - Illuminate Fantasy League, powered by Polkamarkets',
+    title: 'Portfolio - Polkamarkets',
     description:
-      'Participate in the Illuminate Fantasy League and compete with your friends, coworkers or other community members. Predict Football World Cup match winners and manage your portfolio outcome shares with a seamless and user friendly page.',
-    image: '/ifl_meta_portfolio.png'
+      'Participate in the Polkamarkets app and compete with your friends, coworkers or other community members.',
+    image: '/metadata-portfolio.png'
   }
 };
 
@@ -164,8 +163,7 @@ app.get('/clubs/:slug', async (request, response, next) => {
           url: `${request.headers['x-forwarded-proto'] || 'http'}://${
             request.headers.host
           }/clubs/${request.params.slug}`,
-          title:
-            `${title} - Illuminate Fantasy League` || defaultMetadata.title,
+          title: `${title} - ${defaultMetadata.title}`,
           description:
             metadataByPage.clubs.description || defaultMetadata.description,
           image:
@@ -211,7 +209,7 @@ app.get('/user/:address', (request, response) => {
   });
 });
 
-app.get('/market/create', (request, response) => {
+app.get('/markets/create', (request, response) => {
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();

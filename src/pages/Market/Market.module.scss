@@ -133,3 +133,13 @@
     }
   }
 }
+
+.about {
+  &Description {
+    color: var(--color-text-primary);
+
+    &:not(:last-of-type) {
+      margin-bottom: 1em;
+    }
+  }
+}

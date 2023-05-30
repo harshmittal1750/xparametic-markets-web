@@ -1,6 +1,7 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
+import cn from 'classnames';
 import { ui } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
@@ -145,7 +146,7 @@ function MarketUI() {
   );
 
   return (
-    <div className={marketClasses.root}>
+    <div className={cn(marketClasses.root, 'max-width-screen-xl')}>
       <div className={marketClasses.body}>
         <SEO
           title={market.title}
@@ -192,7 +193,9 @@ function MarketUI() {
             </div>
           )}
           {!theme.device.isDesktop && <MarketAnalytics />}
-          <MarketAbout />
+          {market.description && (
+            <MarketAbout>{market.description}</MarketAbout>
+          )}
           {ui.market.voting.enabled && !theme.device.isDesktop && (
             <section className={marketClasses.section}>
               <MarketTitle>Vote to verify</MarketTitle>
