@@ -72,7 +72,8 @@ export default class PolkamarketsService {
         web3AuthConfig: {
           clientId: process.env.REACT_APP_WEB3AUTH_CLIENT_ID,
           discord: {
-            customVerifier: process.env.REACT_APP_WEB3AUTH_DISCORD_CUSTOM_VERIFIER,
+            customVerifier:
+              process.env.REACT_APP_WEB3AUTH_DISCORD_CUSTOM_VERIFIER,
             clientId: process.env.REACT_APP_WEB3AUTH_DISCORD_CLIENT_ID
           }
         },

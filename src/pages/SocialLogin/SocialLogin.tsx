@@ -99,11 +99,12 @@ function SocialLogin() {
           <label htmlFor="email" className="pm-c-input__label--default">
             Email
           </label>
-         <input
+          <input
             className="pm-c-input--default"
             id="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}/>
+            onChange={e => setEmail(e.target.value)}
+          />
         </div>
       </form>
       <Button
