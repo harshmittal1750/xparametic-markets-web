@@ -2,7 +2,7 @@ import { memo } from 'react';
 
 function DamatTweenLogo() {
   return (
-    <svg height="24" viewBox="0 0 142 24" xmlns="http://www.w3.org/2000/svg">
+    <svg height="36" viewBox="0 0 142 28" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <style>
           {`
