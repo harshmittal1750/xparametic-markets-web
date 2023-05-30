@@ -39,6 +39,7 @@ export default function HeaderActions() {
           [headerClasses.container]: !theme.device.isDesktop
         })}
       >
+        <ThemeSelector />
         {ui.layout.header.networkSelector.enabled && theme.device.isDesktop && (
           <NetworkSelector
             size="sm"
@@ -47,7 +48,6 @@ export default function HeaderActions() {
           />
         )}
         {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
-        <ThemeSelector />
       </Wrapper>
     </Root>
   );

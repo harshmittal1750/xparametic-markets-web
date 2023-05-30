@@ -54,12 +54,14 @@ export default function NetworkSelector() {
         color="default"
         aria-label="Switch theme"
         onClick={handleShow}
+        size="sm"
         className={themeSelectorClasses.root}
       >
         <Icon
           name={isThemeDark(theme.device.mode) ? 'Moon' : 'Sun'}
           size="lg"
         />
+        {isThemeDark(theme.device.mode) ? 'Dark' : 'Light'}
       </Button>
       <Popover position="bottomRight" onHide={handleHide} show={show}>
         {!theme.device.isDesktop && (
