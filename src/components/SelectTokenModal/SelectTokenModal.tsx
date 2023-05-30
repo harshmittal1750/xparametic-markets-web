@@ -1,7 +1,7 @@
-import { useCallback, useState, ChangeEvent, useMemo } from 'react';
+import { useCallback, useState, ChangeEvent, useMemo, useEffect } from 'react';
 
 import cn from 'classnames';
-import { tokens } from 'config';
+import { ui, tokens } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import { changeCreateMarketToken } from 'redux/ducks/polkamarkets';
 import { PolkamarketsService } from 'services';
@@ -37,6 +37,53 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
   const { networkConfig } = useNetwork();
 
   const currency = createMarketToken || network.currency;
+
+  const currencyByNetwork = network.currency;
+  const tokensByNetwork = useMemo(
+    () =>
+      tokens.filter(token =>
+        Object.keys(token.addresses).includes(network.key)
+      ),
+    [network.key]
+  );
+
+  const isOnBlacklist = (token: Currency | Token) =>
+    ui.selectTokenModal.blacklist
+      ? ui.selectTokenModal.blacklist.some(
+          tokenTicker =>
+            tokenTicker.toLowerCase() === token.ticker.toLowerCase()
+        )
+      : false;
+
+  const filterByBlacklist = (token: Currency | Token) => !isOnBlacklist(token);
+
+  const filterBySearchString = (token: Currency | Token) =>
+    token.name.toLowerCase().includes(searchString.toLowerCase()) ||
+    token.ticker.toLowerCase().includes(searchString.toLowerCase());
+
+  const availableTokens = [currencyByNetwork, ...tokensByNetwork].filter(
+    token => filterByBlacklist(token)
+  );
+
+  const filteredTokens = availableTokens.filter(token =>
+    filterBySearchString(token)
+  );
+
+  useEffect(() => {
+    if (
+      createMarketToken &&
+      (createMarketToken as Token).addresses &&
+      !(createMarketToken as Token).addresses[network.key]
+    ) {
+      dispatch(changeCreateMarketToken(network.currency));
+    }
+  }, [
+    availableTokens,
+    createMarketToken,
+    dispatch,
+    network.currency,
+    network.key
+  ]);
 
   const handleShow = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) =>
@@ -77,22 +124,6 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
     [handleHide, dispatch]
   );
 
-  const currencyByNetwork = network.currency;
-  const tokensByNetwork = useMemo(
-    () =>
-      tokens.filter(token =>
-        Object.keys(token.addresses).includes(network.key)
-      ),
-    [network.key]
-  );
-
-  const availableTokens = [currencyByNetwork, ...tokensByNetwork];
-  const filteredTokens = availableTokens.filter(
-    token =>
-      token.name.toLowerCase().includes(searchString.toLowerCase()) ||
-      token.ticker.toLowerCase().includes(searchString.toLowerCase())
-  );
-
   if (searchToken) {
     const tokenByTicker = (Object.values(tokens).find(
       token => token.ticker === searchToken.ticker
@@ -110,6 +141,9 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
 
     filteredTokens.push(res);
   }
+
+  const searchTokenIsOnBlacklist =
+    filteredTokens.length === 1 && isOnBlacklist(filteredTokens[0]);
 
   return (
     <>
@@ -181,6 +215,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                     color="default"
                     className={selectTokenModalClasses.buttonListItem}
                     onClick={() => handleSelect(token)}
+                    disabled={isOnBlacklist(token)}
                   >
                     {token.iconName === 'Token' ? (
                       <TokenIcon
@@ -205,39 +240,60 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
           </Container>
           <Container className={selectTokenModalClasses.dialogList}>
             {!isEmpty(filteredTokens) ? (
-              <VirtualizedList
-                height="100%"
-                data={filteredTokens}
-                itemContent={(_index, token) => (
-                  <div
-                    role="button"
-                    tabIndex={0}
-                    className={selectTokenModalClasses.listItem}
-                    onClick={() => handleSelect(token)}
-                    onKeyPress={() => handleSelect(token)}
-                  >
-                    {token.iconName === 'Token' ? (
-                      <TokenIcon
-                        className={selectTokenModalClasses.listItemIcon}
-                        ticker={token.ticker}
-                      />
-                    ) : (
-                      <Icon
-                        name={token.iconName}
-                        className={selectTokenModalClasses.listItemIcon}
-                      />
-                    )}
-                    <div className={selectTokenModalClasses.listItemNameGroup}>
-                      <span className={selectTokenModalClasses.listItemName}>
-                        {token.name}
-                      </span>
-                      <span className={selectTokenModalClasses.listItemTicker}>
-                        {token.ticker}
-                      </span>
+              <>
+                <VirtualizedList
+                  height="100%"
+                  data={filteredTokens}
+                  itemContent={(_index, token) => (
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className={cn(selectTokenModalClasses.listItem, {
+                        [selectTokenModalClasses.listItemDisabled]:
+                          isOnBlacklist(token)
+                      })}
+                      onClick={() => handleSelect(token)}
+                      onKeyPress={() => handleSelect(token)}
+                    >
+                      {token.iconName === 'Token' ? (
+                        <TokenIcon
+                          className={selectTokenModalClasses.listItemIcon}
+                          ticker={token.ticker}
+                        />
+                      ) : (
+                        <Icon
+                          name={token.iconName}
+                          className={selectTokenModalClasses.listItemIcon}
+                        />
+                      )}
+                      <div
+                        className={selectTokenModalClasses.listItemNameGroup}
+                      >
+                        <span className={selectTokenModalClasses.listItemName}>
+                          {token.name}
+                        </span>
+                        <span
+                          className={selectTokenModalClasses.listItemTicker}
+                        >
+                          {token.ticker}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                )}
-              />
+                  )}
+                  components={{
+                    Footer: () =>
+                      searchTokenIsOnBlacklist ? (
+                        <div className={selectTokenModalClasses.listError}>
+                          <p
+                            className={selectTokenModalClasses.listErrorMessage}
+                          >
+                            {`${filteredTokens[0].ticker} is used to secure and curate the Polkamarkets Protocol. It shouldn’t be used directly in markets`}
+                          </p>
+                        </div>
+                      ) : null
+                  }}
+                />
+              </>
             ) : (
               <div className={selectTokenModalClasses.listEmpty}>
                 <Icon
