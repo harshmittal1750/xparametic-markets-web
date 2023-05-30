@@ -13,15 +13,6 @@ const pages = {
     meta: null,
     enabled: true
   },
-  login: {
-    pathname: '/sociallogin',
-    Component: lazy(() => import('pages/SocialLogin')),
-    exact: false,
-    navigation: false,
-    name: '',
-    meta: null,
-    enabled: true
-  },
   club: {
     pathname: '/clubs/:slug',
     Component: Leaderboard,
