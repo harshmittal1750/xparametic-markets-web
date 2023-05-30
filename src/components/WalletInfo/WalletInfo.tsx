@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { formatNumberToString } from 'helpers/math';
-import { Adornment, Avatar } from 'ui';
+import { Avatar } from 'ui';
 
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
