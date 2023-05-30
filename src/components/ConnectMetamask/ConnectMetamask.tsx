@@ -263,13 +263,13 @@ export default function ConnectMetamask() {
         </Button>
       )}
       {ui.socialLogin.enabled && (
-        <Button
-          variant="outline"
-          color="default"
-          size="sm"
-          onClick={handleLogin}
-        >
-          Login
+        <Button variant="ghost" color="default" size="sm" onClick={handleLogin}>
+          <Icon
+            name="LogIn"
+            size="lg"
+            style={{ fill: 'var(--color-text-secondary)' }}
+          />
+          Sign In
         </Button>
       )}
     </>
