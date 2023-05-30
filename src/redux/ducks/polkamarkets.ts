@@ -227,6 +227,12 @@ function login(polkamarketsService: PolkamarketsService) {
         .isPolkClaimed()
         .then(polkClaimed => {
           dispatch(changePolkClaimed(polkClaimed));
+          dispatch(
+            changeLoading({
+              key: 'login',
+              value: false
+            })
+          );
         })
         .catch(() => {});
 

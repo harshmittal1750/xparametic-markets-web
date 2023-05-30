@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { login } from 'redux/ducks/polkamarkets';
 import { Transaction } from 'types/transaction';
@@ -55,9 +55,22 @@ function WalletInfoClaim() {
     }
   }, [dispatch, polkamarketsService, showToastNotification]);
 
-  if (!isPolkClaimed && !isClaiming && !isLoadingPolkClaimed) {
-    handleClaim();
-  }
+  useEffect(() => {
+    if (
+      !isPolkClaimed &&
+      !isClaiming &&
+      !isLoadingPolkClaimed &&
+      transaction.state === 'not_started'
+    ) {
+      handleClaim();
+    }
+  }, [
+    isPolkClaimed,
+    isClaiming,
+    isLoadingPolkClaimed,
+    transaction,
+    handleClaim
+  ]);
 
   return (
     <>
