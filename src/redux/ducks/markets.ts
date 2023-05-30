@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment } from 'config';
+import { environment, ui } from 'config';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { toStartEnd } from 'helpers/date';
@@ -8,18 +8,29 @@ import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
+import some from 'lodash/some';
 import uniqBy from 'lodash/uniqBy';
+import without from 'lodash/without';
 import { Market } from 'models/market';
 import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
 
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 
+import { useFantasyTokenTicker } from 'hooks';
+
 import { getCurrencyByTicker, getNetworkById } from './market';
 
 dayjs.extend(isBetween);
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
+
+// eslint-disable-next-line react-hooks/rules-of-hooks
+const fantasyTokenTicker = useFantasyTokenTicker();
+
+const isMarketTokenFantasy = (market: Market) => {
+  return !fantasyTokenTicker || market.token.symbol === fantasyTokenTicker;
+};
 
 const isMarketFromAvailableNetwork = (market: Market) =>
   AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
@@ -107,23 +118,26 @@ const marketsSlice = createSlice({
         return {
           payload: {
             type,
-            data: data.filter(isMarketFromAvailableNetwork).map(market => {
-              const network = getNetworkById(market.networkId);
-              const currencyByTokenSymbol = getCurrencyByTicker(
-                market.token.symbol
-              );
+            data: data
+              .filter(isMarketFromAvailableNetwork)
+              .filter(isMarketTokenFantasy)
+              .map(market => {
+                const network = getNetworkById(market.networkId);
+                const currencyByTokenSymbol = getCurrencyByTicker(
+                  market.token.symbol
+                );
 
-              return {
-                ...market,
-                network,
-                currency: network.currency,
-                token: {
-                  ...market.token,
-                  ticker: market.token.symbol,
-                  iconName: currencyByTokenSymbol.iconName
-                }
-              } as Market;
-            })
+                return {
+                  ...market,
+                  network,
+                  currency: network.currency,
+                  token: {
+                    ...market.token,
+                    ticker: market.token.symbol,
+                    iconName: currencyByTokenSymbol.iconName
+                  }
+                } as Market;
+              })
           },
           type
         };
@@ -249,6 +263,7 @@ type MarketsSelectorArgs = {
     };
     states: string[];
     networks: string[];
+    tokens: string[];
     volume: string;
     liquidity: string;
     endDate: string;
@@ -269,6 +284,28 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     !isEmpty(filters.networks)
       ? filters.networks.includes(`${networkId}`)
       : true;
+
+  const filterByTokenSymbol = (tokenSymbol: string) => {
+    if (isEmpty(filters.tokens)) {
+      return true;
+    }
+
+    if (
+      some(
+        without(filters.tokens, 'other').map(token =>
+          tokenSymbol.includes(token)
+        )
+      )
+    ) {
+      return true;
+    }
+
+    if (filters.tokens.includes('other')) {
+      return !some(ui.filters.tokens.map(token => tokenSymbol.includes(token)));
+    }
+
+    return false;
+  };
 
   const filterByState = marketState =>
     !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
@@ -352,6 +389,7 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
           market.title?.match(regExpFromSearchQuery)) &&
         filterByFavorite(market.id, market.networkId) &&
         filterByNetworkId(market.networkId) &&
+        filterByTokenSymbol(market.token.symbol) &&
         filterByState(market.state) &&
         filterByVolume(market.volumeEur) &&
         filterByLiquidity(market.liquidityEur) &&

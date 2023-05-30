@@ -34,8 +34,10 @@ const ui = {
       url: environment.UI_HERO_ACTION_URL
     }
   },
+  logo: environment.UI_LOGO,
   filters: {
-    categories: environment.UI_FILTERS_CATEGORIES?.split(',')
+    categories: environment.UI_FILTERS_CATEGORIES?.split(','),
+    tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
   },
   tradeForm: {
     liquidity: {

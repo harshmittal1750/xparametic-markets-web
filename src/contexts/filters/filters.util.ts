@@ -122,6 +122,21 @@ const filters: Filters = {
       multiple: true,
       enabled: features.regular.enabled
     },
+    tokens: {
+      title: 'Token',
+      options: [
+        ...ui.filters.tokens.map(token => ({
+          label: token,
+          value: token
+        })),
+        {
+          label: 'Other',
+          value: 'other'
+        }
+      ],
+      multiple: true,
+      enabled: true
+    },
     volume: {
       title: 'Volume',
       options: defaultRangeOptions,
@@ -171,6 +186,7 @@ const filtersInitialState: FiltersState = {
   dropdowns: {
     states: [],
     networks: [],
+    tokens: [],
     volume: 'any',
     liquidity: 'any',
     endDate: 'any',
