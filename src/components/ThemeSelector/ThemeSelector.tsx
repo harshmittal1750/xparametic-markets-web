@@ -58,6 +58,7 @@ export default function NetworkSelector() {
         className={themeSelectorClasses.root}
       >
         <Icon
+          style={{ fill: 'var(--color-text-secondary)' }}
           name={isThemeDark(theme.device.mode) ? 'Moon' : 'Sun'}
           size="lg"
         />

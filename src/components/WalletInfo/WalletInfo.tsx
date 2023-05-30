@@ -66,8 +66,12 @@ export default function WalletInfo() {
         size="sm"
         onClick={handleSocialLogout}
       >
-        <Icon name="LogOut" size="lg" />
-        Logout
+        <Icon
+          name="LogOut"
+          size="lg"
+          style={{ fill: 'var(--color-text-secondary)' }}
+        />
+        Sign Out
       </Button>
       <div className="pm-c-wallet-info__profile">
         <Link to={`/user/${ethAddress}`}>
@@ -79,7 +83,11 @@ export default function WalletInfo() {
           />
         </Link>
         <div>
-          <Text scale="caption" fontWeight="semibold">
+          <Text
+            scale="caption"
+            fontWeight="semibold"
+            style={{ color: 'var(--color-text-primary)' }}
+          >
             {user.name}
           </Text>
           <Text

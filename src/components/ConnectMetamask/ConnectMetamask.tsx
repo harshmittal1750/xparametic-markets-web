@@ -245,7 +245,11 @@ export default function ConnectMetamask() {
       )}
       {PolkamarketsService.isSocialLogin && (
         <Button variant="ghost" color="default" size="sm" onClick={handleLogin}>
-          <Icon name="LogIn" size="lg" />
+          <Icon
+            name="LogIn"
+            size="lg"
+            style={{ fill: 'var(--color-text-secondary)' }}
+          />
           Sign In
         </Button>
       )}
