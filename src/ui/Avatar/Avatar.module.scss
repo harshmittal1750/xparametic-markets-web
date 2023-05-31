@@ -7,11 +7,12 @@
 .caption {
   position: absolute;
   inset: 0px;
-  background-color: var(--color-text-quinary);
+  background-color: var(--color-text-sextary);
   display: inherit;
 
   &Text {
     margin: auto;
+    color: var(--color-text-quaternary);
   }
 }
 
