@@ -9,6 +9,8 @@ app.use(helmet.frameguard({ action: 'deny' }));
 const port = process.env.PORT || 5000;
 const isClubsEnabled =
   process.env.REACT_APP_FEATURE_CLUBS?.toLowerCase() === 'true';
+const isTournamentsEnabled =
+  process.env.REACT_APP_FEATURE_TOURNAMENTS?.toLowerCase() === 'true';
 const isAchievementsEnabled =
   process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() === 'true';
 
@@ -42,6 +44,11 @@ const metadataByPage = {
     title: 'Clubs - Polkamarkets',
     description:
       "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
+    image: '/metadata-homepage.png'
+  },
+  tournaments: {
+    title: 'Tournaments - Polkamarkets',
+    description: '',
     image: '/metadata-homepage.png'
   },
   leaderboard: {
@@ -176,6 +183,22 @@ app.get('/clubs/:slug', async (request, response, next) => {
     } catch (e) {
       return response.send(defaultMetadataTemplate(request, htmlData));
     }
+  });
+});
+
+app.get('/tournaments', (request, response, next) => {
+  if (!isTournamentsEnabled) {
+    next();
+    return;
+  }
+
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+    return response.send(
+      metadataByPageTemplate('tournaments', request, htmlData)
+    );
   });
 });
 
