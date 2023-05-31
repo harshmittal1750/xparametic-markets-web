@@ -202,6 +202,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
           </Container>
           <Container className={selectTokenModalClasses.dialogContent}>
             <SearchBar
+              size="md"
               placeholder="Search name or paste address"
               onSearch={() => {}}
               onChange={handleChange}

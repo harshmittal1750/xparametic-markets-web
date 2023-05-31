@@ -7,19 +7,18 @@ import { SearchBarProps } from './SearchBar.type';
 /**
  * A search bar with standard search input
  */
-function SearchBar({
-  size = 'md',
-  className,
-  onSearch,
-  ...props
-}: SearchBarProps) {
+function SearchBar({ size, className, onSearch, ...props }: SearchBarProps) {
   return (
     <form
       role="search"
-      className={cn('pm-c-searchbar', className?.form, {
-        'pm-c-searchbar--sm': size === 'sm',
-        'pm-c-searchbar--md': size === 'md'
-      })}
+      className={cn(
+        'pm-c-searchbar',
+        {
+          'pm-c-searchbar--sm': size === 'sm',
+          'pm-c-searchbar--md': size === 'md'
+        },
+        className?.form
+      )}
       onSubmit={onSearch}
     >
       <button
