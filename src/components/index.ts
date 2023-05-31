@@ -65,7 +65,6 @@ import Tooltip from './Tooltip';
 import TradeForm from './TradeForm';
 import VoteArrows from './VoteArrows';
 import VoteModal from './VoteModal';
-import WalletInfo from './WalletInfo';
 
 export {
   Alert,
@@ -138,15 +137,12 @@ export {
   ToggleSwitch,
   TradeForm,
   VoteArrows,
-  VoteModal,
-  WalletInfo
+  VoteModal
 };
 
 export { default as ApproveToken } from './ApproveToken';
 
 export { default as BetaTesting } from './BetaTesting';
-
-export { default as ConnectMetamask } from './ConnectMetamask';
 
 export { default as CreateLeaderboardGroup } from './CreateLeaderboardGroup';
 
