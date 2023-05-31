@@ -36,6 +36,19 @@ const pages = {
     },
     enabled: ui.clubs.enabled
   },
+  tournaments: {
+    pathname: '/tournaments',
+    Component: lazy(() => import('pages/Tournaments')),
+    exact: true,
+    navigation: true,
+    name: 'Tournaments',
+    meta: {
+      title: 'Tournaments - Polkamarkets',
+      description: '',
+      image: `${process.env.PUBLIC_URL}/metadata-homepage.png`
+    },
+    enabled: ui.tournaments.enabled
+  },
   leaderboard: {
     pathname: '/leaderboard',
     Component: Leaderboard,
