@@ -68,7 +68,7 @@ export default class PolkamarketsService {
           dappAPIKey: process.env.REACT_APP_NETWORK_80001_SOCIAL_LOGIN_DAPP
         },
         web3AuthConfig: {
-          // clientId: process.env.REACT_APP_WEB3AUTH_CLIENT_ID,
+          clientId: process.env.REACT_APP_WEB3AUTH_CLIENT_ID,
           discord: {
             customVerifier:
               process.env.REACT_APP_WEB3AUTH_DISCORD_CUSTOM_VERIFIER,
