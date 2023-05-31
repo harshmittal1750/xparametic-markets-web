@@ -204,6 +204,8 @@ export { default as OutcomeItem } from './OutcomeItem';
 
 export { default as OutcomeItemText } from './OutcomeItemText';
 
+export { default as Profile } from './Profile';
+
 export { default as SelectTokenModal } from './SelectTokenModal';
 
 export { default as Steps } from './Steps';
