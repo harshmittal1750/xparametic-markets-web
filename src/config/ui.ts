@@ -9,6 +9,14 @@ import {
 import environment from './environment';
 import features from './features';
 
+export type Providers = 'Google' | 'Facebook' | 'Discord' | 'Email';
+
+const providers = (environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',') || [
+  'Google',
+  'Facebook',
+  'Discord',
+  'Email'
+]) as unknown as Array<Providers>;
 const ui = {
   layout: {
     header: {
@@ -100,9 +108,7 @@ const ui = {
   socialLogin: {
     enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
     isTestnet: isTrue(environment.FEATURE_SOCIAL_LOGIN_IS_TESTNET),
-    providers: environment.FEATURE_SOCIAL_LOGIN_PROVIDERS
-      ? environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',')
-      : ['google', 'facebook', 'discord', 'email', 'metamask']
+    providers
   }
 } as const;
 
