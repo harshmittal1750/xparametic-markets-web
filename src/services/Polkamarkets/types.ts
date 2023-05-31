@@ -8,6 +8,7 @@ import {
 } from 'types/leaderboard';
 import { MarketState } from 'types/market';
 import { FeedActivity } from 'types/portfolio';
+import { Tournament } from 'types/tournament';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -141,6 +142,9 @@ export type GetLeaderboardGroupBySlugArgs = {
 // getUserLeaderboards
 export type GetLeaderboardGroupsByUserData = UserLeaderboard[];
 export type GetLeaderboardGroupsByUserArgs = { user: string };
+
+// getTournaments
+export type GetTournamentsData = Tournament[];
 
 // getPortfolioFeedByAddress
 export type GetPortfolioFeedByAddressData = FeedActivity[];
