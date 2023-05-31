@@ -1,5 +1,7 @@
 import { Container } from 'ui';
 
+import TournamentsList from './TournamentsList';
+
 function Tournaments() {
   return (
     <Container className="pm-p-leaderboard max-width-screen-xl">
@@ -10,6 +12,9 @@ function Tournaments() {
             Compete with your friends, coworkers and community.
           </p>
         </div>
+      </div>
+      <div className="padding-y-6 bg-2 border-radius-medium border-solid border-1 width-full">
+        <TournamentsList />
       </div>
     </Container>
   );
