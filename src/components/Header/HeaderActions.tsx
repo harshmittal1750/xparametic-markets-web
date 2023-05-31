@@ -1,13 +1,13 @@
 import { Fragment, useEffect } from 'react';
 
 import cn from 'classnames';
-import { ui } from 'config';
+import { features, ui } from 'config';
 import { Container, useTheme } from 'ui';
 
-import ConnectMetamask from 'components/ConnectMetamask';
 import NetworkSelector from 'components/NetworkSelector';
+import Profile from 'components/Profile';
 import ThemeSelector from 'components/ThemeSelector';
-import WalletInfo from 'components/WalletInfo';
+import Wallet from 'components/Wallet';
 
 import { useAppSelector, usePortal } from 'hooks';
 
@@ -27,27 +27,27 @@ function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
 }
 export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const theme = useTheme();
-  const { Root, Wrapper } = theme.device.isDesktop
-    ? { Root: Fragment, Wrapper: 'div' }
-    : { Root: HeaderActionsWrapper, Wrapper: Container };
+  const { isDesktop } = useTheme().device;
+  const Root = isDesktop ? Fragment : HeaderActionsWrapper;
+  const Wrapper = isDesktop ? 'div' : Container;
+  const HeaderActionsIntegration = features.fantasy.enabled ? Profile : Wallet;
 
   return (
     <Root>
       <Wrapper
         className={cn(headerActionsClasses.root, {
-          [headerClasses.container]: !theme.device.isDesktop
+          [headerClasses.container]: !isDesktop
         })}
       >
         <ThemeSelector />
-        {ui.layout.header.networkSelector.enabled && theme.device.isDesktop && (
+        {ui.layout.header.networkSelector.enabled && isDesktop && (
           <NetworkSelector
             size="sm"
             responsive
             className={headerActionsClasses.network}
           />
         )}
-        {isLoggedIn ? <WalletInfo /> : <ConnectMetamask />}
+        <HeaderActionsIntegration isLoggedIn={isLoggedIn} />
       </Wrapper>
     </Root>
   );
