@@ -16,6 +16,8 @@ import {
   usePolkamarketsService
 } from 'hooks';
 
+import profileSignoutClasses from './Profile.module.scss';
+
 const user = {
   src: '',
   name: 'User Name'
@@ -62,12 +64,13 @@ export default function ProfileSignout() {
   }, [userInfo, ethAddress]);
 
   return (
-    <div>
+    <div className={profileSignoutClasses.signout}>
       <Button
         variant="ghost"
         color="default"
         size="sm"
         onClick={handleSocialLogout}
+        className={profileSignoutClasses.signoutButton}
       >
         <Icon
           name="LogOut"
@@ -81,8 +84,8 @@ export default function ProfileSignout() {
           <Avatar
             $size="sm"
             $radius="lg"
-            src="https://polkamarkets.infura-ipfs.io/ipfs/QmRM8tsi1LVZyCdcWjkgcEgM7JxU8AZGsD6uf8p5BAMvgY"
-            alt={user.name}
+            src=""
+            alt={user.name.toUpperCase()}
           />
         </Link>
         <div>
