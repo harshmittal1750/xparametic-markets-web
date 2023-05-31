@@ -214,4 +214,6 @@ export { default as ThemeSelector } from './ThemeSelector';
 
 export { default as VirtualizedList } from './VirtualizedList';
 
+export { default as Wallet } from './Wallet';
+
 export { default as WrongNetwork } from './WrongNetwork';
