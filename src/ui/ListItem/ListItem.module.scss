@@ -12,10 +12,17 @@
   border: none;
   width: 100%;
   cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
 
   &:hover,
   &Active {
     --background-color: var(--color-text-quinary);
     --color: var(--color-text-primary);
+
+    &:hover {
+      --color: var(--color-text-secondary);
+    }
   }
 }
