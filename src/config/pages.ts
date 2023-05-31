@@ -28,12 +28,7 @@ const pages = {
     exact: true,
     navigation: true,
     name: 'Clubs',
-    meta: {
-      title: 'Clubs - Polkamarkets',
-      description:
-        "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
-      image: `${process.env.PUBLIC_URL}/metadata-homepage.png`
-    },
+    meta: null,
     enabled: ui.clubs.enabled
   },
   leaderboard: {
@@ -42,12 +37,7 @@ const pages = {
     exact: false,
     navigation: true,
     name: 'Leaderboard',
-    meta: {
-      title: 'Leaderboard - Polkamarkets',
-      description:
-        'Rank up higher on the leaderboard and be the #1 forecaster of Polkamarkets.',
-      image: `${process.env.PUBLIC_URL}/metadata-leaderboard.png`
-    },
+    meta: null,
     enabled: true
   },
   achievements: {
@@ -56,12 +46,7 @@ const pages = {
     exact: false,
     navigation: true,
     name: 'Achievements',
-    meta: {
-      title: 'Achievements - Polkamarkets',
-      description:
-        'Place predictions in the Polkamarkets app and grab your exclusive NFT Achievements.',
-      image: `${process.env.PUBLIC_URL}/metadata-homepage.png`
-    },
+    meta: null,
     enabled: ui.achievements.enabled
   },
   portfolio: {
@@ -70,12 +55,7 @@ const pages = {
     exact: false,
     navigation: true,
     name: 'Portfolio',
-    meta: {
-      title: 'Portfolio - Polkamarkets',
-      description:
-        'Participate in the Polkamarkets app and compete with your friends, coworkers or other community members.',
-      image: `${process.env.PUBLIC_URL}/metadata-portfolio.png`
-    },
+    meta: null,
     enabled: true
   },
   home: {
@@ -84,12 +64,7 @@ const pages = {
     exact: false,
     navigation: true,
     name: 'Markets',
-    meta: {
-      title: 'Polkamarkets - Autonomous Prediction Markets',
-      description:
-        'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange.',
-      image: `${process.env.PUBLIC_URL}/polkamarkets_meta.jpg`
-    },
+    meta: null,
     enabled: true,
     pages: {
       create: {
