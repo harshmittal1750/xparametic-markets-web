@@ -39,6 +39,9 @@ const ui = {
     categories: environment.UI_FILTERS_CATEGORIES?.split(','),
     tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
   },
+  selectTokenModal: {
+    blacklist: environment.UI_TOKEN_BLACKLIST?.split(',')
+  },
   tradeForm: {
     liquidity: {
       enabled: features.regular.enabled
