@@ -147,6 +147,12 @@ export type GetLeaderboardGroupsByUserArgs = { user: string };
 // getTournaments
 export type GetTournamentsData = Tournament[];
 
+// getTournamentBySlug
+export type GetTournamentBySlugData = Tournament;
+export type GetTournamentBySlugArgs = {
+  slug: string;
+};
+
 // getPortfolioFeedByAddress
 export type GetPortfolioFeedByAddressData = FeedActivity[];
 

@@ -45,7 +45,9 @@ import {
   GetLeaderboardGroupsByUserArgs,
   JoinLeaderboardGroupData,
   JoinLeaderboardGroupParams,
-  GetTournamentsData
+  GetTournamentsData,
+  GetTournamentBySlugData,
+  GetTournamentBySlugArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -212,6 +214,14 @@ const polkamarketsApi = createApi({
       query: () => `/tournaments`,
       transformResponse: (response: GetTournamentsData) => camelize(response)
     }),
+    getTournamentBySlug: builder.query<
+      GetTournamentBySlugData,
+      GetTournamentBySlugArgs
+    >({
+      query: ({ slug }) => `/tournaments/${slug}`,
+      transformResponse: (response: GetTournamentBySlugData) =>
+        camelize(response)
+    }),
     getPortfolioFeedByAddress: builder.query<
       GetPortfolioFeedByAddressData,
       GetPortfolioFeedByAddressArgs
@@ -243,5 +253,6 @@ export const {
   useGetLeaderboardGroupBySlugQuery,
   useGetLeaderboardGroupsByUserQuery,
   useGetTournamentsQuery,
+  useGetTournamentBySlugQuery,
   useGetPortfolioFeedByAddressQuery
 } = polkamarketsApi;
