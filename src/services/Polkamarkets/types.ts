@@ -89,6 +89,7 @@ export type GetLeaderboardByTimeframeData = GetLeaderboardBaseData[];
 export type GetLeaderboardByTimeframeArgs = {
   timeframe: LeaderboardTimeframe;
   networkId: string;
+  tournamentId?: string;
 };
 
 // getLeaderboardByAddress

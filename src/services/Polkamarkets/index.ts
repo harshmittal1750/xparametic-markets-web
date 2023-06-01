@@ -121,8 +121,17 @@ const polkamarketsApi = createApi({
       GetLeaderboardByTimeframeData,
       GetLeaderboardByTimeframeArgs
     >({
-      query: ({ timeframe, networkId }) =>
-        `/leaderboards?timeframe=${timeframe}&network_id=${networkId}`,
+      query: ({ timeframe, networkId, tournamentId }) => ({
+        url: `/leaderboards`,
+        params: pickBy(
+          {
+            timeframe,
+            network_id: networkId,
+            tournament_id: tournamentId
+          },
+          identity
+        )
+      }),
       transformResponse: (response: GetLeaderboardByTimeframeData) =>
         getLeaderboardByTimeframeTransformResponse(camelize(response))
     }),
