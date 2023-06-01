@@ -15,15 +15,13 @@ export default function ProfileSigninEmail(
 
   return (
     <>
-      <ModalSectionText>
-        <hr
-          style={{
-            marginTop: '2rem',
-            border: 'none',
-            borderBottom: '0.1rem solid white'
-          }}
-        />
-      </ModalSectionText>
+      <hr
+        style={{
+          marginTop: '2rem',
+          border: 'none',
+          borderBottom: '0.1rem solid white'
+        }}
+      />
       <ModalSectionText>
         <form>
           <div className="pm-c-input__group">

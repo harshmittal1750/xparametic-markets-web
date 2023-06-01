@@ -202,6 +202,12 @@ export { default as OutcomeItemText } from './OutcomeItemText';
 
 export { default as Profile } from './Profile';
 
+export { default as ProfileSignin } from './ProfileSignin';
+
+export { default as ProfileSigninEmail } from './ProfileSigninEmail';
+
+export { default as ProfileSignout } from './ProfileSignout';
+
 export { default as SelectTokenModal } from './SelectTokenModal';
 
 export { default as Steps } from './Steps';

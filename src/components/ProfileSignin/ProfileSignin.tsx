@@ -12,6 +12,7 @@ import ModalHeader from 'components/ModalHeader';
 import ModalHeaderHide from 'components/ModalHeaderHide';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
+import ProfileSigninEmail from 'components/ProfileSigninEmail';
 import Text from 'components/Text';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';
@@ -19,7 +20,6 @@ import { useAppDispatch, usePolkamarketsService } from 'hooks';
 import DiscordIcon from '../../assets/icons/DiscordIcon';
 import FacebookIcon from '../../assets/icons/FacebookIcon';
 import GoogleIcon from '../../assets/icons/GoogleIcon';
-import ProfileSigninEmail from './ProfileSigninEmail';
 
 const providers = {
   Discord: <DiscordIcon />,

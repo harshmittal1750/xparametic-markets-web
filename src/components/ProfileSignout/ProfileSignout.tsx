@@ -16,7 +16,7 @@ import {
   usePolkamarketsService
 } from 'hooks';
 
-import profileSignoutClasses from './Profile.module.scss';
+import profileSignoutClasses from './ProfileSignout.module.scss';
 
 const user = {
   src: '',
@@ -64,13 +64,13 @@ export default function ProfileSignout() {
   }, [userInfo, ethAddress]);
 
   return (
-    <div className={profileSignoutClasses.signout}>
+    <div className={profileSignoutClasses.root}>
       <Button
         variant="ghost"
         color="default"
         size="sm"
         onClick={handleSocialLogout}
-        className={profileSignoutClasses.signoutButton}
+        className={profileSignoutClasses.signout}
       >
         <Icon
           name="LogOut"

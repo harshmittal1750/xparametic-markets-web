@@ -1,5 +1,5 @@
-import ProfileSignin from './ProfileSignin';
-import ProfileSignout from './ProfileSignout';
+import ProfileSignin from 'components/ProfileSignin';
+import ProfileSignout from 'components/ProfileSignout';
 
 type ProfileProps = {
   isLoggedIn: boolean;
