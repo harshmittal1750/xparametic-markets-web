@@ -15,21 +15,19 @@ async function getUserGeolocation() {
 
 async function updateSocialLoginInfo(
   authenticationToken: string,
-  username: string,
   loginType: string,
   walletAddress: string,
   avatar: string,
-  discordServers: any[]
+  oAuthAccessToken: string
 ) {
   const url = `${polkamarketsApiUrl}/users`;
   return api.put(
     url,
     {
-      username,
       login_type: loginType,
       wallet_address: walletAddress,
       avatar,
-      discord_servers: discordServers
+      oauth_access_token: oAuthAccessToken
     },
     {
       headers: {

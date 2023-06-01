@@ -22,7 +22,6 @@ import {
 } from 'hooks';
 
 import { logout } from '../../redux/ducks/polkamarkets';
-import { PolkamarketsService } from '../../services';
 import { updateSocialLoginInfo } from '../../services/Polkamarkets/user';
 import { Transak } from '../integrations';
 import WalletInfoClaim from './WalletInfoClaim';
@@ -63,22 +62,13 @@ export default function WalletInfo() {
 
   useEffect(() => {
     const fetchData = async () => {
-      let username;
-      let servers = [];
-
-      if (userInfo.typeOfLogin === 'discord') {
-        ({ username, servers } =
-          await PolkamarketsService.getDiscordUsernameAndServer(userInfo));
-      }
-
       // send data to backend
-      updateSocialLoginInfo(
+      await updateSocialLoginInfo(
         userInfo.idToken,
-        username,
         userInfo.typeOfLogin,
         ethAddress,
         userInfo.profileImage,
-        servers.map((server: any) => ({ id: server.id, name: server.name }))
+        userInfo.oAuthAccessToken
       );
     };
 

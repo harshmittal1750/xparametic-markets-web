@@ -4,8 +4,6 @@ import { features, ui } from 'config';
 import environment, { NetworkConfig } from 'config/environment';
 import * as polkamarketsjs from 'polkamarkets-js';
 
-import api from './Polkamarkets/api';
-
 export default class PolkamarketsService {
   // polkamarkets app
   public polkamarkets: any;
@@ -161,20 +159,6 @@ export default class PolkamarketsService {
 
   public async getSocialLoginUserInfo() {
     return this.polkamarkets.getSocialLoginUserInfo();
-  }
-
-  public static async getDiscordUsernameAndServer(userInfo) {
-    // get username and servers
-    const [{ data: userData }, { data: serverData }] = await Promise.all([
-      api.get('https://discord.com/api/users/@me', {
-        headers: { Authorization: `Bearer ${userInfo.oAuthAccessToken}` }
-      }),
-      api.get('https://discord.com/api/users/@me/guilds', {
-        headers: { Authorization: `Bearer ${userInfo.oAuthAccessToken}` }
-      })
-    ]);
-
-    return { username: userData.username, servers: serverData };
   }
 
   // returns wether wallet is connected to service or not
