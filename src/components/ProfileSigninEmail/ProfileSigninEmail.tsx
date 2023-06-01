@@ -1,7 +1,11 @@
 import { useCallback, useState } from 'react';
 
-import { Button, ButtonProps } from 'components/Button';
-import ModalSectionText from 'components/ModalSectionText';
+import { Divider } from 'ui';
+
+import { Button } from 'components/Button';
+import type { ButtonProps } from 'components/Button';
+
+import profileSigninEmailClasses from './ProfileSigninEmail.module.scss';
 
 export default function ProfileSigninEmail(
   props: Pick<ButtonProps, 'onClick' | 'name'>
@@ -15,27 +19,20 @@ export default function ProfileSigninEmail(
 
   return (
     <>
-      <hr
-        style={{
-          marginTop: '2rem',
-          border: 'none',
-          borderBottom: '0.1rem solid white'
-        }}
-      />
-      <ModalSectionText>
-        <form>
-          <div className="pm-c-input__group">
-            <input
-              className="pm-c-input--default"
-              id="email"
-              value={email}
-              placeholder="Write your email here"
-              onChange={handleEmail}
-            />
-          </div>
-        </form>
+      <Divider enableGutters />
+      <form>
+        <label htmlFor="email" className="pm-c-input__group">
+          <input
+            className="pm-c-input--default"
+            id="email"
+            value={email}
+            placeholder="Write your email here"
+            onChange={handleEmail}
+          />
+        </label>
         <Button
-          style={{ marginTop: '1rem' }}
+          type="submit"
+          className={profileSigninEmailClasses.email}
           color="default"
           size="sm"
           disabled={!email}
@@ -44,7 +41,7 @@ export default function ProfileSigninEmail(
         >
           Email
         </Button>
-      </ModalSectionText>
+      </form>
     </>
   );
 }
