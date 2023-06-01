@@ -20,6 +20,7 @@ import {
   buildLeaderboardData,
   sanitizePreviousCreateLeaderboardFormValues
 } from './Leaderboard.util';
+import LeaderboardMarkets from './LeaderboardMarkets';
 import LeaderboardMyLeaderboards from './LeaderboardMyLeaderboards';
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
@@ -458,7 +459,7 @@ function Leaderboard() {
                 isLoading={isLoadingQuery}
               />
               {theme.device.isDesktop ? (
-                <div className="flex-column gap-6 justify-start align-start">
+                <div className="flex-column gap-6 justify-start align-start width-min-content">
                   {walletConnected ? (
                     <LeaderboardYourStats
                       loggedInUser={userEthAddress}
@@ -475,6 +476,12 @@ function Leaderboard() {
                   />
                   {leaderboardType.club && walletConnected ? (
                     <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
+                  ) : null}
+                  {leaderboardType.tournament ? (
+                    <LeaderboardMarkets
+                      data={tournamentBySlug?.markets}
+                      isLoading={isLoadingTournamentBySlugQuery}
+                    />
                   ) : null}
                 </div>
               ) : null}
