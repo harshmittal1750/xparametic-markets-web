@@ -145,6 +145,8 @@ type LeaderboardURLParams = {
 
 type Timeframe = '1w' | '1m' | 'at';
 
+type Meta = { title: string; imageUrl: string | null };
+
 function Leaderboard() {
   // Hooks
   const location = useLocation();
@@ -259,9 +261,27 @@ function Leaderboard() {
 
   // Leaderboard
 
-  const leaderboardTitle = leaderboardGroup
-    ? leaderboardGroup.title
-    : 'Leaderboard';
+  const meta: { [key: string]: Meta } = {
+    default: {
+      title: 'Leaderboard',
+      imageUrl: null
+    },
+    club: {
+      title: leaderboardGroup?.title || 'Leaderboard',
+      imageUrl: leaderboardGroup?.imageUrl || null
+    },
+    tournament: {
+      title: tournamentBySlug?.title || 'Leaderboard',
+      imageUrl: tournamentBySlug?.imageUrl || null
+    }
+  };
+
+  const currentLeaderboardType = Object.keys(leaderboardType).find(
+    type => leaderboardType[type]
+  );
+
+  const { title: leaderboardTitle, imageUrl: leaderboardImageUrl } =
+    meta[currentLeaderboardType || 'default'];
 
   const data = useMemo(
     () =>
@@ -336,11 +356,11 @@ function Leaderboard() {
     <Container className="pm-p-leaderboard max-width-screen-xl">
       <div className="pm-p-leaderboard__header">
         <div className="flex-row gap-5 align-start">
-          {leaderboardGroup?.imageUrl ? (
+          {leaderboardImageUrl ? (
             <img
               className="pm-p-leaderboard__avatar"
-              alt={leaderboardGroup.title}
-              src={leaderboardGroup.imageUrl}
+              alt={leaderboardTitle}
+              src={leaderboardImageUrl}
               width={64}
               height={64}
             />
