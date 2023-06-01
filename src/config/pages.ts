@@ -36,6 +36,15 @@ const pages = {
     },
     enabled: ui.clubs.enabled
   },
+  tournament: {
+    pathname: '/tournaments/:slug',
+    Component: Leaderboard,
+    exact: false,
+    navigation: false,
+    name: '',
+    meta: null,
+    enabled: ui.tournaments.enabled
+  },
   tournaments: {
     pathname: '/tournaments',
     Component: lazy(() => import('pages/Tournaments')),
