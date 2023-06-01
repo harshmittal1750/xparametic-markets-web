@@ -18,14 +18,13 @@ import { Button, ButtonLoading } from '../Button';
 
 export default function WalletInfoClaim() {
   const dispatch = useAppDispatch();
-  const isPolkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
   const polkamarketsService = usePolkamarketsService();
-  const { show: showToastNotification, close: closeToastNotification } =
-    useToastNotification();
+  const toastNotification = useToastNotification();
   const fantasyTokenTicker = useFantasyTokenTicker();
   const [transaction, setTransaction] = useState<Transaction>({
     state: 'not_started'
   });
+  const isPolkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
   const isLoadingPolkClaimed = useAppSelector(
     state => state.polkamarkets.isLoading.login
   );
@@ -40,15 +39,14 @@ export default function WalletInfoClaim() {
       setTransaction({ state: 'success' });
       setIsClaiming(false);
 
-      showToastNotification('claim-success');
+      toastNotification.show('claim-success');
 
-      // updating wallet
-      await dispatch(login(polkamarketsService));
+      dispatch(login(polkamarketsService));
     } catch (error) {
       setIsClaiming(false);
       setTransaction({ state: 'failure' });
     }
-  }, [dispatch, polkamarketsService, showToastNotification]);
+  }, [dispatch, polkamarketsService, toastNotification]);
 
   useEffect(() => {
     if (
@@ -60,11 +58,11 @@ export default function WalletInfoClaim() {
       handleClaim();
     }
   }, [
+    isPolkClaimed,
     isClaiming,
     isLoadingPolkClaimed,
     transaction,
-    handleClaim,
-    isPolkClaimed
+    handleClaim
   ]);
 
   return (
@@ -80,7 +78,7 @@ export default function WalletInfoClaim() {
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => closeToastNotification('claim-success')}
+                onClick={() => toastNotification.close('claim-success')}
               >
                 Dismiss
               </Button>
@@ -88,7 +86,7 @@ export default function WalletInfoClaim() {
           </Toast>
         </ToastNotification>
       ) : null}
-      {!isPolkClaimed && (
+      {!isPolkClaimed ? (
         <ButtonLoading
           className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__transak"
           loading={isClaiming}
@@ -97,7 +95,7 @@ export default function WalletInfoClaim() {
         >
           {`Claim $${fantasyTokenTicker || 'POLK'}`}
         </ButtonLoading>
-      )}
+      ) : null}
     </>
   );
 }

@@ -1,5 +1,5 @@
-import WalletConnect from './WalletConnect';
-import WalletInfo from './WalletInfo';
+import WalletConnect from 'components/WalletConnect';
+import WalletInfo from 'components/WalletInfo';
 
 type ProfileProps = {
   isLoggedIn: boolean;
