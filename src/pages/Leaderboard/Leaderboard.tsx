@@ -335,7 +335,7 @@ function Leaderboard() {
   return (
     <Container className="pm-p-leaderboard max-width-screen-xl">
       <div className="pm-p-leaderboard__header">
-        <div className="flex-row gap-5 align-center">
+        <div className="flex-row gap-5 align-start">
           {leaderboardGroup?.imageUrl ? (
             <img
               className="pm-p-leaderboard__avatar"
@@ -370,6 +370,11 @@ function Leaderboard() {
                   href="https://docs.v2.polkamarkets.com/"
                   target="_blank"
                 />
+              </p>
+            ) : null}
+            {leaderboardType.tournament && tournamentBySlug ? (
+              <p className="tiny medium text-2 whitespace-pre-line">
+                {tournamentBySlug.description}
               </p>
             ) : null}
           </div>
