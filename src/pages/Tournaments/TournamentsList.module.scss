@@ -8,6 +8,7 @@
 
   &Avatar {
     display: flex;
+    flex-shrink: 0;
     overflow: hidden;
 
     width: 40px;
