@@ -216,7 +216,7 @@ function Leaderboard() {
       tournamentId: tournamentBySlug?.id.toString()
     },
     {
-      skip: !leaderboardType.tournament || isLoadingTournamentBySlugQuery
+      skip: isLoadingTournamentBySlugQuery
     }
   );
 
