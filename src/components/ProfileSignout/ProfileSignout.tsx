@@ -28,7 +28,9 @@ export default function ProfileSignout() {
   const fantasyTokenTicker = useFantasyTokenTicker();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
-  const userInfo = useAppSelector(state => state.polkamarkets.socialLoginInfo);
+  const socialLoginInfo = useAppSelector(
+    state => state.polkamarkets.socialLoginInfo
+  );
   const polkamarketsService = usePolkamarketsService();
   const handleSocialLogout = useCallback(async () => {
     const { logout } = await import('redux/ducks/polkamarkets');
@@ -45,16 +47,16 @@ export default function ProfileSignout() {
 
       // send data to backend
       await updateSocialLoginInfo(
-        userInfo.idToken,
-        userInfo.typeOfLogin,
+        socialLoginInfo.idToken,
+        socialLoginInfo.typeOfLogin,
         ethAddress,
-        userInfo.profileImage,
-        userInfo.oAuthAccessToken
+        socialLoginInfo.profileImage,
+        socialLoginInfo.oAuthAccessToken
       );
     }
 
-    if (userInfo?.typeOfLogin === 'discord') handleDiscordLogin();
-  }, [userInfo, ethAddress]);
+    if (socialLoginInfo?.typeOfLogin === 'discord') handleDiscordLogin();
+  }, [socialLoginInfo, ethAddress]);
 
   return (
     <div className={profileSignoutClasses.root}>
@@ -74,12 +76,7 @@ export default function ProfileSignout() {
       </Button>
       <div className="pm-c-wallet-info__profile">
         <Link to={`/user/${ethAddress}`}>
-          <Avatar
-            $size="sm"
-            $radius="lg"
-            src=""
-            alt={user.name.toUpperCase()}
-          />
+          <Avatar $size="sm" $radius="lg" src="" alt={user.name} />
         </Link>
         <div>
           <Text

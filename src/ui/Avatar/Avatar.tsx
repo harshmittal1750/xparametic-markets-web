@@ -42,11 +42,11 @@ const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
         // eslint-disable-next-line jsx-a11y/alt-text
         <img ref={ref} className={avatarClasses.image} {...props} />
       ) : (
-        <span className={avatarClasses.caption}>
+        <div className={avatarClasses.caption}>
           <strong className={avatarClasses.captionText}>
-            {alt.match(/\w/)}
+            {alt.toUpperCase().match(/\w/)}
           </strong>
-        </span>
+        </div>
       )}
     </div>
   );
