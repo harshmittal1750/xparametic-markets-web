@@ -1,8 +1,28 @@
 .root {
   min-height: 48px;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding-left: 16px;
+  padding-right: 16px;
   display: flex;
   align-items: center;
-  color: var(--color-text-primary);
+  color: var(--color, var(--color-text-secondary));
+}
+
+.button {
+  background-color: var(--background-color, transparent);
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+
+  &:hover,
+  &Active {
+    --background-color: var(--color-text-quinary);
+    --color: var(--color-text-primary);
+
+    &:hover {
+      --color: var(--color-text-secondary);
+    }
+  }
 }

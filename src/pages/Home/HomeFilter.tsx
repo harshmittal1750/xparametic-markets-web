@@ -124,7 +124,11 @@ function ListItemNested({
 
   return (
     <>
-      <ListItem onClick={handleExpand}>
+      <ListItem
+        ButtonProps={{
+          onClick: handleExpand
+        }}
+      >
         <ListItemText>{subitems.title}</ListItemText>
         <Adornment $edge="end">
           <Icon name="Chevron" size="lg" dir={expand ? 'up' : 'down'} />
@@ -230,10 +234,14 @@ export default function HomeFilter({
       <List className={homeClasses.filterList}>
         <form className={homeClasses.filterForm}>
           {!theme.device.isDesktop && (
-            <ListItem>
+            <ListItem
+              ButtonProps={{
+                onClick: onFilterHide
+              }}
+            >
               <ListItemText>Filter</ListItemText>
               <Adornment $edge="end">
-                <Icon name="Cross" onClick={onFilterHide} />
+                <Icon name="Cross" />
               </Adornment>
             </ListItem>
           )}

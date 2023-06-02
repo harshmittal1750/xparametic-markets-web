@@ -42,21 +42,14 @@ export default function ProfileSignout() {
       const { updateSocialLoginInfo } = await import(
         'services/Polkamarkets/user'
       );
-      const { PolkamarketsService } = await import('services');
-      const discordUsernameAndServer =
-        await PolkamarketsService.getDiscordUsernameAndServer(userInfo);
 
       // send data to backend
-      updateSocialLoginInfo(
+      await updateSocialLoginInfo(
         userInfo.idToken,
-        discordUsernameAndServer.username,
         userInfo.typeOfLogin,
         ethAddress,
         userInfo.profileImage,
-        discordUsernameAndServer.servers.map((server: any) => ({
-          id: server.id,
-          name: server.name
-        }))
+        userInfo.oAuthAccessToken
       );
     }
 

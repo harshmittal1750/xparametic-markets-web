@@ -1,6 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
-import cn from 'classnames';
 import {
   Adornment,
   List,
@@ -50,9 +49,8 @@ export default function NetworkSelector() {
   return (
     <>
       <Button
-        variant="ghost"
-        color="default"
         aria-label="Switch theme"
+        variant="ghost"
         onClick={handleShow}
         size="sm"
         className={themeSelectorClasses.root}
@@ -79,7 +77,7 @@ export default function NetworkSelector() {
                 size="xs"
                 variant="ghost"
                 color="default"
-                aria-label="Settings"
+                aria-label="Hide"
                 onClick={handleHide}
               >
                 <Icon name="Cross" size="lg" />
@@ -89,31 +87,32 @@ export default function NetworkSelector() {
         )}
         <List className={themeSelectorClasses.list}>
           {Object.keys(modes).map(mode => (
-            <ListItem key={mode} className={themeSelectorClasses.listItem}>
-              <Button
-                variant="ghost"
-                fullwidth
-                name={mode}
-                onClick={handleTheme}
-                className={cn(themeSelectorClasses.listItemButton, {
-                  [themeSelectorClasses.listItemSelected]:
-                    mode.toLowerCase() === modeStored
-                })}
+            <Fragment key={mode}>
+              <ListItem
+                ButtonProps={{
+                  name: mode,
+                  className: themeSelectorClasses.listItem,
+                  onClick: handleTheme
+                }}
+                $actived={mode.toLowerCase() === modeStored}
               >
-                <span className={themeSelectorClasses.listItemButtonIcon}>
+                <Adornment
+                  $edge="start"
+                  $size={theme.device.isDesktop ? 'sm' : 'md'}
+                >
                   <Icon
                     name={modes[mode]}
                     size={theme.device.isDesktop ? 'lg' : 'xl'}
                   />
-                </span>
+                </Adornment>
                 <Text
                   scale={theme.device.isDesktop ? 'caption' : 'body'}
                   fontWeight="semibold"
                 >
                   {mode}
                 </Text>
-              </Button>
-            </ListItem>
+              </ListItem>
+            </Fragment>
           ))}
         </List>
       </Popover>
