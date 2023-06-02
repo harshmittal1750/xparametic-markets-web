@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
 import cn from 'classnames';
 import { Adornment, List, ListItem, Popover, useTheme } from 'ui';
@@ -30,9 +30,9 @@ export default function NetworkSelector({
   );
   const handleHide = useCallback(() => setShow(null), []);
   const handleNetworkClick = useCallback(
-    (name: string) => () => {
+    (event: React.MouseEvent<HTMLButtonElement>) => {
       const [network] = networks.networks.filter(
-        _network => _network.name === name
+        ({ name }) => name === event.currentTarget.name
       );
 
       networks.changeToNetwork(network);
@@ -47,10 +47,9 @@ export default function NetworkSelector({
   return (
     <>
       <Button
-        type="button"
         aria-label="Switch network"
-        onClick={handleShow}
         variant="outline"
+        onClick={handleShow}
         className={cn(
           networSelectorClasses.root,
           {
@@ -73,7 +72,7 @@ export default function NetworkSelector({
         )}
       </Button>
       <Popover position="bottomLeft" onHide={handleHide} show={show}>
-        {!isDesktop && (
+        {!theme.device.isDesktop && (
           <header className={networSelectorClasses.header}>
             <Text
               scale="heading"
@@ -87,7 +86,7 @@ export default function NetworkSelector({
                 size="xs"
                 variant="ghost"
                 color="default"
-                aria-label="Settings"
+                aria-label="Hide"
                 onClick={handleHide}
               >
                 <Icon name="Cross" size="lg" />
@@ -97,33 +96,32 @@ export default function NetworkSelector({
         )}
         <List className={networSelectorClasses.list}>
           {networks.networks.map(network => (
-            <ListItem
-              key={network.id}
-              className={networSelectorClasses.listItem}
-            >
-              <Button
-                variant="ghost"
-                fullwidth
-                onClick={handleNetworkClick(network.name)}
-                className={cn(networSelectorClasses.listItemButton, {
-                  [networSelectorClasses.listItemSelected]:
-                    network.id === networks.network.id
-                })}
+            <Fragment key={network.id}>
+              <ListItem
+                ButtonProps={{
+                  name: network.name,
+                  className: networSelectorClasses.listItem,
+                  onClick: handleNetworkClick
+                }}
+                $actived={network.id === networks.network.id}
               >
-                <span className={networSelectorClasses.listItemButtonIcon}>
+                <Adornment
+                  $edge="start"
+                  $size={theme.device.isDesktop ? 'sm' : 'md'}
+                >
                   <Icon
                     name={network.currency.iconName}
-                    size={isDesktop ? 'lg' : 'xl'}
+                    size={theme.device.isDesktop ? 'lg' : 'xl'}
                   />
-                </span>
+                </Adornment>
                 <Text
-                  scale={isDesktop ? 'caption' : 'body'}
+                  scale={theme.device.isDesktop ? 'caption' : 'body'}
                   fontWeight="semibold"
                 >
                   {network.name}
                 </Text>
-              </Button>
-            </ListItem>
+              </ListItem>
+            </Fragment>
           ))}
         </List>
       </Popover>
