@@ -72,6 +72,8 @@
   --color-number-input-button-background--disabled: #eff1f4;
   --color-number-input-button-border--error: #e12d39;
 
+  --color-tournament-avatar-background: rgb(0 0 0 / 0.1);
+
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
   --color-categorical-0: #0fb5ae;
@@ -127,6 +129,8 @@
 
     --color-number-input-button-background: rgba(35, 42, 54, 0.3);
     --color-number-input-button-background--disabled: #292d32;
+
+    --color-tournament-avatar-background: rgb(255 255 255 / 0.1);
   }
 
   --grid-margin: var(--size-12);
