@@ -25,13 +25,12 @@ const providers = {
   Discord: <DiscordIcon />,
   Facebook: <FacebookIcon />,
   Google: <GoogleIcon />
-};
+} as const;
 
 export default function ProfileSignin() {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
-  const [isLoading, setLoading] = useState(false);
   const [pickedProvider, setPickedProvider] = useState<Providers | ''>('');
 
   function handleShow() {
@@ -41,25 +40,23 @@ export default function ProfileSignin() {
     setShow(false);
   }
   async function handleLogin(event: React.MouseEvent<HTMLButtonElement>) {
-    const { name, dataset } = event.currentTarget;
-
-    setPickedProvider(name as Providers);
+    const name = event.currentTarget.name as Providers;
 
     try {
-      setLoading(true);
+      setPickedProvider(name);
 
       const success = await polkamarketsService[`socialLogin${name}`](
-        dataset.email
+        name === 'Email' ? event.currentTarget.dataset.email : undefined
       );
 
       if (success) {
         const { login } = await import('redux/ducks/polkamarkets');
 
-        setShow(false);
         dispatch(login(polkamarketsService));
       }
     } finally {
-      setLoading(false);
+      setPickedProvider('');
+      setShow(false);
     }
   }
 
@@ -75,28 +72,31 @@ export default function ProfileSignin() {
             </Text>
           </ModalHeader>
           <ModalSection>
-            {ui.socialLogin.providers.map(provider => (
-              <Fragment key={provider}>
-                {provider === 'Email' ? (
-                  <ProfileSigninEmail name={provider} onClick={handleLogin} />
-                ) : (
-                  <Button
-                    style={{ marginRight: '3rem' }}
-                    variant="outline"
-                    color="default"
-                    size="sm"
-                    name={provider}
-                    onClick={handleLogin}
-                  >
-                    {isLoading && pickedProvider === provider ? (
-                      <Spinner />
-                    ) : (
-                      providers[provider]
-                    )}
-                  </Button>
-                )}
-              </Fragment>
-            ))}
+            {ui.socialLogin.providers.map(provider => {
+              const renderChildren =
+                pickedProvider === provider ? <Spinner /> : providers[provider];
+
+              return (
+                <Fragment key={provider}>
+                  {provider === 'Email' ? (
+                    <ProfileSigninEmail name={provider} onClick={handleLogin}>
+                      {renderChildren}
+                    </ProfileSigninEmail>
+                  ) : (
+                    <Button
+                      style={{ marginRight: '3rem' }}
+                      variant="outline"
+                      color="default"
+                      size="sm"
+                      name={provider}
+                      onClick={handleLogin}
+                    >
+                      {renderChildren}
+                    </Button>
+                  )}
+                </Fragment>
+              );
+            })}
           </ModalSection>
         </ModalContent>
       </Modal>

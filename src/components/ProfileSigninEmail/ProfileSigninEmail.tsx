@@ -8,7 +8,7 @@ import type { ButtonProps } from 'components/Button';
 import profileSigninEmailClasses from './ProfileSigninEmail.module.scss';
 
 export default function ProfileSigninEmail(
-  props: Pick<ButtonProps, 'onClick' | 'name'>
+  props: Pick<ButtonProps, 'onClick' | 'name' | 'children'>
 ) {
   const [email, setEmail] = useState('');
   const handleEmail = useCallback(
@@ -38,9 +38,7 @@ export default function ProfileSigninEmail(
           disabled={!email}
           data-email={email}
           {...props}
-        >
-          Email
-        </Button>
+        />
       </form>
     </>
   );
