@@ -1,10 +1,12 @@
 import { useCallback, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams, matchPath } from 'react-router-dom';
 
-import { ui } from 'config';
+import cn from 'classnames';
+import { ui, pages } from 'config';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery,
+  useGetTournamentBySlugQuery,
   useJoinLeaderboardGroupMutation
 } from 'services/Polkamarkets';
 import { Container, useTheme } from 'ui';
@@ -19,6 +21,7 @@ import {
   buildLeaderboardData,
   sanitizePreviousCreateLeaderboardFormValues
 } from './Leaderboard.util';
+import LeaderboardMarkets from './LeaderboardMarkets';
 import LeaderboardMyLeaderboards from './LeaderboardMyLeaderboards';
 import LeaderboardTable from './LeaderboardTable';
 import LeaderboardTopWallets from './LeaderboardTopWallets';
@@ -144,13 +147,16 @@ type LeaderboardURLParams = {
 
 type Timeframe = '1w' | '1m' | 'at';
 
+type Meta = { title: string; imageUrl: string | null };
+
 function Leaderboard() {
-  // Custom hooks
+  // Hooks
+  const location = useLocation();
   const { slug } = useParams<LeaderboardURLParams>();
+
+  // Custom hooks
   const theme = useTheme();
-
   const { network } = useNetwork();
-
   const { currency } = network;
 
   // Redux selectors
@@ -165,18 +171,63 @@ function Leaderboard() {
   );
   const [timeframe, setTimeframe] = useState<Timeframe>('at');
 
+  const leaderboardType = {
+    default: !!matchPath(location.pathname, {
+      path: pages.leaderboard.pathname
+    }),
+    club:
+      ui.clubs.enabled &&
+      !!matchPath(location.pathname, {
+        path: pages.club.pathname
+      }),
+    tournament:
+      ui.tournaments.enabled &&
+      !!matchPath(location.pathname, {
+        path: pages.tournament.pathname
+      })
+  };
+
   // Queries
+
+  // Tournament
+
+  const {
+    data: tournamentBySlug,
+    isLoading: isLoadingTournamentBySlug,
+    isFetching: isFetchingTournamentBySlug
+  } = useGetTournamentBySlugQuery(
+    {
+      slug: slug || ''
+    },
+    {
+      skip: !leaderboardType.tournament || !slug
+    }
+  );
+
+  const isLoadingTournamentBySlugQuery =
+    isLoadingTournamentBySlug || isFetchingTournamentBySlug;
+
+  // Default
+
   const {
     data: leaderboardByTimeframe,
     isLoading: isLoadingLeaderboardByTimeframe,
     isFetching: isFetchingLeaderboardByTimeframe
-  } = useGetLeaderboardByTimeframeQuery({
-    timeframe,
-    networkId: network.id
-  });
+  } = useGetLeaderboardByTimeframeQuery(
+    {
+      timeframe,
+      networkId: network.id,
+      tournamentId: tournamentBySlug?.id.toString()
+    },
+    {
+      skip: isLoadingTournamentBySlugQuery
+    }
+  );
 
   const isLoadingLeaderboardByTimeframeQuery =
     isLoadingLeaderboardByTimeframe || isFetchingLeaderboardByTimeframe;
+
+  // Club
 
   const {
     data: leaderboardGroup,
@@ -187,7 +238,10 @@ function Leaderboard() {
     {
       slug: slug || ''
     },
-    { skip: isLoadingLeaderboardByTimeframeQuery || !slug }
+    {
+      skip:
+        !leaderboardType.club || isLoadingLeaderboardByTimeframeQuery || !slug
+    }
   );
 
   const isLoadingGetLeaderboardGroupBySlugQuery =
@@ -208,9 +262,28 @@ function Leaderboard() {
   // Derivated data
 
   // Leaderboard
-  const leaderboardTitle = leaderboardGroup
-    ? leaderboardGroup.title
-    : 'Leaderboard';
+
+  const meta: { [key: string]: Meta } = {
+    default: {
+      title: 'Leaderboard',
+      imageUrl: null
+    },
+    club: {
+      title: leaderboardGroup?.title || 'Leaderboard',
+      imageUrl: leaderboardGroup?.imageUrl || null
+    },
+    tournament: {
+      title: tournamentBySlug?.title || 'Leaderboard',
+      imageUrl: tournamentBySlug?.imageUrl || null
+    }
+  };
+
+  const currentLeaderboardType = Object.keys(leaderboardType).find(
+    type => leaderboardType[type]
+  );
+
+  const { title: leaderboardTitle, imageUrl: leaderboardImageUrl } =
+    meta[currentLeaderboardType || 'default'];
 
   const data = useMemo(
     () =>
@@ -284,12 +357,12 @@ function Leaderboard() {
   return (
     <Container className="pm-p-leaderboard max-width-screen-xl">
       <div className="pm-p-leaderboard__header">
-        <div className="flex-row gap-5 align-center">
-          {leaderboardGroup?.imageUrl ? (
+        <div className="flex-row gap-5 align-start">
+          {leaderboardImageUrl ? (
             <img
               className="pm-p-leaderboard__avatar"
-              alt={leaderboardGroup.title}
-              src={leaderboardGroup.imageUrl}
+              alt={leaderboardTitle}
+              src={leaderboardImageUrl}
               width={64}
               height={64}
             />
@@ -297,7 +370,7 @@ function Leaderboard() {
           <div className="flex-column gap-3">
             <div className="flex-row gap-5 align-center">
               <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
-              {ui.clubs.enabled &&
+              {leaderboardType.club &&
               createGroupState.visible &&
               createGroupState.mode === 'edit' ? (
                 <CreateLeaderboardGroup
@@ -309,7 +382,7 @@ function Leaderboard() {
                 />
               ) : null}
             </div>
-            {ui.clubs.enabled ? (
+            {leaderboardType.club ? (
               <p className="tiny medium text-2">
                 {`Play with your friends, coworkers and community. `}
                 <Link
@@ -321,9 +394,14 @@ function Leaderboard() {
                 />
               </p>
             ) : null}
+            {leaderboardType.tournament && tournamentBySlug ? (
+              <p className="tiny medium text-2 whitespace-pre-line">
+                {tournamentBySlug.description}
+              </p>
+            ) : null}
           </div>
         </div>
-        {ui.clubs.enabled &&
+        {leaderboardType.club &&
         createGroupState.visible &&
         !joinGroupState.visible ? (
           <CreateLeaderboardGroup
@@ -333,7 +411,7 @@ function Leaderboard() {
             disabled={isLoadingQuery}
           />
         ) : null}
-        {ui.clubs.enabled && joinGroupState.visible ? (
+        {leaderboardType.club && joinGroupState.visible ? (
           <ButtonLoading
             size="sm"
             color="default"
@@ -365,7 +443,15 @@ function Leaderboard() {
       >
         {tabs.map(tab => (
           <Tabs.TabPane key={tab.id} id={tab.id} tab={tab.title}>
-            <div className="flex-row gap-6 justify-space-between align-start width-full">
+            <div
+              className={cn(
+                'gap-6 justify-space-between align-start width-full',
+                {
+                  'flex-row': theme.device.isDesktop,
+                  'flex-column': !theme.device.isDesktop
+                }
+              )}
+            >
               <LeaderboardTable
                 loggedInUser={userEthAddress}
                 columns={
@@ -381,27 +467,43 @@ function Leaderboard() {
                 ticker={ticker}
                 isLoading={isLoadingQuery}
               />
-              {theme.device.isDesktop ? (
-                <div className="flex-column gap-6 justify-start align-start">
-                  {walletConnected ? (
-                    <LeaderboardYourStats
-                      loggedInUser={userEthAddress}
+
+              <div
+                className={cn('flex-column gap-6 justify-start align-start', {
+                  'width-min-content': theme.device.isDesktop,
+                  'width-full': !theme.device.isDesktop
+                })}
+              >
+                {theme.device.isDesktop ? (
+                  <>
+                    {walletConnected ? (
+                      <LeaderboardYourStats
+                        loggedInUser={userEthAddress}
+                        rows={data}
+                        sortBy={tab.sortBy}
+                        ticker={ticker}
+                        isLoading={isLoadingQuery}
+                      />
+                    ) : null}
+                    <LeaderboardTopWallets
                       rows={data}
                       sortBy={tab.sortBy}
-                      ticker={ticker}
                       isLoading={isLoadingQuery}
                     />
-                  ) : null}
-                  <LeaderboardTopWallets
-                    rows={data}
-                    sortBy={tab.sortBy}
-                    isLoading={isLoadingQuery}
+                    {leaderboardType.club && walletConnected ? (
+                      <LeaderboardMyLeaderboards
+                        loggedInUser={userEthAddress}
+                      />
+                    ) : null}
+                  </>
+                ) : null}
+                {leaderboardType.tournament ? (
+                  <LeaderboardMarkets
+                    data={tournamentBySlug?.markets}
+                    isLoading={isLoadingTournamentBySlugQuery}
                   />
-                  {ui.clubs.enabled && walletConnected ? (
-                    <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
-                  ) : null}
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </div>
           </Tabs.TabPane>
         ))}

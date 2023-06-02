@@ -122,6 +122,13 @@ function HeaderNavMenu({
                   return page.pathname === pages.clubs.pathname;
                 }
 
+                if (
+                  pages.tournaments.enabled &&
+                  /^\/tournaments/.test(location.pathname)
+                ) {
+                  return page.pathname === pages.tournaments.pathname;
+                }
+
                 return new RegExp(shiftSlash(location.pathname)).test(
                   shiftSlash(page.pathname)
                 );
