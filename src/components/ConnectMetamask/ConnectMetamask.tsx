@@ -15,12 +15,12 @@ import Pill from 'components/Pill';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
-const walletConnectProps = {
+const connectMetamaskProps = {
   'aria-labelledby': 'connect-metamask-modal-name',
   'aria-describedby': 'connect-metamask-modal-description'
 };
 
-export default function WalletConnect() {
+export default function ConnectMetamask() {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
@@ -48,7 +48,7 @@ export default function WalletConnect() {
         centered
         size="sm"
         onHide={handleHide}
-        {...walletConnectProps}
+        {...connectMetamaskProps}
       >
         <ModalContent>
           <ModalHeader>
@@ -59,12 +59,12 @@ export default function WalletConnect() {
                 <WarningOutlinedIcon />
               </Pill>
             </div>
-            <ModalHeaderTitle id={walletConnectProps['aria-labelledby']}>
+            <ModalHeaderTitle id={connectMetamaskProps['aria-labelledby']}>
               Looks like your browser do not have Metamask installed.
             </ModalHeaderTitle>
           </ModalHeader>
           <ModalSection>
-            <ModalSectionText id={walletConnectProps['aria-describedby']}>
+            <ModalSectionText id={connectMetamaskProps['aria-describedby']}>
               Please follow up the instructions to install it, make sure your
               wallet is unlocked with at least one account on it and try again.
             </ModalSectionText>

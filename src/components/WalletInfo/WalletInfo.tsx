@@ -9,11 +9,11 @@ import { useTheme } from 'ui';
 import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 
 import { Button } from 'components/Button';
-import WalletInfoClaim from 'components/WalletInfoClaim';
 
 import { useAppSelector, useNetwork } from 'hooks';
 
 import { Transak } from '../integrations';
+import WalletInfoClaim from './WalletInfoClaim';
 
 function MetaMaskIcon() {
   return (

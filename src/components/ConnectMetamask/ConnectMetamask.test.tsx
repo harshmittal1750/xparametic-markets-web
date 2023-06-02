@@ -2,7 +2,7 @@ import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { renderWithProviders } from 'helpers/test';
 import { PolkamarketsService } from 'services';
 
-import ConnectMetamask from './WalletConnect';
+import ConnectMetamask from './ConnectMetamask';
 
 const { location, ethereum } = window;
 
