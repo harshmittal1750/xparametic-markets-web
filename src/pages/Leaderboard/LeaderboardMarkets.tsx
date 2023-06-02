@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { Tournament } from 'types/tournament';
+import { useTheme } from 'ui';
 
 import { AlertMini } from 'components';
 
@@ -19,10 +20,19 @@ function LeaderboardMarkets({
   isLoading,
   emptyDataDescription = 'No data to show.'
 }: LeaderboardMarketsProps) {
+  const theme = useTheme();
+
   const isEmptyData = isEmpty(data);
 
   return (
-    <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1">
+    <div
+      className={cn(
+        'pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1',
+        {
+          'width-full': !theme.device.isDesktop
+        }
+      )}
+    >
       <h2 className="body semibold text-1">Markets</h2>
       {isLoading ? (
         <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
