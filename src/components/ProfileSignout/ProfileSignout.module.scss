@@ -17,4 +17,12 @@
   @media (min-width: 1024px) {
     margin-left: unset;
   }
+
+  &Icon {
+    fill: var(--color-text-secondary);
+  }
+}
+
+.username {
+  color: var(--color-text-primary);
 }

@@ -70,7 +70,7 @@ export default function ProfileSignout() {
         <Icon
           name="LogOut"
           size="lg"
-          style={{ fill: 'var(--color-text-secondary)' }}
+          className={profileSignoutClasses.signoutIcon}
         />
         Sign Out
       </Button>
@@ -82,7 +82,7 @@ export default function ProfileSignout() {
           <Text
             scale="caption"
             fontWeight="semibold"
-            style={{ color: 'var(--color-text-primary)' }}
+            className={profileSignoutClasses.username}
           >
             {user.name || shortenAddress(ethAddress)}
           </Text>
