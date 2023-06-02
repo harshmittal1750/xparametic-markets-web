@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { useLocation, useParams, matchPath } from 'react-router-dom';
 
+import cn from 'classnames';
 import { ui, pages } from 'config';
 import {
   useGetLeaderboardByTimeframeQuery,
@@ -442,7 +443,15 @@ function Leaderboard() {
       >
         {tabs.map(tab => (
           <Tabs.TabPane key={tab.id} id={tab.id} tab={tab.title}>
-            <div className="flex-row gap-6 justify-space-between align-start width-full">
+            <div
+              className={cn(
+                'gap-6 justify-space-between align-start width-full',
+                {
+                  'flex-row': theme.device.isDesktop,
+                  'flex-column': !theme.device.isDesktop
+                }
+              )}
+            >
               <LeaderboardTable
                 loggedInUser={userEthAddress}
                 columns={
@@ -458,33 +467,43 @@ function Leaderboard() {
                 ticker={ticker}
                 isLoading={isLoadingQuery}
               />
-              {theme.device.isDesktop ? (
-                <div className="flex-column gap-6 justify-start align-start width-min-content">
-                  {walletConnected ? (
-                    <LeaderboardYourStats
-                      loggedInUser={userEthAddress}
+
+              <div
+                className={cn('flex-column gap-6 justify-start align-start', {
+                  'width-min-content': theme.device.isDesktop,
+                  'width-full': !theme.device.isDesktop
+                })}
+              >
+                {theme.device.isDesktop ? (
+                  <>
+                    {walletConnected ? (
+                      <LeaderboardYourStats
+                        loggedInUser={userEthAddress}
+                        rows={data}
+                        sortBy={tab.sortBy}
+                        ticker={ticker}
+                        isLoading={isLoadingQuery}
+                      />
+                    ) : null}
+                    <LeaderboardTopWallets
                       rows={data}
                       sortBy={tab.sortBy}
-                      ticker={ticker}
                       isLoading={isLoadingQuery}
                     />
-                  ) : null}
-                  <LeaderboardTopWallets
-                    rows={data}
-                    sortBy={tab.sortBy}
-                    isLoading={isLoadingQuery}
+                    {leaderboardType.club && walletConnected ? (
+                      <LeaderboardMyLeaderboards
+                        loggedInUser={userEthAddress}
+                      />
+                    ) : null}
+                  </>
+                ) : null}
+                {leaderboardType.tournament ? (
+                  <LeaderboardMarkets
+                    data={tournamentBySlug?.markets}
+                    isLoading={isLoadingTournamentBySlugQuery}
                   />
-                  {leaderboardType.club && walletConnected ? (
-                    <LeaderboardMyLeaderboards loggedInUser={userEthAddress} />
-                  ) : null}
-                  {leaderboardType.tournament ? (
-                    <LeaderboardMarkets
-                      data={tournamentBySlug?.markets}
-                      isLoading={isLoadingTournamentBySlugQuery}
-                    />
-                  ) : null}
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </div>
           </Tabs.TabPane>
         ))}
