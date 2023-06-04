@@ -20,6 +20,7 @@ import { useAppDispatch, usePolkamarketsService } from 'hooks';
 import DiscordIcon from '../../assets/icons/DiscordIcon';
 import FacebookIcon from '../../assets/icons/FacebookIcon';
 import GoogleIcon from '../../assets/icons/GoogleIcon';
+import profileSigninClasses from './ProfileSignin.module.scss';
 
 const providers = {
   Discord: <DiscordIcon />,
@@ -27,11 +28,14 @@ const providers = {
   Google: <GoogleIcon />
 } as const;
 
+function isEmail(params: Providers): params is 'Email' {
+  return params === 'Email';
+}
 export default function ProfileSignin() {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
-  const [pickedProvider, setPickedProvider] = useState<Providers | ''>('');
+  const [load, setLoad] = useState<Providers | ''>('');
 
   function handleShow() {
     setShow(true);
@@ -43,7 +47,7 @@ export default function ProfileSignin() {
     const name = event.currentTarget.name as Providers;
 
     try {
-      setPickedProvider(name);
+      setLoad(name);
 
       const success = await polkamarketsService[`socialLogin${name}`](
         name === 'Email' ? event.currentTarget.dataset.email : undefined
@@ -55,7 +59,7 @@ export default function ProfileSignin() {
         dispatch(login(polkamarketsService));
       }
     } finally {
-      setPickedProvider('');
+      setLoad('');
       setShow(false);
     }
   }
@@ -73,27 +77,22 @@ export default function ProfileSignin() {
           </ModalHeader>
           <ModalSection>
             {ui.socialLogin.providers.map(provider => {
-              const renderChildren =
-                pickedProvider === provider ? <Spinner /> : providers[provider];
+              const Component = isEmail(provider) ? ProfileSigninEmail : Button;
 
               return (
                 <Fragment key={provider}>
-                  {provider === 'Email' ? (
-                    <ProfileSigninEmail name={provider} onClick={handleLogin}>
-                      {renderChildren}
-                    </ProfileSigninEmail>
-                  ) : (
-                    <Button
-                      style={{ marginRight: '3rem' }}
-                      variant="outline"
-                      color="default"
-                      size="sm"
-                      name={provider}
-                      onClick={handleLogin}
-                    >
-                      {renderChildren}
-                    </Button>
-                  )}
+                  <Component
+                    name={provider}
+                    onClick={handleLogin}
+                    {...(!isEmail(provider) && {
+                      className: profileSigninClasses.provider,
+                      variant: 'outline',
+                      color: 'default',
+                      size: 'sm'
+                    })}
+                  >
+                    {load === provider ? <Spinner /> : providers[provider]}
+                  </Component>
                 </Fragment>
               );
             })}
@@ -104,7 +103,7 @@ export default function ProfileSignin() {
         <Icon
           name="LogIn"
           size="lg"
-          style={{ fill: 'var(--color-text-secondary)' }}
+          className={profileSigninClasses.signinIcon}
         />
         Sign In
       </Button>

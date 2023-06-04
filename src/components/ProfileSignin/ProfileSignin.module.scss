@@ -1,0 +1,9 @@
+.provider {
+  margin-right: var(--size-16);
+}
+
+.signin {
+  &Icon {
+    fill: var(--color-text-secondary);
+  }
+}
