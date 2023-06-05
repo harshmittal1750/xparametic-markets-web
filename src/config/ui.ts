@@ -38,6 +38,9 @@ const ui = {
     categories: environment.UI_FILTERS_CATEGORIES?.split(','),
     tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
   },
+  selectTokenModal: {
+    blacklist: environment.UI_TOKEN_BLACKLIST?.split(',')
+  },
   tradeForm: {
     liquidity: {
       enabled: features.regular.enabled
@@ -56,6 +59,9 @@ const ui = {
   },
   clubs: {
     enabled: isTrue(environment.FEATURE_CLUBS)
+  },
+  tournaments: {
+    enabled: isTrue(environment.FEATURE_TOURNAMENTS)
   },
   achievements: {
     enabled: isTrue(environment.FEATURE_ACHIEVEMENTS)

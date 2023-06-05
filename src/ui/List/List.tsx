@@ -1,18 +1,25 @@
 import cn from 'classnames';
 
-import ListClasses from './List.module.scss';
+import listClasses from './List.module.scss';
 
 interface ListProps extends React.ComponentPropsWithoutRef<'ul'> {
   $rounded?: boolean;
+  $disableGutters?: boolean;
 }
 
-export default function List({ className, $rounded, ...props }: ListProps) {
+export default function List({
+  className,
+  $rounded,
+  $disableGutters,
+  ...props
+}: ListProps) {
   return (
     <ul
       role="listbox"
       className={cn(
         {
-          [ListClasses.rounded]: $rounded
+          [listClasses.rounded]: $rounded,
+          [listClasses.gutters]: !$disableGutters
         },
         className
       )}
