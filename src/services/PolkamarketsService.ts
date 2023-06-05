@@ -60,7 +60,7 @@ export default class PolkamarketsService {
       socialLoginParams: {
         useCustomModal: true,
         isTestnet: ui.socialLogin.isTestnet,
-        urls: [process.env.PUBLIC_URL || process.env.REACT_APP_PUBLIC_URL],
+        urls: [],
         networkConfig: {
           chainId: 80001,
           dappAPIKey: process.env.REACT_APP_NETWORK_80001_SOCIAL_LOGIN_DAPP
