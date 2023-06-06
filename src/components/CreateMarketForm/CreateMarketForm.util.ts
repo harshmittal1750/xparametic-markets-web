@@ -1,5 +1,6 @@
 import uuid from 'react-uuid';
 
+import { features } from 'config';
 import dayjs from 'dayjs';
 import { almost } from 'helpers/math';
 import sum from 'lodash/sum';
@@ -26,7 +27,9 @@ const initialValues: CreateMarketFormData = {
   liquidity: 0,
   fee: 2,
   treasuryFee: 1,
-  resolutionSource: ''
+  ...(features.regular.enabled && {
+    resolutionSource: ''
+  })
 };
 
 const validationSchema = [
