@@ -123,15 +123,7 @@ const marketsSlice = createSlice({
                   ...market.token,
                   ticker: market.token.symbol,
                   iconName: currencyByTokenSymbol.iconName
-                },
-                outcomes: market.outcomes.map((outcome, index) => ({
-                  ...outcome,
-                  imageUrl: [
-                    'https://polkamarkets.infura-ipfs.io/ipfs/QmdRGv8odwsnafpz49ZayQNhmJzJTaT2kjXrrm6aBMJ1Qw',
-                    'https://polkamarkets.infura-ipfs.io/ipfs/QmeVh77bH7iAVmqrPWNp4SvA59enTfSSPe2VAHoCmJxQmZ',
-                    'https://polkamarkets.infura-ipfs.io/ipfs/QmXUiapNZUbxfWpNYMtbT8Xpyk4EdF6gKWa7cw8SBX5gm9'
-                  ][index]
-                }))
+                }
               } as Market;
             })
           },
