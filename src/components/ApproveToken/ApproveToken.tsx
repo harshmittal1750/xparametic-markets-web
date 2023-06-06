@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import cn from 'classnames';
+import { features } from 'config';
 
 import { QuestionIcon } from 'assets/icons';
 
-import { useNetwork, usePolkamarketsService } from 'hooks';
+import { useAppSelector, useNetwork, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
@@ -33,6 +34,10 @@ function ApproveToken({
   const { network } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
+
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
 
   const predictionMarketContractAddress =
     polkamarketsService.contracts.pm.getAddress();
@@ -93,7 +98,9 @@ function ApproveToken({
     show
   ]);
 
-  if (!isTokenApproved) {
+  const isEnabled = !features.fantasy.enabled && walletConnected;
+
+  if (isEnabled && !isTokenApproved) {
     return (
       <>
         <ButtonLoading
