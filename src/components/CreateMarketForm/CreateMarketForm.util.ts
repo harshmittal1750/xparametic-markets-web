@@ -40,9 +40,11 @@ const validationSchema = [
       .required('Market Description is required.'),
     category: Yup.string().required('Category is required.'),
     subcategory: Yup.string().required('Subcategory is required.'),
-    resolutionSource: Yup.string()
-      .url('Please enter a valid url.')
-      .required('Resolution source is required.'),
+    ...(features.regular.enabled && {
+      resolutionSource: Yup.string()
+        .url('Please enter a valid url.')
+        .required('Resolution source is required.')
+    }),
     closingDate: Yup.date()
       .min(
         dayjs().format('MM/DD/YYYY HH:mm'),
