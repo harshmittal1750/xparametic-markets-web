@@ -69,6 +69,9 @@ const ui = {
   clubs: {
     enabled: isTrue(environment.FEATURE_CLUBS)
   },
+  tournaments: {
+    enabled: isTrue(environment.FEATURE_TOURNAMENTS)
+  },
   achievements: {
     enabled: isTrue(environment.FEATURE_ACHIEVEMENTS)
   },

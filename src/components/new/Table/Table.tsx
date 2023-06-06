@@ -1,6 +1,13 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/jsx-curly-newline */
-import { CSSProperties, ReactNode, useCallback, useRef, useState } from 'react';
+import {
+  CSSProperties,
+  ReactNode,
+  forwardRef,
+  useCallback,
+  useRef,
+  useState
+} from 'react';
 import { ListItem, TableVirtuoso, TableVirtuosoHandle } from 'react-virtuoso';
 
 import classNames from 'classnames';
@@ -140,12 +147,15 @@ function Table({
               }}
             />
           ),
-          TableHead: props => (
-            <thead
-              {...props}
-              style={{ position: 'sticky', zIndex: 10, top: '0px' }}
-            />
-          ),
+          TableHead: forwardRef(function TableHeadWithForwardedRef(props, ref) {
+            return (
+              <thead
+                style={{ position: 'sticky', zIndex: 10, top: '0px' }}
+                ref={ref}
+                {...props}
+              />
+            );
+          }),
           TableRow: props => {
             const index = props['data-index'];
             const row = rows[index];

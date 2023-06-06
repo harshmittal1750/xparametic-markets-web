@@ -55,7 +55,7 @@ export default function WalletInfoClaim() {
       !isLoadingPolkClaimed &&
       transaction.state === 'not_started'
     ) {
-      handleClaim();
+      // handleClaim();
     }
   }, [
     isPolkClaimed,
