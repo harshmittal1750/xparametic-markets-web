@@ -11,12 +11,13 @@ import features from './features';
 
 export type Providers = 'Google' | 'Facebook' | 'Discord' | 'Email';
 
-const providers = (environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',') || [
-  'Google',
-  'Facebook',
-  'Discord',
-  'Email'
-]) as unknown as Array<Providers>;
+const providers = (environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',').map(
+  provider => {
+    const [firstLetter, ...letters] = Array.from(provider);
+
+    return firstLetter.toUpperCase() + letters.join('');
+  }
+) || ['Google', 'Facebook', 'Discord', 'Email']) as unknown as Array<Providers>;
 const ui = {
   layout: {
     header: {
