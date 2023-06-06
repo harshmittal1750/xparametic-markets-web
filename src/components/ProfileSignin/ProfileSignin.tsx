@@ -26,7 +26,7 @@ const providers = {
   Discord: <DiscordIcon />,
   Facebook: <FacebookIcon />,
   Google: <GoogleIcon />,
-  Email: 'Email login'
+  Email: 'Sign In'
 } as const;
 
 function isEmail(params: Providers): params is 'Email' {
