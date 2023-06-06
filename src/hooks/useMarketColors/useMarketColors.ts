@@ -38,6 +38,7 @@ export default function useMarketColors(markets?: ReadonlyArray<Market>) {
         }
       }
     })();
+    // TODO: it must update whether filters or sort by changes
   }, [marketColorsStored, markets]);
 
   return {

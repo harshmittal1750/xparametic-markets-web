@@ -1,13 +1,13 @@
 import { useCallback } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
+import cn from 'classnames';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
 import OutcomeItem from 'components/OutcomeItem';
-import OutcomeItemText from 'components/OutcomeItemText';
 
 import {
   useAppDispatch,
@@ -78,32 +78,29 @@ export default function TradeFormPredictions() {
             <OutcomeItem
               $size="md"
               image={outcome.imageUrl}
-              $gutterBottom={
-                !expandableOutcomes.isExpanded ||
-                index !== expandableOutcomes.onseted.length - 1
-              }
-              percent={+outcome.price * 100}
+              activeColor={marketColors.outcome(+outcome.id)}
+              value={outcome.id}
+              onClick={handleOutcomeClick}
+              data={outcome.data}
               primary={outcome.title}
-              secondary={
-                <OutcomeItemText
-                  price={outcome.price}
-                  symbol={market.token.ticker}
-                  isPositive={outcome.isPriceUp}
-                />
-              }
+              secondary={{
+                price: outcome.price,
+                ticker: market.token.ticker,
+                isPriceUp: outcome.isPriceUp
+              }}
               isActive={
                 outcome.id === +trade.selectedOutcomeId &&
                 outcome.marketId === +trade.selectedMarketId
               }
-              isPositive={outcome.isPriceUp}
-              value={outcome.id}
-              onClick={handleOutcomeClick}
-              data={outcome.data}
               invested={roundNumber(
                 portfolio[trade.selectedMarketId]?.outcomes[outcome.id]?.shares,
                 3
               )}
-              activeColor={marketColors.outcome(+outcome.id)}
+              className={cn({
+                [tradeFormClasses.gutterOutcome]:
+                  !expandableOutcomes.isExpanded ||
+                  index !== expandableOutcomes.onseted.length - 1
+              })}
             />
           )}
         />
@@ -114,23 +111,19 @@ export default function TradeFormPredictions() {
               <OutcomeItem
                 $size="md"
                 image={outcome.imageUrl}
-                percent={+outcome.price * 100}
+                value={outcome.id}
+                onClick={handleOutcomeClick}
+                activeColor={marketColors.outcome(+outcome.id)}
                 primary={outcome.title}
-                secondary={
-                  <OutcomeItemText
-                    price={outcome.price}
-                    symbol={market.token.ticker}
-                    isPositive={outcome.isPriceUp}
-                  />
-                }
+                secondary={{
+                  price: outcome.price,
+                  ticker: market.token.ticker,
+                  isPriceUp: outcome.isPriceUp
+                }}
                 isActive={
                   outcome.id === +trade.selectedOutcomeId &&
                   outcome.marketId === +trade.selectedMarketId
                 }
-                isPositive={outcome.isPriceUp}
-                value={outcome.id}
-                onClick={handleOutcomeClick}
-                activeColor={marketColors.outcome(+outcome.id)}
               />
             </li>
           ))}
