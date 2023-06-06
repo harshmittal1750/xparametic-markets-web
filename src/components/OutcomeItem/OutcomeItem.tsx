@@ -71,12 +71,6 @@ export default function OutcomeItem({
           [outcomeItemClasses.backdropDefault]: image && resolved !== 'won',
           [outcomeItemClasses.backdropSuccess]: image && resolved === 'won',
           [outcomeItemClasses.backdropActive]: image && !resolved && isActive,
-          // [outcomeItemClasses.backdropWarning]: image && resolved === 'voided',
-          /*   [outcomeItemClasses.colorDefaultState]: !resolved,
-          [outcomeItemClasses.colorDefault]: !resolved || resolved === 'lost',
-          [outcomeItemClasses.colorSuccess]: resolved === 'won',
-        */
-
           [outcomeItemClasses.variantDashed]: $variant === 'dashed',
           [outcomeItemClasses.sizeSm]: isSm,
           [outcomeItemClasses.sizeMd]: isMd,
