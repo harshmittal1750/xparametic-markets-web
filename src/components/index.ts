@@ -202,8 +202,6 @@ export { default as NumberInput } from './NumberInput';
 
 export { default as OutcomeItem } from './OutcomeItem';
 
-export { default as OutcomeItemText } from './OutcomeItemText';
-
 export { default as SelectTokenModal } from './SelectTokenModal';
 
 export { default as Steps } from './Steps';
