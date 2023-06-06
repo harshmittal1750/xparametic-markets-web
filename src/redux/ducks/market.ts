@@ -166,14 +166,9 @@ const marketSlice = createSlice({
               ticker,
               iconName: (tokenByTicker || currencyByTicker).iconName
             },
-            outcomes: market.outcomes.map((outcome, index) => ({
+            outcomes: market.outcomes.map(outcome => ({
               ...outcome,
-              price: Number(outcome.price.toFixed(3)),
-              imageUrl: [
-                'https://polkamarkets.infura-ipfs.io/ipfs/QmdRGv8odwsnafpz49ZayQNhmJzJTaT2kjXrrm6aBMJ1Qw',
-                'https://polkamarkets.infura-ipfs.io/ipfs/QmeVh77bH7iAVmqrPWNp4SvA59enTfSSPe2VAHoCmJxQmZ',
-                'https://polkamarkets.infura-ipfs.io/ipfs/QmXUiapNZUbxfWpNYMtbT8Xpyk4EdF6gKWa7cw8SBX5gm9'
-              ][index]
+              price: Number(outcome.price.toFixed(3))
             }))
           }
         };
@@ -209,14 +204,9 @@ const marketSlice = createSlice({
               ticker,
               iconName: (tokenByTicker || currencyByTicker).iconName
             },
-            outcomes: market.outcomes.map((outcome, index) => ({
+            outcomes: market.outcomes.map(outcome => ({
               ...outcome,
-              price: Number(outcome.price.toFixed(3)),
-              imageUrl: [
-                'https://polkamarkets.infura-ipfs.io/ipfs/QmdRGv8odwsnafpz49ZayQNhmJzJTaT2kjXrrm6aBMJ1Qw',
-                'https://polkamarkets.infura-ipfs.io/ipfs/QmeVh77bH7iAVmqrPWNp4SvA59enTfSSPe2VAHoCmJxQmZ',
-                'https://polkamarkets.infura-ipfs.io/ipfs/QmXUiapNZUbxfWpNYMtbT8Xpyk4EdF6gKWa7cw8SBX5gm9'
-              ][index]
+              price: Number(outcome.price.toFixed(3))
             }))
           }
         };
