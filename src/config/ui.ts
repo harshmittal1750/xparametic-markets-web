@@ -1,3 +1,4 @@
+import capitalize from 'helpers/capitalize';
 import isTrue from 'helpers/isTrue';
 import intersection from 'lodash/intersection';
 
@@ -12,11 +13,7 @@ import features from './features';
 export type Providers = 'Google' | 'Facebook' | 'Discord' | 'Email';
 
 const providers = (environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',').map(
-  provider => {
-    const [firstLetter, ...letters] = Array.from(provider);
-
-    return firstLetter.toUpperCase() + letters.join('');
-  }
+  capitalize
 ) || ['Google', 'Facebook', 'Discord', 'Email']) as unknown as Array<Providers>;
 const ui = {
   layout: {
