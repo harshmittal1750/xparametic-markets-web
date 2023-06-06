@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { environment } from 'config';
 import { useField, useFormikContext } from 'formik';
 import { roundNumber } from 'helpers/math';
 import has from 'lodash/has';
@@ -255,6 +256,7 @@ function ReportFormActions({
               <ApproveToken
                 fullwidth
                 address={networkConfig.ERC20_CONTRACT_ADDRESS}
+                spenderAddress={environment.ERC20_CONTRACT_ADDRESS}
                 ticker="POLK"
               >
                 <ButtonLoading
