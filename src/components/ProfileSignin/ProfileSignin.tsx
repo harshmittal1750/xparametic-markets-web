@@ -25,7 +25,8 @@ import profileSigninClasses from './ProfileSignin.module.scss';
 const providers = {
   Discord: <DiscordIcon />,
   Facebook: <FacebookIcon />,
-  Google: <GoogleIcon />
+  Google: <GoogleIcon />,
+  Email: 'Email login'
 } as const;
 
 function isEmail(params: Providers): params is 'Email' {
@@ -82,14 +83,12 @@ export default function ProfileSignin() {
               return (
                 <Fragment key={provider}>
                   <Component
+                    className={profileSigninClasses.provider}
+                    variant="outline"
+                    color="default"
+                    size="sm"
                     name={provider}
                     onClick={handleLogin}
-                    {...(!isEmail(provider) && {
-                      className: profileSigninClasses.provider,
-                      variant: 'outline',
-                      color: 'default',
-                      size: 'sm'
-                    })}
                   >
                     {load === provider ? <Spinner /> : providers[provider]}
                   </Component>
