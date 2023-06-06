@@ -15,61 +15,75 @@ import outcomeItemClasses from './OutcomeItem.module.scss';
 
 export type OutcomeProps = Pick<
   React.ComponentPropsWithoutRef<'button'>,
-  'onClick' | 'children' | 'value'
+  'onClick' | 'children' | 'value' | 'className'
 > &
-  Partial<
-    Record<
-      | 'isActive'
-      | 'isPositive'
-      | 'isResolved'
-      | 'isWinning'
-      | 'isVoided'
-      | '$gutterBottom',
-      boolean
-    >
-  > &
   Partial<Record<'primary' | 'image' | 'activeColor', string>> &
-  Partial<Record<'secondary', React.ReactNode>> &
-  Partial<Record<'invested' | 'percent', number>> & {
+  Partial<Record<'invested', number>> & {
+    isActive?: boolean;
     data?: AreaDataPoint[];
     $variant?: 'dashed';
     $size?: 'sm' | 'md';
+    resolved?: 'won' | 'lost' | 'voided';
+    secondary: {
+      price: number;
+      ticker?: string;
+      isPriceUp?: boolean;
+      text?: string;
+    };
   };
+
+const resolveds = {
+  voided: <RepeatCycleIcon />,
+  won: <CheckIcon fill="#27ab83" />,
+  lost: <RemoveIcon fill="#e12d39" />
+};
 
 export default function OutcomeItem({
   primary,
   secondary,
-  percent,
   isActive,
-  isPositive,
-  isResolved,
-  isWinning,
-  isVoided,
   invested,
-  $gutterBottom,
   $size,
   data,
   $variant,
   image,
   activeColor,
+  resolved,
+  className,
   ...props
 }: OutcomeProps) {
-  const theme = useTheme();
+  const { isTablet } = useTheme().device;
+  const isSm = $size === 'sm';
+  const isMd = $size === 'md';
 
   return (
     <button
       type="button"
-      disabled={isResolved}
-      className={cn(outcomeItemClasses.root, {
-        'pm-c-market-outcomes__item--default': !isResolved,
-        'pm-c-market-outcomes__item--success': isWinning,
-        'pm-c-market-outcomes__item--danger': !isWinning,
-        [outcomeItemClasses.gutterBottom]: $gutterBottom,
-        [outcomeItemClasses.variantDashed]: $variant === 'dashed',
-        [outcomeItemClasses.backdrop]: !isResolved && image,
-        [outcomeItemClasses.backdropActive]: !isResolved && image && isActive,
-        active: isActive
-      })}
+      disabled={!!resolved}
+      className={cn(
+        outcomeItemClasses.root,
+        {
+          'pm-c-market-outcomes__item--default': !image && !resolved,
+          'pm-c-market-outcomes__item--success': !image && resolved === 'won',
+          'pm-c-market-outcomes__item--danger': !image && resolved === 'lost',
+
+          [outcomeItemClasses.backdrop]: image,
+          [outcomeItemClasses.backdropDefault]: image && resolved !== 'won',
+          [outcomeItemClasses.backdropSuccess]: image && resolved === 'won',
+          [outcomeItemClasses.backdropActive]: image && !resolved && isActive,
+          // [outcomeItemClasses.backdropWarning]: image && resolved === 'voided',
+          /*   [outcomeItemClasses.colorDefaultState]: !resolved,
+          [outcomeItemClasses.colorDefault]: !resolved || resolved === 'lost',
+          [outcomeItemClasses.colorSuccess]: resolved === 'won',
+        */
+
+          [outcomeItemClasses.variantDashed]: $variant === 'dashed',
+          [outcomeItemClasses.sizeSm]: isSm,
+          [outcomeItemClasses.sizeMd]: isMd,
+          active: isActive
+        },
+        className
+      )}
       style={{
         // @ts-expect-error No need to assert React.CSSProperties here
         '--outcome-image': image && `url('${image}')`,
@@ -78,17 +92,17 @@ export default function OutcomeItem({
       {...props}
     >
       <div className={outcomeItemClasses.content}>
-        {image && $size === 'md' && (
+        {image && isMd && (
           <div className={outcomeItemClasses.itemStart}>
             <Avatar $size="xs" $radius="xs" src={image} />
           </div>
         )}
-        <div className="pm-c-market-outcomes__item-group--column">
+        <div className={outcomeItemClasses.contentContainer}>
           <Text
             as="p"
             scale="caption"
             fontWeight="semibold"
-            className="pm-c-market-outcomes__item-title"
+            className={`pm-c-market-outcomes__item-title ${outcomeItemClasses.primary}`}
           >
             {primary}
           </Text>
@@ -98,49 +112,58 @@ export default function OutcomeItem({
             fontWeight="semibold"
             className={`pm-c-market-outcomes__item-odd ${outcomeItemClasses.secondary}`}
           >
-            {secondary}
+            {secondary.text || (
+              <>
+                <strong className={outcomeItemClasses.primary}>
+                  {secondary.price}
+                </strong>{' '}
+                {secondary.ticker}
+                <Text
+                  as="span"
+                  scale="tiny"
+                  color={secondary.isPriceUp ? 'success' : 'danger'}
+                >
+                  <Icon
+                    name="Arrow"
+                    size="sm"
+                    dir={secondary.isPriceUp ? 'up' : 'down'}
+                  />
+                </Text>
+              </>
+            )}
           </Text>
         </div>
-        {(isResolved ||
-          (image && $size === 'sm') ||
-          (data && theme.device.isTablet) ||
-          $size === 'md') && (
-          <div className={outcomeItemClasses.itemEnd}>
-            {(() => {
-              if (isResolved)
-                return (
-                  <div className="pm-c-market-outcomes__item-result">
-                    {(() => {
-                      if (isVoided) return <RepeatCycleIcon />;
-                      if (isWinning) return <CheckIcon />;
-                      return <RemoveIcon />;
-                    })()}
-                  </div>
-                );
-              if (image && $size === 'sm')
-                return <Avatar $size="xs" $radius="xs" src={image} />;
-              if (data && theme.device.isTablet)
-                return (
-                  <Area
-                    id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
-                    data={data}
-                    color={isPositive ? 'green' : 'red'}
-                    width={48}
-                    height={32}
-                  />
-                );
-              if ($size === 'md')
-                return (
-                  <span className={outcomeItemClasses.secondary}>
-                    <Icon size="lg" name="Plus" />
-                  </span>
-                );
-              return null;
-            })()}
-          </div>
-        )}
+        <div className={outcomeItemClasses.itemEnd}>
+          {(() => {
+            if (resolved)
+              return (
+                <Text color={resolved === 'won' ? 'success' : 'dark'}>
+                  {resolveds[resolved]}
+                </Text>
+              );
+            if (image && $size === 'sm')
+              return <Avatar $size="xs" $radius="xs" src={image} />;
+            if (data && isTablet)
+              return (
+                <Area
+                  id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
+                  data={data}
+                  color={secondary.isPriceUp ? 'green' : 'red'}
+                  width={48}
+                  height={32}
+                />
+              );
+            if (isMd)
+              return (
+                <span className={outcomeItemClasses.secondary}>
+                  <Icon size="lg" name="Plus" />
+                </span>
+              );
+            return null;
+          })()}
+        </div>
       </div>
-      {data && theme.device.isTablet && $size === 'md' && (
+      {data && isTablet && isMd && (
         <MiniTable
           style={{
             paddingLeft: 16,
@@ -150,18 +173,18 @@ export default function OutcomeItem({
           rows={[
             {
               key: 'invested',
-              title: 'your invested',
+              title: 'Invested',
               value: invested || 0
             }
           ]}
         />
       )}
-      {!isResolved && typeof percent !== 'undefined' && (
+      {!resolved && (
         <Line
-          percent={percent}
+          percent={+secondary.price * 100}
           strokeWidth={1}
           strokeColor={(() => {
-            if (isPositive) return '#65D6AD';
+            if (secondary.isPriceUp) return '#65D6AD';
             if (!data) return 'var(--color-text-secondary)';
             return '#F86A6A';
           })()}
