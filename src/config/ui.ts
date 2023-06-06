@@ -10,7 +10,12 @@ import {
 import environment from './environment';
 import features from './features';
 
-export type Providers = 'Google' | 'Facebook' | 'Discord' | 'Email';
+export type Providers =
+  | 'Google'
+  | 'Facebook'
+  | 'Discord'
+  | 'Email'
+  | 'Metamask';
 
 const providers = (environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',').map(
   capitalize

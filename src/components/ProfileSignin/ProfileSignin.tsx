@@ -2,9 +2,10 @@ import { Fragment, useState } from 'react';
 
 import { ui } from 'config';
 import type { Providers } from 'config';
-import { Spinner } from 'ui';
+import { Divider, Spinner } from 'ui';
 
 import { Button } from 'components/Button';
+import ConnectMetamask from 'components/ConnectMetamask';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
@@ -29,8 +30,11 @@ const providers = {
   Email: 'Sign In'
 } as const;
 
-function isEmail(params: Providers): params is 'Email' {
+function isProviderEmail(params: Providers): params is 'Email' {
   return params === 'Email';
+}
+function isProviderMetamask(params: Providers): params is 'Metamask' {
+  return params === 'Metamask';
 }
 export default function ProfileSignin() {
   const dispatch = useAppDispatch();
@@ -78,20 +82,29 @@ export default function ProfileSignin() {
           </ModalHeader>
           <ModalSection>
             {ui.socialLogin.providers.map(provider => {
-              const Component = isEmail(provider) ? ProfileSigninEmail : Button;
+              const Component = isProviderEmail(provider)
+                ? ProfileSigninEmail
+                : Button;
 
               return (
                 <Fragment key={provider}>
-                  <Component
-                    className={profileSigninClasses.provider}
-                    variant="outline"
-                    color="default"
-                    size="sm"
-                    name={provider}
-                    onClick={handleLogin}
-                  >
-                    {load === provider ? <Spinner /> : providers[provider]}
-                  </Component>
+                  {isProviderMetamask(provider) ? (
+                    <>
+                      <Divider enableGutters />
+                      <ConnectMetamask />
+                    </>
+                  ) : (
+                    <Component
+                      className={profileSigninClasses.provider}
+                      variant="outline"
+                      color="default"
+                      size="sm"
+                      name={provider}
+                      onClick={handleLogin}
+                    >
+                      {load === provider ? <Spinner /> : providers[provider]}
+                    </Component>
+                  )}
                 </Fragment>
               );
             })}
