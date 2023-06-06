@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import cn from 'classnames';
 import { Divider } from 'ui';
 
 import { Button } from 'components/Button';
@@ -7,9 +8,10 @@ import type { ButtonProps } from 'components/Button';
 
 import profileSigninEmailClasses from './ProfileSigninEmail.module.scss';
 
-export default function ProfileSigninEmail(
-  props: Pick<ButtonProps, 'onClick' | 'name' | 'children'>
-) {
+export default function ProfileSigninEmail({
+  className,
+  ...props
+}: Pick<ButtonProps, 'onClick' | 'name' | 'children' | 'className'>) {
   const [email, setEmail] = useState('');
   const handleEmail = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) =>
@@ -32,7 +34,7 @@ export default function ProfileSigninEmail(
         </label>
         <Button
           type="submit"
-          className={profileSigninEmailClasses.email}
+          className={cn(profileSigninEmailClasses.email, className)}
           color="default"
           size="sm"
           disabled={!email}
