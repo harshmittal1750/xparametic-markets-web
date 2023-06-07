@@ -22,3 +22,18 @@
     }
   }
 }
+
+.terms {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  font-size: 500;
+  color: #59749b;
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      color: #4c6383;
+    }
+  }
+}

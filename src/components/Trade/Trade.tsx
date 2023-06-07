@@ -18,6 +18,17 @@ function Trade({ view = 'default' }: TradeProps) {
       {view === 'default' ? (
         <p className={styles.rootDefaultTitle}>Make your prediction</p>
       ) : null}
+
+      <p className={styles.terms}>
+        By clicking you’re agreeing to our{' '}
+        <a
+          href="https://www.polkamarkets.com/legal/terms-conditions"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Terms and Conditions
+        </a>
+      </p>
     </div>
   );
 }
