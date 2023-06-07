@@ -70,11 +70,11 @@
     --background-color: var(--outcome-color);
     --shadow-alpha: 0.6;
     --border-color: var(--outcome-color);
-    --border-alpha: 0.4;
+    --border-alpha: 0.2;
 
     &:hover {
       --border-color: var(--outcome-color);
-      --border-alpha: 0.6;
+      --border-alpha: 0.4;
     }
   }
 }
