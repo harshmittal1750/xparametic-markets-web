@@ -256,7 +256,7 @@ function ReportFormActions({
               <ApproveToken
                 fullwidth
                 address={networkConfig.ERC20_CONTRACT_ADDRESS}
-                spenderAddress={environment.ERC20_CONTRACT_ADDRESS}
+                spenderAddress={networkConfig.REALITIO_ERC20_CONTRACT_ADDRESS}
                 ticker="POLK"
               >
                 <ButtonLoading
