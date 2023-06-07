@@ -30,7 +30,7 @@
 }
 
 .backdrop {
-  box-shadow: 0px 0px 20px rgb(var(--outcome-color) / var(--shadow-alpha));
+  box-shadow: 0px 0px 20px rgb(var(--outcome-color) / var(--shadow-alpha, 0));
   border-color: rgb(var(--border-color) / var(--border-alpha));
   background: linear-gradient(
       0deg,
@@ -51,7 +51,7 @@
   &Default {
     --background-color: var(--color-background--rgb);
     --border-color: var(--color-text--rgb);
-    --border-alpha: 0.2;
+    --border-alpha: 0.1;
 
     &:hover {
       --border-alpha: 0.4;
@@ -67,9 +67,8 @@
   }
   &Active {
     --background-color: var(--outcome-color);
-    --border-color: var(--outcome-color);
-    --shadow-alpha: 0.4;
-    border-color: rgb(var(--outcome-color) / 0.2) !important;
+    --shadow-alpha: 0.6;
+    border-color: rgb(var(--outcome-color) / 0.4);
   }
 }
 
