@@ -7,12 +7,7 @@ import { useTheme } from 'ui';
 
 import OutcomeItem from 'components/OutcomeItem';
 
-import {
-  useAppDispatch,
-  useAppSelector,
-  useExpandableOutcomes,
-  useMarketColors
-} from 'hooks';
+import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
 type MarketOutcomesProps = {
   market: Market;
@@ -22,7 +17,6 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
   const history = useHistory();
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
-  const marketColors = useMarketColors();
   const theme = useTheme();
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
@@ -86,12 +80,11 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
             <OutcomeItem
               $size="sm"
               image={outcome.imageUrl}
-              isActive={getOutcomeActive(outcome.id)}
               value={outcome.id}
-              onClick={handleOutcomeClick}
               data={outcome.data}
               primary={outcome.title}
-              activeColor={marketColors.outcome(+outcome.id)}
+              isActive={getOutcomeActive(outcome.id)}
+              onClick={handleOutcomeClick}
               secondary={{
                 price: outcome.price,
                 ticker: market.token.ticker,

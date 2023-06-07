@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
 import cn from 'classnames';
+import getMarketColors from 'helpers/getMarketColors';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
@@ -9,12 +10,7 @@ import { useTheme } from 'ui';
 
 import OutcomeItem from 'components/OutcomeItem';
 
-import {
-  useAppDispatch,
-  useAppSelector,
-  useExpandableOutcomes,
-  useMarketColors
-} from 'hooks';
+import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
 import tradeFormClasses from './TradeForm.module.scss';
 
@@ -24,7 +20,6 @@ export default function TradeFormPredictions() {
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
   const market = useAppSelector(state => state.market.market);
   const theme = useTheme();
-  const marketColors = useMarketColors();
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
     timeframe: '7d'
@@ -56,6 +51,10 @@ export default function TradeFormPredictions() {
     ),
     [expandableOutcomes.expand, expandableOutcomes.offseted]
   );
+  const marketColors = getMarketColors({
+    network: market.network.id,
+    market: market.id
+  });
   const needExpandOutcomes = sortedOutcomes.length > 3;
   const outcomes =
     theme.device.isDesktop && needExpandOutcomes
@@ -78,11 +77,11 @@ export default function TradeFormPredictions() {
             <OutcomeItem
               $size="md"
               image={outcome.imageUrl}
-              activeColor={marketColors.outcome(+outcome.id)}
               value={outcome.id}
-              onClick={handleOutcomeClick}
               data={outcome.data}
               primary={outcome.title}
+              activeColor={marketColors.outcome(outcome.id)}
+              onClick={handleOutcomeClick}
               secondary={{
                 price: outcome.price,
                 ticker: market.token.ticker,

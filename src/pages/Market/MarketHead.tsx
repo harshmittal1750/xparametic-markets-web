@@ -1,25 +1,29 @@
 import { Fragment } from 'react';
 
+import getMarketColors from 'helpers/getMarketColors';
 import { Container, Hero, useTheme } from 'ui';
 
 import { MarketAvatar, MarketCategory, Text } from 'components';
 import MarketFooter from 'components/Market/MarketFooter';
 import MarketFooterActions from 'components/Market/MarketFooterActions';
 
-import { useAppSelector, useMarketColors } from 'hooks';
+import { useAppSelector } from 'hooks';
 
 import marketClasses from './Market.module.scss';
 
 function MarketHeadWrapper(
   props: React.PropsWithChildren<Record<string, unknown>>
 ) {
-  const imageUrl = useAppSelector(state => state.market.market.imageUrl);
-  const marketColors = useMarketColors();
+  const market = useAppSelector(state => state.market.market);
+  const marketColors = getMarketColors({
+    network: market.network.id,
+    market: market.id
+  });
 
   return (
     <Hero
       className={marketClasses.hero}
-      $image={imageUrl}
+      $image={market.imageUrl}
       $backdrop={marketColors.market}
       {...props}
     />

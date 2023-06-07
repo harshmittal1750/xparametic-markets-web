@@ -15,7 +15,7 @@ import { InfoIcon } from 'assets/icons';
 
 import PredictionCard from 'components/PredictionCard';
 
-import { useMarkets, useMarketColors } from 'hooks';
+import { useMarkets } from 'hooks';
 
 import { Button } from '../Button';
 import Text from '../Text';
@@ -60,7 +60,25 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
-  useMarketColors(data);
+  useEffect(() => {
+    (async function handleMarketColors() {
+      if (data) {
+        try {
+          const { default: buildMarketColors } = await import(
+            'helpers/buildMarketColors'
+          );
+          const { MARKET_COLORS_KEY } = await import('helpers/getMarketColors');
+
+          localStorage.setItem(
+            MARKET_COLORS_KEY,
+            JSON.stringify(await buildMarketColors(data))
+          );
+        } catch (error) {
+          // unsupported
+        }
+      }
+    })();
+  }, [data]);
 
   return (
     <>
