@@ -54,7 +54,8 @@
     --border-alpha: 0.1;
 
     &:hover {
-      --border-alpha: 0.4;
+      --border-color: var(--color-text--rgb);
+      --border-alpha: 0.2;
     }
     &:disabled {
       --border-alpha: 0.16;
@@ -68,7 +69,13 @@
   &Active {
     --background-color: var(--outcome-color);
     --shadow-alpha: 0.6;
-    border-color: rgb(var(--outcome-color) / 0.4);
+    --border-color: var(--outcome-color);
+    --border-alpha: 0.4;
+
+    &:hover {
+      --border-color: var(--outcome-color);
+      --border-alpha: 0.6;
+    }
   }
 }
 

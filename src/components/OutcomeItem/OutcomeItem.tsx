@@ -52,7 +52,7 @@ export default function OutcomeItem({
   className,
   ...props
 }: OutcomeProps) {
-  const { isTablet } = useTheme().device;
+  const theme = useTheme();
   const isSm = $size === 'sm';
   const isMd = $size === 'md';
 
@@ -65,8 +65,7 @@ export default function OutcomeItem({
         {
           'pm-c-market-outcomes__item--default': !image && !resolved,
           'pm-c-market-outcomes__item--success': !image && resolved === 'won',
-          'pm-c-market-outcomes__item--danger': !image && resolved === 'lost',
-
+          'pm-c-market-outcomes__item--danger': !image && resolved !== 'won',
           [outcomeItemClasses.backdrop]: image,
           [outcomeItemClasses.backdropDefault]: image && resolved !== 'won',
           [outcomeItemClasses.backdropSuccess]: image && resolved === 'won',
@@ -137,7 +136,7 @@ export default function OutcomeItem({
               );
             if (image && $size === 'sm')
               return <Avatar $size="xs" $radius="xs" src={image} />;
-            if (data && isTablet)
+            if (data && theme.device.isTablet)
               return (
                 <Area
                   id={`${kebabCase(primary)}-${uniqueId('outcome-item')}`}
@@ -157,7 +156,7 @@ export default function OutcomeItem({
           })()}
         </div>
       </div>
-      {data && isTablet && isMd && (
+      {data && theme.device.isTablet && isMd && (
         <MiniTable
           style={{
             paddingLeft: 16,
