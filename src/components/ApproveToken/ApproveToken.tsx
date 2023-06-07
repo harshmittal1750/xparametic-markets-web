@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import cn from 'classnames';
+import { features } from 'config';
 
 import { QuestionIcon } from 'assets/icons';
 
-import { useNetwork, usePolkamarketsService } from 'hooks';
+import { useAppSelector, useNetwork, usePolkamarketsService } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
@@ -17,6 +18,7 @@ import approveTokenClasses from './ApproveToken.module.scss';
 interface ApproveTokenProps
   extends Pick<ButtonProps, 'fullwidth' | 'children'> {
   address: string;
+  spenderAddress?: string;
   ticker: string;
   wrapped?: boolean;
   onApprove?(isApproved: boolean): void;
@@ -24,6 +26,7 @@ interface ApproveTokenProps
 
 function ApproveToken({
   address,
+  spenderAddress,
   ticker,
   wrapped = false,
   children,
@@ -34,8 +37,12 @@ function ApproveToken({
   const polkamarketsService = usePolkamarketsService();
   const { show, close } = useToastNotification();
 
-  const predictionMarketContractAddress =
-    polkamarketsService.contracts.pm.getAddress();
+  const walletConnected = useAppSelector(
+    state => state.polkamarkets.isLoggedIn
+  );
+
+  const contractAddress =
+    spenderAddress || polkamarketsService.contracts.pm.getAddress();
 
   const [isTokenApproved, setIsTokenApproved] = useState(false);
   const [isApprovingToken, setIsApprovingToken] = useState(false);
@@ -47,19 +54,22 @@ function ApproveToken({
   ] = useState(undefined);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  async function checkTokenApproval(tokenAddress, spenderAddress) {
+  async function checkTokenApproval(tokenAddress) {
     const isApproved =
       wrapped ||
       !tokenAddress ||
-      (await polkamarketsService.isERC20Approved(tokenAddress, spenderAddress));
+      (await polkamarketsService.isERC20Approved(
+        tokenAddress,
+        contractAddress
+      ));
 
     setIsTokenApproved(isApproved);
     onApprove?.(isApproved);
   }
 
   useEffect(() => {
-    checkTokenApproval(address, predictionMarketContractAddress);
-  }, [address, checkTokenApproval, predictionMarketContractAddress]);
+    checkTokenApproval(address);
+  }, [address, checkTokenApproval]);
 
   const handleApproveToken = useCallback(async () => {
     setIsApprovingToken(true);
@@ -67,7 +77,7 @@ function ApproveToken({
     try {
       const response = await polkamarketsService.approveERC20(
         address,
-        predictionMarketContractAddress
+        contractAddress
       );
 
       const { status, transactionHash } = response;
@@ -80,20 +90,22 @@ function ApproveToken({
 
       setIsApprovingToken(false);
 
-      checkTokenApproval(address, predictionMarketContractAddress);
+      checkTokenApproval(address);
     } catch (error) {
       setIsApprovingToken(false);
     }
   }, [
     polkamarketsService,
     address,
-    ticker,
-    predictionMarketContractAddress,
+    contractAddress,
     checkTokenApproval,
-    show
+    show,
+    ticker
   ]);
 
-  if (!isTokenApproved) {
+  const isEnabled = !features.fantasy.enabled && walletConnected;
+
+  if (isEnabled && !isTokenApproved) {
     return (
       <>
         <ButtonLoading
