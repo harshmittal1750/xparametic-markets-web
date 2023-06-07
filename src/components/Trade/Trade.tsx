@@ -7,6 +7,7 @@ import { Button } from '../Button';
 import { views } from './Trade.config';
 import styles from './Trade.module.scss';
 import type { View } from './Trade.types';
+import TradePredictions from './TradePredictions';
 
 type TradeProps = {
   view?: View;
@@ -38,6 +39,7 @@ function Trade({ view = 'default' }: TradeProps) {
           <p className={styles.marketTitle}>{market.title}</p>
         ) : null}
       </div>
+      <TradePredictions />
       <Button size="sm" color="primary">
         Predict & Win
       </Button>

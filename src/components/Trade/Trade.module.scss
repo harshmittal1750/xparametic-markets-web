@@ -38,6 +38,58 @@
   }
 }
 
+.predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.prediction {
+  position: relative;
+
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(4px);
+  border-radius: var(--size-4);
+
+  &Gutter {
+    &Bottom {
+      margin-bottom: 6px;
+    }
+  }
+
+  &Progress {
+    position: absolute;
+
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.16);
+    border-radius: var(--size-4);
+  }
+
+  &Content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--size-16);
+    padding: 10px;
+  }
+
+  &Title {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #f9fafb;
+  }
+
+  &Price {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #a5bee4;
+  }
+}
+
 .terms {
   font-size: 1.4rem;
   line-height: 1.5;
