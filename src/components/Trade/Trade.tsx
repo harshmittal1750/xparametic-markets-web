@@ -1,5 +1,6 @@
 import cn from 'classnames';
 
+import { Button } from '../Button';
 import styles from './Trade.module.scss';
 import type { View } from './Trade.types';
 
@@ -18,7 +19,9 @@ function Trade({ view = 'default' }: TradeProps) {
       {view === 'default' ? (
         <p className={styles.rootDefaultTitle}>Make your prediction</p>
       ) : null}
-
+      <Button size="sm" color="primary">
+        Predict & Win
+      </Button>
       <p className={styles.terms}>
         By clicking you’re agreeing to our{' '}
         <a
