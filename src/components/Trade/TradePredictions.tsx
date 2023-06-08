@@ -48,13 +48,14 @@ function TradePredictions() {
       />
       <button
         type="button"
+        className={styles.predictionsShowMore}
         onClick={() =>
           off.length > 0
             ? setVisiblePredictions(outcomes.length)
             : setVisiblePredictions(3)
         }
       >
-        {off.length > 0 ? `Show More (${off.length})` : 'Show less'}
+        {off.length > 0 ? `Show More (${off.length})` : 'Undo'}
       </button>
     </div>
   );
