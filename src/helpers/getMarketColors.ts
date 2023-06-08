@@ -7,7 +7,6 @@ type Value = string | number;
 export default function getMarketColors(
   params: Record<'network' | 'market', Value>
 ) {
-  // const market = useAppSelector(state => state.market.market);
   const marketColorsStored = localStorage.getItem(MARKET_COLORS_KEY) || '{}';
   const marketColorsParsed: MarketColorsByNetwork | Record<string, never> =
     JSON.parse(marketColorsStored);
