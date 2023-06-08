@@ -17,7 +17,7 @@ function TradePredictions() {
   const on = multiple ? outcomes.slice(0, visiblePredictions) : outcomes;
   const off = multiple ? outcomes.slice(visiblePredictions) : [];
 
-  const listHeight = on.length * 47;
+  const listHeight = on.length * 49;
 
   return (
     <div>
@@ -25,7 +25,8 @@ function TradePredictions() {
         height={listHeight}
         data={on}
         itemContent={(index, outcome) => (
-          <div
+          <button
+            type="button"
             className={cn(styles.prediction, {
               [styles.predictionGutterBottom]: index !== outcomes.length - 1
             })}
@@ -42,7 +43,7 @@ function TradePredictions() {
                 outcome.price * 100
               }%`}</p>
             </div>
-          </div>
+          </button>
         )}
       />
       <button

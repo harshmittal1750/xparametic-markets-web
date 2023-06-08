@@ -45,11 +45,29 @@
 }
 
 .prediction {
+  cursor: pointer;
   position: relative;
+  width: 100%;
 
   background-color: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(4px);
+  border: 1px solid transparent;
   border-radius: var(--size-4);
+
+  &:hover,
+  &:focus,
+  &Selected {
+    border: 1px solid #5d55fa;
+    box-shadow: 0px 0px 0px 3px rgba(93, 85, 250, 0.2);
+
+    .predictionProgress {
+      background-color: rgba(93, 85, 250, 0.16);
+    }
+
+    .predictionPrice {
+      color: #ffffff;
+    }
+  }
 
   &Gutter {
     &Bottom {
