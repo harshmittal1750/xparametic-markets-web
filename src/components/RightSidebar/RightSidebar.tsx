@@ -17,7 +17,7 @@ const forms = {
   ) : (
     <TradeFormClosed />
   ),
-  tradeForm: features.fantasy ? <Trade /> : <TradeForm />
+  tradeForm: features.fantasy.enabled ? <Trade /> : <TradeForm />
 };
 
 export default function RightSidebar() {
