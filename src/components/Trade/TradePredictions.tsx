@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import cn from 'classnames';
+import { roundNumber } from 'helpers/math';
 
 import { useAppSelector } from 'hooks';
 
@@ -39,9 +40,10 @@ function TradePredictions() {
             />
             <div className={styles.predictionContent}>
               <p className={styles.predictionTitle}>{outcome.title}</p>
-              <p className={styles.predictionPrice}>{`${
-                outcome.price * 100
-              }%`}</p>
+              <p className={styles.predictionPrice}>{`${roundNumber(
+                outcome.price * 100,
+                3
+              )}%`}</p>
             </div>
           </button>
         )}
