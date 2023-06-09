@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { formatNumberToString } from 'helpers/math';
@@ -18,11 +18,6 @@ import {
 
 import profileSignoutClasses from './ProfileSignout.module.scss';
 
-const user = {
-  src: '',
-  name: 'User Name'
-};
-
 export default function ProfileSignout() {
   const dispatch = useAppDispatch();
   const fantasyTokenTicker = useFantasyTokenTicker();
@@ -39,11 +34,18 @@ export default function ProfileSignout() {
     dispatch(logout());
   }, [dispatch, polkamarketsService]);
 
+  const [user, setUser] = useState({ name: '', src: '' });
+
   useEffect(() => {
     async function handleDiscordLogin() {
       const { updateSocialLoginInfo } = await import(
         'services/Polkamarkets/user'
       );
+
+      setUser({
+        name: socialLoginInfo.name.split('#')[0],
+        src: socialLoginInfo.profileImage
+      });
 
       // send data to backend
       await updateSocialLoginInfo(
@@ -76,7 +78,12 @@ export default function ProfileSignout() {
       </Button>
       <div className="pm-c-wallet-info__profile">
         <Link to={`/user/${ethAddress}`}>
-          <Avatar $size="sm" $radius="lg" src="" alt={user.name} />
+          <Avatar
+            $size="sm"
+            $radius="lg"
+            src={user.src || ''}
+            alt={user.name}
+          />
         </Link>
         <div>
           <Text
