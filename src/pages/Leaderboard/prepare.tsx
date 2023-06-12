@@ -13,6 +13,7 @@ import {
   FirstPlaceIcon,
   SecondPlaceIcon,
   ThirdPlaceIcon,
+  MyPlaceIcon,
   RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
@@ -101,7 +102,7 @@ function walletColumnRender({
 
   return (
     <Link to={`/user/${address}`} className="pm-c-leaderboard-table__wallet">
-      {userImageUrl && (
+      {userImageUrl ? (
         <Avatar
           $radius="lg"
           $size="x2s"
@@ -111,6 +112,8 @@ function walletColumnRender({
             'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
           })}
         />
+      ) : (
+        isLoggedInUser && <MyPlaceIcon />
       )}
       {walletPlace.icon}
       <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
