@@ -3,6 +3,7 @@
   flex-direction: column;
   gap: var(--grid-margin);
   height: 100%;
+  max-width: 540px;
 
   &Default {
     &Title {
@@ -38,6 +39,10 @@
       line-height: 1.3;
       font-weight: 700;
       color: #f9fafb;
+    }
+
+    .terms {
+      text-align: center;
     }
   }
 
