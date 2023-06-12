@@ -146,7 +146,7 @@ export default function OutcomeItem({
                   height={32}
                 />
               );
-            if (isMd)
+            if ($variant === 'dashed')
               return (
                 <span className={outcomeItemClasses.secondary}>
                   <Icon size="lg" name="Plus" />
