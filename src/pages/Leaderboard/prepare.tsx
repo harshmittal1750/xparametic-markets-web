@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 
+import cn from 'classnames';
 import { ui } from 'config';
+import shortenAddress from 'helpers/shortenAddress';
 import isEmpty from 'lodash/isEmpty';
 import orderBy from 'lodash/orderBy';
 import pick from 'lodash/pick';
@@ -82,7 +84,7 @@ type WalletColumnRenderArgs = {
   place: number;
   explorerURL: string;
   achievements: Achievement[];
-};
+} & Record<'username' | 'userImageUrl', string | null>;
 
 function walletColumnRender({
   isLoggedInUser,
@@ -98,19 +100,18 @@ function walletColumnRender({
   return (
     <div className="pm-c-leaderboard-table__wallet">
       {walletPlace.icon}
-      {isLoggedInUser ? <MyPlaceIcon /> : null}
+      {isLoggedInUser && <MyPlaceIcon />}
       <Link
-        className={`caption semibold text-${
-          isLoggedInUser ? '1' : walletPlace.textColor
-        }`}
         to={`/user/${address}`}
+        className={cn('caption semibold', {
+          'text-1': isLoggedInUser,
+          [walletPlace.textColor]: !isLoggedInUser
+        })}
       >
-        {`${address.substring(0, 6)}...${address.substring(
-          address.length - 4
-        )}`}
-        {isLoggedInUser ? (
-          <span className="caption semibold text-3">{` (You)`}</span>
-        ) : null}
+        {shortenAddress(address)}
+        {isLoggedInUser && (
+          <span className="caption semibold text-3"> (You)</span>
+        )}
       </Link>
       {achievementsColumnRender(
         achievements,
