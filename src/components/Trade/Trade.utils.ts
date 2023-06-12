@@ -6,14 +6,14 @@ function formatTradeDetails({ price, maxStake, maxROI, ticker }) {
     {
       key: 'probability',
       title: 'Probability',
-      value: `${price * 100}%`
+      value: `${roundNumber(price * 100, 2)}%`
     },
     {
       key: 'payout',
       title: 'Est. Payout If Chosen',
       value: `${roundNumber(maxStake, 3)} ${ticker} (+${roundNumber(
         maxROI,
-        3
+        2
       )}%)`
     }
   ];
