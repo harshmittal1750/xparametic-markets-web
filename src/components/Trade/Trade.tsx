@@ -57,7 +57,7 @@ function Trade({ view = 'default' }: TradeProps) {
           <p className={styles.marketTitle}>{market.title}</p>
         </div>
       ) : null}
-      <TradePredictions />
+      <TradePredictions view={view} />
       <TradeFormInput />
       <TradeDetails />
       <Button size="sm" color="primary">

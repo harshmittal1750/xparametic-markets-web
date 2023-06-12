@@ -9,8 +9,13 @@ import { useAppDispatch, useAppSelector } from 'hooks';
 
 import VirtualizedList from '../VirtualizedList';
 import styles from './Trade.module.scss';
+import { View } from './Trade.types';
 
-function TradePredictions() {
+type TradePredictionsProps = {
+  view: View;
+};
+
+function TradePredictions({ view }: TradePredictionsProps) {
   const dispatch = useAppDispatch();
   const [visiblePredictions, setVisiblePredictions] = useState(3);
 
@@ -55,7 +60,10 @@ function TradePredictions() {
   const on = multiple ? predictions.slice(0, visiblePredictions) : predictions;
   const off = multiple ? predictions.slice(visiblePredictions) : [];
 
-  const listHeight = on.length * 49;
+  const listHeight = Math.min(
+    Math.ceil(window.innerHeight * (view === 'modal' ? 0.25 : 0.35)),
+    on.length * 49
+  );
 
   return (
     <div>
