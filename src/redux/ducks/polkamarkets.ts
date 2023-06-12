@@ -226,6 +226,21 @@ function login(polkamarketsService: PolkamarketsService) {
       polkamarketsService
         .isPolkClaimed()
         .then(polkClaimed => {
+          if (!polkClaimed) {
+            polkamarketsService
+              .claimPolk()
+              .then(_polkClaimed => {
+                // balance is updated after claim
+                polkamarketsService
+                  .getPolkBalance()
+                  .then(polkBalance => {
+                    dispatch(changePolkBalance(polkBalance));
+                  })
+                  .catch(() => {});
+              })
+              .catch(() => {});
+          }
+
           dispatch(changePolkClaimed(polkClaimed));
           dispatch(
             changeLoading({
