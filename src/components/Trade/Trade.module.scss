@@ -14,14 +14,15 @@
   }
 
   &Modal {
+    padding: 40px;
     background: linear-gradient(
         0deg,
-        rgb(var(--backdrop-color) / var(--alpha-quaternary)) 0%,
+        rgb(var(--backdrop-color) / var(--alpha-septenary)) 60%,
         rgb(var(--backdrop-color) / var(--alpha-quinary)) 100%
       ),
       linear-gradient(
         0deg,
-        var(--color-background-primary) 0%,
+        var(--color-background-primary) 30%,
         var(--color-background-tertiary) 100%
       ),
       var(--image), var(--color-background-secondary);
