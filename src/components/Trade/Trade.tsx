@@ -6,12 +6,12 @@ import { useTheme } from 'ui';
 import { useAppSelector } from 'hooks';
 
 import Breadcrumb from '../Breadcrumb';
-import { Button } from '../Button';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
 import TradeFormInput from '../TradeForm/TradeFormInput';
 import { views } from './Trade.config';
 import styles from './Trade.module.scss';
 import type { View } from './Trade.types';
+import TradeActions from './TradeActions';
 import TradeDetails from './TradeDetails';
 import TradePredictions from './TradePredictions';
 
@@ -69,9 +69,7 @@ function Trade({ view = 'default' }: TradeProps) {
         <TradeFormInput />
         <TradeDetails />
         <div className={styles.actionsGroup}>
-          <Button size="sm" color="primary">
-            Predict & Win
-          </Button>
+          <TradeActions />
           <p className={styles.terms}>
             By clicking you’re agreeing to our{' '}
             <a
