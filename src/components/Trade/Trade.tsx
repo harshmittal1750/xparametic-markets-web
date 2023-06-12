@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, Fragment } from 'react';
 
 import cn from 'classnames';
 import { useTheme } from 'ui';
@@ -63,19 +63,21 @@ function Trade({ view = 'default' }: TradeProps) {
       <div className={styles.rootActions}>
         <TradeFormInput />
         <TradeDetails />
-        <Button size="sm" color="primary">
-          Predict & Win
-        </Button>
-        <p className={styles.terms}>
-          By clicking you’re agreeing to our{' '}
-          <a
-            href="https://www.polkamarkets.com/legal/terms-conditions"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Terms and Conditions
-          </a>
-        </p>
+        <div className={styles.actionsGroup}>
+          <Button size="sm" color="primary">
+            Predict & Win
+          </Button>
+          <p className={styles.terms}>
+            By clicking you’re agreeing to our{' '}
+            <a
+              href="https://www.polkamarkets.com/legal/terms-conditions"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Terms and Conditions
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   );
