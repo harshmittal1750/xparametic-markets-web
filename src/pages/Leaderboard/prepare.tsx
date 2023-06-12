@@ -7,12 +7,12 @@ import isEmpty from 'lodash/isEmpty';
 import orderBy from 'lodash/orderBy';
 import pick from 'lodash/pick';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
+import { Avatar } from 'ui';
 
 import {
   FirstPlaceIcon,
   SecondPlaceIcon,
   ThirdPlaceIcon,
-  MyPlaceIcon,
   RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
@@ -90,7 +90,9 @@ function walletColumnRender({
   isLoggedInUser,
   address,
   place,
-  achievements
+  achievements,
+  username,
+  userImageUrl
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -98,27 +100,31 @@ function walletColumnRender({
   };
 
   return (
-    <div className="pm-c-leaderboard-table__wallet">
+    <Link to={`/user/${address}`} className="pm-c-leaderboard-table__wallet">
+      {userImageUrl && (
+        <Avatar
+          $radius="lg"
+          $size="x2s"
+          alt="Avatar"
+          src={userImageUrl}
+          className={cn({
+            'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
+          })}
+        />
+      )}
       {walletPlace.icon}
-      {isLoggedInUser && <MyPlaceIcon />}
-      <Link
-        to={`/user/${address}`}
-        className={cn('caption semibold', {
-          'text-1': isLoggedInUser,
-          [walletPlace.textColor]: !isLoggedInUser
-        })}
-      >
-        {shortenAddress(address)}
+      <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
+        {username || shortenAddress(address)}
         {isLoggedInUser && (
           <span className="caption semibold text-3"> (You)</span>
         )}
-      </Link>
+      </p>
       {achievementsColumnRender(
         achievements,
         'medium',
         5 + 20 * Math.min(achievements.length, 4)
       )}
-    </div>
+    </Link>
   );
 }
 
@@ -223,7 +229,9 @@ function prepareLeaderboardTableRows({
           isLoggedInUser,
           address: row.user,
           place: index + 1,
-          achievements: row.achievements
+          achievements: row.achievements,
+          username: row.username,
+          userImageUrl: row.userImageUrl
         },
         volumeEur: {
           volume: row.volumeEur,
