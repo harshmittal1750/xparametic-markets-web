@@ -30,7 +30,7 @@
 }
 
 .backdrop {
-  box-shadow: 0px 0px 20px rgb(var(--outcome-color) / var(--shadow-alpha, 0));
+  box-shadow: 0px 0px 12px rgb(var(--outcome-color) / var(--shadow-alpha, 0));
   border-color: rgb(var(--border-color) / var(--border-alpha));
   background: linear-gradient(
       0deg,
@@ -47,6 +47,10 @@
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+
+  @media (min-width: 1024px) {
+    box-shadow: 0px 0px 24px rgb(var(--outcome-color) / var(--shadow-alpha, 0));
+  }
 
   &Default {
     --background-color: var(--color-background--rgb);

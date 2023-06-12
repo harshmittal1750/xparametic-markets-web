@@ -4,9 +4,9 @@
   overflow-y: hidden;
   overflow-x: auto;
   margin-left: calc(-1 * var(--grid-margin));
-  width: calc(100% + var(--grid-margin) * 2);
-  padding-left: var(--grid-margin);
-  padding-right: var(--grid-margin);
+  margin-top: calc(#{var(--grid-margin)} * -1);
+  width: calc(100% + #{var(--grid-margin)} * 2);
+  padding: var(--grid-margin);
   -ms-overflow-style: none;
   scrollbar-width: none;
 
