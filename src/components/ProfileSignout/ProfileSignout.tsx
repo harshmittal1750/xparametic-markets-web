@@ -99,10 +99,10 @@ export default function ProfileSignout() {
             className="pm-c-wallet-info__profile__ticker"
           >
             {formatNumberToString(polkBalance)} {fantasyTokenTicker || 'POLK'}
-            <Icon
+            {/* <Icon
               name="PlusOutlined"
               className="pm-c-wallet-info__profile__ticker_icon"
-            />
+            /> */}
           </Text>
         </div>
       </div>
