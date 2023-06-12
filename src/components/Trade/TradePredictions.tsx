@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, MouseEvent } from 'react';
+import { useCallback, useMemo, useState, MouseEvent, useEffect } from 'react';
 
 import cn from 'classnames';
 import { roundNumber } from 'helpers/math';
@@ -14,10 +14,19 @@ function TradePredictions() {
   const dispatch = useAppDispatch();
   const [visiblePredictions, setVisiblePredictions] = useState(3);
 
-  const { outcomes } = useAppSelector(state => state.market.market);
+  const { id, outcomes, networkId } = useAppSelector(
+    state => state.market.market
+  );
 
   const { selectedOutcomeId, selectedMarketId, selectedMarketNetworkId } =
     useAppSelector(state => state.trade);
+
+  useEffect(() => {
+    if (id !== selectedMarketId) {
+      dispatch(selectOutcome(id, networkId, outcomes[0].id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleSelectOutcome = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
