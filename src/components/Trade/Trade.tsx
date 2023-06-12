@@ -8,6 +8,7 @@ import { useAppSelector } from 'hooks';
 import Breadcrumb from '../Breadcrumb';
 import { Button } from '../Button';
 import TradeFormClosed from '../TradeForm/TradeFormClosed';
+import TradeFormInput from '../TradeForm/TradeFormInput';
 import { views } from './Trade.config';
 import styles from './Trade.module.scss';
 import type { View } from './Trade.types';
@@ -57,6 +58,7 @@ function Trade({ view = 'default' }: TradeProps) {
         </div>
       ) : null}
       <TradePredictions />
+      <TradeFormInput />
       <TradeDetails />
       <Button size="sm" color="primary">
         Predict & Win
