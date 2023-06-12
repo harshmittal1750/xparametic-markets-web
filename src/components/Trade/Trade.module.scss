@@ -1,0 +1,212 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-margin);
+  height: 100%;
+  max-width: 540px;
+
+  &Default {
+    &Title {
+      font-size: 2.4rem;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #8888fc;
+    }
+  }
+
+  &Modal {
+    padding: 40px;
+    background: linear-gradient(
+        0deg,
+        rgb(var(--backdrop-color) / var(--alpha-septenary)) 60%,
+        rgb(var(--backdrop-color) / var(--alpha-quinary)) 100%
+      ),
+      linear-gradient(
+        0deg,
+        var(--color-background-primary) 30%,
+        var(--color-background-tertiary) 100%
+      ),
+      var(--image), var(--color-background-secondary);
+    background-clip: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    transition: background-color 300ms ease-in;
+
+    &Title {
+      font-size: 2rem;
+      line-height: 1.3;
+      font-weight: 700;
+      color: #f9fafb;
+    }
+
+    .terms {
+      text-align: center;
+    }
+  }
+
+  &View,
+  &Actions {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  &View {
+    flex: 1 0 auto;
+
+    @media (min-width: 768px) {
+      min-height: 360px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+  }
+}
+
+.market {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-8);
+
+  &Title {
+    font-size: 2.5rem;
+    line-height: 1.35;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    word-break: break-all;
+  }
+}
+
+.predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &ShowMore {
+    cursor: pointer;
+
+    padding: var(--size-8);
+    background-color: rgba(136, 136, 252, 0.08);
+
+    border: none;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #a2a5fc;
+  }
+}
+
+.prediction {
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+
+  background-color: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(4px);
+  border: 1px solid transparent;
+  border-radius: var(--size-4);
+
+  &:hover,
+  &:focus,
+  &Selected {
+    border: 1px solid #5d55fa;
+    box-shadow: 0px 0px 0px 3px rgba(93, 85, 250, 0.2);
+
+    transition-property: border, box-shadow;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+
+  &Selected {
+    .predictionProgress {
+      background-color: rgba(93, 85, 250, 0.16);
+    }
+
+    .predictionPrice {
+      color: #ffffff;
+    }
+  }
+
+  &Gutter {
+    &Bottom {
+      margin-bottom: 6px;
+    }
+  }
+
+  &Progress {
+    position: absolute;
+
+    height: 100%;
+    border-radius: var(--size-4);
+
+    transition: background-color 0.2s ease-in-out;
+
+    &Default {
+      background-color: rgba(255, 255, 255, 0.16);
+    }
+
+    &Winning {
+      background-color: rgba(101, 214, 173, 0.16);
+    }
+
+    &Losing {
+      background-color: rgba(248, 106, 106, 0.16);
+    }
+  }
+
+  &Content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--size-16);
+    padding: 10px;
+  }
+
+  &Title {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #f9fafb;
+  }
+
+  &Price {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: #a5bee4;
+  }
+}
+
+.actionsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+}
+
+.terms {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  font-size: 500;
+  word-break: break-all;
+  color: #59749b;
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      color: #4c6383;
+    }
+  }
+}
+
+.closed {
+  padding: 40px;
+}

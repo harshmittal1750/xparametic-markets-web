@@ -218,6 +218,8 @@ export { default as Steps } from './Steps';
 
 export { default as ThemeSelector } from './ThemeSelector';
 
+export { default as Trade } from './Trade';
+
 export { default as VirtualizedList } from './VirtualizedList';
 
 export { default as Wallet } from './Wallet';
