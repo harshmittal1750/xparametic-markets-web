@@ -14,6 +14,23 @@
   }
 
   &Modal {
+    background: linear-gradient(
+        0deg,
+        rgb(var(--backdrop-color) / var(--alpha-quaternary)) 0%,
+        rgb(var(--backdrop-color) / var(--alpha-quinary)) 100%
+      ),
+      linear-gradient(
+        0deg,
+        var(--color-background-primary) 0%,
+        var(--color-background-tertiary) 100%
+      ),
+      var(--image), var(--color-background-secondary);
+    background-clip: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    transition: background-color 300ms ease-in;
+
     &Title {
       font-size: 2rem;
       line-height: 1.3;

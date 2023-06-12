@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 import cn from 'classnames';
 
 import { useAppSelector } from 'hooks';
@@ -16,6 +18,7 @@ type TradeProps = {
 
 function Trade({ view = 'default' }: TradeProps) {
   const market = useAppSelector(state => state.market.market);
+  const colors = useAppSelector(state => state.ui.market.colors);
 
   const config = views[view];
 
@@ -25,6 +28,12 @@ function Trade({ view = 'default' }: TradeProps) {
         [styles.rootDefault]: view === 'default',
         [styles.rootModal]: view === 'modal'
       })}
+      style={
+        {
+          '--image': `url('${market.imageUrl}')`,
+          '--backdrop-color': colors[market.id]
+        } as CSSProperties
+      }
     >
       {view === 'default' ? (
         <p className={styles.rootDefaultTitle}>Make your prediction</p>
