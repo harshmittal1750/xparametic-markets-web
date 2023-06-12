@@ -7,6 +7,7 @@ import { useAppSelector } from 'hooks';
 
 import Breadcrumb from '../Breadcrumb';
 import { Button } from '../Button';
+import TradeFormClosed from '../TradeForm/TradeFormClosed';
 import { views } from './Trade.config';
 import styles from './Trade.module.scss';
 import type { View } from './Trade.types';
@@ -22,7 +23,13 @@ function Trade({ view = 'default' }: TradeProps) {
   const market = useAppSelector(state => state.market.market);
   const colors = useAppSelector(state => state.ui.market.colors);
 
+  const isLoadingMarket = useAppSelector(state => state.market.isLoading);
+
   const config = views[view];
+
+  if (isLoadingMarket) return null;
+
+  if (market.state !== 'open') return <TradeFormClosed />;
 
   return (
     <div
