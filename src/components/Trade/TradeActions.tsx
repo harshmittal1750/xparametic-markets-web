@@ -208,7 +208,7 @@ function TradeActions() {
               disabled={!isValidAmount || isLoading}
               loading={isLoading}
             >
-              Predict & Win
+              Predict
             </ButtonLoading>
           </ApproveToken>
         ) : null}
