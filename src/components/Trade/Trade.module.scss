@@ -117,8 +117,19 @@
     position: absolute;
 
     height: 100%;
-    background-color: rgba(255, 255, 255, 0.16);
     border-radius: var(--size-4);
+
+    &Default {
+      background-color: rgba(255, 255, 255, 0.16);
+    }
+
+    &Winning {
+      background-color: rgba(101, 214, 173, 0.16);
+    }
+
+    &Losing {
+      background-color: rgba(248, 106, 106, 0.16);
+    }
   }
 
   &Content {

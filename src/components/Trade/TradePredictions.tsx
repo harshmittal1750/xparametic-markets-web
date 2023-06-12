@@ -21,13 +21,6 @@ function TradePredictions() {
   const { selectedOutcomeId, selectedMarketId, selectedMarketNetworkId } =
     useAppSelector(state => state.trade);
 
-  useEffect(() => {
-    if (id !== selectedMarketId) {
-      dispatch(selectOutcome(id, networkId, outcomes[0].id));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const handleSelectOutcome = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
       dispatch(
@@ -49,6 +42,13 @@ function TradePredictions() {
       }),
     [outcomes]
   );
+
+  useEffect(() => {
+    if (id !== selectedMarketId) {
+      dispatch(selectOutcome(id, networkId, predictions[0].id));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const multiple = predictions.length > 2;
 
@@ -75,7 +75,11 @@ function TradePredictions() {
             onClick={handleSelectOutcome}
           >
             <div
-              className={styles.predictionProgress}
+              className={cn(styles.predictionProgress, {
+                [styles.predictionProgressDefault]: multiple,
+                [styles.predictionProgressWinning]: !multiple && index === 0,
+                [styles.predictionProgressLosing]: !multiple && index === 1
+              })}
               style={{
                 width: `${outcome.price * 100}%`
               }}
