@@ -48,31 +48,35 @@ function Trade({ view = 'default' }: TradeProps) {
       {view === 'default' && theme.device.isDesktop ? (
         <p className={styles.rootDefaultTitle}>Make your prediction</p>
       ) : null}
-      {config.market.details ? (
-        <div className={styles.market}>
-          <Breadcrumb>
-            <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
-            <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
-          </Breadcrumb>
-          <p className={styles.marketTitle}>{market.title}</p>
-        </div>
-      ) : null}
-      <TradePredictions view={view} />
-      <TradeFormInput />
-      <TradeDetails />
-      <Button size="sm" color="primary">
-        Predict & Win
-      </Button>
-      <p className={styles.terms}>
-        By clicking you’re agreeing to our{' '}
-        <a
-          href="https://www.polkamarkets.com/legal/terms-conditions"
-          target="_blank"
-          rel="noreferrer"
-        >
-          Terms and Conditions
-        </a>
-      </p>
+      <div className={styles.rootView}>
+        {config.market.details ? (
+          <div className={styles.market}>
+            <Breadcrumb>
+              <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
+              <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
+            </Breadcrumb>
+            <p className={styles.marketTitle}>{market.title}</p>
+          </div>
+        ) : null}
+        <TradePredictions view={view} />
+      </div>
+      <div className={styles.rootActions}>
+        <TradeFormInput />
+        <TradeDetails />
+        <Button size="sm" color="primary">
+          Predict & Win
+        </Button>
+        <p className={styles.terms}>
+          By clicking you’re agreeing to our{' '}
+          <a
+            href="https://www.polkamarkets.com/legal/terms-conditions"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Terms and Conditions
+          </a>
+        </p>
+      </div>
     </div>
   );
 }

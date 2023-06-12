@@ -17,11 +17,7 @@ function TradeDetails() {
     ticker
   });
 
-  return (
-    <div>
-      <MiniTable rows={tableRows} />
-    </div>
-  );
+  return <MiniTable rows={tableRows} />;
 }
 
 export default TradeDetails;
