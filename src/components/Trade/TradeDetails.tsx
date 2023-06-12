@@ -5,13 +5,19 @@ import { formatTradeDetails } from './Trade.utils';
 
 function TradeDetails() {
   const { market } = useAppSelector(state => state.market);
-  const { token } = market;
+  const { outcomes, token } = market;
   const { ticker } = token;
 
-  const { price, maxROI, maxStake } = useAppSelector(state => state.trade);
+  const { maxROI, maxStake, selectedOutcomeId } = useAppSelector(
+    state => state.trade
+  );
+
+  const selectedOutcome = outcomes.find(
+    outcome => outcome.id.toString() === selectedOutcomeId.toString()
+  );
 
   const tableRows = formatTradeDetails({
-    price,
+    price: selectedOutcome?.price || 0,
     maxStake,
     maxROI,
     ticker
