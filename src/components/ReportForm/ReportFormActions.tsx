@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { environment } from 'config';
 import { useField, useFormikContext } from 'formik';
 import { roundNumber } from 'helpers/math';
 import has from 'lodash/has';
