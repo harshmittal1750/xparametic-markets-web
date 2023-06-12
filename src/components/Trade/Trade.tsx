@@ -1,4 +1,4 @@
-import { CSSProperties, Fragment } from 'react';
+import { CSSProperties } from 'react';
 
 import cn from 'classnames';
 import { useTheme } from 'ui';
@@ -30,7 +30,12 @@ function Trade({ view = 'default' }: TradeProps) {
 
   if (isLoadingMarket) return null;
 
-  if (market.state !== 'open') return <TradeFormClosed />;
+  if (market.state !== 'open')
+    return (
+      <div className={cn({ [styles.closed]: view === 'modal' })}>
+        <TradeFormClosed />
+      </div>
+    );
 
   return (
     <div
