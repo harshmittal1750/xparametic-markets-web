@@ -10,7 +10,7 @@ function formatTradeDetails({ price, maxStake, maxROI, ticker }) {
     },
     {
       key: 'payout',
-      title: 'Est. Payout If Chosen',
+      title: 'Max Payout',
       value: `${roundNumber(maxStake, 3)} ${ticker} (+${roundNumber(
         maxROI,
         2
