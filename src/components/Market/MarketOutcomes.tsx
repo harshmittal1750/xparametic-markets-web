@@ -106,7 +106,9 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
         <ModalContent className={styles.tradeModalContent}>
           <ModalHeader className={styles.tradeModalHeader}>
             <ModalHeaderHide onClick={handleCloseTrade} />
-            <ModalHeaderTitle>Make your prediction</ModalHeaderTitle>
+            <ModalHeaderTitle className={styles.tradeModalHeaderTitle}>
+              Make your prediction
+            </ModalHeaderTitle>
           </ModalHeader>
           <Trade view="modal" />
         </ModalContent>
