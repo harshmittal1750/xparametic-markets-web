@@ -5,8 +5,7 @@ export type ViewConfig = {
     image: boolean;
   };
   market: {
-    categories: boolean;
-    title: boolean;
+    details: boolean;
   };
 };
 

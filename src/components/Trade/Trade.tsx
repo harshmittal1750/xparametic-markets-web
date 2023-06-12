@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
 
 import cn from 'classnames';
+import { useTheme } from 'ui';
 
 import { useAppSelector } from 'hooks';
 
@@ -17,6 +18,7 @@ type TradeProps = {
 };
 
 function Trade({ view = 'default' }: TradeProps) {
+  const theme = useTheme();
   const market = useAppSelector(state => state.market.market);
   const colors = useAppSelector(state => state.ui.market.colors);
 
@@ -35,20 +37,18 @@ function Trade({ view = 'default' }: TradeProps) {
         } as CSSProperties
       }
     >
-      {view === 'default' ? (
+      {view === 'default' && theme.device.isDesktop ? (
         <p className={styles.rootDefaultTitle}>Make your prediction</p>
       ) : null}
-      <div className={styles.market}>
-        {config.market.categories ? (
+      {config.market.details ? (
+        <div className={styles.market}>
           <Breadcrumb>
             <Breadcrumb.Item>{market.category}</Breadcrumb.Item>
             <Breadcrumb.Item>{market.subcategory}</Breadcrumb.Item>
           </Breadcrumb>
-        ) : null}
-        {config.market.title ? (
           <p className={styles.marketTitle}>{market.title}</p>
-        ) : null}
-      </div>
+        </div>
+      ) : null}
       <TradePredictions />
       <TradeDetails />
       <Button size="sm" color="primary">

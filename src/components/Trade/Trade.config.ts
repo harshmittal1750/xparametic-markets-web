@@ -7,8 +7,7 @@ const views: Views = {
       image: false
     },
     market: {
-      categories: false,
-      title: false
+      details: false
     }
   },
   modal: {
@@ -16,8 +15,7 @@ const views: Views = {
       image: true
     },
     market: {
-      categories: true,
-      title: true
+      details: true
     }
   }
 };
