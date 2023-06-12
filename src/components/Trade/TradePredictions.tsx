@@ -94,17 +94,17 @@ function TradePredictions() {
           </button>
         )}
       />
-      <button
-        type="button"
-        className={styles.predictionsShowMore}
-        onClick={() =>
-          off.length > 0
-            ? setVisiblePredictions(predictions.length)
-            : setVisiblePredictions(3)
-        }
-      >
-        {off.length > 0 ? `Show More (${off.length})` : 'Undo'}
-      </button>
+      {predictions.length > 3 ? (
+        <button
+          type="button"
+          className={styles.predictionsShowMore}
+          onClick={() =>
+            setVisiblePredictions(off.length > 0 ? predictions.length : 3)
+          }
+        >
+          {off.length > 0 ? `Show More (${off.length})` : 'Undo'}
+        </button>
+      ) : null}
     </div>
   );
 }
