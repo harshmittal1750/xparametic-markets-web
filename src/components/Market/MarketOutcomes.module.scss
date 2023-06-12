@@ -1,0 +1,14 @@
+.tradeModal {
+  &Content {
+    padding: 0;
+  }
+
+  &Header {
+    padding: 20px 12px;
+
+    button {
+      right: 8px;
+      top: 16px;
+    }
+  }
+}

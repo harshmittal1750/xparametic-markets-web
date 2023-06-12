@@ -20,6 +20,7 @@ import ModalHeader from '../ModalHeader';
 import ModalHeaderHide from '../ModalHeaderHide';
 import ModalHeaderTitle from '../ModalHeaderTitle';
 import Trade from '../Trade';
+import styles from './MarketOutcomes.module.scss';
 
 type MarketOutcomesProps = {
   market: Market;
@@ -102,8 +103,8 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
   return (
     <ul className="pm-c-market-outcomes">
       <Modal show={tradeVisible} centered>
-        <ModalContent>
-          <ModalHeader>
+        <ModalContent className={styles.tradeModalContent}>
+          <ModalHeader className={styles.tradeModalHeader}>
             <ModalHeaderHide onClick={handleCloseTrade} />
             <ModalHeaderTitle>Make your prediction</ModalHeaderTitle>
           </ModalHeader>
