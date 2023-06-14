@@ -55,6 +55,7 @@ type TabsProps = {
   fullwidth?: boolean;
   value: string;
   onChange: (_value: string) => void;
+  adornment?: ReactNode;
   filters?: ReactNode[];
   children?: ReactNode;
 };
@@ -64,6 +65,7 @@ type TabsProps = {
  */
 function Tabs({
   direction = 'row',
+  adornment,
   filters,
   fullwidth,
   children,
@@ -97,6 +99,7 @@ function Tabs({
               </button>
             </li>
           ))}
+          {adornment ? <li tabIndex={tabs.length}>{adornment}</li> : null}
         </ul>
         {!isUndefined(filters) && !isEmpty(filters) ? (
           <ul className="pm-c-tabs__filters">
