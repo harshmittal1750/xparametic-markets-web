@@ -134,6 +134,13 @@
   }
 }
 
+.tabs {
+  &Adornment {
+    padding: 0 var(--size-12) !important;
+    height: var(--size-32) !important;
+  }
+}
+
 .about {
   &Description {
     color: var(--color-text-primary);
