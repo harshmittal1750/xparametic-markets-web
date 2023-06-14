@@ -8,7 +8,7 @@ function TradeDetails() {
   const { outcomes, token } = market;
   const { ticker } = token;
 
-  const { maxROI, maxStake, selectedOutcomeId } = useAppSelector(
+  const { type, maxROI, maxStake, shares, selectedOutcomeId } = useAppSelector(
     state => state.trade
   );
 
@@ -17,9 +17,11 @@ function TradeDetails() {
   );
 
   const tableRows = formatTradeDetails({
+    type,
     price: selectedOutcome?.price || 0,
     maxStake,
     maxROI,
+    shares,
     ticker
   });
 
