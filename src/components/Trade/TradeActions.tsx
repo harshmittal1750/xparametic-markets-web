@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 
+import { ui } from 'config';
 import { changeOutcomeData, changeData } from 'redux/ducks/market';
 import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
@@ -46,7 +47,8 @@ function TradeActions() {
   const { wrapped: tokenWrapped, address } = token;
 
   // Derivated state
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
 
   // Local state
   const [isLoading, setIsLoading] = useState(false);

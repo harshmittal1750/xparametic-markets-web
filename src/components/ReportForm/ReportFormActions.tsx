@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { environment } from 'config';
+import { ui } from 'config';
 import { useField, useFormikContext } from 'formik';
 import { roundNumber } from 'helpers/math';
 import has from 'lodash/has';
@@ -78,7 +78,8 @@ function ReportFormActions({
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
-  const isWrongNetwork = network.id !== `${networkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${networkId}`;
   const resolvedOutcomeId = PolkamarketsService.bytes32ToInt(bestAnswer);
 
   const isWinningOutcome = outcomeId =>
