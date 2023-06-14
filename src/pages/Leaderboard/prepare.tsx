@@ -102,20 +102,23 @@ function walletColumnRender({
 
   return (
     <Link to={`/user/${address}`} className="pm-c-leaderboard-table__wallet">
-      {userImageUrl ? (
-        <Avatar
-          $radius="lg"
-          $size="x2s"
-          alt="Avatar"
-          src={userImageUrl}
-          className={cn({
-            'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
-          })}
-        />
-      ) : (
-        isLoggedInUser && <MyPlaceIcon />
-      )}
       {walletPlace.icon}
+      {(() => {
+        if (userImageUrl)
+          return (
+            <Avatar
+              $radius="lg"
+              $size="x2s"
+              alt="Avatar"
+              src={userImageUrl}
+              className={cn({
+                'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
+              })}
+            />
+          );
+        if (isLoggedInUser) return <MyPlaceIcon />;
+        return null;
+      })()}
       <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
         {username || shortenAddress(address)}
         {isLoggedInUser && (
