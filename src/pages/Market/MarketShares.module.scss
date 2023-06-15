@@ -22,7 +22,7 @@
       font-size: 1.9rem;
       line-height: 1.6;
       font-weight: 500;
-      color: #c4c6ff;
+      color: var(--color-market-shares-description);
 
       text-overflow: ellipsis;
       overflow: hidden;
@@ -33,7 +33,7 @@
       word-break: break-all;
 
       strong {
-        color: #ffffff;
+        color: var(--color-market-shares-description--bold);
       }
     }
   }
