@@ -113,6 +113,7 @@ const ui = {
   },
   socialLogin: {
     enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
+    networkId: environment.FEATURE_SOCIAL_LOGIN_NETWORK_ID,
     isTestnet: isTrue(environment.FEATURE_SOCIAL_LOGIN_IS_TESTNET),
     providers
   }
