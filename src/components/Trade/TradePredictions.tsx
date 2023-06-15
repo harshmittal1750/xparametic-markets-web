@@ -14,9 +14,14 @@ import { View } from './Trade.types';
 type TradePredictionsProps = {
   view: View;
   size?: 'md' | 'lg';
+  onPredictionSelected?: () => void;
 };
 
-function TradePredictions({ view, size = 'md' }: TradePredictionsProps) {
+function TradePredictions({
+  view,
+  size = 'md',
+  onPredictionSelected
+}: TradePredictionsProps) {
   const dispatch = useAppDispatch();
   const [visiblePredictions, setVisiblePredictions] = useState(3);
 
@@ -36,8 +41,18 @@ function TradePredictions({ view, size = 'md' }: TradePredictionsProps) {
           +event.currentTarget.value
         )
       );
+
+      if (view === 'default' && onPredictionSelected) {
+        onPredictionSelected();
+      }
     },
-    [dispatch, selectedMarketId, selectedMarketNetworkId]
+    [
+      dispatch,
+      onPredictionSelected,
+      selectedMarketId,
+      selectedMarketNetworkId,
+      view
+    ]
   );
 
   const predictions = useMemo(
