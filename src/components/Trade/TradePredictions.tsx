@@ -13,9 +13,10 @@ import { View } from './Trade.types';
 
 type TradePredictionsProps = {
   view: View;
+  size?: 'md' | 'lg';
 };
 
-function TradePredictions({ view }: TradePredictionsProps) {
+function TradePredictions({ view, size = 'md' }: TradePredictionsProps) {
   const dispatch = useAppDispatch();
   const [visiblePredictions, setVisiblePredictions] = useState(3);
 
@@ -62,7 +63,7 @@ function TradePredictions({ view }: TradePredictionsProps) {
 
   const listHeight = Math.min(
     Math.ceil(window.innerHeight * (view === 'modal' ? 0.25 : 0.35)),
-    on.length * 49
+    on.length * (size === 'md' ? 49 : 71)
   );
 
   return (
@@ -74,7 +75,9 @@ function TradePredictions({ view }: TradePredictionsProps) {
           <button
             type="button"
             className={cn(styles.prediction, {
+              [styles.predictionLg]: size === 'lg',
               [styles.predictionGutterBottom]: index !== predictions.length - 1,
+              [styles.predictionGutterBottomLg]: size === 'lg',
               [styles.predictionSelected]:
                 outcome.id.toString() === selectedOutcomeId.toString() &&
                 outcome.marketId.toString() === selectedMarketId.toString()
