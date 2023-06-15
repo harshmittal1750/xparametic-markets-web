@@ -9,7 +9,6 @@
   transition: background-color 200ms ease-in-out;
   background-color: var(--color-surface-primary);
   z-index: 1;
-  flex-direction: row-reverse;
 
   @media (min-width: 1024px) {
     background-color: unset;
@@ -18,7 +17,17 @@
     border-top: unset;
     position: unset;
     width: unset;
-    flex-direction: unset;
+  }
+}
+.reverse {
+  @media (min-width: 1024px) {
+    flex-direction: row-reverse;
+  }
+}
+.actions {
+  &Group {
+    display: inherit;
+    gap: inherit;
   }
 }
 .high {
