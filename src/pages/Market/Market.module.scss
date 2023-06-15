@@ -95,6 +95,24 @@
   }
 }
 
+.predictions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-12);
+
+  margin-bottom: 56px;
+
+  &Title {
+    font-size: 1.2rem;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: #59749b;
+  }
+}
+
 .stats {
   display: flex;
   flex-flow: row wrap;

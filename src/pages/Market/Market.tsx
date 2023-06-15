@@ -36,6 +36,7 @@ import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
 import MarketHead from './MarketHead';
 import MarketNews from './MarketNews';
+import MarketPredictions from './MarketPredictions';
 import MarketShares from './MarketShares';
 import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
@@ -163,6 +164,7 @@ function MarketUI() {
         <Container $enableGutters>
           <Feature name="fantasy">
             <MarketShares />
+            <MarketPredictions />
           </Feature>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
