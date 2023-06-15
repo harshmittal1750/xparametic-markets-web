@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState, MouseEvent, useEffect } from 'react';
+import { useCallback, useMemo, useState, MouseEvent } from 'react';
 
 import cn from 'classnames';
 import { roundNumber } from 'helpers/math';
@@ -29,30 +29,19 @@ function TradePredictions({
     state => state.market.market
   );
 
-  const { selectedOutcomeId, selectedMarketId, selectedMarketNetworkId } =
-    useAppSelector(state => state.trade);
+  const { selectedOutcomeId, selectedMarketId } = useAppSelector(
+    state => state.trade
+  );
 
   const handleSelectOutcome = useCallback(
     (event: MouseEvent<HTMLButtonElement>) => {
-      dispatch(
-        selectOutcome(
-          selectedMarketId,
-          selectedMarketNetworkId,
-          +event.currentTarget.value
-        )
-      );
+      dispatch(selectOutcome(id, networkId, +event.currentTarget.value));
 
       if (view === 'default' && onPredictionSelected) {
         onPredictionSelected();
       }
     },
-    [
-      dispatch,
-      onPredictionSelected,
-      selectedMarketId,
-      selectedMarketNetworkId,
-      view
-    ]
+    [dispatch, id, networkId, onPredictionSelected, view]
   );
 
   const predictions = useMemo(
@@ -63,13 +52,6 @@ function TradePredictions({
       }),
     [outcomes]
   );
-
-  useEffect(() => {
-    if (id !== selectedMarketId) {
-      dispatch(selectOutcome(id, networkId, predictions[0].id));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const multiple = predictions.length > 2;
 
@@ -94,6 +76,7 @@ function TradePredictions({
               [styles.predictionGutterBottom]: index !== predictions.length - 1,
               [styles.predictionGutterBottomLg]: size === 'lg',
               [styles.predictionSelected]:
+                view === 'modal' &&
                 outcome.id.toString() === selectedOutcomeId.toString() &&
                 outcome.marketId.toString() === selectedMarketId.toString()
             })}
