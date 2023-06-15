@@ -20,7 +20,8 @@ import {
   Modal,
   Button,
   VoteArrows,
-  Icon
+  Icon,
+  Feature
 } from 'components';
 
 import {
@@ -36,6 +37,7 @@ import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
 import MarketHead from './MarketHead';
 import MarketNews from './MarketNews';
+import MarketShares from './MarketShares';
 import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
@@ -167,6 +169,9 @@ function MarketUI() {
         />
         <MarketHead />
         <Container $enableGutters>
+          <Feature name="fantasy">
+            <MarketShares />
+          </Feature>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">
