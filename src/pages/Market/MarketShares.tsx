@@ -1,17 +1,42 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
+import { changeTradeType, selectOutcome } from 'redux/ducks/trade';
 
 import { Button } from 'components';
 
-import { useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector } from 'hooks';
 
 import styles from './MarketShares.module.scss';
 
 function MarketShares() {
+  const dispatch = useAppDispatch();
+  const { type, selectedMarketId, selectedMarketNetworkId, selectedOutcomeId } =
+    useAppSelector(state => state.trade);
   const { id, outcomes } = useAppSelector(state => state.market.market);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+
+  const handleSell = useCallback(
+    (outcomeId: string) => {
+      if (type !== 'sell') {
+        dispatch(changeTradeType('sell'));
+      }
+
+      if (selectedOutcomeId !== outcomeId) {
+        dispatch(
+          selectOutcome(selectedMarketId, selectedMarketNetworkId, outcomeId)
+        );
+      }
+    },
+    [
+      dispatch,
+      selectedMarketId,
+      selectedMarketNetworkId,
+      selectedOutcomeId,
+      type
+    ]
+  );
 
   const outcomesWithShares = useMemo(() => {
     const marketShares = portfolio[id];
@@ -22,7 +47,7 @@ function MarketShares() {
       const outcomeShares = marketShares.outcomes[outcome.id];
 
       return {
-        id: outcome.id,
+        id: outcome.id.toString(),
         title: outcome.title,
         shares: outcomeShares ? outcomeShares.shares : 0
       };
@@ -42,7 +67,9 @@ function MarketShares() {
             <strong>{`${roundNumber(outcome.shares, 3)}`} Shares</strong> of{' '}
             <strong>{outcome.title}</strong>
           </p>
-          <Button size="sm">Sell Shares</Button>
+          <Button size="sm" onClick={() => handleSell(outcome.id)}>
+            Sell Shares
+          </Button>
         </li>
       ))}
     </ul>
