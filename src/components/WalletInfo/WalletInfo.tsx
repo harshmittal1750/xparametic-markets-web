@@ -31,6 +31,7 @@ export default function WalletInfo() {
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethBalance = useAppSelector(state => state.polkamarkets.ethBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const isPolkClaimed = useAppSelector(state => state.polkamarkets.polkClaimed);
   const MetaMaskWalletComponent = theme.device.isDesktop
     ? MetaMaskWallet
     : Fragment;
@@ -42,7 +43,7 @@ export default function WalletInfo() {
         <span className="pm-c-wallet-info__currency__ticker">POLK</span>
         {theme.device.isDesktop && (
           <>
-            <WalletInfoClaim />
+            {!isPolkClaimed && <WalletInfoClaim />}
             {network.buyEc20Url && (
               <Button
                 className="pm-c-button-normal--primary pm-c-button--sm pm-c-wallet-info__currency__button pm-c-wallet-info__currency__buy"
