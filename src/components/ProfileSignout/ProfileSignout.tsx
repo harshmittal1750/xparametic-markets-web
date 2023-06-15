@@ -34,7 +34,8 @@ export default function ProfileSignout() {
     dispatch(logout());
   }, [dispatch, polkamarketsService]);
 
-  const [user, setUser] = useState({ name: '', src: '' });
+  const [name, setName] = useState('');
+  const [src, setSrc] = useState('');
 
   useEffect(() => {
     async function handleDiscordLogin() {
@@ -42,10 +43,8 @@ export default function ProfileSignout() {
         'services/Polkamarkets/user'
       );
 
-      setUser({
-        name: socialLoginInfo.name.split('#')[0],
-        src: socialLoginInfo.profileImage
-      });
+      setName(socialLoginInfo.name.split('#')[0]);
+      setSrc(socialLoginInfo.profileImage);
 
       // send data to backend
       await updateSocialLoginInfo(
@@ -78,12 +77,7 @@ export default function ProfileSignout() {
       </Button>
       <div className="pm-c-wallet-info__profile">
         <Link to={`/user/${ethAddress}`}>
-          <Avatar
-            $size="sm"
-            $radius="lg"
-            src={user.src || ''}
-            alt={user.name}
-          />
+          <Avatar $size="sm" $radius="lg" src={src} alt={name} />
         </Link>
         <div>
           <Text
@@ -91,7 +85,7 @@ export default function ProfileSignout() {
             fontWeight="semibold"
             className={profileSignoutClasses.username}
           >
-            {user.name || shortenAddress(ethAddress)}
+            {name || shortenAddress(ethAddress)}
           </Text>
           <Text
             scale="tiny-uppercase"
@@ -99,10 +93,6 @@ export default function ProfileSignout() {
             className="pm-c-wallet-info__profile__ticker"
           >
             {formatNumberToString(polkBalance)} {fantasyTokenTicker || 'POLK'}
-            {/* <Icon
-              name="PlusOutlined"
-              className="pm-c-wallet-info__profile__ticker_icon"
-            /> */}
           </Text>
         </div>
       </div>
