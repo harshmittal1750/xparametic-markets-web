@@ -37,7 +37,6 @@ import MarketChart from './MarketChart';
 import MarketHead from './MarketHead';
 import MarketNews from './MarketNews';
 import MarketPredictions from './MarketPredictions';
-import MarketShares from './MarketShares';
 import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
@@ -106,6 +105,7 @@ function MarketUI() {
   const market = useAppSelector(state => state.market.market);
   const chartViews = useAppSelector(state => state.market.chartViews);
   const [tab, setTab] = useState('positions');
+
   const handleChartChange = useCallback(
     async (type: string) => {
       const { setChartViewType } = await import('redux/ducks/market');
@@ -163,8 +163,7 @@ function MarketUI() {
         <MarketHead />
         <Container $enableGutters>
           <Feature name="fantasy">
-            <MarketShares />
-            <MarketPredictions />
+            {market.state === 'open' ? <MarketPredictions /> : null}
           </Feature>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">

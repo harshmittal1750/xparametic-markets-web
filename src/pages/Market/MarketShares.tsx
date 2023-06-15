@@ -10,35 +10,39 @@ import { useAppDispatch, useAppSelector } from 'hooks';
 
 import styles from './MarketShares.module.scss';
 
-function MarketShares() {
+type MarketSharesProps = {
+  onSellSelected?: () => void;
+};
+
+function MarketShares({ onSellSelected }: MarketSharesProps) {
   const dispatch = useAppDispatch();
-  const { type, selectedMarketId, selectedMarketNetworkId, selectedOutcomeId } =
-    useAppSelector(state => state.trade);
-  const { id, outcomes } = useAppSelector(state => state.market.market);
+  const { type } = useAppSelector(state => state.trade);
+  const { id, outcomes, networkId } = useAppSelector(
+    state => state.market.market
+  );
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
+  const { portfolio: isLoadingPortfolio } = useAppSelector(
+    state => state.polkamarkets.isLoading
+  );
 
   const handleSell = useCallback(
     (outcomeId: string) => {
+      if (onSellSelected) {
+        onSellSelected();
+      }
+
       if (type !== 'sell') {
         dispatch(changeTradeType('sell'));
       }
 
-      if (selectedOutcomeId !== outcomeId) {
-        dispatch(
-          selectOutcome(selectedMarketId, selectedMarketNetworkId, outcomeId)
-        );
-      }
+      dispatch(selectOutcome(id, networkId, outcomeId));
     },
-    [
-      dispatch,
-      selectedMarketId,
-      selectedMarketNetworkId,
-      selectedOutcomeId,
-      type
-    ]
+    [dispatch, id, networkId, onSellSelected, type]
   );
 
   const outcomesWithShares = useMemo(() => {
+    if (isLoadingPortfolio) return [];
+
     const marketShares = portfolio[id];
 
     if (!marketShares) return [];
@@ -54,7 +58,7 @@ function MarketShares() {
     });
 
     return sharesByOutcome.filter(outcome => outcome.shares > 0);
-  }, [id, outcomes, portfolio]);
+  }, [id, isLoadingPortfolio, outcomes, portfolio]);
 
   if (isEmpty(outcomesWithShares)) return null;
 
