@@ -149,12 +149,6 @@ function MarketUI() {
     ]
   );
 
-  const handleSell = useCallback(async () => {
-    const { changeTradeType } = await import('redux/ducks/trade');
-
-    dispatch(changeTradeType('sell'));
-  }, [dispatch]);
-
   return (
     <div className={cn(marketClasses.root, 'max-width-screen-xl')}>
       <div className={marketClasses.body}>
@@ -222,22 +216,7 @@ function MarketUI() {
             </section>
           )}
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
-            <Tabs
-              value={tab}
-              onChange={setTab}
-              adornment={
-                <Button
-                  variant="normal"
-                  size="xs"
-                  color="primary"
-                  className={marketClasses.tabsAdornment}
-                  onClick={handleSell}
-                  disabled={isEmpty(tableItems.rows) || tradeType === 'sell'}
-                >
-                  Sell
-                </Button>
-              }
-            >
+            <Tabs value={tab} onChange={setTab}>
               <Tabs.TabPane tab="Positions" id="positions">
                 {tabPositions}
               </Tabs.TabPane>
