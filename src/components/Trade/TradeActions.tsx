@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { ui } from 'config';
 import { changeOutcomeData, changeData } from 'redux/ducks/market';
@@ -32,7 +32,7 @@ function TradeActions() {
   const { show, close } = useToastNotification();
 
   // Market selectors
-  const type = 'buy';
+  const type = useAppSelector(state => state.trade.type);
   const wrapped = useAppSelector(state => state.trade.wrapped);
   const marketId = useAppSelector(state => state.trade.selectedMarketId);
   const marketNetworkId = useAppSelector(
@@ -40,7 +40,9 @@ function TradeActions() {
   );
   const marketSlug = useAppSelector(state => state.market.market.slug);
   const predictionId = useAppSelector(state => state.trade.selectedOutcomeId);
-  const { amount, shares } = useAppSelector(state => state.trade);
+  const { amount, shares, totalStake, fee } = useAppSelector(
+    state => state.trade
+  );
   const maxAmount = useAppSelector(state => state.trade.maxAmount);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
   const token = useAppSelector(state => state.market.market.token);
@@ -157,11 +159,90 @@ function TradeActions() {
     return true;
   }
 
+  async function handleSell() {
+    setTransactionSuccess(false);
+    setTransactionSuccessHash(undefined);
+
+    setIsLoading(true);
+    setNeedsPricesRefresh(false);
+
+    try {
+      // adding a 1% slippage due to js floating numbers rounding
+      const ethAmount = totalStake - fee;
+      const minShares = shares * 1.001;
+
+      // calculating shares amount from smart contract
+      const sharesToSell = await polkamarketsService.calcSellAmount(
+        marketId,
+        predictionId,
+        ethAmount
+      );
+
+      // will refresh form if there's a slippage > 2%
+      if (Math.abs(sharesToSell - minShares) / sharesToSell > 0.02) {
+        setIsLoading(false);
+        setNeedsPricesRefresh(true);
+
+        return false;
+      }
+
+      // performing sell action on smart contract
+      const response = await polkamarketsService.sell(
+        marketId,
+        predictionId,
+        ethAmount,
+        minShares,
+        tokenWrapped && !wrapped
+      );
+
+      setIsLoading(false);
+
+      const { status, transactionHash } = response;
+
+      if (status && transactionHash) {
+        setTransactionSuccess(status);
+        setTransactionSuccessHash(transactionHash);
+        show(type);
+      }
+
+      // triggering market prices redux update
+      reloadMarketPrices();
+
+      // triggering cache reload action on api
+      new PolkamarketsApiService().reloadMarket(marketSlug);
+      new PolkamarketsApiService().reloadPortfolio(ethAddress, network.id);
+
+      // updating wallet
+      await updateWallet();
+      await refreshBalance();
+    } catch (error) {
+      setIsLoading(false);
+    }
+
+    return true;
+  }
+
+  const handleCancel = useCallback(async () => {
+    const { changeTradeType } = await import('redux/ducks/trade');
+
+    dispatch(changeTradeType('buy'));
+  }, [dispatch]);
+
   const isValidAmount = amount > 0 && amount <= maxAmount;
 
   return (
     <div className="pm-c-trade-form-actions__group--column">
       <div className="pm-c-trade-form-actions">
+        {type === 'sell' ? (
+          <Button
+            variant="subtle"
+            color="default"
+            onClick={handleCancel}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+        ) : null}
         {isWrongNetwork ? <NetworkSwitch /> : null}
         {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
@@ -213,6 +294,17 @@ function TradeActions() {
               Predict
             </ButtonLoading>
           </ApproveToken>
+        ) : null}
+        {type === 'sell' && !needsPricesRefresh && !isWrongNetwork ? (
+          <ButtonLoading
+            color="danger"
+            fullwidth
+            onClick={handleSell}
+            disabled={!isValidAmount || isLoading}
+            loading={isLoading}
+          >
+            Sell
+          </ButtonLoading>
         ) : null}
       </div>
       {transactionSuccess && transactionSuccessHash ? (

@@ -3,6 +3,7 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import cn from 'classnames';
 import { ui } from 'config';
+import isEmpty from 'lodash/isEmpty';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -102,6 +103,7 @@ function MarketUI() {
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
+  const tradeType = useAppSelector(state => state.trade.type);
   const chartViews = useAppSelector(state => state.market.chartViews);
   const [tab, setTab] = useState('positions');
   const handleChartChange = useCallback(
@@ -145,6 +147,12 @@ function MarketUI() {
       tableItems.rows
     ]
   );
+
+  const handleSell = useCallback(async () => {
+    const { changeTradeType } = await import('redux/ducks/trade');
+
+    dispatch(changeTradeType('sell'));
+  }, [dispatch]);
 
   return (
     <div className={cn(marketClasses.root, 'max-width-screen-xl')}>
@@ -212,7 +220,22 @@ function MarketUI() {
             </section>
           )}
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
-            <Tabs value={tab} onChange={setTab}>
+            <Tabs
+              value={tab}
+              onChange={setTab}
+              adornment={
+                <Button
+                  variant="normal"
+                  size="xs"
+                  color="primary"
+                  className={marketClasses.tabsAdornment}
+                  onClick={handleSell}
+                  disabled={isEmpty(tableItems.rows) || tradeType === 'sell'}
+                >
+                  Sell
+                </Button>
+              }
+            >
               <Tabs.TabPane tab="Positions" id="positions">
                 {tabPositions}
               </Tabs.TabPane>
