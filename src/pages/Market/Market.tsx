@@ -3,7 +3,6 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import cn from 'classnames';
 import { ui } from 'config';
-import isEmpty from 'lodash/isEmpty';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -104,7 +103,6 @@ function MarketUI() {
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
-  const tradeType = useAppSelector(state => state.trade.type);
   const chartViews = useAppSelector(state => state.market.chartViews);
   const [tab, setTab] = useState('positions');
   const handleChartChange = useCallback(
