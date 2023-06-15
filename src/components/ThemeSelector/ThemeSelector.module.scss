@@ -1,5 +1,14 @@
 .root {
+  background-color: unset !important;
   margin-left: auto;
+}
+.finger {
+  height: 44px !important;
+  width: 44px;
+  padding: 0px !important;
+}
+.icon {
+  fill: var(--color-text-secondary);
 }
 .dialog {
   border-radius: 20px 20px 0px 0px;
