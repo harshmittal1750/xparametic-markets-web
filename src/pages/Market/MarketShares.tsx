@@ -6,7 +6,7 @@ import { changeTradeType, selectOutcome } from 'redux/ducks/trade';
 
 import { Button } from 'components';
 
-import { useAppDispatch, useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
 import styles from './MarketShares.module.scss';
 
@@ -16,6 +16,7 @@ type MarketSharesProps = {
 
 function MarketShares({ onSellSelected }: MarketSharesProps) {
   const dispatch = useAppDispatch();
+  const { network } = useNetwork();
   const { type } = useAppSelector(state => state.trade);
   const { id, outcomes, networkId } = useAppSelector(
     state => state.market.market
@@ -60,7 +61,9 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
     return sharesByOutcome.filter(outcome => outcome.shares > 0);
   }, [id, isLoadingPortfolio, outcomes, portfolio]);
 
-  if (isEmpty(outcomesWithShares)) return null;
+  const isWrongNetwork = network.id !== networkId.toString();
+
+  if (isWrongNetwork || isEmpty(outcomesWithShares)) return null;
 
   return (
     <ul className={styles.root}>
