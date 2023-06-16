@@ -25,9 +25,14 @@
     margin-right: var(--size-8);
   }
 
-  &Buy {
+  &Button {
+    padding-left: 12px;
+    padding-right: 12px;
     border: unset !important;
-    max-height: 32px;
+
+    @media (min-width: 1024px) {
+      max-height: 32px;
+    }
   }
 }
 
@@ -52,8 +57,4 @@
 .profile {
   color: var(--color-text-secondary);
   background-color: rgba(92, 116, 153, 0.12) !important;
-
-  @media (min-width: 1024px) {
-    max-height: 32px;
-  }
 }

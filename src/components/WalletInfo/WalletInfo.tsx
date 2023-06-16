@@ -8,8 +8,6 @@ import { useTheme } from 'ui';
 
 import { MetaMaskIcon as MetaMaskIconUI } from 'assets/icons';
 
-import { Button } from 'components/Button';
-
 import { useAppSelector, useNetwork } from 'hooks';
 
 import { Transak } from '../integrations';
@@ -48,17 +46,18 @@ export default function WalletInfo() {
           <>
             {!isPolkClaimed && <WalletInfoClaim />}
             {network.buyEc20Url && (
-              <Button
+              <a
+                href={network.buyEc20Url}
+                rel="noreferrer"
+                target="_blank"
                 className={cn(
-                  walletInfoClasses.actionBuy,
+                  'pm-c-button-normal--default pm-c-button--sm',
+                  walletInfoClasses.actionButton,
                   walletInfoClasses.polkBuy
                 )}
-                size="sm"
-                style={{ padding: '0.5rem 1rem' }}
-                onClick={() => window.open(network.buyEc20Url, '_blank')}
               >
                 Buy {theme.device.isDesktop && '$POLK'}
-              </Button>
+              </a>
             )}
           </>
         )}
@@ -77,6 +76,7 @@ export default function WalletInfo() {
           to={`/user/${ethAddress}`}
           className={cn(
             walletInfoClasses.profile,
+            walletInfoClasses.actionButton,
             walletInfoClasses.root,
             'pm-c-button-subtle--default pm-c-button--sm'
           )}
