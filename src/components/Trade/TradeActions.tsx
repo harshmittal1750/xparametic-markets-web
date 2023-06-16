@@ -221,27 +221,11 @@ function TradeActions() {
     return true;
   }
 
-  const handleCancel = useCallback(async () => {
-    const { changeTradeType } = await import('redux/ducks/trade');
-
-    dispatch(changeTradeType('buy'));
-  }, [dispatch]);
-
   const isValidAmount = amount > 0 && amount <= maxAmount;
 
   return (
     <div className="pm-c-trade-form-actions__group--column">
       <div className="pm-c-trade-form-actions">
-        {type === 'sell' ? (
-          <Button
-            variant="subtle"
-            color="default"
-            onClick={handleCancel}
-            disabled={isLoading}
-          >
-            Cancel
-          </Button>
-        ) : null}
         {isWrongNetwork ? <NetworkSwitch /> : null}
         {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
