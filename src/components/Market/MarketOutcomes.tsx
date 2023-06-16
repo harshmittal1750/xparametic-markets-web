@@ -102,7 +102,7 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
 
   return (
     <ul className="pm-c-market-outcomes">
-      <Modal show={tradeVisible} centered>
+      <Modal centered show={tradeVisible} onHide={handleCloseTrade}>
         <ModalContent className={styles.tradeModalContent}>
           <ModalHeader className={styles.tradeModalHeader}>
             <ModalHeaderHide onClick={handleCloseTrade} />
