@@ -41,7 +41,7 @@ function MarketPredictions() {
           size="lg"
           onPredictionSelected={handlePredictionSelected}
         />
-        <Modal show={tradeVisible} centered>
+        <Modal centered show={tradeVisible} onHide={handleCloseTrade}>
           <ModalContent className={styles.tradeModalContent}>
             <ModalHeader className={styles.tradeModalHeader}>
               <ModalHeaderHide onClick={handleCloseTrade} />
