@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import { formatNumberToString } from 'helpers/math';
@@ -21,30 +21,26 @@ import profileSignoutClasses from './ProfileSignout.module.scss';
 export default function ProfileSignout() {
   const dispatch = useAppDispatch();
   const fantasyTokenTicker = useFantasyTokenTicker();
+  const polkamarketsService = usePolkamarketsService();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
   const socialLoginInfo = useAppSelector(
     state => state.polkamarkets.socialLoginInfo
   );
-  const polkamarketsService = usePolkamarketsService();
   const handleSocialLogout = useCallback(async () => {
     const { logout } = await import('redux/ducks/polkamarkets');
 
     polkamarketsService.logoutSocialLogin();
     dispatch(logout());
   }, [dispatch, polkamarketsService]);
-
-  const [name, setName] = useState('');
-  const [src, setSrc] = useState('');
+  const username =
+    socialLoginInfo?.name.split('#')[0] || shortenAddress(ethAddress);
 
   useEffect(() => {
     async function handleDiscordLogin() {
       const { updateSocialLoginInfo } = await import(
         'services/Polkamarkets/user'
       );
-
-      setName(socialLoginInfo.name.split('#')[0]);
-      setSrc(socialLoginInfo.profileImage);
 
       // send data to backend
       await updateSocialLoginInfo(
@@ -77,7 +73,12 @@ export default function ProfileSignout() {
       </Button>
       <div className="pm-c-wallet-info__profile">
         <Link to={`/user/${ethAddress}`}>
-          <Avatar $size="sm" $radius="lg" src={src} alt={name} />
+          <Avatar
+            $size="sm"
+            $radius="lg"
+            src={socialLoginInfo?.profileImage}
+            alt={username || 'avatar'}
+          />
         </Link>
         <div>
           <Text
@@ -85,7 +86,7 @@ export default function ProfileSignout() {
             fontWeight="semibold"
             className={profileSignoutClasses.username}
           >
-            {name || shortenAddress(ethAddress)}
+            {username}
           </Text>
           <Text
             scale="tiny-uppercase"
