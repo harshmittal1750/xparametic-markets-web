@@ -98,12 +98,13 @@ export default function NetworkSelector() {
           {Object.keys(modes).map(mode => (
             <Fragment key={mode}>
               <ListItem
+                className={themeSelectorClasses.listItem}
+                $actived={mode.toLowerCase() === modeStored}
                 ButtonProps={{
                   name: mode,
-                  className: themeSelectorClasses.listItem,
+                  className: themeSelectorClasses.listItemButton,
                   onClick: handleTheme
                 }}
-                $actived={mode.toLowerCase() === modeStored}
               >
                 <Adornment
                   $edge="start"
