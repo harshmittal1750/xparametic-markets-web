@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 
 import cn from 'classnames';
 import { features, ui } from 'config';
-import { Container, useTheme } from 'ui';
+import { Container, Skeleton, useTheme } from 'ui';
 
 import NetworkSelector from 'components/NetworkSelector';
 import Profile from 'components/Profile';
@@ -32,12 +32,40 @@ function HeaderActionsGroup(
 ) {
   return <div className={headerActionsClasses.actionsGroup} {...props} />;
 }
+function SkeletonWallet() {
+  return (
+    <div style={{ display: 'inherit', alignItems: 'center', gap: 'inherit' }}>
+      <Skeleton style={{ height: 44, width: 72 }} />
+      <Skeleton style={{ height: 44, width: 72 }} />
+    </div>
+  );
+}
+function SkeletonProfile() {
+  return (
+    <div style={{ display: 'inherit', alignItems: 'center', gap: 'inherit' }}>
+      <Skeleton style={{ height: 32, width: 72 }} />
+      <div style={{ display: 'inherit', alignItems: 'center', gap: 8 }}>
+        <Skeleton radius="full" style={{ height: 44, width: 44 }} />
+        <div>
+          <Skeleton style={{ height: 16, width: 72, marginBottom: 4 }} />
+          <Skeleton style={{ height: 16, width: 52 }} />
+        </div>
+      </div>
+    </div>
+  );
+}
 export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const { isDesktop } = useTheme().device;
-  const Root = isDesktop ? Fragment : HeaderActionsWrapper;
-  const Wrapper = isDesktop ? 'div' : Container;
-  const HeaderActionsIntegration = features.fantasy.enabled ? Profile : Wallet;
+  const isLoginLoading = useAppSelector(
+    state => state.polkamarkets.isLoading.login
+  );
+  const theme = useTheme();
+  const Root = theme.device.isDesktop ? Fragment : HeaderActionsWrapper;
+  const Wrapper = theme.device.isDesktop ? 'div' : Container;
+  const ActionLoadingComponent = features.fantasy.enabled
+    ? SkeletonProfile
+    : SkeletonWallet;
+  const HeaderActionComponent = features.fantasy.enabled ? Profile : Wallet;
   const HeaderActionsGroupComponent = features.fantasy.enabled
     ? Fragment
     : HeaderActionsGroup;
@@ -46,19 +74,24 @@ export default function HeaderActions() {
     <Root>
       <Wrapper
         className={cn(headerActionsClasses.root, {
-          [headerClasses.container]: !isDesktop,
+          [headerClasses.container]: !theme.device.isDesktop,
           [headerActionsClasses.reverse]: features.fantasy.enabled
         })}
       >
         <HeaderActionsGroupComponent>
-          {ui.layout.header.networkSelector.enabled && isDesktop && (
-            <NetworkSelector
-              size="sm"
-              responsive
-              className={headerActionsClasses.network}
-            />
+          {ui.layout.header.networkSelector.enabled &&
+            theme.device.isDesktop && (
+              <NetworkSelector
+                size="sm"
+                responsive
+                className={headerActionsClasses.network}
+              />
+            )}
+          {isLoginLoading ? (
+            <ActionLoadingComponent />
+          ) : (
+            <HeaderActionComponent isLoggedIn={isLoggedIn} />
           )}
-          <HeaderActionsIntegration isLoggedIn={isLoggedIn} />
         </HeaderActionsGroupComponent>
         <ThemeSelector />
       </Wrapper>
