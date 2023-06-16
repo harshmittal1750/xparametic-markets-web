@@ -2,7 +2,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui } from 'config';
+import { ui, features } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -261,7 +261,10 @@ export default function Market() {
         'redux/ducks/market'
       );
 
-      dispatch(openTradeForm());
+      if (features.regular.enabled) {
+        dispatch(openTradeForm());
+      }
+
       dispatch(getMarket(params.marketId));
       dispatch(setChartViewType('marketOverview'));
     })();
