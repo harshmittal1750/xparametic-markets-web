@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { changeOutcomeData, changeData } from 'redux/ducks/market';
 import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
