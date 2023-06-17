@@ -33,21 +33,48 @@ function HeaderActionsGroup(
   return <div className={headerActionsClasses.actionsGroup} {...props} />;
 }
 function SkeletonWallet() {
-  return (
-    <div style={{ display: 'inherit', alignItems: 'center', gap: 'inherit' }}>
-      <Skeleton style={{ height: 44, width: 72 }} />
-      <Skeleton style={{ height: 44, width: 72 }} />
-    </div>
-  );
+  return <Skeleton style={{ height: 44, width: 192 }} />;
 }
 function SkeletonProfile() {
+  const theme = useTheme();
+
   return (
-    <div style={{ display: 'inherit', alignItems: 'center', gap: 'inherit' }}>
-      <Skeleton style={{ height: 32, width: 72 }} />
-      <div style={{ display: 'inherit', alignItems: 'center', gap: 8 }}>
-        <Skeleton radius="full" style={{ height: 44, width: 44 }} />
+    <div
+      style={{
+        display: 'inherit',
+        alignItems: 'center',
+        gap: 32,
+        ...(!theme.device.isDesktop && {
+          flexDirection: 'row-reverse',
+          width: '100%'
+        })
+      }}
+    >
+      <Skeleton
+        style={{
+          height: 32,
+          width: 96,
+          ...(!theme.device.isDesktop && {
+            marginLeft: 'auto'
+          })
+        }}
+      />
+      <div
+        style={{
+          display: 'inherit',
+          alignItems: 'center',
+          gap: 16
+        }}
+      >
+        <Skeleton
+          radius="full"
+          style={{
+            height: 48,
+            width: 48
+          }}
+        />
         <div>
-          <Skeleton style={{ height: 16, width: 72, marginBottom: 4 }} />
+          <Skeleton style={{ height: 16, width: 84, marginBottom: 4 }} />
           <Skeleton style={{ height: 16, width: 52 }} />
         </div>
       </div>
