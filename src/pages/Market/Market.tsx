@@ -2,8 +2,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui } from 'config';
-import isEmpty from 'lodash/isEmpty';
+import { ui, features } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -37,6 +36,7 @@ import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
 import MarketHead from './MarketHead';
 import MarketNews from './MarketNews';
+import MarketPredictions from './MarketPredictions';
 import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
@@ -103,9 +103,9 @@ function MarketUI() {
   const actions = useAppSelector(state => state.polkamarkets.actions);
   const bondActions = useAppSelector(state => state.polkamarkets.bondActions);
   const market = useAppSelector(state => state.market.market);
-  const tradeType = useAppSelector(state => state.trade.type);
   const chartViews = useAppSelector(state => state.market.chartViews);
   const [tab, setTab] = useState('positions');
+
   const handleChartChange = useCallback(
     async (type: string) => {
       const { setChartViewType } = await import('redux/ducks/market');
@@ -148,12 +148,6 @@ function MarketUI() {
     ]
   );
 
-  const handleSell = useCallback(async () => {
-    const { changeTradeType } = await import('redux/ducks/trade');
-
-    dispatch(changeTradeType('sell'));
-  }, [dispatch]);
-
   return (
     <div className={cn(marketClasses.root, 'max-width-screen-xl')}>
       <div className={marketClasses.body}>
@@ -168,6 +162,9 @@ function MarketUI() {
         />
         <MarketHead />
         <Container $enableGutters>
+          <Feature name="fantasy">
+            {market.state === 'open' ? <MarketPredictions /> : null}
+          </Feature>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">
@@ -220,22 +217,7 @@ function MarketUI() {
             </section>
           )}
           <section className={`pm-p-market__tabs ${marketClasses.section}`}>
-            <Tabs
-              value={tab}
-              onChange={setTab}
-              adornment={
-                <Button
-                  variant="normal"
-                  size="xs"
-                  color="primary"
-                  className={marketClasses.tabsAdornment}
-                  onClick={handleSell}
-                  disabled={isEmpty(tableItems.rows) || tradeType === 'sell'}
-                >
-                  Sell
-                </Button>
-              }
-            >
+            <Tabs value={tab} onChange={setTab}>
               <Tabs.TabPane tab="Positions" id="positions">
                 {tabPositions}
               </Tabs.TabPane>
@@ -281,7 +263,10 @@ export default function Market() {
         'redux/ducks/market'
       );
 
-      dispatch(openTradeForm());
+      if (features.regular.enabled) {
+        dispatch(openTradeForm());
+      }
+
       dispatch(getMarket(params.marketId));
       dispatch(setChartViewType('marketOverview'));
     })();

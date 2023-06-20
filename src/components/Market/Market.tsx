@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
+import { features } from 'config';
 import { Market as MarketInterface } from 'models/market';
 import { useAverageColor, useTheme } from 'ui';
 
@@ -27,9 +28,17 @@ function Market({ market }: MarketCardProps) {
     const { openTradeForm } = await import('redux/ducks/ui');
     const { selectOutcome } = await import('redux/ducks/trade');
 
-    dispatch(selectOutcome(market.id, market.networkId, market.outcomes[0].id));
+    if (features.regular.enabled) {
+      dispatch(
+        selectOutcome(market.id, market.networkId, market.outcomes[0].id)
+      );
+    }
+
     dispatch(clearMarket());
-    dispatch(openTradeForm());
+
+    if (features.regular.enabled) {
+      dispatch(openTradeForm());
+    }
   }, [dispatch, market.id, market.networkId, market.outcomes]);
 
   useEffect(() => {

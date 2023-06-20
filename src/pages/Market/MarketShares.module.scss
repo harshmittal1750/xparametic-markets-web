@@ -1,0 +1,40 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+
+  padding: var(--size-24);
+  margin-bottom: var(--size-40);
+
+  background: rgba(93, 85, 250, 0.1);
+  border: 1px solid rgba(136, 136, 252, 0.3);
+
+  border-radius: var(--size-4);
+
+  &Item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--size-24);
+
+    &Description {
+      font-size: 1.5rem;
+      line-height: 1.6;
+      font-weight: 500;
+      color: var(--color-market-shares-description);
+
+      text-overflow: ellipsis;
+      overflow: hidden;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+
+      strong {
+        color: var(--color-market-shares-description--bold);
+      }
+    }
+  }
+}
