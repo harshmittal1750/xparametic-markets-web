@@ -6,7 +6,8 @@ import avatarClasses from './Avatar.module.scss';
 
 export type AvatarProps = Pick<
   React.ComponentPropsWithRef<'img'>,
-  'src' | 'alt' | 'className' | 'ref'
+  // TODO: omit [style]
+  'src' | 'alt' | 'className' | 'ref' | 'style'
 > & {
   $size?: 'x2s' | 'sm' | 'md' | 'lg';
   $radius?: 'sm' | 'md' | 'lg';
