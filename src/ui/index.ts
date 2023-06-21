@@ -36,6 +36,8 @@ export { default as Toggle } from './Toggle';
 
 export { default as useAverageColor } from './useAverageColor';
 
+export { default as useImage } from './useImage';
+
 export { default as useMedia } from './useMedia';
 
 export { default as useRect } from './useRect';
