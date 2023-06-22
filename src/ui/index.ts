@@ -16,6 +16,8 @@ export { default as Focustrap } from './Focustrap';
 
 export { default as Hero } from './Hero';
 
+export { default as Image } from './Image';
+
 export { default as List } from './List';
 
 export { default as ListItem } from './ListItem';
