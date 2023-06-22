@@ -1,7 +1,8 @@
 import {
   rankColumnRender,
   volumeColumnRender,
-  liquidityColumnRender
+  liquidityColumnRender,
+  earningsColumnRender
 } from 'pages/Leaderboard/prepare';
 
 import {
@@ -42,6 +43,13 @@ function prepareLeaderboardRanksRow(
         change: 'stable'
       },
       render: rankColumnRender
+    },
+    rankByEarnings: {
+      value: {
+        place: ranks.rankByEarnings,
+        change: 'stable'
+      },
+      render: rankColumnRender
     }
   };
 }
@@ -75,6 +83,13 @@ function preparePredictionStatisticsRow({
         ticker
       },
       render: liquidityColumnRender
+    },
+    earnings: {
+      value: {
+        earnings: statistics.earnings,
+        ticker
+      },
+      render: earningsColumnRender
     }
   };
 }
