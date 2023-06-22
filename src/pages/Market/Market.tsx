@@ -2,7 +2,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui } from 'config';
+import { ui, features } from 'config';
 import type { Market as MarketInterface } from 'models/market';
 import type { Action } from 'redux/ducks/polkamarkets';
 import { Adornment, Container, useTheme } from 'ui';
@@ -36,6 +36,7 @@ import MarketAnalytics from './MarketAnalytics';
 import MarketChart from './MarketChart';
 import MarketHead from './MarketHead';
 import MarketNews from './MarketNews';
+import MarketPredictions from './MarketPredictions';
 import MarketTitle from './MarketTitle';
 import { formatMarketPositions, formatSEODescription } from './utils';
 
@@ -104,6 +105,7 @@ function MarketUI() {
   const market = useAppSelector(state => state.market.market);
   const chartViews = useAppSelector(state => state.market.chartViews);
   const [tab, setTab] = useState('positions');
+
   const handleChartChange = useCallback(
     async (type: string) => {
       const { setChartViewType } = await import('redux/ducks/market');
@@ -160,6 +162,9 @@ function MarketUI() {
         />
         <MarketHead />
         <Container $enableGutters>
+          <Feature name="fantasy">
+            {market.state === 'open' ? <MarketPredictions /> : null}
+          </Feature>
           {market.tradingViewSymbol && (
             <div className="pm-p-market__view">
               <div className="market-chart__view-selector">
@@ -258,7 +263,10 @@ export default function Market() {
         'redux/ducks/market'
       );
 
-      dispatch(openTradeForm());
+      if (features.regular.enabled) {
+        dispatch(openTradeForm());
+      }
+
       dispatch(getMarket(params.marketId));
       dispatch(setChartViewType('marketOverview'));
     })();

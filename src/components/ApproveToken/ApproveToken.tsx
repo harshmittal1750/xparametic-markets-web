@@ -10,6 +10,7 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import { Button, ButtonLoading } from '../Button';
 import type { ButtonProps } from '../Button';
+import Feature from '../Feature';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 import Tooltip from '../Tooltip';
@@ -134,15 +135,17 @@ function ApproveToken({
               description="Your transaction is completed!"
             >
               <Toast.Actions>
-                <a
-                  target="_blank"
-                  href={`${network.explorerURL}/tx/${approveTokenTransactionSuccessHash}`}
-                  rel="noreferrer"
-                >
-                  <Button size="sm" color="success">
-                    View on Explorer
-                  </Button>
-                </a>
+                <Feature name="regular">
+                  <a
+                    target="_blank"
+                    href={`${network.explorerURL}/tx/${approveTokenTransactionSuccessHash}`}
+                    rel="noreferrer"
+                  >
+                    <Button size="sm" color="success">
+                      View on Explorer
+                    </Button>
+                  </a>
+                </Feature>
                 <Button
                   size="sm"
                   variant="ghost"

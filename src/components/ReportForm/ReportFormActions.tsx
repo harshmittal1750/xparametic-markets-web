@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { ui } from 'config';
 import { useField, useFormikContext } from 'formik';
 import { roundNumber } from 'helpers/math';
 import has from 'lodash/has';
@@ -23,6 +24,7 @@ import useToastNotification from 'hooks/useToastNotification';
 
 import { Alert, AlertMinimal } from '../Alert';
 import { Button, ButtonLoading } from '../Button';
+import Feature from '../Feature';
 import Link from '../Link';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
@@ -77,7 +79,8 @@ function ReportFormActions({
 
   // Derivated state
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
-  const isWrongNetwork = network.id !== `${networkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${networkId}`;
   const resolvedOutcomeId = PolkamarketsService.bytes32ToInt(bestAnswer);
 
   const isWinningOutcome = outcomeId =>
@@ -214,15 +217,17 @@ function ReportFormActions({
                 description="Your transaction is completed!"
               >
                 <Toast.Actions>
-                  <a
-                    target="_blank"
-                    href={`${network.explorerURL}/tx/${marketResolveTransactionSuccessHash}`}
-                    rel="noreferrer"
-                  >
-                    <Button size="sm" color="success">
-                      View on Explorer
-                    </Button>
-                  </a>
+                  <Feature name="regular">
+                    <a
+                      target="_blank"
+                      href={`${network.explorerURL}/tx/${marketResolveTransactionSuccessHash}`}
+                      rel="noreferrer"
+                    >
+                      <Button size="sm" color="success">
+                        View on Explorer
+                      </Button>
+                    </a>
+                  </Feature>
                   <Button
                     size="sm"
                     variant="ghost"
@@ -284,15 +289,17 @@ function ReportFormActions({
                   description="Your transaction is completed!"
                 >
                   <Toast.Actions>
-                    <a
-                      target="_blank"
-                      href={`${network.explorerURL}/tx/${bondTransactionSuccessHash}`}
-                      rel="noreferrer"
-                    >
-                      <Button size="sm" color="success">
-                        View on Explorer
-                      </Button>
-                    </a>
+                    <Feature name="regular">
+                      <a
+                        target="_blank"
+                        href={`${network.explorerURL}/tx/${bondTransactionSuccessHash}`}
+                        rel="noreferrer"
+                      >
+                        <Button size="sm" color="success">
+                          View on Explorer
+                        </Button>
+                      </a>
+                    </Feature>
                     <Button
                       size="sm"
                       variant="ghost"

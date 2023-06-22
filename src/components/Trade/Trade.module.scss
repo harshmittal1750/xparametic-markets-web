@@ -1,0 +1,247 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--grid-margin);
+  height: 100%;
+  max-width: 540px;
+
+  &Default {
+    &Title {
+      font-size: 2.4rem;
+      line-height: 1.3;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      color: #8888fc;
+    }
+  }
+
+  &Modal {
+    padding: 40px;
+    background: linear-gradient(
+        0deg,
+        rgb(var(--backdrop-color) / var(--alpha-septenary)) 60%,
+        rgb(var(--backdrop-color) / var(--alpha-quinary)) 100%
+      ),
+      linear-gradient(
+        0deg,
+        var(--color-background-primary) 30%,
+        var(--color-background-tertiary) 100%
+      ),
+      var(--image), var(--color-background-secondary);
+    background-clip: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    transition: background-color 300ms ease-in;
+
+    &Title {
+      font-size: 2rem;
+      line-height: 1.3;
+      font-weight: 700;
+      color: #f9fafb;
+    }
+
+    .terms {
+      text-align: center;
+    }
+  }
+
+  &View,
+  &Actions {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  &View {
+    flex: 1 0 auto;
+
+    @media (min-width: 768px) {
+      min-height: 360px;
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+  }
+}
+
+.market {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--size-8);
+
+  &Title {
+    font-size: 2.5rem;
+    line-height: 1.35;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    word-break: break-all;
+    color: var(--color-trade-market-title);
+  }
+}
+
+.predictions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &ShowMore {
+    cursor: pointer;
+
+    padding: var(--size-8);
+    margin-top: var(--size-8);
+    background-color: var(--color-trade-predictions-show-more-background);
+
+    border: none;
+    border-radius: 4px;
+    backdrop-filter: blur(4px);
+
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--color-trade-predictions-show-more-text);
+
+    transition-property: background-color, color;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+
+    &:hover {
+      background-color: var(
+        --color-trade-predictions-show-more-background--hover
+      );
+      color: var(--color-trade-predictions-show-more-text--hover);
+    }
+  }
+}
+
+.prediction {
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+
+  background-color: var(--color-trade-prediction);
+  backdrop-filter: blur(4px);
+  border: 1px solid transparent;
+  border-radius: var(--size-4);
+
+  &Lg {
+    .predictionContent {
+      padding: var(--size-16);
+    }
+
+    .predictionTitle {
+      font-size: 1.9rem;
+      line-height: 1.3;
+    }
+
+    .predictionPrice {
+      font-size: 1.4rem;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &Selected {
+    border: 1px solid #5d55fa;
+    box-shadow: 0px 0px 0px 3px rgba(93, 85, 250, 0.2);
+
+    transition-property: border, box-shadow;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-in-out;
+  }
+
+  &Selected {
+    .predictionProgress {
+      background-color: var(--color-trade-prediction-progress--selected);
+    }
+
+    .predictionPrice {
+      color: var(--color-trade-prediction-price--selected);
+    }
+  }
+
+  &Gutter {
+    &Bottom {
+      margin-bottom: 6px;
+
+      &Lg {
+        margin-bottom: var(--size-12);
+      }
+    }
+  }
+
+  &Progress {
+    position: absolute;
+
+    height: 100%;
+    border-radius: var(--size-4);
+
+    transition: background-color 0.2s ease-in-out;
+
+    &Default {
+      background-color: var(--color-trade-prediction-progress--default);
+    }
+
+    &Winning {
+      background-color: var(--color-trade-prediction-progress--winning);
+    }
+
+    &Losing {
+      background-color: var(--color-trade-prediction-progress--losing);
+    }
+  }
+
+  &Content {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--size-16);
+    padding: 10px;
+  }
+
+  &Title {
+    font-size: 1.4rem;
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-trade-prediction-title);
+    z-index: 10;
+  }
+
+  &Price {
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-trade-prediction-price);
+    z-index: 10;
+  }
+}
+
+.actionsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--size-16);
+}
+
+.terms {
+  font-size: 1.4rem;
+  line-height: 1.5;
+  font-size: 500;
+  word-break: break-all;
+  color: #59749b;
+
+  a {
+    text-decoration: underline;
+
+    &:hover {
+      color: #4c6383;
+    }
+  }
+}
+
+.closed {
+  padding: 40px;
+}

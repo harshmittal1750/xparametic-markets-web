@@ -5,7 +5,7 @@ import cn from 'classnames';
 import avatarClasses from './Avatar.module.scss';
 
 export const avatarProps = {
-  $size: ['sm', 'md', 'lg'],
+  $size: ['x2s', 'sm', 'md', 'lg'],
   $radius: ['sm', 'md', 'lg']
 } as const;
 
@@ -30,6 +30,7 @@ const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
           [avatarClasses.radiusSm]: $radius === 'sm',
           [avatarClasses.radiusMd]: $radius === 'md',
           [avatarClasses.radiusLg]: $radius === 'lg',
+          [avatarClasses.sizeX2s]: $size === 'x2s',
           [avatarClasses.sizeSm]: $size === 'sm',
           [avatarClasses.sizeMd]: $size === 'md',
           [avatarClasses.sizeLg]: $size === 'lg'

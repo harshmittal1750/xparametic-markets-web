@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { ui } from 'config';
 import { changeOutcomeData, changeData } from 'redux/ducks/market';
 import { changeMarketOutcomeData, changeMarketData } from 'redux/ducks/markets';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
-import { selectOutcome } from 'redux/ducks/trade';
-import { closeTradeForm } from 'redux/ducks/ui';
 import { PolkamarketsService, PolkamarketsApiService } from 'services';
 
 import TWarningIcon from 'assets/icons/TWarningIcon';
@@ -28,9 +25,8 @@ import Text from '../Text';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 
-function TradeFormActions() {
+function TradeActions() {
   // Helpers
-  const location = useLocation();
   const dispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
   const polkamarketsService = usePolkamarketsService();
@@ -54,7 +50,6 @@ function TradeFormActions() {
   const { wrapped: tokenWrapped, address } = token;
 
   // Derivated state
-  const isMarketPage = location.pathname === `/markets/${marketSlug}`;
   const isWrongNetwork =
     !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
 
@@ -65,11 +60,6 @@ function TradeFormActions() {
     useState(undefined);
   const [needsPricesRefresh, setNeedsPricesRefresh] = useState(false);
   const { refreshBalance } = useERC20Balance(address);
-
-  function handleCancel() {
-    dispatch(selectOutcome('', '', ''));
-    dispatch(closeTradeForm());
-  }
 
   async function reloadMarketPrices() {
     const marketData = await new PolkamarketsService(
@@ -234,22 +224,10 @@ function TradeFormActions() {
   }
 
   const isValidAmount = amount > 0 && amount <= maxAmount;
-  // terms currently disabled
-  const hasAcceptedTerms = true;
 
   return (
     <div className="pm-c-trade-form-actions__group--column">
       <div className="pm-c-trade-form-actions">
-        {!isMarketPage ? (
-          <Button
-            variant="subtle"
-            color="default"
-            onClick={handleCancel}
-            disabled={isLoading}
-          >
-            Cancel
-          </Button>
-        ) : null}
         {isWrongNetwork ? <NetworkSwitch /> : null}
         {needsPricesRefresh && !isWrongNetwork ? (
           <div className="pm-c-trade-form-actions__group--column">
@@ -257,7 +235,7 @@ function TradeFormActions() {
               color="default"
               fullwidth
               onClick={handlePricesRefresh}
-              disabled={!isValidAmount || !hasAcceptedTerms || isLoading}
+              disabled={!isValidAmount || isLoading}
               loading={isLoading}
             >
               Refresh Prices
@@ -292,13 +270,13 @@ function TradeFormActions() {
             wrapped={token.wrapped && !wrapped}
           >
             <ButtonLoading
-              color="success"
+              color="primary"
               fullwidth
               onClick={handleBuy}
-              disabled={!isValidAmount || !hasAcceptedTerms || isLoading}
+              disabled={!isValidAmount || isLoading}
               loading={isLoading}
             >
-              Buy
+              Predict
             </ButtonLoading>
           </ApproveToken>
         ) : null}
@@ -307,7 +285,7 @@ function TradeFormActions() {
             color="danger"
             fullwidth
             onClick={handleSell}
-            disabled={!isValidAmount || !hasAcceptedTerms || isLoading}
+            disabled={!isValidAmount || isLoading}
             loading={isLoading}
           >
             Sell
@@ -344,4 +322,4 @@ function TradeFormActions() {
   );
 }
 
-export default TradeFormActions;
+export default TradeActions;

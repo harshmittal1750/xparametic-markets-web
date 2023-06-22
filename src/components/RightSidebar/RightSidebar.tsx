@@ -1,4 +1,4 @@
-import { ui as configUI } from 'config';
+import { ui as configUI, features } from 'config';
 import { Container } from 'ui';
 
 import { useMarketForms } from 'hooks';
@@ -16,7 +16,7 @@ const forms = {
   ) : (
     <TradeFormClosed />
   ),
-  tradeForm: <TradeForm />
+  tradeForm: features.fantasy.enabled ? null : <TradeForm />
 };
 
 export default function RightSidebar() {

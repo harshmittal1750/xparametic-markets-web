@@ -2,6 +2,7 @@ import { useCallback, useReducer } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import cn from 'classnames';
+import { ui } from 'config';
 import { Market } from 'models/market';
 import { changeVotes } from 'redux/ducks/market';
 import { changeMarketVotesById } from 'redux/ducks/markets';
@@ -29,6 +30,7 @@ import { useVote } from 'contexts/vote';
 import { useAppDispatch } from 'hooks';
 import useToastNotification from 'hooks/useToastNotification';
 
+import Feature from '../Feature';
 import Link from '../Link';
 import Text from '../new/Text';
 import VoteModalClasses from './VoteModal.module.scss';
@@ -74,7 +76,8 @@ function VoteModal({
     useToastNotification();
 
   // Derivated state from props
-  const isWrongNetwork = network.id !== `${marketNetworkId}`;
+  const isWrongNetwork =
+    !ui.socialLogin.enabled && network.id !== `${marketNetworkId}`;
   const needsBuyPolk = userPolkBalance < userRequiredPolkBalance;
   const isMarketPage = location.pathname === `/markets/${marketSlug}`;
 
@@ -212,15 +215,17 @@ function VoteModal({
             description="Your transaction is completed!"
           >
             <Toast.Actions>
-              <a
-                target="_blank"
-                href={`${network.explorerURL}/tx/${transaction.successHash}`}
-                rel="noreferrer"
-              >
-                <Button size="sm" color="success">
-                  View on Explorer
-                </Button>
-              </a>
+              <Feature name="regular">
+                <a
+                  target="_blank"
+                  href={`${network.explorerURL}/tx/${transaction.successHash}`}
+                  rel="noreferrer"
+                >
+                  <Button size="sm" color="success">
+                    View on Explorer
+                  </Button>
+                </a>
+              </Feature>
               <Button
                 size="sm"
                 variant="ghost"

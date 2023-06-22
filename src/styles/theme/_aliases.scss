@@ -73,6 +73,27 @@
   --color-number-input-button-border--error: #e12d39;
 
   --color-tournament-avatar-background: rgb(0 0 0 / 0.1);
+  --color-trade-market-title: #313a4c;
+  --color-trade-prediction-title: #313a4c;
+  --color-trade-prediction-price: #67768e;
+  --color-trade-prediction-price--selected: #313a4c;
+  --color-trade-prediction: rgba(0, 0, 0, 0.03);
+  --color-trade-prediction-progress--default: rgba(0, 0, 0, 0.08);
+  --color-trade-prediction-progress--winning: rgba(101, 214, 173, 0.24);
+  --color-trade-prediction-progress--losing: rgba(248, 106, 106, 0.24);
+  --color-trade-prediction-progress--selected: rgba(93, 85, 250, 0.24);
+  --color-trade-predictions-show-more-background: rgba(117, 117, 231, 0.133);
+  --color-trade-predictions-show-more-background--hover: rgba(
+    95,
+    95,
+    216,
+    0.08
+  );
+  --color-trade-predictions-show-more-text: rgb(130, 133, 233);
+  --color-trade-predictions-show-more-text--hover: rgb(109, 113, 225);
+
+  --color-market-shares-description: #8682fd;
+  --color-market-shares-description--bold: #313a4c;
 
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
@@ -131,6 +152,27 @@
     --color-number-input-button-background--disabled: #292d32;
 
     --color-tournament-avatar-background: rgb(255 255 255 / 0.1);
+    --color-trade-market-title: #f9fafb;
+    --color-trade-prediction-title: #f9fafb;
+    --color-trade-prediction-price: #a5bee4;
+    --color-trade-prediction-price--selected: #f9fafb;
+    --color-trade-prediction: rgba(255, 255, 255, 0.08);
+    --color-trade-prediction-progress--default: rgba(255, 255, 255, 0.16);
+    --color-trade-prediction-progress--winning: rgba(101, 214, 173, 0.16);
+    --color-trade-prediction-progress--losing: rgba(248, 106, 106, 0.16);
+    --color-trade-prediction-progreess--selected: rgba(93, 85, 250, 0.16);
+    --color-trade-predictions-show-more-background: rgba(136, 136, 252, 0.08);
+    --color-trade-predictions-show-more-background--hover: rgba(
+      102,
+      102,
+      212,
+      0.08
+    );
+    --color-trade-predictions-show-more-text: rgb(162, 165, 252);
+    --color-trade-predictions-show-more-text--hover: rgb(184, 186, 245);
+
+    --color-market-shares-description: #c4c6ff;
+    --color-market-shares-description--bold: #ffffff;
   }
 
   --grid-margin: var(--size-12);
