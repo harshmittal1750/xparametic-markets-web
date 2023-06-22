@@ -30,12 +30,6 @@ const providers = {
   Email: 'Sign In'
 } as const;
 
-function isProviderEmail(params: Providers): params is 'Email' {
-  return params === 'Email';
-}
-function isProviderMetamask(params: Providers): params is 'Metamask' {
-  return params === 'Metamask';
-}
 export default function ProfileSignin() {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
@@ -82,13 +76,12 @@ export default function ProfileSignin() {
           </ModalHeader>
           <ModalSection>
             {ui.socialLogin.providers.map(provider => {
-              const Component = isProviderEmail(provider)
-                ? ProfileSigninEmail
-                : Button;
+              const Component =
+                provider === 'Email' ? ProfileSigninEmail : Button;
 
               return (
                 <Fragment key={provider}>
-                  {isProviderMetamask(provider) ? (
+                  {provider === 'Metamask' ? (
                     <>
                       <Divider enableGutters />
                       <ConnectMetamask />

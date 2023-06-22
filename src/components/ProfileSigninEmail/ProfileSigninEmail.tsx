@@ -13,23 +13,27 @@ export default function ProfileSigninEmail({
   ...props
 }: Pick<ButtonProps, 'onClick' | 'name' | 'children' | 'className'>) {
   const [email, setEmail] = useState('');
-  const handleEmail = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) =>
-      setEmail(event.target.value),
-    []
-  );
 
   return (
     <>
       <Divider enableGutters />
-      <form>
+      <form
+        onSubmit={useCallback(
+          (event: React.SyntheticEvent) => event.preventDefault(),
+          []
+        )}
+      >
         <label htmlFor="email" className="pm-c-input__group">
           <input
             className="pm-c-input--default"
             id="email"
             value={email}
             placeholder="Write your email here"
-            onChange={handleEmail}
+            onChange={useCallback(
+              (event: React.ChangeEvent<HTMLInputElement>) =>
+                setEmail(event.target.value),
+              []
+            )}
           />
         </label>
         <Button

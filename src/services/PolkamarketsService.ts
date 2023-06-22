@@ -494,7 +494,7 @@ export default class PolkamarketsService {
   public async isPolkClaimed(): Promise<boolean> {
     if (!this.address) return false;
 
-    if (features.regular.enabled) return false;
+    if (features.regular.enabled) return true;
 
     let claimed;
 
@@ -515,6 +515,8 @@ export default class PolkamarketsService {
   }
 
   public async claimPolk(): Promise<boolean> {
+    if (features.regular.enabled) return true;
+
     // ensuring user has wallet connected
     await this.login();
 

@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 
 import cn from 'classnames';
 import { features, ui } from 'config';
-import { Container, useTheme } from 'ui';
+import { Container, Skeleton, useTheme } from 'ui';
 
 import NetworkSelector from 'components/NetworkSelector';
 import Profile from 'components/Profile';
@@ -14,7 +14,9 @@ import { useAppSelector, usePortal } from 'hooks';
 import headerClasses from './Header.module.scss';
 import headerActionsClasses from './HeaderActions.module.scss';
 
-function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
+function HeaderActionsWrapper(
+  props: React.PropsWithChildren<Record<string, unknown>>
+) {
   const Portal = usePortal({
     root: document.body
   });
@@ -25,29 +27,100 @@ function HeaderActionsWrapper(props: React.PropsWithChildren<{}>) {
 
   return <Portal {...props} />;
 }
+function HeaderActionsGroup(
+  props: React.PropsWithChildren<Record<string, unknown>>
+) {
+  return <div className={headerActionsClasses.actionsGroup} {...props} />;
+}
+function SkeletonWallet() {
+  return <Skeleton style={{ height: 44, width: 192 }} />;
+}
+function SkeletonProfile() {
+  const theme = useTheme();
+
+  return (
+    <div
+      style={{
+        display: 'inherit',
+        alignItems: 'center',
+        gap: 32,
+        ...(!theme.device.isDesktop && {
+          flexDirection: 'row-reverse',
+          width: '100%'
+        })
+      }}
+    >
+      <Skeleton
+        style={{
+          height: 32,
+          width: 96,
+          ...(!theme.device.isDesktop && {
+            marginLeft: 'auto'
+          })
+        }}
+      />
+      <div
+        style={{
+          display: 'inherit',
+          alignItems: 'center',
+          gap: 16
+        }}
+      >
+        <Skeleton
+          radius="full"
+          style={{
+            height: 48,
+            width: 48
+          }}
+        />
+        <div>
+          <Skeleton style={{ height: 16, width: 84, marginBottom: 4 }} />
+          <Skeleton style={{ height: 16, width: 52 }} />
+        </div>
+      </div>
+    </div>
+  );
+}
 export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const { isDesktop } = useTheme().device;
-  const Root = isDesktop ? Fragment : HeaderActionsWrapper;
-  const Wrapper = isDesktop ? 'div' : Container;
-  const HeaderActionsIntegration = features.fantasy.enabled ? Profile : Wallet;
+  const isLoginLoading = useAppSelector(
+    state => state.polkamarkets.isLoading.login
+  );
+  const theme = useTheme();
+  const Root = theme.device.isDesktop ? Fragment : HeaderActionsWrapper;
+  const Wrapper = theme.device.isDesktop ? 'div' : Container;
+  const ActionLoadingComponent = features.fantasy.enabled
+    ? SkeletonProfile
+    : SkeletonWallet;
+  const HeaderActionComponent = features.fantasy.enabled ? Profile : Wallet;
+  const HeaderActionsGroupComponent = features.fantasy.enabled
+    ? Fragment
+    : HeaderActionsGroup;
 
   return (
     <Root>
       <Wrapper
         className={cn(headerActionsClasses.root, {
-          [headerClasses.container]: !isDesktop
+          [headerClasses.container]: !theme.device.isDesktop,
+          [headerActionsClasses.reverse]: features.fantasy.enabled
         })}
       >
+        <HeaderActionsGroupComponent>
+          {ui.layout.header.networkSelector.enabled &&
+            theme.device.isDesktop && (
+              <NetworkSelector
+                size="sm"
+                responsive
+                className={headerActionsClasses.network}
+              />
+            )}
+          {isLoginLoading ? (
+            <ActionLoadingComponent />
+          ) : (
+            <HeaderActionComponent isLoggedIn={isLoggedIn} />
+          )}
+        </HeaderActionsGroupComponent>
         <ThemeSelector />
-        {ui.layout.header.networkSelector.enabled && isDesktop && (
-          <NetworkSelector
-            size="sm"
-            responsive
-            className={headerActionsClasses.network}
-          />
-        )}
-        <HeaderActionsIntegration isLoggedIn={isLoggedIn} />
       </Wrapper>
     </Root>
   );

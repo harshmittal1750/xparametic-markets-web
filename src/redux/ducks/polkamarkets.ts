@@ -60,7 +60,7 @@ const initialState: PolkamarketsInitialState = {
     bonds: false,
     actions: false,
     votes: false,
-    login: false
+    login: true
   },
   createMarketToken: null
 };
