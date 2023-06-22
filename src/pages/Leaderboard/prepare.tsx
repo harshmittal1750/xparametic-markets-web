@@ -165,6 +165,20 @@ function liquidityColumnRender({
   );
 }
 
+type EarningsColumnRenderArgs = {
+  earnings: number;
+  ticker: string;
+};
+
+function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
+  return (
+    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
+      {`${earnings?.toFixed(1)} `}
+      <strong className="caption semibold text-3">{ticker}</strong>
+    </span>
+  );
+}
+
 type BalanceColumnRenderArgs = {
   balance: number;
   ticker: string;
@@ -202,7 +216,8 @@ export {
   achievementsColumnRender,
   liquidityColumnRender,
   balanceColumnRender,
-  rankColumnRender
+  rankColumnRender,
+  earningsColumnRender
 };
 
 // Rows
@@ -251,6 +266,10 @@ function prepareLeaderboardTableRows({
         },
         netLiquidity: {
           liquidity: row.tvlLiquidityEur,
+          ticker: fantasyTokenTicker || '€'
+        },
+        earnings: {
+          earnings: row.earningsEur,
           ticker: fantasyTokenTicker || '€'
         },
         transactions: row.transactions,
@@ -322,6 +341,16 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
               }
             : null,
         render: liquidityColumnRender
+      },
+      earnings: {
+        value:
+          yourStats && yourStats.earnings
+            ? {
+                liquidity: yourStats.earnings.earnings,
+                ticker: yourStats.earnings.ticker
+              }
+            : null,
+        render: earningsColumnRender
       },
       transactions: {
         value: yourStats ? yourStats.transactions : null

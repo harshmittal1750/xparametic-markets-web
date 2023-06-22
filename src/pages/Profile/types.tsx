@@ -16,6 +16,7 @@ export type LeaderboardRanks = {
   rankByMarketsCreated: number;
   rankByWonPredictions: number;
   rankByLiquidityAdded: number;
+  rankByEarnings: number;
 };
 
 // Prediction statistics
@@ -26,6 +27,7 @@ export type PredictionStatistics = {
   marketsCreated: number;
   wonPredictions: number;
   liquidityAdded: number;
+  earnings: number;
 };
 
 export type ProfileAchievementsProps = {
