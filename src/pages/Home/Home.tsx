@@ -25,7 +25,7 @@ export default function Home() {
       <Route exact path={routeMatch.path}>
         <div className="max-width-screen-xl">
           {ui.hero.enabled && <HomeHero />}
-          <Container ref={ref} $enableGutters className={homeClasses.nav}>
+          <Container ref={ref} className={homeClasses.nav}>
             <HomeNav
               onFilterClick={theme.device.isDesktop ? handleToggle : handleShow}
             />

@@ -93,6 +93,7 @@
 
   --color-market-shares-description: #8682fd;
   --color-market-shares-description--bold: #313a4c;
+  --color-tournament-avatar-background: rgb(0 0 0 / 0.1);
 
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
@@ -171,6 +172,7 @@
 
     --color-market-shares-description: #c4c6ff;
     --color-market-shares-description--bold: #ffffff;
+    --color-tournament-avatar-background: rgb(255 255 255 / 0.1);
   }
 
   --grid-margin: var(--size-12);

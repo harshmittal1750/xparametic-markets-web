@@ -12,7 +12,7 @@ import {
   getPortfolioByAddressTransformResponse,
   getPortfolioFeedByAddressTransformResponse
 } from './functions';
-import type {
+import {
   GetMarketBySlugArgs,
   GetMarketBySlugData,
   GetMarketsByStateArgs,
@@ -44,7 +44,10 @@ import type {
   GetLeaderboardGroupsByUserData,
   GetLeaderboardGroupsByUserArgs,
   JoinLeaderboardGroupData,
-  JoinLeaderboardGroupParams
+  JoinLeaderboardGroupParams,
+  GetTournamentsData,
+  GetTournamentBySlugData,
+  GetTournamentBySlugArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -120,8 +123,17 @@ const polkamarketsApi = createApi({
       GetLeaderboardByTimeframeData,
       GetLeaderboardByTimeframeArgs
     >({
-      query: ({ timeframe, networkId }) =>
-        `/leaderboards?timeframe=${timeframe}&network_id=${networkId}`,
+      query: ({ timeframe, networkId, tournamentId }) => ({
+        url: `/leaderboards`,
+        params: pickBy(
+          {
+            timeframe,
+            network_id: networkId,
+            tournament_id: tournamentId
+          },
+          identity
+        )
+      }),
       transformResponse: (response: GetLeaderboardByTimeframeData) =>
         getLeaderboardByTimeframeTransformResponse(camelize(response))
     }),
@@ -198,6 +210,18 @@ const polkamarketsApi = createApi({
       transformResponse: (response: GetLeaderboardGroupsByUserData) =>
         camelize(response)
     }),
+    getTournaments: builder.query<GetTournamentsData, void>({
+      query: () => `/tournaments`,
+      transformResponse: (response: GetTournamentsData) => camelize(response)
+    }),
+    getTournamentBySlug: builder.query<
+      GetTournamentBySlugData,
+      GetTournamentBySlugArgs
+    >({
+      query: ({ slug }) => `/tournaments/${slug}`,
+      transformResponse: (response: GetTournamentBySlugData) =>
+        camelize(response)
+    }),
     getPortfolioFeedByAddress: builder.query<
       GetPortfolioFeedByAddressData,
       GetPortfolioFeedByAddressArgs
@@ -228,5 +252,7 @@ export const {
   useJoinLeaderboardGroupMutation,
   useGetLeaderboardGroupBySlugQuery,
   useGetLeaderboardGroupsByUserQuery,
+  useGetTournamentsQuery,
+  useGetTournamentBySlugQuery,
   useGetPortfolioFeedByAddressQuery
 } = polkamarketsApi;

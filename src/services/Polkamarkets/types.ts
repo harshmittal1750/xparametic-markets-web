@@ -8,6 +8,7 @@ import {
 } from 'types/leaderboard';
 import { MarketState } from 'types/market';
 import { FeedActivity } from 'types/portfolio';
+import { Tournament } from 'types/tournament';
 
 // getMarketBySlug
 export type GetMarketBySlugData = Market;
@@ -69,6 +70,8 @@ export type GetAchievementsArgs = {
 };
 
 export type GetLeaderboardBaseData = {
+  userImageUrl?: string | null;
+  username?: string | null;
   user: string;
   ens?: any;
   marketsCreated: number;
@@ -88,6 +91,7 @@ export type GetLeaderboardByTimeframeData = GetLeaderboardBaseData[];
 export type GetLeaderboardByTimeframeArgs = {
   timeframe: LeaderboardTimeframe;
   networkId: string;
+  tournamentId?: string;
 };
 
 // getLeaderboardByAddress
@@ -141,6 +145,15 @@ export type GetLeaderboardGroupBySlugArgs = {
 // getUserLeaderboards
 export type GetLeaderboardGroupsByUserData = UserLeaderboard[];
 export type GetLeaderboardGroupsByUserArgs = { user: string };
+
+// getTournaments
+export type GetTournamentsData = Tournament[];
+
+// getTournamentBySlug
+export type GetTournamentBySlugData = Tournament;
+export type GetTournamentBySlugArgs = {
+  slug: string;
+};
 
 // getPortfolioFeedByAddress
 export type GetPortfolioFeedByAddressData = FeedActivity[];
