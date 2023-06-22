@@ -12,12 +12,23 @@
   position: relative;
   width: 100%;
   height: auto;
+  border-radius: var(--border-radius);
+  overflow-x: hidden;
+  overflow-y: hidden;
 
   &::after {
     content: '';
     position: absolute;
     inset: 0px;
     animation: animation 600ms linear infinite alternate;
-    border-radius: 8px;
+  }
+}
+
+.radius {
+  &Default {
+    --border-radius: 4px;
+  }
+  &Full {
+    --border-radius: 100%;
   }
 }
