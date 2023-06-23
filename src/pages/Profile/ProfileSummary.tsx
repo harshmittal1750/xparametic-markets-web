@@ -17,6 +17,11 @@ function ProfileSummaryGroup(
 ) {
   return <div className={profileClasses.summaryGroup} {...props} />;
 }
+function hasAvatar(
+  image: ProfileSummaryProps['user']['image']
+): image is string {
+  return typeof image === 'string' && features.fantasy.enabled;
+}
 export default function ProfileSummary({
   address,
   isLoading,
@@ -24,11 +29,10 @@ export default function ProfileSummary({
   network,
   user
 }: ProfileSummaryProps) {
-  const hasAvatar = user.image && features.fantasy.enabled;
-  const ProfileSummaryGroupComponent = hasAvatar
+  const ProfileSummaryGroupComponent = hasAvatar(user.image)
     ? ProfileSummaryGroup
     : Fragment;
-  const ProfileSummaryInfoComponent = hasAvatar ? 'div' : Fragment;
+  const ProfileSummaryInfoComponent = hasAvatar(user.image) ? 'div' : Fragment;
 
   return (
     <div className="pm-p-profile-summary__details">
@@ -53,7 +57,7 @@ export default function ProfileSummary({
           );
         return (
           <ProfileSummaryGroupComponent>
-            {user.image && (
+            {hasAvatar(user.image) && (
               <Avatar $radius="lg" $size="md" alt="avatar" src={user.image} />
             )}
             <ProfileSummaryInfoComponent>

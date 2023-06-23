@@ -33,8 +33,7 @@ export default function ProfileSignout() {
     polkamarketsService.logoutSocialLogin();
     dispatch(logout());
   }, [dispatch, polkamarketsService]);
-  const username =
-    socialLoginInfo?.name.split('#')[0] || shortenAddress(ethAddress);
+  const username = socialLoginInfo?.name.split('#')[0];
 
   useEffect(() => {
     async function handleDiscordLogin() {
@@ -86,7 +85,7 @@ export default function ProfileSignout() {
             fontWeight="semibold"
             className={profileSignoutClasses.username}
           >
-            {username}
+            {username || shortenAddress(ethAddress)}
           </Text>
           <Text
             scale="tiny-uppercase"
