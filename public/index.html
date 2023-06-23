@@ -59,6 +59,12 @@
       type="font/woff2"
       crossorigin="anonymous"
     />
+    <script type="text/javascript">
+      '%REACT_APP_LOCALIZE_CONFIG%'.includes('key') &&
+        document.write(
+          '<script src="https://global.localizecdn.com/localize.js"><\/script><script>!function(a){if(!a.Localize){a.Localize={};for(var e=["translate","untranslate","phrase","initialize","translatePage","setLanguage","getLanguage","getSourceLanguage","detectLanguage","getAvailableLanguages","untranslatePage","bootstrap","prefetch","on","off","hideWidget","showWidget"],t=0;t<e.length;t++)a.Localize[e[t]]=function(){}}}(window);<\/script><script>Localize.initialize(%REACT_APP_LOCALIZE_CONFIG%);<\/script>'
+        );
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
