@@ -5,3 +5,11 @@
     margin-top: var(--size-16);
   }
 }
+
+.summary {
+  &Group {
+    display: flex;
+    align-items: center;
+    gap: var(--size-12);
+  }
+}
