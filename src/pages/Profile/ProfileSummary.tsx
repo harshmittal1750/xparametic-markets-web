@@ -2,7 +2,6 @@ import { Fragment } from 'react';
 
 import { features } from 'config';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
-import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Avatar, Skeleton } from 'ui';
 
 import { ShareIcon } from 'assets/icons';
@@ -22,14 +21,10 @@ export default function ProfileSummary({
   address,
   isLoading,
   data,
-  network
+  network,
+  user
 }: ProfileSummaryProps) {
-  const leaderboard = useGetLeaderboardByAddressQuery({
-    address,
-    networkId: network.id,
-    timeframe: '1w'
-  });
-  const hasAvatar = leaderboard.data?.userImageUrl && features.fantasy.enabled;
+  const hasAvatar = user.image && features.fantasy.enabled;
   const ProfileSummaryGroupComponent = hasAvatar
     ? ProfileSummaryGroup
     : Fragment;
@@ -58,13 +53,8 @@ export default function ProfileSummary({
           );
         return (
           <ProfileSummaryGroupComponent>
-            {leaderboard.data?.userImageUrl && (
-              <Avatar
-                $radius="lg"
-                $size="md"
-                alt="avatar"
-                src={leaderboard.data?.userImageUrl}
-              />
+            {user.image && (
+              <Avatar $radius="lg" $size="md" alt="avatar" src={user.image} />
             )}
             <ProfileSummaryInfoComponent>
               <Text
@@ -74,7 +64,7 @@ export default function ProfileSummary({
                 fontWeight="bold"
                 color="1"
               >
-                {leaderboard.data?.username || address}
+                {user.name || address}
                 <Feature name="regular">
                   <Tooltip position="bottom-start" text="View on Explorer">
                     <a

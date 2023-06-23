@@ -40,11 +40,12 @@ export default function Profile() {
     networkId: network.id
   });
   const hasError = portfolio.isError && leaderboard.isError && activity.isError;
+  const username = leaderboard.data?.username || '';
 
   return (
     <Container className="pm-p-profile max-width-screen-xl">
       {hasError ? (
-        <ProfileError />
+        <ProfileError username={username} />
       ) : (
         <>
           <div className="pm-p-profile-summary">
@@ -53,6 +54,10 @@ export default function Profile() {
               data={portfolio.data}
               isLoading={portfolio.isLoading}
               network={network}
+              user={{
+                image: leaderboard.data?.userImageUrl || '',
+                name: username
+              }}
             />
             <ProfileSummaryStat
               isLoading={portfolio.isLoading}
