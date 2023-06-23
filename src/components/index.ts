@@ -171,8 +171,6 @@ export { default as FormikPersist } from './FormikPersist';
 
 export { default as Header } from './Header';
 
-export { default as Localize } from './Localize';
-
 export { default as Logos } from './Logos';
 
 export { default as MarketAvatar } from './MarketAvatar';
