@@ -25,7 +25,7 @@ export default function Profile() {
   const [timeframe, setTimeframe] = useState<LeaderboardTimeframe>('at');
   const { address } = useParams<Record<'address', string>>();
   const { network } = useNetwork();
-  const fantasyTokenTicker = useFantasyTokenTicker();
+  const fantasyTokenTicker = useFantasyTokenTicker() || '€';
   const portfolio = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id
@@ -39,8 +39,7 @@ export default function Profile() {
     address,
     networkId: network.id
   });
-
-  const hasError = portfolio.isError || leaderboard.isError || activity.isError;
+  const hasError = portfolio.isError && leaderboard.isError && activity.isError;
 
   return (
     <Container className="pm-p-profile max-width-screen-xl">
@@ -57,14 +56,14 @@ export default function Profile() {
             />
             <ProfileSummaryStat
               isLoading={portfolio.isLoading}
-              ticker={fantasyTokenTicker || '€'}
+              ticker={fantasyTokenTicker}
               data={portfolio.data}
             />
           </div>
           <ProfileYourStats
             onTimeframe={setTimeframe}
             isLoading={leaderboard.isLoading}
-            ticker={fantasyTokenTicker || '€'}
+            ticker={fantasyTokenTicker}
             data={leaderboard.data}
           />
           <div className="pm-p-profile-lists margin-top-6">
