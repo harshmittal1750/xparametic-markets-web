@@ -7,12 +7,12 @@ interface LogosProps extends React.ComponentPropsWithoutRef<'svg'> {
 
 const sizes = {
   sm: 24,
-  md: 48,
-  lg: 96
+  md: 40,
+  lg: 64
 };
 const modes = {
-  light: ['0 0 0', '0.2', '0.4', '0.1'],
-  dark: ['255 255 255', '0.2', '0.1', '0.4']
+  light: ['0 0 0', 0.2, 0.4, 0.1],
+  dark: ['255 255 255', 0.2, 0.1, 0.4]
 } as const;
 
 function getStandards(channel: string, ...alphas: number[]) {
