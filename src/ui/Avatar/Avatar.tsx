@@ -4,19 +4,13 @@ import cn from 'classnames';
 
 import avatarClasses from './Avatar.module.scss';
 
-export const avatarProps = {
-  $size: ['xs', 'sm', 'md', 'lg'],
-  $radius: ['xs', 'sm', 'md', 'lg']
-} as const;
-
-export interface AvatarProps
-  extends Pick<
-    React.ComponentPropsWithRef<'img'>,
-    'src' | 'alt' | 'className' | 'ref'
-  > {
-  $size?: typeof avatarProps.$size[number];
-  $radius?: typeof avatarProps.$radius[number];
-}
+export type AvatarProps = Pick<
+  React.ComponentPropsWithRef<'img'>,
+  'src' | 'alt' | 'className' | 'ref'
+> & {
+  $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
+  $radius?: 'sm' | 'md' | 'lg';
+};
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
   { $size, $radius, className, ...props },
@@ -32,6 +26,7 @@ const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
           [avatarClasses.radiusSm]: $radius === 'sm',
           [avatarClasses.radiusMd]: $radius === 'md',
           [avatarClasses.radiusLg]: $radius === 'lg',
+          [avatarClasses.sizeX2s]: $size === 'x2s',
           [avatarClasses.sizeXs]: $size === 'xs',
           [avatarClasses.sizeSm]: $size === 'sm',
           [avatarClasses.sizeMd]: $size === 'md',

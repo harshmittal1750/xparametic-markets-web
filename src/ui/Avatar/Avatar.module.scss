@@ -17,6 +17,11 @@
 }
 
 .size {
+  &X2s {
+    width: var(--size-24);
+    height: var(--size-24);
+  }
+  
   &Xs {
     width: var(--size-36);
     height: var(--size-36);
