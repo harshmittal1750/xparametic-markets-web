@@ -9,7 +9,7 @@ export type AvatarProps = Pick<
   'src' | 'alt' | 'className' | 'ref'
 > & {
   $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
-  $radius?: 'sm' | 'md' | 'lg';
+  $radius?: 'xs' | 'sm' | 'md' | 'lg';
 };
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
