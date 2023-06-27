@@ -1,8 +1,10 @@
 import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import { features } from 'config';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
+import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
 import { Avatar } from 'ui';
 
 import { Button } from 'components/Button';
@@ -13,6 +15,7 @@ import {
   useAppDispatch,
   useAppSelector,
   useFantasyTokenTicker,
+  useNetwork,
   usePolkamarketsService
 } from 'hooks';
 
@@ -23,7 +26,13 @@ export default function ProfileSignout() {
   const fantasyTokenTicker = useFantasyTokenTicker();
   const polkamarketsService = usePolkamarketsService();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
-  const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+  const address = useAppSelector(state => state.polkamarkets.ethAddress);
+  const network = useNetwork();
+  const leaderboard = useGetLeaderboardByAddressQuery({
+    address,
+    networkId: network.network.id,
+    timeframe: 'at'
+  });
   const socialLoginInfo = useAppSelector(
     state => state.polkamarkets.socialLoginInfo
   );
@@ -45,14 +54,14 @@ export default function ProfileSignout() {
       await updateSocialLoginInfo(
         socialLoginInfo.idToken,
         socialLoginInfo.typeOfLogin,
-        ethAddress,
+        address,
         socialLoginInfo.profileImage,
         socialLoginInfo.oAuthAccessToken
       );
     }
 
     if (socialLoginInfo?.typeOfLogin === 'discord') handleDiscordLogin();
-  }, [socialLoginInfo, ethAddress]);
+  }, [socialLoginInfo, address]);
 
   return (
     <div className={profileSignoutClasses.root}>
@@ -71,7 +80,11 @@ export default function ProfileSignout() {
         Sign Out
       </Button>
       <div className="pm-c-wallet-info__profile">
-        <Link to={`/user/${ethAddress}`}>
+        <Link
+          to={`/user/${
+            (features.fantasy.enabled && leaderboard.data?.username) || address
+          }`}
+        >
           <Avatar
             $size="sm"
             $radius="lg"
@@ -85,7 +98,7 @@ export default function ProfileSignout() {
             fontWeight="semibold"
             className={profileSignoutClasses.username}
           >
-            {username || shortenAddress(ethAddress)}
+            {username || shortenAddress(address)}
           </Text>
           <Text
             scale="tiny-uppercase"
