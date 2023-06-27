@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { ui } from 'config';
+import { features, ui } from 'config';
 import {
   useGetLeaderboardByAddressQuery,
   useGetPortfolioByAddressQuery,
@@ -40,7 +40,8 @@ export default function Profile() {
     networkId: network.id
   });
   const hasError = portfolio.isError && leaderboard.isError && activity.isError;
-  const username = leaderboard.data?.username || '';
+  const username =
+    (features.fantasy.enabled && leaderboard.data?.username) || '';
 
   return (
     <Container className="pm-p-profile max-width-screen-xl">
@@ -54,10 +55,11 @@ export default function Profile() {
               data={portfolio.data}
               isLoading={portfolio.isLoading}
               network={network}
-              user={{
-                image: leaderboard.data?.userImageUrl || '',
-                name: username
-              }}
+              username={username}
+              avatar={
+                (features.fantasy.enabled && leaderboard.data?.userImageUrl) ||
+                ''
+              }
             />
             <ProfileSummaryStat
               isLoading={portfolio.isLoading}

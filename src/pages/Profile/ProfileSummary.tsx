@@ -1,6 +1,5 @@
 import { Fragment } from 'react';
 
-import { features } from 'config';
 import { fromTimestampToCustomFormatDate } from 'helpers/date';
 import { Avatar, Skeleton } from 'ui';
 
@@ -17,22 +16,16 @@ function ProfileSummaryGroup(
 ) {
   return <div className={profileClasses.summaryGroup} {...props} />;
 }
-function hasAvatar(
-  image: ProfileSummaryProps['user']['image']
-): image is string {
-  return typeof image === 'string' && features.fantasy.enabled;
-}
 export default function ProfileSummary({
   address,
   isLoading,
   data,
   network,
-  user
+  username,
+  avatar
 }: ProfileSummaryProps) {
-  const ProfileSummaryGroupComponent = hasAvatar(user.image)
-    ? ProfileSummaryGroup
-    : Fragment;
-  const ProfileSummaryInfoComponent = hasAvatar(user.image) ? 'div' : Fragment;
+  const ProfileSummaryGroupComponent = avatar ? ProfileSummaryGroup : Fragment;
+  const ProfileSummaryInfoComponent = avatar ? 'div' : Fragment;
 
   return (
     <div className="pm-p-profile-summary__details">
@@ -57,8 +50,8 @@ export default function ProfileSummary({
           );
         return (
           <ProfileSummaryGroupComponent>
-            {hasAvatar(user.image) && (
-              <Avatar $radius="lg" $size="md" alt="avatar" src={user.image} />
+            {avatar && (
+              <Avatar $radius="lg" $size="md" alt="avatar" src={avatar} />
             )}
             <ProfileSummaryInfoComponent>
               <Text
@@ -68,7 +61,7 @@ export default function ProfileSummary({
                 fontWeight="bold"
                 color="1"
               >
-                {user.name || address}
+                {username || address}
                 <Feature name="regular">
                   <Tooltip position="bottom-start" text="View on Explorer">
                     <a
