@@ -12,7 +12,7 @@ export default function ProfileError({ username = '' }: ProfileErrorProps) {
   return (
     <div className={profileClasses.container}>
       <Logos size="lg" standard="mono" />
-      <Text color="gray" scale="caption" fontWeight="semibold">
+      <Text color="gray" scale="body" fontWeight="semibold">
         {features.regular.enabled ? (
           'Something went wrong. Please, try again!'
         ) : (
