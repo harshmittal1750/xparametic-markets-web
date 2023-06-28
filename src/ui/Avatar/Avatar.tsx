@@ -43,7 +43,7 @@ const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
       ) : (
         <div className={avatarClasses.caption}>
           <strong className={avatarClasses.captionText}>
-            {alt.toUpperCase().match(/\w/)}
+            {alt?.toUpperCase().match(/\w/)}
           </strong>
         </div>
       )}
