@@ -15,7 +15,7 @@ export default function MarketAvatar({
 }: MarketAvatarProps) {
   return (
     <div className={marketAvatarClasses.root}>
-      <Image $radius="full" alt="Market" $size={$size} src={imageUrl} />
+      <Image $radius="lg" alt="Market" $size={$size} src={imageUrl} />
       {verified && (
         <div className={marketAvatarClasses.verified}>
           <VerifiedIcon size="sm" />

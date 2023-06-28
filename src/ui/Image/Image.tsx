@@ -2,42 +2,21 @@ import { forwardRef, useCallback } from 'react';
 
 import cn from 'classnames';
 import { AnimatePresence, motion } from 'framer-motion';
+import type { AvatarProps } from 'ui/Avatar';
+import { getAvatarClasses } from 'ui/Avatar';
 import Skeleton from 'ui/Skeleton';
 import useImage from 'ui/useImage';
 
 import imageClasses from './Image.module.scss';
 
-export type ImageProps = Pick<
-  React.ComponentPropsWithRef<'img'>,
-  'src' | 'alt' | 'className' | 'ref'
-> & {
-  $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
-  $radius?: 'sm' | 'md' | 'lg' | 'full';
-};
-
-const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
-  { $size, $radius, className, alt, ...props },
+const Image = forwardRef<HTMLImageElement, AvatarProps>(function Image(
+  { alt, className, ...props },
   ref
 ) {
   const [state, { ref: imageRef, ...imageProps }] = useImage();
 
   return (
-    <div
-      className={cn(
-        imageClasses.root,
-        {
-          [imageClasses.radiusSm]: $radius === 'sm',
-          [imageClasses.radiusMd]: $radius === 'md',
-          [imageClasses.radiusLg]: $radius === 'lg',
-          [imageClasses.radiusFull]: $radius === 'full',
-          [imageClasses.sizeX2s]: $size === 'x2s',
-          [imageClasses.sizeSm]: $size === 'sm',
-          [imageClasses.sizeMd]: $size === 'md',
-          [imageClasses.sizeLg]: $size === 'lg'
-        },
-        className
-      )}
-    >
+    <div className={cn(imageClasses.root, getAvatarClasses(props), className)}>
       <img
         alt={alt}
         ref={useCallback(
@@ -52,8 +31,8 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
           },
           [imageRef, ref]
         )}
-        className={cn(imageClasses.image, {
-          [imageClasses.imageHide]: state === 'load'
+        className={cn(imageClasses.element, {
+          [imageClasses.elementHide]: state === 'load'
         })}
         {...imageProps}
         {...props}
@@ -71,14 +50,7 @@ const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
               opacity: 0
             }}
           >
-            <Skeleton
-              $radius="full"
-              style={{
-                position: 'absolute',
-                top: 0,
-                height: '100%'
-              }}
-            />
+            <Skeleton $radius="full" className={imageClasses.skeleton} />
           </motion.div>
         )}
       </AnimatePresence>

@@ -3,44 +3,7 @@
   overflow-y: hidden;
 }
 
-.radius {
-  &Sm {
-    border-radius: var(--size-8);
-  }
-  &Md {
-    border-radius: var(--size-16);
-  }
-  &Lg {
-    border-radius: 50%;
-  }
-  &Full {
-    border-radius: 100%;
-  }
-}
-
-.size {
-  &X2s {
-    width: var(--size-24);
-    height: var(--size-24);
-  }
-
-  &Sm {
-    width: var(--size-48);
-    height: var(--size-48);
-  }
-
-  &Md {
-    width: var(--size-64);
-    height: var(--size-64);
-  }
-
-  &Lg {
-    width: var(--size-96);
-    height: var(--size-96);
-  }
-}
-
-.image {
+.element {
   display: block;
   background-size: cover;
   background-repeat: no-repeat;
@@ -53,4 +16,10 @@
   &Hide {
     opacity: 0;
   }
+}
+
+.skeleton {
+  position: absolute;
+  top: 0;
+  height: 100%;
 }
