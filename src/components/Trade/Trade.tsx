@@ -1,6 +1,7 @@
 import { CSSProperties } from 'react';
 
 import cn from 'classnames';
+import getMarketColors from 'helpers/getMarketColors';
 import { useTheme } from 'ui';
 
 import { useAppSelector } from 'hooks';
@@ -22,7 +23,10 @@ type TradeProps = {
 function Trade({ view = 'default' }: TradeProps) {
   const theme = useTheme();
   const market = useAppSelector(state => state.market.market);
-  const colors = useAppSelector(state => state.ui.market.colors);
+  const marketColors = getMarketColors({
+    network: market.network.id,
+    market: market.id
+  });
 
   const isLoadingMarket = useAppSelector(state => state.market.isLoading);
 
@@ -46,7 +50,7 @@ function Trade({ view = 'default' }: TradeProps) {
       style={
         {
           '--image': `url('${market.imageUrl}')`,
-          '--backdrop-color': colors[market.id]
+          '--backdrop-color': marketColors.market
         } as CSSProperties
       }
     >

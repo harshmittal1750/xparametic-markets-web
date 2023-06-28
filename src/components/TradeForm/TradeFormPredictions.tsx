@@ -1,15 +1,14 @@
 import { useCallback } from 'react';
 import { Virtuoso } from 'react-virtuoso';
 
+import cn from 'classnames';
+import getMarketColors from 'helpers/getMarketColors';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
-import Icon from 'components/Icon';
-import MiniTable from 'components/MiniTable';
 import OutcomeItem from 'components/OutcomeItem';
-import OutcomeItemText from 'components/OutcomeItemText';
 
 import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
@@ -19,21 +18,15 @@ export default function TradeFormPredictions() {
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
-  const symbol = useAppSelector(state => state.market.market.token.ticker);
-  const rawOutcomes = useAppSelector(state => state.market.market.outcomes);
+  const market = useAppSelector(state => state.market.market);
   const theme = useTheme();
   const sortedOutcomes = sortOutcomes({
-    outcomes: rawOutcomes,
+    outcomes: market.outcomes,
     timeframe: '7d'
   });
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: sortedOutcomes
   });
-  const needExpandOutcomes = sortedOutcomes.length > 3;
-  const outcomes =
-    theme.device.isDesktop && needExpandOutcomes
-      ? expandableOutcomes.onseted
-      : sortedOutcomes;
   const handleOutcomeClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
       dispatch(
@@ -49,19 +42,24 @@ export default function TradeFormPredictions() {
   const Footer = useCallback(
     () => (
       <OutcomeItem
+        $size="md"
         $variant="dashed"
         onClick={expandableOutcomes.expand}
-        endAdornment={
-          <span style={{ color: 'var(--color-text-secondary)' }}>
-            <Icon size="lg" name="Plus" />
-          </span>
-        }
         primary={expandableOutcomes.offseted.primary}
         secondary={expandableOutcomes.offseted.secondary}
       />
     ),
     [expandableOutcomes.expand, expandableOutcomes.offseted]
   );
+  const marketColors = getMarketColors({
+    network: market.network.id,
+    market: market.id
+  });
+  const needExpandOutcomes = sortedOutcomes.length > 3;
+  const outcomes =
+    theme.device.isDesktop && needExpandOutcomes
+      ? expandableOutcomes.onseted
+      : sortedOutcomes;
 
   return (
     <div className="pm-c-trade-form-predictions">
@@ -77,48 +75,32 @@ export default function TradeFormPredictions() {
           }}
           itemContent={(index, outcome) => (
             <OutcomeItem
-              $gutterBottom={
-                !expandableOutcomes.isExpanded ||
-                index !== expandableOutcomes.onseted.length - 1
-              }
-              percent={+outcome.price * 100}
+              $size="md"
+              image={outcome.imageUrl}
+              value={outcome.id}
+              data={outcome.data}
               primary={outcome.title}
-              secondary={
-                <OutcomeItemText
-                  price={outcome.price}
-                  symbol={symbol}
-                  isPositive={outcome.isPriceUp}
-                />
-              }
+              activeColor={marketColors.outcome(outcome.id)}
+              onClick={handleOutcomeClick}
+              secondary={{
+                price: outcome.price,
+                ticker: market.token.ticker,
+                isPriceUp: outcome.isPriceUp
+              }}
               isActive={
                 outcome.id === +trade.selectedOutcomeId &&
                 outcome.marketId === +trade.selectedMarketId
               }
-              isPositive={outcome.isPriceUp}
-              value={outcome.id}
-              onClick={handleOutcomeClick}
-              data={outcome.data}
-            >
-              <MiniTable
-                style={{
-                  paddingLeft: 16,
-                  paddingRight: 16,
-                  paddingBottom: 8
-                }}
-                rows={[
-                  {
-                    key: 'invested',
-                    title: 'your shares',
-                    value:
-                      roundNumber(
-                        portfolio[trade.selectedMarketId]?.outcomes[outcome.id]
-                          ?.shares,
-                        3
-                      ) || 0
-                  }
-                ]}
-              />
-            </OutcomeItem>
+              invested={roundNumber(
+                portfolio[trade.selectedMarketId]?.outcomes[outcome.id]?.shares,
+                3
+              )}
+              className={cn({
+                [tradeFormClasses.gutterOutcome]:
+                  !expandableOutcomes.isExpanded ||
+                  index !== expandableOutcomes.onseted.length - 1
+              })}
+            />
           )}
         />
       ) : (
@@ -126,22 +108,21 @@ export default function TradeFormPredictions() {
           {outcomes.map(outcome => (
             <li key={outcome.title} className={tradeFormClasses.horizontalItem}>
               <OutcomeItem
-                percent={+outcome.price * 100}
+                $size="md"
+                image={outcome.imageUrl}
+                value={outcome.id}
+                onClick={handleOutcomeClick}
+                activeColor={marketColors.outcome(+outcome.id)}
                 primary={outcome.title}
-                secondary={
-                  <OutcomeItemText
-                    price={outcome.price}
-                    symbol={symbol}
-                    isPositive={outcome.isPriceUp}
-                  />
-                }
+                secondary={{
+                  price: outcome.price,
+                  ticker: market.token.ticker,
+                  isPriceUp: outcome.isPriceUp
+                }}
                 isActive={
                   outcome.id === +trade.selectedOutcomeId &&
                   outcome.marketId === +trade.selectedMarketId
                 }
-                isPositive={outcome.isPriceUp}
-                value={outcome.id}
-                onClick={handleOutcomeClick}
               />
             </li>
           ))}

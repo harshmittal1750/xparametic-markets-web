@@ -69,7 +69,7 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
       };
     });
 
-    return sharesByOutcome.filter(outcome => outcome.shares > 0);
+    return sharesByOutcome.filter(outcome => outcome.shares > 1e-5);
   }, [id, isLoadingPortfolio, outcomes, portfolio, market]);
 
   const isWrongNetwork = network.id !== networkId.toString();
