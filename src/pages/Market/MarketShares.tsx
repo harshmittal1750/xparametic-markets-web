@@ -8,6 +8,7 @@ import { Button } from 'components';
 
 import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
 
+import { calculateTradeDetails } from '../../components/TradeForm/utils';
 import styles from './MarketShares.module.scss';
 
 type MarketSharesProps = {
@@ -18,7 +19,8 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
   const dispatch = useAppDispatch();
   const { network } = useNetwork();
   const { type } = useAppSelector(state => state.trade);
-  const { id, outcomes, networkId } = useAppSelector(
+  const { market } = useAppSelector(state => state.market);
+  const { id, outcomes, networkId, token } = useAppSelector(
     state => state.market.market
   );
   const portfolio = useAppSelector(state => state.polkamarkets.portfolio);
@@ -54,12 +56,21 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
       return {
         id: outcome.id.toString(),
         title: outcome.title,
-        shares: outcomeShares ? outcomeShares.shares : 0
+        shares: outcomeShares ? outcomeShares.shares : 0,
+        value:
+          outcomeShares && outcomeShares.shares > 0
+            ? calculateTradeDetails(
+                'sell',
+                market,
+                outcome,
+                outcomeShares.shares
+              ).totalStake
+            : 0
       };
     });
 
     return sharesByOutcome.filter(outcome => outcome.shares > 0);
-  }, [id, isLoadingPortfolio, outcomes, portfolio]);
+  }, [id, isLoadingPortfolio, outcomes, portfolio, market]);
 
   const isWrongNetwork = network.id !== networkId.toString();
 
@@ -72,7 +83,10 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
           <p className={styles.rootItemDescription}>
             You currently hold{' '}
             <strong>{`${roundNumber(outcome.shares, 3)}`} Shares</strong> of{' '}
-            <strong>{outcome.title}</strong>
+            <strong>{outcome.title}</strong> worth{' '}
+            <strong>
+              {outcome.value.toFixed(3)} {token.symbol}
+            </strong>
           </p>
           <Button size="sm" onClick={() => handleSell(outcome.id)}>
             Sell Shares
