@@ -11,7 +11,7 @@ export type ImageProps = Pick<
   React.ComponentPropsWithRef<'img'>,
   'src' | 'alt' | 'className' | 'ref'
 > & {
-  $size?: 'x2s' | 'sm' | 'md' | 'lg';
+  $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
   $radius?: 'sm' | 'md' | 'lg' | 'full';
 };
 
