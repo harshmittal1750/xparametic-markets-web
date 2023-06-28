@@ -29,12 +29,20 @@ function probabilityRowRender({ from, to }: ProbabilityRowRenderArgs) {
   );
 }
 
-function formatTradeDetails({ type, price, maxStake, maxROI, shares, ticker }) {
+function formatTradeDetails({
+  type,
+  priceFrom,
+  priceTo,
+  maxStake,
+  maxROI,
+  shares,
+  ticker
+}) {
   return [
     {
       key: 'probability',
       title: 'Probability',
-      value: { from: price, to: price },
+      value: { from: priceFrom, to: priceTo },
       render: probabilityRowRender
     },
     type === 'buy'
