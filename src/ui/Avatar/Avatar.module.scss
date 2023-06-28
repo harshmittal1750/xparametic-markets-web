@@ -24,6 +24,10 @@
 }
 
 .radius {
+  &Xs {
+    border-radius: var(--size-4);
+  }
+
   &Sm {
     border-radius: var(--size-8);
   }
@@ -41,6 +45,11 @@
   &X2s {
     width: var(--size-24);
     height: var(--size-24);
+  }
+  
+  &Xs {
+    width: var(--size-36);
+    height: var(--size-36);
   }
 
   &Sm {

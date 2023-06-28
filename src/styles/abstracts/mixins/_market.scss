@@ -35,10 +35,6 @@
     color: map-get($text-colors-map, 'primary');
   }
 
-  .pm-c-market-outcomes__item-odd {
-    color: map-get($text-colors-map, 'tertiary');
-  }
-
   .pm-c-market-outcomes__item-value {
     color: map-get($text-colors-map, 'secondary');
   }

@@ -10,6 +10,7 @@ import Text from 'components/Text';
 import { useAppDispatch, useAppSelector } from 'hooks';
 
 import Feature from '../Feature';
+import tradeFormClasses from './TradeForm.module.scss';
 import TradeFormActions from './TradeFormActions';
 import TradeFormClosed from './TradeFormClosed';
 import TradeFormDetails from './TradeFormDetails';
@@ -56,7 +57,7 @@ function TradeForm() {
             {theme.device.isDesktop && (
               <Text
                 scale="tiny-uppercase"
-                style={{ color: 'var(--color-text-quaternary)' }}
+                className={tradeFormClasses.title}
                 fontWeight="semibold"
               >
                 Select outcome

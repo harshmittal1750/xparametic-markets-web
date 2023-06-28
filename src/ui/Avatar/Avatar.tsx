@@ -4,17 +4,13 @@ import cn from 'classnames';
 
 import avatarClasses from './Avatar.module.scss';
 
-export const avatarProps = {
-  $size: ['x2s', 'sm', 'md', 'lg'],
-  $radius: ['sm', 'md', 'lg']
-} as const;
-
-type ImageAttrs = React.ComponentPropsWithRef<'img'>;
-export type AvatarProps = Required<Pick<ImageAttrs, 'src' | 'alt'>> &
-  Pick<ImageAttrs, 'className' | 'ref'> & {
-    $size?: typeof avatarProps.$size[number];
-    $radius?: typeof avatarProps.$radius[number];
-  };
+export type AvatarProps = Pick<
+  React.ComponentPropsWithRef<'img'>,
+  'src' | 'alt' | 'className' | 'ref'
+> & {
+  $size?: 'x2s' | 'xs' | 'sm' | 'md' | 'lg';
+  $radius?: 'xs' | 'sm' | 'md' | 'lg';
+};
 
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
   { $size, $radius, className, ...props },
@@ -27,10 +23,12 @@ const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
       className={cn(
         avatarClasses.root,
         {
+          [avatarClasses.radiusXs]: $radius === 'xs',
           [avatarClasses.radiusSm]: $radius === 'sm',
           [avatarClasses.radiusMd]: $radius === 'md',
           [avatarClasses.radiusLg]: $radius === 'lg',
           [avatarClasses.sizeX2s]: $size === 'x2s',
+          [avatarClasses.sizeXs]: $size === 'xs',
           [avatarClasses.sizeSm]: $size === 'sm',
           [avatarClasses.sizeMd]: $size === 'md',
           [avatarClasses.sizeLg]: $size === 'lg'

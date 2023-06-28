@@ -92,7 +92,8 @@ const initialState: MarketInitialState = {
           chartData: []
         },
         priceCharts: [],
-        shares: 0
+        shares: 0,
+        imageUrl: ''
       },
       {
         id: '-2',
@@ -105,7 +106,8 @@ const initialState: MarketInitialState = {
           chartData: []
         },
         priceCharts: [],
-        shares: 0
+        shares: 0,
+        imageUrl: ''
       }
     ],
     tradingViewSymbol: null,

@@ -14,6 +14,8 @@ export { default as Divider } from './Divider';
 
 export { default as Focustrap } from './Focustrap';
 
+export { default as getAverageColor } from './getAverageColor';
+
 export { default as Hero } from './Hero';
 
 export { default as List } from './List';
@@ -33,8 +35,6 @@ export { default as Spinner } from './Spinner';
 export { default as Tag } from './Tag';
 
 export { default as Toggle } from './Toggle';
-
-export { default as useAverageColor } from './useAverageColor';
 
 export { default as useMedia } from './useMedia';
 
