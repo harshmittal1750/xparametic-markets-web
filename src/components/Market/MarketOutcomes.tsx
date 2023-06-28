@@ -1,8 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { features } from 'config';
 import sortOutcomes from 'helpers/sortOutcomes';
 import type { Market } from 'models/market';
+import { reset } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
 import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
@@ -11,6 +13,14 @@ import OutcomeItem from 'components/OutcomeItem';
 import OutcomeItemText from 'components/OutcomeItemText';
 
 import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
+
+import Modal from '../Modal';
+import ModalContent from '../ModalContent';
+import ModalHeader from '../ModalHeader';
+import ModalHeaderHide from '../ModalHeaderHide';
+import ModalHeaderTitle from '../ModalHeaderTitle';
+import Trade from '../Trade';
+import styles from './MarketOutcomes.module.scss';
 
 type MarketOutcomesProps = {
   market: Market;
@@ -21,6 +31,9 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
   const dispatch = useAppDispatch();
   const trade = useAppSelector(state => state.trade);
   const theme = useTheme();
+
+  const [tradeVisible, setTradeVisible] = useState(false);
+
   const MAX_OUTCOMES_EXPANDABLE = theme.device.isDesktop ? 2 : 1;
   const isMarketResolved = market.state === 'resolved';
   const sortedOutcomes = sortOutcomes({
@@ -59,27 +72,47 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
         selectOutcome(market.id, market.networkId, isOutcomeActive ? '' : value)
       );
 
-      if (market.state === 'closed') {
-        const { openReportForm } = await import('redux/ducks/ui');
-
-        dispatch(openReportForm());
+      if (features.fantasy.enabled) {
+        setTradeVisible(true);
       } else {
-        const { openTradeForm } = await import('redux/ducks/ui');
+        if (market.state === 'closed') {
+          const { openReportForm } = await import('redux/ducks/ui');
 
-        dispatch(openTradeForm());
-      }
-      if (isOutcomeActive) {
-        const { closeTradeForm } = await import('redux/ducks/ui');
+          dispatch(openReportForm());
+        } else {
+          const { openTradeForm } = await import('redux/ducks/ui');
 
-        dispatch(closeTradeForm());
+          dispatch(openTradeForm());
+        }
+        if (isOutcomeActive) {
+          const { closeTradeForm } = await import('redux/ducks/ui');
+
+          dispatch(closeTradeForm());
+        }
+        history.push(`/markets/${market.slug}`);
       }
-      history.push(`/markets/${market.slug}`);
     },
     [dispatch, getOutcomeActive, history, market]
   );
 
+  const handleCloseTrade = useCallback(() => {
+    dispatch(reset());
+    setTradeVisible(false);
+  }, [dispatch]);
+
   return (
     <ul className="pm-c-market-outcomes">
+      <Modal centered show={tradeVisible} onHide={handleCloseTrade}>
+        <ModalContent className={styles.tradeModalContent}>
+          <ModalHeader className={styles.tradeModalHeader}>
+            <ModalHeaderHide onClick={handleCloseTrade} />
+            <ModalHeaderTitle className={styles.tradeModalHeaderTitle}>
+              Make your prediction
+            </ModalHeaderTitle>
+          </ModalHeader>
+          <Trade view="modal" />
+        </ModalContent>
+      </Modal>
       {(needExpandOutcomes ? expandableOutcomes.onseted : sortedOutcomes).map(
         outcome => {
           const isWinningOutcome =

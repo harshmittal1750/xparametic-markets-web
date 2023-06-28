@@ -5,6 +5,7 @@ type TradeType = 'buy' | 'sell' | string;
 export interface TradeDetails {
   shares: number;
   price: number;
+  priceTo: number;
   maxROI: number;
   totalStake: number;
   maxStake: number;
@@ -21,6 +22,7 @@ const initialState = {
   maxAmount: 0,
   shares: 0,
   price: 0,
+  priceTo: 0,
   maxROI: 0,
   totalStake: 0,
   maxStake: 0,
@@ -59,6 +61,7 @@ const tradeSlice = createSlice({
       ...state,
       shares: action.payload.shares,
       price: action.payload.price,
+      priceTo: action.payload.priceTo,
       maxROI: action.payload.maxROI,
       totalStake: action.payload.totalStake,
       maxStake: action.payload.maxStake,
