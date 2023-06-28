@@ -220,6 +220,14 @@
   }
 }
 
+.details {
+  &Probability {
+    &Arrow {
+      fill: #59749b;
+    }
+  }
+}
+
 .actionsGroup {
   display: flex;
   flex-direction: column;
