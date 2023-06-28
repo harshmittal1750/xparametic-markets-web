@@ -12,7 +12,7 @@
   position: relative;
   width: 100%;
   height: auto;
-  border-radius: var(--border-radius);
+  border-radius: 4px;
   overflow-x: hidden;
   overflow-y: hidden;
 
@@ -21,14 +21,5 @@
     position: absolute;
     inset: 0px;
     animation: animation 600ms linear infinite alternate;
-  }
-}
-
-.radius {
-  &Default {
-    --border-radius: 4px;
-  }
-  &Full {
-    --border-radius: 100%;
   }
 }
