@@ -2,7 +2,7 @@ export { default as Adornment } from './Adornment';
 
 export { default as Banner } from './Banner';
 
-export { default as Avatar } from './Avatar';
+export { default as Avatar, getAvatarClasses } from './Avatar';
 export type { AvatarProps } from './Avatar';
 
 export { default as ButtonGroup } from './ButtonGroup';
@@ -44,8 +44,8 @@ export { default as useMedia } from './useMedia';
 
 export { default as useRect } from './useRect';
 
-export { default as ThemeProvider } from './useTheme';
 export {
+  default as ThemeProvider,
   useTheme,
   isThemeDark,
   THEME_MODE_KEY,
