@@ -36,7 +36,8 @@ function formatTradeDetails({
   maxStake,
   maxROI,
   shares,
-  ticker
+  ticker,
+  totalStake
 }) {
   return [
     {
@@ -56,8 +57,8 @@ function formatTradeDetails({
         }
       : {
           key: 'shares',
-          title: 'Shares sold',
-          value: roundNumber(shares, 3)
+          title: 'Total Stake',
+          value: `${roundNumber(totalStake, 3)} ${ticker}`
         }
   ];
 }
