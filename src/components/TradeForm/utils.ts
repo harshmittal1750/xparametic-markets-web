@@ -106,9 +106,21 @@ function calculateSharesBought(
   const maxROI = shares > 1e-6 ? (1 / price - 1) * 100 : 0;
   const totalStake = ethAmount;
   const maxStake = shares - amount;
+  // calculation outcome final price after trade
+  const outcomeShares = outcome.shares - shares + amount;
+  const priceTo =
+    1 /
+    market.outcomes.reduce((acc, cur) => {
+      return (
+        acc +
+        outcomeShares /
+          (cur.id === outcome.id ? outcomeShares : cur.shares + amount)
+      );
+    }, 0);
 
   return {
     price,
+    priceTo,
     shares,
     maxROI,
     totalStake,
@@ -172,9 +184,21 @@ function calculateEthAmountSold(
   const maxROI = 1;
   const maxStake = 0;
   const fee = totalStake * (market.fee + market.treasuryFee);
+  // calculation outcome final price after trade
+  const outcomeShares = outcome.shares + shares - totalStake;
+  const priceTo =
+    1 /
+    market.outcomes.reduce((acc, cur) => {
+      return (
+        acc +
+        outcomeShares /
+          (cur.id === outcome.id ? outcomeShares : cur.shares - totalStake)
+      );
+    }, 0);
 
   return {
     price,
+    priceTo,
     shares,
     maxROI,
     totalStake,
