@@ -15,7 +15,7 @@ import { InfoIcon } from 'assets/icons';
 
 import PredictionCard from 'components/PredictionCard';
 
-import useMarkets from 'hooks/useMarkets';
+import { useMarkets } from 'hooks';
 
 import { Button } from '../Button';
 import Text from '../Text';
@@ -60,6 +60,26 @@ function Virtuoso({ data }: VirtuosoProps) {
     []
   );
 
+  useEffect(() => {
+    (async function handleMarketColors() {
+      if (data) {
+        try {
+          const { default: buildMarketColors } = await import(
+            'helpers/buildMarketColors'
+          );
+          const { MARKET_COLORS_KEY } = await import('helpers/getMarketColors');
+
+          localStorage.setItem(
+            MARKET_COLORS_KEY,
+            JSON.stringify(await buildMarketColors(data))
+          );
+        } catch (error) {
+          // unsupported
+        }
+      }
+    })();
+  }, [data]);
+
   return (
     <>
       <AnimatePresence>
@@ -85,7 +105,7 @@ function Virtuoso({ data }: VirtuosoProps) {
         itemContent={handleItemContent}
         rangeChanged={handleRangeChange}
         data={data}
-        style={{ top: renderBack ? -backRect.height : '' }}
+        style={{ top: renderBack ? -backRect.height : undefined }}
       />
     </>
   );

@@ -7,10 +7,7 @@ import type { Market } from 'models/market';
 import { reset } from 'redux/ducks/trade';
 import { useTheme } from 'ui';
 
-import { CheckIcon, RemoveIcon, RepeatCycleIcon } from 'assets/icons';
-
 import OutcomeItem from 'components/OutcomeItem';
-import OutcomeItemText from 'components/OutcomeItemText';
 
 import { useAppDispatch, useAppSelector, useExpandableOutcomes } from 'hooks';
 
@@ -34,16 +31,13 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
 
   const [tradeVisible, setTradeVisible] = useState(false);
 
-  const MAX_OUTCOMES_EXPANDABLE = theme.device.isDesktop ? 2 : 1;
-  const isMarketResolved = market.state === 'resolved';
   const sortedOutcomes = sortOutcomes({
     outcomes: market.outcomes,
     timeframe: '7d'
   });
   const expandableOutcomes = useExpandableOutcomes({
     outcomes: sortedOutcomes,
-    max: MAX_OUTCOMES_EXPANDABLE,
-    truncateMax: MAX_OUTCOMES_EXPANDABLE
+    max: theme.device.isDesktop ? 2 : 1
   });
   const needExpandOutcomes =
     sortedOutcomes.length > (theme.device.isDesktop ? 3 : 2);
@@ -114,52 +108,35 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
         </ModalContent>
       </Modal>
       {(needExpandOutcomes ? expandableOutcomes.onseted : sortedOutcomes).map(
-        outcome => {
-          const isWinningOutcome =
-            isMarketResolved && market.resolvedOutcomeId === outcome.id;
-          const isOutcomeActive = getOutcomeActive(outcome.id);
-
-          return (
-            <li key={outcome.id}>
-              <OutcomeItem
-                primary={outcome.title}
-                secondary={
-                  <OutcomeItemText
-                    price={outcome.price}
-                    symbol={market.token.ticker}
-                    isPositive={outcome.isPriceUp}
-                  />
-                }
-                percent={+outcome.price * 100}
-                isActive={isOutcomeActive}
-                isPositive={outcome.isPriceUp}
-                isResolved={isMarketResolved}
-                isWinning={isWinningOutcome}
-                value={outcome.id}
-                onClick={handleOutcomeClick}
-                data={outcome.data}
-                endAdornment={
-                  isMarketResolved && (
-                    <div className="pm-c-market-outcomes__item-result">
-                      {(() => {
-                        if (isWinningOutcome && !market.voided)
-                          return <CheckIcon />;
-                        if (!isWinningOutcome && !market.voided)
-                          return <RemoveIcon />;
-                        if (market.voided) return <RepeatCycleIcon />;
-                        return null;
-                      })()}
-                    </div>
-                  )
-                }
-              />
-            </li>
-          );
-        }
+        outcome => (
+          <li key={outcome.id}>
+            <OutcomeItem
+              $size="sm"
+              image={outcome.imageUrl}
+              value={outcome.id}
+              data={outcome.data}
+              primary={outcome.title}
+              isActive={getOutcomeActive(outcome.id)}
+              onClick={handleOutcomeClick}
+              secondary={{
+                price: outcome.price,
+                ticker: market.token.ticker,
+                isPriceUp: outcome.isPriceUp
+              }}
+              resolved={(() => {
+                if (market.voided) return 'voided';
+                if (market.resolvedOutcomeId === outcome.id) return 'won';
+                if (market.state === 'resolved') return 'lost';
+                return undefined;
+              })()}
+            />
+          </li>
+        )
       )}
       {needExpandOutcomes && !expandableOutcomes.isExpanded && (
         <li>
           <OutcomeItem
+            $size="sm"
             $variant="dashed"
             value={expandableOutcomes.onseted[0].id}
             onClick={handleOutcomeClick}

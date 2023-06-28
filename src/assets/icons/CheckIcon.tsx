@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CheckIcon() {
+function CheckIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
     <svg
       width="16"
@@ -8,6 +8,7 @@ function CheckIcon() {
       viewBox="0 0 16 16"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path d="M8 0C3.6 0 0 3.6 0 8C0 12.4 3.6 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0ZM7 11.4L3.6 8L5 6.6L7 8.6L11 4.6L12.4 6L7 11.4Z" />
     </svg>
