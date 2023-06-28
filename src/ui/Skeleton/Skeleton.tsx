@@ -4,28 +4,17 @@ import cn from 'classnames';
 
 import skeletonClasses from './Skeleton.module.scss';
 
-interface SkeletonProps
-  extends Pick<ComponentPropsWithoutRef<'span'>, 'className' | 'style'> {
-  $radius?: 'full';
-}
+type SkeletonProps = Pick<
+  ComponentPropsWithoutRef<'span'>,
+  'className' | 'style'
+>;
 
-export default function Skeleton({
-  className,
-  $radius,
-  ...props
-}: SkeletonProps) {
+export default function Skeleton({ className, ...props }: SkeletonProps) {
   return (
     <span
       role="alert"
       aria-busy
-      className={cn(
-        skeletonClasses.root,
-        {
-          [skeletonClasses.radiusDefault]: !$radius,
-          [skeletonClasses.radiusFull]: $radius === 'full'
-        },
-        className
-      )}
+      className={cn(skeletonClasses.root, className)}
       {...props}
     />
   );

@@ -50,7 +50,7 @@ const Image = forwardRef<HTMLImageElement, AvatarProps>(function Image(
               opacity: 0
             }}
           >
-            <Skeleton $radius="full" className={imageClasses.skeleton} />
+            <Skeleton className={imageClasses.skeleton} />
           </motion.div>
         )}
       </AnimatePresence>
