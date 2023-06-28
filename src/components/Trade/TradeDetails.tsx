@@ -8,9 +8,15 @@ function TradeDetails() {
   const { outcomes, token } = market;
   const { ticker } = token;
 
-  const { type, maxROI, maxStake, shares, selectedOutcomeId } = useAppSelector(
-    state => state.trade
-  );
+  const {
+    type,
+    maxROI,
+    maxStake,
+    shares,
+    selectedOutcomeId,
+    priceTo,
+    totalStake
+  } = useAppSelector(state => state.trade);
 
   const selectedOutcome = outcomes.find(
     outcome => outcome.id.toString() === selectedOutcomeId.toString()
@@ -18,11 +24,13 @@ function TradeDetails() {
 
   const tableRows = formatTradeDetails({
     type,
-    price: selectedOutcome?.price || 0,
+    priceFrom: selectedOutcome?.price || 0,
+    priceTo,
     maxStake,
     maxROI,
     shares,
-    ticker
+    ticker,
+    totalStake
   });
 
   return <MiniTable rows={tableRows} />;

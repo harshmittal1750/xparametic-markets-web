@@ -1,4 +1,4 @@
-import React from 'react';
+import { ReactNode, CSSProperties } from 'react';
 
 import Text from '../Text';
 
@@ -16,7 +16,11 @@ export type MiniTableRow = {
   /**
    * Value of this row
    */
-  value: string | number;
+  value: any;
+  /**
+   * Function to render the value
+   */
+  render?: (value: any) => ReactNode;
 };
 
 type MiniTableProps = {
@@ -32,7 +36,7 @@ type MiniTableProps = {
   /**
    * Aditional CSS inline style
    */
-  style?: React.CSSProperties;
+  style?: CSSProperties;
 };
 
 /**
@@ -47,9 +51,13 @@ function MiniTable({ rows, color = 'default', style }: MiniTableProps) {
             {item.title}
           </Text>
           <div className="fill-empty-space" />
-          <Text as="strong" scale="caption" fontWeight="bold">
-            {item.value}
-          </Text>
+          {item.render ? (
+            item.render(item.value)
+          ) : (
+            <Text as="strong" scale="caption" fontWeight="bold">
+              {item.value}
+            </Text>
+          )}
         </li>
       ))}
     </ul>
