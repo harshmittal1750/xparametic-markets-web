@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { features, ui } from 'config';
-import { isUndefined } from 'lodash';
 import {
   useGetLeaderboardByAddressQuery,
   useGetPortfolioByAddressQuery,
@@ -43,7 +42,13 @@ export default function Profile() {
   const username =
     (features.fantasy.enabled && leaderboard.data?.username) || '';
 
-  if ([portfolio.data, leaderboard.data, activity.data].every(isUndefined))
+  if (
+    // TODO: leaderboard must return error
+    [portfolio, leaderboard, activity].some(
+      ({ error }) =>
+        typeof error === 'object' && 'status' in error && error.status === 404
+    )
+  )
     return <ProfileError username={address} />;
 
   return (
