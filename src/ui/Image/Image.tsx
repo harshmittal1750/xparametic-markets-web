@@ -9,7 +9,9 @@ import useImage from 'ui/useImage';
 
 import imageClasses from './Image.module.scss';
 
-const Image = forwardRef<HTMLImageElement, AvatarProps>(function Image(
+export type ImageProps = AvatarProps;
+
+const Image = forwardRef<HTMLImageElement, ImageProps>(function Image(
   { alt, className, ...props },
   ref
 ) {

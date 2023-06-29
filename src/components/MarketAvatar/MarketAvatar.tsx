@@ -1,12 +1,13 @@
 import type { Market } from 'models/market';
-import { AvatarProps, Image } from 'ui';
+import { Image } from 'ui';
+import type { ImageProps } from 'ui';
 
 import { VerifiedIcon } from 'assets/icons';
 
 import marketAvatarClasses from './MarketAvatar.module.scss';
 
 type MarketAvatarProps = Pick<Market, 'imageUrl' | 'verified'> &
-  Pick<AvatarProps, '$size'>;
+  Pick<ImageProps, '$size'>;
 
 export default function MarketAvatar({
   imageUrl,

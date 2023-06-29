@@ -19,6 +19,7 @@ export { default as getAverageColor } from './getAverageColor';
 export { default as Hero } from './Hero';
 
 export { default as Image } from './Image';
+export type { ImageProps } from './Image';
 
 export { default as List } from './List';
 
