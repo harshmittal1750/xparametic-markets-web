@@ -24,3 +24,15 @@
   top: 0;
   height: 100%;
 }
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-text-sextary);
+  display: flex;
+  align-items: center;
+
+  &Element {
+    margin: auto;
+  }
+}
