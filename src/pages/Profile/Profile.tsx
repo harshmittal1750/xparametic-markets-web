@@ -43,8 +43,7 @@ export default function Profile() {
     (features.fantasy.enabled && leaderboard.data?.username) || '';
 
   if (
-    // TODO: leaderboard must return error
-    [portfolio, leaderboard, activity].some(
+    [portfolio, activity].some(
       ({ error }) =>
         typeof error === 'object' && 'status' in error && error.status === 404
     )
