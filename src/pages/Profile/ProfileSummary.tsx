@@ -16,6 +16,11 @@ function ProfileSummaryGroup(
 ) {
   return <div className={profileClasses.summaryGroup} {...props} />;
 }
+function ProfileSummaryInfo(
+  props: React.PropsWithChildren<Record<string, unknown>>
+) {
+  return <div className="pm-p-profile-summary__details" {...props} />;
+}
 export default function ProfileSummary({
   address,
   isLoading,
@@ -25,7 +30,7 @@ export default function ProfileSummary({
   avatar
 }: ProfileSummaryProps) {
   const ProfileSummaryGroupComponent = avatar ? ProfileSummaryGroup : Fragment;
-  const ProfileSummaryInfoComponent = avatar ? 'div' : Fragment;
+  const ProfileSummaryInfoComponent = avatar ? ProfileSummaryInfo : Fragment;
 
   return (
     <div className="pm-p-profile-summary__details">
@@ -51,7 +56,13 @@ export default function ProfileSummary({
         return (
           <ProfileSummaryGroupComponent>
             {avatar && (
-              <Avatar $radius="lg" $size="md" alt="avatar" src={avatar} />
+              <Avatar
+                $radius="lg"
+                $size="sm"
+                alt="avatar"
+                src={avatar}
+                className={profileClasses.summaryAvatar}
+              />
             )}
             <ProfileSummaryInfoComponent>
               <Text

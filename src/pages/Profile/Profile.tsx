@@ -39,16 +39,15 @@ export default function Profile() {
     address,
     networkId: network.id
   });
-  const username =
-    (features.fantasy.enabled && leaderboard.data?.username) || '';
 
   if (
     [portfolio, activity].some(
       ({ error }) =>
         typeof error === 'object' && 'status' in error && error.status === 404
     )
-  )
+  ) {
     return <ProfileError username={address} />;
+  }
 
   return (
     <Container className="pm-p-profile max-width-screen-xl">
@@ -58,10 +57,10 @@ export default function Profile() {
           data={portfolio.data}
           isLoading={portfolio.isLoading}
           network={network}
-          username={username}
-          avatar={
-            (features.fantasy.enabled && leaderboard.data?.userImageUrl) || ''
-          }
+          {...(features.fantasy.enabled && {
+            username: leaderboard.data?.username,
+            avatar: leaderboard.data?.userImageUrl
+          })}
         />
         <ProfileSummaryStat
           isLoading={portfolio.isLoading}

@@ -7,6 +7,14 @@
 }
 
 .summary {
+  &Avatar {
+    flex: 1 0 auto;
+  }
+
+  &Title {
+    margin-bottom: 8px;
+  }
+
   &Group {
     display: flex;
     align-items: center;
