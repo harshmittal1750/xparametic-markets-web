@@ -2,7 +2,7 @@ export { default as Adornment } from './Adornment';
 
 export { default as Banner } from './Banner';
 
-export { default as Avatar } from './Avatar';
+export { default as Avatar, getAvatarClasses } from './Avatar';
 export type { AvatarProps } from './Avatar';
 
 export { default as ButtonGroup } from './ButtonGroup';
@@ -17,6 +17,9 @@ export { default as Focustrap } from './Focustrap';
 export { default as getAverageColor } from './getAverageColor';
 
 export { default as Hero } from './Hero';
+
+export { default as Image } from './Image';
+export type { ImageProps } from './Image';
 
 export { default as List } from './List';
 
@@ -36,12 +39,14 @@ export { default as Tag } from './Tag';
 
 export { default as Toggle } from './Toggle';
 
+export { default as useImage } from './useImage';
+
 export { default as useMedia } from './useMedia';
 
 export { default as useRect } from './useRect';
 
-export { default as ThemeProvider } from './useTheme';
 export {
+  default as ThemeProvider,
   useTheme,
   isThemeDark,
   THEME_MODE_KEY,

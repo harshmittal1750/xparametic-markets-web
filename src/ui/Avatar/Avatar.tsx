@@ -12,28 +12,29 @@ export type AvatarProps = Pick<
   $radius?: 'xs' | 'sm' | 'md' | 'lg';
 };
 
+export function getAvatarClasses({ $size, $radius }: AvatarProps) {
+  return {
+    [avatarClasses.radiusXs]: $radius === 'xs',
+    [avatarClasses.radiusSm]: $radius === 'sm',
+    [avatarClasses.radiusMd]: $radius === 'md',
+    [avatarClasses.radiusLg]: $radius === 'lg',
+    [avatarClasses.sizeX2s]: $size === 'x2s',
+    [avatarClasses.sizeXs]: $size === 'xs',
+    [avatarClasses.sizeSm]: $size === 'sm',
+    [avatarClasses.sizeMd]: $size === 'md',
+    [avatarClasses.sizeLg]: $size === 'lg'
+  };
+}
+
 const Avatar = forwardRef<HTMLImageElement, AvatarProps>(function Avatar(
-  { $size, $radius, className, ...props },
+  { alt, className, ...props },
   ref
 ) {
   return (
-    // eslint-disable-next-line jsx-a11y/alt-text
     <img
       ref={ref}
-      className={cn(
-        {
-          [avatarClasses.radiusXs]: $radius === 'xs',
-          [avatarClasses.radiusSm]: $radius === 'sm',
-          [avatarClasses.radiusMd]: $radius === 'md',
-          [avatarClasses.radiusLg]: $radius === 'lg',
-          [avatarClasses.sizeX2s]: $size === 'x2s',
-          [avatarClasses.sizeXs]: $size === 'xs',
-          [avatarClasses.sizeSm]: $size === 'sm',
-          [avatarClasses.sizeMd]: $size === 'md',
-          [avatarClasses.sizeLg]: $size === 'lg'
-        },
-        className
-      )}
+      alt={alt}
+      className={cn(getAvatarClasses(props), className)}
       {...props}
     />
   );

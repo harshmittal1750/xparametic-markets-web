@@ -1,0 +1,38 @@
+.root {
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.element {
+  display: block;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+  width: 100%;
+  object-fit: cover;
+  transition: opacity 600ms ease;
+
+  &Hide {
+    opacity: 0;
+  }
+}
+
+.skeleton {
+  position: absolute;
+  top: 0;
+  height: 100%;
+}
+
+.fallback {
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-text-sextary);
+  display: flex;
+  align-items: center;
+
+  &Element {
+    margin: auto;
+  }
+}
