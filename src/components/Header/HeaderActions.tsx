@@ -43,7 +43,7 @@ function SkeletonProfile() {
       style={{
         display: 'inherit',
         alignItems: 'center',
-        gap: 32,
+        gap: 24,
         ...(!theme.device.isDesktop && {
           flexDirection: 'row-reverse',
           width: '100%'
@@ -63,7 +63,7 @@ function SkeletonProfile() {
         style={{
           display: 'inherit',
           alignItems: 'center',
-          gap: 16
+          gap: 12
         }}
       >
         <Skeleton
@@ -83,9 +83,7 @@ function SkeletonProfile() {
 }
 export default function HeaderActions() {
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
-  const isLoginLoading = useAppSelector(
-    state => state.polkamarkets.isLoading.login
-  );
+  const isLoading = useAppSelector(state => state.polkamarkets.isLoading.login);
   const theme = useTheme();
   const Root = theme.device.isDesktop ? Fragment : HeaderActionsWrapper;
   const Wrapper = theme.device.isDesktop ? 'div' : Container;
@@ -100,10 +98,14 @@ export default function HeaderActions() {
   return (
     <Root>
       <Wrapper
-        className={cn(headerActionsClasses.root, {
-          [headerClasses.container]: !theme.device.isDesktop,
-          [headerActionsClasses.reverse]: features.fantasy.enabled
-        })}
+        className={cn(
+          headerActionsClasses.root,
+          headerActionsClasses.gutterActions,
+          {
+            [headerClasses.container]: !theme.device.isDesktop,
+            [headerActionsClasses.reverse]: features.fantasy.enabled
+          }
+        )}
       >
         <HeaderActionsGroupComponent>
           {ui.layout.header.networkSelector.enabled &&
@@ -114,7 +116,7 @@ export default function HeaderActions() {
                 className={headerActionsClasses.network}
               />
             )}
-          {isLoginLoading ? (
+          {isLoading ? (
             <ActionLoadingComponent />
           ) : (
             <HeaderActionComponent isLoggedIn={isLoggedIn} />
