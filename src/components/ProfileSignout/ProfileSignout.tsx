@@ -41,7 +41,6 @@ export default function ProfileSignout() {
 
     polkamarketsService.logoutSocialLogin();
     dispatch(logout());
-    window.location.reload();
   }, [dispatch, polkamarketsService]);
   const username = socialLoginInfo?.name.split('#')[0];
 
