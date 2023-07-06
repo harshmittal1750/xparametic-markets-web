@@ -129,6 +129,7 @@ function Filter({
 
   return (
     <div
+      aria-label="Sort by"
       role="button"
       tabIndex={0}
       className={cn('pm-c-filter', className)}
