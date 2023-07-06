@@ -12,13 +12,13 @@ type HeroProps = {
 } & (
   | ({ $as?: 'div' } & Pick<
       React.ComponentPropsWithRef<'div'>,
-      'className' | 'children'
+      'className' | 'style' | 'children'
     >)
   | ({
       $as?: 'a';
     } & Pick<
       React.ComponentPropsWithRef<'a'>,
-      'className' | 'children' | 'target' | 'href' | 'rel' | 'aria-label'
+      'className' | 'style' | 'children' | 'href' | 'target'
     >)
 );
 
@@ -27,7 +27,7 @@ function isMain(params: HeroProps['$backdrop']): params is 'main' {
 }
 
 export default forwardRef(function Hero(
-  { $image, $rounded, $backdrop, $as, className, ...props }: HeroProps,
+  { $image, $rounded, $backdrop, $as, className, style, ...props }: HeroProps,
   ref: React.Ref<Element>
 ) {
   return createElement($as || 'div', {
@@ -45,7 +45,8 @@ export default forwardRef(function Hero(
       '--hero-image': `url('${$image}')`,
       ...(!isMain($backdrop) && {
         '--hero-backdrop-color': $backdrop
-      })
+      }),
+      ...style
     },
     ...props
   });

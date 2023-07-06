@@ -93,7 +93,6 @@ export default function BetaWarning() {
           </Button>
           <Text as="p" color="gray">
             <Link
-              variant="information"
               title="Terms & Conditions"
               scale="caption"
               fontWeight="medium"
@@ -102,7 +101,6 @@ export default function BetaWarning() {
             />
             {' • '}
             <Link
-              variant="information"
               title="Risk Disclosure"
               scale="caption"
               fontWeight="medium"
