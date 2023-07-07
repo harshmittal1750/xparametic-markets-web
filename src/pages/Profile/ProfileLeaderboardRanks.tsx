@@ -27,7 +27,7 @@ const columns: LeaderboardRanksColumn[] = [
   {
     key: 'rankByEarnings',
     title: 'Rank (By Earnings)'
-  },
+  }
 ];
 
 type ProfileLeaderboardRanksProps = {

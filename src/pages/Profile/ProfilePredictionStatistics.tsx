@@ -27,7 +27,7 @@ const columns: PredictionStatisticsColumn[] = [
   {
     key: 'earnings',
     title: 'Earnings'
-  },
+  }
 ];
 
 type ProfilePredictionStatisticsProps = {

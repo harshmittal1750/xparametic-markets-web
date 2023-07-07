@@ -101,7 +101,10 @@ function walletColumnRender({
   };
 
   return (
-    <Link to={`/user/${address}`} className="pm-c-leaderboard-table__wallet">
+    <Link
+      to={`/user/${username || address}`}
+      className="pm-c-leaderboard-table__wallet"
+    >
       {walletPlace.icon}
       {(() => {
         if (userImageUrl)

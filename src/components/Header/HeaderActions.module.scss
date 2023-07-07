@@ -1,7 +1,6 @@
 .root {
   display: flex;
   align-items: center;
-  gap: 12px;
   border-top: 1px solid var(--color-border);
   position: fixed;
   bottom: 0px;
@@ -18,6 +17,9 @@
     position: unset;
     width: unset;
   }
+}
+.gutterActions {
+  gap: 12px;
 }
 .reverse {
   @media (min-width: 1024px) {
