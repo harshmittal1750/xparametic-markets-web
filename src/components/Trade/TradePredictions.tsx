@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { roundNumber } from 'helpers/math';
 import sortOutcomes from 'helpers/sortOutcomes';
 import { selectOutcome } from 'redux/ducks/trade';
+import { Image } from 'ui';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 
@@ -94,7 +95,17 @@ function TradePredictions({
               }}
             />
             <div className={styles.predictionContent}>
-              <p className={styles.predictionTitle}>{outcome.title}</p>
+              <div className={styles.predictionTitleGroup}>
+                {size === 'lg' && outcome.imageUrl ? (
+                  <Image
+                    $radius="lg"
+                    alt={outcome.title}
+                    $size="xs"
+                    src={outcome.imageUrl}
+                  />
+                ) : null}
+                <p className={styles.predictionTitle}>{outcome.title}</p>
+              </div>
               <p className={styles.predictionPrice}>{`${roundNumber(
                 +outcome.price * 100,
                 3
