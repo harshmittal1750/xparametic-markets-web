@@ -5,8 +5,8 @@ import Filter from './Filter';
 it('renders label', () => {
   render(
     <Filter
-      description=""
-      defaultOption="filter"
+      description="filter"
+      defaultOption=""
       options={[]}
       onChange={jest.fn}
     />
