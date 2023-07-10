@@ -272,11 +272,15 @@
     color: #000000;
 
     align-self: center;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.9;
+    }
 
     &:disabled {
       cursor: inherit;
       opacity: 0.5;
-      transition: opacity 0.2s ease-in-out;
     }
   }
 }
@@ -300,6 +304,12 @@
     transition: border 0.2s ease-in-out;
   }
 
+  &Selected {
+    .predictionWithImageDetails {
+      background-color: var(--color-trade-prediction-progress--selected);
+    }
+  }
+
   &Image {
     height: 132px;
     width: 132px;
@@ -317,8 +327,10 @@
     gap: var(--size-8);
 
     padding: var(--size-12) var(--size-8);
-    background-color: rgba(#ffffff, 0.08);
+    background-color: var(--color-trade-prediction);
     border-radius: 0 0 var(--size-4) var(--size-4);
+
+    transition: background-color 0.2s ease-in-out;
 
     &Title {
       font-size: 1.5rem;
