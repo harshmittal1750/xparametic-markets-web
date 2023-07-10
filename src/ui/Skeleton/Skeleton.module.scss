@@ -12,6 +12,9 @@
   position: relative;
   width: 100%;
   height: auto;
+  border-radius: 4px;
+  overflow-x: hidden;
+  overflow-y: hidden;
 
   &::after {
     content: '';

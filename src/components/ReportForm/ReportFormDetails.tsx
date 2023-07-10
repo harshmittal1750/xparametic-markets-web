@@ -97,7 +97,7 @@ function ReportFormDetails() {
       fontWeight: 'normal'
     })),
     {
-      key: 'invalid',
+      key: '-1',
       title: <Badge color="warning" label="Invalid" />,
       value: bonds[-1] || 0,
       fontWeight: 'normal'

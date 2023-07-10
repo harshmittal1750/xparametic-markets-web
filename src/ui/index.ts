@@ -18,6 +18,9 @@ export { default as getAverageColor } from './getAverageColor';
 
 export { default as Hero } from './Hero';
 
+export { default as Image } from './Image';
+export type { ImageProps } from './Image';
+
 export { default as List } from './List';
 
 export { default as ListItem } from './ListItem';
@@ -36,12 +39,16 @@ export { default as Tag } from './Tag';
 
 export { default as Toggle } from './Toggle';
 
+export { default as useEnhancedRef } from './useEnhancedRef';
+
+export { default as useImage } from './useImage';
+
 export { default as useMedia } from './useMedia';
 
 export { default as useRect } from './useRect';
 
-export { default as ThemeProvider } from './useTheme';
 export {
+  default as ThemeProvider,
   useTheme,
   isThemeDark,
   THEME_MODE_KEY,
