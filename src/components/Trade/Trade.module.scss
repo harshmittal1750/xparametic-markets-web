@@ -317,6 +317,41 @@
     border-radius: var(--size-4) var(--size-4) 0 0;
   }
 
+  &Progress {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+
+    &Wrapper {
+      position: relative;
+    }
+
+    padding: var(--size-4);
+
+    :global(.rc-progress-line-trail) {
+      stroke: rgba(255, 255, 255, 0.3);
+    }
+
+    &Default {
+      :global(.rc-progress-line-path) {
+        stroke: #ffffff;
+      }
+    }
+
+    &Winning {
+      :global(.rc-progress-line-path) {
+        stroke: #3ebd93;
+      }
+    }
+
+    &Losing {
+      :global(.rc-progress-line-path) {
+        stroke: #f66b6d;
+      }
+    }
+  }
+
   &Details {
     display: flex;
     flex-direction: column;
