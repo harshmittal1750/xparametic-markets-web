@@ -268,8 +268,8 @@
     width: var(--size-24);
     height: var(--size-24);
 
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--color-trade-predictions-arrow-button);
+    color: var(--color-trade-predictions-arrow);
 
     align-self: center;
     transition: opacity 0.2s ease-in-out;
