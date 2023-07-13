@@ -76,8 +76,10 @@ export default class PolkamarketsService {
           }
         },
         whiteLabelData: {
-          logo: 'https://www.polkamarkets.com/favicon.ico',
-          name: 'Polkamarkets'
+          logo:
+            process.env.REACT_APP_SOCIAL_LOGIN_LOGO_URL ||
+            'https://www.polkamarkets.com/favicon.ico',
+          name: process.env.REACT_APP_SOCIAL_LOGIN_NAME || 'Polkamarkets'
         }
       }
     });
