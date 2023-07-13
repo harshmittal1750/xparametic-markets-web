@@ -2,11 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <script type="text/javascript">
+      '%REACT_APP_FAVICON_URL%'.includes('https') ?
+        document.write(
+          '<link rel="icon" href="%REACT_APP_FAVICON_URL%" \/><link rel="apple-touch-icon" href="%REACT_APP_FAVICON_URL%" />'
+        ) :
+        document.write(
+          '<link rel="icon" href="%PUBLIC_URL%/favicon.ico" \/><link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" \/>'
+        );
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
 
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
     <!-- Primary Meta Tags -->
