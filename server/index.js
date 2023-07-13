@@ -95,9 +95,11 @@ const defaultMetadataTemplate = (request, htmlData) => {
     }${request.url}`,
     title: defaultMetadata.title,
     description: defaultMetadata.description,
-    image: `${request.headers['x-forwarded-proto'] || 'http'}://${
-      request.headers.host
-    }${defaultMetadata.image}`
+    image: defaultMetadata.image.startsWith('http')
+      ? defaultMetadata.image
+      : `${request.headers['x-forwarded-proto'] || 'http'}://${
+          request.headers.host
+        }${defaultMetadata.image}`
   });
 };
 
@@ -111,9 +113,11 @@ const metadataByPageTemplate = (page, request, htmlData) => {
     }${request.url}`,
     title: metadata.title,
     description: metadata.description,
-    image: `${request.headers['x-forwarded-proto'] || 'http'}://${
-      request.headers.host
-    }${metadata.image}`
+    image: metadata.image.startsWith('http')
+      ? metadata.image
+      : `${request.headers['x-forwarded-proto'] || 'http'}://${
+          request.headers.host
+        }${metadata.image}`
   });
 };
 
