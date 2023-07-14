@@ -21,6 +21,9 @@ const ui = {
     },
     alert: {
       enabled: isTrue(environment.FEATURE_ALERT)
+    },
+    footer: {
+      text: environment.UI_FOOTER_TEXT
     }
   },
   hero: {

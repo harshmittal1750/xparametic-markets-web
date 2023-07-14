@@ -1,10 +1,13 @@
+import { useMemo } from 'react';
+
 import cn from 'classnames';
+import { ui } from 'config';
 import { Container } from 'ui';
 
-import Link from 'components/Link';
 import Text from 'components/Text';
 
-import footerClasses from './Footer.module.scss';
+import styles from './Footer.module.scss';
+import { defaultFooterText, getFooterItems } from './Footer.utils';
 
 export interface FooterProps
   extends Pick<React.ComponentPropsWithoutRef<'footer'>, 'className'> {
@@ -12,41 +15,40 @@ export interface FooterProps
 }
 
 export default function Footer({ className, $gutterTop }: FooterProps) {
+  const text = ui.layout.footer.text || defaultFooterText;
+
+  const items = useMemo(() => getFooterItems(text), [text]);
+
   return (
     <footer
-      className={cn(
-        footerClasses.root,
-        { [footerClasses.gutterTop]: $gutterTop },
-        className
-      )}
+      className={cn(styles.root, { [styles.gutterTop]: $gutterTop }, className)}
     >
-      <Container className={footerClasses.container}>
+      <Container className={styles.container}>
         <Text
           as="p"
           scale="caption"
           fontWeight="medium"
           className="pm-l-footer__terms-text-secondary"
         >
-          {`Polkamarkets Services and POLK Token (POLK) `}
-          <Link
-            title="are not available in Excluded Jurisdictions."
-            scale="caption"
-            fontWeight="medium"
-            className="pm-l-footer__terms-text-primary"
-            style={{
-              textDecoration: 'none'
-            }}
-            href="https://www.polkamarkets.com/legal/terms-conditions"
-            target="_blank"
-          />
-          {` By accessing and using the interface you agree with our `}
-          <Link
-            title="Terms & Conditions"
-            scale="caption"
-            fontWeight="medium"
-            href="https://www.polkamarkets.com/legal/terms-conditions"
-            target="_blank"
-          />
+          {items.map(item =>
+            item.isLink ? (
+              <a
+                className={cn('caption medium', {
+                  [styles.itemLinkDefault]:
+                    !item.color || item.color === 'default',
+                  [styles.itemLinkPrimary]: item.color === 'primary',
+                  [styles.itemLinkUnderline]: item.underline
+                })}
+                href={item.url!}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {item.text}
+              </a>
+            ) : (
+              item.text
+            )
+          )}
         </Text>
       </Container>
     </footer>
