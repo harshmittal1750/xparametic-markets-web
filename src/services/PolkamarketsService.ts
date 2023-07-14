@@ -32,8 +32,8 @@ export default class PolkamarketsService {
     return Number(realitioLib.bytes32ToString(bytes32Str, { type: 'int' }));
   }
 
-  static intToBytes32(int: string): number {
-    return realitioLib.answerToBytes32(int, { type: 'int' });
+  static intToBytes32(int: string): string {
+    return realitioLib.answerToBytes32(Number(int), { type: 'int' });
   }
 
   constructor(
