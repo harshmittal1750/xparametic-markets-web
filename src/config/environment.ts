@@ -30,7 +30,8 @@ const environmentConfigVariables = [
   'UI_LEADERBOARD_DEFAULT_COLUMN',
   'UI_THEME_MODE',
   'UI_FILTERS_CATEGORIES',
-  'UI_TOKEN_BLACKLIST'
+  'UI_TOKEN_BLACKLIST',
+  'UI_FOOTER_TEXT'
 ] as const;
 
 export type EnvironmentConfigVariable =
