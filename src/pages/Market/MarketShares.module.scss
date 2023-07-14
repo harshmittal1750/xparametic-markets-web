@@ -18,6 +18,20 @@
     align-items: center;
     gap: var(--size-24);
 
+    &TitleGroup {
+      display: inline-flex;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--size-4);
+
+      padding: 0 var(--size-4);
+      vertical-align: bottom;
+
+      &Image {
+        margin-left: 2px;
+      }
+    }
+
     &Description {
       font-size: 1.5rem;
       line-height: 1.6;

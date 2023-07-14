@@ -3,6 +3,7 @@ import { useCallback, useMemo } from 'react';
 import { roundNumber } from 'helpers/math';
 import isEmpty from 'lodash/isEmpty';
 import { changeTradeType, selectOutcome } from 'redux/ducks/trade';
+import { Image } from 'ui';
 
 import { Button } from 'components';
 
@@ -56,6 +57,7 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
       return {
         id: outcome.id.toString(),
         title: outcome.title,
+        imageUrl: outcome.imageUrl,
         shares: outcomeShares ? outcomeShares.shares : 0,
         value:
           outcomeShares && outcomeShares.shares > 0
@@ -82,8 +84,20 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
         <li key={outcome.id} className={styles.rootItem}>
           <p className={styles.rootItemDescription}>
             You currently hold{' '}
-            <strong>{`${roundNumber(outcome.shares, 3)}`} Shares</strong> of{' '}
-            <strong>{outcome.title}</strong> worth{' '}
+            <strong>{`${roundNumber(outcome.shares, 3)}`} Shares</strong> of
+            <div className={styles.rootItemTitleGroup}>
+              {outcome.imageUrl ? (
+                <Image
+                  className={styles.rootItemTitleGroupImage}
+                  $radius="lg"
+                  alt={outcome.title}
+                  $size="x2s"
+                  src={outcome.imageUrl}
+                />
+              ) : null}
+              <strong>{outcome.title}</strong>
+            </div>
+            worth{' '}
             <strong>
               {outcome.value.toFixed(3)} {token.symbol}
             </strong>
