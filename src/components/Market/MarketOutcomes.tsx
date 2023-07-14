@@ -96,7 +96,21 @@ export default function MarketOutcomes({ market }: MarketOutcomesProps) {
 
   return (
     <ul className="pm-c-market-outcomes">
-      <Modal centered show={tradeVisible} onHide={handleCloseTrade}>
+      <Modal
+        show={tradeVisible}
+        onHide={handleCloseTrade}
+        {...(theme.device.isDesktop
+          ? { centered: true }
+          : {
+              fullWidth: true,
+              initial: { bottom: '-100%' },
+              animate: { left: 0, bottom: 0 },
+              exit: { bottom: '-100%' },
+              className: {
+                dialog: styles.tradeModalDialog
+              }
+            })}
+      >
         <ModalContent className={styles.tradeModalContent}>
           <ModalHeader className={styles.tradeModalHeader}>
             <ModalHeaderHide onClick={handleCloseTrade} />

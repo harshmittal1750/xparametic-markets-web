@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 
 import { reset } from 'redux/ducks/trade';
+import { useTheme } from 'ui';
 
 import {
   Modal,
@@ -19,6 +20,7 @@ import MarketShares from './MarketShares';
 
 function MarketPredictions() {
   const dispatch = useAppDispatch();
+  const theme = useTheme();
   const [tradeVisible, setTradeVisible] = useState(false);
 
   const handleCloseTrade = useCallback(() => {
@@ -41,7 +43,21 @@ function MarketPredictions() {
           size="lg"
           onPredictionSelected={handlePredictionSelected}
         />
-        <Modal centered show={tradeVisible} onHide={handleCloseTrade}>
+        <Modal
+          show={tradeVisible}
+          onHide={handleCloseTrade}
+          {...(theme.device.isDesktop
+            ? { centered: true }
+            : {
+                fullWidth: true,
+                initial: { bottom: '-100%' },
+                animate: { left: 0, bottom: 0 },
+                exit: { bottom: '-100%' },
+                className: {
+                  dialog: styles.sidebarDialog
+                }
+              })}
+        >
           <ModalContent className={styles.tradeModalContent}>
             <ModalHeader className={styles.tradeModalHeader}>
               <ModalHeaderHide onClick={handleCloseTrade} />
