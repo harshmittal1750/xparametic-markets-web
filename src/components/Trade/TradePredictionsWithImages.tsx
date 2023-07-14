@@ -1,4 +1,10 @@
-import { useContext, useCallback, MouseEvent } from 'react';
+import {
+  useContext,
+  useCallback,
+  MouseEvent,
+  ContextType,
+  WheelEvent
+} from 'react';
 import { ScrollMenu, VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 import cn from 'classnames';
@@ -43,6 +49,8 @@ function RightArrow() {
   );
 }
 
+type scrollVisibilityApiType = ContextType<typeof VisibilityContext>;
+
 type TradePredictionsWithImagesProps = {
   predictions: Outcome[];
 };
@@ -56,6 +64,25 @@ function TradePredictionsWithImages({
 
   const { selectedOutcomeId, selectedMarketId } = useAppSelector(
     state => state.trade
+  );
+
+  const onWheel = useCallback(
+    (apiObj: scrollVisibilityApiType, event: WheelEvent): void => {
+      const isTouchpad =
+        Math.abs(event.deltaX) !== 0 || Math.abs(event.deltaY) < 15;
+
+      if (isTouchpad) {
+        event.stopPropagation();
+        return;
+      }
+
+      if (event.deltaY < 0) {
+        apiObj.scrollNext();
+      } else if (event.deltaY > 0) {
+        apiObj.scrollPrev();
+      }
+    },
+    []
   );
 
   const handleSelectPrediction = useCallback(
@@ -74,6 +101,7 @@ function TradePredictionsWithImages({
       itemClassName={styles.predictionsWithImageItem}
       LeftArrow={LeftArrow}
       RightArrow={RightArrow}
+      onWheel={onWheel}
     >
       {predictions.map((prediction, index) => (
         <button

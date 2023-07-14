@@ -49,6 +49,7 @@ function Trade({ view = 'default' }: TradeProps) {
       })}
       style={
         {
+          maxWidth: theme.device.isDesktop ? '540px' : 'unset',
           '--image': `url('${market.imageUrl}')`,
           '--backdrop-color': marketColors.market
         } as CSSProperties
