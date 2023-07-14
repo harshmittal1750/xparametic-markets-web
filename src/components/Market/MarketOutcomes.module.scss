@@ -1,4 +1,10 @@
 .tradeModal {
+  &Dialog {
+    border-radius: 20px 20px 0px 0px;
+    background-color: var(--color-surface-primary);
+    position: absolute;
+  }
+
   &Content {
     padding: 0;
   }
