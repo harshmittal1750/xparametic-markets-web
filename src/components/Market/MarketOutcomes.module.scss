@@ -1,8 +1,12 @@
 .tradeModal {
   &Dialog {
-    border-radius: 20px 20px 0px 0px;
-    background-color: var(--color-surface-primary);
     position: absolute;
+
+    max-height: 100vh;
+    overflow-y: auto;
+
+    background-color: var(--color-surface-primary);
+    border-radius: 20px 20px 0px 0px;
   }
 
   &Content {
