@@ -13,3 +13,19 @@
     padding-top: var(--grid-margin);
   }
 }
+
+.item {
+  &Link {
+    &Default {
+      color: var(--color-text-1);
+    }
+
+    &Primary {
+      color: #5d55fa;
+    }
+
+    &Underline {
+      text-decoration: underline;
+    }
+  }
+}
