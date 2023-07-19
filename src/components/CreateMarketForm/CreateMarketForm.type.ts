@@ -6,7 +6,7 @@ export type Image = {
 
 export type Outcome = {
   id: string;
-  image: Image;
+  image?: Image;
   name: string;
   probability: number;
 };
