@@ -47,7 +47,7 @@
 .outcomes {
   display: grid;
 
-  grid-template-columns: 7fr 3fr auto;
+  grid-template-columns: auto 7fr 3fr auto;
   gap: var(--size-16);
   align-items: flex-start;
   margin-bottom: var(--size-16);

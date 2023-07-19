@@ -11,7 +11,12 @@ import { usePrevious } from 'hooks';
 import { Button } from '../Button';
 import ButtonGroup from '../ButtonGroup';
 import Icon from '../Icon';
-import { InputErrorMessage, OutcomeInput, ProbabilityInput } from '../Input';
+import {
+  ImageUploadInput,
+  InputErrorMessage,
+  OutcomeInput,
+  ProbabilityInput
+} from '../Input';
 import CreateMarketFormOutcomesClasses from './CreateMarketFormOutcomes.module.scss';
 import { ProbabilityDistribution } from './CreateMarketFormOutcomes.type';
 
@@ -146,17 +151,24 @@ function CreateMarketFormOutcomes() {
         <div className={CreateMarketFormOutcomesClasses.outcomes}>
           {outcomes.map(outcome => (
             <Fragment key={outcome.id}>
-              <OutcomeInput
+              <ImageUploadInput
                 key={`${outcome.id}[0]`}
+                as="icon"
+                name={`outcomes[${outcomes.indexOf(outcome)}].image`}
+                notUploadedActionLabel="Upload Image"
+                uploadedActionLabel="Re-Upload"
+              />
+              <OutcomeInput
+                key={`${outcome.id}[1]`}
                 outcomeId={outcome.id}
                 placeholder="Outcome"
               />
               <ProbabilityInput
-                key={`${outcome.id}[1]`}
+                key={`${outcome.id}[2]`}
                 outcomeId={outcome.id}
               />
               <Button
-                key={`${outcome.id}[2]`}
+                key={`${outcome.id}[3]`}
                 variant="subtle"
                 color="default"
                 size="normal"
