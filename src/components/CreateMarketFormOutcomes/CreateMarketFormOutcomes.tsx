@@ -95,7 +95,18 @@ function CreateMarketFormOutcomes() {
     if (probabilityDistribution === 'manual') {
       const newOutcomes = [
         ...outcomes,
-        { id: uuid(), name: '', probability: 0.1 }
+        {
+          id: uuid(),
+          ...(features.fantasy.enabled && {
+            image: {
+              file: undefined,
+              hash: '',
+              isUploaded: false
+            }
+          }),
+          name: '',
+          probability: 0.1
+        }
       ];
       setFieldValue('outcomes', newOutcomes);
     } else {
