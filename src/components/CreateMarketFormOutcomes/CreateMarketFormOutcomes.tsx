@@ -36,10 +36,18 @@ function CreateMarketFormOutcomes() {
     setFieldTouched('outcomes', true);
   }, [setFieldTouched]);
 
+  const updateOutcomes = useCallback(
+    (newOutcomes: any) => {
+      setFieldValue('outcomes', newOutcomes);
+      setTimeout(() => setFieldTouched('outcomes', true, true));
+    },
+    [setFieldTouched, setFieldValue]
+  );
+
   useEffect(() => {
     if (answerType === 'binary' && previousAnswerType === 'multiple') {
       setProbabilityDistribution('uniform');
-      setFieldValue('outcomes', [
+      updateOutcomes([
         {
           id: uuid(),
           ...(features.fantasy.enabled && {
@@ -66,7 +74,7 @@ function CreateMarketFormOutcomes() {
         }
       ]);
     }
-  }, [answerType, outcomes, previousAnswerType, setFieldValue]);
+  }, [answerType, previousAnswerType, updateOutcomes]);
 
   const validProbabilities = useMemo(() => {
     const probabilities = outcomes.map(outcome => outcome.probability);
@@ -87,9 +95,11 @@ function CreateMarketFormOutcomes() {
         outcomes[outcomeIndex].probability = probability;
       });
 
-      setFieldValue('outcomes', outcomes);
+      const newOutcomes = [...outcomes];
+
+      updateOutcomes(newOutcomes);
     }
-  }, [outcomes, probabilityDistribution, setFieldValue]);
+  }, [outcomes, probabilityDistribution, updateOutcomes]);
 
   const handleAddOutcome = useCallback(() => {
     if (probabilityDistribution === 'manual') {
@@ -108,7 +118,7 @@ function CreateMarketFormOutcomes() {
           probability: 0.1
         }
       ];
-      setFieldValue('outcomes', newOutcomes);
+      updateOutcomes(newOutcomes);
     } else {
       const probability = roundNumber(100 / (outcomes.length + 1), 2);
 
@@ -131,9 +141,9 @@ function CreateMarketFormOutcomes() {
           probability
         }
       ];
-      setFieldValue('outcomes', newOutcomes);
+      updateOutcomes(newOutcomes);
     }
-  }, [outcomes, probabilityDistribution, setFieldValue]);
+  }, [outcomes, probabilityDistribution, updateOutcomes]);
 
   const handleRemoveOutcome = useCallback(
     (outcomeId: number) => {
@@ -153,9 +163,9 @@ function CreateMarketFormOutcomes() {
 
       const newOutcomes = [...outcomes];
 
-      setFieldValue('outcomes', newOutcomes);
+      updateOutcomes(newOutcomes);
     },
-    [outcomes, probabilityDistribution, setFieldValue]
+    [outcomes, probabilityDistribution, updateOutcomes]
   );
 
   const hasMoreThanTwoOutcomes = outcomes.length > 2;
@@ -197,9 +207,8 @@ function CreateMarketFormOutcomes() {
           </button>
         </div>
         <div className={CreateMarketFormOutcomesClasses.outcomes}>
-          {outcomes.map(outcome => {
-            const index = outcomes.indexOf(outcome);
-            const field = `outcomes[${index}]`;
+          {outcomes.map((outcome, index) => {
+            const field = `outcomes.${index}`;
 
             return (
               <Fragment key={outcome.id}>
