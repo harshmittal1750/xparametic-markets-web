@@ -186,37 +186,43 @@ function CreateMarketFormOutcomes() {
           </button>
         </div>
         <div className={CreateMarketFormOutcomesClasses.outcomes}>
-          {outcomes.map(outcome => (
-            <Fragment key={outcome.id}>
-              <ImageUploadInput
-                key={`${outcome.id}[0]`}
-                as="icon"
-                name={`outcomes[${outcomes.indexOf(outcome)}].image`}
-                notUploadedActionLabel="Upload Image"
-                uploadedActionLabel="Re-Upload"
-              />
-              <OutcomeInput
-                key={`${outcome.id}[1]`}
-                outcomeId={outcome.id}
-                placeholder="Outcome"
-              />
-              <ProbabilityInput
-                key={`${outcome.id}[2]`}
-                outcomeId={outcome.id}
-              />
-              <Button
-                key={`${outcome.id}[3]`}
-                variant="subtle"
-                color="default"
-                size="normal"
-                className={CreateMarketFormOutcomesClasses.remove}
-                onClick={() => handleRemoveOutcome(outcome.id)}
-                disabled={!hasMoreThanTwoOutcomes}
-              >
-                <Icon name="Minus" size="md" />
-              </Button>
-            </Fragment>
-          ))}
+          {outcomes.map(outcome => {
+            const index = outcomes.indexOf(outcome);
+            const field = `outcomes[${index}]`;
+
+            return (
+              <Fragment key={outcome.id}>
+                <ImageUploadInput
+                  key={`${outcome.id}[image]`}
+                  as="icon"
+                  name={`${field}.image`}
+                  notUploadedActionLabel="Upload Image"
+                  uploadedActionLabel="Re-Upload"
+                />
+                <OutcomeInput
+                  key={`${outcome.id}[name]`}
+                  index={index}
+                  name={`${field}.name`}
+                  placeholder="Outcome"
+                />
+                <ProbabilityInput
+                  key={`${outcome.id}[probability]`}
+                  name={`${field}.probability`}
+                />
+                <Button
+                  key={`${outcome.id}[action]`}
+                  variant="subtle"
+                  color="default"
+                  size="normal"
+                  className={CreateMarketFormOutcomesClasses.remove}
+                  onClick={() => handleRemoveOutcome(outcome.id)}
+                  disabled={!hasMoreThanTwoOutcomes}
+                >
+                  <Icon name="Minus" size="md" />
+                </Button>
+              </Fragment>
+            );
+          })}
         </div>
         <div className={CreateMarketFormOutcomesClasses.error}>
           {!validProbabilities ? (
