@@ -2,6 +2,7 @@ import { useCallback, useState, Fragment, useMemo, useEffect } from 'react';
 import uuid from 'react-uuid';
 
 import cn from 'classnames';
+import { features } from 'config';
 import { useFormikContext, getIn } from 'formik';
 import { almost, roundNumber } from 'helpers/math';
 import sum from 'lodash/sum';
@@ -39,8 +40,30 @@ function CreateMarketFormOutcomes() {
     if (answerType === 'binary' && previousAnswerType === 'multiple') {
       setProbabilityDistribution('uniform');
       setFieldValue('outcomes', [
-        { id: uuid(), name: 'Yes', probability: 50 },
-        { id: uuid(), name: 'No', probability: 50 }
+        {
+          id: uuid(),
+          ...(features.fantasy.enabled && {
+            image: {
+              file: undefined,
+              hash: '',
+              isUploaded: false
+            }
+          }),
+          name: 'Yes',
+          probability: 50
+        },
+        {
+          id: uuid(),
+          ...(features.fantasy.enabled && {
+            image: {
+              file: undefined,
+              hash: '',
+              isUploaded: false
+            }
+          }),
+          name: 'No',
+          probability: 50
+        }
       ]);
     }
   }, [answerType, outcomes, previousAnswerType, setFieldValue]);
@@ -82,7 +105,21 @@ function CreateMarketFormOutcomes() {
         outcomes[outcomeIndex].probability = probability;
       });
 
-      const newOutcomes = [...outcomes, { id: uuid(), name: '', probability }];
+      const newOutcomes = [
+        ...outcomes,
+        {
+          id: uuid(),
+          ...(features.fantasy.enabled && {
+            image: {
+              file: undefined,
+              hash: '',
+              isUploaded: false
+            }
+          }),
+          name: '',
+          probability
+        }
+      ];
       setFieldValue('outcomes', newOutcomes);
     }
   }, [outcomes, probabilityDistribution, setFieldValue]);
