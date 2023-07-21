@@ -4,6 +4,15 @@ import ui from './ui';
 
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
 const pages = {
+  restrictedCountry: {
+    pathname: '/blocked',
+    Component: lazy(() => import('pages/RestrictedCountry')),
+    exact: true,
+    navigation: false,
+    name: '',
+    meta: null,
+    enabled: true
+  },
   profile: {
     pathname: '/user/:address',
     Component: lazy(() => import('pages/Profile')),
