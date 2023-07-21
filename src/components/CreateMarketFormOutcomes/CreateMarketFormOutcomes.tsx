@@ -50,25 +50,21 @@ function CreateMarketFormOutcomes() {
       updateOutcomes([
         {
           id: uuid(),
-          ...(features.fantasy.enabled && {
-            image: {
-              file: undefined,
-              hash: '',
-              isUploaded: false
-            }
-          }),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
           name: 'Yes',
           probability: 50
         },
         {
           id: uuid(),
-          ...(features.fantasy.enabled && {
-            image: {
-              file: undefined,
-              hash: '',
-              isUploaded: false
-            }
-          }),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
           name: 'No',
           probability: 50
         }
@@ -123,13 +119,11 @@ function CreateMarketFormOutcomes() {
         ...outcomes,
         {
           id: uuid(),
-          ...(features.fantasy.enabled && {
-            image: {
-              file: undefined,
-              hash: '',
-              isUploaded: false
-            }
-          }),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
           name: '',
           probability: 0.1
         }
@@ -146,13 +140,11 @@ function CreateMarketFormOutcomes() {
         ...outcomes,
         {
           id: uuid(),
-          ...(features.fantasy.enabled && {
-            image: {
-              file: undefined,
-              hash: '',
-              isUploaded: false
-            }
-          }),
+          image: {
+            file: undefined,
+            hash: '',
+            isUploaded: false
+          },
           name: '',
           probability
         }
@@ -222,19 +214,26 @@ function CreateMarketFormOutcomes() {
               : 'Set uniformly'}
           </button>
         </div>
-        <div className={CreateMarketFormOutcomesClasses.outcomes}>
+        <div
+          className={cn(CreateMarketFormOutcomesClasses.outcomes, {
+            [CreateMarketFormOutcomesClasses.outcomesWithImages]:
+              features.fantasy.enabled
+          })}
+        >
           {outcomes.map((outcome, index) => {
             const field = `outcomes.${index}`;
 
             return (
               <Fragment key={outcome.id}>
-                <ImageUploadInput
-                  key={`${outcome.id}[image]`}
-                  as="icon"
-                  name={`${field}.image`}
-                  notUploadedActionLabel="Upload Image"
-                  uploadedActionLabel="Re-Upload"
-                />
+                {features.fantasy.enabled ? (
+                  <ImageUploadInput
+                    key={`${outcome.id}[image]`}
+                    as="icon"
+                    name={`${field}.image`}
+                    notUploadedActionLabel="Upload Image"
+                    uploadedActionLabel="Re-Upload"
+                  />
+                ) : null}
                 <OutcomeInput
                   key={`${outcome.id}[name]`}
                   index={index}
