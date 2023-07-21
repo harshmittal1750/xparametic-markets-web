@@ -83,7 +83,7 @@ const validationSchema = [
         Yup.object().shape({
           ...(features.fantasy.enabled && {
             image: Yup.object().shape({
-              hash: Yup.string().required('Image is required.')
+              hash: Yup.string()
             })
           }),
           name: Yup.string().required('Outcome name is required.'),
@@ -93,6 +93,23 @@ const validationSchema = [
             .required('Probability is required.')
         })
       )
+      .test('images-required', 'All outcomes must have an image', value => {
+        if (!features.fantasy.enabled) {
+          return true;
+        }
+
+        const outcomes = value as CreateMarketFormData['outcomes'];
+
+        const hasImage = outcomes.some(
+          outcome => outcome.image && outcome.image.hash
+        );
+
+        if (!hasImage) {
+          return true;
+        }
+
+        return outcomes.every(outcome => outcome.image && outcome.image.hash);
+      })
       .test('sum', 'Sum of probabilities must be 100%', (_value, context) => {
         const { outcomes } = context.parent;
         const probabilities = outcomes.map(outcome => outcome.probability);
