@@ -38,8 +38,8 @@ function CreateMarketFormOutcomes() {
 
   const updateOutcomes = useCallback(
     (newOutcomes: any) => {
+      setFieldTouched('outcomes', true);
       setFieldValue('outcomes', newOutcomes);
-      setTimeout(() => setFieldTouched('outcomes', true, true));
     },
     [setFieldTouched, setFieldValue]
   );
