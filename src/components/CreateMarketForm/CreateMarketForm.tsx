@@ -71,7 +71,12 @@ function CreateMarketForm() {
       wrapped = true;
     }
 
+    const hashes = values.outcomes.map(
+      outcome => outcome.image && outcome.image.hash
+    );
+
     const outcomes = values.outcomes.map(outcome => outcome.name);
+    const images = hashes.some(hash => !hash) ? [] : hashes;
     const odds = values.outcomes.map(outcome => outcome.probability);
 
     // data format: "category;subcategory;resolutionSource"
