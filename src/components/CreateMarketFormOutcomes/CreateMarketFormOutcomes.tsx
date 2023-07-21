@@ -83,6 +83,22 @@ function CreateMarketFormOutcomes() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [outcomes, probabilityDistribution]);
 
+  const imagesRequired = useMemo(() => {
+    if (!features.fantasy.enabled) {
+      return false;
+    }
+
+    const hasImage = outcomes.some(
+      outcome => outcome.image && outcome.image.hash
+    );
+
+    if (!hasImage) {
+      return false;
+    }
+
+    return !outcomes.every(outcome => outcome.image && outcome.image.hash);
+  }, [outcomes]);
+
   const toggleProbabilityDistribution = useCallback(() => {
     if (probabilityDistribution === 'uniform') {
       setProbabilityDistribution('manual');
@@ -245,6 +261,9 @@ function CreateMarketFormOutcomes() {
           })}
         </div>
         <div className={CreateMarketFormOutcomesClasses.error}>
+          {imagesRequired ? (
+            <InputErrorMessage message="All outcomes must have an image" />
+          ) : null}
           {!validProbabilities ? (
             <InputErrorMessage message="Sum of probabilities must be 100%" />
           ) : null}
