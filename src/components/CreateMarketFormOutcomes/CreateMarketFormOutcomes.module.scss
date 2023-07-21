@@ -51,6 +51,10 @@
   gap: var(--size-16);
   align-items: flex-start;
   margin-bottom: var(--size-16);
+
+  @media (max-width: 576px) {
+    overflow-x: scroll;
+  }
 }
 
 .remove {
