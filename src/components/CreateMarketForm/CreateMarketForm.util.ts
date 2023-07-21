@@ -15,25 +15,21 @@ const initialValues: CreateMarketFormData = {
   outcomes: [
     {
       id: uuid(),
-      ...(features.fantasy.enabled && {
-        image: {
-          file: undefined,
-          hash: '',
-          isUploaded: false
-        }
-      }),
+      image: {
+        file: undefined,
+        hash: '',
+        isUploaded: false
+      },
       name: 'Yes',
       probability: 50
     },
     {
       id: uuid(),
-      ...(features.fantasy.enabled && {
-        image: {
-          file: undefined,
-          hash: '',
-          isUploaded: false
-        }
-      }),
+      image: {
+        file: undefined,
+        hash: '',
+        isUploaded: false
+      },
       name: 'No',
       probability: 50
     }
@@ -81,11 +77,11 @@ const validationSchema = [
     outcomes: Yup.array()
       .of(
         Yup.object().shape({
-          ...(features.fantasy.enabled && {
-            image: Yup.object().shape({
-              hash: Yup.string()
-            })
-          }),
+          image: features.fantasy.enabled
+            ? Yup.object().shape({
+                hash: Yup.string()
+              })
+            : Yup.mixed(),
           name: Yup.string().required('Outcome name is required.'),
           probability: Yup.number()
             .moreThan(0, 'Probability must be greater than 0%.')
