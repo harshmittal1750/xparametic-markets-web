@@ -11,7 +11,7 @@ const pages = {
     navigation: false,
     name: '',
     meta: null,
-    enabled: true
+    enabled: false
   },
   profile: {
     pathname: '/user/:address',
