@@ -106,6 +106,16 @@ app.get('/', (request, response) => {
   });
 });
 
+app.get('/blocked', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
 app.get('/portfolio', (request, response) => {
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
