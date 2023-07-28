@@ -1,9 +1,13 @@
 .provider {
-  margin-right: var(--size-16);
+  display: flex !important;
 }
 
 .signin {
   &Icon {
     fill: var(--color-text-secondary);
   }
+}
+
+.subtitle {
+  margin-bottom: var(--size-16);
 }

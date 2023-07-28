@@ -1,8 +1,8 @@
-import { Fragment, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import { ui } from 'config';
 import type { Providers } from 'config';
-import { Divider, Spinner } from 'ui';
+import { Spinner } from 'ui';
 
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
@@ -69,12 +69,17 @@ export default function ProfileSignin() {
         <ModalContent>
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />
-            <ModalHeaderTitle>Login</ModalHeaderTitle>
-            <Text as="h4" fontWeight="medium" scale="caption" color="white">
-              Select one of the following to continue
-            </Text>
+            <ModalHeaderTitle>Sign In</ModalHeaderTitle>
           </ModalHeader>
           <ModalSection>
+            <Text
+              fontWeight="medium"
+              scale="caption"
+              color="white"
+              className={profileSigninClasses.subtitle}
+            >
+              Select one of the following to continue.
+            </Text>
             {ui.socialLogin.providers.map(provider => {
               const Component =
                 provider === 'Email' ? ProfileSigninEmail : Button;
@@ -82,10 +87,7 @@ export default function ProfileSignin() {
               return (
                 <Fragment key={provider}>
                   {provider === 'Metamask' ? (
-                    <>
-                      <Divider enableGutters />
-                      <ConnectMetamask />
-                    </>
+                    <ConnectMetamask />
                   ) : (
                     <Component
                       className={profileSigninClasses.provider}
@@ -93,6 +95,7 @@ export default function ProfileSignin() {
                       color="default"
                       size="sm"
                       name={provider}
+                      aria-label={provider}
                       onClick={handleLogin}
                     >
                       {load === provider ? <Spinner /> : providers[provider]}
