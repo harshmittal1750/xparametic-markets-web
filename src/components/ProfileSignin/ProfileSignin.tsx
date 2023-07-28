@@ -18,17 +18,7 @@ import Text from 'components/Text';
 
 import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
-import DiscordIcon from '../../assets/icons/DiscordIcon';
-import FacebookIcon from '../../assets/icons/FacebookIcon';
-import GoogleIcon from '../../assets/icons/GoogleIcon';
 import profileSigninClasses from './ProfileSignin.module.scss';
-
-const providers = {
-  Discord: <DiscordIcon />,
-  Facebook: <FacebookIcon />,
-  Google: <GoogleIcon />,
-  Email: 'Sign In'
-} as const;
 
 export default function ProfileSignin() {
   const dispatch = useAppDispatch();
@@ -98,7 +88,11 @@ export default function ProfileSignin() {
                       aria-label={provider}
                       onClick={handleLogin}
                     >
-                      {load === provider ? <Spinner /> : providers[provider]}
+                      {(() => {
+                        if (load === provider) return <Spinner />;
+                        if (provider === 'Email') return 'Sign In';
+                        return <Icon size="lg" name={provider} />;
+                      })()}
                     </Component>
                   )}
                 </Fragment>
