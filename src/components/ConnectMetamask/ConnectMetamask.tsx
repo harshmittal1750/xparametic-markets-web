@@ -1,8 +1,9 @@
 import { useCallback, useState } from 'react';
 
-import { MetaMaskIcon, WarningOutlinedIcon } from 'assets/icons';
+import { WarningOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalFooter from 'components/ModalFooter';
@@ -54,7 +55,7 @@ export default function ConnectMetamask() {
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />
             <div className="pm-l-navbar__actions-metamask__status">
-              <MetaMaskIcon size={40} />
+              <Icon name="MetaMask" size="lg" />
               <Pill variant="normal" color="danger">
                 <WarningOutlinedIcon />
               </Pill>
@@ -95,7 +96,7 @@ export default function ConnectMetamask() {
         size="sm"
         onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
       >
-        <MetaMaskIcon />
+        <Icon name="MetaMask" size="lg" />
         Connect MetaMask
       </Button>
     </>
