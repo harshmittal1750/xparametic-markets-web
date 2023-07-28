@@ -28,13 +28,14 @@ export default function ProfileSigninEmail({
           placeholder="Write your email here"
           onChange={handleEmail}
         />
+        <Button
+          disabled={!email}
+          data-email={email}
+          className={cn(profileSigninEmailClasses.email, className)}
+          {...props}
+          variant="normal"
+        />
       </label>
-      <Button
-        disabled={!email}
-        data-email={email}
-        className={cn(profileSigninEmailClasses.email, className)}
-        {...props}
-      />
     </>
   );
 }

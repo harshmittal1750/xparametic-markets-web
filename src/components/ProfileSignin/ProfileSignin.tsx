@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import { Fragment, useState } from 'react';
 
 import { ui } from 'config';
 import type { Providers } from 'config';
@@ -61,7 +61,7 @@ export default function ProfileSignin() {
             <ModalHeaderHide onClick={handleHide} />
             <ModalHeaderTitle>Sign In</ModalHeaderTitle>
           </ModalHeader>
-          <ModalSection>
+          <ModalSection className={profileSigninClasses.providers}>
             <Text
               fontWeight="medium"
               scale="caption"
@@ -88,11 +88,15 @@ export default function ProfileSignin() {
                       aria-label={provider}
                       onClick={handleLogin}
                     >
-                      {(() => {
-                        if (load === provider) return <Spinner />;
-                        if (provider === 'Email') return 'Sign In';
-                        return <Icon size="lg" name={provider} />;
-                      })()}
+                      {provider}
+                      {load === provider ? (
+                        <Spinner />
+                      ) : (
+                        <Icon
+                          size="lg"
+                          name={provider === 'Email' ? 'LogIn' : provider}
+                        />
+                      )}
                     </Component>
                   )}
                 </Fragment>
