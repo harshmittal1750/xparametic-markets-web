@@ -3,6 +3,7 @@ import { useCallback, useState } from 'react';
 import { WarningOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import type { ButtonProps } from 'components/Button';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
@@ -21,7 +22,7 @@ const connectMetamaskProps = {
   'aria-describedby': 'connect-metamask-modal-description'
 };
 
-export default function ConnectMetamask() {
+export default function ConnectMetamask(props: ButtonProps) {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
@@ -95,6 +96,7 @@ export default function ConnectMetamask() {
         color="default"
         size="sm"
         onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
+        {...props}
       >
         <Icon name="MetaMask" size="lg" />
         Connect MetaMask
