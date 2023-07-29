@@ -13,3 +13,30 @@
 .subtitle {
   margin-bottom: var(--size-16);
 }
+
+.social {
+  border-radius: 8px;
+  justify-content: space-between !important;
+  border-color: rgb(var(--channel) / var(--color-alpha, 0.6)) !important;
+  background: linear-gradient(45deg, rgb(var(--channel) / 0.4), transparent);
+  transition: border-color background-color 300ms ease;
+
+  &:hover {
+    --color-alpha: 1;
+    background-color: transparent !important;
+  }
+
+  &Google {
+    --channel: 66 133 244;
+  }
+  &Facebook {
+    --channel: 25 175 255;
+  }
+  &Discord {
+    --channel: 88 101 242;
+  }
+  &MetaMask {
+    --channel: 246 133 27;
+    flex-direction: row-reverse;
+  }
+}

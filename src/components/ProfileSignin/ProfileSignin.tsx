@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 
+import classNames from 'classnames';
 import { ui } from 'config';
 import type { Providers } from 'config';
 import { Spinner } from 'ui';
@@ -71,34 +72,46 @@ export default function ProfileSignin() {
               Select one of the following to continue.
             </Text>
             {ui.socialLogin.providers.map(provider => {
-              const Component =
-                provider === 'Email' ? ProfileSigninEmail : Button;
+              const Component = (() => {
+                if (provider === 'Email') return ProfileSigninEmail;
+                if (provider === 'MetaMask') return ConnectMetamask;
+                return Button;
+              })();
 
               return (
                 <Fragment key={provider}>
-                  {provider === 'Metamask' ? (
-                    <ConnectMetamask />
-                  ) : (
-                    <Component
-                      className={profileSigninClasses.provider}
-                      variant="outline"
-                      color="default"
-                      size="sm"
-                      name={provider}
-                      aria-label={provider}
-                      onClick={handleLogin}
-                    >
-                      {provider}
-                      {load === provider ? (
-                        <Spinner />
-                      ) : (
-                        <Icon
-                          size="lg"
-                          name={provider === 'Email' ? 'LogIn' : provider}
-                        />
-                      )}
-                    </Component>
-                  )}
+                  <Component
+                    className={classNames(
+                      profileSigninClasses.provider,
+                      profileSigninClasses.social,
+                      {
+                        [profileSigninClasses.socialGoogle]:
+                          provider === 'Google',
+                        [profileSigninClasses.socialFacebook]:
+                          provider === 'Facebook',
+                        [profileSigninClasses.socialDiscord]:
+                          provider === 'Discord',
+                        [profileSigninClasses.socialMetaMask]:
+                          provider === 'MetaMask'
+                      }
+                    )}
+                    variant="outline"
+                    color="default"
+                    size="sm"
+                    name={provider}
+                    aria-label={provider}
+                    onClick={handleLogin}
+                  >
+                    {provider}
+                    {load === provider ? (
+                      <Spinner />
+                    ) : (
+                      <Icon
+                        size="lg"
+                        name={provider === 'Email' ? 'LogIn' : provider}
+                      />
+                    )}
+                  </Component>
                 </Fragment>
               );
             })}
