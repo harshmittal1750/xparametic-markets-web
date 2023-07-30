@@ -14,8 +14,9 @@ const providers = [
   'Google',
   'Facebook',
   'Discord',
-  'Email',
-  'MetaMask'
+  'MetaMask',
+  'Twitter',
+  'Email'
 ] as const;
 
 export type Providers = typeof providers[number];
