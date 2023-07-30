@@ -22,7 +22,15 @@ const connectMetamaskProps = {
   'aria-describedby': 'connect-metamask-modal-description'
 };
 
-export default function ConnectMetamask(props: ButtonProps) {
+export default function ConnectMetamask({
+  children = (
+    <>
+      <Icon name="MetaMask" size="lg" />
+      Connect MetaMask
+    </>
+  ),
+  ...props
+}: ButtonProps) {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
@@ -98,8 +106,7 @@ export default function ConnectMetamask(props: ButtonProps) {
         onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
         {...props}
       >
-        <Icon name="MetaMask" size="lg" />
-        Connect MetaMask
+        {children}
       </Button>
     </>
   );
