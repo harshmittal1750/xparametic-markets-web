@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 import classNames from 'classnames';
 import { ui } from 'config';
@@ -33,15 +33,13 @@ export default function ProfileSignin() {
   function handleHide() {
     setShow(false);
   }
-  async function handleLogin(event: React.MouseEvent<HTMLButtonElement>) {
-    const name = event.currentTarget.name as Providers;
+  async function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    const name = event.currentTarget.name as Exclude<Providers, 'Email'>;
 
     try {
       setLoad(name);
 
-      const success = await polkamarketsService[`socialLogin${name}`](
-        name === 'Email' ? event.currentTarget.dataset.email : undefined
-      );
+      const success = await polkamarketsService[`socialLogin${name}`]();
 
       if (success) {
         const { login } = await import('redux/ducks/polkamarkets');
@@ -53,6 +51,28 @@ export default function ProfileSignin() {
       setShow(false);
     }
   }
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (event.target[0].value) {
+      try {
+        setLoad('Email');
+
+        const success = await polkamarketsService.socialLoginEmail(
+          event.target[0].value
+        );
+
+        if (success) {
+          const { login } = await import('redux/ducks/polkamarkets');
+
+          dispatch(login(polkamarketsService));
+        }
+      } finally {
+        setLoad('');
+        setShow(false);
+      }
+    }
+  }
 
   return (
     <>
@@ -60,7 +80,7 @@ export default function ProfileSignin() {
         <ModalContent>
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />
-            <ModalHeaderTitle>Sign In</ModalHeaderTitle>
+            <ModalHeaderTitle>Login</ModalHeaderTitle>
           </ModalHeader>
           <ModalSection className={profileSigninClasses.providers}>
             <Text
@@ -72,47 +92,51 @@ export default function ProfileSignin() {
               Select one of the following to continue.
             </Text>
             {ui.socialLogin.providers.map(provider => {
-              const Component = (() => {
-                if (provider === 'Email') return ProfileSigninEmail;
-                if (provider === 'MetaMask') return ConnectMetamask;
-                return Button;
-              })();
+              if (provider === 'Email')
+                return <ProfileSigninEmail onSubmit={handleSubmit} />;
+
+              const child = (
+                <>
+                  {provider}
+                  {load === provider ? (
+                    <Spinner />
+                  ) : (
+                    <Icon size="lg" name={provider} />
+                  )}
+                </>
+              );
+              const className = classNames(
+                profileSigninClasses.provider,
+                profileSigninClasses.social,
+                {
+                  [profileSigninClasses.socialGoogle]: provider === 'Google',
+                  [profileSigninClasses.socialFacebook]:
+                    provider === 'Facebook',
+                  [profileSigninClasses.socialDiscord]: provider === 'Discord',
+                  [profileSigninClasses.socialTwitter]: provider === 'Twitter',
+                  [profileSigninClasses.socialMetaMask]: provider === 'MetaMask'
+                }
+              );
+
+              if (provider === 'MetaMask')
+                return (
+                  <ConnectMetamask className={className}>
+                    {child}
+                  </ConnectMetamask>
+                );
 
               return (
-                <Fragment key={provider}>
-                  <Component
-                    className={classNames(
-                      profileSigninClasses.provider,
-                      profileSigninClasses.social,
-                      {
-                        [profileSigninClasses.socialGoogle]:
-                          provider === 'Google',
-                        [profileSigninClasses.socialFacebook]:
-                          provider === 'Facebook',
-                        [profileSigninClasses.socialDiscord]:
-                          provider === 'Discord',
-                        [profileSigninClasses.socialMetaMask]:
-                          provider === 'MetaMask'
-                      }
-                    )}
-                    variant="outline"
-                    color="default"
-                    size="sm"
-                    name={provider}
-                    aria-label={provider}
-                    onClick={handleLogin}
-                  >
-                    {provider}
-                    {load === provider ? (
-                      <Spinner />
-                    ) : (
-                      <Icon
-                        size="lg"
-                        name={provider === 'Email' ? 'LogIn' : provider}
-                      />
-                    )}
-                  </Component>
-                </Fragment>
+                <Button
+                  variant="outline"
+                  color="default"
+                  size="sm"
+                  key={provider}
+                  name={provider}
+                  className={className}
+                  onClick={handleClick}
+                >
+                  {child}
+                </Button>
               );
             })}
           </ModalSection>
@@ -124,7 +148,7 @@ export default function ProfileSignin() {
           size="lg"
           className={profileSigninClasses.signinIcon}
         />
-        Sign In
+        Login
       </Button>
     </>
   );

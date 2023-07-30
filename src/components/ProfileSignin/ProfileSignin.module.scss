@@ -15,10 +15,10 @@
 }
 
 .social {
-  border-radius: 8px;
+  border-radius: 8px !important;
   justify-content: space-between !important;
-  border-color: rgb(var(--channel) / var(--color-alpha, 0.6)) !important;
-  background: linear-gradient(45deg, rgb(var(--channel) / 0.4), transparent);
+  border-color: rgb(var(--channel) / var(--color-alpha, 0.4)) !important;
+  background: linear-gradient(45deg, rgb(var(--channel) / 0.2), transparent);
   transition: border-color background-color 300ms ease;
 
   &:hover {
@@ -35,8 +35,10 @@
   &Discord {
     --channel: 88 101 242;
   }
+  &Twitter {
+    --channel: 255 255 255;
+  }
   &MetaMask {
     --channel: 246 133 27;
-    flex-direction: row-reverse;
   }
 }
