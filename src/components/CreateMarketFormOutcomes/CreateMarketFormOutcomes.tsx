@@ -80,10 +80,6 @@ function CreateMarketFormOutcomes() {
   }, [outcomes, probabilityDistribution]);
 
   const imagesRequired = useMemo(() => {
-    if (!features.fantasy.enabled) {
-      return false;
-    }
-
     const hasImage = outcomes.some(
       outcome => outcome.image && outcome.image.hash
     );
@@ -216,8 +212,7 @@ function CreateMarketFormOutcomes() {
         </div>
         <div
           className={cn(CreateMarketFormOutcomesClasses.outcomes, {
-            [CreateMarketFormOutcomesClasses.outcomesWithImages]:
-              features.fantasy.enabled
+            [CreateMarketFormOutcomesClasses.outcomesWithImages]: true
           })}
         >
           {outcomes.map((outcome, index) => {
@@ -225,15 +220,13 @@ function CreateMarketFormOutcomes() {
 
             return (
               <Fragment key={outcome.id}>
-                {features.fantasy.enabled ? (
-                  <ImageUploadInput
-                    key={`${outcome.id}[image]`}
-                    as="icon"
-                    name={`${field}.image`}
-                    notUploadedActionLabel="Upload Image"
-                    uploadedActionLabel="Re-Upload"
-                  />
-                ) : null}
+                <ImageUploadInput
+                  key={`${outcome.id}[image]`}
+                  as="icon"
+                  name={`${field}.image`}
+                  notUploadedActionLabel="Upload Image"
+                  uploadedActionLabel="Re-Upload"
+                />
                 <OutcomeInput
                   key={`${outcome.id}[name]`}
                   index={index}
