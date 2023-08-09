@@ -3,7 +3,9 @@
 }
 
 .signin {
+  color: var(--color-text-primary) !important;
+
   &Icon {
-    fill: var(--color-text-secondary);
+    fill: var(--color-text-secondary) !important;
   }
 }

@@ -104,7 +104,13 @@ export default function ProfileSignin() {
           </ModalSection>
         </ModalContent>
       </Modal>
-      <Button variant="ghost" color="default" size="sm" onClick={handleShow}>
+      <Button
+        variant="ghost"
+        color="default"
+        size="sm"
+        className={profileSigninClasses.signin}
+        onClick={handleShow}
+      >
         <Icon
           name="LogIn"
           size="lg"
