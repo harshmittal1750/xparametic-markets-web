@@ -126,13 +126,21 @@ export default function HeaderActions() {
         <ThemeSelector />
         {ui.layout.header.helpUrl && (
           <a
-            href={ui.layout.header.helpUrl}
             role="button"
+            href={ui.layout.header.helpUrl}
             target="_blank"
-            className="pm-c-button--sm pm-c-button-ghost--default"
             rel="noreferrer"
+            className={cn(
+              [headerActionsClasses.help],
+              'pm-c-button--sm',
+              'pm-c-button-ghost--default'
+            )}
           >
-            <Icon name="Question" size="lg" />
+            <Icon
+              name="Question"
+              size="lg"
+              className={headerActionsClasses.helpIcon}
+            />
             Help
           </a>
         )}
