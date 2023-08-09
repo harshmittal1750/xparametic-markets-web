@@ -61,13 +61,17 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
     [handleDispatchSearch]
   );
 
+  const filterDisabled = ['loading', 'error', 'canceled'].includes(
+    markets.state
+  );
+
   return (
     <>
       <Button
         variant="outline"
         size="sm"
         onClick={onFilterClick}
-        disabled={markets.state !== 'success'}
+        disabled={filterDisabled}
         className={homeClasses.navAction}
       >
         <Icon
