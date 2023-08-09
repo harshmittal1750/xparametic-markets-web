@@ -25,7 +25,8 @@ const ui = {
     header: {
       networkSelector: {
         enabled: features.regular.enabled
-      }
+      },
+      helpUrl: environment.UI_HELP_URL
     },
     disclaimer: {
       enabled: features.regular.enabled
