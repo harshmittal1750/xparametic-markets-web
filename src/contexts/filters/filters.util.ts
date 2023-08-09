@@ -135,7 +135,7 @@ const filters: Filters = {
         }
       ],
       multiple: true,
-      enabled: true
+      enabled: features.regular.enabled
     },
     volume: {
       title: 'Volume',
