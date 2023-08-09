@@ -184,7 +184,7 @@ const filtersInitialState: FiltersState = {
     favorites: false
   },
   dropdowns: {
-    states: [],
+    states: ['open'],
     networks: [],
     tokens: [],
     volume: 'any',
