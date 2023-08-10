@@ -83,10 +83,8 @@ function calculateLiquidityAdded(
     }
   });
 
-  const liquidityRatio = (poolWeight * ethAmount) / market.liquidity;
-
-  const liquidityShares = liquidityRatio;
-  const liquidityStake = liquidityRatio * market.liquidityPrice;
+  const liquidityShares = (market.liquidity * ethAmount) / poolWeight;
+  const liquidityStake = liquidityShares * market.liquidityPrice;
   const totalStake = ethAmount;
 
   return {
