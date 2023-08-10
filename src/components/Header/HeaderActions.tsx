@@ -11,6 +11,7 @@ import Wallet from 'components/Wallet';
 
 import { useAppSelector, usePortal } from 'hooks';
 
+import Icon from '../Icon';
 import headerClasses from './Header.module.scss';
 import headerActionsClasses from './HeaderActions.module.scss';
 
@@ -123,6 +124,26 @@ export default function HeaderActions() {
           )}
         </HeaderActionsGroupComponent>
         <ThemeSelector />
+        {ui.layout.header.helpUrl && (
+          <a
+            role="button"
+            href={ui.layout.header.helpUrl}
+            target="_blank"
+            rel="noreferrer"
+            className={cn(
+              [headerActionsClasses.help],
+              'pm-c-button--sm',
+              'pm-c-button-ghost--default'
+            )}
+          >
+            <Icon
+              name="Question"
+              size="lg"
+              className={headerActionsClasses.helpIcon}
+            />
+            Help
+          </a>
+        )}
       </Wrapper>
     </Root>
   );

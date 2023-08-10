@@ -1,5 +1,6 @@
 .root {
   margin-left: auto;
+  color: var(--color-text-primary) !important;
 }
 .finger {
   height: 44px !important;
@@ -8,7 +9,7 @@
   padding: 0px !important;
 }
 .icon {
-  fill: var(--color-text-secondary);
+  fill: var(--color-text-secondary) !important;
 }
 .dialog {
   border-radius: 20px 20px 0px 0px;

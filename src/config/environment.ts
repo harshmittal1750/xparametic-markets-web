@@ -36,7 +36,8 @@ const environmentConfigVariables = [
   'UI_FILTERS_CATEGORIES',
   'UI_TOKEN_BLACKLIST',
   'UI_LOGO',
-  'UI_FOOTER_TEXT'
+  'UI_FOOTER_TEXT',
+  'UI_HELP_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =

@@ -13,13 +13,14 @@
 
 .signout {
   margin-left: auto;
+  color: var(--color-text-primary) !important;
 
   @media (min-width: 1024px) {
     margin-left: unset;
   }
 
   &Icon {
-    fill: var(--color-text-secondary);
+    fill: var(--color-text-secondary) !important;
   }
 }
 
