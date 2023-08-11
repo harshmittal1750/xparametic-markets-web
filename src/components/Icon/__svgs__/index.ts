@@ -3,6 +3,7 @@ export { ReactComponent as Ban } from './Ban.svg';
 export { ReactComponent as Binance } from './Binance.svg';
 export { ReactComponent as Bitcoin } from './Bitcoin.svg';
 export { ReactComponent as Calendar } from './Calendar.svg';
+export { ReactComponent as Camera } from './Camera.svg';
 export { ReactComponent as Check } from './Check.svg';
 export { ReactComponent as Checkbox } from './Checkbox.svg';
 export { ReactComponent as CheckboxFilled } from './CheckboxFilled.svg';
