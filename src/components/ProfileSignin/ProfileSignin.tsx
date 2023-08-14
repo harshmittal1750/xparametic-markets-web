@@ -77,7 +77,12 @@ export default function ProfileSignin() {
 
   return (
     <>
-      <Modal show={show} centered size="sm" onHide={handleHide}>
+      <Modal
+        show={show}
+        centered
+        className={{ dialog: profileSigninClasses.modal }}
+        onHide={handleHide}
+      >
         <ModalContent>
           <ModalHeader>
             <Button

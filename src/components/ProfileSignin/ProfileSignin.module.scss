@@ -11,6 +11,9 @@
 }
 
 .modal {
+  width: 100%;
+  max-width: 304px;
+
   &Header {
     &Hide {
       position: absolute;
