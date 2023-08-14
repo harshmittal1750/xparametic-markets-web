@@ -188,8 +188,8 @@ export default function ProfileSignin() {
         onClick={hasSingleProvider ? handleClick : handleShow}
         className={
           hasSingleProvider
-            ? profileSigninClasses.signin
-            : getProviderCns(singleProviderName)
+            ? getProviderCns(singleProviderName)
+            : profileSigninClasses.signin
         }
       >
         <Icon
