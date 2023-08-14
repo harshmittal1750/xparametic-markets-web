@@ -46,10 +46,17 @@
 }
 
 .social {
-  border-radius: 8px !important;
   justify-content: space-between !important;
-  border-color: rgb(var(--channel) / var(--color-alpha, 0.4)) !important;
+
+  padding: var(--size-8) var(--size-12) !important;
+
   background: linear-gradient(45deg, rgb(var(--channel) / 0.2), transparent);
+  color: var(--color-text-primary) !important;
+  font-weight: bold !important;
+
+  border-radius: 8px !important;
+  border-color: rgb(var(--channel) / var(--color-alpha, 0.4)) !important;
+
   transition: border-color background-color 300ms ease;
 
   &:hover {
