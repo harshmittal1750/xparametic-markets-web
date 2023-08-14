@@ -5,13 +5,14 @@ import { ui } from 'config';
 import type { Providers } from 'config';
 import { Spinner } from 'ui';
 
+import { RemoveOutlinedIcon } from 'assets/icons';
+
 import { Button } from 'components/Button';
 import ConnectMetamask from 'components/ConnectMetamask';
 import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalHeader from 'components/ModalHeader';
-import ModalHeaderHide from 'components/ModalHeaderHide';
 import ModalHeaderTitle from 'components/ModalHeaderTitle';
 import ModalSection from 'components/ModalSection';
 import ProfileSigninEmail from 'components/ProfileSigninEmail';
@@ -79,10 +80,19 @@ export default function ProfileSignin() {
       <Modal show={show} centered size="sm" onHide={handleHide}>
         <ModalContent>
           <ModalHeader>
-            <ModalHeaderHide onClick={handleHide} />
-            <ModalHeaderTitle>Login</ModalHeaderTitle>
+            <Button
+              variant="ghost"
+              className={profileSigninClasses.modalHeaderHide}
+              aria-label="Hide"
+              onClick={handleHide}
+            >
+              <RemoveOutlinedIcon />
+            </Button>
+            <ModalHeaderTitle className={profileSigninClasses.modalHeaderTitle}>
+              Login
+            </ModalHeaderTitle>
           </ModalHeader>
-          <ModalSection className={profileSigninClasses.providers}>
+          <ModalSection>
             <Text
               fontWeight="medium"
               scale="caption"
@@ -91,54 +101,59 @@ export default function ProfileSignin() {
             >
               Select one of the following to continue.
             </Text>
-            {ui.socialLogin.providers.map(provider => {
-              if (provider === 'Email')
-                return <ProfileSigninEmail onSubmit={handleSubmit} />;
+            <div className={profileSigninClasses.providers}>
+              {ui.socialLogin.providers.map(provider => {
+                if (provider === 'Email')
+                  return <ProfileSigninEmail onSubmit={handleSubmit} />;
 
-              const child = (
-                <>
-                  {provider}
-                  {load === provider ? (
-                    <Spinner />
-                  ) : (
-                    <Icon size="lg" name={provider} />
-                  )}
-                </>
-              );
-              const className = classNames(
-                profileSigninClasses.provider,
-                profileSigninClasses.social,
-                {
-                  [profileSigninClasses.socialGoogle]: provider === 'Google',
-                  [profileSigninClasses.socialFacebook]:
-                    provider === 'Facebook',
-                  [profileSigninClasses.socialDiscord]: provider === 'Discord',
-                  [profileSigninClasses.socialTwitter]: provider === 'Twitter',
-                  [profileSigninClasses.socialMetaMask]: provider === 'MetaMask'
-                }
-              );
-
-              if (provider === 'MetaMask')
-                return (
-                  <ConnectMetamask className={className}>
-                    {child}
-                  </ConnectMetamask>
+                const child = (
+                  <>
+                    {provider}
+                    {load === provider ? (
+                      <Spinner />
+                    ) : (
+                      <Icon size="lg" name={provider} />
+                    )}
+                  </>
+                );
+                const className = classNames(
+                  profileSigninClasses.provider,
+                  profileSigninClasses.social,
+                  {
+                    [profileSigninClasses.socialGoogle]: provider === 'Google',
+                    [profileSigninClasses.socialFacebook]:
+                      provider === 'Facebook',
+                    [profileSigninClasses.socialDiscord]:
+                      provider === 'Discord',
+                    [profileSigninClasses.socialTwitter]:
+                      provider === 'Twitter',
+                    [profileSigninClasses.socialMetaMask]:
+                      provider === 'MetaMask'
+                  }
                 );
 
-              return (
-                <Button
-                  variant="outline"
-                  color="default"
-                  size="sm"
-                  key={provider}
-                  name={provider}
-                  className={className}
-                  onClick={handleClick}
-                >
-                  {child}
-                </Button>
-              );
-            })}
+                if (provider === 'MetaMask')
+                  return (
+                    <ConnectMetamask className={className}>
+                      {child}
+                    </ConnectMetamask>
+                  );
+
+                return (
+                  <Button
+                    variant="outline"
+                    color="default"
+                    size="sm"
+                    key={provider}
+                    name={provider}
+                    className={className}
+                    onClick={handleClick}
+                  >
+                    {child}
+                  </Button>
+                );
+              })}
+            </div>
           </ModalSection>
         </ModalContent>
       </Modal>
