@@ -12,6 +12,7 @@
 
 .subtitle {
   margin-bottom: var(--size-16);
+  color: var(--color-text-secondary);
 }
 
 .social {
@@ -21,7 +22,7 @@
   background: linear-gradient(45deg, rgb(var(--channel) / 0.2), transparent);
   transition: border-color background-color 300ms ease;
 
-  &:hover {
+  &:is(:hover, :focus) {
     --color-alpha: 1;
     background-color: transparent !important;
   }

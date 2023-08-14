@@ -10,12 +10,17 @@ export default function ProfileSigninEmail(
 ) {
   return (
     <form {...props}>
-      <label htmlFor="profile-signin-email" className="pm-c-input__group">
+      <label
+        htmlFor="profile-signin-email"
+        className="pm-c-input__group"
+        style={{ flexDirection: 'row', gap: 0 }}
+      >
         <input
           type="email"
           id="profile-signin-email"
           className="pm-c-input--default"
           placeholder="example@mail.com"
+          style={{ width: '100%' }}
         />
         <Button
           type="submit"
