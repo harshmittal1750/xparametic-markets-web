@@ -62,7 +62,7 @@
 
   transition: border-color background-color 300ms ease;
 
-  &:hover {
+  &:is(:hover, :focus) {
     --color-alpha: 1;
     background-color: transparent !important;
   }

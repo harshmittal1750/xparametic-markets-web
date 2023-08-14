@@ -101,7 +101,6 @@ export default function ProfileSignin() {
             <Text
               fontWeight="medium"
               scale="caption"
-              color="white"
               className={profileSigninClasses.subtitle}
             >
               Select one of the following to continue.
@@ -109,7 +108,12 @@ export default function ProfileSignin() {
             <div className={profileSigninClasses.providers}>
               {ui.socialLogin.providers.map(provider => {
                 if (provider === 'Email')
-                  return <ProfileSigninEmail onSubmit={handleSubmit} />;
+                  return (
+                    <ProfileSigninEmail
+                      key={provider}
+                      onSubmit={handleSubmit}
+                    />
+                  );
 
                 const child = (
                   <>
@@ -139,7 +143,7 @@ export default function ProfileSignin() {
 
                 if (provider === 'MetaMask')
                   return (
-                    <ConnectMetamask className={className}>
+                    <ConnectMetamask key={provider} className={className}>
                       {child}
                     </ConnectMetamask>
                   );
