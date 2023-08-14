@@ -2,8 +2,9 @@ import { useCallback, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import type ReactRouterDom from 'react-router-dom';
 
-import { pages, socials, ui } from 'config';
+import { pages, community, ui } from 'config';
 import { shiftSlash } from 'helpers/string';
+import isEmpty from 'lodash/isEmpty';
 import { useTheme } from 'ui';
 
 import * as Logos from 'assets/icons';
@@ -54,34 +55,38 @@ function HeaderNavModal({
         </header>
         {typeof children === 'function' ? children(handleHide) : children}
         <footer className={headerNavClasses.footer}>
-          <Text
-            color="gray"
-            scale="tiny-uppercase"
-            fontWeight="bold"
-            className={headerNavClasses.title}
-          >
-            Join our community
-          </Text>
-          <ul className={headerNavClasses.socials}>
-            {Object.values(socials).map(social => (
-              <li key={social.name}>
-                <Text
-                  // @ts-ignore
-                  as="a"
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={headerNavClasses.social}
-                >
-                  <Icon
-                    title={social.name}
-                    name={social.name}
-                    className={headerNavClasses.icon}
-                  />
-                </Text>
-              </li>
-            ))}
-          </ul>
+          {ui.layout.header.communityUrls.enabled && !isEmpty(community) ? (
+            <>
+              <Text
+                color="gray"
+                scale="tiny-uppercase"
+                fontWeight="bold"
+                className={headerNavClasses.title}
+              >
+                Join our community
+              </Text>
+              <ul className={headerNavClasses.socials}>
+                {community.map(social => (
+                  <li key={social.name}>
+                    <Text
+                      // @ts-ignore
+                      as="a"
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={headerNavClasses.social}
+                    >
+                      <Icon
+                        title={social.name}
+                        name={social.name}
+                        className={headerNavClasses.icon}
+                      />
+                    </Text>
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
           <Feature name="regular">
             <CreateMarket
               fullwidth

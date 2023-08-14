@@ -26,6 +26,15 @@ const ui = {
     header: {
       networkSelector: {
         enabled: features.regular.enabled
+      },
+      communityUrls: {
+        enabled: isTrue(environment.UI_COMMUNITY_URLS),
+        twitter: environment.UI_COMMUNITY_TWITTER_URL,
+        medium: environment.UI_COMMUNITY_MEDIUM_URL,
+        telegram: environment.UI_COMMUNITY_TELEGRAM_URL,
+        youtube: environment.UI_COMMUNITY_YOUTUBE_URL,
+        linkedin: environment.UI_COMMUNITY_LINKEDIN_URL,
+        github: environment.UI_COMMUNITY_GITHUB_URL
       }
     },
     disclaimer: {

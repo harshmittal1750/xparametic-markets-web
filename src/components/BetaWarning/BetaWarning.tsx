@@ -84,7 +84,7 @@ export default function BetaWarning() {
         <ModalFooter className="pm-c-beta-warning__footer">
           <Button
             variant="normal"
-            color="warning"
+            color="primary"
             fullwidth
             disabled={!agreed}
             onClick={handleProceed}
