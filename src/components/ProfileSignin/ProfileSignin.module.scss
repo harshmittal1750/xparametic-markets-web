@@ -1,7 +1,7 @@
 .providers {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 8px;
 }
 
 .signin {
@@ -34,6 +34,7 @@
       font-weight: bold !important;
       line-height: 1.5 !important;
       letter-spacing: -0.01em !important;
+      color: var(--color-text-secondary) !important;
     }
   }
 }
@@ -76,7 +77,7 @@
     --channel: 88 101 242;
   }
   &Twitter {
-    --channel: 255 255 255;
+    --channel: var(--color-text--rgb);
   }
   &MetaMask {
     --channel: 246 133 27;

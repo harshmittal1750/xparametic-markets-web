@@ -107,21 +107,18 @@ export default function ProfileSignin() {
             </Text>
             <div className={profileSigninClasses.providers}>
               {ui.socialLogin.providers.map(provider => {
-                if (provider === 'Email')
-                  return (
-                    <ProfileSigninEmail
-                      key={provider}
-                      onSubmit={handleSubmit}
-                    />
-                  );
-
+                const isLoading = !!load && load === provider;
+                const isDisabled = !!load && load !== provider;
                 const child = (
                   <>
-                    {provider}
-                    {load === provider ? (
-                      <Spinner />
+                    {provider === 'Email' ? '' : provider}
+                    {isLoading ? (
+                      <Spinner $size="md" />
                     ) : (
-                      <Icon size="lg" name={provider} />
+                      <Icon
+                        size="lg"
+                        name={provider === 'Email' ? 'LogIn' : provider}
+                      />
                     )}
                   </>
                 );
@@ -141,9 +138,24 @@ export default function ProfileSignin() {
                   }
                 );
 
+                if (provider === 'Email')
+                  return (
+                    <ProfileSigninEmail
+                      key={provider}
+                      disabled={isDisabled}
+                      onSubmit={handleSubmit}
+                    >
+                      {child}
+                    </ProfileSigninEmail>
+                  );
+
                 if (provider === 'MetaMask')
                   return (
-                    <ConnectMetamask key={provider} className={className}>
+                    <ConnectMetamask
+                      key={provider}
+                      className={className}
+                      disabled={isDisabled}
+                    >
                       {child}
                     </ConnectMetamask>
                   );
@@ -157,6 +169,7 @@ export default function ProfileSignin() {
                     name={provider}
                     className={className}
                     onClick={handleClick}
+                    disabled={isDisabled}
                   >
                     {child}
                   </Button>

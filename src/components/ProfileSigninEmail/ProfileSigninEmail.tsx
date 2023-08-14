@@ -1,28 +1,39 @@
-import cn from 'classnames';
+import classNames from 'classnames';
 
-import { Button } from 'components/Button';
-import Icon from 'components/Icon';
+import { Button, ButtonProps } from 'components/Button';
 
 import profileSigninEmailClasses from './ProfileSigninEmail.module.scss';
 
-export default function ProfileSigninEmail(
-  props: Pick<React.ComponentPropsWithoutRef<'form'>, 'onSubmit'>
-) {
+type ProfileSigninEmailProps = Pick<
+  React.ComponentPropsWithoutRef<'form'>,
+  'onSubmit'
+> &
+  Omit<ButtonProps, 'onSubmit'>;
+
+export default function ProfileSigninEmail({
+  onSubmit,
+  ...props
+}: ProfileSigninEmailProps) {
   return (
-    <form className={profileSigninEmailClasses.root} {...props}>
+    <form
+      onSubmit={onSubmit}
+      className={classNames(profileSigninEmailClasses.root, {
+        [profileSigninEmailClasses.disabled]: props.disabled
+      })}
+    >
       <input
         type="email"
-        className={profileSigninEmailClasses.input}
         placeholder="Enter your e-mail"
+        className={profileSigninEmailClasses.input}
+        disabled={props.disabled}
       />
       <Button
         type="submit"
         variant="normal"
         size="xs"
-        className={cn(profileSigninEmailClasses.email)}
-      >
-        <Icon size="lg" name="LogIn" />
-      </Button>
+        className={profileSigninEmailClasses.email}
+        {...props}
+      />
     </form>
   );
 }
