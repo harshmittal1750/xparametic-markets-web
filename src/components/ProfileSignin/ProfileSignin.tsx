@@ -22,11 +22,33 @@ import { useAppDispatch, usePolkamarketsService } from 'hooks';
 
 import profileSigninClasses from './ProfileSignin.module.scss';
 
+function getProviderCns(provider: Providers) {
+  return classNames(
+    profileSigninClasses.provider,
+    profileSigninClasses.social,
+    {
+      [profileSigninClasses.socialGoogle]: provider === 'Google',
+      [profileSigninClasses.socialFacebook]: provider === 'Facebook',
+      [profileSigninClasses.socialDiscord]: provider === 'Discord',
+      [profileSigninClasses.socialTwitter]: provider === 'Twitter',
+      [profileSigninClasses.socialMetaMask]: provider === 'MetaMask'
+    }
+  );
+}
+function getProviderChild(provider: Providers, isLoading: boolean) {
+  return isLoading ? (
+    <Spinner $size="md" />
+  ) : (
+    <Icon size="lg" name={provider === 'Email' ? 'LogIn' : provider} />
+  );
+}
 export default function ProfileSignin() {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
   const [load, setLoad] = useState<Providers | ''>('');
+  const hasSingleProvider = ui.socialLogin.providers.length === 1;
+  const singleProviderName = ui.socialLogin.providers[0];
 
   function handleShow() {
     setShow(true);
@@ -112,31 +134,10 @@ export default function ProfileSignin() {
                 const child = (
                   <>
                     {provider === 'Email' ? '' : provider}
-                    {isLoading ? (
-                      <Spinner $size="md" />
-                    ) : (
-                      <Icon
-                        size="lg"
-                        name={provider === 'Email' ? 'LogIn' : provider}
-                      />
-                    )}
+                    {getProviderChild(provider, isLoading)}
                   </>
                 );
-                const className = classNames(
-                  profileSigninClasses.provider,
-                  profileSigninClasses.social,
-                  {
-                    [profileSigninClasses.socialGoogle]: provider === 'Google',
-                    [profileSigninClasses.socialFacebook]:
-                      provider === 'Facebook',
-                    [profileSigninClasses.socialDiscord]:
-                      provider === 'Discord',
-                    [profileSigninClasses.socialTwitter]:
-                      provider === 'Twitter',
-                    [profileSigninClasses.socialMetaMask]:
-                      provider === 'MetaMask'
-                  }
-                );
+                const className = getProviderCns(provider);
 
                 if (provider === 'Email')
                   return (
@@ -179,13 +180,25 @@ export default function ProfileSignin() {
           </ModalSection>
         </ModalContent>
       </Modal>
-      <Button variant="ghost" color="default" size="sm" onClick={handleShow}>
+      <Button
+        variant="ghost"
+        color="default"
+        size="sm"
+        name={hasSingleProvider ? singleProviderName : undefined}
+        onClick={hasSingleProvider ? handleClick : handleShow}
+        className={getProviderCns(singleProviderName)}
+      >
         <Icon
           name="LogIn"
           size="lg"
           className={profileSigninClasses.signinIcon}
         />
         Login
+        {hasSingleProvider && ` with ${singleProviderName}`}
+        {getProviderChild(
+          singleProviderName,
+          !!load && load === singleProviderName
+        )}
       </Button>
     </>
   );
