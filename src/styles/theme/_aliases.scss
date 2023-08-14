@@ -99,6 +99,12 @@
   --color-market-shares-description--bold: #313a4c;
   --color-tournament-avatar-background: rgb(0 0 0 / 0.1);
 
+  --color-input-background-color: rgba(227, 231, 240, 0.3);
+  --color-input-background-focus-color: var(--color-bg-4);
+  --color-input-border-default-color: #e0e2e7;
+  --color-input-border-default-focus-color: #7069fa;
+  --color-image-input-icon-border-color: #8193ae;
+
   // Reference: https://spectrum.adobe.com/page/color-for-data-visualization/#Categorical
 
   --color-categorical-0: #0fb5ae;
@@ -181,6 +187,10 @@
     --color-market-shares-description: #c4c6ff;
     --color-market-shares-description--bold: #ffffff;
     --color-tournament-avatar-background: rgb(255 255 255 / 0.1);
+
+    --color-input-background-color: rgba(35, 42, 54, 0.3);
+    --color-input-border-default-color: #252c3b;
+    --color-image-input-icon-border-color: #637084;
   }
 
   --grid-margin: var(--size-12);

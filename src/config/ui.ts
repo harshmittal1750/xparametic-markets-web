@@ -27,6 +27,7 @@ const ui = {
       networkSelector: {
         enabled: features.regular.enabled
       },
+      helpUrl: environment.UI_HELP_URL,
       communityUrls: {
         enabled: isTrue(environment.UI_COMMUNITY_URLS),
         twitter: environment.UI_COMMUNITY_TWITTER_URL,

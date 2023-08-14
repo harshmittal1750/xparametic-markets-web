@@ -37,6 +37,8 @@ const environmentConfigVariables = [
   'UI_TOKEN_BLACKLIST',
   'UI_LOGO',
   'UI_FOOTER_TEXT',
+  'UI_HELP_URL',
+  'UI_FOOTER_TEXT',
   'UI_COMMUNITY_URLS',
   'UI_COMMUNITY_TWITTER_URL',
   'UI_COMMUNITY_MEDIUM_URL',

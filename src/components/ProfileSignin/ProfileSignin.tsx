@@ -186,7 +186,11 @@ export default function ProfileSignin() {
         size="sm"
         name={hasSingleProvider ? singleProviderName : undefined}
         onClick={hasSingleProvider ? handleClick : handleShow}
-        className={getProviderCns(singleProviderName)}
+        className={
+          hasSingleProvider
+            ? profileSigninClasses.signin
+            : getProviderCns(singleProviderName)
+        }
       >
         <Icon
           name="LogIn"
