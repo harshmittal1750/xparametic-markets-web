@@ -23,7 +23,7 @@ export default function ProfileSigninEmail({
     >
       <input
         type="email"
-        placeholder="Enter your e-mail"
+        placeholder="Login with your e-mail"
         className={profileSigninEmailClasses.input}
         disabled={props.disabled}
       />
