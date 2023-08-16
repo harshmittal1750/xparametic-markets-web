@@ -77,7 +77,7 @@ export default function ProfileSignin() {
     [dispatch, polkamarketsService]
   );
   const renderProviders = useCallback(
-    provider => {
+    (provider: Providers) => {
       const isLoading = !!load && load === provider;
       const isDisabled = !!load && load !== provider;
       const child = (
