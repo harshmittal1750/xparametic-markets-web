@@ -82,7 +82,9 @@ export default function ProfileSignout() {
       <div className="pm-c-wallet-info__profile">
         <Link
           to={`/user/${
-            (features.fantasy.enabled && leaderboard.data?.username) || address
+            (features.fantasy.enabled &&
+              (leaderboard.data?.username || username)) ||
+            address
           }`}
         >
           <Avatar
