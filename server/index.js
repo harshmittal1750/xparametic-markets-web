@@ -59,9 +59,13 @@ const metadataByPage = {
       process.env.REACT_APP_METADATA_CLUBS_IMAGE || '/metadata-homepage.png'
   },
   tournaments: {
-    title: 'Tournaments - Polkamarkets',
-    description: '',
-    image: '/metadata-homepage.png'
+    title:
+      process.env.REACT_APP_METADATA_TOURNAMENTS_TITLE ||
+      'Tournaments - Polkamarkets',
+    description: process.env.REACT_APP_METADATA_TOURNAMENTS_DESCRIPTION || '',
+    image:
+      process.env.REACT_APP_METADATA_TOURNAMENTS_IMAGE ||
+      '/metadata-homepage.png'
   },
   leaderboard: {
     title:

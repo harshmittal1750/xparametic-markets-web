@@ -399,9 +399,11 @@ function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
         className={`caption semibold text-${walletPlace.textColor}`}
         to={`/user/${address}`}
       >
-        {`${address.substring(0, 6)}...${address.substring(
-          address.length - 4
-        )}`}
+        {address.startsWith('0x')
+          ? `${address.substring(0, 6)}...${address.substring(
+              address.length - 4
+            )}`
+          : address}
       </Link>
     </div>
   );
@@ -446,7 +448,7 @@ function prepareLeaderboardTopWalletsRow({
     firstPlace: {
       value: firstPlace
         ? {
-            address: firstPlace.user,
+            address: firstPlace.username || firstPlace.user,
             place: 1,
             change: 'stable'
           }
@@ -456,7 +458,7 @@ function prepareLeaderboardTopWalletsRow({
     secondPlace: {
       value: secondPlace
         ? {
-            address: secondPlace.user,
+            address: secondPlace.username || secondPlace.user,
             place: 2,
             change: 'stable'
           }
@@ -466,7 +468,7 @@ function prepareLeaderboardTopWalletsRow({
     thirdPlace: {
       value: thirdPlace
         ? {
-            address: thirdPlace.user,
+            address: thirdPlace.username || thirdPlace.user,
             place: 3,
             change: 'stable'
           }
