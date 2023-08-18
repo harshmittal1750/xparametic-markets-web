@@ -1,51 +1,39 @@
-import { useCallback, useState } from 'react';
+import classNames from 'classnames';
 
-import cn from 'classnames';
-import { Divider } from 'ui';
-
-import { Button } from 'components/Button';
-import type { ButtonProps } from 'components/Button';
+import { Button, ButtonProps } from 'components/Button';
 
 import profileSigninEmailClasses from './ProfileSigninEmail.module.scss';
 
-export default function ProfileSigninEmail({
-  className,
-  ...props
-}: Pick<ButtonProps, 'onClick' | 'name' | 'children' | 'className'>) {
-  const [email, setEmail] = useState('');
+type ProfileSigninEmailProps = Pick<
+  React.ComponentPropsWithoutRef<'form'>,
+  'onSubmit'
+> &
+  Omit<ButtonProps, 'onSubmit'>;
 
+export default function ProfileSigninEmail({
+  onSubmit,
+  ...props
+}: ProfileSigninEmailProps) {
   return (
-    <>
-      <Divider enableGutters />
-      <form
-        onSubmit={useCallback(
-          (event: React.SyntheticEvent) => event.preventDefault(),
-          []
-        )}
-      >
-        <label htmlFor="email" className="pm-c-input__group">
-          <input
-            className="pm-c-input--default"
-            id="email"
-            value={email}
-            placeholder="Write your email here"
-            onChange={useCallback(
-              (event: React.ChangeEvent<HTMLInputElement>) =>
-                setEmail(event.target.value),
-              []
-            )}
-          />
-        </label>
-        <Button
-          type="submit"
-          className={cn(profileSigninEmailClasses.email, className)}
-          color="default"
-          size="sm"
-          disabled={!email}
-          data-email={email}
-          {...props}
-        />
-      </form>
-    </>
+    <form
+      onSubmit={onSubmit}
+      className={classNames(profileSigninEmailClasses.root, {
+        [profileSigninEmailClasses.disabled]: props.disabled
+      })}
+    >
+      <input
+        type="email"
+        placeholder="Login with your e-mail"
+        className={profileSigninEmailClasses.input}
+        disabled={props.disabled}
+      />
+      <Button
+        type="submit"
+        variant="normal"
+        size="xs"
+        className={profileSigninEmailClasses.email}
+        {...props}
+      />
+    </form>
   );
 }

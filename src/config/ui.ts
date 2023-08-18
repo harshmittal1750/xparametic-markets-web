@@ -10,16 +10,17 @@ import {
 import environment from './environment';
 import features from './features';
 
-export type Providers =
-  | 'Google'
-  | 'Facebook'
-  | 'Discord'
-  | 'Email'
-  | 'Metamask';
+const providers = [
+  'Google',
+  'Facebook',
+  'Discord',
+  'MetaMask',
+  'Twitter',
+  'Email'
+] as const;
 
-const providers = (environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(',').map(
-  capitalize
-) || ['Google', 'Facebook', 'Discord', 'Email']) as unknown as Array<Providers>;
+export type Providers = typeof providers[number];
+
 const ui = {
   layout: {
     header: {
@@ -128,7 +129,12 @@ const ui = {
     enabled: isTrue(environment.FEATURE_SOCIAL_LOGIN),
     networkId: environment.FEATURE_SOCIAL_LOGIN_NETWORK_ID,
     isTestnet: isTrue(environment.FEATURE_SOCIAL_LOGIN_IS_TESTNET),
-    providers
+    providers:
+      (
+        environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(
+          ','
+        ) as Array<Providers>
+      ).map(capitalize) || providers
   }
 } as const;
 

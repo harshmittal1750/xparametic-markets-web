@@ -1,8 +1,10 @@
 import { useCallback, useState } from 'react';
 
-import { MetaMaskIcon, WarningOutlinedIcon } from 'assets/icons';
+import { WarningOutlinedIcon } from 'assets/icons';
 
 import { Button } from 'components/Button';
+import type { ButtonProps } from 'components/Button';
+import Icon from 'components/Icon';
 import Modal from 'components/Modal';
 import ModalContent from 'components/ModalContent';
 import ModalFooter from 'components/ModalFooter';
@@ -20,7 +22,15 @@ const connectMetamaskProps = {
   'aria-describedby': 'connect-metamask-modal-description'
 };
 
-export default function ConnectMetamask() {
+export default function ConnectMetamask({
+  children = (
+    <>
+      <Icon name="MetaMask" size="lg" />
+      Connect MetaMask
+    </>
+  ),
+  ...props
+}: ButtonProps) {
   const dispatch = useAppDispatch();
   const polkamarketsService = usePolkamarketsService();
   const [show, setShow] = useState(false);
@@ -54,7 +64,7 @@ export default function ConnectMetamask() {
           <ModalHeader>
             <ModalHeaderHide onClick={handleHide} />
             <div className="pm-l-navbar__actions-metamask__status">
-              <MetaMaskIcon size={40} />
+              <Icon name="MetaMask" size="lg" />
               <Pill variant="normal" color="danger">
                 <WarningOutlinedIcon />
               </Pill>
@@ -94,9 +104,9 @@ export default function ConnectMetamask() {
         color="default"
         size="sm"
         onClick={!window.ethereum ? handleMetamaskModal : handleMetamaskLogin}
+        {...props}
       >
-        <MetaMaskIcon />
-        Connect MetaMask
+        {children}
       </Button>
     </>
   );
