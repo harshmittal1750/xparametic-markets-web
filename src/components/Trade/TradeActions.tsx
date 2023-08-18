@@ -24,7 +24,11 @@ import Text from '../Text';
 import Toast from '../Toast';
 import ToastNotification from '../ToastNotification';
 
-function TradeActions() {
+type TradeActionsProps = {
+  onTradeFinished: () => void;
+};
+
+function TradeActions({ onTradeFinished }: TradeActionsProps) {
   // Helpers
   const dispatch = useAppDispatch();
   const { network, networkConfig } = useNetwork();
@@ -151,6 +155,7 @@ function TradeActions() {
       // updating wallet
       await updateWallet();
       await refreshBalance();
+      setTimeout(() => onTradeFinished(), 1000);
     } catch (error) {
       setIsLoading(false);
     }
@@ -214,6 +219,7 @@ function TradeActions() {
       // updating wallet
       await updateWallet();
       await refreshBalance();
+      setTimeout(() => onTradeFinished(), 1000);
     } catch (error) {
       setIsLoading(false);
     }
