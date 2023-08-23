@@ -2,7 +2,7 @@
 import { undefinedCountry } from 'helpers/location';
 import { UserGeolocation } from 'models/user';
 
-import api from './api';
+import api, { polkamarketsApiUrl } from './api';
 
 async function getUserGeolocation() {
   const { REACT_APP_IP_API_KEY } = process.env;
@@ -16,4 +16,28 @@ async function getUserGeolocation() {
   });
 }
 
-export { getUserGeolocation };
+async function updateSocialLoginInfo(
+  authenticationToken: string,
+  loginType: string,
+  walletAddress: string,
+  avatar: string,
+  oAuthAccessToken: string
+) {
+  const url = `${polkamarketsApiUrl}/users`;
+  return api.put(
+    url,
+    {
+      login_type: loginType,
+      wallet_address: walletAddress,
+      avatar,
+      oauth_access_token: oAuthAccessToken
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${authenticationToken}`
+      }
+    }
+  );
+}
+
+export { getUserGeolocation, updateSocialLoginInfo };
