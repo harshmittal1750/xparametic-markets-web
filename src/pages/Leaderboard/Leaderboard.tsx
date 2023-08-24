@@ -29,6 +29,7 @@ import LeaderboardYourStats from './LeaderboardYourStats';
 import {
   balanceColumnRender,
   liquidityColumnRender,
+  earningsColumnRender,
   rankColumnRender,
   volumeColumnRender,
   walletColumnRender
@@ -73,6 +74,11 @@ const tabs = [
     id: 'netLiquidity',
     title: 'Net Liquidity',
     sortBy: 'tvlLiquidityEur'
+  },
+  {
+    id: 'earnings',
+    title: 'Earnings',
+    sortBy: 'earningsEur'
   }
 ].filter(tab => ui.leaderboard.columns.includes(tab.id));
 
@@ -129,6 +135,13 @@ const columns: LeaderboardTableColumn[] = [
     align: 'right',
     width: 140,
     render: liquidityColumnRender
+  },
+  {
+    title: 'Earnings',
+    key: 'earnings',
+    align: 'right',
+    width: 140,
+    render: earningsColumnRender
   },
   {
     title: 'Rank',

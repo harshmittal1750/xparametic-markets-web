@@ -74,7 +74,12 @@ function Filter({
       option => option.value === defaultOption
     );
 
-    const defaultTrigger = defaultSelectedOption?.defaultTrigger || 1;
+    const defaultTrigger =
+      defaultSelectedOption?.defaultTrigger !== undefined &&
+      defaultSelectedOption?.defaultTrigger !== 1
+        ? defaultSelectedOption?.defaultTrigger
+        : 1;
+
     const defaultSelectedTrigger =
       defaultSelectedOption?.optionalTriggers?.[defaultTrigger];
 

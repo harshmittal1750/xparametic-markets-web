@@ -108,7 +108,10 @@ function walletColumnRender({
 
   return (
     <div className="flex-row gap-3 align-center">
-      <Link to={`/user/${address}`} className="pm-c-leaderboard-table__wallet">
+      <Link
+        to={`/user/${username || address}`}
+        className="pm-c-leaderboard-table__wallet"
+      >
         {walletPlace.icon}
         {(() => {
           if (userImageUrl)
@@ -178,7 +181,7 @@ type VolumeColumnRenderArgs = {
 function volumeColumnRender({ volume, ticker }: VolumeColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__volume caption semibold text-1">
-      {`${volume.toFixed(1)} `}
+      {`${volume?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -195,7 +198,21 @@ function liquidityColumnRender({
 }: LiquidityColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
-      {`${liquidity.toFixed(1)} `}
+      {`${liquidity?.toFixed(1)} `}
+      <strong className="caption semibold text-3">{ticker}</strong>
+    </span>
+  );
+}
+
+type EarningsColumnRenderArgs = {
+  earnings: number;
+  ticker: string;
+};
+
+function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
+  return (
+    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
+      {`${earnings?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -209,7 +226,7 @@ type BalanceColumnRenderArgs = {
 function balanceColumnRender({ balance, ticker }: BalanceColumnRenderArgs) {
   return (
     <span className="pm-c-leaderboard-table__balance caption semibold text-1">
-      {`${balance.toFixed(1)} `}
+      {`${balance?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
   );
@@ -238,7 +255,8 @@ export {
   achievementsColumnRender,
   liquidityColumnRender,
   balanceColumnRender,
-  rankColumnRender
+  rankColumnRender,
+  earningsColumnRender
 };
 
 // Rows
@@ -288,6 +306,10 @@ function prepareLeaderboardTableRows({
         },
         netLiquidity: {
           liquidity: row.tvlLiquidityEur,
+          ticker: fantasyTokenTicker || '€'
+        },
+        earnings: {
+          earnings: row.earningsEur,
           ticker: fantasyTokenTicker || '€'
         },
         transactions: row.transactions,
@@ -360,6 +382,16 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
             : null,
         render: liquidityColumnRender
       },
+      earnings: {
+        value:
+          yourStats && yourStats.earnings
+            ? {
+                liquidity: yourStats.earnings.earnings,
+                ticker: yourStats.earnings.ticker
+              }
+            : null,
+        render: earningsColumnRender
+      },
       transactions: {
         value: yourStats ? yourStats.transactions : null
       },
@@ -404,9 +436,11 @@ function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
         className={`caption semibold text-${walletPlace.textColor}`}
         to={`/user/${address}`}
       >
-        {`${address.substring(0, 6)}...${address.substring(
-          address.length - 4
-        )}`}
+        {address.startsWith('0x')
+          ? `${address.substring(0, 6)}...${address.substring(
+              address.length - 4
+            )}`
+          : address}
       </Link>
     </div>
   );
@@ -451,7 +485,7 @@ function prepareLeaderboardTopWalletsRow({
     firstPlace: {
       value: firstPlace
         ? {
-            address: firstPlace.user,
+            address: firstPlace.username || firstPlace.user,
             place: 1,
             change: 'stable'
           }
@@ -461,7 +495,7 @@ function prepareLeaderboardTopWalletsRow({
     secondPlace: {
       value: secondPlace
         ? {
-            address: secondPlace.user,
+            address: secondPlace.username || secondPlace.user,
             place: 2,
             change: 'stable'
           }
@@ -471,7 +505,7 @@ function prepareLeaderboardTopWalletsRow({
     thirdPlace: {
       value: thirdPlace
         ? {
-            address: thirdPlace.user,
+            address: thirdPlace.username || thirdPlace.user,
             place: 3,
             change: 'stable'
           }

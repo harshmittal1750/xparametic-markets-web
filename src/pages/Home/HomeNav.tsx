@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 
+import { features } from 'config';
 import { setSorter, setSearchQuery } from 'redux/ducks/markets';
 import { useTheme } from 'ui';
 
@@ -92,7 +93,7 @@ export default function HomeNav({ onFilterClick }: HomeNavProps) {
       />
       <Filter
         description="Sort by"
-        defaultOption="liquidityEur"
+        defaultOption={features.fantasy.enabled ? 'expiresAt' : 'liquidityEur'}
         options={filters}
         onChange={handleSelectedFilter}
       />
