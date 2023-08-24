@@ -140,9 +140,9 @@ function walletColumnRender({
             )
           : null}
       </Link>
-      {!isUndefined(malicius) &&
-      !isUndefined(ui.leaderboard.wallet.suspiciousActivityUrl) &&
-      !malicius ? (
+      {!isUndefined(ui.leaderboard.wallet.suspiciousActivityUrl) &&
+      !isUndefined(malicius) &&
+      malicius ? (
         <Tooltip
           interactive
           delayHide={250}
