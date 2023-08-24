@@ -89,7 +89,7 @@ type WalletColumnRenderArgs = {
   place: number;
   explorerURL: string;
   achievements: Achievement[];
-  malicius?: boolean;
+  malicious?: boolean;
 } & Record<'username' | 'userImageUrl', string | null>;
 
 function walletColumnRender({
@@ -99,7 +99,7 @@ function walletColumnRender({
   achievements,
   username,
   userImageUrl,
-  malicius
+  malicious
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -144,8 +144,8 @@ function walletColumnRender({
           : null}
       </Link>
       {!isUndefined(ui.leaderboard.wallet.suspiciousActivityUrl) &&
-      !isUndefined(malicius) &&
-      malicius ? (
+      !isUndefined(malicious) &&
+      malicious ? (
         <Tooltip
           interactive
           delayHide={250}
@@ -290,7 +290,7 @@ function prepareLeaderboardTableRows({
           address: row.user,
           place: index + 1,
           achievements: row.achievements,
-          malicius: row.malicious,
+          malicious: row.malicious,
           username: row.username,
           userImageUrl: row.userImageUrl
         },
