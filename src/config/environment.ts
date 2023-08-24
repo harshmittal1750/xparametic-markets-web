@@ -45,7 +45,8 @@ const environmentConfigVariables = [
   'UI_COMMUNITY_TELEGRAM_URL',
   'UI_COMMUNITY_YOUTUBE_URL',
   'UI_COMMUNITY_LINKEDIN_URL',
-  'UI_COMMUNITY_GITHUB_URL'
+  'UI_COMMUNITY_GITHUB_URL',
+  'UI_SUSPICIOUS_ACTIVITY_URL'
 ] as const;
 
 export type EnvironmentConfigVariable =

@@ -75,6 +75,7 @@ export type GetLeaderboardBaseData = {
   user: string;
   ens?: any;
   marketsCreated: number;
+  malicious?: boolean;
   volumeEur: number;
   tvlVolumeEur: number;
   liquidityEur: number;

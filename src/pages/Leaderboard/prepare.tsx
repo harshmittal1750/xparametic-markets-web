@@ -4,6 +4,7 @@ import cn from 'classnames';
 import { ui } from 'config';
 import shortenAddress from 'helpers/shortenAddress';
 import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
 import orderBy from 'lodash/orderBy';
 import pick from 'lodash/pick';
 import { GetLeaderboardByTimeframeData } from 'services/Polkamarkets/types';
@@ -17,6 +18,9 @@ import {
   RankStableIcon
 } from 'assets/icons/pages/leaderboard';
 
+import { Icon, Tooltip } from 'components';
+
+import LeaderboardClasses from './Leaderboard.module.scss';
 import { Achievement, LeaderboardTableRow } from './types';
 
 const WALLET_PLACES = {
@@ -85,6 +89,7 @@ type WalletColumnRenderArgs = {
   place: number;
   explorerURL: string;
   achievements: Achievement[];
+  malicius?: boolean;
 } & Record<'username' | 'userImageUrl', string | null>;
 
 function walletColumnRender({
@@ -93,7 +98,8 @@ function walletColumnRender({
   place,
   achievements,
   username,
-  userImageUrl
+  userImageUrl,
+  malicius
 }: WalletColumnRenderArgs) {
   const walletPlace = WALLET_PLACES[place] || {
     icon: null,
@@ -101,39 +107,69 @@ function walletColumnRender({
   };
 
   return (
-    <Link
-      to={`/user/${username || address}`}
-      className="pm-c-leaderboard-table__wallet"
-    >
-      {walletPlace.icon}
-      {(() => {
-        if (userImageUrl)
-          return (
-            <Avatar
-              $radius="lg"
-              $size="x2s"
-              alt="Avatar"
-              src={userImageUrl}
-              className={cn({
-                'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
-              })}
-            />
-          );
-        if (isLoggedInUser) return <MyPlaceIcon />;
-        return null;
-      })()}
-      <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
-        {username || shortenAddress(address)}
-        {isLoggedInUser && (
-          <span className="caption semibold text-3"> (You)</span>
-        )}
-      </p>
-      {achievementsColumnRender(
-        achievements,
-        'medium',
-        5 + 20 * Math.min(achievements.length, 4)
-      )}
-    </Link>
+    <div className="flex-row gap-3 align-center">
+      <Link
+        to={`/user/${username || address}`}
+        className="pm-c-leaderboard-table__wallet"
+      >
+        {walletPlace.icon}
+        {(() => {
+          if (userImageUrl)
+            return (
+              <Avatar
+                $radius="lg"
+                $size="x2s"
+                alt="Avatar"
+                src={userImageUrl}
+                className={cn({
+                  'pm-c-leaderboard-table__wallet__avatar': isLoggedInUser
+                })}
+              />
+            );
+          if (isLoggedInUser) return <MyPlaceIcon />;
+          return null;
+        })()}
+        <p className={cn('caption semibold', `text-${walletPlace.textColor}`)}>
+          {username || shortenAddress(address)}
+          {isLoggedInUser && (
+            <span className="caption semibold text-3"> (You)</span>
+          )}
+        </p>
+        {!isEmpty(achievements)
+          ? achievementsColumnRender(
+              achievements,
+              'medium',
+              5 + 20 * Math.min(achievements.length, 4)
+            )
+          : null}
+      </Link>
+      {!isUndefined(ui.leaderboard.wallet.suspiciousActivityUrl) &&
+      !isUndefined(malicius) &&
+      malicius ? (
+        <Tooltip
+          interactive
+          delayHide={250}
+          text={
+            <p className="pm-c-tooltip__text">
+              {`This account is flagged for suspicious activity. `}
+              <a
+                href={ui.leaderboard.wallet.suspiciousActivityUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="pm-c-tooltip__link"
+              >
+                More info
+              </a>
+            </p>
+          }
+        >
+          <Icon
+            name="Warning"
+            className={LeaderboardClasses.walletWarningFlagIcon}
+          />
+        </Tooltip>
+      ) : null}
+    </div>
   );
 }
 
@@ -254,6 +290,7 @@ function prepareLeaderboardTableRows({
           address: row.user,
           place: index + 1,
           achievements: row.achievements,
+          malicius: row.malicious,
           username: row.username,
           userImageUrl: row.userImageUrl
         },
