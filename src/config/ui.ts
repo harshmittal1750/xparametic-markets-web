@@ -67,7 +67,10 @@ const ui = {
         defaultLeaderboardColumns,
       leaderboardColumns
     ),
-    default_column: environment.UI_LEADERBOARD_DEFAULT_COLUMN
+    default_column: environment.UI_LEADERBOARD_DEFAULT_COLUMN,
+    wallet: {
+      suspiciousActivityUrl: environment.UI_SUSPICIOUS_ACTIVITY_URL
+    }
   },
   clubs: {
     enabled: isTrue(environment.FEATURE_CLUBS)
