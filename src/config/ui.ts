@@ -137,7 +137,7 @@ const ui = {
         environment.FEATURE_SOCIAL_LOGIN_PROVIDERS?.split(
           ','
         ) as Array<Providers>
-      ).map(capitalize) || providers
+      )?.map(capitalize) || providers
   }
 } as const;
 
