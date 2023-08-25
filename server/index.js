@@ -14,6 +14,9 @@ const isTournamentsEnabled =
 const isAchievementsEnabled =
   process.env.REACT_APP_FEATURE_ACHIEVEMENTS?.toLowerCase() === 'true';
 
+const isFantasyEnabled =
+  process.env.REACT_APP_FEATURE_FANTASY?.toLowerCase() === 'true';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -136,6 +139,21 @@ app.get('/', (request, response) => {
 });
 
 app.get('/blocked', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
+app.get('/reset', (request, response) => {
+  if (!isFantasyEnabled) {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();
