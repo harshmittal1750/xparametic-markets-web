@@ -1,7 +1,8 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { getPortfolio } from 'redux/ducks/portfolio';
+import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 import { Container } from 'ui';
 
 import { Button } from 'components';
@@ -22,15 +23,53 @@ function ResetAccount() {
   );
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
+  const {
+    data: leaderboardByTimeframe,
+    isLoading: isLoadingLeaderboardByTimeframe,
+    isFetching: isFetchingLeaderboardByTimeframe
+  } = useGetLeaderboardByTimeframeQuery(
+    {
+      timeframe: 'at',
+      networkId: network.id
+    },
+    {
+      skip: !isLoggedIn
+    }
+  );
+
+  const isLoadingLeaderboard =
+    isLoadingLeaderboardByTimeframe || isFetchingLeaderboardByTimeframe;
+
+  const isMaliciousUser = useMemo(() => {
+    if (!leaderboardByTimeframe) return false;
+
+    const userInLeaderboard = leaderboardByTimeframe.find(
+      row => row.user.toLowerCase() === ethAddress.toLowerCase()
+    );
+
+    if (!userInLeaderboard) return false;
+
+    return userInLeaderboard.malicious === true;
+  }, [ethAddress, leaderboardByTimeframe]);
+
   const redirectToHome = useCallback(() => {
     history.push('/');
   }, [history]);
 
   useEffect(() => {
-    if (!isLoadingLogin && !isLoggedIn) {
+    if (
+      (!isLoadingLogin && !isLoggedIn) ||
+      (!isLoadingLeaderboard && !isMaliciousUser)
+    ) {
       redirectToHome();
     }
-  }, [isLoadingLogin, isLoggedIn, redirectToHome]);
+  }, [
+    isLoadingLeaderboard,
+    isLoadingLogin,
+    isLoggedIn,
+    isMaliciousUser,
+    redirectToHome
+  ]);
 
   useEffect(() => {
     async function fetchPortfolio() {
@@ -42,7 +81,7 @@ function ResetAccount() {
     }
   }, [dispatch, ethAddress, isLoadingLogin, isLoggedIn, network.id]);
 
-  if (isLoadingLogin) {
+  if (isLoadingLogin || isLoadingLeaderboard) {
     return (
       <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
         <span className="spinner--primary" />
