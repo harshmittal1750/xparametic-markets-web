@@ -47,19 +47,23 @@ function ResetAccountMarkets({
     <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1 width-full">
       <h2 className="body semibold text-1">Markets</h2>
       {isLoadingData ? (
-        <div className="flex-row justify-center align-center width-full padding-y-5 padding-x-4">
+        <div className="flex-row justify-center align-center width-full padding-y-6 padding-x-5 margin-bottom-6">
           <span className="spinner--primary" />
         </div>
       ) : null}
-      {!isLoading && isEmptyData ? (
+      {!isLoadingData && isEmptyData ? (
         <AlertMini
-          style={{ border: 'none' }}
+          style={{
+            padding: '25px 16px 25px 16px',
+            marginBottom: 24,
+            border: 'none'
+          }}
           styles="outline"
           variant="information"
           description={emptyDataDescription}
         />
       ) : null}
-      {!isLoading && !isEmptyData ? (
+      {!isLoadingData && !isEmptyData ? (
         <ul className={styles.markets}>
           {data?.map(market => (
             <li key={market.slug}>
