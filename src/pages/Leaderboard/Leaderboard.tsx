@@ -84,7 +84,7 @@ const tabs = [
 
 const columns: LeaderboardTableColumn[] = [
   {
-    title: 'Wallet',
+    title: 'User',
     key: 'wallet',
     align: 'left',
     width: 200,
