@@ -1,9 +1,11 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import { ui } from 'config';
 import isEmpty from 'lodash/isEmpty';
 import { useGetMarketsByIdsQuery } from 'services/Polkamarkets';
+
+import { formatMarketPositions } from 'pages/Portfolio/utils';
 
 import { AlertMini } from 'components';
 
@@ -20,28 +22,41 @@ function ResetAccountMarkets({
 }: ResetAccountMarketsProps) {
   const { network } = useNetwork();
 
-  const { marketsWithActions, marketsWithBonds, isLoading } = useAppSelector(
+  // fetching all marketIds from portfolio positions with outcome shares
+  const { portfolio, actions, marketsWithActions, isLoading } = useAppSelector(
     state => state.polkamarkets
   );
 
-  const { bonds: isLoadingBonds, actions: isLoadingActions } = isLoading;
-  const marketsIds = [...marketsWithActions, ...marketsWithBonds];
+  const { actions: isLoadingActions } = isLoading;
 
   const { data, isLoading: isLoadingMarkets } = useGetMarketsByIdsQuery(
     {
-      ids: marketsIds,
+      ids: marketsWithActions,
       networkId: network.id
     },
     {
-      skip:
-        (ui.portfolio.tabs.reportPositions.enabled && isLoadingBonds) ||
-        isLoadingActions ||
-        isEmpty(marketsIds)
+      skip: isLoadingActions || isEmpty(marketsWithActions)
     }
   );
 
   const isEmptyData = isEmpty(data);
-  const isLoadingData = isLoadingBonds || isLoadingActions || isLoadingMarkets;
+  const isLoadingData = isLoadingActions || isLoadingMarkets;
+
+  const marketPositions = useMemo(
+    () => formatMarketPositions(portfolio, actions, data),
+    [actions, data, portfolio]
+  );
+
+  // filtering positions that have already had an action
+  const positions = marketPositions.rows.filter(position => {
+    return !['lost', 'claimed', 'claimed_voided'].includes(
+      position.result.type
+    );
+  });
+
+  const markets = positions
+    .map(position => position.market)
+    .filter((v, i, a) => a.indexOf(v) === i);
 
   return (
     <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1 width-full">
@@ -65,7 +80,7 @@ function ResetAccountMarkets({
       ) : null}
       {!isLoadingData && !isEmptyData ? (
         <ul className={styles.markets}>
-          {data?.map(market => (
+          {markets?.map(market => (
             <li key={market.slug}>
               <Link className={styles.market} to={`/markets/${market.slug}`}>
                 <img
