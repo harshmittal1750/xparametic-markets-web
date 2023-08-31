@@ -74,7 +74,7 @@ function ResetAccountMarkets({
 
   return (
     <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1 width-full">
-      <h2 className="body semibold text-1">Markets</h2>
+      <h2 className="body semibold text-1">Open Positions</h2>
       {isLoadingData ? (
         <div className="flex-row justify-center align-center width-full padding-y-6 padding-x-5 margin-bottom-6">
           <span className="spinner--primary" />
