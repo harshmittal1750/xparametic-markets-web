@@ -1,13 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import dayjs from 'dayjs';
 import { getPortfolio } from 'redux/ducks/portfolio';
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 import { Container } from 'ui';
 
 import { Button } from 'components';
 
-import { useAppDispatch, useAppSelector, useNetwork } from 'hooks';
+import {
+  useAppDispatch,
+  useAppSelector,
+  useNetwork,
+  usePolkamarketsService
+} from 'hooks';
 
 import styles from './ResetAccount.module.scss';
 import ResetAccountMarkets from './ResetAccountMarkets';
@@ -16,6 +22,7 @@ function ResetAccount() {
   const dispatch = useAppDispatch();
   const history = useHistory();
   const { network } = useNetwork();
+  const polkamarketsService = usePolkamarketsService();
 
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
   const isLoadingLogin = useAppSelector(
@@ -31,6 +38,8 @@ function ResetAccount() {
     },
     [canReset]
   );
+
+  const [hasReset, setHasReset] = useState(false);
 
   const {
     data: leaderboardByTimeframe,
@@ -66,13 +75,37 @@ function ResetAccount() {
   }, [history]);
 
   useEffect(() => {
+    async function fetchHasUserResetBalance() {
+      // chek if user has reset balance over the last hour
+      const response = await polkamarketsService.hasUserResetBalance(
+        dayjs().subtract(1, 'hour').unix()
+      );
+
+      setHasReset(response);
+    }
+
+    if (!isLoadingLogin && isLoggedIn) {
+      fetchHasUserResetBalance();
+    }
+  }, [
+    ethAddress,
+    dispatch,
+    isLoadingLogin,
+    isLoggedIn,
+    network.id,
+    polkamarketsService
+  ]);
+
+  useEffect(() => {
     if (
-      (!isLoadingLogin && !isLoggedIn) ||
-      (!isLoadingLeaderboard && !isMaliciousUser)
+      !(isLoadingLogin || isLoggedIn) ||
+      !(isLoadingLeaderboard || !isMaliciousUser) ||
+      hasReset
     ) {
       redirectToHome();
     }
   }, [
+    hasReset,
     isLoadingLeaderboard,
     isLoadingLogin,
     isLoggedIn,
@@ -114,7 +147,7 @@ function ResetAccount() {
             className={styles.actionButton}
             disabled={!canReset}
           >
-            Reset Here
+            Reset Account
           </Button>
           {!canReset && (
             <p className="caption medium text-2">
