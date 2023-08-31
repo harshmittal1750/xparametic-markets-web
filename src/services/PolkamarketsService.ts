@@ -531,6 +531,38 @@ export default class PolkamarketsService {
     return true;
   }
 
+  public async resetBalance(): Promise<boolean> {
+    if (features.regular.enabled) return true;
+
+    // ensuring user has wallet connected
+    await this.login();
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await this.contracts.erc20.__init__();
+
+    const response = await this.contracts.erc20.resetBalance();
+
+    return response;
+  }
+
+  public async hasUserResetBalance(timestamp: number = 0): Promise<boolean> {
+    if (features.regular.enabled) return false;
+
+    // ensuring user has wallet connected
+    await this.login();
+
+    // TODO improve this: ensuring erc20 contract is initialized
+    // eslint-disable-next-line no-underscore-dangle
+    await this.contracts.erc20.__init__();
+
+    const events = await this.contracts.erc20.burnEvents({
+      address: this.address
+    });
+
+    return events.filter(event => event.timestamp > timestamp).length > 0;
+  }
+
   public async getERC20TokenInfo(erc20ContractAddress: string): Promise<any> {
     if (!erc20ContractAddress) return false;
 
