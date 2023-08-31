@@ -157,7 +157,9 @@ function ResetAccount() {
           )}
         </div>
       </div>
-      <ResetAccountMarkets onChangeCanReset={handleChangeCanReset} />
+      {!canReset && (
+        <ResetAccountMarkets onChangeCanReset={handleChangeCanReset} />
+      )}
     </Container>
   );
 }
