@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { getPortfolio } from 'redux/ducks/portfolio';
@@ -22,6 +22,15 @@ function ResetAccount() {
     state => state.polkamarkets.isLoading.login
   );
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
+
+  const [canReset, setCanReset] = useState(false);
+
+  const handleChangeCanReset = useCallback(
+    value => {
+      if (value !== canReset) setCanReset(value);
+    },
+    [canReset]
+  );
 
   const {
     data: leaderboardByTimeframe,
@@ -89,6 +98,8 @@ function ResetAccount() {
     );
   }
 
+  console.log('canReset', canReset);
+
   return (
     <Container className="flex-column justify-start align-start gap-5 width-full max-width-screen-xl">
       <div className="flex-row justify-space-between align-center gap-6 width-full margin-bottom-4">
@@ -103,7 +114,7 @@ function ResetAccount() {
           </Button>
         </div>
       </div>
-      <ResetAccountMarkets />
+      <ResetAccountMarkets onChangeCanReset={handleChangeCanReset} />
     </Container>
   );
 }

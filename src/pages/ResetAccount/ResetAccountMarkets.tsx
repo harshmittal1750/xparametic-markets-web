@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
@@ -15,10 +15,12 @@ import styles from './ResetAccount.module.scss';
 
 type ResetAccountMarketsProps = {
   emptyDataDescription?: string;
+  onChangeCanReset: (canReset: boolean) => void;
 };
 
 function ResetAccountMarkets({
-  emptyDataDescription = 'No data to show.'
+  emptyDataDescription = 'No data to show.',
+  onChangeCanReset
 }: ResetAccountMarketsProps) {
   const { network } = useNetwork();
 
@@ -57,6 +59,18 @@ function ResetAccountMarkets({
   const markets = positions
     .map(position => position.market)
     .filter((v, i, a) => a.indexOf(v) === i);
+
+  useEffect(() => {
+    function checkIfCanReset() {
+      const canReset = markets.length === 0;
+
+      onChangeCanReset(canReset);
+    }
+
+    if (!isLoadingData) {
+      checkIfCanReset();
+    }
+  }, [data, isLoadingData, markets, onChangeCanReset]);
 
   return (
     <div className="pm-c-leaderboard-stats bg-3 border-radius-medium border-solid border-1 width-full">
