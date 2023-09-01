@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import dayjs from 'dayjs';
+import { changePolkBalance } from 'redux/ducks/polkamarkets';
 import { getPortfolio } from 'redux/ducks/portfolio';
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 import { Container } from 'ui';
@@ -55,11 +56,18 @@ function ResetAccount() {
       setHasReset(true);
       setIsResetting(false);
 
+      await polkamarketsService
+        .getPolkBalance()
+        .then(polkBalance => {
+          dispatch(changePolkBalance(polkBalance));
+        })
+        .catch(() => {});
+
       redirectToHome();
     } catch (err) {
       setIsResetting(false);
     }
-  }, [canReset, polkamarketsService, redirectToHome]);
+  }, [canReset, dispatch, polkamarketsService, redirectToHome]);
 
   const [hasReset, setHasReset] = useState(false);
 
