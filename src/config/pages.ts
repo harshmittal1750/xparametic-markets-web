@@ -1,9 +1,19 @@
 import { lazy } from 'react';
 
+import features from './features';
 import ui from './ui';
 
 const Leaderboard = lazy(() => import('pages/Leaderboard'));
 const pages = {
+  resetAccount: {
+    pathname: '/reset',
+    Component: lazy(() => import('pages/ResetAccount')),
+    exact: true,
+    navigation: false,
+    name: '',
+    meta: null,
+    enabled: features.fantasy.enabled
+  },
   restrictedCountry: {
     pathname: '/blocked',
     Component: lazy(() => import('pages/RestrictedCountry')),
