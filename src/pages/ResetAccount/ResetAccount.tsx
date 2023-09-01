@@ -6,7 +6,7 @@ import { getPortfolio } from 'redux/ducks/portfolio';
 import { useGetLeaderboardByTimeframeQuery } from 'services/Polkamarkets';
 import { Container } from 'ui';
 
-import { Button } from 'components';
+import { ButtonLoading } from 'components/Button';
 
 import {
   useAppDispatch,
@@ -31,6 +31,11 @@ function ResetAccount() {
   const ethAddress = useAppSelector(state => state.polkamarkets.ethAddress);
 
   const [canReset, setCanReset] = useState(false);
+  const [isResetting, setIsResetting] = useState(false);
+
+  const redirectToHome = useCallback(() => {
+    history.push('/');
+  }, [history]);
 
   const handleChangeCanReset = useCallback(
     value => {
@@ -38,6 +43,23 @@ function ResetAccount() {
     },
     [canReset]
   );
+
+  const handleResetAccount = useCallback(async () => {
+    if (!canReset) return;
+    setIsResetting(true);
+
+    try {
+      await polkamarketsService.resetBalance();
+
+      setCanReset(false);
+      setHasReset(true);
+      setIsResetting(false);
+
+      redirectToHome();
+    } catch (err) {
+      setIsResetting(false);
+    }
+  }, [canReset, polkamarketsService, redirectToHome]);
 
   const [hasReset, setHasReset] = useState(false);
 
@@ -69,10 +91,6 @@ function ResetAccount() {
 
     return userInLeaderboard.malicious === true;
   }, [ethAddress, leaderboardByTimeframe]);
-
-  const redirectToHome = useCallback(() => {
-    history.push('/');
-  }, [history]);
 
   useEffect(() => {
     async function fetchHasUserResetBalance() {
@@ -141,14 +159,16 @@ function ResetAccount() {
             order to reset your status, you&apos;ll need to reset your balance
             back to the initial amount.
           </p>
-          <Button
+          <ButtonLoading
             size="sm"
             color="primary"
             className={styles.actionButton}
             disabled={!canReset}
+            loading={isResetting}
+            onClick={handleResetAccount}
           >
             Reset Account
-          </Button>
+          </ButtonLoading>
           {!canReset && (
             <p className="caption medium text-2">
               You need to sell all your positions before you can reset your
