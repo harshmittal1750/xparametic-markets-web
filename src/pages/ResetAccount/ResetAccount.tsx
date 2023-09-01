@@ -125,7 +125,7 @@ function ResetAccount() {
   useEffect(() => {
     if (
       !(isLoadingLogin || isLoggedIn) ||
-      !(isLoadingLeaderboard || !isMaliciousUser) ||
+      !(isLoadingLeaderboard || isMaliciousUser) ||
       hasReset
     ) {
       redirectToHome();
