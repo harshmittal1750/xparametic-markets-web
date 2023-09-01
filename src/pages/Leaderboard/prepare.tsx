@@ -150,17 +150,44 @@ function walletColumnRender({
           interactive
           delayHide={250}
           text={
-            <p className="pm-c-tooltip__text">
-              {`This account is flagged for suspicious activity. `}
-              <a
-                href={ui.leaderboard.wallet.suspiciousActivityUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="pm-c-tooltip__link"
-              >
-                More info
-              </a>
-            </p>
+            isLoggedInUser ? (
+              <>
+                <p className="pm-c-tooltip__text">
+                  Your account was flagged for suspicious activity.
+                </p>
+                <p className="pm-c-tooltip__text">
+                  {`Reset it `}
+                  <a
+                    href="/reset"
+                    rel="noreferrer"
+                    className="pm-c-tooltip__link"
+                  >
+                    here
+                  </a>
+                  {` you're the account owner. `}
+                  <a
+                    href={ui.leaderboard.wallet.suspiciousActivityUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="pm-c-tooltip__link"
+                  >
+                    More info
+                  </a>
+                </p>
+              </>
+            ) : (
+              <p className="pm-c-tooltip__text">
+                {`This account is flagged for suspicious activity. `}
+                <a
+                  href={ui.leaderboard.wallet.suspiciousActivityUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="pm-c-tooltip__link"
+                >
+                  More info
+                </a>
+              </p>
+            )
           }
         >
           <Icon
