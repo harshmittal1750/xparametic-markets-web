@@ -84,7 +84,7 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
     <ul className={styles.root}>
       {outcomesWithShares.map(outcome => (
         <li key={outcome.id} className={styles.rootItem}>
-          <p className={styles.rootItemDescription}>
+          <p className={`${styles.rootItemDescription} notranslate`}>
             {language === 'tr' ? (
               <>
                 Şu anda <strong>{`${roundNumber(outcome.shares, 3)}`}</strong>{' '}
