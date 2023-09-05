@@ -207,7 +207,7 @@ type VolumeColumnRenderArgs = {
 
 function volumeColumnRender({ volume, ticker }: VolumeColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__volume caption semibold text-1">
+    <span className="pm-c-leaderboard-table__volume caption semibold text-1 notranslate">
       {`${volume?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
@@ -224,7 +224,7 @@ function liquidityColumnRender({
   ticker
 }: LiquidityColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
+    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
       {`${liquidity?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
@@ -238,7 +238,7 @@ type EarningsColumnRenderArgs = {
 
 function earningsColumnRender({ earnings, ticker }: EarningsColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1">
+    <span className="pm-c-leaderboard-table__liquidity caption semibold text-1 notranslate">
       {`${earnings?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
@@ -252,7 +252,7 @@ type BalanceColumnRenderArgs = {
 
 function balanceColumnRender({ balance, ticker }: BalanceColumnRenderArgs) {
   return (
-    <span className="pm-c-leaderboard-table__balance caption semibold text-1">
+    <span className="pm-c-leaderboard-table__balance caption semibold text-1 notranslate">
       {`${balance?.toFixed(1)} `}
       <strong className="caption semibold text-3">{ticker}</strong>
     </span>
