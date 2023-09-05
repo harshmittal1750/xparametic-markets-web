@@ -86,7 +86,9 @@ function ResetAccount() {
   );
 
   const isLoadingLeaderboard =
-    isLoadingLeaderboardByTimeframe || isFetchingLeaderboardByTimeframe;
+    isLoadingLeaderboardByTimeframe ||
+    isFetchingLeaderboardByTimeframe ||
+    isLoadingLogin;
 
   const isMaliciousUser = useMemo(() => {
     if (!leaderboardByTimeframe) return false;
