@@ -457,7 +457,7 @@ function topWalletColumnRender({ address, place }: TopWalletRenderArgs) {
   };
 
   return (
-    <div className="pm-c-leaderboard-top-wallets__wallet">
+    <div className="pm-c-leaderboard-top-wallets__wallet notranslate">
       {walletPlace.icon}
       <Link
         className={`caption semibold text-${walletPlace.textColor}`}

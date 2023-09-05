@@ -41,7 +41,8 @@ type TableProps = {
   customAction?: {
     description: string;
     index: number;
-  };
+  },
+  rowClasses?: [string?];
 };
 
 function Table({
@@ -50,7 +51,8 @@ function Table({
   rows,
   isLoadingData = false,
   emptyDataDescription = 'No data to show.',
-  customAction
+  customAction,
+  rowClasses = []
 }: TableProps) {
   const [atTop, setAtTop] = useState(true);
   const [indexInRenderedItems, setIndexInRenderedItems] = useState(false);
@@ -164,9 +166,10 @@ function Table({
               <tr
                 {...props}
                 className={classNames({
+                  ...Object.fromEntries(rowClasses.map(c => [c, true])),
                   'bg-1 bg-3-on-hover': !row.highlight,
                   'bg-primary-10': row.highlight,
-                  'border-solid-top border-1': true
+                  'border-solid-top border-1': true,
                 })}
               />
             );
