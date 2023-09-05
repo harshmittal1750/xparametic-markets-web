@@ -95,7 +95,7 @@ export default function ProfileSummary({
                 {!!data?.firstPositionAt && (
                   <>
                     First prediction:{' '}
-                    <span className="pm-p-profile-summary__history-accent">
+                    <span className="pm-p-profile-summary__history-accent notranslate">
                       {fromTimestampToCustomFormatDate(
                         data.firstPositionAt * 1000,
                         'MMMM DD, YYYY'
