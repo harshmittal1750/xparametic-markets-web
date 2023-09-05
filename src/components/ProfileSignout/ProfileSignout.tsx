@@ -79,7 +79,7 @@ export default function ProfileSignout() {
         />
         Sign Out
       </Button>
-      <div className="pm-c-wallet-info__profile">
+      <div className="pm-c-wallet-info__profile notranslate">
         <Link
           to={`/user/${
             (features.fantasy.enabled &&

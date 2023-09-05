@@ -103,7 +103,7 @@ export default function OutcomeItem({
             as="p"
             scale="tiny"
             fontWeight="semibold"
-            className={`pm-c-market-outcomes__item-odd ${outcomeItemClasses.secondary}`}
+            className={`pm-c-market-outcomes__item-odd ${outcomeItemClasses.secondary} notranslate`}
           >
             {secondary.text || (
               <>
