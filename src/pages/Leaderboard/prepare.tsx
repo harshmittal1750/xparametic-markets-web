@@ -413,7 +413,7 @@ function prepareLeaderboardYourStatsRow(rows: LeaderboardTableRow[]) {
         value:
           yourStats && yourStats.earnings
             ? {
-                liquidity: yourStats.earnings.earnings,
+                earnings: yourStats.earnings.earnings,
                 ticker: yourStats.earnings.ticker
               }
             : null,
