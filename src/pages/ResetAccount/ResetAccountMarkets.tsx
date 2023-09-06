@@ -30,6 +30,7 @@ function ResetAccountMarkets({
   );
 
   const { actions: isLoadingActions } = isLoading;
+  const { portfolio: isLoadingPortfolio } = isLoading;
 
   const { data, isLoading: isLoadingMarkets } = useGetMarketsByIdsQuery(
     {
@@ -42,7 +43,7 @@ function ResetAccountMarkets({
   );
 
   const isEmptyData = isEmpty(data);
-  const isLoadingData = isLoadingActions || isLoadingMarkets;
+  const isLoadingData = isLoadingActions || isLoadingMarkets || isLoadingPortfolio;
 
   const marketPositions = useMemo(
     () => formatMarketPositions(portfolio, actions, data),
