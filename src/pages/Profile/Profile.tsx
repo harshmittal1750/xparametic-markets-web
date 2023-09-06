@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { features, ui } from 'config';
@@ -10,8 +10,9 @@ import {
 import type { LeaderboardTimeframe } from 'types/leaderboard';
 import { Container } from 'ui';
 
-import { useFantasyTokenTicker, useNetwork } from 'hooks';
+import { useFantasyTokenTicker, useLanguage, useNetwork } from 'hooks';
 
+import { getPortfolioFeedByAddressTransformResponse } from './prepare';
 import ProfileAchievements from './ProfileAchievements';
 import ProfileActivities from './ProfileActivities';
 import ProfileError from './ProfileError';
@@ -26,6 +27,8 @@ export default function Profile() {
   const { address } = useParams<Record<'address', string>>();
   const { network } = useNetwork();
   const fantasyTokenTicker = useFantasyTokenTicker() || '€';
+  const language = useLanguage();
+
   const portfolio = useGetPortfolioByAddressQuery({
     address,
     networkId: network.id
@@ -35,10 +38,21 @@ export default function Profile() {
     networkId: network.id,
     timeframe
   });
-  const activity = useGetPortfolioFeedByAddressQuery({
+  const portfolioFeed = useGetPortfolioFeedByAddressQuery({
     address,
     networkId: network.id
   });
+
+  const activity = useMemo(
+    () => ({
+      ...portfolioFeed,
+      data: getPortfolioFeedByAddressTransformResponse(
+        portfolioFeed.data || [],
+        language
+      )
+    }),
+    [language, portfolioFeed]
+  );
 
   if (
     [portfolio, activity].some(
