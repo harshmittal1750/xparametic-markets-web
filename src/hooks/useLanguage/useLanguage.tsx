@@ -1,30 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
 
-import type { LanguageCode } from './useLanguage.type';
+import isEmpty from 'lodash/isEmpty';
 
-function useLanguage(): LanguageCode {
-  const [language, setLanguage] = useState<string>(
-    document.documentElement.lang
-  );
+import { LanguageContext } from './useLanguage.context';
 
-  useEffect(() => {
-    function updateLanguage() {
-      setLanguage(document.documentElement.lang);
-    }
+function useLanguage() {
+  const context = useContext(LanguageContext);
 
-    const observer = new MutationObserver(updateLanguage);
+  if (isEmpty(context)) {
+    throw new Error('useLanguage must be used within a LanguageProvider');
+  }
 
-    observer.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['lang']
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
-  return language as LanguageCode;
+  return context.language;
 }
 
 export default useLanguage;
