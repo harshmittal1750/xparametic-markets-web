@@ -113,7 +113,9 @@ const getFeedActionTitle = (action: FeedAction, language: LanguageCode) => {
     claim_winnings: (_shares: number, _outcomeTitle?: string) =>
       'Won a prediction',
     create_market: (_shares: number, _outcomeTitle?: string) =>
-      'Created a market'
+      'Created a market',
+    upvote: (_shares: number, _outcomeTitle?: string) => 'Upvoted a market',
+    downvote: (_shares: number, _outcomeTitle?: string) => 'Downvoted a market'
   }[action];
 };
 
@@ -123,7 +125,9 @@ const feedAccentColors: { [key: string]: FeedActionAccentColor } = {
   add_liquidity: 'primary',
   remove_liquidity: 'danger',
   claim_winnings: 'success',
-  create_market: 'primary'
+  create_market: 'primary',
+  upvote: 'success',
+  downvote: 'danger'
 };
 
 function getPortfolioFeedByAddressTransformResponse(
