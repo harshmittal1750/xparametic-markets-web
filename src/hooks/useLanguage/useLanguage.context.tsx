@@ -1,5 +1,7 @@
 import { useState, useEffect, createContext, ReactNode } from 'react';
 
+import dayjs from 'dayjs';
+
 import type { LanguageContextState, LanguageCode } from './useLanguage.type';
 
 export const LanguageContext = createContext<LanguageContextState>(
@@ -15,9 +17,20 @@ function LanguageProvider({ children }: LanguageProviderProps) {
     document.documentElement.lang
   );
 
+  const [loadedLanguages, setLoadedLanguages] = useState<string[]>(['en']);
+
   useEffect(() => {
+    function loadLanguage(lang: string) {
+      if (!loadedLanguages.includes(lang)) {
+        import(`dayjs/locale/${lang}`);
+        setLoadedLanguages([...loadedLanguages, lang]);
+      }
+    }
+
     function updateLanguage() {
+      loadLanguage(document.documentElement.lang);
       setLanguage(document.documentElement.lang);
+      dayjs.locale(document.documentElement.lang);
     }
 
     const observer = new MutationObserver(updateLanguage);
@@ -30,7 +43,7 @@ function LanguageProvider({ children }: LanguageProviderProps) {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [loadedLanguages]);
 
   return (
     <LanguageContext.Provider
