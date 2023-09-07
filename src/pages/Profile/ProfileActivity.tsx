@@ -5,6 +5,8 @@ import { FeedActivity } from 'types/portfolio';
 
 import { Text } from 'components/new';
 
+import { useLanguage } from 'hooks';
+
 type ProfileActivityProps = {
   activity: FeedActivity;
   backgroundColor: '2' | '3';
@@ -60,7 +62,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
           transform="uppercase"
           color="3"
         >
-          {relativeTimeFromNow(timestamp * 1000)}
+          {relativeTimeFromNow(timestamp * 1000, useLanguage())}
         </Text>
       </div>
     </Link>

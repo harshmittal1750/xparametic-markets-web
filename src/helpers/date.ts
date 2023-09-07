@@ -24,7 +24,7 @@ function toUTC(date: any, formatTemplate: string) {
   return utcDate;
 }
 
-function relativeTimeFromNow(timestamp: number) {
+function relativeTimeFromNow(timestamp: number, language: string) {
   dayjs.extend(relativeTime);
   dayjs.extend(updateLocale);
 
@@ -48,7 +48,13 @@ function relativeTimeFromNow(timestamp: number) {
 
   const date = fromTimestampToDate(timestamp);
 
-  return dayjs(date).fromNow();
+  if (language !== 'en') {
+    // loading dayjs locale
+    // eslint-disable-next-line global-require, import/no-dynamic-require
+    require(`dayjs/locale/${language}`);
+  }
+
+  return dayjs(date).locale(language).fromNow();
 }
 
 function relativeTimeToX(timestamp: number) {
