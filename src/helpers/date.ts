@@ -48,12 +48,6 @@ function relativeTimeFromNow(timestamp: number, language: string) {
 
   const date = fromTimestampToDate(timestamp);
 
-  if (language !== 'en') {
-    // loading dayjs locale
-    // eslint-disable-next-line global-require, import/no-dynamic-require
-    require(`dayjs/locale/${language}`);
-  }
-
   return dayjs(date).locale(language).fromNow();
 }
 
