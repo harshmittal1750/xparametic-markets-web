@@ -103,9 +103,13 @@ function preparePredictionStatisticsRow({
 const getFeedActionTitle = (action: FeedAction, language: LanguageCode) => {
   return {
     buy: (shares: number, outcomeTitle?: string) =>
-      `Bought ${shares} shares of outcome "${outcomeTitle}"`,
+      language === 'tr'
+        ? `${shares} adet "${outcomeTitle}" sonucu hisse senedi alındı`
+        : `Bought ${shares} shares of outcome "${outcomeTitle}"`,
     sell: (shares: number, outcomeTitle?: string) =>
-      `Sold ${shares} shares of outcome "${outcomeTitle}"`,
+      language === 'tr'
+        ? `${shares} adet "${outcomeTitle}" sonucu hisse senedi satıldı`
+        : `Sold ${shares} shares of outcome "${outcomeTitle}"`,
     add_liquidity: (shares: number, _outcomeTitle?: string) =>
       `Added ${shares} liquidity shares`,
     remove_liquidity: (shares: number, _outcomeTitle?: string) =>
