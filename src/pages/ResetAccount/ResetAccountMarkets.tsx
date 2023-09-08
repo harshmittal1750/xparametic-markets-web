@@ -43,7 +43,8 @@ function ResetAccountMarkets({
   );
 
   const isEmptyData = isEmpty(data);
-  const isLoadingData = isLoadingActions || isLoadingMarkets || isLoadingPortfolio;
+  const isLoadingData =
+    isLoadingActions || isLoadingMarkets || isLoadingPortfolio;
 
   const marketPositions = useMemo(
     () => formatMarketPositions(portfolio, actions, data),

@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-type LanguageCode =
+export type LanguageCode =
   | 'aa'
   | 'ab'
   | 'af'
@@ -156,4 +155,6 @@ type LanguageCode =
   | 'zh'
   | 'zu';
 
-export type { LanguageCode };
+export type LanguageContextState = {
+  language: LanguageCode;
+};

@@ -25,7 +25,7 @@ export default function ProfileActivities({
             );
           return (
             <ScrollableArea
-              className="flex-column notranslate"
+              className="flex-column"
               scrollbarSize="sm"
               style={{ height: listHeight }}
               fullwidth
