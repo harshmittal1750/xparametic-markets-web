@@ -166,7 +166,7 @@ export default function OutcomeItem({
           rows={[
             {
               key: 'invested',
-              title: 'Invested',
+              title: 'Your Shares',
               value: invested || 0
             }
           ]}
