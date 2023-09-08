@@ -104,7 +104,8 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
                 hissesine sahipsiniz ve bunun değeri{' '}
                 <strong>
                   {outcome.value.toFixed(3)} {token.symbol}
-                </strong> denk geliyor
+                </strong>{' '}
+                denk geliyor
               </>
             ) : (
               <>

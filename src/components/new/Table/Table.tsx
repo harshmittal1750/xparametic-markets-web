@@ -41,7 +41,7 @@ type TableProps = {
   customAction?: {
     description: string;
     index: number;
-  },
+  };
   rowClasses?: [string?];
 };
 
@@ -169,7 +169,7 @@ function Table({
                   ...Object.fromEntries(rowClasses.map(c => [c, true])),
                   'bg-1 bg-3-on-hover': !row.highlight,
                   'bg-primary-10': row.highlight,
-                  'border-solid-top border-1': true,
+                  'border-solid-top border-1': true
                 })}
               />
             );
