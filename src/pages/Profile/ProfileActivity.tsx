@@ -42,7 +42,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
           fontSize="body-4"
           fontWeight="semibold"
           transform="uppercase"
-          className={`pm-c-activity__action-title--${accentColor}`}
+          className={`pm-c-activity__action-title--${accentColor} notranslate`}
         >
           {actionTitle}
         </Text>
@@ -61,6 +61,7 @@ function ProfileActivity({ activity, backgroundColor }: ProfileActivityProps) {
           fontWeight="semibold"
           transform="uppercase"
           color="3"
+          className="notranslate"
         >
           {relativeTimeFromNow(timestamp * 1000, useLanguage())}
         </Text>
