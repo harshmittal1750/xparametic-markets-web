@@ -22,7 +22,7 @@ function LanguageProvider({ children }: LanguageProviderProps) {
   useEffect(() => {
     function loadLanguage(lang: string) {
       if (!loadedLanguages.includes(lang)) {
-        import(`dayjs/locale/${lang}`);
+        import(`dayjs/locale/${lang}.js`);
         setLoadedLanguages([...loadedLanguages, lang]);
       }
     }
