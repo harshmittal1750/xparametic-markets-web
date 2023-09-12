@@ -5,6 +5,7 @@ export type {
 } from './environment';
 
 export { default as ui } from './ui';
+export type { Providers } from './ui';
 
 export { default as currencies } from './currencies';
 
