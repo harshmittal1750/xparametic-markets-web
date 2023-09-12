@@ -136,7 +136,7 @@ function VoteModal({
   const handleUpvote = useCallback(async () => {
     const { upvoted } = currentUserVote;
 
-    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsService = new PolkamarketsService();
     const polkamarketsApiService = new PolkamarketsApiService();
 
     if (upvoted) {
@@ -169,7 +169,7 @@ function VoteModal({
   const handleDownvote = useCallback(async () => {
     const { downvoted } = currentUserVote;
 
-    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsService = new PolkamarketsService();
     const polkamarketsApiService = new PolkamarketsApiService();
 
     if (downvoted) {

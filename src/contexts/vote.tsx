@@ -31,7 +31,7 @@ function VoteProvider({ children }) {
 
   useEffect(() => {
     async function getUserRequiredPolkBalance() {
-      const polkamarketsService = new PolkamarketsService(networkConfig);
+      const polkamarketsService = new PolkamarketsService();
 
       const response =
         await polkamarketsService.getMinimumVotingRequiredBalance();

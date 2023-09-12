@@ -36,26 +36,21 @@ export default class PolkamarketsService {
     return realitioLib.answerToBytes32(Number(int), { type: 'int' });
   }
 
-  constructor(
-    {
-      PREDICTION_MARKET_CONTRACT_ADDRESS,
-      ERC20_CONTRACT_ADDRESS,
-      REALITIO_ERC20_CONTRACT_ADDRESS,
-      ACHIEVEMENTS_CONTRACT_ADDRESS,
-      VOTING_CONTRACT_ADDRESS,
-      WEB3_PROVIDER,
-      WEB3_EVENTS_PROVIDER
-    }: NetworkConfig = environment.NETWORKS[environment.NETWORK_ID || 42]
-  ) {
-    this.predictionMarketContractAddress = PREDICTION_MARKET_CONTRACT_ADDRESS;
-    this.erc20ContractAddress = ERC20_CONTRACT_ADDRESS;
-    this.realitioErc20ContractAddress = REALITIO_ERC20_CONTRACT_ADDRESS;
-    this.achievementsContractAddress = ACHIEVEMENTS_CONTRACT_ADDRESS;
-    this.votingContractAddress = VOTING_CONTRACT_ADDRESS;
+  constructor() {
+    this.predictionMarketContractAddress =
+      '0x6AA72e36d97F8b5B76C78597b1453A207c9289E5';
+    this.erc20ContractAddress = '0x16878fb876D4AA99F86f9778E44a1bdE4f11E3B7';
+    this.realitioErc20ContractAddress =
+      '0x997f7f87fBCb14308F807fE0Fa885b5F25306C86';
+    this.achievementsContractAddress =
+      '0x89675c45ad2894Ca0C83Dd2497a812E5E74a6356';
+    this.votingContractAddress = '0x7dac4883231Af09A6A4C4819F2F5d9FF21A336cc';
 
     this.polkamarkets = new polkamarketsjs.Application({
-      web3Provider: WEB3_PROVIDER,
-      web3EventsProvider: WEB3_EVENTS_PROVIDER
+      web3Provider:
+        'https://goerli.infura.io/v3/e06345ef5db24fc5b28b483ed432f1ec',
+      web3EventsProvider:
+        'https://goerli.infura.io/v3/e06345ef5db24fc5b28b483ed432f1ec'
     });
 
     this.polkamarkets.start();

@@ -65,7 +65,7 @@ function ReportFormDetails() {
   // UGLY WORKAROUND! TODO: get data from api
   useEffect(() => {
     async function getOutcomesBonds() {
-      const polkamarketsService = new PolkamarketsService(networkConfig);
+      const polkamarketsService = new PolkamarketsService();
       // await polkamarketsService.login();
 
       const response = await polkamarketsService.getQuestionBonds(questionId);

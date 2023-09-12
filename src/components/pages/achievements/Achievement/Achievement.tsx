@@ -66,7 +66,7 @@ function Achievement({
   async function claimNFT() {
     setIsClaimingNFT(true);
 
-    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsService = new PolkamarketsService();
 
     try {
       await polkamarketsService.login();

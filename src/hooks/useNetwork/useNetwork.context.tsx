@@ -98,7 +98,7 @@ function NetworkProvider({ children }: NetworkProviderProps) {
     environment.NETWORKS[network.id] || DEFAULT_NETWORK_CONFIG;
 
   const polkamarketService = useMemo(
-    () => new PolkamarketsService(networkConfig),
+    () => new PolkamarketsService(),
     [networkConfig]
   );
 

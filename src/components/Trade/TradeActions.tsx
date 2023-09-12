@@ -60,9 +60,8 @@ function TradeActions() {
   const { refreshBalance } = useERC20Balance(address);
 
   async function reloadMarketPrices() {
-    const marketData = await new PolkamarketsService(
-      networkConfig
-    ).getMarketData(marketId);
+    const marketData = await new PolkamarketsService().getMarketData(marketId);
+    // networkConfig
 
     marketData.outcomes.forEach((outcomeData, outcomeId) => {
       const data = { price: outcomeData.price, shares: outcomeData.shares };

@@ -40,7 +40,7 @@ function ReportFormInput() {
   const timeLeftUntilDecision = relativeTimeToX(finalizeTs * 1000);
 
   async function fetchQuestion() {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsService = new PolkamarketsService();
     const question = await polkamarketsService.getQuestion(questionId);
     dispatch(changeQuestion(question));
     dispatch(changeMarketQuestion({ marketId: id, question }));

@@ -75,7 +75,7 @@ function Achievements() {
 
   // Memoized callbacks
   const getUserAchievements = useCallback(async () => {
-    const polkamarketsService = new PolkamarketsService(networkConfig);
+    const polkamarketsService = new PolkamarketsService();
     await polkamarketsService.login();
 
     const response = await polkamarketsService.getAchievements();

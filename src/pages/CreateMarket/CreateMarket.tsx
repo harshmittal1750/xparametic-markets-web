@@ -19,7 +19,7 @@ function CreateMarket() {
 
   useEffect(() => {
     (async function getMinimumRequiredBalance() {
-      const polkamarketsService = new PolkamarketsService(networkConfig);
+      const polkamarketsService = new PolkamarketsService();
 
       const response = await polkamarketsService.getMinimumRequiredBalance();
       setRequiredBalance(response);

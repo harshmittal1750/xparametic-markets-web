@@ -20,10 +20,7 @@ function PolkamarketsServiceProvider({
 }: PolkamarketsServiceProviderProps) {
   const { networkConfig } = useNetwork();
 
-  const instance = useMemo(
-    () => new PolkamarketsService(networkConfig),
-    [networkConfig]
-  );
+  const instance = useMemo(() => new PolkamarketsService(), [networkConfig]);
 
   return (
     <PolkamarketsServiceContext.Provider

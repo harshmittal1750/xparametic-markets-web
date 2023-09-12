@@ -102,7 +102,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
       const isAddress = /0[x, X][a-fA-F0-9]{40}/.test(text);
 
       if (isAddress) {
-        const polkamarketsService = new PolkamarketsService(networkConfig);
+        const polkamarketsService = new PolkamarketsService();
         // fetching token info from blockchain
         const tokenInfo = await polkamarketsService.getERC20TokenInfo(text);
 
