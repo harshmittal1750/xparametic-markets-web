@@ -33,7 +33,7 @@ function HeaderNavModal({
   return (
     <>
       <Button size="xs" variant="ghost" onClick={() => setShow(true)}>
-        <Icon name="Menu" size="lg" />
+        <Icon name="Menu" size="lg" title="Open Menu" />
       </Button>
       <Modal
         show={show}
@@ -50,7 +50,7 @@ function HeaderNavModal({
             onClick={handleHide}
             className={headerNavClasses.hide}
           >
-            <Icon name="Cross" size="lg" />
+            <Icon name="Cross" size="lg" title="Close Menu" />
           </Button>
         </header>
         {typeof children === 'function' ? children(handleHide) : children}

@@ -64,7 +64,7 @@ export default function Banner({
       {onHide && (
         <Adornment $edge="end" className={bannerClasses.actions}>
           <Button size="xs" variant="ghost" onClick={onHide}>
-            <Icon name="Cross" />
+            <Icon name="Cross" title="Close" />
           </Button>
         </Adornment>
       )}
