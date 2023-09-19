@@ -1,6 +1,10 @@
 import { useCallback } from 'react';
 
-import { marketsSelector } from 'redux/ducks/markets';
+import {
+  getFavoriteMarkets,
+  getMarkets,
+  marketsSelector
+} from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
 
 import useAppSelector from './useAppSelector';
@@ -27,17 +31,14 @@ export default function useMarkets() {
       volume: filtersState.dropdowns.volume as string,
       liquidity: filtersState.dropdowns.liquidity as string,
       endDate: filtersState.dropdowns.endDate as string,
-      categories: filtersState.dropdowns.categories as string[]
+      categories: filtersState.dropdowns.categories as string[],
+      tournaments: filtersState.dropdowns.tournaments as string[]
     }
   });
 
   return {
     data: markets,
     fetch: useCallback(async () => {
-      const { getFavoriteMarkets, getMarkets } = await import(
-        'redux/ducks/markets'
-      );
-
       dispatch(getMarkets('open'));
       dispatch(getMarkets('closed'));
       dispatch(getMarkets('resolved'));
