@@ -7,5 +7,5 @@ export type Tournament = {
   title: string;
   description: string;
   imageUrl: string | null;
-  markets?: Pick<Market, 'title' | 'imageUrl' | 'slug'>[];
+  markets?: Pick<Market, 'id' | 'title' | 'imageUrl' | 'slug'>[];
 };
