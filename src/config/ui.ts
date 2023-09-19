@@ -61,6 +61,18 @@ const ui = {
   },
   logo: environment.UI_LOGO,
   filters: {
+    favorites: {
+      enabled: !isTrue(environment.UI_FILTERS_FAVORITES_DISABLED)
+    },
+    states: {
+      enabled: !isTrue(environment.UI_FILTERS_STATE_DISABLED)
+    },
+    volume: {
+      enabled: !isTrue(environment.UI_FILTERS_VOLUME_DISABLED)
+    },
+    endDate: {
+      enabled: !isTrue(environment.UI_FILTERS_END_DATE_DISABLED)
+    },
     categories: {
       enabled: !isTrue(environment.UI_FILTERS_CATEGORIES_DISABLED),
       options: environment.UI_FILTERS_CATEGORIES?.split(',')
