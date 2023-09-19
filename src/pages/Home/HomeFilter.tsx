@@ -6,6 +6,7 @@ import {
   UseFormSetValue
 } from 'react-hook-form';
 
+import { ui } from 'config';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   Adornment,
@@ -244,12 +245,14 @@ export default function HomeFilter({
               </Adornment>
             </ListItem>
           )}
-          <ListItem>
-            <ListItemText>{filters.toggles.favorites.title}</ListItemText>
-            <Adornment $edge="end">
-              <ToggleSwitch id="favorites" {...register('favorites')} />
-            </Adornment>
-          </ListItem>
+          {ui.filters.favorites.enabled ? (
+            <ListItem>
+              <ListItemText>{filters.toggles.favorites.title}</ListItemText>
+              <Adornment $edge="end">
+                <ToggleSwitch id="favorites" {...register('favorites')} />
+              </Adornment>
+            </ListItem>
+          ) : null}
           {Object.keys(filters.dropdowns).map(dropdrown => (
             <Fragment key={dropdrown}>
               <Divider />
