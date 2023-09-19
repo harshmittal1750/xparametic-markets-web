@@ -93,7 +93,7 @@ const filters: Filters = {
   toggles: {
     favorites: {
       title: 'Favorites',
-      enabled: true
+      enabled: ui.filters.favorites.enabled
     }
   },
   dropdowns: {
@@ -114,7 +114,7 @@ const filters: Filters = {
         }
       ],
       multiple: true,
-      enabled: true
+      enabled: ui.filters.states.enabled
     },
     networks: {
       title: 'Network',
@@ -141,7 +141,7 @@ const filters: Filters = {
       title: 'Volume',
       options: defaultRangeOptions,
       multiple: false,
-      enabled: true
+      enabled: ui.filters.volume.enabled
     },
     liquidity: {
       title: 'Liquidity',
@@ -159,7 +159,7 @@ const filters: Filters = {
         }
       ],
       multiple: false,
-      enabled: true
+      enabled: ui.filters.endDate.enabled
     },
     categories: {
       title: 'Category',
