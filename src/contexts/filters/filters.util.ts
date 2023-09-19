@@ -82,7 +82,7 @@ const defaultCategoriesOptions: Option[] = [
   }
 ];
 
-const categoriesOptionsFromEnvironment = ui.filters.categories?.map(
+const categoriesOptionsFromEnvironment = ui.filters.categories.options?.map(
   category => ({
     label: category,
     value: category
@@ -165,7 +165,7 @@ const filters: Filters = {
       title: 'Category',
       options: categoriesOptionsFromEnvironment || defaultCategoriesOptions,
       multiple: true,
-      enabled: true
+      enabled: ui.filters.categories.enabled
     }
   }
 };
