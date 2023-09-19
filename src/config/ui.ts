@@ -61,7 +61,10 @@ const ui = {
   },
   logo: environment.UI_LOGO,
   filters: {
-    categories: environment.UI_FILTERS_CATEGORIES?.split(','),
+    categories: {
+      enabled: !isTrue(environment.UI_FILTERS_CATEGORIES_DISABLED),
+      options: environment.UI_FILTERS_CATEGORIES?.split(',')
+    },
     tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
   },
   selectTokenModal: {
