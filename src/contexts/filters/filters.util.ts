@@ -1,6 +1,7 @@
 import { environment, features, ui } from 'config';
 import dayjs from 'dayjs';
 import set from 'lodash/set';
+import type { GetTournamentsData } from 'services/Polkamarkets/types';
 import type { Network } from 'types/network';
 
 import type { Filters, FiltersState, Option } from './filters.type';
@@ -166,6 +167,12 @@ const filters: Filters = {
       options: categoriesOptionsFromEnvironment || defaultCategoriesOptions,
       multiple: true,
       enabled: ui.filters.categories.enabled
+    },
+    tournaments: {
+      title: 'Tournament',
+      options: [],
+      multiple: true,
+      enabled: ui.filters.tournaments.enabled
     }
   }
 };
@@ -179,6 +186,20 @@ function addNetworks(networks: Network[]): Filters {
   return set(filters, 'dropdowns.networks.options', networksOptions);
 }
 
+function addTournaments(tournaments: GetTournamentsData | undefined): Filters {
+  const tournamentsOptions =
+    tournaments?.map(tournament => ({
+      label: tournament.title,
+      value: `${tournament.networkId}${
+        tournament.markets
+          ? `,${tournament.markets.map(market => market.id).join(',')}`
+          : ''
+      }`
+    })) || [];
+
+  return set(filters, 'dropdowns.tournaments.options', tournamentsOptions);
+}
+
 const filtersInitialState: FiltersState = {
   toggles: {
     favorites: false
@@ -190,8 +211,9 @@ const filtersInitialState: FiltersState = {
     volume: 'any',
     liquidity: 'any',
     endDate: 'any',
-    categories: []
+    categories: [],
+    tournaments: []
   }
 };
 
-export { filters, addNetworks, filtersInitialState };
+export { filters, addNetworks, addTournaments, filtersInitialState };

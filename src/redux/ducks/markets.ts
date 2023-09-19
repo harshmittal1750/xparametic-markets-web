@@ -35,6 +35,21 @@ const isMarketTokenFantasy = (market: Market) => {
 const isMarketFromAvailableNetwork = (market: Market) =>
   AVAILABLE_NETWORKS_IDS.includes(`${market.networkId}`);
 
+const parseTournament = (tournament: string) => {
+  const parts = tournament.split(',');
+  if (parts.length >= 1) {
+    const networkId = parts[0];
+    const markets = parts.slice(1);
+
+    return {
+      networkId,
+      markets: markets.length > 0 ? markets : []
+    };
+  }
+
+  return null;
+};
+
 export interface MarketsIntialState {
   markets: Market[];
   isLoading: {
@@ -257,28 +272,32 @@ export {
 type MarketsSelectorArgs = {
   state: MarketsIntialState;
   filters: {
-    favorites: {
+    favorites?: {
       checked: boolean;
       marketsByNetwork: FavoriteMarketsByNetwork;
     };
-    states: string[];
+    states?: string[];
     networks: string[];
     tokens: string[];
-    volume: string;
+    volume?: string;
     liquidity: string;
-    endDate: string;
-    categories: string[];
+    endDate?: string;
+    categories?: string[];
+    tournaments?: string[];
   };
 };
 
 export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   const regExpFromSearchQuery = new RegExp(state.searchQuery, 'i');
 
-  const filterByFavorite = (id, networkId) =>
-    filters.favorites.checked
+  const filterByFavorite = (id, networkId) => {
+    if (!filters.favorites) return true;
+
+    return filters.favorites.checked
       ? filters.favorites.marketsByNetwork[`${networkId}`] &&
-        filters.favorites.marketsByNetwork[`${networkId}`].includes(id)
+          filters.favorites.marketsByNetwork[`${networkId}`].includes(id)
       : true;
+  };
 
   const filterByNetworkId = networkId =>
     !isEmpty(filters.networks)
@@ -307,8 +326,13 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     return false;
   };
 
-  const filterByState = marketState =>
-    !isEmpty(filters.states) ? filters.states.includes(marketState) : true;
+  const filterByState = marketState => {
+    if (!filters.states) return true;
+
+    return !isEmpty(filters.states)
+      ? filters.states.includes(marketState)
+      : true;
+  };
 
   const filterByRange = (value: number, range: string) => {
     const { min, max } = toMinMax(range);
@@ -321,6 +345,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   };
 
   const filterByVolume = (volume: number) => {
+    if (!filters.volume) return true;
+
     if (filters.volume !== 'any') {
       return filterByRange(volume, filters.volume);
     }
@@ -337,6 +363,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   };
 
   const filterByEndDate = (expiresAt: string) => {
+    if (!filters.endDate) return true;
+
     if (filters.endDate === 'custom') {
       return true;
     }
@@ -353,15 +381,41 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     return true;
   };
 
-  const filterByCategory = (category: string) =>
-    !isEmpty(filters.categories)
+  const filterByCategory = (category: string) => {
+    if (!filters.categories) return true;
+
+    return !isEmpty(filters.categories)
       ? filters.categories
           .map(c => c.toLowerCase())
           .includes(category.toLowerCase())
       : true;
+  };
 
   // const filterByisEndingSoon = expiresAt =>
   //   inRange(dayjs().diff(dayjs(expiresAt), 'hours'), -24, 1);
+
+  const filterByTournament = (networkId: string, marketId: string): boolean => {
+    if (!filters.tournaments) return true;
+
+    if (isEmpty(filters.tournaments)) {
+      return true;
+    }
+
+    const marketInTournament = filters.tournaments.some(tournament => {
+      const parsedTournament = parseTournament(tournament);
+
+      if (parsedTournament) {
+        return (
+          parsedTournament.networkId === networkId.toString() &&
+          parsedTournament.markets.includes(marketId.toString())
+        );
+      }
+
+      return false;
+    });
+
+    return marketInTournament;
+  };
 
   function sorted(markets: Market[]) {
     if (state.sorter.sortBy) {
@@ -394,7 +448,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
         filterByVolume(market.volumeEur) &&
         filterByLiquidity(market.liquidityEur) &&
         filterByEndDate(market.expiresAt) &&
-        filterByCategory(market.category)
+        filterByCategory(market.category) &&
+        filterByTournament(market.networkId, market.id)
     )
   );
 };

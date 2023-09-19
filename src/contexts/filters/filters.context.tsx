@@ -1,6 +1,9 @@
 import { createContext, useCallback, useMemo, useReducer } from 'react';
 
+import { ui } from 'config';
+import merge from 'lodash/merge';
 import pickBy from 'lodash/pickBy';
+import { useGetTournamentsQuery } from 'services/Polkamarkets';
 
 import { useNetworks } from 'contexts/networks';
 
@@ -9,13 +12,13 @@ import {
   FiltersActions,
   FiltersContextState,
   UpdateTogglePayload,
-  UpdateDropdownPayload,
-  Dropdown,
-  Dropdowns,
-  Toggles,
-  Toggle
+  UpdateDropdownPayload
 } from './filters.type';
-import { addNetworks, filtersInitialState } from './filters.util';
+import {
+  addNetworks,
+  addTournaments,
+  filtersInitialState
+} from './filters.util';
 
 const FiltersContext = createContext<FiltersContextState>(
   {} as FiltersContextState
@@ -24,7 +27,20 @@ const FiltersContext = createContext<FiltersContextState>(
 function FiltersProvider({ children }) {
   const { networks } = useNetworks();
 
+  const { data: tournaments } = useGetTournamentsQuery(undefined, {
+    skip: !ui.filters.tournaments.enabled
+  });
+
   const filtersWithNetworks = useMemo(() => addNetworks(networks), [networks]);
+  const filtersWithTournaments = useMemo(
+    () => addTournaments(tournaments),
+    [tournaments]
+  );
+
+  const filters = useMemo(
+    () => merge(filtersWithNetworks, filtersWithTournaments),
+    [filtersWithNetworks, filtersWithTournaments]
+  );
 
   const [filtersState, dispatch] = useReducer(
     filtersReducer,
@@ -48,20 +64,24 @@ function FiltersProvider({ children }) {
     []
   );
 
+  const toggles = pickBy(filters.toggles, value => value.enabled);
+  const dropdowns = pickBy(filters.dropdowns, value => value.enabled);
+
   return (
     <FiltersContext.Provider
       value={{
         filters: {
-          toggles: pickBy(
-            filtersWithNetworks.toggles,
-            value => value.enabled
-          ) as Record<Toggles, Toggle>,
-          dropdowns: pickBy(
-            filtersWithNetworks.dropdowns,
-            value => value.enabled
-          ) as Record<Dropdowns, Dropdown>
+          toggles,
+          dropdowns
         },
-        state: filtersState,
+        state: {
+          toggles: pickBy(filtersState.toggles, (_value, key) =>
+            Object.keys(toggles).includes(key)
+          ),
+          dropdowns: pickBy(filtersState.dropdowns, (_value, key) =>
+            Object.keys(dropdowns).includes(key)
+          )
+        },
         controls: {
           updateToggle,
           updateDropdown
