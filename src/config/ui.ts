@@ -77,7 +77,10 @@ const ui = {
       enabled: !isTrue(environment.UI_FILTERS_CATEGORIES_DISABLED),
       options: environment.UI_FILTERS_CATEGORIES?.split(',')
     },
-    tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
+    tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR'],
+    tournaments: {
+      enabled: isTrue(environment.FEATURE_TOURNAMENTS)
+    }
   },
   selectTokenModal: {
     blacklist: environment.UI_TOKEN_BLACKLIST?.split(',')
