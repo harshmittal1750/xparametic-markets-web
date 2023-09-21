@@ -6,6 +6,7 @@ import { toStartEnd } from 'helpers/date';
 import { toMinMax } from 'helpers/string';
 import { camelize } from 'humps';
 import difference from 'lodash/difference';
+import flattenDeep from 'lodash/flattenDeep';
 import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
@@ -305,18 +306,16 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   const filterMarketsByExtraFiltersInTitle = (title: string) => {
     if (isEmpty(extraFilters)) return true;
 
-    return some(
-      Object.values(extraFilters).map(filter => {
-        if (isEmpty(filter) || isUndefined(filter)) return true;
+    const flattenExtraFilters = flattenDeep(
+      Object.values(extraFilters).filter(
+        f => !isUndefined(f) && !isEmpty(f)
+      ) as string | string[]
+    );
 
-        if (Array.isArray(filter)) {
-          return filter.some(item =>
-            title.toLowerCase().includes(item.toLowerCase())
-          );
-        }
+    if (isEmpty(flattenExtraFilters)) return true;
 
-        return title.toLowerCase().includes(filter.toLowerCase());
-      })
+    return flattenExtraFilters.some(filter =>
+      title.toLowerCase().includes(filter.toLowerCase())
     );
   };
 
