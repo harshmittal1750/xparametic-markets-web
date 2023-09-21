@@ -4,8 +4,12 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { toStartEnd } from 'helpers/date';
 import { toMinMax } from 'helpers/string';
+import { camelize } from 'humps';
+import difference from 'lodash/difference';
 import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
+import omit from 'lodash/omit';
 import omitBy from 'lodash/omitBy';
 import orderBy from 'lodash/orderBy';
 import some from 'lodash/some';
@@ -284,11 +288,37 @@ type MarketsSelectorArgs = {
     endDate?: string;
     categories?: string[];
     tournaments?: string[];
-  };
+  } & Record<string, any>;
 };
 
 export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   const regExpFromSearchQuery = new RegExp(state.searchQuery, 'i');
+
+  const extraFilters = omit(
+    filters,
+    difference(
+      Object.keys(filters),
+      ui.filters.extra.filters.map(filter => camelize(filter.name))
+    )
+  ) as Record<string, string | string[] | undefined>;
+
+  const filterMarketsByExtraFiltersInTitle = (title: string) => {
+    if (isEmpty(extraFilters)) return true;
+
+    return some(
+      Object.values(extraFilters).map(filter => {
+        if (isEmpty(filter) || isUndefined(filter)) return true;
+
+        if (Array.isArray(filter)) {
+          return filter.some(item =>
+            title.toLowerCase().includes(item.toLowerCase())
+          );
+        }
+
+        return title.toLowerCase().includes(filter.toLowerCase());
+      })
+    );
+  };
 
   const filterByFavorite = (id, networkId) => {
     if (!filters.favorites) return true;
@@ -449,7 +479,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
         filterByLiquidity(market.liquidityEur) &&
         filterByEndDate(market.expiresAt) &&
         filterByCategory(market.category) &&
-        filterByTournament(market.networkId, market.id)
+        filterByTournament(market.networkId, market.id) &&
+        filterMarketsByExtraFiltersInTitle(market.title)
     )
   );
 };
