@@ -15,6 +15,7 @@ import {
   UpdateDropdownPayload
 } from './filters.type';
 import {
+  addExtraFilters,
   addNetworks,
   addTournaments,
   filtersInitialState
@@ -36,10 +37,16 @@ function FiltersProvider({ children }) {
     () => addTournaments(tournaments),
     [tournaments]
   );
+  const filtersWithExtraFilters = useMemo(() => addExtraFilters(), []);
 
   const filters = useMemo(
-    () => merge(filtersWithNetworks, filtersWithTournaments),
-    [filtersWithNetworks, filtersWithTournaments]
+    () =>
+      merge(
+        filtersWithNetworks,
+        filtersWithTournaments,
+        filtersWithExtraFilters
+      ),
+    [filtersWithExtraFilters, filtersWithNetworks, filtersWithTournaments]
   );
 
   const [filtersState, dispatch] = useReducer(

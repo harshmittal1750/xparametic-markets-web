@@ -1,10 +1,17 @@
 import { environment, features, ui } from 'config';
 import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import { camelize } from 'humps';
+import isEmpty from 'lodash/isEmpty';
 import set from 'lodash/set';
 import type { GetTournamentsData } from 'services/Polkamarkets/types';
 import type { Network } from 'types/network';
 
 import type { Filters, FiltersState, Option } from './filters.type';
+
+dayjs.extend(utc);
+
+const extraFilters = ui.filters.extra.filters;
 
 const fantasyTokenTicker =
   features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER
@@ -200,6 +207,33 @@ function addTournaments(tournaments: GetTournamentsData | undefined): Filters {
   return set(filters, 'dropdowns.tournaments.options', tournamentsOptions);
 }
 
+const dropdownsKeys = Object.keys(filters.dropdowns);
+
+function addExtraFilters() {
+  if (isEmpty(extraFilters)) return filters;
+
+  const extraFiltersOptions = {};
+
+  extraFilters
+    .filter(filter => !dropdownsKeys.includes(filter.name))
+    .forEach(filter => {
+      extraFiltersOptions[`${filter.name.toLowerCase()}`] = {
+        title: filter.name,
+        options: filter.values.map(option => ({
+          label: option,
+          value: option.toLowerCase()
+        })),
+        multiple: filter.multiple,
+        enabled: true
+      };
+    });
+
+  return set(filters, 'dropdowns', {
+    ...filters.dropdowns,
+    ...extraFiltersOptions
+  });
+}
+
 const filtersInitialState: FiltersState = {
   toggles: {
     favorites: false
@@ -212,8 +246,20 @@ const filtersInitialState: FiltersState = {
     liquidity: 'any',
     endDate: 'any',
     categories: [],
-    tournaments: []
+    tournaments: [],
+    ...extraFilters.reduce((acc, filter) => {
+      acc[`${camelize(filter.name)}`] = filter.multiple
+        ? []
+        : camelize(filter.values[0]);
+      return acc;
+    }, {})
   }
 };
 
-export { filters, addNetworks, addTournaments, filtersInitialState };
+export {
+  filters,
+  addNetworks,
+  addTournaments,
+  addExtraFilters,
+  filtersInitialState
+};

@@ -208,7 +208,7 @@ export default function HomeFilter({
           toggle: name as Toggles,
           state: value[`${name}`]
         });
-      } else if (Object.values(Dropdowns).includes(name as Dropdowns)) {
+      } else {
         updateDropdown({
           dropdown: name as Dropdowns,
           state: value[`${name}`]
