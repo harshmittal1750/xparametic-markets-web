@@ -9,6 +9,7 @@ import {
 
 import environment from './environment';
 import features from './features';
+import { parseFiltersFromEnv } from './ui.utils';
 
 const providers = [
   'Google',
@@ -80,6 +81,9 @@ const ui = {
     tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR'],
     tournaments: {
       enabled: isTrue(environment.FEATURE_TOURNAMENTS)
+    },
+    extra: {
+      filters: parseFiltersFromEnv(environment.UI_FILTERS_EXTRA_FILTERS)
     }
   },
   selectTokenModal: {

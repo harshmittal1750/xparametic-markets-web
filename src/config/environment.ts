@@ -51,7 +51,8 @@ const environmentConfigVariables = [
   'UI_FILTERS_STATE_DISABLED',
   'UI_FILTERS_VOLUME_DISABLED',
   'UI_FILTERS_END_DATE_DISABLED',
-  'UI_FILTERS_FAVORITES_DISABLED'
+  'UI_FILTERS_FAVORITES_DISABLED',
+  'UI_FILTERS_EXTRA_FILTERS'
 ] as const;
 
 export type EnvironmentConfigVariable =
