@@ -385,6 +385,8 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   };
 
   const filterByLiquidity = (liquidity: number) => {
+    if (!filters.liquidity) return true;
+
     if (filters.liquidity !== 'any') {
       return filterByRange(liquidity, filters.liquidity);
     }
