@@ -4,7 +4,6 @@ import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { toStartEnd } from 'helpers/date';
 import { toMinMax } from 'helpers/string';
-import { camelize } from 'humps';
 import difference from 'lodash/difference';
 import flattenDeep from 'lodash/flattenDeep';
 import inRange from 'lodash/inRange';
@@ -21,6 +20,7 @@ import * as marketService from 'services/Polkamarkets/market';
 import { MarketState } from 'types/market';
 
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
+import { sanitizeFilterKey } from 'contexts/filters/filters.util';
 
 import { useFantasyTokenTicker } from 'hooks';
 
@@ -299,11 +299,15 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
     filters,
     difference(
       Object.keys(filters),
-      ui.filters.extra.filters.map(filter => camelize(filter.name))
+      ui.filters.extra.filters.map(filter => sanitizeFilterKey(filter.name))
     )
   ) as Record<string, string | string[] | undefined>;
 
-  const filterMarketsByExtraFiltersInTitle = (title: string) => {
+  const filterMarketsByExtraFilters = (
+    title: string,
+    category: string,
+    subcategory: string
+  ) => {
     if (isEmpty(extraFilters)) return true;
 
     const flattenExtraFilters = flattenDeep(
@@ -314,9 +318,14 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
 
     if (isEmpty(flattenExtraFilters)) return true;
 
-    return flattenExtraFilters.some(filter =>
-      title.toLowerCase().includes(filter.toLowerCase())
-    );
+    return flattenExtraFilters.some(filter => {
+      const regExp = new RegExp(filter, 'i');
+      return (
+        title.match(regExp) ||
+        category.match(regExp) ||
+        subcategory.match(regExp)
+      );
+    });
   };
 
   const filterByFavorite = (id, networkId) => {
@@ -481,7 +490,11 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
         filterByEndDate(market.expiresAt) &&
         filterByCategory(market.category) &&
         filterByTournament(market.networkId, market.id) &&
-        filterMarketsByExtraFiltersInTitle(market.title)
+        filterMarketsByExtraFilters(
+          market.title,
+          market.category,
+          market.subcategory
+        )
     )
   );
 };
