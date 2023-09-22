@@ -265,5 +265,6 @@ export {
   addNetworks,
   addTournaments,
   addExtraFilters,
-  filtersInitialState
+  filtersInitialState,
+  sanitizeFilterKey
 };
