@@ -209,6 +209,10 @@ function addTournaments(tournaments: GetTournamentsData | undefined): Filters {
 
 const dropdownsKeys = Object.keys(filters.dropdowns);
 
+function sanitizeFilterKey(key: string) {
+  return camelize(key.replace(/[^\w ]/g, ''));
+}
+
 function addExtraFilters() {
   if (isEmpty(extraFilters)) return filters;
 
@@ -217,7 +221,7 @@ function addExtraFilters() {
   extraFilters
     .filter(filter => !dropdownsKeys.includes(filter.name))
     .forEach(filter => {
-      extraFiltersOptions[`${filter.name.toLowerCase()}`] = {
+      extraFiltersOptions[`${sanitizeFilterKey(filter.name)}`] = {
         title: filter.name,
         options: filter.values.map(option => ({
           label: option,
@@ -248,9 +252,9 @@ const filtersInitialState: FiltersState = {
     categories: [],
     tournaments: [],
     ...extraFilters.reduce((acc, filter) => {
-      acc[`${camelize(filter.name)}`] = filter.multiple
+      acc[`${sanitizeFilterKey(filter.name)}`] = filter.multiple
         ? []
-        : camelize(filter.values[0]);
+        : filter.values[0];
       return acc;
     }, {})
   }
