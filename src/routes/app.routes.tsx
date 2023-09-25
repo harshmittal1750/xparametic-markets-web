@@ -1,37 +1,12 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { pages, ui } from 'config';
-import { getUserCountry } from 'helpers/location';
 import { Spinner } from 'ui';
-
-import RestrictedCountry from 'pages/RestrictedCountry';
 
 import { Layout } from 'components';
 
-const restrictedCountries =
-  process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
-
 export default function AppRoutes() {
-  const [isLoading, setLoading] = useState(true);
-  const [isRestricted, setRestricted] = useState(false);
-
-  useEffect(() => {
-    (async function handleCountry() {
-      try {
-        const userCountry = await getUserCountry();
-
-        setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  if (isLoading) return <Spinner />;
-
-  if (isRestricted) return <RestrictedCountry />;
-
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>
