@@ -115,7 +115,7 @@ function NetworkProvider({ children }: NetworkProviderProps) {
   );
 
   useEffect(() => {
-    dispatch(login(polkamarketService, isEnabled && isWhitelisted));
+    dispatch(login(polkamarketService, !isEnabled || isWhitelisted));
   }, [dispatch, isEnabled, isWhitelisted, polkamarketService]);
 
   useEffect(() => {
