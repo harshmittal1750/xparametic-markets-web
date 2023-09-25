@@ -6,10 +6,21 @@ import { Spinner } from 'ui';
 
 import { Layout } from 'components';
 
+import { useWhitelist } from 'contexts/whitelist';
+
 export default function AppRoutes() {
+  const { isEnabled } = useWhitelist();
+
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>
+        {isEnabled ? (
+          <Route
+            exact={pages.whitelist.exact}
+            path={pages.whitelist.pathname}
+            component={pages.whitelist.Component}
+          />
+        ) : null}
         <Route
           exact={pages.restrictedCountry.exact}
           path={pages.restrictedCountry.pathname}
