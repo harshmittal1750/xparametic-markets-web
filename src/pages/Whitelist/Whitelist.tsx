@@ -52,9 +52,8 @@ export default function Whitelist() {
               className={styles.contentTitle}
             >
               {isLoading
-                ? `Please wait while we verify your address.`
-                : `Your
-              address is not whitelisted in our application.`}
+                ? `Please wait while we verify your address`
+                : `Your address is not whitelisted`}
             </Text>
           </ModalHeader>
           <ModalSection>
@@ -63,7 +62,7 @@ export default function Whitelist() {
             ) : (
               <>
                 <ModalSectionText>
-                  {`The email address ${email} is not whitelisted in our application`}
+                  {`The email address ${email} is not whitelisted in our application.`}
                 </ModalSectionText>
                 <ModalSectionText>
                   For further information please contact us on{' '}
