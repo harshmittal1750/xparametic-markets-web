@@ -31,6 +31,10 @@
     border-color: $border-colors-map;
   }
 
+  .pm-c-market-outcomes__item-odd {
+    color: map-get($text-colors-map, 'secondary');
+  }
+
   .pm-c-market-outcomes__item-title {
     color: map-get($text-colors-map, 'primary');
   }

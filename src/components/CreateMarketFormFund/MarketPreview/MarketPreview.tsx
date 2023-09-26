@@ -43,6 +43,7 @@ function MarketPreview({ token }: MarketPreviewProps) {
               $size="md"
               alt="Market"
               src={`https://polkamarkets.infura-ipfs.io/ipfs/${image.hash}`}
+              className={MarketPreviewClasses.bodyHeaderImage}
             />
           ) : null}
           <div className="pm-c-market__body-details">
