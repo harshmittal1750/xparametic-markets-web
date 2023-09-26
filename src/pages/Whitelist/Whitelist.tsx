@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import { Spinner } from 'ui';
@@ -17,17 +17,27 @@ import {
 
 import { useWhitelist } from 'contexts/whitelist';
 
+import { useAppSelector } from 'hooks';
+
 import styles from './Whitelist.module.scss';
 
 export default function Whitelist() {
   const history = useHistory();
   const { isLoading, email, isWhitelisted } = useWhitelist();
 
+  const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
+
+  const redirectToHome = useCallback(() => history.push('/'), [history]);
+
   useEffect(() => {
-    if (!isLoading && isWhitelisted) {
-      history.push('/');
+    if (!isLoading && !isLoggedIn) {
+      redirectToHome();
     }
-  }, [history, isLoading, isWhitelisted]);
+
+    if (!isLoading && isWhitelisted) {
+      redirectToHome();
+    }
+  }, [isLoading, isLoggedIn, isWhitelisted, redirectToHome]);
 
   return (
     <div className={styles.root}>
