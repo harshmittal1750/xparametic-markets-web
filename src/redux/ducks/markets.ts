@@ -1,11 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { environment, ui } from 'config';
+import { environment, features, ui } from 'config';
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween';
 import { toStartEnd } from 'helpers/date';
 import { toMinMax } from 'helpers/string';
 import difference from 'lodash/difference';
-import flattenDeep from 'lodash/flattenDeep';
 import inRange from 'lodash/inRange';
 import isEmpty from 'lodash/isEmpty';
 import isUndefined from 'lodash/isUndefined';
@@ -22,16 +21,16 @@ import { MarketState } from 'types/market';
 import type { FavoriteMarketsByNetwork } from 'contexts/favoriteMarkets';
 import { sanitizeFilterKey } from 'contexts/filters/filters.util';
 
-import { useFantasyTokenTicker } from 'hooks';
-
 import { getCurrencyByTicker, getNetworkById } from './market';
 
 dayjs.extend(isBetween);
 
 const AVAILABLE_NETWORKS_IDS = Object.keys(environment.NETWORKS);
 
-// eslint-disable-next-line react-hooks/rules-of-hooks
-const fantasyTokenTicker = useFantasyTokenTicker();
+const fantasyTokenTicker =
+  features.fantasy.enabled && environment.FEATURE_FANTASY_TOKEN_TICKER
+    ? environment.FEATURE_FANTASY_TOKEN_TICKER
+    : undefined;
 
 const isMarketTokenFantasy = (market: Market) => {
   return !fantasyTokenTicker || market.token.symbol === fantasyTokenTicker;
@@ -310,20 +309,26 @@ export const marketsSelector = ({ state, filters }: MarketsSelectorArgs) => {
   ) => {
     if (isEmpty(extraFilters)) return true;
 
-    const flattenExtraFilters = flattenDeep(
-      Object.values(extraFilters).filter(
-        f => !isUndefined(f) && !isEmpty(f)
-      ) as string | string[]
-    );
+    const validExtraFilters = Object.values(extraFilters).filter(
+      f => !isUndefined(f) && !isEmpty(f)
+    ) as (string | string[])[];
 
-    if (isEmpty(flattenExtraFilters)) return true;
+    if (isEmpty(validExtraFilters)) return true;
 
-    return flattenExtraFilters.some(filter => {
+    return validExtraFilters.every(filter => {
+      if (Array.isArray(filter)) {
+        return filter.some(f => {
+          const regExp = new RegExp(f, 'i');
+          return (
+            regExp.test(title) ||
+            regExp.test(category) ||
+            regExp.test(subcategory)
+          );
+        });
+      }
       const regExp = new RegExp(filter, 'i');
       return (
-        title.match(regExp) ||
-        category.match(regExp) ||
-        subcategory.match(regExp)
+        regExp.test(title) || regExp.test(category) || regExp.test(subcategory)
       );
     });
   };
