@@ -41,14 +41,10 @@ export default function Whitelist() {
   }, [dispatch, polkamarketsService]);
 
   useEffect(() => {
-    if (!isLoading && !isLoggedIn) {
+    if (!isLoading && (!isLoggedIn || !email || isWhitelisted)) {
       redirectToHome();
     }
-
-    if (!isLoading && isWhitelisted) {
-      redirectToHome();
-    }
-  }, [isLoading, isLoggedIn, isWhitelisted, redirectToHome]);
+  }, [email, isLoading, isLoggedIn, isWhitelisted, redirectToHome]);
 
   return (
     <div className={styles.root}>
