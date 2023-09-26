@@ -14,20 +14,31 @@ import {
   ModalSectionText,
   Text
 } from 'components';
+import { Button } from 'components/Button';
+import Icon from 'components/Icon';
 
 import { useWhitelist } from 'contexts/whitelist';
 
-import { useAppSelector } from 'hooks';
+import { useAppDispatch, useAppSelector, usePolkamarketsService } from 'hooks';
 
 import styles from './Whitelist.module.scss';
 
 export default function Whitelist() {
+  const dispatch = useAppDispatch();
   const history = useHistory();
+  const polkamarketsService = usePolkamarketsService();
   const { isLoading, email, isWhitelisted } = useWhitelist();
 
   const isLoggedIn = useAppSelector(state => state.polkamarkets.isLoggedIn);
 
   const redirectToHome = useCallback(() => history.push('/'), [history]);
+
+  const handleLogout = useCallback(async () => {
+    const { logout } = await import('redux/ducks/polkamarkets');
+
+    polkamarketsService.logoutSocialLogin();
+    dispatch(logout());
+  }, [dispatch, polkamarketsService]);
 
   useEffect(() => {
     if (!isLoading && !isLoggedIn) {
@@ -75,6 +86,16 @@ export default function Whitelist() {
                     target="_blank"
                   />
                 </ModalSectionText>
+                <Button
+                  variant="normal"
+                  color="default"
+                  size="sm"
+                  className={styles.contentAction}
+                  onClick={handleLogout}
+                >
+                  <Icon name="LogOut" size="lg" />
+                  Login with different account
+                </Button>
               </>
             )}
           </ModalSection>
