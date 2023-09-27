@@ -6,7 +6,7 @@ import isTrue from 'helpers/isTrue';
 import isEmpty from 'lodash/isEmpty';
 import { useGetWhitelistStatusQuery } from 'services/Polkamarkets';
 
-import { useAppSelector } from '../hooks';
+import useAppSelector from 'hooks/useAppSelector';
 
 type WhitelistContextState = {
   isEnabled: boolean;
