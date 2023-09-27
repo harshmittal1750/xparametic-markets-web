@@ -1,2 +1,3 @@
-// eslint-disable-next-line import/no-cycle
-export { default } from './PortfolioLiquidityTable';
+import PortfolioLiquidityTable from './PortfolioLiquidityTable';
+
+export default PortfolioLiquidityTable;
