@@ -236,7 +236,7 @@ const polkamarketsApi = createApi({
       GetWhitelistStatusData,
       GetWhitelistStatusArgs
     >({
-      query: ({ email }) => `/whitelist?item=${email}`,
+      query: ({ email }) => `/whitelist?item=${email.replace(/\+/g, '%2B')}`,
       transformResponse: (response: GetWhitelistStatusData) =>
         camelize(response)
     })
