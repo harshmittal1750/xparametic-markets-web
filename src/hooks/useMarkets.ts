@@ -1,6 +1,11 @@
 import { useCallback } from 'react';
 
-import { marketsSelector } from 'redux/ducks/markets';
+import { camelize } from 'humps';
+import {
+  getFavoriteMarkets,
+  getMarkets,
+  marketsSelector
+} from 'redux/ducks/markets';
 import { useAppDispatch } from 'redux/store';
 
 import useAppSelector from './useAppSelector';
@@ -14,6 +19,7 @@ export default function useMarkets() {
   const rawMarkets = useAppSelector(state => state.markets);
   const isLoading = useAppSelector(state => state.markets.isLoading);
   const error = useAppSelector(state => state.markets.error);
+
   const markets = marketsSelector({
     state: rawMarkets,
     filters: {
@@ -27,17 +33,18 @@ export default function useMarkets() {
       volume: filtersState.dropdowns.volume as string,
       liquidity: filtersState.dropdowns.liquidity as string,
       endDate: filtersState.dropdowns.endDate as string,
-      categories: filtersState.dropdowns.categories as string[]
+      categories: filtersState.dropdowns.categories as string[],
+      tournaments: filtersState.dropdowns.tournaments as string[],
+      ...Object.keys(filtersState.dropdowns).reduce((acc, filter) => {
+        acc[`${camelize(filter)}`] = filtersState.dropdowns[filter];
+        return acc;
+      }, {})
     }
   });
 
   return {
     data: markets,
     fetch: useCallback(async () => {
-      const { getFavoriteMarkets, getMarkets } = await import(
-        'redux/ducks/markets'
-      );
-
       dispatch(getMarkets('open'));
       dispatch(getMarkets('closed'));
       dispatch(getMarkets('resolved'));

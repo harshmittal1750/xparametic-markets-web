@@ -11,7 +11,8 @@ export enum Dropdowns {
   VOLUME = 'volume',
   LIQUIDITY = 'liquidity',
   END_DATE = 'endDate',
-  CATEGORIES = 'categories'
+  CATEGORIES = 'categories',
+  TOURNAMENTS = 'tournaments'
 }
 
 export type Toggle = {
@@ -32,8 +33,8 @@ export type Dropdown = {
 };
 
 export type Filters = {
-  toggles: Record<Toggles, Toggle>;
-  dropdowns: Record<Dropdowns, Dropdown>;
+  toggles: Record<string, Toggle>;
+  dropdowns: Record<string, Dropdown>;
 };
 
 // State
@@ -43,8 +44,8 @@ export type DropdownState = string;
 export type DropdownMultipleState = string[];
 
 export type FiltersState = {
-  toggles: Record<Toggles, ToggleState>;
-  dropdowns: Record<Dropdowns, DropdownState | DropdownMultipleState>;
+  toggles: Record<string, ToggleState>;
+  dropdowns: Record<string, DropdownState | DropdownMultipleState>;
 };
 
 // Context
