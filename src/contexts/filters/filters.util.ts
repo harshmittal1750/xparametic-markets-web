@@ -197,7 +197,7 @@ function addTournaments(tournaments: GetTournamentsData | undefined): Filters {
   const tournamentsOptions =
     tournaments?.map(tournament => ({
       label: tournament.title,
-      value: `${tournament.networkId}${
+      value: `${tournament.networkId}${tournament.slug}${
         tournament.markets
           ? `,${tournament.markets.map(market => market.id).join(',')}`
           : ''
