@@ -41,9 +41,9 @@ const isMarketFromAvailableNetwork = (market: Market) =>
 
 const parseTournament = (tournament: string) => {
   const parts = tournament.split(',');
-  if (parts.length >= 1) {
-    const networkId = parts[0];
-    const markets = parts.slice(1);
+  if (parts.length >= 2) {
+    const networkId = parts[1];
+    const markets = parts.slice(2);
 
     return {
       networkId,
