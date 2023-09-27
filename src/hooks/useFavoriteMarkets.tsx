@@ -1,4 +1,3 @@
-/* eslint-disable import/no-cycle */
 import { useCallback, useContext } from 'react';
 
 import uniq from 'lodash/uniq';
