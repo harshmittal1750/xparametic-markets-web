@@ -5,8 +5,7 @@ import merge from 'lodash/merge';
 import pickBy from 'lodash/pickBy';
 import { useGetTournamentsQuery } from 'services/Polkamarkets';
 
-import { useNetworks } from 'contexts/networks';
-
+import { useNetworks } from '../networks';
 import filtersReducer from './filters.reducer';
 import {
   FiltersActions,
