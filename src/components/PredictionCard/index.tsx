@@ -1,2 +1,3 @@
-// eslint-disable-next-line import/no-cycle
-export { default } from './PredictionCard';
+import PredictionCard from './PredictionCard';
+
+export default PredictionCard;
