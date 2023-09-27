@@ -1,5 +1,5 @@
-import { NetworkConfig } from 'config/environment';
-import { Network } from 'types/network';
+import type { NetworkConfig } from 'config/environment';
+import type { Network } from 'types/network';
 
 declare global {
   interface Window {
