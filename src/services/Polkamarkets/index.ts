@@ -46,7 +46,9 @@ import {
   JoinLeaderboardGroupParams,
   GetTournamentsData,
   GetTournamentBySlugData,
-  GetTournamentBySlugArgs
+  GetTournamentBySlugArgs,
+  GetWhitelistStatusData,
+  GetWhitelistStatusArgs
 } from './types';
 
 function camelize<T extends object>(response: T): T {
@@ -229,6 +231,14 @@ const polkamarketsApi = createApi({
         `/portfolios/${address}/feed?network_id=${networkId}`,
       transformResponse: (response: GetPortfolioFeedByAddressData) =>
         camelize(response)
+    }),
+    getWhitelistStatus: builder.query<
+      GetWhitelistStatusData,
+      GetWhitelistStatusArgs
+    >({
+      query: ({ email }) => `/whitelist?item=${email.replace(/\+/g, '%2B')}`,
+      transformResponse: (response: GetWhitelistStatusData) =>
+        camelize(response)
     })
   })
 });
@@ -253,5 +263,6 @@ export const {
   useGetLeaderboardGroupsByUserQuery,
   useGetTournamentsQuery,
   useGetTournamentBySlugQuery,
-  useGetPortfolioFeedByAddressQuery
+  useGetPortfolioFeedByAddressQuery,
+  useGetWhitelistStatusQuery
 } = polkamarketsApi;

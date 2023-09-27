@@ -191,7 +191,10 @@ const {
 } = polkamarketsSlice.actions;
 
 // fetching initial wallet details
-function login(polkamarketsService: PolkamarketsService) {
+function login(
+  polkamarketsService: PolkamarketsService,
+  autoClaimAllowed = true
+) {
   return async dispatch => {
     const isLoggedIn = await polkamarketsService.isLoggedIn();
 
@@ -226,7 +229,7 @@ function login(polkamarketsService: PolkamarketsService) {
       polkamarketsService
         .isPolkClaimed()
         .then(polkClaimed => {
-          if (!polkClaimed) {
+          if (autoClaimAllowed && !polkClaimed) {
             polkamarketsService
               .claimPolk()
               .then(_polkClaimed => {

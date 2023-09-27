@@ -165,3 +165,11 @@ export type GetPortfolioFeedByAddressArgs = {
   address: string;
   networkId: string;
 };
+
+// getWhitelistStatus
+export type GetWhitelistStatusData = {
+  isWhitelisted: boolean;
+};
+export type GetWhitelistStatusArgs = {
+  email: string;
+};

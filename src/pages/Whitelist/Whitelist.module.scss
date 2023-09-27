@@ -1,0 +1,19 @@
+.root {
+  width: 100%;
+  height: 100vh;
+
+  background-image: url('../../assets/images/private-beta-background.png');
+  background-size: cover;
+}
+
+.content {
+  text-align: center;
+
+  &Title {
+    color: var(--color-text-primary);
+  }
+
+  &Action {
+    margin-bottom: var(--size-16);
+  }
+}
