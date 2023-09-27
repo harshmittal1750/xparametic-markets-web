@@ -204,6 +204,11 @@ function addTournaments(tournaments: GetTournamentsData | undefined): Filters {
       }`
     })) || [];
 
+  // disabling tournaments view if there are no tournaments from query
+  if (tournaments?.length === 0) {
+    return set(filters, 'dropdowns.tournaments.enabled', false);
+  }
+
   return set(filters, 'dropdowns.tournaments.options', tournamentsOptions);
 }
 
