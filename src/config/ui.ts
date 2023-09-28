@@ -9,6 +9,7 @@ import {
 
 import environment from './environment';
 import features from './features';
+import { parseFiltersFromEnv } from './ui.utils';
 
 const providers = [
   'Google',
@@ -61,8 +62,29 @@ const ui = {
   },
   logo: environment.UI_LOGO,
   filters: {
-    categories: environment.UI_FILTERS_CATEGORIES?.split(','),
-    tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR']
+    favorites: {
+      enabled: !isTrue(environment.UI_FILTERS_FAVORITES_DISABLED)
+    },
+    states: {
+      enabled: !isTrue(environment.UI_FILTERS_STATE_DISABLED)
+    },
+    volume: {
+      enabled: !isTrue(environment.UI_FILTERS_VOLUME_DISABLED)
+    },
+    endDate: {
+      enabled: !isTrue(environment.UI_FILTERS_END_DATE_DISABLED)
+    },
+    categories: {
+      enabled: !isTrue(environment.UI_FILTERS_CATEGORIES_DISABLED),
+      options: environment.UI_FILTERS_CATEGORIES?.split(',')
+    },
+    tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR'],
+    tournaments: {
+      enabled: isTrue(environment.FEATURE_TOURNAMENTS)
+    },
+    extra: {
+      filters: parseFiltersFromEnv(environment.UI_FILTERS_EXTRA_FILTERS)
+    }
   },
   selectTokenModal: {
     blacklist: environment.UI_TOKEN_BLACKLIST?.split(',')

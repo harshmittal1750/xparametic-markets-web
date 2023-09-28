@@ -1,40 +1,26 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import { pages, ui } from 'config';
-import { getUserCountry } from 'helpers/location';
 import { Spinner } from 'ui';
-
-import RestrictedCountry from 'pages/RestrictedCountry';
 
 import { Layout } from 'components';
 
-const restrictedCountries =
-  process.env.REACT_APP_RESTRICTED_COUNTRIES?.split(',');
+import { useWhitelist } from 'contexts/whitelist';
 
 export default function AppRoutes() {
-  const [isLoading, setLoading] = useState(true);
-  const [isRestricted, setRestricted] = useState(false);
-
-  useEffect(() => {
-    (async function handleCountry() {
-      try {
-        const userCountry = await getUserCountry();
-
-        setRestricted(!!restrictedCountries?.includes(userCountry.countryCode));
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  if (isLoading) return <Spinner />;
-
-  if (isRestricted) return <RestrictedCountry />;
+  const { isEnabled } = useWhitelist();
 
   return (
     <Suspense fallback={<Spinner />}>
       <Switch>
+        {isEnabled ? (
+          <Route
+            exact={pages.whitelist.exact}
+            path={pages.whitelist.pathname}
+            component={pages.whitelist.Component}
+          />
+        ) : null}
         <Route
           exact={pages.restrictedCountry.exact}
           path={pages.restrictedCountry.pathname}

@@ -17,6 +17,9 @@ const isAchievementsEnabled =
 const isFantasyEnabled =
   process.env.REACT_APP_FEATURE_FANTASY?.toLowerCase() === 'true';
 
+const isFantasyWhitelistEnabled =
+  process.env.REACT_APP_FEATURE_FANTASY_WHITELIST?.toLowerCase() === 'true';
+
 const fs = require('fs');
 const path = require('path');
 
@@ -139,6 +142,21 @@ app.get('/', (request, response) => {
 });
 
 app.get('/blocked', (request, response) => {
+  fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
+    if (error) {
+      return response.status(404).end();
+    }
+
+    return response.send(defaultMetadataTemplate(request, htmlData));
+  });
+});
+
+app.get('/whitelist', (request, response) => {
+  if (!isFantasyWhitelistEnabled) {
+    next();
+    return;
+  }
+
   fs.readFile(indexPath, 'utf8', async (error, htmlData) => {
     if (error) {
       return response.status(404).end();

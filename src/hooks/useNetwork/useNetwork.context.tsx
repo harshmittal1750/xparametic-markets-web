@@ -13,6 +13,8 @@ import { toHexadecimal } from 'helpers/string';
 import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import { PolkamarketsService } from 'services';
 
+import { useWhitelist } from 'contexts/whitelist';
+
 import useAppDispatch from '../useAppDispatch';
 import useAppSelector from '../useAppSelector';
 import useLocalStorage from '../useLocalStorage';
@@ -49,6 +51,8 @@ function NetworkProvider({ children }: NetworkProviderProps) {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useAppDispatch();
+
+  const { isEnabled, isWhitelisted } = useWhitelist();
 
   const walletIsConnected = useAppSelector(
     state => state.polkamarkets.isLoggedIn
@@ -110,8 +114,8 @@ function NetworkProvider({ children }: NetworkProviderProps) {
   );
 
   useEffect(() => {
-    dispatch(login(polkamarketService));
-  }, [dispatch, polkamarketService]);
+    dispatch(login(polkamarketService, !isEnabled || isWhitelisted));
+  }, [dispatch, isEnabled, isWhitelisted, polkamarketService]);
 
   useEffect(() => {
     async function fetchUserData() {

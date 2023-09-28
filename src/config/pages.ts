@@ -23,6 +23,15 @@ const pages = {
     meta: null,
     enabled: false
   },
+  whitelist: {
+    pathname: '/whitelist',
+    Component: lazy(() => import('pages/Whitelist')),
+    exact: true,
+    navigation: false,
+    name: '',
+    meta: null,
+    enabled: false
+  },
   profile: {
     pathname: '/user/:address',
     Component: lazy(() => import('pages/Profile')),
