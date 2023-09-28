@@ -2,8 +2,7 @@ import { createContext, ReactNode, useMemo } from 'react';
 
 import { PolkamarketsService } from 'services';
 
-import useNetwork from 'hooks/useNetwork';
-
+import useNetwork from '../useNetwork';
 import type { PolkamarketsServiceContextState } from './usePolkamarketsService.type';
 
 export const PolkamarketsServiceContext =

@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useMemo } from 'react';
 
-import { useLocalStorage } from 'hooks';
+import useLocalStorage from 'hooks/useLocalStorage';
 
 export type FavoriteMarketsByNetwork = { [key: string]: string[] };
 

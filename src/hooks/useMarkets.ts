@@ -6,8 +6,8 @@ import {
   getMarkets,
   marketsSelector
 } from 'redux/ducks/markets';
-import { useAppDispatch } from 'redux/store';
 
+import useAppDispatch from './useAppDispatch';
 import useAppSelector from './useAppSelector';
 import useFavoriteMarkets from './useFavoriteMarkets';
 import useFilters from './useFilters';

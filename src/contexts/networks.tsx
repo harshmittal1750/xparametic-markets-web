@@ -11,7 +11,8 @@ import findKey from 'lodash/findKey';
 import isEmpty from 'lodash/isEmpty';
 import type { Network } from 'types/network';
 
-import { useAppSelector, useNetwork } from 'hooks';
+import useAppSelector from 'hooks/useAppSelector';
+import useNetwork from 'hooks/useNetwork';
 
 export type NetworksContextState = {
   network: Network;
