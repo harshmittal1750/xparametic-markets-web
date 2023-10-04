@@ -30,13 +30,10 @@ export type PolkamarketsInitialState = {
   marketsWithBonds: string[];
   bondActions: any[];
   votes: Votes;
-  isLoading: {
-    portfolio: boolean;
-    bonds: boolean;
-    actions: boolean;
-    votes: boolean;
-    login: boolean;
-  };
+  isLoading: Record<
+    'portfolio' | 'bonds' | 'actions' | 'votes' | 'login' | 'polk',
+    boolean
+  >;
   createMarketToken: Token | Currency | null;
 };
 
@@ -60,7 +57,8 @@ const initialState: PolkamarketsInitialState = {
     bonds: false,
     actions: false,
     votes: false,
-    login: true
+    login: true,
+    polk: false
   },
   createMarketToken: null
 };
@@ -233,11 +231,23 @@ function login(
             polkamarketsService
               .claimPolk()
               .then(_polkClaimed => {
+                dispatch(
+                  changeLoading({
+                    key: 'polk',
+                    value: true
+                  })
+                );
                 // balance is updated after claim
                 polkamarketsService
                   .getPolkBalance()
                   .then(polkBalance => {
                     dispatch(changePolkBalance(polkBalance));
+                    dispatch(
+                      changeLoading({
+                        key: 'polk',
+                        value: false
+                      })
+                    );
                   })
                   .catch(() => {});
               })
@@ -398,6 +408,7 @@ function fetchAditionalData(polkamarketsService: PolkamarketsService) {
 }
 
 export {
+  changeLoading,
   changeIsLoggedIn,
   changeEthAddress,
   changeEthBalance,
