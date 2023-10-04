@@ -49,6 +49,7 @@ function Market({ market }: MarketCardProps) {
       {!isNull(market.imageUrl) && (
         <MarketAvatar
           $size="md"
+          $radius="xs"
           imageUrl={market.imageUrl}
           verified={!theme.device.isDesktop && market.verified}
         />
