@@ -228,15 +228,16 @@ function login(
         .isPolkClaimed()
         .then(polkClaimed => {
           if (autoClaimAllowed && !polkClaimed) {
+            dispatch(
+              changeLoading({
+                key: 'polk',
+                value: true
+              })
+            );
+
             polkamarketsService
               .claimPolk()
               .then(_polkClaimed => {
-                dispatch(
-                  changeLoading({
-                    key: 'polk',
-                    value: true
-                  })
-                );
                 // balance is updated after claim
                 polkamarketsService
                   .getPolkBalance()
