@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
-import isEmpty from 'lodash/isEmpty';
+import { isNull, isEmpty } from 'lodash';
 import { Tournament } from 'types/tournament';
 import { useTheme } from 'ui';
 
@@ -52,11 +52,13 @@ function LeaderboardMarkets({
           {data?.map(market => (
             <li key={market.slug}>
               <Link className={styles.market} to={`/markets/${market.slug}`}>
-                <img
-                  className={styles.marketImage}
-                  src={market.imageUrl}
-                  alt={market.title}
-                />
+                {!isNull(market.imageUrl) && (
+                  <img
+                    className={styles.marketImage}
+                    src={market.imageUrl}
+                    alt={market.title}
+                  />
+                )}
                 <p
                   className={cn(
                     styles.marketTitle,
