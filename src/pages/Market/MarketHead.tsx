@@ -47,6 +47,7 @@ export default function MarketHead() {
       >
         {!isNull(market.imageUrl) && (
           <MarketAvatar
+            $radius={theme.device.isDesktop ? 'sm' : 'xs'}
             $size={theme.device.isDesktop ? 'lg' : 'md'}
             imageUrl={market.imageUrl}
             verified={!theme.device.isDesktop && market.verified}
