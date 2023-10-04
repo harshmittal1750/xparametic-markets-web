@@ -5,7 +5,7 @@ import { features } from 'config';
 import { formatNumberToString } from 'helpers/math';
 import shortenAddress from 'helpers/shortenAddress';
 import { useGetLeaderboardByAddressQuery } from 'services/Polkamarkets';
-import { Avatar } from 'ui';
+import { Avatar, Skeleton } from 'ui';
 
 import { Button } from 'components/Button';
 import Icon from 'components/Icon';
@@ -27,6 +27,9 @@ export default function ProfileSignout() {
   const polkamarketsService = usePolkamarketsService();
   const polkBalance = useAppSelector(state => state.polkamarkets.polkBalance);
   const address = useAppSelector(state => state.polkamarkets.ethAddress);
+  const isPolkLoading = useAppSelector(
+    state => state.polkamarkets.isLoading.polk
+  );
   const network = useNetwork();
   const leaderboard = useGetLeaderboardByAddressQuery({
     address,
@@ -42,7 +45,7 @@ export default function ProfileSignout() {
     polkamarketsService.logoutSocialLogin();
     dispatch(logout());
   }, [dispatch, polkamarketsService]);
-  const username = socialLoginInfo?.name.split('#')[0];
+  const username = socialLoginInfo?.name?.split('#')[0];
 
   useEffect(() => {
     async function handleDiscordLogin() {
@@ -102,13 +105,17 @@ export default function ProfileSignout() {
           >
             {username || shortenAddress(address)}
           </Text>
-          <Text
-            scale="tiny-uppercase"
-            fontWeight="semibold"
-            className="pm-c-wallet-info__profile__ticker"
-          >
-            {formatNumberToString(polkBalance)} {fantasyTokenTicker || 'POLK'}
-          </Text>
+          {isPolkLoading ? (
+            <Skeleton style={{ height: 16, width: 52 }} />
+          ) : (
+            <Text
+              scale="tiny-uppercase"
+              fontWeight="semibold"
+              className="pm-c-wallet-info__profile__ticker"
+            >
+              {formatNumberToString(polkBalance)} {fantasyTokenTicker || 'POLK'}
+            </Text>
+          )}
         </div>
       </div>
     </div>
