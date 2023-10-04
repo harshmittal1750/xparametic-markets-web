@@ -50,7 +50,7 @@ const initialState: MarketInitialState = {
     category: '',
     subcategory: '',
     resolutionSource: null,
-    imageUrl: '',
+    imageUrl: null,
     bannerUrl: '',
     title: '',
     description: '',
