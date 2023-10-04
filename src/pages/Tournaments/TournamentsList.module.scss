@@ -6,26 +6,6 @@
 
   padding: var(--size-16);
 
-  &Avatar {
-    display: flex;
-    flex-shrink: 0;
-    overflow: hidden;
-
-    width: 40px;
-    height: 40px;
-    background-color: var(--color-tournament-avatar-background);
-    border-radius: 20px;
-  }
-
-  &Image {
-    width: 100%;
-    height: auto;
-  }
-
-  &Initials {
-    margin: auto;
-  }
-
   &Description {
     display: -webkit-box;
     overflow: hidden;
