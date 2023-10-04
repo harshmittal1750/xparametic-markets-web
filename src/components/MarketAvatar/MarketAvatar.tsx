@@ -8,8 +8,9 @@ import Logos from 'components/Logos';
 
 import marketAvatarClasses from './MarketAvatar.module.scss';
 
-type MarketAvatarProps = Pick<Market, 'imageUrl' | 'verified'> &
-  Pick<ImageProps, '$size'>;
+type MarketAvatarProps = Pick<Market, 'verified'> &
+  Pick<ImageProps, '$size'> &
+  Record<'imageUrl', string>;
 
 export default function MarketAvatar({
   imageUrl,
