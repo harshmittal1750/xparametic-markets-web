@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 
 import getMarketColors from 'helpers/getMarketColors';
+import { isNull } from 'lodash';
 import { Container, Hero, useTheme } from 'ui';
 
 import { MarketAvatar, MarketCategory, Text } from 'components';
@@ -23,8 +24,10 @@ function MarketHeadWrapper(
   return (
     <Hero
       className={marketClasses.hero}
-      $image={market.imageUrl}
       $backdrop={marketColors.market}
+      {...(!isNull(market.imageUrl) && {
+        $image: market.imageUrl
+      })}
       {...props}
     />
   );
@@ -42,11 +45,13 @@ export default function MarketHead() {
         $enableGutters={!theme.device.isDesktop}
         className={marketClasses.heroInfo}
       >
-        <MarketAvatar
-          $size={theme.device.isDesktop ? 'lg' : 'md'}
-          imageUrl={market.imageUrl}
-          verified={!theme.device.isDesktop && market.verified}
-        />
+        {!isNull(market.imageUrl) && (
+          <MarketAvatar
+            $size={theme.device.isDesktop ? 'lg' : 'md'}
+            imageUrl={market.imageUrl}
+            verified={!theme.device.isDesktop && market.verified}
+          />
+        )}
         <div>
           <MarketCategory
             category={market.category}
