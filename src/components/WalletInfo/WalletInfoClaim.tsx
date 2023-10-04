@@ -1,6 +1,5 @@
 import { useCallback, useState } from 'react';
 
-import { login } from 'redux/ducks/polkamarkets';
 import { Transaction } from 'types/transaction';
 
 import Toast from 'components/Toast';
@@ -24,18 +23,36 @@ export default function WalletInfoClaim() {
     state: 'not_started'
   });
   const handleClaim = useCallback(async () => {
+    const { changeLoading, login } = await import('redux/ducks/polkamarkets');
+
     try {
+      dispatch(
+        changeLoading({
+          key: 'polk',
+          value: true
+        })
+      );
       setTransaction({ state: 'request' });
 
       // performing claim action on smart contract
       await polkamarketsService.claimPolk();
       setTransaction({ state: 'success' });
-
+      dispatch(
+        changeLoading({
+          key: 'polk',
+          value: false
+        })
+      );
       toastNotification.show('claim-success');
-
       dispatch(login(polkamarketsService));
     } catch (error) {
       setTransaction({ state: 'failure' });
+      dispatch(
+        changeLoading({
+          key: 'polk',
+          value: false
+        })
+      );
     }
   }, [dispatch, polkamarketsService, toastNotification]);
   const isRequesting = transaction.state === 'request';
