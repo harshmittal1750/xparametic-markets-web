@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { features } from 'config';
+import { isNull } from 'lodash';
 import { Market as MarketInterface } from 'models/market';
 import { useTheme } from 'ui';
 
@@ -45,11 +46,13 @@ function Market({ market }: MarketCardProps) {
       to={`/markets/${market.slug}`}
       onClick={handleNavigation}
     >
-      <MarketAvatar
-        $size="md"
-        imageUrl={market.imageUrl}
-        verified={!theme.device.isDesktop && market.verified}
-      />
+      {!isNull(market.imageUrl) && (
+        <MarketAvatar
+          $size="md"
+          imageUrl={market.imageUrl}
+          verified={!theme.device.isDesktop && market.verified}
+        />
+      )}
       <div className="pm-c-market__body-details">
         <MarketCategory
           category={market.category}
