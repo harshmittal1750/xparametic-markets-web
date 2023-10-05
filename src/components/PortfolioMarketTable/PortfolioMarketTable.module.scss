@@ -1,0 +1,10 @@
+.row {
+  &Market {
+    display: flex;
+    align-items: center;
+
+    &Avatar {
+      margin-right: 16px;
+    }
+  }
+}
