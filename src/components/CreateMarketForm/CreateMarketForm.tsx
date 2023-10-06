@@ -89,7 +89,8 @@ function CreateMarketForm() {
     const image =
       images.length > 0
         ? `${values.image.hash}${realitioLib.delimiter()}${images.join(',')}`
-        : values.image.hash;
+        : // TODO: what's the format for !values.image.hash (no image)?
+          values.image.hash;
 
     const response = await polkamarketsService.createMarket(
       values.question,
