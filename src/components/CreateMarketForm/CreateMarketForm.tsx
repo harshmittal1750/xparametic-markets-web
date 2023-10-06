@@ -86,11 +86,9 @@ function CreateMarketForm() {
     }`;
 
     // images format: "market image hash␟outcome image hash,outcome image hash,..."
-    const image =
-      images.length > 0
-        ? `${values.image.hash}${realitioLib.delimiter()}${images.join(',')}`
-        : // TODO: what's the format for !values.image.hash (no image)?
-          values.image.hash;
+    const image = `${values.image.hash || ''}${
+      images.length > 0 ? `${realitioLib.delimiter()}${images.join(',')}` : ''
+    }`;
 
     const response = await polkamarketsService.createMarket(
       values.question,
