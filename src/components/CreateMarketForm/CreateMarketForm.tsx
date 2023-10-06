@@ -86,7 +86,7 @@ function CreateMarketForm() {
     }`;
 
     // images format: "market image hash␟outcome image hash,outcome image hash,..."
-    const image = `${values.image.hash || ''}${
+    const image = `${values.image.hash}${
       images.length > 0 ? `${realitioLib.delimiter()}${images.join(',')}` : ''
     }`;
 
