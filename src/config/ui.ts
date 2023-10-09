@@ -20,6 +20,15 @@ const providers = [
   'Email'
 ] as const;
 
+const categories = [
+  'Society',
+  'Economy/Finance',
+  'Politics',
+  'Entertainment/Arts',
+  'Sports',
+  'Other'
+];
+
 export type Providers = typeof providers[number];
 
 const ui = {
@@ -76,7 +85,7 @@ const ui = {
     },
     categories: {
       enabled: !isTrue(environment.UI_FILTERS_CATEGORIES_DISABLED),
-      options: environment.UI_FILTERS_CATEGORIES?.split(',')
+      options: environment.UI_FILTERS_CATEGORIES?.split(',') || categories
     },
     tokens: ['USDT', 'USDC', 'DAI', 'MATIC', 'GLMR', 'MOVR'],
     tournaments: {

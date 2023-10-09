@@ -1,10 +1,9 @@
 import { useMemo } from 'react';
 
+import ui from 'config/ui';
 import { useField } from 'formik';
 
 import Feature from 'components/Feature';
-
-import { useFilters } from 'hooks';
 
 import {
   Input,
@@ -16,7 +15,6 @@ import {
 import CreateMarketFormDetailsClasses from './CreateMarketFormDetails.module.scss';
 
 function CreateMarketFormDetails() {
-  const { filters } = useFilters();
   const [field] = useField('image');
 
   const uploadedImageURL = field.value.isUploaded
@@ -25,11 +23,11 @@ function CreateMarketFormDetails() {
 
   const categories = useMemo(
     () =>
-      filters.dropdowns.categories.options.map(category => ({
-        name: category.label,
-        value: category.value
+      ui.filters.categories.options.map(category => ({
+        name: category,
+        value: category
       })),
-    [filters.dropdowns.categories.options]
+    []
   );
 
   return (
