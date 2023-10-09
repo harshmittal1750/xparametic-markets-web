@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 
 import * as realitioLib from '@reality.eth/reality-eth-lib/formatters/question';
 import { features } from 'config';
-import { Formik, Form } from 'formik';
+import { Formik, Form, getIn } from 'formik';
 import { fetchAditionalData, login } from 'redux/ducks/polkamarkets';
 import * as marketService from 'services/Polkamarkets/market';
 import { Token } from 'types/token';
@@ -125,6 +125,19 @@ function CreateMarketForm() {
 
   const currentValidationSchema = validationSchema[currentStep];
 
+  const isRequiredField = useCallback(
+    name => {
+      const schemaDescription = currentValidationSchema.describe();
+      const accessor = name.split('.').join('.fields.');
+      const field = getIn(schemaDescription.fields, accessor);
+
+      if (!field) return false;
+
+      return !field.optional;
+    },
+    [currentValidationSchema]
+  );
+
   return (
     <>
       <ToastNotification id="createMarket" duration={10000}>
@@ -165,6 +178,7 @@ function CreateMarketForm() {
             <Steps
               current={currentStep}
               currentStepFields={Object.keys(currentValidationSchema.fields)}
+              isRequiredField={isRequiredField}
               steps={[
                 {
                   id: 'details',
