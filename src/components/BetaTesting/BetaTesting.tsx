@@ -20,8 +20,8 @@ export default function BetaTesting({ network }: BetaTestingProps) {
 
   return (
     <Banner $type="info" $variant="subtle" onHide={() => setShow(false)}>
-      Welcome to the brand new <strong>Polkamarkets V2</strong> 🎉 if you want
-      to use V1 use the following{' '}
+      Welcome to the brand new <strong>Parametric</strong> 🎉 if you want to use
+      V1 use the following{' '}
       <Link
         className={betaTesting.link}
         title="link"

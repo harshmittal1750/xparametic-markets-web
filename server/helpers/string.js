@@ -29,7 +29,7 @@ function replaceToMetadataTemplate({
 }) {
   return htmlData
     .replace(
-      '<title>Polkamarkets - Autonomous Prediction Markets</title>',
+      '<title>Parametric - Autonomous Prediction Markets</title>',
       `<title>${title}</title>`
     )
     .replace('__META_TITLE__', title)

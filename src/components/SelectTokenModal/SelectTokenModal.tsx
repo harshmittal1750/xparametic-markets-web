@@ -288,7 +288,7 @@ export default function SelectTokenModal({ network }: SelectTokenModalProps) {
                           <p
                             className={selectTokenModalClasses.listErrorMessage}
                           >
-                            {`${filteredTokens[0].ticker} is used to secure and curate the Polkamarkets Protocol. It shouldn’t be used directly in markets`}
+                            {`${filteredTokens[0].ticker} is used to secure and curate the Parametric Protocol. It shouldn’t be used directly in markets`}
                           </p>
                         </div>
                       ) : null

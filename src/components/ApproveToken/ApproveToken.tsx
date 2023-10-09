@@ -121,7 +121,7 @@ function ApproveToken({
           })}
           {...props}
         >
-          {`Allow Polkamarkets to use your ${ticker}`}
+          {`Allow Parametric to use your ${ticker}`}
           <Tooltip text="You only have to do this once.">
             <QuestionIcon className={approveTokenClasses.icon} />
           </Tooltip>

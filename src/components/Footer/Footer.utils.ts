@@ -1,7 +1,7 @@
 import type { FooterItem } from './Footer.type';
 
 const defaultFooterText =
-  'Polkamarkets Services and POLK Token (POLK) [are not available in Excluded Jurisdictions.](https://www.polkamarkets.com/legal/terms-conditions){default} By accessing and using the interface you agree with our [Terms & Conditions](https://www.polkamarkets.com/legal/terms-conditions){primary underline}';
+  'Parametric Services and POLK Token (POLK) [are not available in Excluded Jurisdictions.](https://www.polkamarkets.com/legal/terms-conditions){default} By accessing and using the interface you agree with our [Terms & Conditions](https://www.polkamarkets.com/legal/terms-conditions){primary underline}';
 
 const regex: RegExp = /\[(.*?)\]\((.*?)\)\{(default|primary)(\s+underline)?\}/g;
 

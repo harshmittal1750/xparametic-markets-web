@@ -24,12 +24,12 @@ export default function RestrictedCountry() {
               fontWeight="bold"
               className="pm-restricted-country__content-title"
             >
-              Polkamarkets is not available in your country
+              Parametric is not available in your country
             </Text>
           </ModalHeader>
           <ModalSection>
             <ModalSectionText>
-              At the moment Polkamarkets Services and POLK Token (POLK) are not
+              At the moment Parametric Services and POLK Token (POLK) are not
               available in{' '}
               <Link
                 href="https://www.polkamarkets.com/legal/terms-conditions"

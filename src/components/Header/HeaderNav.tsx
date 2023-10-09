@@ -166,7 +166,7 @@ export default function HeaderNav() {
         ) : (
           <>
             <Logos.PolkamarketsLogo />
-            <V2Badge className={headerNavClasses.logosBadge} />
+            {/* <V2Badge className={headerNavClasses.logosBadge} /> */}
           </>
         )}
       </Link>

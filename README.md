@@ -1,12 +1,12 @@
-# Polkamarkets
+# Parametric
 
-Polkamarkets is an Autonomous Prediction Market Protocol built for multi-chain information exchange and trading, based on Polkadot.
+Parametric is an Autonomous Prediction Market Protocol built for multi-chain information exchange and trading, based on Polkadot.
 
 ## Overview
 
 Our web interface is built with React.
 
-The backend and Ethereum integrations are being developed through [`polkamarkets-js`](https://github.com/Polkamarkets/polkamarkets-js) package. You can have a look on our smart contract [here](https://github.com/Polkamarkets/polkamarkets-js/blob/main/contracts/PredictionMarket.sol).
+The backend and Ethereum integrations are being developed through [`polkamarkets-js`](https://github.com/Parametric/polkamarkets-js) package. You can have a look on our smart contract [here](https://github.com/Parametric/polkamarkets-js/blob/main/contracts/PredictionMarket.sol).
 
 We're currently running on [Moonbeam](https://moonbeam.network/) and [Moonriver](https://moonbeam.network/networks/moonriver/). You can access it at [https://app.polkamarkets.com](https://app.polkamarkets.com)
 
@@ -20,7 +20,7 @@ We're currently running on [Moonbeam](https://moonbeam.network/) and [Moonriver]
 2. Installing the app
 
 ```
-git clone https://github.com/Polkamarkets/polkamarkets-web.git
+git clone https://github.com/Parametric/polkamarkets-web.git
 cd polkamarkets-web
 yarn install
 ```

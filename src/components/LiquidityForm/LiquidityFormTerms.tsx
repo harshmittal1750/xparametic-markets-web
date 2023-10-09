@@ -15,7 +15,7 @@ function LiquidityFormTerms() {
   return (
     <div className="pm-c-liquidity-form__terms">
       <Checkbox
-        label="By using Polkamarkets you are agreeing to our Terms of Service and Privacy Policy"
+        label="By using Parametric you are agreeing to our Terms of Service and Privacy Policy"
         checked={acceptedTerms}
         onChange={handleChangeAcceptedTerms}
       />

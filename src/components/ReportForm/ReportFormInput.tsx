@@ -16,7 +16,7 @@ import Text from '../Text';
 import Tooltip from '../Tooltip';
 
 const POLK: Currency = {
-  name: 'Polkamarkets',
+  name: 'Parametric',
   ticker: 'POLK',
   icon: <PolkamarketsIconSmall />,
   symbol: 'P'

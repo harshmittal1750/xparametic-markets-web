@@ -60,15 +60,15 @@ export default function BetaWarning() {
         </ModalHeader>
         <ModalSection>
           <ModalSectionText>
-            Polkamarkets Protocol is a 100% autonomous protocol running on
+            Parametric Protocol is a 100% autonomous protocol running on
             publicly accessible blockchains. This website is a graphical user
             interface for visualizing data from, and interacting with, the
-            Polkamarkets Protocol Smart Contracts on EVMs or sidechains, via
-            your Web 3 injected wallet.
+            Parametric Protocol Smart Contracts on EVMs or sidechains, via your
+            Web 3 injected wallet.
           </ModalSectionText>
           <ModalSectionText>
-            POLKAMARKET OÜ does not host any markets, nor takes custody of
-            funds, nor charges fees, nor profits from trades.
+            Parametric does not host any markets, nor takes custody of funds,
+            nor charges fees, nor profits from trades.
           </ModalSectionText>
           <ModalSectionText id={betaWarningProps['aria-describedby']}>
             By entering the website I confirm I am not a citizen or resident in

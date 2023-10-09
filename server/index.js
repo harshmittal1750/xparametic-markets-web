@@ -37,10 +37,10 @@ const indexPath = path.resolve(__dirname, '..', 'build', 'index.html');
 const defaultMetadata = {
   title:
     process.env.REACT_APP_METADATA_TITLE ||
-    'Polkamarkets - Autonomous Prediction Markets',
+    'Parametric - Autonomous Prediction Markets',
   description:
     process.env.REACT_APP_METADATA_DESCRIPTION ||
-    'Polkamarkets is a DeFi-Powered Prediction Market built for cross-chain information exchange.',
+    'Parametric is a DeFi-Powered Prediction Market built for cross-chain information exchange.',
   image: process.env.REACT_APP_METADATA_IMAGE || '/metadata-homepage.png'
 };
 
@@ -48,16 +48,16 @@ const metadataByPage = {
   achievements: {
     title:
       process.env.REACT_APP_METADATA_ACHIEVEMENTS_TITLE ||
-      'Achievements - Polkamarkets',
+      'Achievements - Parametric',
     description:
       process.env.REACT_APP_METADATA_ACHIEVEMENTS_DESCRIPTION ||
-      'Place predictions in the Polkamarkets app and grab your exclusive NFT Achievements.',
+      'Place predictions in the Parametric app and grab your exclusive NFT Achievements.',
     image:
       process.env.REACT_APP_METADATA_ACHIEVEMENTS_IMAGE ||
       '/metadata-homepage.png'
   },
   clubs: {
-    title: process.env.REACT_APP_METADATA_CLUBS_TITLE || 'Clubs - Polkamarkets',
+    title: process.env.REACT_APP_METADATA_CLUBS_TITLE || 'Clubs - Parametric',
     description:
       process.env.REACT_APP_METADATA_CLUBS_DESCRIPTION ||
       "Build your own Club, league and leaderboard with your friends, against colleagues or around communities. Wear your own logo, tease your clubmates and let all fight to climb the Club's leaderboard.",
@@ -67,7 +67,7 @@ const metadataByPage = {
   tournaments: {
     title:
       process.env.REACT_APP_METADATA_TOURNAMENTS_TITLE ||
-      'Tournaments - Polkamarkets',
+      'Tournaments - Parametric',
     description: process.env.REACT_APP_METADATA_TOURNAMENTS_DESCRIPTION || '',
     image:
       process.env.REACT_APP_METADATA_TOURNAMENTS_IMAGE ||
@@ -76,10 +76,10 @@ const metadataByPage = {
   leaderboard: {
     title:
       process.env.REACT_APP_METADATA_LEADERBOARD_TITLE ||
-      'Leaderboard - Polkamarkets',
+      'Leaderboard - Parametric',
     description:
       process.env.REACT_APP_METADATA_LEADERBOARD_DESCRIPTION ||
-      'Rank up higher on the leaderboard and be the #1 forecaster of Polkamarkets.',
+      'Rank up higher on the leaderboard and be the #1 forecaster of Parametric.',
     image:
       process.env.REACT_APP_METADATA_LEADERBOARD_IMAGE ||
       '/metadata-leaderboard.png'
@@ -87,10 +87,10 @@ const metadataByPage = {
   portfolio: {
     title:
       process.env.REACT_APP_METADATA_PORTFOLIO_TITLE ||
-      'Portfolio - Polkamarkets',
+      'Portfolio - Parametric',
     description:
       process.env.REACT_APP_METADATA_PORTFOLIO_DESCRIPTION ||
-      'Participate in the Polkamarkets app and compete with your friends, coworkers or other community members.',
+      'Participate in the Parametric app and compete with your friends, coworkers or other community members.',
     image:
       process.env.REACT_APP_METADATA_PORTFOLIO_IMAGE ||
       '/metadata-portfolio.png'
