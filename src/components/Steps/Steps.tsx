@@ -15,9 +15,16 @@ type StepsProps = {
   currentStepFields: string[];
   steps: Step[];
   onChange: (step: number) => void;
+  isRequiredField: (field: string) => boolean;
 };
 
-function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
+function Steps({
+  current,
+  currentStepFields,
+  steps,
+  onChange,
+  isRequiredField
+}: StepsProps) {
   const { isValid, touched, isSubmitting } = useFormikContext();
   const { network } = useNetwork();
 
@@ -38,7 +45,8 @@ function Steps({ current, currentStepFields, steps, onChange }: StepsProps) {
   }
 
   const isCurrentStepValid =
-    currentStepFields.every(field => touched[field]) && isValid;
+    currentStepFields.filter(isRequiredField).every(field => touched[field]) &&
+    isValid;
 
   return (
     <div className={StepsClasses.root}>
