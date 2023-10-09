@@ -63,33 +63,6 @@ const defaultDateRangeOptions: Option[] = [
   }
 ];
 
-const defaultCategoriesOptions: Option[] = [
-  {
-    label: 'Society',
-    value: 'Society'
-  },
-  {
-    label: 'Economy/Finance',
-    value: 'Economy/Finance'
-  },
-  {
-    label: 'Politics',
-    value: 'Politics'
-  },
-  {
-    label: 'Entertainment/Arts',
-    value: 'Entertainment/Arts'
-  },
-  {
-    label: 'Sports',
-    value: 'Sports'
-  },
-  {
-    label: 'Other',
-    value: 'Other'
-  }
-];
-
 const categoriesOptionsFromEnvironment = ui.filters.categories.options?.map(
   category => ({
     label: category,
@@ -171,7 +144,7 @@ const filters: Filters = {
     },
     categories: {
       title: 'Category',
-      options: categoriesOptionsFromEnvironment || defaultCategoriesOptions,
+      options: categoriesOptionsFromEnvironment,
       multiple: true,
       enabled: ui.filters.categories.enabled
     },
