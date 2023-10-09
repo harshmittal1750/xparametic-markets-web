@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 
 import cn from 'classnames';
+import { isNull } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { useGetTournamentsQuery } from 'services/Polkamarkets';
 import { Avatar } from 'ui';
@@ -39,12 +40,14 @@ function TournamentsList() {
               'bg-3': index % 2 === 0
             })}
           >
-            <Avatar
-              src={tournament.imageUrl || ''}
-              alt={tournament.title}
-              $size="xs"
-              $radius="xs"
-            />
+            {!isNull(tournament.imageUrl) && (
+              <Avatar
+                src={tournament.imageUrl}
+                alt={tournament.title}
+                $size="xs"
+                $radius="xs"
+              />
+            )}
             <div>
               <span className="body semibold text-2 text-1-on-hover">
                 {tournament.title}
