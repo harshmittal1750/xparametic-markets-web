@@ -59,8 +59,8 @@
 
   &__action-button {
     @extend .pm-c-button-normal--primary, .pm-c-button--sm;
-    background-color: #5d55fa;
-    border-color: #5d55fa;
+    background-color: #303596;
+    border-color: #303596;
 
     &:hover,
     :focus {
@@ -69,8 +69,8 @@
     }
 
     &:disabled {
-      background-color: mix(#ffffff, #5d55fa, 86%);
-      border-color: mix(#ffffff, #5d55fa, 86%);
+      background-color: mix(#ffffff, #303596, 86%);
+      border-color: mix(#ffffff, #303596, 86%);
     }
 
     color: #ffffff;

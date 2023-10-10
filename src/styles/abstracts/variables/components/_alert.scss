@@ -11,7 +11,7 @@ $alert-mini-border-radius: 0.4rem !default;
 $alert-themes: (
   light: (
     alert-color-default: #8b96a7,
-    alert-color-information: #5d55fa,
+    alert-color-information: #303596,
     alert-color-success: #27ab83,
     alert-color-warning: #f0b429,
     alert-description-color: #171b23,
@@ -19,7 +19,7 @@ $alert-themes: (
     alert-border-color: #e0e2e7,
     alert-shadow: drop-shadow(0rem 0rem 1.6rem rgba(0, 35, 121, 0.08)),
     alert-mini-subtle-default-background-color: mix(#ffffff, #8a96a8, 86%),
-    alert-mini-subtle-information-background-color: mix(#ffffff, #5d55fa, 85%),
+    alert-mini-subtle-information-background-color: mix(#ffffff, #303596, 85%),
     alert-mini-subtle-success-background-color: mix(#ffffff, #27ab83, 85%),
     alert-mini-subtle-warning-background-color: mix(#ffffff, #f0b429, 85%),
     alert-mini-subtle-error-background-color: mix(#ffffff, #e12d39, 90%),
@@ -31,7 +31,7 @@ $alert-themes: (
   ),
   dark: (
     alert-color-default: #8a96a8,
-    alert-color-information: #5d55fa,
+    alert-color-information: #303596,
     alert-color-success: #27ab83,
     alert-color-warning: #f0b429,
     alert-color-error: #e12d39,
@@ -40,7 +40,7 @@ $alert-themes: (
     alert-border-color: #252c3b,
     alert-shadow: drop-shadow(0rem 0.4rem 2.4rem rgba(0, 0, 0, 0.4)),
     alert-mini-subtle-default-background-color: mix(#000000, #8a96a8, 80%),
-    alert-mini-subtle-information-background-color: mix(#000000, #5d55fa, 75%),
+    alert-mini-subtle-information-background-color: mix(#000000, #303596, 75%),
     alert-mini-subtle-success-background-color: mix(#000000, #27ab83, 75%),
     alert-mini-subtle-warning-background-color: mix(#000000, #f0b429, 85%),
     alert-mini-subtle-error-background-color: mix(#000000, #e12d39, 75%),
@@ -62,19 +62,19 @@ $alert-minimal-border-radius: 0.4rem !default;
 $alert-minimal-themes: (
   light: (
     background-colors: (
-      information: mix(#5d55fa, transparent, 8%),
+      information: mix(#303596, transparent, 8%),
       success: mix(#27ab83, transparent, 8%),
       warning: mix(#f0b429, transparent, 8%),
       danger: mix(#e12d39, transparent, 8%)
     ),
     border-colors: (
-      information: mix(#5d55fa, transparent, 12%),
+      information: mix(#303596, transparent, 12%),
       success: mix(#27ab83, transparent, 12%),
       warning: mix(#f0b429, transparent, 12%),
       danger: mix(#e12d39, transparent, 12%)
     ),
     text-colors: (
-      information: #5d55fa,
+      information: #303596,
       success: #27ab83,
       warning: #f0b429,
       danger: #e12d39
@@ -82,19 +82,19 @@ $alert-minimal-themes: (
   ),
   dark: (
     background-colors: (
-      information: mix(#5d55fa, transparent, 8%),
+      information: mix(#303596, transparent, 8%),
       success: mix(#27ab83, transparent, 8%),
       warning: mix(#f0b429, transparent, 8%),
       danger: mix(#e12d39, transparent, 8%)
     ),
     border-colors: (
-      information: mix(#5d55fa, transparent, 12%),
+      information: mix(#303596, transparent, 12%),
       success: mix(#27ab83, transparent, 12%),
       warning: mix(#f0b429, transparent, 12%),
       danger: mix(#e12d39, transparent, 12%)
     ),
     text-colors: (
-      information: #5d55fa,
+      information: #303596,
       success: #27ab83,
       warning: #f0b429,
       danger: #e12d39

@@ -24,9 +24,9 @@ $button-normal-themes: (
         background-color-disabled: mix(#ffffff, #94a2b8, 85%)
       ),
       primary: (
-        background-color: #5d55fa,
+        background-color: #303596,
         background-color-hover: #4d3df7,
-        background-color-disabled: mix(#ffffff, #5d55fa, 86%)
+        background-color-disabled: mix(#ffffff, #303596, 86%)
       ),
       danger: (
         background-color: #e12d39,
@@ -60,9 +60,9 @@ $button-normal-themes: (
         background-color-disabled: mix(#000000, #7887b6, 80%)
       ),
       primary: (
-        background-color: #5d55fa,
+        background-color: #303596,
         background-color-hover: #7069fa,
-        background-color-disabled: mix(#000000, #5d55fa, 75%)
+        background-color-disabled: mix(#000000, #303596, 75%)
       ),
       danger: (
         background-color: #e12d39,
@@ -105,7 +105,7 @@ $button-outline-themes: (
       ),
       primary: (
         background-color: transparent,
-        background-color-hover: #5d55fa,
+        background-color-hover: #303596,
         background-color-disabled: transparent
       ),
       danger: (
@@ -136,9 +136,9 @@ $button-outline-themes: (
         border-color-disabled: #e0e2e7
       ),
       primary: (
-        border-color: mix(#ffffff, #5d55fa, 50%),
-        border-color-hover: #5d55fa,
-        border-color-disabled: mix(#ffffff, #5d55fa, 50%)
+        border-color: mix(#ffffff, #303596, 50%),
+        border-color-hover: #303596,
+        border-color-disabled: mix(#ffffff, #303596, 50%)
       ),
       danger: (
         border-color: mix(#ffffff, #e12d39, 50%),
@@ -168,9 +168,9 @@ $button-outline-themes: (
         text-color-disabled: #637084
       ),
       primary: (
-        text-color: #5d55fa,
+        text-color: #303596,
         text-color-hover: #ffffff,
-        text-color-disabled: #5d55fa
+        text-color-disabled: #303596
       ),
       danger: (
         text-color: #e12d39,
@@ -234,9 +234,9 @@ $button-outline-themes: (
         border-color-disabled: #252c3b
       ),
       primary: (
-        border-color: mix(#000000, #5d55fa, 50%),
-        border-color-hover: #5d55fa,
-        border-color-disabled: mix(#000000, #5d55fa, 50%)
+        border-color: mix(#000000, #303596, 50%),
+        border-color-hover: #303596,
+        border-color-disabled: mix(#000000, #303596, 50%)
       ),
       danger: (
         border-color: mix(#000000, #e12d39, 50%),
@@ -266,9 +266,9 @@ $button-outline-themes: (
         text-color-disabled: #f3f4f6
       ),
       primary: (
-        text-color: #5d55fa,
+        text-color: #303596,
         text-color-hover: #ffffff,
-        text-color-disabled: #5d55fa
+        text-color-disabled: #303596
       ),
       danger: (
         text-color: #e12d39,
@@ -298,9 +298,9 @@ $button-subtle-themes: (
         background-color-disabled: mix(#ffffff, #8a96a8, 55%)
       ),
       primary: (
-        background-color: mix(#ffffff, #5d55fa, 85%),
-        background-color-hover: #5d55fa,
-        background-color-disabled: mix(#ffffff, #5d55fa, 85%)
+        background-color: mix(#ffffff, #303596, 85%),
+        background-color-hover: #303596,
+        background-color-disabled: mix(#ffffff, #303596, 85%)
       ),
       danger: (
         background-color: mix(#ffffff, #e12d39, 90%),
@@ -325,9 +325,9 @@ $button-subtle-themes: (
         text-color-disabled: #13161e
       ),
       primary: (
-        text-color: #5d55fa,
+        text-color: #303596,
         text-color-hover: #ffffff,
-        text-color-disabled: #5d55fa
+        text-color-disabled: #303596
       ),
       danger: (
         text-color: #e12d39,
@@ -354,9 +354,9 @@ $button-subtle-themes: (
         background-color-disabled: mix(#000000, #8a96a8, 55%)
       ),
       primary: (
-        background-color: mix(#000000, #5d55fa, 75%),
+        background-color: mix(#000000, #303596, 75%),
         background-color-hover: #7069fa,
-        background-color-disabled: mix(#000000, #5d55fa, 75%)
+        background-color-disabled: mix(#000000, #303596, 75%)
       ),
       danger: (
         background-color: mix(#000000, #e12d39, 75%),
@@ -381,9 +381,9 @@ $button-subtle-themes: (
         text-color-disabled: #c5cad3
       ),
       primary: (
-        text-color: #5d55fa,
+        text-color: #303596,
         text-color-hover: #ffffff,
-        text-color-disabled: #5d55fa
+        text-color-disabled: #303596
       ),
       danger: (
         text-color: #e12d39,
@@ -413,9 +413,9 @@ $button-ghost-themes: (
         background-color-disabled: mix(#ffffff, #8a96a8, 85%)
       ),
       primary: (
-        background-color: mix(#ffffff, #5d55fa, 85%),
-        background-color-hover: mix(#ffffff, #5d55fa, 75%),
-        background-color-disabled: mix(#ffffff, #5d55fa, 85%)
+        background-color: mix(#ffffff, #303596, 85%),
+        background-color-hover: mix(#ffffff, #303596, 75%),
+        background-color-disabled: mix(#ffffff, #303596, 85%)
       ),
       danger: (
         background-color: transparent,
@@ -440,9 +440,9 @@ $button-ghost-themes: (
         text-color-disabled: #637084
       ),
       primary: (
-        text-color: #5d55fa,
-        text-color-hover: #5d55fa,
-        text-color-disabled: #5d55fa
+        text-color: #303596,
+        text-color-hover: #303596,
+        text-color-disabled: #303596
       ),
       danger: (
         text-color: #e12d39,
@@ -469,9 +469,9 @@ $button-ghost-themes: (
         background-color-disabled: mix(#000000, #8a96a8, 80%)
       ),
       primary: (
-        background-color: mix(#000000, #5d55fa, 75%),
-        background-color-hover: mix(#000000, #5d55fa, 80%),
-        background-color-disabled: mix(#000000, #5d55fa, 75%)
+        background-color: mix(#000000, #303596, 75%),
+        background-color-hover: mix(#000000, #303596, 80%),
+        background-color-disabled: mix(#000000, #303596, 75%)
       ),
       danger: (
         background-color: transparent,
@@ -496,9 +496,9 @@ $button-ghost-themes: (
         text-color-disabled: #c5cad3
       ),
       primary: (
-        text-color: #5d55fa,
-        text-color-hover: #5d55fa,
-        text-color-disabled: #5d55fa
+        text-color: #303596,
+        text-color-hover: #303596,
+        text-color-disabled: #303596
       ),
       danger: (
         text-color: #e12d39,

@@ -160,7 +160,7 @@
   &:hover,
   &:focus,
   &Selected {
-    border: 1px solid #5d55fa;
+    border: 1px solid #303596;
     box-shadow: 0px 0px 0px 3px rgba(93, 85, 250, 0.2);
 
     transition-property: border, box-shadow;
@@ -313,7 +313,7 @@
   &:hover,
   &:focus,
   &Selected {
-    border: 2px solid #5d55fa;
+    border: 2px solid #303596;
 
     transition: border 0.2s ease-in-out;
   }
