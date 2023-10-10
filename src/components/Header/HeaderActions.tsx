@@ -123,7 +123,7 @@ export default function HeaderActions() {
             <HeaderActionComponent isLoggedIn={isLoggedIn} />
           )}
         </HeaderActionsGroupComponent>
-        <ThemeSelector />
+        {/* <ThemeSelector /> */}
         {ui.layout.header.helpUrl && (
           <a
             role="button"

@@ -24,9 +24,9 @@ import { useLocalStorage } from 'hooks';
 import themeSelectorClasses from './ThemeSelector.module.scss';
 
 const modes = {
-  Light: 'Sun',
-  Dark: 'Moon',
-  System: 'Sparkles'
+  Light: 'Sun'
+  // Dark: 'Moon',
+  // System: 'Sparkles'
 };
 
 export default function NetworkSelector() {
