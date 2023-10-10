@@ -6,7 +6,7 @@ import { Container, Skeleton, useTheme } from 'ui';
 
 import NetworkSelector from 'components/NetworkSelector';
 import Profile from 'components/Profile';
-import ThemeSelector from 'components/ThemeSelector';
+// import ThemeSelector from 'components/ThemeSelector';
 import Wallet from 'components/Wallet';
 
 import { useAppSelector, usePortal } from 'hooks';

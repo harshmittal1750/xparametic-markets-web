@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { ui } from 'config';
 import { Container } from 'ui';
 
-import Text from 'components/Text';
+// import Text from 'components/Text';
 
 import styles from './Footer.module.scss';
 import { defaultFooterText, getFooterItems } from './Footer.utils';
@@ -24,7 +24,7 @@ export default function Footer({ className, $gutterTop }: FooterProps) {
       className={cn(styles.root, { [styles.gutterTop]: $gutterTop }, className)}
     >
       <Container className={styles.container}>
-        <Text
+        {/* <Text
           as="p"
           scale="caption"
           fontWeight="medium"
@@ -49,7 +49,7 @@ export default function Footer({ className, $gutterTop }: FooterProps) {
               item.text
             )
           )}
-        </Text>
+        </Text> */}
       </Container>
     </footer>
   );

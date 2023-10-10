@@ -25,7 +25,7 @@ export default function WrongNetwork({ network }: WrongNetworkProps) {
       }
     >
       The selected network <strong>{network.name}</strong> does not match
-      Polkamarkets&apos; networks. <strong>Change</strong> the App network or
+      Parametric&apos;s networks. <strong>Change</strong> the App network or
       learn{' '}
       <Link
         className={wrongNetworkClasses.link}

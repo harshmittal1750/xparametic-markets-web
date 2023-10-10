@@ -64,7 +64,7 @@ function CreateMarketBuyPolk({
         percent={(polkBalance / requiredPolkBalance) * 100}
         color="warning"
       />
-      <ButtonLoading
+      {/* <ButtonLoading
         size="sm"
         color="warning"
         fullwidth
@@ -72,7 +72,7 @@ function CreateMarketBuyPolk({
         loading={isLoadingBuyPolk}
       >
         Buy $POLK
-      </ButtonLoading>
+      </ButtonLoading> */}
     </div>
   );
 }

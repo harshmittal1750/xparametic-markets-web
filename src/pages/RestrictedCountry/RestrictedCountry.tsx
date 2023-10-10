@@ -1,14 +1,14 @@
 import { PolkamarketsIcon } from 'assets/icons';
 
 import {
-  Link,
+  // Link,
   Modal,
   ModalContent,
   ModalFooter,
-  ModalHeader,
-  ModalSection,
-  ModalSectionText,
-  Text
+  ModalHeader
+  // ModalSection,
+  // ModalSectionText,
+  // Text
 } from 'components';
 
 export default function RestrictedCountry() {
@@ -18,16 +18,16 @@ export default function RestrictedCountry() {
         <ModalContent className="pm-restricted-country__content">
           <ModalHeader>
             <PolkamarketsIcon />
-            <Text
+            {/* <Text
               as="h5"
               scale="heading"
               fontWeight="bold"
               className="pm-restricted-country__content-title"
             >
               Parametric is not available in your country
-            </Text>
+            </Text> */}
           </ModalHeader>
-          <ModalSection>
+          {/* <ModalSection>
             <ModalSectionText>
               At the moment Parametric Services and POLK Token (POLK) are not
               available in{' '}
@@ -51,7 +51,7 @@ export default function RestrictedCountry() {
                 target="_blank"
               />
             </ModalSectionText>
-          </ModalSection>
+          </ModalSection> */}
           <ModalFooter>
             <a
               style={{ margin: '0 auto' }}

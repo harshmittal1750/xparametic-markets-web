@@ -43,7 +43,7 @@ function CreateMarket() {
           market that&apos;s engaging and easy to participate in for users.{' '}
           <a
             className={CreateMarketClasses.subheadingLink}
-            href="https://help.polkamarkets.com/en/articles/5610512-how-to-create-a-prediction-market"
+            href="/"
             target="_blank"
             rel="noreferrer"
           >

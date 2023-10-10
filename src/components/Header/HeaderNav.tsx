@@ -8,7 +8,7 @@ import isEmpty from 'lodash/isEmpty';
 import { useTheme } from 'ui';
 
 import * as Logos from 'assets/icons';
-import { ReactComponent as V2Badge } from 'assets/icons/svgs/v2-badge.svg';
+// import { ReactComponent as V2Badge } from 'assets/icons/svgs/v2-badge.svg';
 
 import { Button } from 'components/Button';
 import CreateMarket from 'components/CreateMarket';

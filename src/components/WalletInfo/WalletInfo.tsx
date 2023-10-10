@@ -39,7 +39,7 @@ export default function WalletInfo() {
 
   return (
     <div className={walletInfoClasses.root}>
-      <div className={cn(walletInfoClasses.action, walletInfoClasses.polk)}>
+      {/* <div className={cn(walletInfoClasses.action, walletInfoClasses.polk)}>
         {formatNumberToString(polkBalance)}
         <span className={walletInfoClasses.actionTicker}>POLK</span>
         {theme.device.isDesktop && (
@@ -61,7 +61,7 @@ export default function WalletInfo() {
             )}
           </>
         )}
-      </div>
+      </div> */}
       <MetaMaskWalletComponent>
         {theme.device.isDesktop && (
           <>
