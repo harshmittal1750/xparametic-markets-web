@@ -16,7 +16,9 @@ function getImage(src: string, options: Record<'width' | 'height', number>) {
  * @param {string} src Source link image.
  * @returns {Promise<string>} RGB color string-like `RRR GGG BBB`
  */
-export default async function getAverageColor(src: string): Promise<string> {
+export default async function getAverageColor(
+  src: string | null
+): Promise<string> {
   const context = document.createElement('canvas').getContext?.('2d', {
     willReadFrequently: true
   });

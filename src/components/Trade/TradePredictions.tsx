@@ -102,7 +102,7 @@ function TradePredictions({
                 <div className={styles.predictionTitleGroup}>
                   {withImages ? (
                     <Image
-                      $radius="lg"
+                      $radius="xs"
                       alt={outcome.title}
                       $size="xs"
                       src={outcome.imageUrl}

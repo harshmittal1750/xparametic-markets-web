@@ -44,7 +44,7 @@ function ImageCroppper({ image, onCrop, onCancel }: ImageCropperProps) {
           crop={crop}
           zoom={zoom}
           aspect={1}
-          cropShape="round"
+          cropShape="rect"
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
           onZoomChange={setZoom}

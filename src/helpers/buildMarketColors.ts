@@ -1,5 +1,4 @@
 import type { Market } from 'models/market';
-import { getAverageColor } from 'ui';
 
 type Color = string;
 type OutcomeColors = Record<number, Color>;
@@ -12,6 +11,8 @@ export type MarketColorsByNetwork = Record<
 export default async function buildMarketColors(
   data: ReadonlyArray<Market>
 ): Promise<MarketColorsByNetwork> {
+  const { getAverageColor } = await import('ui');
+
   let marketColors: MarketColorsByNetwork = {};
 
   // eslint-disable-next-line no-restricted-syntax

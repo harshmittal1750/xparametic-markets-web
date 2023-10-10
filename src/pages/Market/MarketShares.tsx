@@ -115,7 +115,7 @@ function MarketShares({ onSellSelected }: MarketSharesProps) {
                   {outcome.imageUrl ? (
                     <Image
                       className={styles.rootItemTitleGroupImage}
-                      $radius="lg"
+                      $radius="xs"
                       alt={outcome.title}
                       $size="x2s"
                       src={outcome.imageUrl}
