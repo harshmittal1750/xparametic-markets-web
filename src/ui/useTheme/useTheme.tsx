@@ -19,12 +19,12 @@ export const THEME_MODE_DEFAULT: ThemeModes = (() => {
   switch (environment.UI_THEME_MODE?.toLowerCase()) {
     case THEME_MODES.light:
       return THEME_MODES.light;
-    case THEME_MODES.dark:
-      return THEME_MODES.dark;
-    case THEME_MODES.system:
-      return THEME_MODES.system;
+    // case THEME_MODES.dark:
+    //   return THEME_MODES.dark;
+    // case THEME_MODES.system:
+    //   return THEME_MODES.system;
     default:
-      return THEME_MODES.dark;
+      return THEME_MODES.light;
   }
 })();
 

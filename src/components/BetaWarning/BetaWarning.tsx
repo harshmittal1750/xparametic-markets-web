@@ -97,7 +97,7 @@ export default function BetaWarning() {
               title="Terms & Conditions"
               scale="caption"
               fontWeight="medium"
-              href="https://www.polkamarkets.com/legal/terms-conditions"
+              href="/"
               target="_blank"
             />
             {' • '}
@@ -106,7 +106,7 @@ export default function BetaWarning() {
               title="Risk Disclosure"
               scale="caption"
               fontWeight="medium"
-              href="https://docs.google.com/document/d/1TR8HYTBOhZeZOb0E5uAo8lbK4v0Oxv3JnQD_AdYENBY/edit"
+              href="/"
               target="_blank"
             />
           </Text>
