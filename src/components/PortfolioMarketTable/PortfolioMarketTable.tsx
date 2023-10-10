@@ -6,8 +6,10 @@ import { useHistory } from 'react-router-dom';
 import classnames from 'classnames';
 import { colorByOutcomeId } from 'helpers/color';
 import { roundNumber } from 'helpers/math';
+import { isNull } from 'lodash';
 import isEmpty from 'lodash/isEmpty';
 import { login, fetchAditionalData } from 'redux/ducks/polkamarkets';
+import { Avatar } from 'ui';
 
 import {
   ArrowDownIcon,
@@ -29,6 +31,7 @@ import Badge from '../Badge';
 import { ButtonLoading } from '../Button';
 import Pill from '../Pill';
 import Text from '../Text';
+import portfolioMarketTableClasses from './PortfolioMarketTable.module.scss';
 
 type MarketTableProps = {
   rows: any[];
@@ -165,20 +168,18 @@ const PortfolioMarketTable = ({
                     onClick={() => redirectTo(market.slug)}
                     style={{ cursor: 'pointer' }}
                   >
-                    <div
-                      style={{
-                        display: 'flex',
-                        gap: '1.6rem',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <img
-                        src={market.imageUrl}
-                        alt={market.id}
-                        height={32}
-                        width={32}
-                        style={{ borderRadius: '50%' }}
-                      />
+                    <div className={portfolioMarketTableClasses.rowMarket}>
+                      {!isNull(market.imageUrl) && (
+                        <Avatar
+                          className={
+                            portfolioMarketTableClasses.rowMarketAvatar
+                          }
+                          src={market.imageUrl}
+                          alt={market.title}
+                          $size="xs"
+                          $radius="xs"
+                        />
+                      )}
                       {market.title}
                     </div>
                   </td>

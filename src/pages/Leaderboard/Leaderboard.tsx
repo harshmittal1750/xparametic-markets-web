@@ -3,13 +3,14 @@ import { useLocation, useParams, matchPath } from 'react-router-dom';
 
 import cn from 'classnames';
 import { ui, pages } from 'config';
+import { isNull } from 'lodash';
 import {
   useGetLeaderboardByTimeframeQuery,
   useGetLeaderboardGroupBySlugQuery,
   useGetTournamentBySlugQuery,
   useJoinLeaderboardGroupMutation
 } from 'services/Polkamarkets';
-import { Container, useTheme } from 'ui';
+import { Container, Image, useTheme } from 'ui';
 
 import { CreateLeaderboardGroup, Link, Tabs } from 'components';
 import { ButtonLoading } from 'components/Button';
@@ -371,15 +372,14 @@ function Leaderboard() {
     <Container className="pm-p-leaderboard max-width-screen-xl">
       <div className="pm-p-leaderboard__header">
         <div className="flex-row gap-5 align-start">
-          {leaderboardImageUrl ? (
-            <img
-              className="pm-p-leaderboard__avatar"
+          {!isNull(leaderboardImageUrl) && (
+            <Image
+              $size="md"
+              $radius="sm"
               alt={leaderboardTitle}
               src={leaderboardImageUrl}
-              width={64}
-              height={64}
             />
-          ) : null}
+          )}
           <div className="flex-column gap-3">
             <div className="flex-row gap-5 align-center">
               <h1 className="heading semibold text-1">{leaderboardTitle}</h1>
