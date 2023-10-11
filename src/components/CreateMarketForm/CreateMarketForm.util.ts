@@ -70,7 +70,9 @@ const validationSchema = [
       )
       .required('Closing date is required.'),
     image: Yup.object().shape({
-      hash: Yup.string().required('Image is required.')
+      hash: features.fantasy.enabled
+        ? Yup.string()
+        : Yup.string().required('Image is required.')
     })
   }),
   Yup.object().shape({

@@ -49,7 +49,7 @@ export interface Market {
   category: string;
   subcategory: string;
   resolutionSource?: string | null;
-  imageUrl: string;
+  imageUrl: string | null;
   bannerUrl: string;
   title: string;
   description: string;
