@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { pages, environment, ui } from 'config';
 
 import BetaTesting from 'components/BetaTesting';
-import BetaWarning from 'components/BetaWarning';
+// import BetaWarning from 'components/BetaWarning';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import SEO from 'components/SEO';
@@ -32,7 +32,7 @@ export default function Layout({ children }: React.PropsWithChildren<{}>) {
   return (
     <>
       {page?.meta && <SEO {...page.meta} />}
-      {ui.layout.disclaimer.enabled && <BetaWarning />}
+      {/* {ui.layout.disclaimer.enabled && <BetaWarning />} */}
       {ui.layout.alert.enabled && <BetaTesting network={network} />}
       {!ui.socialLogin.enabled && !isAllowedNetwork && (
         <WrongNetwork network={network} />
