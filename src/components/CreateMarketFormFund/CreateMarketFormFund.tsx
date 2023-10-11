@@ -92,7 +92,7 @@ function CreateMarketFormFund() {
                 time.
               </p>
               <a
-                href="//help.polkamarkets.com/en/articles/6153227-strategies-and-risks-for-liquidity-providers"
+                href="/"
                 aria-label="More Info"
                 target="_blank"
                 rel="noreferrer"

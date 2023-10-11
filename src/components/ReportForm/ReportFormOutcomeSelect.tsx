@@ -25,7 +25,7 @@ function OutcomeHeader() {
           Earn POLK by reporting the correct outcome.
           <Link
             title="Learn more"
-            href="https://help.polkamarkets.com/en/articles/5610525-how-market-resolution-works"
+            href="/"
             aria-label="Learn more"
             target="_blank"
             rel="noreferrer"

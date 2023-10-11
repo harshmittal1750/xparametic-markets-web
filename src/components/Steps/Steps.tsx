@@ -101,9 +101,10 @@ function Steps({
                 variant="normal"
                 color="success"
                 loading={isSubmitting}
-                disabled={
-                  !walletConnected || !isCurrentStepValid || isSubmitting
-                }
+                // disabled={
+                // isSubmitting || !walletConnected || !isCurrentStepValid
+                // }
+                disabled
               >
                 Create Market
               </ButtonLoading>
@@ -113,7 +114,7 @@ function Steps({
               variant="subtle"
               color="default"
               onClick={() => onChange(current + 1)}
-              disabled={current === steps.length - 1 || !isCurrentStepValid}
+              // disabled={current === steps.length - 1 || !isCurrentStepValid}
             >
               Next Step
             </Button>

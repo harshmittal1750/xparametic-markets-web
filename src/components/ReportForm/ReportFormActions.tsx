@@ -185,7 +185,7 @@ function ReportFormActions({
                 )} POLK. `}
                   <Link
                     target="_blank"
-                    href="https://help.polkamarkets.com/en/articles/5610525-how-market-resolution-works"
+                    href="/"
                     rel="noreferrer"
                     variant="warning"
                     scale="caption"

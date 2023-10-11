@@ -56,7 +56,7 @@ export default function RestrictedCountry() {
             <a
               style={{ margin: '0 auto' }}
               className="pm-c-button-normal--primary pm-c-button--sm"
-              href="https://help.polkamarkets.com/en/articles/5623718-ownership-architecture"
+              href="/"
               target="_blank"
               rel="noreferrer"
             >

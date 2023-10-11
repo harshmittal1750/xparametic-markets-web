@@ -11,7 +11,7 @@ function LiquidityFormInfo() {
             {`When adding liquidity on a market with uneven prices, you’ll get part of your stake as outcome shares. There are risks involved. `}
             <Link
               title="Learn more"
-              href="//help.polkamarkets.com/en/articles/6153227-strategies-and-risks-for-liquidity-providers"
+              href="/"
               aria-label="Learn more"
               target="_blank"
               rel="noreferrer"
