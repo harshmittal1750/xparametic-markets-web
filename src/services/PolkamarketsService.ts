@@ -38,25 +38,35 @@ export default class PolkamarketsService {
 
   constructor() {
     this.predictionMarketContractAddress =
-      '0x6AA72e36d97F8b5B76C78597b1453A207c9289E5';
-    this.erc20ContractAddress = '0x16878fb876D4AA99F86f9778E44a1bdE4f11E3B7';
+      '0xcE10B5baf0C4454Ad2BFc2758AC5518cFBF70323';
+    this.erc20ContractAddress = '0xe9bD734f78ca44Bd32eA37d085731C376e26Dd49';
     this.realitioErc20ContractAddress =
-      '0x997f7f87fBCb14308F807fE0Fa885b5F25306C86';
+      '0x1C366E3D78cb4177D45F786Ee22f4f17489B5fdA';
     this.achievementsContractAddress =
-      '0x89675c45ad2894Ca0C83Dd2497a812E5E74a6356';
-    this.votingContractAddress = '0x7dac4883231Af09A6A4C4819F2F5d9FF21A336cc';
+      '0x261C4cF55f736755B0681B14Aa16da97F9C0EAa6';
+    this.votingContractAddress = '0x6247bFF1356Afb4B544477A0A5534D0A731438E6';
 
     this.polkamarkets = new polkamarketsjs.Application({
       web3Provider:
-        'https://goerli.infura.io/v3/e06345ef5db24fc5b28b483ed432f1ec',
+        'https://sepolia.infura.io/v3/e06345ef5db24fc5b28b483ed432f1ec',
       web3EventsProvider:
-        'https://goerli.infura.io/v3/e06345ef5db24fc5b28b483ed432f1ec'
+        'https://sepolia.infura.io/v3/e06345ef5db24fc5b28b483ed432f1ec'
     });
 
     this.polkamarkets.start();
     // fetching contract
     this.getContracts();
   }
+  // ERC20_USER=0xf8248Ba62020e481Ca6746EE3ae3356E0769CDD3
+  // TOKEN=0xe9bD734f78ca44Bd32eA37d085731C376e26Dd49
+  // REALITIO_ADDRESS=0x1C366E3D78cb4177D45F786Ee22f4f17489B5fdA
+  // REALITIO_TIMEOUT=30
+  // WETH=0x3466a2d5EA52eB61a75E21aBCb2eac0a96902aCF
+  // FEE=0
+  // REQUIRED_BALANCE=0
+  // ACHIEVEMENTS=0x261C4cF55f736755B0681B14Aa16da97F9C0EAa6
+  // VOTING=0x6247bFF1356Afb4B544477A0A5534D0A731438E6
+  // PM = 0xce10b5baf0c4454ad2bfc2758ac5518cfbf70323;
 
   public async getContracts() {
     this.getPredictionMarketContract();
