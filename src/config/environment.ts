@@ -63,6 +63,28 @@ export type EnvironmentConfig = {
   [_variable in typeof environmentConfigVariables[number]]: string | undefined;
 };
 
+// const REACT_APP_NETWORK_ID = '11155111';
+// process.env.REACT_APP_NETWORK_ID = '11155111';
+
+// function getEnvironmentConfigVariable(
+//   variable: EnvironmentConfigVariable
+// ): string | undefined {
+//   // console.log(`${process.env}.REACT_APP_${variable}`);
+//   // console.log(process.env);
+
+//   // if (!(`REACT_APP_${variable}` in process.env)) {
+//   //   return undefined;
+//   // }
+
+//   if (!(`REACT_APP_${variable}` === REACT_APP_NETWORK_ID)) {
+//     return undefined;
+//   }
+
+//   // return process.env[`REACT_APP_${variable}`];
+
+//   return REACT_APP_NETWORK_ID;
+//   // return '11155111';
+// }
 function getEnvironmentConfigVariable(
   variable: EnvironmentConfigVariable
 ): string | undefined {

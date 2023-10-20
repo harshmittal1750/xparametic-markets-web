@@ -26,10 +26,14 @@ export const NetworkContext = createContext<NetworkContextState>(
 
 // Constants
 const AVAILABLE_NETWORKS = Object.keys(environment.NETWORKS);
-const DEFAULT_NETWORK_ID = toHexadecimal(environment.NETWORK_ID || 5);
-const DEFAULT_NETWORK = networks[DEFAULT_NETWORK_ID];
-const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
+console.log(environment);
 
+const DEFAULT_NETWORK_ID = toHexadecimal(environment.NETWORK_ID || 5);
+const DEFAULT_NETWORK = networks[DEFAULT_NETWORK_ID] || {};
+const DEFAULT_NETWORK_CONFIG = environment.NETWORKS[DEFAULT_NETWORK.id];
+if (!DEFAULT_NETWORK.id) {
+  console.error(`Network with ID ${DEFAULT_NETWORK_ID} not found.`);
+}
 const UNKNOWN_NETWORK = networks['0x270f'];
 
 function getNetwork(networkId) {

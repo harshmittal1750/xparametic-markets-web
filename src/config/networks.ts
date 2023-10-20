@@ -163,6 +163,27 @@ const networks: {
     decimals: 18,
     explorerURL: 'https://mumbai.polygonscan.com',
     rpcUrls: ['https://rpc-mumbai.maticvigil.com']
+  },
+  // '0xAA36A7': {
+  //   id: '11155111',
+  //   name: 'Sepolia Testnet',
+  //   key: 'sepolia',
+  //   colorAccent: 'blue',
+  //   currency: ETH,
+  //   decimals: 18,
+  //   explorerURL: 'https://sepolia.etherscan.io',
+  //   rpcUrls: ['']
+  // },
+
+  '0xAA36A7': {
+    id: '11155111',
+    name: 'Sepolia Testnet',
+    key: 'sepolia',
+    colorAccent: 'blue',
+    currency: ETH,
+    decimals: 18,
+    explorerURL: 'https://sepolia.etherscan.io',
+    rpcUrls: ['https://sepolia-rpc-url.com']
   }
 });
 

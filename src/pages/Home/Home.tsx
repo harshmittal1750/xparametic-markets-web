@@ -4,7 +4,7 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { pages, ui } from 'config';
 import { Container, useRect, useTheme } from 'ui';
 
-import { MarketList } from 'components';
+import { MarketListNew } from 'components';
 
 import homeClasses from './Home.module.scss';
 import HomeFilter from './HomeFilter';
@@ -32,7 +32,8 @@ export default function Home() {
           </Container>
           <div className={homeClasses.root}>
             <HomeFilter onFilterHide={handleHide} rect={rect} show={show} />
-            <MarketList filtersVisible={show} />
+            {/* <MarketList filtersVisible={show} /> */}
+            <MarketListNew />
           </div>
         </div>
       </Route>
