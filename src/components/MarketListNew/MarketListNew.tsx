@@ -1,10 +1,18 @@
-import PredictionCardNew from 'components/PredictionCardNew';
-import React from 'react';
+import MarketCardList from 'components/MarketCardList';
 
 const MarketListNew = () => {
   return (
-    <div>
-      <PredictionCardNew />
+    <div
+      style={{
+        justifyContent: 'center',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        marginLeft: 20,
+        marginRight: 20
+      }}
+    >
+      <MarketCardList />
     </div>
   );
 };
