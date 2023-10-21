@@ -12,6 +12,7 @@ import polkamarkets from './ducks/polkamarkets';
 import portfolio from './ducks/portfolio';
 import trade from './ducks/trade';
 import ui from './ducks/ui';
+import questionsReducer from './ducks/questionSlice';
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     portfolio,
     polkamarkets,
     ui,
+    questions: questionsReducer,
     [polkamarketsApi.reducerPath]: polkamarketsApi.reducer
   },
   middleware: getDefaultMiddleware =>

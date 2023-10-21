@@ -30,10 +30,12 @@
     "eslint-plugin-import-helpers",
     "jsx-a11y"
   ],
+  
   "rules": {
     /**
      * START COLLISIONS
      */
+     
     "no-shadow": "off",
     "@typescript-eslint/no-shadow": ["error"],
 

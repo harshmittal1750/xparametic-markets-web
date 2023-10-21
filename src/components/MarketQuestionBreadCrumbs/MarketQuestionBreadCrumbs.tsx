@@ -1,10 +1,10 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "@mui/material/Link";
+import * as React from 'react';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 interface LiquidityProps {
   questionId: number;
@@ -15,11 +15,11 @@ interface LiquidityProps {
 // }
 
 const MarketQuestionBreadCrumbs: React.FC<LiquidityProps> = ({
-  questionId,
+  questionId
 }) => {
   const question = useSelector((state: RootState) => {
     const selectedQuestion = state.questions.questionsData.find(
-      (q) => q.id === questionId
+      q => q.id === questionId
     );
     return selectedQuestion;
   });
@@ -31,10 +31,10 @@ const MarketQuestionBreadCrumbs: React.FC<LiquidityProps> = ({
 
   return (
     <Breadcrumbs aria-label="breadcrumb">
-      <Typography variant="subtitle2" textTransform={"uppercase"}>
+      <Typography variant="subtitle2" textTransform="uppercase">
         {question.category}
       </Typography>
-      <Typography variant="subtitle1" textTransform={"uppercase"}>
+      <Typography variant="subtitle1" textTransform="uppercase">
         {question.subCategory}
       </Typography>
     </Breadcrumbs>

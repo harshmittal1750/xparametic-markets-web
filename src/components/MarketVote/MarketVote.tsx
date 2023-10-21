@@ -19,7 +19,7 @@ const MarketVote: React.FC<MarketVoteProps> = ({ initialValue = 0 }) => {
   };
 
   return (
-    <Box display="flex" alignItems={'center'}>
+    <Box display="flex" alignItems="center">
       <Tooltip title="Vote Up">
         <IconButton
           disableRipple

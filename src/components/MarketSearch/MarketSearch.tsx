@@ -11,7 +11,7 @@ const MarketSearch = () => {
   };
 
   return (
-    <Box m={2} display={'flex'} width={'100%'}>
+    <Box m={2} display="flex" width="100%">
       <TextField
         fullWidth
         value={searchValue}

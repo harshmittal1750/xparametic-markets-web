@@ -1,15 +1,15 @@
-import * as React from "react";
-import { styled } from "@mui/material/styles";
-import List from "@mui/material/List";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
-import Radio from "@mui/material/Radio";
-import Collapse from "@mui/material/Collapse";
-import ExpandLess from "@mui/icons-material/ExpandLess";
-import ExpandMore from "@mui/icons-material/ExpandMore";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import Button from "@mui/material/Button";
-import Slide from "@mui/material/Slide";
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import Radio from '@mui/material/Radio';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import Button from '@mui/material/Button';
+import Slide from '@mui/material/Slide';
 
 interface FilterCategory {
   id: string;
@@ -19,27 +19,27 @@ interface FilterCategory {
 
 const filterCategories: FilterCategory[] = [
   {
-    id: "state",
-    name: "State",
-    values: ["Open", "Close", "Resolved"],
+    id: 'state',
+    name: 'State',
+    values: ['Open', 'Close', 'Resolved']
   },
   {
-    id: "price",
-    name: "Price",
-    values: ["0$-50$", "50$-100$", "100$-1000$"],
+    id: 'price',
+    name: 'Price',
+    values: ['0$-50$', '50$-100$', '100$-1000$']
   },
   {
-    id: "category",
-    name: "Category",
-    values: ["Technology", "Politics", "Crypto"],
-  },
+    id: 'category',
+    name: 'Category',
+    values: ['Technology', 'Politics', 'Crypto']
+  }
 ];
 
 const StyledListItemButton = styled(ListItemButton)({
-  "&:hover": {
-    backgroundColor: "rgba(0, 0, 0, 0.04)",
+  '&:hover': {
+    backgroundColor: 'rgba(0, 0, 0, 0.04)'
   },
-  transition: "all 0.2s ease-in-out",
+  transition: 'all 0.2s ease-in-out'
 });
 
 const FilterList: React.FC = () => {
@@ -52,14 +52,14 @@ const FilterList: React.FC = () => {
   const [listOpen, setListOpen] = React.useState(false);
 
   const handleToggle = (id: string) => {
-    setOpenedCategories((prevState) => ({
+    setOpenedCategories(prevState => ({
       ...prevState,
-      [id]: !prevState[id],
+      [id]: !prevState[id]
     }));
   };
 
   const handleRadioChange = (category: string, value: string) => {
-    setSelectedValues((prev) => ({ ...prev, [category]: value }));
+    setSelectedValues(prev => ({ ...prev, [category]: value }));
   };
 
   const toggleList = () => {
@@ -79,11 +79,11 @@ const FilterList: React.FC = () => {
       <Slide direction="right" in={listOpen} mountOnEnter unmountOnExit>
         <List
           sx={{
-            width: "100%",
+            width: '100%',
             maxWidth: 500,
             // border: 1,
             // borderColor: "#000000",
-            boxShadow: 1,
+            boxShadow: 1
           }}
           component="nav"
           aria-labelledby="nested-list-subheader"
@@ -101,12 +101,12 @@ const FilterList: React.FC = () => {
                 // sx={{ boxShadow: 1 }}
               >
                 <List component="div" disablePadding>
-                  {values.map((value) => (
+                  {values.map(value => (
                     <StyledListItemButton
                       key={value}
                       onClick={() => handleRadioChange(id, value)}
                     >
-                      {<Radio checked={selectedValues[id] === value} />}
+                      <Radio checked={selectedValues[id] === value} />
                       <ListItemText primary={value} />
                     </StyledListItemButton>
                   ))}
