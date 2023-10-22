@@ -86,7 +86,8 @@ const MarketCard: React.FC<MarketCardListProps> = ({ questionId }) => {
               </Typography>
             </CardContent>
           </Grid>
-          <Grid item xl={5} lg={5} md={5}>
+          <Grid item xl={2} lg={2} md={2} />
+          <Grid item xl={3} lg={3} md={3}>
             <Box
               display="flex"
               flexDirection={{
@@ -120,9 +121,9 @@ const MarketCard: React.FC<MarketCardListProps> = ({ questionId }) => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box sx={{ mx: 1 }}>
+                {/* <Box sx={{ mx: 1 }}>
                   <CardThumbnailChartYes />
-                </Box>
+                </Box> */}
               </Box>
               <Box
                 display="flex"
@@ -147,9 +148,9 @@ const MarketCard: React.FC<MarketCardListProps> = ({ questionId }) => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box mx={1}>
+                {/* <Box mx={1}>
                   <CardThumbnailChartNo />
-                </Box>
+                </Box> */}
               </Box>
             </Box>
           </Grid>

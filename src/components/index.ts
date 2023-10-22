@@ -178,7 +178,7 @@ export { default as MarketAvatar } from './MarketAvatar';
 export { default as MarketCategory } from './MarketCategory';
 
 export { default as MarketList } from './MarketList';
-export { default as MarketListNew } from './MarketListNew';
+// export { default as MarketListNew } from './MarketListNew';
 export { default as BookmarkMarket } from './BookmarkMarket';
 export { default as CarousalCard } from './CarousalCard';
 export { default as CardThumbnailChartNo } from './CardThumbnailChartNo';
