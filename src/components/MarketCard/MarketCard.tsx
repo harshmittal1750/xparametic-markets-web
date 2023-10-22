@@ -86,7 +86,8 @@ const MarketCard: React.FC<MarketCardListProps> = ({ questionId }) => {
               </Typography>
             </CardContent>
           </Grid>
-          <Grid item xl={5} lg={5} md={5}>
+          <Grid item xl={2} lg={2} md={2} />
+          <Grid item xl={3} lg={3} md={3}>
             <Box
               display="flex"
               flexDirection={{
