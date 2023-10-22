@@ -120,9 +120,9 @@ const MarketCard: React.FC<MarketCardListProps> = ({ questionId }) => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box sx={{ mx: 1 }}>
+                {/* <Box sx={{ mx: 1 }}>
                   <CardThumbnailChartYes />
-                </Box>
+                </Box> */}
               </Box>
               <Box
                 display="flex"
@@ -147,9 +147,9 @@ const MarketCard: React.FC<MarketCardListProps> = ({ questionId }) => {
                     </Typography>
                   </Box>
                 </Box>
-                <Box mx={1}>
+                {/* <Box mx={1}>
                   <CardThumbnailChartNo />
-                </Box>
+                </Box> */}
               </Box>
             </Box>
           </Grid>
