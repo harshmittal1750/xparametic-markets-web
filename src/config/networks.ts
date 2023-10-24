@@ -50,6 +50,23 @@ const networks: {
     explorerURL: 'https://goerli.etherscan.io',
     rpcUrls: []
   },
+  '0xaa36a7': {
+    id: '11155111',
+    name: 'Sepolia Testnet',
+    key: 'sepolia',
+    colorAccent: 'blue',
+    currency: ETH,
+    decimals: 18,
+    explorerURL: 'https://sepolia.etherscan.io',
+    rpcUrls: [
+      'https://sepolia-rpc-url.com',
+      'https://ethereum-sepolia.publicnode.com',
+      'https://rpc2.sepolia.org',
+      'https://sepolia.gateway.tenderly.co',
+      'https://gateway.tenderly.co/public/sepolia',
+      'https://rpc-sepolia.rockx.com'
+    ]
+  },
   '0x2a': {
     id: '42',
     name: 'Kovan Testnet',
@@ -163,27 +180,6 @@ const networks: {
     decimals: 18,
     explorerURL: 'https://mumbai.polygonscan.com',
     rpcUrls: ['https://rpc-mumbai.maticvigil.com']
-  },
-  // '0xAA36A7': {
-  //   id: '11155111',
-  //   name: 'Sepolia Testnet',
-  //   key: 'sepolia',
-  //   colorAccent: 'blue',
-  //   currency: ETH,
-  //   decimals: 18,
-  //   explorerURL: 'https://sepolia.etherscan.io',
-  //   rpcUrls: ['']
-  // },
-
-  '0xAA36A7': {
-    id: '11155111',
-    name: 'Sepolia Testnet',
-    key: 'sepolia',
-    colorAccent: 'blue',
-    currency: ETH,
-    decimals: 18,
-    explorerURL: 'https://sepolia.etherscan.io',
-    rpcUrls: ['https://sepolia-rpc-url.com']
   }
 });
 
