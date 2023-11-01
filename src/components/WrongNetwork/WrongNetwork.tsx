@@ -12,29 +12,27 @@ type WrongNetworkProps = {
 
 export default function WrongNetwork({ network }: WrongNetworkProps) {
   return (
-    <Banner
-      $type="warning"
-      $variant="subtle"
-      actions={
-        <NetworkSelector
-          size="xs"
-          color="warning"
-          variant="ghost"
-          className={wrongNetworkClasses.change}
-        />
-      }
-    >
-      The selected network <strong>{network.name}</strong> does not match
-      Parametric&apos;s networks. <strong>Change</strong> the App network or
-      learn{' '}
-      <Link
-        className={wrongNetworkClasses.link}
-        title="how to change"
-        target="_blank"
-        rel="noreferrer noopener"
-        href="https://support.metamask.io/hc/en-us/articles/360043227612-How-to-add-a-custom-network-RPC"
-      />{' '}
-      it in MetaMask.
-    </Banner>
+    <>
+      {network.name === 'Sepolia Testnet' ? (
+        ''
+      ) : (
+        <Banner
+          $type="warning"
+          $variant="subtle"
+          actions={
+            <NetworkSelector
+              size="xs"
+              color="warning"
+              variant="ghost"
+              className={wrongNetworkClasses.change}
+            />
+          }
+        >
+          The selected network <strong>{network.name}</strong> does not match
+          Parametric&apos;s networks. <strong>Change</strong> the App network to
+          <strong> Sepolia Testnet</strong> Network from the wallet.
+        </Banner>
+      )}
+    </>
   );
 }
